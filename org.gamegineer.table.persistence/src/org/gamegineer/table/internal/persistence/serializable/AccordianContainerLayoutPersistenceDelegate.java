@@ -1,5 +1,5 @@
 /*
- * CardPileLayoutPersistenceDelegate.java
+ * AccordianContainerLayoutPersistenceDelegate.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,19 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 9, 2010 at 9:19:39 PM.
+ * Created on May 12, 2012 at 10:44:41 PM.
  */
 
 package org.gamegineer.table.internal.persistence.serializable;
 
+import java.io.IOException;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
+import org.gamegineer.table.internal.core.AccordianContainerLayout;
 
 /**
- * A persistence delegate for the {@code CardPileLayout} class.
+ * A persistence delegate for the {@link AccordianContainerLayout} class.
  */
 @Immutable
-public final class CardPileLayoutPersistenceDelegate
+public final class AccordianContainerLayoutPersistenceDelegate
     extends AbstractPersistenceDelegate
 {
     // ======================================================================
@@ -37,9 +39,30 @@ public final class CardPileLayoutPersistenceDelegate
 
     /**
      * Initializes a new instance of the
-     * {@code CardPileLayoutPersistenceDelegate} class.
+     * {@code AccordianContainerLayoutPersistenceDelegate} class.
      */
-    public CardPileLayoutPersistenceDelegate()
+    public AccordianContainerLayoutPersistenceDelegate()
     {
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /*
+     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate#replaceObject(java.lang.Object)
+     */
+    @Override
+    public Object replaceObject(
+        final Object obj )
+        throws IOException
+    {
+        if( obj instanceof AccordianContainerLayout )
+        {
+            return new AccordianContainerLayoutProxy( (AccordianContainerLayout)obj );
+        }
+
+        return super.replaceObject( obj );
     }
 }

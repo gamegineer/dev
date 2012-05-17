@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.core;
 
+import static org.gamegineer.table.core.Assert.assertComponentEquals;
 import static org.gamegineer.test.core.Assert.assertImmutableCollection;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -28,9 +29,11 @@ import static org.junit.Assert.assertNotNull;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Collection;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase;
+import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -76,6 +79,24 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     // ======================================================================
 
     /**
+     * This implementation compares the expected and actual values according to
+     * the specification of the
+     * {@link org.gamegineer.table.core.Assert#assertComponentEquals} method.
+     * 
+     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#assertMementoOriginatorEquals(org.gamegineer.common.core.util.memento.IMementoOriginator,
+     *      org.gamegineer.common.core.util.memento.IMementoOriginator)
+     */
+    @Override
+    protected void assertMementoOriginatorEquals(
+        final IMementoOriginator expected,
+        final IMementoOriginator actual )
+    {
+        final IComponent expectedComponent = (IComponent)expected;
+        final IComponent actualComponent = (IComponent)actual;
+        assertComponentEquals( expectedComponent, actualComponent );
+    }
+
+    /**
      * Creates the component to be tested.
      * 
      * @param table
@@ -92,18 +113,6 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     protected abstract T createComponent(
         /* @NonNull */
         final ITable table )
-        throws Exception;
-
-    /**
-     * Creates the table for use in the fixture.
-     * 
-     * @return The table for use in the fixture; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    /* @NonNull */
-    protected abstract ITable createTable()
         throws Exception;
 
     /**
@@ -126,6 +135,27 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
             }
         };
     }
+
+    /*
+     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#createMementoOriginator()
+     */
+    @Override
+    protected final IMementoOriginator createMementoOriginator()
+    {
+        return component_;
+    }
+
+    /**
+     * Creates the table for use in the fixture.
+     * 
+     * @return The table for use in the fixture; never {@code null}.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    /* @NonNull */
+    protected abstract ITable createTable()
+        throws Exception;
 
     /**
      * Fires a component bounds changed event for the specified component.
@@ -168,6 +198,58 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
         T component );
 
     /**
+     * Gets an alternate to the specified component orientation from the
+     * specified collection of supported component orientations.
+     * 
+     * @param orientation
+     *        The component orientation for which an alternate is desired; must
+     *        not be {@code null}.
+     * @param supportedOrientations
+     *        The collection of supported component orientations; must not be
+     *        {@code null}.
+     * 
+     * @return The alternate component orientation; never {@code null}. If no
+     *         alternate component orientation is available, the specified
+     *         component orientation is returned.
+     */
+    /* @NonNull */
+    private static ComponentOrientation getAlternateOrientation(
+        /* @NonNull */
+        final ComponentOrientation orientation,
+        /* @NonNull */
+        final Collection<ComponentOrientation> supportedOrientations )
+    {
+        for( final ComponentOrientation supportedOrientation : supportedOrientations )
+        {
+            if( supportedOrientation != orientation )
+            {
+                return supportedOrientation;
+            }
+        }
+
+        return orientation;
+    }
+
+    /**
+     * Gets an alternate to the specified point.
+     * 
+     * @param point
+     *        The point for which an alternate is desired; must not be
+     *        {@code null}.
+     * 
+     * @return The alternate point; never {@code null}.
+     */
+    /* @NonNull */
+    private static Point getAlternatePoint(
+        /* @NonNull */
+        final Point point )
+    {
+        assert point != null;
+
+        return new Point( point.x + 1000, point.y + 1000 );
+    }
+
+    /**
      * Gets the component under test in the fixture.
      * 
      * @return The component under test in the fixture; never {@code null}.
@@ -189,6 +271,23 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     {
         assertNotNull( table_ );
         return table_;
+    }
+
+    /*
+     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#initializeMementoOriginator(org.gamegineer.common.core.util.memento.IMementoOriginator)
+     */
+    @Override
+    protected void initializeMementoOriginator(
+        final IMementoOriginator mementoOriginator )
+    {
+        final IComponent component = (IComponent)mementoOriginator;
+        component.setLocation( getAlternatePoint( component.getLocation() ) );
+        component.setOrientation( getAlternateOrientation( component.getOrientation(), component.getSupportedOrientations() ) );
+        component.setOrigin( getAlternatePoint( component.getOrigin() ) );
+        for( final ComponentOrientation orientation : component.getSupportedOrientations() )
+        {
+            component.setSurfaceDesign( orientation, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+        }
     }
 
     /*

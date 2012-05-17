@@ -62,7 +62,7 @@ import org.gamegineer.common.ui.window.WindowConstants;
 import org.gamegineer.common.ui.wizard.IWizard;
 import org.gamegineer.common.ui.wizard.WizardDialog;
 import org.gamegineer.table.core.CardOrientation;
-import org.gamegineer.table.core.CardPileLayout;
+import org.gamegineer.table.core.CardPileLayouts;
 import org.gamegineer.table.core.CardPileOrientation;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ICard;
@@ -70,6 +70,7 @@ import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentSurfaceDesign;
 import org.gamegineer.table.core.IComponentSurfaceDesignRegistry;
+import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
 import org.gamegineer.table.internal.ui.Activator;
@@ -353,7 +354,7 @@ final class TableView
             public void actionPerformed(
                 final ActionEvent event )
             {
-                setCardPileLayout( CardPileLayout.valueOf( event.getActionCommand() ) );
+                setCardPileLayout( CardPileLayouts.fromId( event.getActionCommand() ) );
             }
         };
         actionMediator_.bindActionListener( Actions.getAddAceOfClubsCardAction(), addCardActionListener );
@@ -786,7 +787,7 @@ final class TableView
                     return false;
                 }
 
-                return cardPile.getLayout() == CardPileLayout.valueOf( (String)obj.getValue( Action.ACTION_COMMAND_KEY ) );
+                return cardPile.getLayout() == CardPileLayouts.fromId( (String)obj.getValue( Action.ACTION_COMMAND_KEY ) );
             }
 
         };
@@ -1258,19 +1259,19 @@ final class TableView
     /**
      * Sets the layout of the focused card pile to the specified value.
      * 
-     * @param cardPileLayout
+     * @param layout
      *        The card pile layout; must not be {@code null}.
      */
     private void setCardPileLayout(
         /* @NonNull */
-        final CardPileLayout cardPileLayout )
+        final IContainerLayout layout )
     {
-        assert cardPileLayout != null;
+        assert layout != null;
 
         final ICardPile cardPile = model_.getFocusedCardPile();
         if( cardPile != null )
         {
-            cardPile.setLayout( cardPileLayout );
+            cardPile.setLayout( layout );
         }
     }
 

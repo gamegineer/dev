@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
+    <scr:component
+            name="org.gamegineer.table.persistence.serializable.accordianContainerLayoutPersistenceDelegate"
+            xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+        <implementation
+                class="org.gamegineer.table.internal.persistence.serializable.AccordianContainerLayoutPersistenceDelegate" />
+        <service>
+            <provide
+                    interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegate" />
+        </service>
+        <property
+                name="delegators"
+                type="String">
+            org.gamegineer.table.internal.core.AccordianContainerLayout
+            org.gamegineer.table.internal.persistence.serializable.AccordianContainerLayoutProxy
+       </property>
+    </scr:component>
 	<scr:component
 			name="org.gamegineer.table.persistence.serializable.cardOrientationPersistenceDelegate"
 			xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
@@ -13,21 +29,6 @@
 				name="delegators"
 				type="String">
 			org.gamegineer.table.core.CardOrientation
-       </property>
-	</scr:component>
-	<scr:component
-			name="org.gamegineer.table.persistence.serializable.cardPileLayoutPersistenceDelegate"
-			xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
-		<implementation
-				class="org.gamegineer.table.internal.persistence.serializable.CardPileLayoutPersistenceDelegate" />
-		<service>
-			<provide
-					interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegate" />
-		</service>
-		<property
-				name="delegators"
-				type="String">
-			org.gamegineer.table.core.CardPileLayout
        </property>
 	</scr:component>
     <scr:component
@@ -61,4 +62,20 @@
 			org.gamegineer.table.internal.persistence.serializable.ComponentSurfaceDesignProxy
 		</property>
 	</scr:component>
+    <scr:component
+            name="org.gamegineer.table.persistence.serializable.stackedContainerLayoutPersistenceDelegate"
+            xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+        <implementation
+                class="org.gamegineer.table.internal.persistence.serializable.StackedContainerLayoutPersistenceDelegate" />
+        <service>
+            <provide
+                    interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegate" />
+        </service>
+        <property
+                name="delegators"
+                type="String">
+            org.gamegineer.table.internal.core.StackedContainerLayout
+            org.gamegineer.table.internal.persistence.serializable.StackedContainerLayoutProxy
+       </property>
+    </scr:component>
 </root>

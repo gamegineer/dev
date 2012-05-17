@@ -63,4 +63,17 @@ public interface IContainerListener
     public void componentRemoved(
         /* @NonNull */
         ContainerContentChangedEvent event );
+
+    /**
+     * Invoked after the container layout has changed.
+     * 
+     * @param event
+     *        The event describing the container; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void containerLayoutChanged(
+        /* @NonNull */
+        ContainerEvent event );
 }

@@ -30,15 +30,15 @@ import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.CardOrientation;
-import org.gamegineer.table.core.CardPileEvent;
 import org.gamegineer.table.core.CardPileOrientation;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
+import org.gamegineer.table.core.ContainerEvent;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
-import org.gamegineer.table.core.ICardPileListener;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentListener;
+import org.gamegineer.table.core.IContainerListener;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
@@ -58,8 +58,11 @@ final class LocalNetworkTable
     /** The local card component listener. */
     private final IComponentListener cardComponentListener_;
 
-    /** The local card pile listener. */
-    private final ICardPileListener cardPileListener_;
+    /** The local card pile component listener. */
+    private final IComponentListener cardPileComponentListener_;
+
+    /** The local card pile container listener. */
+    private final IContainerListener cardPileContainerListener_;
 
     /** Indicates events fired by the local table should be ignored. */
     private boolean ignoreEvents_;
@@ -105,8 +108,18 @@ final class LocalNetworkTable
         assert tableManager != null;
         assert table != null;
 
-        cardComponentListener_ = new ComponentListenerProxy( new CardComponentListener() );
-        cardPileListener_ = new CardPileListenerProxy( new CardPileListener() );
+        cardComponentListener_ = new ComponentListenerProxy( new CardComponentListener() )
+        {
+            @Override
+            public void componentBoundsChanged(
+                @SuppressWarnings( "unused" )
+                final ComponentEvent event )
+            {
+                // do nothing - see comment in CardComponentListener#componentBoundsChanged
+            }
+        };
+        cardPileComponentListener_ = new ComponentListenerProxy( new CardPileComponentListener() );
+        cardPileContainerListener_ = new ContainerListenerProxy( new CardPileContainerListener() );
         ignoreEvents_ = false;
         nodeLayer_ = nodeLayer;
         table_ = table;
@@ -209,7 +222,8 @@ final class LocalNetworkTable
 
             for( final ICardPile cardPile : table_.getCardPiles() )
             {
-                cardPile.addCardPileListener( cardPileListener_ );
+                cardPile.addComponentListener( cardPileComponentListener_ );
+                cardPile.addContainerListener( cardPileContainerListener_ );
 
                 for( final IComponent component : cardPile.getComponents() )
                 {
@@ -282,7 +296,8 @@ final class LocalNetworkTable
 
             for( final ICardPile cardPile : table_.getCardPiles() )
             {
-                cardPile.removeCardPileListener( cardPileListener_ );
+                cardPile.removeComponentListener( cardPileComponentListener_ );
+                cardPile.removeContainerListener( cardPileContainerListener_ );
 
                 for( final IComponent component : cardPile.getComponents() )
                 {
@@ -440,20 +455,21 @@ final class LocalNetworkTable
     }
 
     /**
-     * A card pile listener for the local table adapter.
+     * A card pile component listener for the local table adapter.
      */
     @Immutable
-    private final class CardPileListener
-        implements ICardPileListener
+    private final class CardPileComponentListener
+        implements IComponentListener
     {
         // ==================================================================
         // Constructors
         // ==================================================================
 
         /**
-         * Initializes a new instance of the {@code CardPileListener} class.
+         * Initializes a new instance of the {@code CardPileComponentListener}
+         * class.
          */
-        CardPileListener()
+        CardPileComponentListener()
         {
         }
 
@@ -461,89 +477,6 @@ final class LocalNetworkTable
         // ==================================================================
         // Methods
         // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.core.ICardPileListener#cardPileLayoutChanged(org.gamegineer.table.core.CardPileEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void cardPileLayoutChanged(
-            final CardPileEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-            assert nodeLayer_.isNodeLayerThread();
-
-            if( ignoreEvents_ )
-            {
-                return;
-            }
-
-            int cardPileIndex = -1;
-            final CardPileIncrement cardPileIncrement = new CardPileIncrement();
-            getTableLock().lock();
-            try
-            {
-                final ICardPile cardPile = event.getCardPile();
-                final ITable table = cardPile.getTable();
-                if( table != null )
-                {
-                    cardPileIndex = table.getCardPileIndex( cardPile );
-                    cardPileIncrement.setLayout( cardPile.getLayout() );
-                }
-            }
-            finally
-            {
-                getTableLock().unlock();
-            }
-
-            if( cardPileIndex != -1 )
-            {
-                tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
-            }
-        }
-
-        /*
-         * @see org.gamegineer.table.core.IContainerListener#componentAdded(org.gamegineer.table.core.ContainerContentChangedEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void componentAdded(
-            final ContainerContentChangedEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-            assert nodeLayer_.isNodeLayerThread();
-
-            final ICard card = (ICard)event.getComponent(); // FIXME: remove cast
-            card.addComponentListener( cardComponentListener_ );
-
-            if( ignoreEvents_ )
-            {
-                return;
-            }
-
-            int cardPileIndex = -1;
-            final CardPileIncrement cardPileIncrement = new CardPileIncrement();
-            getTableLock().lock();
-            try
-            {
-                final ICardPile cardPile = (ICardPile)event.getContainer(); // FIXME: remove cast
-                final ITable table = cardPile.getTable();
-                if( table != null )
-                {
-                    cardPileIndex = table.getCardPileIndex( cardPile );
-                    cardPileIncrement.setAddedCardMementos( Collections.singletonList( card.createMemento() ) );
-                }
-            }
-            finally
-            {
-                getTableLock().unlock();
-            }
-
-            if( cardPileIndex != -1 )
-            {
-                tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
-            }
-        }
 
         /*
          * @see org.gamegineer.table.core.IComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
@@ -598,6 +531,114 @@ final class LocalNetworkTable
         }
 
         /*
+         * @see org.gamegineer.table.core.IComponentListener#componentSurfaceDesignChanged(org.gamegineer.table.core.ComponentEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void componentSurfaceDesignChanged(
+            final ComponentEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+            assert nodeLayer_.isNodeLayerThread();
+
+            if( ignoreEvents_ )
+            {
+                return;
+            }
+
+            int cardPileIndex = -1;
+            final CardPileIncrement cardPileIncrement = new CardPileIncrement();
+            getTableLock().lock();
+            try
+            {
+                final ICardPile cardPile = (ICardPile)event.getComponent(); // FIXME: remove cast
+                final ITable table = cardPile.getTable();
+                if( table != null )
+                {
+                    cardPileIndex = table.getCardPileIndex( cardPile );
+                    cardPileIncrement.setBaseDesign( cardPile.getSurfaceDesign( CardPileOrientation.BASE ) );
+                }
+            }
+            finally
+            {
+                getTableLock().unlock();
+            }
+
+            if( cardPileIndex != -1 )
+            {
+                tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
+            }
+        }
+    }
+
+    /**
+     * A card pile container listener for the local table adapter.
+     */
+    @Immutable
+    private final class CardPileContainerListener
+        implements IContainerListener
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code CardPileContainerListener}
+         * class.
+         */
+        CardPileContainerListener()
+        {
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.core.IContainerListener#componentAdded(org.gamegineer.table.core.ContainerContentChangedEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void componentAdded(
+            final ContainerContentChangedEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+            assert nodeLayer_.isNodeLayerThread();
+
+            final ICard card = (ICard)event.getComponent(); // FIXME: remove cast
+            card.addComponentListener( cardComponentListener_ );
+
+            if( ignoreEvents_ )
+            {
+                return;
+            }
+
+            int cardPileIndex = -1;
+            final CardPileIncrement cardPileIncrement = new CardPileIncrement();
+            getTableLock().lock();
+            try
+            {
+                final ICardPile cardPile = (ICardPile)event.getContainer(); // FIXME: remove cast
+                final ITable table = cardPile.getTable();
+                if( table != null )
+                {
+                    cardPileIndex = table.getCardPileIndex( cardPile );
+                    cardPileIncrement.setAddedCardMementos( Collections.singletonList( card.createMemento() ) );
+                }
+            }
+            finally
+            {
+                getTableLock().unlock();
+            }
+
+            if( cardPileIndex != -1 )
+            {
+                tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
+            }
+        }
+
+        /*
          * @see org.gamegineer.table.core.IContainerListener#componentRemoved(org.gamegineer.table.core.ContainerContentChangedEvent)
          */
         @Override
@@ -643,12 +684,12 @@ final class LocalNetworkTable
         }
 
         /*
-         * @see org.gamegineer.table.core.IComponentListener#componentSurfaceDesignChanged(org.gamegineer.table.core.ComponentEvent)
+         * @see org.gamegineer.table.core.IContainerListener#containerLayoutChanged(org.gamegineer.table.core.ContainerEvent)
          */
         @Override
         @SuppressWarnings( "synthetic-access" )
-        public void componentSurfaceDesignChanged(
-            final ComponentEvent event )
+        public void containerLayoutChanged(
+            final ContainerEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
             assert nodeLayer_.isNodeLayerThread();
@@ -663,12 +704,12 @@ final class LocalNetworkTable
             getTableLock().lock();
             try
             {
-                final ICardPile cardPile = (ICardPile)event.getComponent(); // FIXME: remove cast
+                final ICardPile cardPile = (ICardPile)event.getContainer(); // FIXME: remove cast
                 final ITable table = cardPile.getTable();
                 if( table != null )
                 {
                     cardPileIndex = table.getCardPileIndex( cardPile );
-                    cardPileIncrement.setBaseDesign( cardPile.getSurfaceDesign( CardPileOrientation.BASE ) );
+                    cardPileIncrement.setLayout( cardPile.getLayout() );
                 }
             }
             finally
@@ -684,161 +725,11 @@ final class LocalNetworkTable
     }
 
     /**
-     * A proxy for instances of {@link ICardPileListener} that ensures all
-     * methods are called on the associated node layer thread.
-     */
-    @Immutable
-    private final class CardPileListenerProxy
-        implements ICardPileListener
-    {
-        // ==================================================================
-        // Fields
-        // ==================================================================
-
-        /** The actual card pile listener. */
-        private final ICardPileListener actualCardPileListener_;
-
-
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code CardPileListenerProxy}
-         * class.
-         * 
-         * @param actualCardPileListener
-         *        The actual card pile listener; must not be {@code null}.
-         */
-        CardPileListenerProxy(
-            /* @NonNull */
-            final ICardPileListener actualCardPileListener )
-        {
-            assert actualCardPileListener != null;
-
-            actualCardPileListener_ = actualCardPileListener;
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.core.ICardPileListener#cardPileLayoutChanged(org.gamegineer.table.core.CardPileEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void cardPileLayoutChanged(
-            final CardPileEvent event )
-        {
-            syncExec( new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    actualCardPileListener_.cardPileLayoutChanged( event );
-                }
-            } );
-        }
-
-        /*
-         * @see org.gamegineer.table.core.IContainerListener#componentAdded(org.gamegineer.table.core.ContainerContentChangedEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void componentAdded(
-            final ContainerContentChangedEvent event )
-        {
-            syncExec( new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    actualCardPileListener_.componentAdded( event );
-                }
-            } );
-        }
-
-        /*
-         * @see org.gamegineer.table.core.IComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void componentBoundsChanged(
-            final ComponentEvent event )
-        {
-            syncExec( new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    actualCardPileListener_.componentBoundsChanged( event );
-                }
-            } );
-        }
-
-        /*
-         * @see org.gamegineer.table.core.IComponentListener#componentOrientationChanged(org.gamegineer.table.core.ComponentEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void componentOrientationChanged(
-            final ComponentEvent event )
-        {
-            syncExec( new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    actualCardPileListener_.componentOrientationChanged( event );
-                }
-            } );
-        }
-
-        /*
-         * @see org.gamegineer.table.core.IContainerListener#componentRemoved(org.gamegineer.table.core.ContainerContentChangedEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void componentRemoved(
-            final ContainerContentChangedEvent event )
-        {
-            syncExec( new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    actualCardPileListener_.componentRemoved( event );
-                }
-            } );
-        }
-
-        /*
-         * @see org.gamegineer.table.core.IComponentListener#componentSurfaceDesignChanged(org.gamegineer.table.core.ComponentEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void componentSurfaceDesignChanged(
-            final ComponentEvent event )
-        {
-            syncExec( new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    actualCardPileListener_.componentSurfaceDesignChanged( event );
-                }
-            } );
-        }
-    }
-
-    /**
      * A proxy for instances of {@link IComponentListener} that ensures all
      * methods are called on the associated node layer thread.
      */
     @Immutable
-    private final class ComponentListenerProxy
+    private class ComponentListenerProxy
         implements IComponentListener
     {
         // ==================================================================
@@ -878,21 +769,18 @@ final class LocalNetworkTable
          * @see org.gamegineer.table.core.IComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
          */
         @Override
+        @SuppressWarnings( "synthetic-access" )
         public void componentBoundsChanged(
-            @SuppressWarnings( "unused" )
             final ComponentEvent event )
         {
-            // do nothing
-
-            // In the current implementation, handling this event is unnecessary because a
-            // card can only be moved by moving a card pile that contains the card. Thus,
-            // when the corresponding card pile bounds changed event is fired, it will
-            // automatically set the new card location when the card pile location is changed.
-            //
-            // If we send both the card pile bounds changed event and the card location
-            // changed event over the network, the card movement on remote tables will appear
-            // "jumpy" because two ICard.setLocation() calls will be made that may be a few
-            // pixels off.
+            syncExec( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    actualComponentListener_.componentBoundsChanged( event );
+                }
+            } );
         }
 
         /*
@@ -927,6 +815,102 @@ final class LocalNetworkTable
                 public void run()
                 {
                     actualComponentListener_.componentSurfaceDesignChanged( event );
+                }
+            } );
+        }
+    }
+
+    /**
+     * A proxy for instances of {@link IContainerListener} that ensures all
+     * methods are called on the associated node layer thread.
+     */
+    @Immutable
+    private final class ContainerListenerProxy
+        implements IContainerListener
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The actual container listener. */
+        private IContainerListener actualContainerListener_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code ContainerListenerProxy}
+         * class.
+         * 
+         * @param actualContainerListener
+         *        The actual container listener; must not be {@code null}.
+         */
+        ContainerListenerProxy(
+            /* @NonNull */
+            final IContainerListener actualContainerListener )
+        {
+            assert actualContainerListener != null;
+
+            actualContainerListener_ = actualContainerListener;
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.core.IContainerListener#componentAdded(org.gamegineer.table.core.ContainerContentChangedEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void componentAdded(
+            final ContainerContentChangedEvent event )
+        {
+            syncExec( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    actualContainerListener_.componentAdded( event );
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.IContainerListener#componentRemoved(org.gamegineer.table.core.ContainerContentChangedEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void componentRemoved(
+            final ContainerContentChangedEvent event )
+        {
+            syncExec( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    actualContainerListener_.componentRemoved( event );
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.IContainerListener#containerLayoutChanged(org.gamegineer.table.core.ContainerEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void containerLayoutChanged(
+            final ContainerEvent event )
+        {
+            syncExec( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    actualContainerListener_.containerLayoutChanged( event );
                 }
             } );
         }
@@ -970,7 +954,8 @@ final class LocalNetworkTable
             try
             {
                 final ICardPile cardPile = event.getCardPile();
-                cardPile.addCardPileListener( cardPileListener_ );
+                cardPile.addComponentListener( cardPileComponentListener_ );
+                cardPile.addContainerListener( cardPileContainerListener_ );
 
                 for( final IComponent component : cardPile.getComponents() )
                 {
@@ -1015,7 +1000,8 @@ final class LocalNetworkTable
                     ((ICard)component).removeComponentListener( cardComponentListener_ ); // FIXME: remove cast
                 }
 
-                cardPile.removeCardPileListener( cardPileListener_ );
+                cardPile.removeComponentListener( cardPileComponentListener_ );
+                cardPile.removeContainerListener( cardPileContainerListener_ );
             }
             finally
             {

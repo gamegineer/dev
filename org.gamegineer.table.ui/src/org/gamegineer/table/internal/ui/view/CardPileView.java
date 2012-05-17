@@ -37,8 +37,9 @@ import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ICard;
-import org.gamegineer.table.core.ICardPileListener;
 import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.IComponentListener;
+import org.gamegineer.table.core.IContainerListener;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.model.CardPileModel;
 import org.gamegineer.table.internal.ui.model.CardPileModelEvent;
@@ -71,14 +72,17 @@ final class CardPileView
     /** The component surface design user interface for the card pile base. */
     private final IComponentSurfaceDesignUI baseDesignUI_;
 
-    /** The card pile listener for this view. */
-    private ICardPileListener cardPileListener_;
-
     /** The card pile model listener for this view. */
     private ICardPileModelListener cardPileModelListener_;
 
     /** The collection of card views. */
     private final Map<ICard, CardView> cardViews_;
+
+    /** The card pile component listener for this view. */
+    private IComponentListener componentListener_;
+
+    /** The card pile container listener for this view. */
+    private IContainerListener containerListener_;
 
     /** The dirty bounds of this view in table coordinates. */
     private final Rectangle dirtyBounds_;
@@ -113,8 +117,10 @@ final class CardPileView
         assert baseDesignUI != null;
 
         baseDesignUI_ = baseDesignUI;
-        cardPileListener_ = null;
+        cardPileModelListener_ = null;
         cardViews_ = new IdentityHashMap<ICard, CardView>();
+        componentListener_ = null;
+        containerListener_ = null;
         dirtyBounds_ = new Rectangle();
         model_ = model;
         tableView_ = null;
@@ -284,8 +290,10 @@ final class CardPileView
         dirtyBounds_.setBounds( getBounds() );
         cardPileModelListener_ = new CardPileModelListener();
         model_.addCardPileModelListener( cardPileModelListener_ );
-        cardPileListener_ = new CardPileListener();
-        model_.getCardPile().addCardPileListener( cardPileListener_ );
+        componentListener_ = new ComponentListener();
+        model_.getCardPile().addComponentListener( componentListener_ );
+        containerListener_ = new ContainerListener();
+        model_.getCardPile().addContainerListener( containerListener_ );
 
         for( final IComponent component : model_.getCardPile().getComponents() )
         {
@@ -389,8 +397,10 @@ final class CardPileView
             deleteCardView( card );
         }
 
-        model_.getCardPile().removeCardPileListener( cardPileListener_ );
-        cardPileListener_ = null;
+        model_.getCardPile().removeContainerListener( containerListener_ );
+        containerListener_ = null;
+        model_.getCardPile().removeComponentListener( componentListener_ );
+        componentListener_ = null;
         model_.removeCardPileModelListener( cardPileModelListener_ );
         cardPileModelListener_ = null;
         tableView_ = null;
@@ -400,110 +410,6 @@ final class CardPileView
     // ======================================================================
     // Nested Types
     // ======================================================================
-
-    /**
-     * A card pile listener for the card pile view.
-     */
-    @Immutable
-    private final class CardPileListener
-        extends org.gamegineer.table.core.CardPileListener
-    {
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code CardPileListener} class.
-         */
-        CardPileListener()
-        {
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.core.CardPileListener#componentAdded(org.gamegineer.table.core.ContainerContentChangedEvent)
-         */
-        @Override
-        public void componentAdded(
-            final ContainerContentChangedEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    CardPileView.this.componentAdded( event.getComponent() );
-                }
-            } );
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
-         */
-        @Override
-        public void componentBoundsChanged(
-            final ComponentEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    CardPileView.this.componentBoundsChanged();
-                }
-            } );
-        }
-
-        /*
-         * @see org.gamegineer.table.core.CardPileListener#componentRemoved(org.gamegineer.table.core.ContainerContentChangedEvent)
-         */
-        @Override
-        public void componentRemoved(
-            final ContainerContentChangedEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    CardPileView.this.componentRemoved( event.getComponent() );
-                }
-            } );
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ComponentListener#componentSurfaceDesignChanged(org.gamegineer.table.core.ComponentEvent)
-         */
-        @Override
-        public void componentSurfaceDesignChanged(
-            final ComponentEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    CardPileView.this.componentSurfaceDesignChanged();
-                }
-            } );
-        }
-    }
 
     /**
      * A card pile model listener for the card pile view.
@@ -545,6 +451,134 @@ final class CardPileView
                 public void run()
                 {
                     CardPileView.this.cardPileModelFocusChanged();
+                }
+            } );
+        }
+    }
+
+    /**
+     * A component listener for the card pile view.
+     */
+    @Immutable
+    private final class ComponentListener
+        extends org.gamegineer.table.core.ComponentListener
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code ComponentListener} class.
+         */
+        ComponentListener()
+        {
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.core.ComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
+         */
+        @Override
+        public void componentBoundsChanged(
+            final ComponentEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    CardPileView.this.componentBoundsChanged();
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.ComponentListener#componentSurfaceDesignChanged(org.gamegineer.table.core.ComponentEvent)
+         */
+        @Override
+        public void componentSurfaceDesignChanged(
+            final ComponentEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    CardPileView.this.componentSurfaceDesignChanged();
+                }
+            } );
+        }
+    }
+
+    /**
+     * A container listener for the card pile view.
+     */
+    @Immutable
+    private final class ContainerListener
+        extends org.gamegineer.table.core.ContainerListener
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code ContainerListener} class.
+         */
+        ContainerListener()
+        {
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.core.ContainerListener#componentAdded(org.gamegineer.table.core.ContainerContentChangedEvent)
+         */
+        @Override
+        public void componentAdded(
+            final ContainerContentChangedEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    CardPileView.this.componentAdded( event.getComponent() );
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.ContainerListener#componentRemoved(org.gamegineer.table.core.ContainerContentChangedEvent)
+         */
+        @Override
+        public void componentRemoved(
+            final ContainerContentChangedEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    CardPileView.this.componentRemoved( event.getComponent() );
                 }
             } );
         }

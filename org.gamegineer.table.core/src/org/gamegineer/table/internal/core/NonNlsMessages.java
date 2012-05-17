@@ -78,9 +78,6 @@ final class NonNlsMessages
 
     // --- CardPile ---------------------------------------------------------
 
-    /** The card pile listener is already registered. */
-    public static String CardPile_addCardPileListener_listener_registered;
-
     /** The component listener is already registered. */
     public static String CardPile_addComponentListener_listener_registered;
 
@@ -99,11 +96,8 @@ final class NonNlsMessages
      */
     public static String CardPile_addComponents_components_containsOwnedComponent;
 
-    /**
-     * An unexpected exception was thrown from
-     * ICardPileListener.cardPileLayoutChanged().
-     */
-    public static String CardPile_cardPileLayoutChanged_unexpectedException;
+    /** The container listener is already registered. */
+    public static String CardPile_addContainerListener_listener_registered;
 
     /**
      * An unexpected exception was thrown from
@@ -135,23 +129,26 @@ final class NonNlsMessages
      */
     public static String CardPile_componentSurfaceDesignChanged_unexpectedException;
 
+    /**
+     * An unexpected exception was thrown from
+     * IContainerListener.containerLayoutChanged().
+     */
+    public static String CardPile_containerLayoutChanged_unexpectedException;
+
     /** The component index is out of range. */
     public static String CardPile_getComponentFromIndex_index_outOfRange;
 
     /** The component is not contained in the container. */
     public static String CardPile_getComponentIndex_component_notOwned;
 
-    /** An unknown layout is active. */
-    public static String CardPile_getComponentOffsetAt_unknownLayout;
-
     /** The orientation is illegal. */
     public static String CardPile_orientation_illegal;
 
-    /** The card pile listener is not registered. */
-    public static String CardPile_removeCardPileListener_listener_notRegistered;
-
     /** The component listener is not registered. */
     public static String CardPile_removeComponentListener_listener_notRegistered;
+
+    /** The container listener is not registered. */
+    public static String CardPile_removeContainerListener_listener_notRegistered;
 
     // --- ComponentSurfaceDesign -------------------------------------------
 

@@ -36,29 +36,6 @@ public interface ICardPile
     // ======================================================================
 
     /**
-     * Adds the specified card pile listener to this card pile.
-     * 
-     * @param listener
-     *        The card pile listener; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code listener} is already a registered card pile listener.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
-     */
-    public void addCardPileListener(
-        /* @NonNull */
-        ICardPileListener listener );
-
-    /**
-     * Gets the layout of cards within this card pile.
-     * 
-     * @return The layout of cards within this card pile; never {@code null}.
-     */
-    /* @NonNull */
-    public CardPileLayout getLayout();
-
-    /**
      * Gets the table that contains this card pile.
      * 
      * @return The table that contains this card pile or {@code null} if this
@@ -66,33 +43,4 @@ public interface ICardPile
      */
     /* @Nullable */
     public ITable getTable();
-
-    /**
-     * Removes the specified card pile listener from this card pile.
-     * 
-     * @param listener
-     *        The card pile listener; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code listener} is not a registered card pile listener.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
-     */
-    public void removeCardPileListener(
-        /* @NonNull */
-        ICardPileListener listener );
-
-    /**
-     * Sets the layout of cards within this card pile.
-     * 
-     * @param layout
-     *        The layout of cards within this card pile; must not be
-     *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code layout} is {@code null}.
-     */
-    public void setLayout(
-        /* @NonNull */
-        CardPileLayout layout );
 }

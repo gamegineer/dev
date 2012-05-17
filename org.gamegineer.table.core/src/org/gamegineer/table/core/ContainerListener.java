@@ -74,4 +74,16 @@ public class ContainerListener
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
     }
+
+    /**
+     * This implementation does nothing.
+     * 
+     * @see org.gamegineer.table.core.IContainerListener#containerLayoutChanged(org.gamegineer.table.core.ContainerEvent)
+     */
+    @Override
+    public void containerLayoutChanged(
+        final ContainerEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+    }
 }

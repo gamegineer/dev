@@ -28,18 +28,15 @@ import org.junit.Test;
 /**
  * A fixture for testing the basic aspects of classes that implement the
  * {@link org.gamegineer.table.core.IComponentListener} interface.
- * 
- * @param <T>
- *        The type of the component listener.
  */
-public abstract class AbstractComponentListenerTestCase<T extends IComponentListener>
+public abstract class AbstractComponentListenerTestCase
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** The component listener under test in the fixture. */
-    private T listener_;
+    private IComponentListener listener_;
 
 
     // ======================================================================
@@ -68,21 +65,8 @@ public abstract class AbstractComponentListenerTestCase<T extends IComponentList
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract T createComponentListener()
+    protected abstract IComponentListener createComponentListener()
         throws Exception;
-
-    /**
-     * Gets the component listener under test in the fixture.
-     * 
-     * @return The component listener under test in the fixture; never
-     *         {@code null}.
-     */
-    /* @NonNull */
-    protected final T getComponentListener()
-    {
-        assertNotNull( listener_ );
-        return listener_;
-    }
 
     /**
      * Sets up the test fixture.

@@ -21,12 +21,8 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.gamegineer.table.core.Assert.assertComponentEquals;
-import java.awt.Point;
 import java.lang.reflect.Method;
-import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.gamegineer.table.core.AbstractComponentTestCase;
-import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ITable;
 
 /**
@@ -54,19 +50,6 @@ public final class CardAsComponentTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#assertMementoOriginatorEquals(org.gamegineer.common.core.util.memento.IMementoOriginator, org.gamegineer.common.core.util.memento.IMementoOriginator)
-     */
-    @Override
-    protected void assertMementoOriginatorEquals(
-        final IMementoOriginator expected,
-        final IMementoOriginator actual )
-    {
-        final Card expectedCard = (Card)expected;
-        final Card actualCard = (Card)actual;
-        assertComponentEquals( expectedCard, actualCard );
-    }
-
-    /*
      * @see org.gamegineer.table.core.AbstractComponentTestCase#createComponent(org.gamegineer.table.core.ITable)
      */
     @Override
@@ -74,18 +57,6 @@ public final class CardAsComponentTest
         final ITable table )
     {
         return new Card( ((Table)table).getTableContext() );
-    }
-
-    /*
-     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#createMementoOriginator()
-     */
-    @Override
-    protected IMementoOriginator createMementoOriginator()
-    {
-        final Card card = getComponent();
-        card.setLocation( new Point( 0, 0 ) );
-        card.setOrientation( CardOrientation.BACK );
-        return card;
     }
 
     /*
@@ -104,16 +75,7 @@ public final class CardAsComponentTest
     protected void fireComponentBoundsChanged(
         final Card component )
     {
-        try
-        {
-            final Method method = Card.class.getDeclaredMethod( "fireComponentBoundsChanged" ); //$NON-NLS-1$
-            method.setAccessible( true );
-            method.invoke( component );
-        }
-        catch( final Exception e )
-        {
-            throw new AssertionError( e );
-        }
+        fireEvent( component, "fireComponentBoundsChanged" ); //$NON-NLS-1$
     }
 
     /*
@@ -123,16 +85,7 @@ public final class CardAsComponentTest
     protected void fireComponentOrientationChanged(
         final Card component )
     {
-        try
-        {
-            final Method method = Card.class.getDeclaredMethod( "fireComponentOrientationChanged" ); //$NON-NLS-1$
-            method.setAccessible( true );
-            method.invoke( component );
-        }
-        catch( final Exception e )
-        {
-            throw new AssertionError( e );
-        }
+        fireEvent( component, "fireComponentOrientationChanged" ); //$NON-NLS-1$
     }
 
     /*
@@ -142,27 +95,36 @@ public final class CardAsComponentTest
     protected void fireComponentSurfaceDesignChanged(
         final Card component )
     {
+        fireEvent( component, "fireComponentSurfaceDesignChanged" ); //$NON-NLS-1$
+    }
+
+    /**
+     * Fires the event associated with the specified card method.
+     * 
+     * @param card
+     *        The card; must not be {@code null}.
+     * @param methodName
+     *        The name of the method associated with the event; must not be
+     *        {@code null}.
+     */
+    private static void fireEvent(
+        /* @NonNull */
+        final Card card,
+        /* @NonNull */
+        final String methodName )
+    {
+        assert card != null;
+        assert methodName != null;
+
         try
         {
-            final Method method = Card.class.getDeclaredMethod( "fireComponentSurfaceDesignChanged" ); //$NON-NLS-1$
+            final Method method = Card.class.getDeclaredMethod( methodName );
             method.setAccessible( true );
-            method.invoke( component );
+            method.invoke( card );
         }
         catch( final Exception e )
         {
             throw new AssertionError( e );
         }
-    }
-
-    /*
-     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#initializeMementoOriginator(org.gamegineer.common.core.util.memento.IMementoOriginator)
-     */
-    @Override
-    protected void initializeMementoOriginator(
-        final IMementoOriginator mementoOriginator )
-    {
-        final Card card = (Card)mementoOriginator;
-        card.setLocation( new Point( Integer.MAX_VALUE, Integer.MIN_VALUE ) );
-        card.setOrientation( CardOrientation.FACE );
     }
 }

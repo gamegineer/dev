@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.core;
 
 import static org.junit.Assert.assertEquals;
+import java.awt.Dimension;
 import java.awt.Point;
 import org.gamegineer.table.core.CardPiles;
 import org.gamegineer.table.core.Cards;
@@ -84,6 +85,22 @@ public final class AccordianContainerLayoutTest
     public void testConstructor_OffsetX_Zero_OffsetY_NonZero()
     {
         new AccordianContainerLayout( 0, 1 );
+    }
+
+    /**
+     * Ensures the {@code getOffset} method returns a copy of the offset.
+     */
+    @Test
+    public void testGetOffset_ReturnValue_Copy()
+    {
+        final AccordianContainerLayout layout = new AccordianContainerLayout( 1, 1 );
+        final Dimension offset = layout.getOffset();
+        final Dimension expectedValue = new Dimension( offset );
+
+        offset.setSize( 1000, 1000 );
+        final Dimension actualValue = layout.getOffset();
+
+        assertEquals( expectedValue, actualValue );
     }
 
     /**

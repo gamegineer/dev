@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.core;
 
+import java.awt.Point;
+
 /**
  * A container layout.
  * 
@@ -35,6 +37,28 @@ public interface IContainerLayout
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the index of the component in the specified container at the
+     * specified location.
+     * 
+     * @param container
+     *        The container; must not be {@code null}.
+     * @param location
+     *        The location in table coordinates; must not be {@code null}.
+     * 
+     * @return The index of the component in the specified container at the
+     *         specified location or -1 if no component in the specified
+     *         container is at that location.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code container} or {@code location} is {@code null}.
+     */
+    public int getComponentIndex(
+        /* @NonNull */
+        IContainer container,
+        /* @NonNull */
+        Point location );
 
     /**
      * Lays out the child components of the specified container according to the

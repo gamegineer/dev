@@ -22,8 +22,12 @@
 package org.gamegineer.table.internal.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
+import java.awt.Point;
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerLayout;
 
 /**
@@ -84,6 +88,30 @@ public final class StackedContainerLayout
     // ======================================================================
 
     /*
+     * @see org.gamegineer.table.internal.core.AbstractContainerLayout#getComponentIndex(org.gamegineer.table.core.IContainer, java.awt.Point)
+     */
+    @Override
+    public int getComponentIndex(
+        final IContainer container,
+        final Point location )
+    {
+        assertArgumentNotNull( container, "container" ); //$NON-NLS-1$
+        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
+
+        final int topIndex = container.getComponentCount() - 1;
+        if( topIndex >= 0 )
+        {
+            final IComponent topComponent = container.getComponent( topIndex );
+            if( topComponent.getBounds().contains( location ) )
+            {
+                return topIndex;
+            }
+        }
+
+        return -1;
+    }
+
+    /*
      * @see org.gamegineer.table.internal.core.AbstractContainerLayout#getComponentOffsetAt(int)
      */
     @Override
@@ -94,5 +122,27 @@ public final class StackedContainerLayout
 
         final int stackLevel = index / componentsPerStackLevel_;
         return new Dimension( stackLevelOffset_.width * stackLevel, stackLevelOffset_.height * stackLevel );
+    }
+
+    /**
+     * Gets the number of components per stack level.
+     * 
+     * @return The number of components per stack level.
+     */
+    public int getComponentsPerStackLevel()
+    {
+        return componentsPerStackLevel_;
+    }
+
+    /**
+     * Gets the offset of each stack level in table coordinates.
+     * 
+     * @return The offset of each stack level in table coordinates; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    public Dimension getStackLevelOffset()
+    {
+        return new Dimension( stackLevelOffset_ );
     }
 }

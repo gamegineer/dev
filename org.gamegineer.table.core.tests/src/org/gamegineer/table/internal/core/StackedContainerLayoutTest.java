@@ -22,6 +22,8 @@
 package org.gamegineer.table.internal.core;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import java.awt.Dimension;
 import java.awt.Point;
 import org.gamegineer.table.core.CardPiles;
 import org.gamegineer.table.core.Cards;
@@ -82,6 +84,72 @@ public final class StackedContainerLayoutTest
     public void testConstructor_StackLevelOffsetY_Zero()
     {
         new StackedContainerLayout( 1, 1, 0 );
+    }
+
+    /**
+     * Ensures the {@code getComponentIndex} method returns {@code -1} when a
+     * component is present at the specified location but the component is not
+     * the top-most component.
+     */
+    @Test
+    public void testGetComponentIndex_Location_ComponentPresent_NotTopComponent()
+    {
+        final StackedContainerLayout layout = new StackedContainerLayout( 1, 10, 10 );
+        final ITable table = TableFactory.createTable();
+        final IContainer container = CardPiles.createUniqueCardPile( table );
+        container.setOrigin( new Point( 0, 0 ) );
+        container.setLayout( layout );
+        final IComponent component1 = Cards.createUniqueCard( table );
+        container.addComponent( component1 );
+        final IComponent component2 = Cards.createUniqueCard( table );
+        container.addComponent( component2 );
+
+        final Point location = new Point( 0, 0 );
+        final int actualIndex = layout.getComponentIndex( container, location );
+
+        assertTrue( container.getBounds().contains( location ) );
+        assertEquals( -1, actualIndex );
+    }
+
+    /**
+     * Ensures the {@code getComponentIndex} method returns the correct index
+     * when a component is present at the specified location and the component
+     * is the top-most component.
+     */
+    @Test
+    public void testGetComponentIndex_Location_ComponentPresent_TopComponent()
+    {
+        final StackedContainerLayout layout = new StackedContainerLayout( 1, 10, 10 );
+        final ITable table = TableFactory.createTable();
+        final IContainer container = CardPiles.createUniqueCardPile( table );
+        container.setOrigin( new Point( 0, 0 ) );
+        container.setLayout( layout );
+        final IComponent component1 = Cards.createUniqueCard( table );
+        container.addComponent( component1 );
+        final IComponent component2 = Cards.createUniqueCard( table );
+        container.addComponent( component2 );
+
+        final Point location = new Point( 10, 10 );
+        final int actualIndex = layout.getComponentIndex( container, location );
+
+        assertEquals( 1, actualIndex );
+    }
+
+    /**
+     * Ensures the {@code getStackLevelOffset} method returns a copy of the
+     * stack level offset.
+     */
+    @Test
+    public void testGetStackLevelOffset_ReturnValue_Copy()
+    {
+        final StackedContainerLayout layout = new StackedContainerLayout( 1, 1, 1 );
+        final Dimension stackLevelOffset = layout.getStackLevelOffset();
+        final Dimension expectedValue = new Dimension( stackLevelOffset );
+
+        stackLevelOffset.setSize( 1000, 1000 );
+        final Dimension actualValue = layout.getStackLevelOffset();
+
+        assertEquals( expectedValue, actualValue );
     }
 
     /**

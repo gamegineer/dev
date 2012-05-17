@@ -1,5 +1,5 @@
 /*
- * AbstractCardPileListenerTestCase.java
+ * StackedContainerLayoutProxyTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,29 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 10, 2010 at 10:22:59 PM.
+ * Created on May 12, 2012 at 11:38:20 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.internal.persistence.serializable;
 
 import org.junit.Test;
 
 /**
- * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.core.ICardPileListener} interface.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.persistence.serializable.StackedContainerLayoutProxy}
+ * class.
  */
-public abstract class AbstractCardPileListenerTestCase
-    extends AbstractComponentListenerTestCase<ICardPileListener>
+public final class StackedContainerLayoutProxyTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractCardPileListenerTestCase} class.
+     * Initializes a new instance of the {@code StackedContainerLayoutProxyTest}
+     * class.
      */
-    protected AbstractCardPileListenerTestCase()
+    public StackedContainerLayoutProxyTest()
     {
     }
 
@@ -48,24 +48,12 @@ public abstract class AbstractCardPileListenerTestCase
     // ======================================================================
 
     /**
-     * Gets the card pile listener under test in the fixture.
-     * 
-     * @return The card pile listener under test in the fixture; never
-     *         {@code null}.
-     */
-    /* @NonNull */
-    protected final ICardPileListener getCardPileListener()
-    {
-        return getComponentListener();
-    }
-
-    /**
-     * Ensures the {@code cardPileLayoutChanged} method throws an exception when
-     * passed a {@code null} event.
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * container layout.
      */
     @Test( expected = NullPointerException.class )
-    public void testCardPileLayoutChanged_Event_Null()
+    public void testConstructor_ContainerLayout_Null()
     {
-        getCardPileListener().cardPileLayoutChanged( null );
+        new StackedContainerLayoutProxy( null );
     }
 }

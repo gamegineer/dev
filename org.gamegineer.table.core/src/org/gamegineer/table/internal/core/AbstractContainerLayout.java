@@ -24,7 +24,9 @@ package org.gamegineer.table.internal.core;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.List;
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerLayout;
 
@@ -50,6 +52,33 @@ abstract class AbstractContainerLayout
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * This implementation returns the top-most component within the specified
+     * container at the specified location.
+     * 
+     * @see org.gamegineer.table.core.IContainerLayout#getComponentIndex(org.gamegineer.table.core.IContainer,
+     *      java.awt.Point)
+     */
+    @Override
+    public int getComponentIndex(
+        final IContainer container,
+        final Point location )
+    {
+        assertArgumentNotNull( container, "container" ); //$NON-NLS-1$
+        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
+
+        final List<IComponent> components = container.getComponents();
+        for( int index = components.size() - 1; index >= 0; --index )
+        {
+            if( components.get( index ).getBounds().contains( location ) )
+            {
+                return index;
+            }
+        }
+
+        return -1;
+    }
 
     /**
      * Gets the offset from the container origin in table coordinates of the

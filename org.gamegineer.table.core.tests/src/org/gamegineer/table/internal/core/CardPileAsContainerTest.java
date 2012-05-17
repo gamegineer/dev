@@ -1,5 +1,5 @@
 /*
- * CardPileAsCardPileTest.java
+ * CardPileAsContainerTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -22,15 +22,12 @@
 package org.gamegineer.table.internal.core;
 
 import java.lang.reflect.Method;
-import org.gamegineer.table.core.AbstractCardPileTestCase;
-import org.gamegineer.table.core.CardPileListener;
+import org.easymock.EasyMock;
+import org.gamegineer.table.core.AbstractContainerTestCase;
 import org.gamegineer.table.core.CardPiles;
 import org.gamegineer.table.core.Cards;
-import org.gamegineer.table.core.ContainerContentChangedEvent;
-import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
-import org.gamegineer.table.core.IContainerListener;
 import org.gamegineer.table.core.ITable;
 
 /**
@@ -38,17 +35,17 @@ import org.gamegineer.table.core.ITable;
  * class to ensure it does not violate the contract of the
  * {@link org.gamegineer.table.core.ICardPile} interface.
  */
-public final class CardPileAsCardPileTest
-    extends AbstractCardPileTestCase
+public final class CardPileAsContainerTest
+    extends AbstractContainerTestCase<CardPile>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardPileAsCardPileTest} class.
+     * Initializes a new instance of the {@code CardPileAsContainerTest} class.
      */
-    public CardPileAsCardPileTest()
+    public CardPileAsContainerTest()
     {
     }
 
@@ -58,36 +55,10 @@ public final class CardPileAsCardPileTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractContainerTestCase#addContainerListener(org.gamegineer.table.core.IContainer, org.gamegineer.table.core.IContainerListener)
-     */
-    @Override
-    protected void addContainerListener(
-        final ICardPile container,
-        final IContainerListener listener )
-    {
-        container.addCardPileListener( new CardPileListener()
-        {
-            @Override
-            public void componentAdded(
-                final ContainerContentChangedEvent event )
-            {
-                listener.componentAdded( event );
-            }
-
-            @Override
-            public void componentRemoved(
-                final ContainerContentChangedEvent event )
-            {
-                listener.componentRemoved( event );
-            }
-        } );
-    }
-
-    /*
      * @see org.gamegineer.table.core.AbstractComponentTestCase#createComponent(org.gamegineer.table.core.ITable)
      */
     @Override
-    protected ICardPile createComponent(
+    protected CardPile createComponent(
         final ITable table )
     {
         return new CardPile( ((Table)table).getTableContext() );
@@ -132,22 +103,23 @@ public final class CardPileAsCardPileTest
     }
 
     /*
+     * @see org.gamegineer.table.core.AbstractContainerTestCase#fireComponentAdded(org.gamegineer.table.core.IContainer)
+     */
+    @Override
+    protected void fireComponentAdded(
+        final CardPile container )
+    {
+        fireEventWithComponentAndInteger( container, "fireComponentAdded" ); //$NON-NLS-1$
+    }
+
+    /*
      * @see org.gamegineer.table.core.AbstractComponentTestCase#fireComponentBoundsChanged(org.gamegineer.table.core.IComponent)
      */
     @Override
     protected void fireComponentBoundsChanged(
-        final ICardPile component )
+        final CardPile component )
     {
-        try
-        {
-            final Method method = CardPile.class.getDeclaredMethod( "fireComponentBoundsChanged" ); //$NON-NLS-1$
-            method.setAccessible( true );
-            method.invoke( component );
-        }
-        catch( final Exception e )
-        {
-            throw new AssertionError( e );
-        }
+        fireEvent( component, "fireComponentBoundsChanged" ); //$NON-NLS-1$
     }
 
     /*
@@ -155,18 +127,19 @@ public final class CardPileAsCardPileTest
      */
     @Override
     protected void fireComponentOrientationChanged(
-        final ICardPile component )
+        final CardPile component )
     {
-        try
-        {
-            final Method method = CardPile.class.getDeclaredMethod( "fireComponentOrientationChanged" ); //$NON-NLS-1$
-            method.setAccessible( true );
-            method.invoke( component );
-        }
-        catch( final Exception e )
-        {
-            throw new AssertionError( e );
-        }
+        fireEvent( component, "fireComponentOrientationChanged" ); //$NON-NLS-1$
+    }
+
+    /*
+     * @see org.gamegineer.table.core.AbstractContainerTestCase#fireComponentRemoved(org.gamegineer.table.core.IContainer)
+     */
+    @Override
+    protected void fireComponentRemoved(
+        final CardPile container )
+    {
+        fireEventWithComponentAndInteger( container, "fireComponentRemoved" ); //$NON-NLS-1$
     }
 
     /*
@@ -174,13 +147,75 @@ public final class CardPileAsCardPileTest
      */
     @Override
     protected void fireComponentSurfaceDesignChanged(
-        final ICardPile component )
+        final CardPile component )
     {
+        fireEvent( component, "fireComponentSurfaceDesignChanged" ); //$NON-NLS-1$
+    }
+
+    /*
+     * @see org.gamegineer.table.core.AbstractContainerTestCase#fireContainerLayoutChanged(org.gamegineer.table.core.IContainer)
+     */
+    @Override
+    protected void fireContainerLayoutChanged(
+        final CardPile container )
+    {
+        fireEvent( container, "fireContainerLayoutChanged" ); //$NON-NLS-1$
+    }
+
+    /**
+     * Fires the event associated with the specified card pile method.
+     * 
+     * @param cardPile
+     *        The card pile; must not be {@code null}.
+     * @param methodName
+     *        The name of the method associated with the event; must not be
+     *        {@code null}.
+     */
+    private static void fireEvent(
+        /* @NonNull */
+        final CardPile cardPile,
+        /* @NonNull */
+        final String methodName )
+    {
+        assert cardPile != null;
+        assert methodName != null;
+
         try
         {
-            final Method method = CardPile.class.getDeclaredMethod( "fireComponentSurfaceDesignChanged" ); //$NON-NLS-1$
+            final Method method = CardPile.class.getDeclaredMethod( methodName );
             method.setAccessible( true );
-            method.invoke( component );
+            method.invoke( cardPile );
+        }
+        catch( final Exception e )
+        {
+            throw new AssertionError( e );
+        }
+    }
+
+    /**
+     * Fires the event associated with the specified card pile method that
+     * accepts an {@link IComponent} and an integer.
+     * 
+     * @param cardPile
+     *        The card pile; must not be {@code null}.
+     * @param methodName
+     *        The name of the method associated with the event; must not be
+     *        {@code null}.
+     */
+    private static void fireEventWithComponentAndInteger(
+        /* @NonNull */
+        final CardPile cardPile,
+        /* @NonNull */
+        final String methodName )
+    {
+        assert cardPile != null;
+        assert methodName != null;
+
+        try
+        {
+            final Method method = CardPile.class.getDeclaredMethod( methodName, IComponent.class, Integer.TYPE );
+            method.setAccessible( true );
+            method.invoke( cardPile, EasyMock.createMock( IComponent.class ), Integer.valueOf( 0 ) );
         }
         catch( final Exception e )
         {

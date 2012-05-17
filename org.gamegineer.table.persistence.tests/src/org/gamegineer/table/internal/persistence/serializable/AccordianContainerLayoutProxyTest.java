@@ -1,5 +1,5 @@
 /*
- * CardPileListenerAsCardPileListenerTest.java
+ * AccordianContainerLayoutProxyTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,18 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 3, 2011 at 8:23:46 PM.
+ * Created on May 12, 2012 at 11:20:45 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.internal.persistence.serializable;
+
+import org.junit.Test;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.core.CardPileListener}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.ICardPileListener} interface.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.persistence.serializable.AccordianContainerLayoutProxy}
+ * class.
  */
-public final class CardPileListenerAsCardPileListenerTest
-    extends AbstractCardPileListenerTestCase
+public final class AccordianContainerLayoutProxyTest
 {
     // ======================================================================
     // Constructors
@@ -35,9 +36,9 @@ public final class CardPileListenerAsCardPileListenerTest
 
     /**
      * Initializes a new instance of the
-     * {@code CardPileListenerAsCardPileListenerTest} class.
+     * {@code AccordianContainerLayoutProxyTest} class.
      */
-    public CardPileListenerAsCardPileListenerTest()
+    public AccordianContainerLayoutProxyTest()
     {
     }
 
@@ -46,12 +47,13 @@ public final class CardPileListenerAsCardPileListenerTest
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.core.AbstractComponentListenerTestCase#createComponentListener()
+    /**
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * container layout.
      */
-    @Override
-    protected ICardPileListener createComponentListener()
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_ContainerLayout_Null()
     {
-        return new CardPileListener();
+        new AccordianContainerLayoutProxy( null );
     }
 }

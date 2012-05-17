@@ -22,6 +22,8 @@
 package org.gamegineer.table.core;
 
 import static org.junit.Assert.assertNotNull;
+import java.awt.Point;
+import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -80,6 +82,36 @@ public abstract class AbstractContainerLayoutTestCase
     {
         layout_ = createContainerLayout();
         assertNotNull( layout_ );
+    }
+
+    /**
+     * Ensures the {@code getComponentIndex} method returns {@code -1} when the
+     * container is empty.
+     */
+    @Test
+    public void testGetComponentIndex_Container_Empty()
+    {
+        layout_.getComponentIndex( CardPiles.createUniqueCardPile( TableFactory.createTable() ), new Point( 0, 0 ) );
+    }
+
+    /**
+     * Ensures the {@code getComponentIndex} method throws an exception when
+     * passed a {@code null} container.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGetComponentIndex_Container_Null()
+    {
+        layout_.getComponentIndex( null, new Point( 0, 0 ) );
+    }
+
+    /**
+     * Ensures the {@code getComponentIndex} method throws an exception when
+     * passed a {@code null} location.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGetComponentIndex_Location_Null()
+    {
+        layout_.getComponentIndex( EasyMock.createMock( IContainer.class ), null );
     }
 
     /**

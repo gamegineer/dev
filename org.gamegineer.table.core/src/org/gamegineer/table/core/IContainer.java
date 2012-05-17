@@ -76,6 +76,21 @@ public interface IContainer
         List<IComponent> components );
 
     /**
+     * Adds the specified container listener to this container.
+     * 
+     * @param listener
+     *        The container listener; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code listener} is already a registered container listener.
+     * @throws java.lang.NullPointerException
+     *         If {@code listener} is {@code null}.
+     */
+    public void addContainerListener(
+        /* @NonNull */
+        IContainerListener listener );
+
+    /**
      * Gets the component in this container at the specified index.
      * 
      * @param index
@@ -157,6 +172,14 @@ public interface IContainer
     public List<IComponent> getComponents();
 
     /**
+     * Gets the layout of components in this container.
+     * 
+     * @return The layout of components in this container; never {@code null}.
+     */
+    /* @NonNull */
+    public IContainerLayout getLayout();
+
+    /**
      * Removes the component at the top of this container.
      * 
      * @return The component that was removed or {@code null} if this container
@@ -192,4 +215,33 @@ public interface IContainer
     public List<IComponent> removeComponents(
         /* @NonNull */
         Point location );
+
+    /**
+     * Removes the specified container listener from this container.
+     * 
+     * @param listener
+     *        The container listener; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code listener} is not a registered container listener.
+     * @throws java.lang.NullPointerException
+     *         If {@code listener} is {@code null}.
+     */
+    public void removeContainerListener(
+        /* @NonNull */
+        IContainerListener listener );
+
+    /**
+     * Sets the layout of components in this container.
+     * 
+     * @param layout
+     *        The layout of components in this container; must not be
+     *        {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code layout} is {@code null}.
+     */
+    public void setLayout(
+        /* @NonNull */
+        IContainerLayout layout );
 }

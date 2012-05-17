@@ -40,20 +40,21 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
-import org.gamegineer.table.core.CardPileEvent;
-import org.gamegineer.table.core.CardPileLayout;
+import org.gamegineer.table.core.CardPileLayouts;
 import org.gamegineer.table.core.CardPileOrientation;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
+import org.gamegineer.table.core.ContainerEvent;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
-import org.gamegineer.table.core.ICardPileListener;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.IComponentSurfaceDesign;
 import org.gamegineer.table.core.IContainer;
+import org.gamegineer.table.core.IContainerLayout;
+import org.gamegineer.table.core.IContainerListener;
 import org.gamegineer.table.core.ITable;
 
 /**
@@ -67,9 +68,6 @@ final class CardPile
     // Fields
     // ======================================================================
 
-    /** The offset of each accordian level in table coordinates. */
-    private static final Dimension ACCORDIAN_LEVEL_OFFSET = new Dimension( 16, 18 );
-
     /**
      * The name of the memento attribute that stores the design of the card pile
      * base.
@@ -82,9 +80,6 @@ final class CardPile
      */
     private static final String CARDS_MEMENTO_ATTRIBUTE_NAME = "cards"; //$NON-NLS-1$
 
-    /** The number of cards per stack level. */
-    private static final int CARDS_PER_STACK_LEVEL = 10;
-
     /** The default card pile base design. */
     private static final IComponentSurfaceDesign DEFAULT_BASE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.CardPile.DEFAULT_BASE_DESIGN" ), 0, 0 ); //$NON-NLS-1$
 
@@ -95,9 +90,6 @@ final class CardPile
 
     /** The name of the memento attribute that stores the card pile origin. */
     private static final String ORIGIN_MEMENTO_ATTRIBUTE_NAME = "origin"; //$NON-NLS-1$
-
-    /** The offset of each stack level in table coordinates. */
-    private static final Dimension STACK_LEVEL_OFFSET = new Dimension( 2, 1 );
 
     /** The collection of supported card pile orientations. */
     private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( CardPileOrientation.values( CardPileOrientation.class ) ) );
@@ -113,12 +105,12 @@ final class CardPile
     /** The collection of component listeners. */
     private final CopyOnWriteArrayList<IComponentListener> componentListeners_;
 
+    /** The collection of container listeners. */
+    private final CopyOnWriteArrayList<IContainerListener> containerListeners_;
+
     /** The card pile layout. */
     @GuardedBy( "getLock()" )
-    private CardPileLayout layout_;
-
-    /** The collection of card pile listeners. */
-    private final CopyOnWriteArrayList<ICardPileListener> listeners_;
+    private IContainerLayout layout_;
 
     /** The card pile origin in table coordinates. */
     @GuardedBy( "getLock()" )
@@ -155,8 +147,8 @@ final class CardPile
         baseDesign_ = DEFAULT_BASE_DESIGN;
         cards_ = new ArrayList<Card>();
         componentListeners_ = new CopyOnWriteArrayList<IComponentListener>();
-        layout_ = CardPileLayout.STACKED;
-        listeners_ = new CopyOnWriteArrayList<ICardPileListener>();
+        containerListeners_ = new CopyOnWriteArrayList<IContainerListener>();
+        layout_ = CardPileLayouts.STACKED;
         origin_ = new Point( 0, 0 );
         table_ = null;
         tableContext_ = tableContext;
@@ -166,17 +158,6 @@ final class CardPile
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /*
-     * @see org.gamegineer.table.core.ICardPile#addCardPileListener(org.gamegineer.table.core.ICardPileListener)
-     */
-    @Override
-    public void addCardPileListener(
-        final ICardPileListener listener )
-    {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.CardPile_addCardPileListener_listener_registered ); //$NON-NLS-1$
-    }
 
     /*
      * @see org.gamegineer.table.core.IContainer#addComponent(org.gamegineer.table.core.IComponent)
@@ -230,14 +211,12 @@ final class CardPile
                 assertArgumentLegal( typedCard.getContainer() == null, "components", NonNlsMessages.CardPile_addComponents_components_containsOwnedComponent ); //$NON-NLS-1$
                 assertArgumentLegal( typedCard.getTableContext() == tableContext_, "components", NonNlsMessages.CardPile_addComponents_components_containsComponentCreatedByDifferentTable ); //$NON-NLS-1$
 
-                final Point cardLocation = new Point( origin_ );
-                final Dimension cardOffset = getComponentOffsetAt( cards_.size() );
-                cardLocation.translate( cardOffset.width, cardOffset.height );
                 typedCard.setCardPile( this );
-                typedCard.setLocation( cardLocation );
                 cards_.add( typedCard );
                 addedCards.add( typedCard );
             }
+
+            layout_.layout( this );
 
             final Rectangle newBounds = getBounds();
             cardPileBoundsChanged = !newBounds.equals( oldBounds );
@@ -271,6 +250,17 @@ final class CardPile
     }
 
     /*
+     * @see org.gamegineer.table.core.IContainer#addContainerListener(org.gamegineer.table.core.IContainerListener)
+     */
+    @Override
+    public void addContainerListener(
+        final IContainerListener listener )
+    {
+        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
+        assertArgumentLegal( containerListeners_.addIfAbsent( listener ), "listener", NonNlsMessages.CardPile_addContainerListener_listener_registered ); //$NON-NLS-1$
+    }
+
+    /*
      * @see org.gamegineer.common.core.util.memento.IMementoOriginator#createMemento()
      */
     @Override
@@ -301,27 +291,6 @@ final class CardPile
     }
 
     /**
-     * Fires a card pile layout changed event.
-     */
-    private void fireCardPileLayoutChanged()
-    {
-        assert !getLock().isHeldByCurrentThread();
-
-        final CardPileEvent event = new CardPileEvent( this );
-        for( final ICardPileListener listener : listeners_ )
-        {
-            try
-            {
-                listener.cardPileLayoutChanged( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_cardPileLayoutChanged_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
      * Fires a component added event.
      * 
      * @param component
@@ -339,7 +308,7 @@ final class CardPile
         assert !getLock().isHeldByCurrentThread();
 
         final ContainerContentChangedEvent event = new ContainerContentChangedEvent( this, component, componentIndex );
-        for( final ICardPileListener listener : listeners_ )
+        for( final IContainerListener listener : containerListeners_ )
         {
             try
             {
@@ -371,17 +340,6 @@ final class CardPile
                 Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentBoundsChanged_unexpectedException, e );
             }
         }
-        for( final ICardPileListener listener : listeners_ )
-        {
-            try
-            {
-                listener.componentBoundsChanged( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentBoundsChanged_unexpectedException, e );
-            }
-        }
     }
 
     /**
@@ -393,17 +351,6 @@ final class CardPile
 
         final ComponentEvent event = new ComponentEvent( this );
         for( final IComponentListener listener : componentListeners_ )
-        {
-            try
-            {
-                listener.componentOrientationChanged( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentOrientationChanged_unexpectedException, e );
-            }
-        }
-        for( final ICardPileListener listener : listeners_ )
         {
             try
             {
@@ -434,7 +381,7 @@ final class CardPile
         assert !getLock().isHeldByCurrentThread();
 
         final ContainerContentChangedEvent event = new ContainerContentChangedEvent( this, component, componentIndex );
-        for( final ICardPileListener listener : listeners_ )
+        for( final IContainerListener listener : containerListeners_ )
         {
             try
             {
@@ -466,15 +413,25 @@ final class CardPile
                 Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentSurfaceDesignChanged_unexpectedException, e );
             }
         }
-        for( final ICardPileListener listener : listeners_ )
+    }
+
+    /**
+     * Fires a container layout changed event.
+     */
+    private void fireContainerLayoutChanged()
+    {
+        assert !getLock().isHeldByCurrentThread();
+
+        final ContainerEvent event = new ContainerEvent( this );
+        for( final IContainerListener listener : containerListeners_ )
         {
             try
             {
-                listener.componentSurfaceDesignChanged( event );
+                listener.containerLayoutChanged( event );
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentSurfaceDesignChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_containerLayoutChanged_unexpectedException, e );
             }
         }
     }
@@ -514,7 +471,7 @@ final class CardPile
         final Point location = MementoUtils.getAttribute( memento, ORIGIN_MEMENTO_ATTRIBUTE_NAME, Point.class );
         cardPile.setLocation( location );
 
-        final CardPileLayout layout = MementoUtils.getAttribute( memento, LAYOUT_MEMENTO_ATTRIBUTE_NAME, CardPileLayout.class );
+        final IContainerLayout layout = MementoUtils.getAttribute( memento, LAYOUT_MEMENTO_ATTRIBUTE_NAME, IContainerLayout.class );
         cardPile.setLayout( layout );
 
         @SuppressWarnings( "unchecked" )
@@ -657,60 +614,7 @@ final class CardPile
         assert location != null;
         assert getLock().isHeldByCurrentThread();
 
-        final int upperIndex = cards_.size() - 1;
-        final int lowerIndex = Math.max( 0, (layout_ == CardPileLayout.STACKED) ? upperIndex : 0 );
-        for( int index = upperIndex; index >= lowerIndex; --index )
-        {
-            if( cards_.get( index ).getBounds().contains( location ) )
-            {
-                return index;
-            }
-        }
-
-        return -1;
-    }
-
-    /**
-     * Gets the offset from the container base location in table coordinates of
-     * the component at the specified index.
-     * 
-     * @param index
-     *        The component index; must be non-negative.
-     * 
-     * @return The offset from the container base location in table coordinates
-     *         of the component at the specified index; never {@code null}.
-     * 
-     * @throws java.lang.IllegalStateException
-     *         If an unknown layout is active.
-     */
-    @GuardedBy( "getLock()" )
-    /* @NonNull */
-    private Dimension getComponentOffsetAt(
-        final int index )
-    {
-        assert index >= 0;
-        assert getLock().isHeldByCurrentThread();
-
-        switch( layout_ )
-        {
-            case STACKED:
-                final int stackLevel = index / CARDS_PER_STACK_LEVEL;
-                return new Dimension( STACK_LEVEL_OFFSET.width * stackLevel, STACK_LEVEL_OFFSET.height * stackLevel );
-
-            case ACCORDIAN_UP:
-                return new Dimension( 0, -ACCORDIAN_LEVEL_OFFSET.height * index );
-
-            case ACCORDIAN_DOWN:
-                return new Dimension( 0, ACCORDIAN_LEVEL_OFFSET.height * index );
-
-            case ACCORDIAN_LEFT:
-                return new Dimension( -ACCORDIAN_LEVEL_OFFSET.width * index, 0 );
-
-            case ACCORDIAN_RIGHT:
-                return new Dimension( ACCORDIAN_LEVEL_OFFSET.width * index, 0 );
-        }
-
-        throw new IllegalStateException( NonNlsMessages.CardPile_getComponentOffsetAt_unknownLayout );
+        return layout_.getComponentIndex( this, location );
     }
 
     /*
@@ -740,10 +644,10 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardPile#getLayout()
+     * @see org.gamegineer.table.core.IContainer#getLayout()
      */
     @Override
-    public CardPileLayout getLayout()
+    public IContainerLayout getLayout()
     {
         getLock().lock();
         try
@@ -873,17 +777,6 @@ final class CardPile
     TableContext getTableContext()
     {
         return tableContext_;
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ICardPile#removeCardPileListener(org.gamegineer.table.core.ICardPileListener)
-     */
-    @Override
-    public void removeCardPileListener(
-        final ICardPileListener listener )
-    {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.CardPile_removeCardPileListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
     /*
@@ -1021,11 +914,22 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardPile#setLayout(org.gamegineer.table.core.CardPileLayout)
+     * @see org.gamegineer.table.core.IContainer#removeContainerListener(org.gamegineer.table.core.IContainerListener)
+     */
+    @Override
+    public void removeContainerListener(
+        final IContainerListener listener )
+    {
+        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
+        assertArgumentLegal( containerListeners_.remove( listener ), "listener", NonNlsMessages.CardPile_removeContainerListener_listener_notRegistered ); //$NON-NLS-1$
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IContainer#setLayout(org.gamegineer.table.core.IContainerLayout)
      */
     @Override
     public void setLayout(
-        final CardPileLayout layout )
+        final IContainerLayout layout )
     {
         assertArgumentNotNull( layout, "layout" ); //$NON-NLS-1$
 
@@ -1044,14 +948,7 @@ final class CardPile
             {
                 final Rectangle oldBounds = getBounds();
 
-                final Point cardLocation = new Point();
-                for( int index = 0, size = cards_.size(); index < size; ++index )
-                {
-                    cardLocation.setLocation( origin_ );
-                    final Dimension cardOffset = getComponentOffsetAt( index );
-                    cardLocation.translate( cardOffset.width, cardOffset.height );
-                    cards_.get( index ).setLocation( cardLocation );
-                }
+                layout_.layout( this );
 
                 final Rectangle newBounds = getBounds();
                 cardPileBoundsChanged = !newBounds.equals( oldBounds );
@@ -1068,7 +965,7 @@ final class CardPile
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                fireCardPileLayoutChanged();
+                fireContainerLayoutChanged();
 
                 if( cardPileBoundsChanged )
                 {

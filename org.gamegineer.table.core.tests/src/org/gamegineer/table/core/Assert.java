@@ -50,38 +50,6 @@ public final class Assert
     // ======================================================================
 
     /**
-     * Asserts that two card piles are equal.
-     * 
-     * @param expected
-     *        The expected value; may be {@code null}.
-     * @param actual
-     *        The actual value; may be {@code null}.
-     * 
-     * @throws java.lang.AssertionError
-     *         If the two values are not equal.
-     */
-    public static void assertCardPileEquals(
-        /* @Nullable */
-        final ICardPile expected,
-        /* @Nullable */
-        final ICardPile actual )
-    {
-        if( expected == null )
-        {
-            assertNull( actual );
-        }
-        else if( actual == null )
-        {
-            assertNull( expected );
-        }
-        else
-        {
-            assertComponentEquals( expected, actual );
-            assertEquals( expected.getLayout(), actual.getLayout() );
-        }
-    }
-
-    /**
      * Asserts that two components are equal.
      * 
      * @param expected
@@ -151,6 +119,8 @@ public final class Assert
         assert expected != null;
         assert actual != null;
 
+        assertEquals( expected.getLayout().getClass(), actual.getLayout().getClass() );
+
         final List<IComponent> expectedComponents = expected.getComponents();
         final List<IComponent> actualComponents = actual.getComponents();
         assertEquals( expectedComponents.size(), actualComponents.size() );
@@ -192,7 +162,7 @@ public final class Assert
             assertEquals( expectedCardPiles.size(), actualCardPiles.size() );
             for( int index = 0, size = expectedCardPiles.size(); index < size; ++index )
             {
-                assertCardPileEquals( expectedCardPiles.get( index ), actualCardPiles.get( index ) );
+                assertComponentEquals( expectedCardPiles.get( index ), actualCardPiles.get( index ) );
             }
         }
     }

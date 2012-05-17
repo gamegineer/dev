@@ -1,5 +1,5 @@
 /*
- * CardPileListenerAsContainerListenerTest.java
+ * StackedContainerLayoutPersistenceDelegate.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,18 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Mar 29, 2012 at 8:50:49 PM.
+ * Created on May 12, 2012 at 10:44:28 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.internal.persistence.serializable;
+
+import java.io.IOException;
+import net.jcip.annotations.Immutable;
+import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
+import org.gamegineer.table.internal.core.StackedContainerLayout;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.core.CardPileListener}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.IContainerListener} interface.
+ * A persistence delegate for the {@link StackedContainerLayout} class.
  */
-public final class CardPileListenerAsContainerListenerTest
-    extends AbstractContainerListenerTestCase
+@Immutable
+public final class StackedContainerLayoutPersistenceDelegate
+    extends AbstractPersistenceDelegate
 {
     // ======================================================================
     // Constructors
@@ -35,9 +39,9 @@ public final class CardPileListenerAsContainerListenerTest
 
     /**
      * Initializes a new instance of the
-     * {@code CardPileListenerAsContainerListenerTest} class.
+     * {@code StackedContainerLayoutPersistenceDelegate} class.
      */
-    public CardPileListenerAsContainerListenerTest()
+    public StackedContainerLayoutPersistenceDelegate()
     {
     }
 
@@ -47,11 +51,18 @@ public final class CardPileListenerAsContainerListenerTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractContainerListenerTestCase#createContainerListener()
+     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate#replaceObject(java.lang.Object)
      */
     @Override
-    protected IContainerListener createContainerListener()
+    public Object replaceObject(
+        final Object obj )
+        throws IOException
     {
-        return new CardPileListener();
+        if( obj instanceof StackedContainerLayout )
+        {
+            return new StackedContainerLayoutProxy( (StackedContainerLayout)obj );
+        }
+
+        return super.replaceObject( obj );
     }
 }

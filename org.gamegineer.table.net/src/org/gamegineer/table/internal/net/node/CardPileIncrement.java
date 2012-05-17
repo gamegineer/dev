@@ -25,8 +25,8 @@ import java.awt.Point;
 import java.io.Serializable;
 import java.util.List;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.core.CardPileLayout;
 import org.gamegineer.table.core.IComponentSurfaceDesign;
+import org.gamegineer.table.core.IContainerLayout;
 
 /**
  * An incremental change to the state of a card pile.
@@ -64,7 +64,7 @@ public final class CardPileIncrement
      * 
      * @serial The new card pile layout.
      */
-    private CardPileLayout layout_;
+    private IContainerLayout layout_;
 
     /**
      * The new card pile origin or {@code null} if unchanged.
@@ -136,7 +136,7 @@ public final class CardPileIncrement
      * @return The new card pile layout or {@code null} if unchanged.
      */
     /* @Nullable */
-    public CardPileLayout getLayout()
+    public IContainerLayout getLayout()
     {
         return layout_;
     }
@@ -203,7 +203,7 @@ public final class CardPileIncrement
      */
     public void setLayout(
         /* @Nullable */
-        final CardPileLayout layout )
+        final IContainerLayout layout )
     {
         layout_ = layout;
     }

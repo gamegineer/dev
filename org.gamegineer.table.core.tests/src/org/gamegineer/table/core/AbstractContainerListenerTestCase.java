@@ -101,4 +101,14 @@ public abstract class AbstractContainerListenerTestCase
     {
         listener_.componentRemoved( null );
     }
+
+    /**
+     * Ensures the {@code containerLayoutChanged} method throws an exception
+     * when passed a {@code null} event.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testContainerLayoutChanged_Event_Null()
+    {
+        listener_.containerLayoutChanged( null );
+    }
 }

@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.KeyStroke;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.CardPileLayout;
+import org.gamegineer.table.core.CardPileLayouts;
 import org.gamegineer.table.internal.ui.action.BasicAction;
 
 /**
@@ -1246,7 +1246,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, CardPileLayout.ACCORDIAN_DOWN.name() );
+                putValue( ACTION_COMMAND_KEY, CardPileLayouts.getId( CardPileLayouts.ACCORDIAN_DOWN ) );
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetAccordianDownCardPileLayoutAction_mnemonic ).getKeyCode() );
                 putValue( NAME, NlsMessages.SetAccordianDownCardPileLayoutAction_text );
             }
@@ -1256,7 +1256,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, CardPileLayout.ACCORDIAN_LEFT.name() );
+                putValue( ACTION_COMMAND_KEY, CardPileLayouts.getId( CardPileLayouts.ACCORDIAN_LEFT ) );
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetAccordianLeftCardPileLayoutAction_mnemonic ).getKeyCode() );
                 putValue( NAME, NlsMessages.SetAccordianLeftCardPileLayoutAction_text );
             }
@@ -1266,7 +1266,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, CardPileLayout.ACCORDIAN_RIGHT.name() );
+                putValue( ACTION_COMMAND_KEY, CardPileLayouts.getId( CardPileLayouts.ACCORDIAN_RIGHT ) );
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetAccordianRightCardPileLayoutAction_mnemonic ).getKeyCode() );
                 putValue( NAME, NlsMessages.SetAccordianRightCardPileLayoutAction_text );
             }
@@ -1276,7 +1276,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, CardPileLayout.ACCORDIAN_UP.name() );
+                putValue( ACTION_COMMAND_KEY, CardPileLayouts.getId( CardPileLayouts.ACCORDIAN_UP ) );
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetAccordianUpCardPileLayoutAction_mnemonic ).getKeyCode() );
                 putValue( NAME, NlsMessages.SetAccordianUpCardPileLayoutAction_text );
             }
@@ -1286,7 +1286,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, CardPileLayout.STACKED.name() );
+                putValue( ACTION_COMMAND_KEY, CardPileLayouts.getId( CardPileLayouts.STACKED ) );
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetStackedCardPileLayoutAction_mnemonic ).getKeyCode() );
                 putValue( NAME, NlsMessages.SetStackedCardPileLayoutAction_text );
             }

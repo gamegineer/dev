@@ -89,4 +89,16 @@ public final class AccordianContainerLayout
 
         return new Dimension( index * offset_.width, index * offset_.height );
     }
+
+    /**
+     * Gets the offset of each component in table coordinates.
+     * 
+     * @return The offset of each component in table coordinates; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    public Dimension getOffset()
+    {
+        return new Dimension( offset_ );
+    }
 }

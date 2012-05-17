@@ -27,7 +27,7 @@ package org.gamegineer.table.core;
  * {@link org.gamegineer.table.core.IComponentListener} interface.
  */
 public final class ComponentListenerAsComponentListenerTest
-    extends AbstractComponentListenerTestCase<ComponentListener>
+    extends AbstractComponentListenerTestCase
 {
     // ======================================================================
     // Constructors
@@ -50,7 +50,7 @@ public final class ComponentListenerAsComponentListenerTest
      * @see org.gamegineer.table.core.AbstractComponentListenerTestCase#createComponentListener()
      */
     @Override
-    protected ComponentListener createComponentListener()
+    protected IComponentListener createComponentListener()
     {
         return new ComponentListener();
     }
