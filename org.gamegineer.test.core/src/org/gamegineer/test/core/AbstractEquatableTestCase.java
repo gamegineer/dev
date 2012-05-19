@@ -154,7 +154,7 @@ public abstract class AbstractEquatableTestCase<T>
     public void testEquals_Equal_NotSame()
         throws Exception
     {
-        final Object other = createReferenceInstance();
+        final T other = createReferenceInstance();
 
         assertNotSame( reference_, other );
         assertEquals( reference_, other );
@@ -182,7 +182,7 @@ public abstract class AbstractEquatableTestCase<T>
     public void testEquals_Unequal()
         throws Exception
     {
-        for( final Object other : createUnequalInstances() )
+        for( final T other : createUnequalInstances() )
         {
             assertFalse( String.format( "expected <%1$s> and <%2$s> to be unequal", reference_, other ), reference_.equals( other ) ); //$NON-NLS-1$
         }
@@ -219,7 +219,7 @@ public abstract class AbstractEquatableTestCase<T>
     public void testHashCode_Equal()
         throws Exception
     {
-        final Object other = createReferenceInstance();
+        final T other = createReferenceInstance();
 
         assertNotSame( reference_, other );
         assertEquals( reference_.hashCode(), other.hashCode() );
@@ -236,7 +236,7 @@ public abstract class AbstractEquatableTestCase<T>
     public void testHashCode_Unequal()
         throws Exception
     {
-        for( final Object other : createUnequalInstances() )
+        for( final T other : createUnequalInstances() )
         {
             assertTrue( String.format( "expected hash codes for <%1$s> and <%2$s> to be unequal", reference_, other ), reference_.hashCode() != other.hashCode() ); //$NON-NLS-1$
         }
