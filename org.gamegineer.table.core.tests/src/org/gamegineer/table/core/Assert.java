@@ -119,7 +119,7 @@ public final class Assert
         assert expected != null;
         assert actual != null;
 
-        assertEquals( expected.getLayout().getClass(), actual.getLayout().getClass() );
+        assertEquals( expected.getLayout(), actual.getLayout() );
 
         final List<IComponent> expectedComponents = expected.getComponents();
         final List<IComponent> actualComponents = actual.getComponents();
