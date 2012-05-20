@@ -21,16 +21,25 @@
 
 package org.gamegineer.table.internal.core;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.awt.Dimension;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.locks.ReentrantLock;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.core.ComponentSurfaceDesignId;
+import org.gamegineer.table.core.ICard;
+import org.gamegineer.table.core.ICardPile;
+import org.gamegineer.table.core.IComponentSurfaceDesign;
+import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.ITableContext;
 
 /**
  * The execution context for a virtual game table.
  */
 @ThreadSafe
-final class TableContext
+public final class TableContext
+    implements ITableContext
 {
     // ======================================================================
     // Fields
@@ -57,7 +66,7 @@ final class TableContext
     /**
      * Initializes a new instance of the {@code TableContext} class.
      */
-    TableContext()
+    public TableContext()
     {
         isEventNotificationInProgress_ = new ThreadLocal<Boolean>()
         {
@@ -126,6 +135,58 @@ final class TableContext
         return !lock_.isHeldByCurrentThread() && !isEventNotificationInProgress_.get().booleanValue();
     }
 
+    /*
+     * @see org.gamegineer.table.core.ITableContext#createCard()
+     */
+    @Override
+    public ICard createCard()
+    {
+        return new Card( this );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITableContext#createCardPile()
+     */
+    @Override
+    public ICardPile createCardPile()
+    {
+        return new CardPile( this );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITableContext#createComponentSurfaceDesign(org.gamegineer.table.core.ComponentSurfaceDesignId, java.awt.Dimension)
+     */
+    @Override
+    public IComponentSurfaceDesign createComponentSurfaceDesign(
+        final ComponentSurfaceDesignId id,
+        final Dimension size )
+    {
+        assertArgumentNotNull( size, "size" ); //$NON-NLS-1$
+
+        return createComponentSurfaceDesign( id, size.width, size.height );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITableContext#createComponentSurfaceDesign(org.gamegineer.table.core.ComponentSurfaceDesignId, int, int)
+     */
+    @Override
+    public IComponentSurfaceDesign createComponentSurfaceDesign(
+        final ComponentSurfaceDesignId id,
+        final int width,
+        final int height )
+    {
+        return new ComponentSurfaceDesign( id, width, height );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITableContext#createTable()
+     */
+    @Override
+    public ITable createTable()
+    {
+        return new Table( this );
+    }
+
     /**
      * Fires all pending event notifications queued for the current thread.
      */
@@ -149,13 +210,11 @@ final class TableContext
         }
     }
 
-    /**
-     * Gets the table context lock.
-     * 
-     * @return The table context lock; never {@code null}.
+    /*
+     * @see org.gamegineer.table.core.ITableContext#getLock()
      */
-    /* @NonNull */
-    ReentrantLock getLock()
+    @Override
+    public ReentrantLock getLock()
     {
         return lock_;
     }

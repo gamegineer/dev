@@ -45,6 +45,7 @@ import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.IComponentSurfaceDesign;
 import org.gamegineer.table.core.IContainer;
+import org.gamegineer.table.core.ITableContext;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ICard}.
@@ -445,13 +446,11 @@ final class Card
         }
     }
 
-    /**
-     * Gets the table context associated with the card.
-     * 
-     * @return The table context associated with the card; never {@code null}.
+    /*
+     * @see org.gamegineer.table.core.IComponent#getTableContext()
      */
-    /* @NonNull */
-    TableContext getTableContext()
+    @Override
+    public ITableContext getTableContext()
     {
         return tableContext_;
     }

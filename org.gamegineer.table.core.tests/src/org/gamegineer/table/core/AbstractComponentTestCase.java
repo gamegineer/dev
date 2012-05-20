@@ -660,6 +660,15 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     }
 
     /**
+     * Ensures the {@code getTableContext} method does not return {@code null}.
+     */
+    @Test
+    public void testGetTableContext_ReturnValue_NonNull()
+    {
+        assertNotNull( component_.getTableContext() );
+    }
+
+    /**
      * Ensures the {@code removeComponentListener} method throws an exception
      * when passed a listener that is absent from the component listener
      * collection.

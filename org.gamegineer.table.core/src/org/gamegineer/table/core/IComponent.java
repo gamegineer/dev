@@ -154,6 +154,14 @@ public interface IComponent
         ComponentOrientation orientation );
 
     /**
+     * Gets the table context.
+     * 
+     * @return The table context; never {@code null}.
+     */
+    /* @NonNull */
+    public ITableContext getTableContext();
+
+    /**
      * Removes the specified component listener from this component.
      * 
      * @param listener

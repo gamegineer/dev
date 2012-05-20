@@ -480,6 +480,15 @@ public abstract class AbstractTableTestCase
     }
 
     /**
+     * Ensures the {@code getTableContext} method does not return {@code null}.
+     */
+    @Test
+    public void testGetTableContext_ReturnValue_NonNull()
+    {
+        assertNotNull( table_.getTableContext() );
+    }
+
+    /**
      * Ensures the {@code removeCardPile} method throws an exception when passed
      * an illegal card pile that is not contained by the table.
      */

@@ -41,6 +41,7 @@ import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
 
+// TODO: make package-private
 /**
  * Implementation of {@link org.gamegineer.table.core.ITable}.
  */
@@ -79,7 +80,7 @@ public final class Table
      * @param tableContext
      *        The table context; must not be {@code null}.
      */
-    private Table(
+    Table(
         /* @NonNull */
         final TableContext tableContext )
     {
@@ -90,6 +91,7 @@ public final class Table
         tableContext_ = tableContext;
     }
 
+    // TODO: remove ctor
     /**
      * Initializes a new instance of the {@code Table} class.
      */
@@ -413,13 +415,11 @@ public final class Table
         return tableContext_.getLock();
     }
 
-    /**
-     * Gets the table context.
-     * 
-     * @return The table context; never {@code null}.
+    /*
+     * @see org.gamegineer.table.core.ITable#getTableContext()
      */
-    /* @NonNull */
-    TableContext getTableContext()
+    @Override
+    public TableContext getTableContext()
     {
         return tableContext_;
     }

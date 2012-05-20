@@ -1,5 +1,5 @@
 /*
- * TableFactory.java
+ * ITableContext.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,43 +16,45 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 6, 2009 at 11:05:05 PM.
+ * Created on May 19, 2012 at 9:21:05 PM.
  */
 
 package org.gamegineer.table.core;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
-import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.core.ComponentSurfaceDesign;
-import org.gamegineer.table.internal.core.Table;
-import org.gamegineer.table.internal.core.TableContext;
+import java.util.concurrent.locks.Lock;
 
-// TODO: rename to TableContextFactory
+// TODO: rename to ITableRuntime or something equivalent
 
 /**
- * A factory for creating table components.
+ * The execution context for one or more virtual game tables.
+ * 
+ * @noextend This interface is not intended to be extended by clients.
+ * 
+ * @noimplement This interface is not intended to be implemented by clients.
  */
-@ThreadSafe
-public final class TableFactory
+public interface ITableContext
 {
-    // ======================================================================
-    // Constructors
-    // ======================================================================
-
-    /**
-     * Initializes a new instance of the {@code TableFactory} class.
-     */
-    private TableFactory()
-    {
-    }
-
-
     // ======================================================================
     // Methods
     // ======================================================================
 
-    // TODO: remove method
+    /**
+     * Creates a new card.
+     * 
+     * @return A new card; never {@code null}.
+     */
+    /* @NonNull */
+    public ICard createCard();
+
+    /**
+     * Creates a new card pile.
+     * 
+     * @return A new card pile; never {@code null}.
+     */
+    /* @NonNull */
+    public ICardPile createCardPile();
+
     /**
      * Creates a new component surface design.
      * 
@@ -70,18 +72,12 @@ public final class TableFactory
      *         If {@code id} or {@code size} is {@code null}.
      */
     /* @NonNull */
-    public static IComponentSurfaceDesign createComponentSurfaceDesign(
+    public IComponentSurfaceDesign createComponentSurfaceDesign(
         /* @NonNull */
-        final ComponentSurfaceDesignId id,
+        ComponentSurfaceDesignId id,
         /* @NonNull */
-        final Dimension size )
-    {
-        assertArgumentNotNull( size, "size" ); //$NON-NLS-1$
+        Dimension size );
 
-        return createComponentSurfaceDesign( id, size.width, size.height );
-    }
-
-    // TODO: remove method
     /**
      * Creates a new component surface design.
      * 
@@ -102,35 +98,33 @@ public final class TableFactory
      *         If {@code id} is {@code null}.
      */
     /* @NonNull */
-    public static IComponentSurfaceDesign createComponentSurfaceDesign(
+    public IComponentSurfaceDesign createComponentSurfaceDesign(
         /* @NonNull */
-        final ComponentSurfaceDesignId id,
-        final int width,
-        final int height )
-    {
-        return new ComponentSurfaceDesign( id, width, height );
-    }
+        ComponentSurfaceDesignId id,
+        int width,
+        int height );
 
-    // TODO: remove method
     /**
      * Creates a new table.
      * 
      * @return A new table; never {@code null}.
      */
     /* @NonNull */
-    public static ITable createTable()
-    {
-        return new Table();
-    }
+    public ITable createTable();
 
     /**
-     * Creates a new table context.
+     * Gets the table context lock.
      * 
-     * @return A new table context; never {@code null}.
+     * <p>
+     * Any modification to a table or table component must be executed while the
+     * table context lock is held. All public methods of all public types in
+     * this package will acquire the table context lock as needed. Clients must
+     * manually acquire the table context lock when invoking multiple methods
+     * that should be treated as an atomic operation.
+     * </p>
+     * 
+     * @return The table context lock; never {@code null}.
      */
     /* @NonNull */
-    public static ITableContext createTableContext()
-    {
-        return new TableContext();
-    }
+    public Lock getLock();
 }

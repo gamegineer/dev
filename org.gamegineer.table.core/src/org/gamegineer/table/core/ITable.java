@@ -1,6 +1,6 @@
 /*
  * ITable.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -77,6 +77,7 @@ public interface ITable
      * @return A new card; never {@code null}. The new card is not contained in
      *         any card pile.
      */
+    // TODO: remove this method
     /* @NonNull */
     public ICard createCard();
 
@@ -86,6 +87,7 @@ public interface ITable
      * @return A new card pile; never {@code null}. The new card pile is not
      *         contained in the table.
      */
+    // TODO: remove this method
     /* @NonNull */
     public ICardPile createCardPile();
 
@@ -95,8 +97,8 @@ public interface ITable
      * @param index
      *        The card pile index.
      * 
-     * @return The card pile in this table at the specified index; never {@code
-     *         null}.
+     * @return The card pile in this table at the specified index; never
+     *         {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code index} is less than zero or greater than or equal to
@@ -180,8 +182,17 @@ public interface ITable
      * 
      * @return The table lock; never {@code null}.
      */
+    // TODO: remove this method
     /* @NonNull */
     public Lock getLock();
+
+    /**
+     * Gets the table context.
+     * 
+     * @return The table context; never {@code null}.
+     */
+    /* @NonNull */
+    public ITableContext getTableContext();
 
     /**
      * Removes the specified card pile from this table.

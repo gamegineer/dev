@@ -56,6 +56,7 @@ import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.core.IContainerListener;
 import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.ITableContext;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ICardPile}.
@@ -767,14 +768,11 @@ final class CardPile
         }
     }
 
-    /**
-     * Gets the table context associated with the card pile.
-     * 
-     * @return The table context associated with the card pile; never
-     *         {@code null}.
+    /*
+     * @see org.gamegineer.table.core.IComponent#getTableContext()
      */
-    /* @NonNull */
-    TableContext getTableContext()
+    @Override
+    public ITableContext getTableContext()
     {
         return tableContext_;
     }
