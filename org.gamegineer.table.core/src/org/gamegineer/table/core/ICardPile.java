@@ -34,13 +34,4 @@ public interface ICardPile
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Gets the table that contains this card pile.
-     * 
-     * @return The table that contains this card pile or {@code null} if this
-     *         card pile is not contained in a table.
-     */
-    /* @Nullable */
-    public ITable getTable();
 }

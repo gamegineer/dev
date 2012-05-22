@@ -752,7 +752,7 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardPile#getTable()
+     * @see org.gamegineer.table.core.IComponent#getTable()
      */
     @Override
     public ITable getTable()

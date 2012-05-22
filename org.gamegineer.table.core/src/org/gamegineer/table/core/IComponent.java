@@ -154,9 +154,19 @@ public interface IComponent
         ComponentOrientation orientation );
 
     /**
-     * Gets the table context.
+     * Gets the table associated with this component.
      * 
-     * @return The table context; never {@code null}.
+     * @return The table associated with this card pile or {@code null} if this
+     *         component is not associated with a table.
+     */
+    /* @Nullable */
+    public ITable getTable();
+
+    /**
+     * Gets the table context associated with this component.
+     * 
+     * @return The table context associated with this component; never
+     *         {@code null}.
      */
     /* @NonNull */
     public ITableContext getTableContext();

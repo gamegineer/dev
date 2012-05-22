@@ -45,6 +45,7 @@ import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.IComponentSurfaceDesign;
 import org.gamegineer.table.core.IContainer;
+import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableContext;
 
 /**
@@ -439,6 +440,23 @@ final class Card
             }
 
             throw new AssertionError( "unknown card orientation" ); //$NON-NLS-1$
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#getTable()
+     */
+    @Override
+    public ITable getTable()
+    {
+        getLock().lock();
+        try
+        {
+            return (cardPile_ != null) ? cardPile_.getTable() : null;
         }
         finally
         {
