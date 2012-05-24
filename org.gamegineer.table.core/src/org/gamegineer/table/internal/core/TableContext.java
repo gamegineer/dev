@@ -21,16 +21,12 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.awt.Dimension;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.locks.ReentrantLock;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
-import org.gamegineer.table.core.IComponentSurfaceDesign;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableContext;
 
@@ -151,31 +147,6 @@ public final class TableContext
     public ICardPile createCardPile()
     {
         return new CardPile( this );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ITableContext#createComponentSurfaceDesign(org.gamegineer.table.core.ComponentSurfaceDesignId, java.awt.Dimension)
-     */
-    @Override
-    public IComponentSurfaceDesign createComponentSurfaceDesign(
-        final ComponentSurfaceDesignId id,
-        final Dimension size )
-    {
-        assertArgumentNotNull( size, "size" ); //$NON-NLS-1$
-
-        return createComponentSurfaceDesign( id, size.width, size.height );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ITableContext#createComponentSurfaceDesign(org.gamegineer.table.core.ComponentSurfaceDesignId, int, int)
-     */
-    @Override
-    public IComponentSurfaceDesign createComponentSurfaceDesign(
-        final ComponentSurfaceDesignId id,
-        final int width,
-        final int height )
-    {
-        return new ComponentSurfaceDesign( id, width, height );
     }
 
     /*

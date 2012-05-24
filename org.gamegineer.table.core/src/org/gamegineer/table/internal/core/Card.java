@@ -40,10 +40,10 @@ import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ComponentOrientation;
+import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.IComponentListener;
-import org.gamegineer.table.core.IComponentSurfaceDesign;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableContext;
@@ -66,7 +66,7 @@ final class Card
     private static final String BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME = "backDesign"; //$NON-NLS-1$
 
     /** The default card surface design. */
-    private static final IComponentSurfaceDesign DEFAULT_SURFACE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.Card.DEFAULT_SURFACE_DESIGN" ), 0, 0 ); //$NON-NLS-1$
+    private static final ComponentSurfaceDesign DEFAULT_SURFACE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.Card.DEFAULT_SURFACE_DESIGN" ), 0, 0 ); //$NON-NLS-1$
 
     /**
      * The name of the memento attribute that stores the design on the face of
@@ -85,7 +85,7 @@ final class Card
 
     /** The design on the back of the card. */
     @GuardedBy( "getLock()" )
-    private IComponentSurfaceDesign backDesign_;
+    private ComponentSurfaceDesign backDesign_;
 
     /**
      * The card pile that contains this card or {@code null} if this card is not
@@ -96,7 +96,7 @@ final class Card
 
     /** The design on the face of the card. */
     @GuardedBy( "getLock()" )
-    private IComponentSurfaceDesign faceDesign_;
+    private ComponentSurfaceDesign faceDesign_;
 
     /** The collection of component listeners. */
     private final CopyOnWriteArrayList<IComponentListener> listeners_;
@@ -271,8 +271,8 @@ final class Card
 
         final Card card = new Card( tableContext );
 
-        final IComponentSurfaceDesign backDesign = MementoUtils.getAttribute( memento, BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, IComponentSurfaceDesign.class );
-        final IComponentSurfaceDesign faceDesign = MementoUtils.getAttribute( memento, FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, IComponentSurfaceDesign.class );
+        final ComponentSurfaceDesign backDesign = MementoUtils.getAttribute( memento, BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, ComponentSurfaceDesign.class );
+        final ComponentSurfaceDesign faceDesign = MementoUtils.getAttribute( memento, FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ComponentSurfaceDesign.class );
         try
         {
             card.setSurfaceDesign( CardOrientation.BACK, backDesign );
@@ -421,7 +421,7 @@ final class Card
      * @see org.gamegineer.table.core.IComponent#getSurfaceDesign(org.gamegineer.table.core.ComponentOrientation)
      */
     @Override
-    public IComponentSurfaceDesign getSurfaceDesign(
+    public ComponentSurfaceDesign getSurfaceDesign(
         final ComponentOrientation orientation )
     {
         assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
@@ -604,12 +604,12 @@ final class Card
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponent#setSurfaceDesign(org.gamegineer.table.core.ComponentOrientation, org.gamegineer.table.core.IComponentSurfaceDesign)
+     * @see org.gamegineer.table.core.IComponent#setSurfaceDesign(org.gamegineer.table.core.ComponentOrientation, org.gamegineer.table.core.ComponentSurfaceDesign)
      */
     @Override
     public void setSurfaceDesign(
         final ComponentOrientation orientation,
-        final IComponentSurfaceDesign surfaceDesign )
+        final ComponentSurfaceDesign surfaceDesign )
     {
         assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
         assertArgumentLegal( orientation instanceof CardOrientation, "orientation", NonNlsMessages.Card_orientation_illegal ); //$NON-NLS-1$

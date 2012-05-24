@@ -22,10 +22,7 @@
 package org.gamegineer.table.ui;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import javax.swing.Icon;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.ComponentSurfaceDesignId;
-import org.gamegineer.table.internal.ui.ComponentSurfaceDesignUI;
 import org.gamegineer.table.internal.ui.TableRunner;
 
 /**
@@ -49,34 +46,6 @@ public final class TableUIFactory
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Creates a new component surface design user interface.
-     * 
-     * @param id
-     *        The component surface design identifier; must not be {@code null}.
-     * @param name
-     *        The component surface design name; must not be {@code null}.
-     * @param icon
-     *        The component surface design icon; must not be {@code null}.
-     * 
-     * @return A new component surface design user interface; never {@code null}
-     *         .
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code id}, {@code name}, or {@code icon} is {@code null}.
-     */
-    /* @NonNull */
-    public static IComponentSurfaceDesignUI createComponentSurfaceDesignUI(
-        /* @NonNull */
-        final ComponentSurfaceDesignId id,
-        /* @NonNull */
-        final String name,
-        /* @NonNull */
-        final Icon icon )
-    {
-        return new ComponentSurfaceDesignUI( id, name, icon );
-    }
 
     /**
      * Creates the table user interface and returns an object capable of running

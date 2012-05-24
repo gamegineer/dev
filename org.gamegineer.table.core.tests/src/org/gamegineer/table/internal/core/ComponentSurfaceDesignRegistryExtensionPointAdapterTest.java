@@ -28,8 +28,8 @@ import org.easymock.IMocksControl;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
-import org.gamegineer.table.core.IComponentSurfaceDesign;
 import org.gamegineer.table.core.IComponentSurfaceDesignRegistry;
 import org.junit.Before;
 import org.junit.Test;
@@ -110,7 +110,7 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapterTest
             configurationElement
         } );
         final IComponentSurfaceDesignRegistry componentSurfaceDesignRegistry = mocksControl_.createMock( IComponentSurfaceDesignRegistry.class );
-        final Capture<IComponentSurfaceDesign> componentSurfaceDesignCapture = new Capture<IComponentSurfaceDesign>();
+        final Capture<ComponentSurfaceDesign> componentSurfaceDesignCapture = new Capture<ComponentSurfaceDesign>();
         componentSurfaceDesignRegistry.registerComponentSurfaceDesign( EasyMock.capture( componentSurfaceDesignCapture ) );
         mocksControl_.replay();
         componentSurfaceDesignRegistryExtensionPointAdapter_.bindComponentSurfaceDesignRegistry( componentSurfaceDesignRegistry );
@@ -194,8 +194,8 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapterTest
             configurationElement
         } ).anyTimes();
         final IComponentSurfaceDesignRegistry componentSurfaceDesignRegistry = mocksControl_.createMock( IComponentSurfaceDesignRegistry.class );
-        componentSurfaceDesignRegistry.registerComponentSurfaceDesign( EasyMock.notNull( IComponentSurfaceDesign.class ) );
-        final Capture<IComponentSurfaceDesign> componentSurfaceDesignCapture = new Capture<IComponentSurfaceDesign>();
+        componentSurfaceDesignRegistry.registerComponentSurfaceDesign( EasyMock.notNull( ComponentSurfaceDesign.class ) );
+        final Capture<ComponentSurfaceDesign> componentSurfaceDesignCapture = new Capture<ComponentSurfaceDesign>();
         componentSurfaceDesignRegistry.unregisterComponentSurfaceDesign( EasyMock.capture( componentSurfaceDesignCapture ) );
         mocksControl_.replay();
         componentSurfaceDesignRegistryExtensionPointAdapter_.bindComponentSurfaceDesignRegistry( componentSurfaceDesignRegistry );

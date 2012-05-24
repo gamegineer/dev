@@ -24,7 +24,7 @@ package org.gamegineer.table.internal.persistence.serializable;
 import java.io.IOException;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
-import org.gamegineer.table.internal.core.ComponentSurfaceDesign;
+import org.gamegineer.table.core.ComponentSurfaceDesign;
 
 /**
  * A persistence delegate for the {@code ComponentSurfaceDesign} class.

@@ -150,14 +150,6 @@ final class NonNlsMessages
     /** The container listener is not registered. */
     public static String CardPile_removeContainerListener_listener_notRegistered;
 
-    // --- ComponentSurfaceDesign -------------------------------------------
-
-    /** The component surface design height must not be negative. */
-    public static String ComponentSurfaceDesign_ctor_height_negative;
-
-    /** The component surface design width must not be negative. */
-    public static String ComponentSurfaceDesign_ctor_width_negative;
-
     // --- ComponentSurfaceDesignRegistry -----------------------------------
 
     /**

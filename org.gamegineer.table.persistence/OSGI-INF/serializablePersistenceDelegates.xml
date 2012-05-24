@@ -58,7 +58,7 @@
 		<property
 				name="delegators"
 				type="String">
-			org.gamegineer.table.internal.core.ComponentSurfaceDesign
+			org.gamegineer.table.core.ComponentSurfaceDesign
 			org.gamegineer.table.internal.persistence.serializable.ComponentSurfaceDesignProxy
 		</property>
 	</scr:component>

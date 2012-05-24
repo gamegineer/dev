@@ -115,10 +115,10 @@ public abstract class AbstractComponentSurfaceDesignRegistryTestCase
     @Test
     public void testGetComponentSurfaceDesign_Id_Present()
     {
-        final IComponentSurfaceDesign expectedComponentSurfaceDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
+        final ComponentSurfaceDesign expectedComponentSurfaceDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
         componentSurfaceDesignRegistry_.registerComponentSurfaceDesign( expectedComponentSurfaceDesign );
 
-        final IComponentSurfaceDesign actualComponentSurfaceDesign = componentSurfaceDesignRegistry_.getComponentSurfaceDesign( expectedComponentSurfaceDesign.getId() );
+        final ComponentSurfaceDesign actualComponentSurfaceDesign = componentSurfaceDesignRegistry_.getComponentSurfaceDesign( expectedComponentSurfaceDesign.getId() );
 
         assertSame( expectedComponentSurfaceDesign, actualComponentSurfaceDesign );
     }
@@ -130,7 +130,7 @@ public abstract class AbstractComponentSurfaceDesignRegistryTestCase
     @Test
     public void testGetComponentSurfaceDesigns_ReturnValue_Copy()
     {
-        final Collection<IComponentSurfaceDesign> componentSurfaceDesigns = componentSurfaceDesignRegistry_.getComponentSurfaceDesigns();
+        final Collection<ComponentSurfaceDesign> componentSurfaceDesigns = componentSurfaceDesignRegistry_.getComponentSurfaceDesigns();
         final int expectedComponentSurfaceDesignsSize = componentSurfaceDesigns.size();
 
         componentSurfaceDesigns.add( ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
@@ -145,7 +145,7 @@ public abstract class AbstractComponentSurfaceDesignRegistryTestCase
     @Test
     public void testGetComponentSurfaceDesigns_ReturnValue_Snapshot()
     {
-        final Collection<IComponentSurfaceDesign> componentSurfaceDesigns = componentSurfaceDesignRegistry_.getComponentSurfaceDesigns();
+        final Collection<ComponentSurfaceDesign> componentSurfaceDesigns = componentSurfaceDesignRegistry_.getComponentSurfaceDesigns();
         componentSurfaceDesignRegistry_.registerComponentSurfaceDesign( ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
 
         assertTrue( componentSurfaceDesigns.size() != componentSurfaceDesignRegistry_.getComponentSurfaceDesigns().size() );
@@ -169,7 +169,7 @@ public abstract class AbstractComponentSurfaceDesignRegistryTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testRegisterComponentSurfaceDesign_ComponentSurfaceDesign_Registered()
     {
-        final IComponentSurfaceDesign componentSurfaceDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
+        final ComponentSurfaceDesign componentSurfaceDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
         componentSurfaceDesignRegistry_.registerComponentSurfaceDesign( componentSurfaceDesign );
 
         componentSurfaceDesignRegistry_.registerComponentSurfaceDesign( ComponentSurfaceDesigns.cloneComponentSurfaceDesign( componentSurfaceDesign ) );
@@ -182,7 +182,7 @@ public abstract class AbstractComponentSurfaceDesignRegistryTestCase
     @Test
     public void testRegisterComponentSurfaceDesign_ComponentSurfaceDesign_Unregistered()
     {
-        final IComponentSurfaceDesign componentSurfaceDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
+        final ComponentSurfaceDesign componentSurfaceDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
 
         componentSurfaceDesignRegistry_.registerComponentSurfaceDesign( componentSurfaceDesign );
 
@@ -208,7 +208,7 @@ public abstract class AbstractComponentSurfaceDesignRegistryTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testUnregisterComponentSurfaceDesign_ComponentSurfaceDesign_Registered_DifferentInstance()
     {
-        final IComponentSurfaceDesign componentSurfaceDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
+        final ComponentSurfaceDesign componentSurfaceDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
         final int originalComponentSurfaceDesignsSize = componentSurfaceDesignRegistry_.getComponentSurfaceDesigns().size();
         componentSurfaceDesignRegistry_.registerComponentSurfaceDesign( componentSurfaceDesign );
         assertEquals( originalComponentSurfaceDesignsSize + 1, componentSurfaceDesignRegistry_.getComponentSurfaceDesigns().size() );
@@ -223,7 +223,7 @@ public abstract class AbstractComponentSurfaceDesignRegistryTestCase
     @Test
     public void testUnregisterComponentSurfaceDesign_ComponentSurfaceDesign_Registered_SameInstance()
     {
-        final IComponentSurfaceDesign componentSurfaceDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
+        final ComponentSurfaceDesign componentSurfaceDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
         final int originalComponentSurfaceDesignsSize = componentSurfaceDesignRegistry_.getComponentSurfaceDesigns().size();
         componentSurfaceDesignRegistry_.registerComponentSurfaceDesign( componentSurfaceDesign );
         assertEquals( originalComponentSurfaceDesignsSize + 1, componentSurfaceDesignRegistry_.getComponentSurfaceDesigns().size() );
@@ -241,7 +241,7 @@ public abstract class AbstractComponentSurfaceDesignRegistryTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testUnregisterComponentSurfaceDesign_ComponentSurfaceDesign_Unregistered()
     {
-        final IComponentSurfaceDesign componentSurfaceDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
+        final ComponentSurfaceDesign componentSurfaceDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
 
         componentSurfaceDesignRegistry_.unregisterComponentSurfaceDesign( componentSurfaceDesign );
     }

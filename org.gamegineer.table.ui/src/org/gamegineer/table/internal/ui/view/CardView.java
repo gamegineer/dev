@@ -34,7 +34,7 @@ import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.internal.ui.model.CardModel;
 import org.gamegineer.table.internal.ui.model.ICardModelListener;
-import org.gamegineer.table.ui.IComponentSurfaceDesignUI;
+import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
 
 /**
  * A view of a card.
@@ -47,7 +47,7 @@ final class CardView
     // ======================================================================
 
     /** The component surface design user interface for the card back. */
-    private final IComponentSurfaceDesignUI backDesignUI_;
+    private final ComponentSurfaceDesignUI backDesignUI_;
 
     /** The card model listener for this view. */
     private ICardModelListener cardModelListener_;
@@ -59,7 +59,7 @@ final class CardView
     private IComponentListener componentListener_;
 
     /** The component surface design user interface for the card face. */
-    private final IComponentSurfaceDesignUI faceDesignUI_;
+    private final ComponentSurfaceDesignUI faceDesignUI_;
 
     /** The model associated with this view. */
     private final CardModel model_;
@@ -85,9 +85,9 @@ final class CardView
         /* @NonNull */
         final CardModel model,
         /* @NonNull */
-        final IComponentSurfaceDesignUI backDesignUI,
+        final ComponentSurfaceDesignUI backDesignUI,
         /* @NonNull */
-        final IComponentSurfaceDesignUI faceDesignUI )
+        final ComponentSurfaceDesignUI faceDesignUI )
     {
         assert model != null;
         assert backDesignUI != null;
@@ -135,7 +135,7 @@ final class CardView
      *         {@code null}.
      */
     /* @NonNull */
-    private IComponentSurfaceDesignUI getActiveComponentSurfaceDesignUI()
+    private ComponentSurfaceDesignUI getActiveComponentSurfaceDesignUI()
     {
         final ComponentOrientation orientation = model_.getCard().getOrientation();
         if( orientation == CardOrientation.BACK )

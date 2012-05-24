@@ -68,13 +68,13 @@ public final class ComponentSurfaceDesigns
      *         If {@code componentSurfaceDesign} is {@code null}.
      */
     /* @NonNull */
-    public static IComponentSurfaceDesign cloneComponentSurfaceDesign(
+    public static ComponentSurfaceDesign cloneComponentSurfaceDesign(
         /* @NonNull */
-        final IComponentSurfaceDesign componentSurfaceDesign )
+        final ComponentSurfaceDesign componentSurfaceDesign )
     {
         assertArgumentNotNull( componentSurfaceDesign, "componentSurfaceDesign" ); //$NON-NLS-1$
 
-        return TableFactory.createComponentSurfaceDesign( componentSurfaceDesign.getId(), componentSurfaceDesign.getSize() );
+        return new ComponentSurfaceDesign( componentSurfaceDesign.getId(), componentSurfaceDesign.getSize() );
     }
 
     /**
@@ -84,7 +84,7 @@ public final class ComponentSurfaceDesigns
      * @return A new component surface design; never {@code null}.
      */
     /* @NonNull */
-    public static IComponentSurfaceDesign createUniqueComponentSurfaceDesign()
+    public static ComponentSurfaceDesign createUniqueComponentSurfaceDesign()
     {
         return createUniqueComponentSurfaceDesign( 100, 100 );
     }
@@ -106,11 +106,11 @@ public final class ComponentSurfaceDesigns
      *         If {@code width} or {@code height} is negative.
      */
     /* @NonNull */
-    public static IComponentSurfaceDesign createUniqueComponentSurfaceDesign(
+    public static ComponentSurfaceDesign createUniqueComponentSurfaceDesign(
         final int width,
         final int height )
     {
-        return TableFactory.createComponentSurfaceDesign( getUniqueComponentSurfaceDesignId(), width, height );
+        return new ComponentSurfaceDesign( getUniqueComponentSurfaceDesignId(), width, height );
     }
 
     /**

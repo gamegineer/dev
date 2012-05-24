@@ -21,10 +21,7 @@
 
 package org.gamegineer.table.core;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.awt.Dimension;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.core.ComponentSurfaceDesign;
 import org.gamegineer.table.internal.core.Table;
 import org.gamegineer.table.internal.core.TableContext;
 
@@ -51,65 +48,6 @@ public final class TableFactory
     // ======================================================================
     // Methods
     // ======================================================================
-
-    // TODO: remove method
-    /**
-     * Creates a new component surface design.
-     * 
-     * @param id
-     *        The component surface design identifier; must not be {@code null}.
-     * @param size
-     *        The component surface design size in table coordinates; no
-     *        component may be negative.
-     * 
-     * @return A new component surface design; never {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If any component of {@code size} is negative.
-     * @throws java.lang.NullPointerException
-     *         If {@code id} or {@code size} is {@code null}.
-     */
-    /* @NonNull */
-    public static IComponentSurfaceDesign createComponentSurfaceDesign(
-        /* @NonNull */
-        final ComponentSurfaceDesignId id,
-        /* @NonNull */
-        final Dimension size )
-    {
-        assertArgumentNotNull( size, "size" ); //$NON-NLS-1$
-
-        return createComponentSurfaceDesign( id, size.width, size.height );
-    }
-
-    // TODO: remove method
-    /**
-     * Creates a new component surface design.
-     * 
-     * @param id
-     *        The component surface design identifier; must not be {@code null}.
-     * @param width
-     *        The component surface design width in table coordinates; must not
-     *        be negative.
-     * @param height
-     *        The component surface design height in table coordinates; must not
-     *        be negative.
-     * 
-     * @return A new component surface design; never {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code width} or {@code height} is negative.
-     * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
-     */
-    /* @NonNull */
-    public static IComponentSurfaceDesign createComponentSurfaceDesign(
-        /* @NonNull */
-        final ComponentSurfaceDesignId id,
-        final int width,
-        final int height )
-    {
-        return new ComponentSurfaceDesign( id, width, height );
-    }
 
     // TODO: remove method
     /**

@@ -19,20 +19,18 @@
  * Created on Apr 23, 2012 at 8:15:04 PM.
  */
 
-package org.gamegineer.table.internal.ui;
+package org.gamegineer.table.ui;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import javax.swing.Icon;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
-import org.gamegineer.table.ui.IComponentSurfaceDesignUI;
 
 /**
- * Implementation of {@link org.gamegineer.table.ui.IComponentSurfaceDesignUI}.
+ * A component surface design user interface.
  */
 @Immutable
 public final class ComponentSurfaceDesignUI
-    implements IComponentSurfaceDesignUI
 {
     // ======================================================================
     // Fields
@@ -87,30 +85,54 @@ public final class ComponentSurfaceDesignUI
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.ui.IComponentSurfaceDesignUI#getIcon()
+    /**
+     * Gets the component surface design icon.
+     * 
+     * @return The component surface design icon; never {@code null}.
      */
-    @Override
+    /* @NonNull */
     public Icon getIcon()
     {
         return icon_;
     }
 
-    /*
-     * @see org.gamegineer.table.ui.IComponentSurfaceDesignUI#getId()
+    /**
+     * Gets the component surface design identifier.
+     * 
+     * @return The component surface design identifier; never {@code null}.
      */
-    @Override
+    /* @NonNull */
     public ComponentSurfaceDesignId getId()
     {
         return id_;
     }
 
-    /*
-     * @see org.gamegineer.table.ui.IComponentSurfaceDesignUI#getName()
+    /**
+     * Gets the component surface design name.
+     * 
+     * @return The component surface design name; never {@code null}.
      */
-    @Override
+    /* @NonNull */
     public String getName()
     {
         return name_;
+    }
+
+    /*
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString()
+    {
+        final StringBuilder sb = new StringBuilder();
+        sb.append( "ComponentSurfaceDesignUI[" ); //$NON-NLS-1$
+        sb.append( "icon_=" ); //$NON-NLS-1$
+        sb.append( icon_ );
+        sb.append( ", id_=" ); //$NON-NLS-1$
+        sb.append( id_ );
+        sb.append( ", name_=" ); //$NON-NLS-1$
+        sb.append( name_ );
+        sb.append( "]" ); //$NON-NLS-1$
+        return sb.toString();
     }
 }

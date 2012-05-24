@@ -25,14 +25,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Rectangle;
 import org.gamegineer.table.core.CardOrientation;
+import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesigns;
 import org.gamegineer.table.core.ICard;
-import org.gamegineer.table.core.IComponentSurfaceDesign;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.model.CardModel;
+import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
 import org.gamegineer.table.ui.ComponentSurfaceDesignUIs;
-import org.gamegineer.table.ui.IComponentSurfaceDesignUI;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -50,7 +50,7 @@ public final class CardViewTest
      * The component surface design user interface for the card back for use in
      * the test fixture.
      */
-    private IComponentSurfaceDesignUI backDesignUI_;
+    private ComponentSurfaceDesignUI backDesignUI_;
 
     /** A card model for use in the test fixture. */
     private CardModel cardModel_;
@@ -62,7 +62,7 @@ public final class CardViewTest
      * The component surface design user interface for the card face for use in
      * the test fixture.
      */
-    private IComponentSurfaceDesignUI faceDesignUI_;
+    private ComponentSurfaceDesignUI faceDesignUI_;
 
 
     // ======================================================================
@@ -92,9 +92,9 @@ public final class CardViewTest
         throws Exception
     {
         final ITable table = TableFactory.createTable();
-        final IComponentSurfaceDesign backDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
+        final ComponentSurfaceDesign backDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
         backDesignUI_ = ComponentSurfaceDesignUIs.createComponentSurfaceDesignUI( backDesign );
-        final IComponentSurfaceDesign faceDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
+        final ComponentSurfaceDesign faceDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
         faceDesignUI_ = ComponentSurfaceDesignUIs.createComponentSurfaceDesignUI( faceDesign );
         final ICard card = table.createCard();
         card.setSurfaceDesign( CardOrientation.BACK, backDesign );

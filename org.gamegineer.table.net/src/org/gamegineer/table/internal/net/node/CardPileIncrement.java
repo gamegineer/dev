@@ -25,7 +25,7 @@ import java.awt.Point;
 import java.io.Serializable;
 import java.util.List;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.core.IComponentSurfaceDesign;
+import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.IContainerLayout;
 
 /**
@@ -57,7 +57,7 @@ public final class CardPileIncrement
      * 
      * @serial The new design of the card pile base.
      */
-    private IComponentSurfaceDesign baseDesign_;
+    private ComponentSurfaceDesign baseDesign_;
 
     /**
      * The new card pile layout or {@code null} if unchanged.
@@ -125,7 +125,7 @@ public final class CardPileIncrement
      *         unchanged.
      */
     /* @Nullable */
-    public IComponentSurfaceDesign getBaseDesign()
+    public ComponentSurfaceDesign getBaseDesign()
     {
         return baseDesign_;
     }
@@ -190,7 +190,7 @@ public final class CardPileIncrement
      */
     public void setBaseDesign(
         /* @Nullable */
-        final IComponentSurfaceDesign baseDesign )
+        final ComponentSurfaceDesign baseDesign )
     {
         baseDesign_ = baseDesign;
     }

@@ -149,7 +149,7 @@ public interface IComponent
      *         If {@code orientation} is {@code null}.
      */
     /* @NonNull */
-    public IComponentSurfaceDesign getSurfaceDesign(
+    public ComponentSurfaceDesign getSurfaceDesign(
         /* @NonNull */
         ComponentOrientation orientation );
 
@@ -250,5 +250,5 @@ public interface IComponent
         /* @NonNull */
         ComponentOrientation orientation,
         /* @NonNull */
-        IComponentSurfaceDesign surfaceDesign );
+        ComponentSurfaceDesign surfaceDesign );
 }

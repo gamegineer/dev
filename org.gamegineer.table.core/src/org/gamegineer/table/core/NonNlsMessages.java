@@ -35,6 +35,14 @@ final class NonNlsMessages
     // Fields
     // ======================================================================
 
+    // --- ComponentSurfaceDesign -------------------------------------------
+
+    /** The component surface design height must not be negative. */
+    public static String ComponentSurfaceDesign_ctor_height_negative;
+
+    /** The component surface design width must not be negative. */
+    public static String ComponentSurfaceDesign_ctor_width_negative;
+
     // --- ContainerContentChangedEvent --------------------------------------
 
     /** The component index is negative. */

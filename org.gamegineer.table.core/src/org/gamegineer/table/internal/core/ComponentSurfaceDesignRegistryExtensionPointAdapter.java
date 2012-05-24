@@ -36,10 +36,9 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IRegistryEventListener;
+import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
-import org.gamegineer.table.core.IComponentSurfaceDesign;
 import org.gamegineer.table.core.IComponentSurfaceDesignRegistry;
-import org.gamegineer.table.core.TableFactory;
 
 /**
  * A component that adapts component surface designs published via the
@@ -468,7 +467,7 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapter
         // ==================================================================
 
         /** The component surface design contributed by the extension. */
-        private final IComponentSurfaceDesign componentSurfaceDesign_;
+        private final ComponentSurfaceDesign componentSurfaceDesign_;
 
         /** The namespace identifier of the contributing extension. */
         private final String extensionNamespaceId_;
@@ -513,7 +512,7 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapter
         {
             assert extension != null;
 
-            componentSurfaceDesign_ = TableFactory.createComponentSurfaceDesign( id, width, height );
+            componentSurfaceDesign_ = new ComponentSurfaceDesign( id, width, height );
             extensionNamespaceId_ = extension.getNamespaceIdentifier();
             extensionSimpleId_ = extension.getSimpleIdentifier();
         }
@@ -530,7 +529,7 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapter
          *         never {@code null}.
          */
         /* @NonNull */
-        IComponentSurfaceDesign getComponentSurfaceDesign()
+        ComponentSurfaceDesign getComponentSurfaceDesign()
         {
             return componentSurfaceDesign_;
         }

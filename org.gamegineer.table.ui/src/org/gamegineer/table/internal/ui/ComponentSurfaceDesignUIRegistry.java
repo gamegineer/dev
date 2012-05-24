@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
-import org.gamegineer.table.ui.IComponentSurfaceDesignUI;
+import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
 import org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry;
 
 /**
@@ -48,7 +48,7 @@ public final class ComponentSurfaceDesignUIRegistry
      * The collection of component surface design user interfaces directly
      * managed by this object.
      */
-    private final ConcurrentMap<ComponentSurfaceDesignId, IComponentSurfaceDesignUI> componentSurfaceDesignUIs_;
+    private final ConcurrentMap<ComponentSurfaceDesignId, ComponentSurfaceDesignUI> componentSurfaceDesignUIs_;
 
 
     // ======================================================================
@@ -61,7 +61,7 @@ public final class ComponentSurfaceDesignUIRegistry
      */
     public ComponentSurfaceDesignUIRegistry()
     {
-        componentSurfaceDesignUIs_ = new ConcurrentHashMap<ComponentSurfaceDesignId, IComponentSurfaceDesignUI>();
+        componentSurfaceDesignUIs_ = new ConcurrentHashMap<ComponentSurfaceDesignId, ComponentSurfaceDesignUI>();
     }
 
 
@@ -73,7 +73,7 @@ public final class ComponentSurfaceDesignUIRegistry
      * @see org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry#getComponentSurfaceDesignUI(org.gamegineer.table.core.ComponentSurfaceDesignId)
      */
     @Override
-    public IComponentSurfaceDesignUI getComponentSurfaceDesignUI(
+    public ComponentSurfaceDesignUI getComponentSurfaceDesignUI(
         final ComponentSurfaceDesignId id )
     {
         assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
@@ -85,17 +85,17 @@ public final class ComponentSurfaceDesignUIRegistry
      * @see org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry#getComponentSurfaceDesignUIs()
      */
     @Override
-    public Collection<IComponentSurfaceDesignUI> getComponentSurfaceDesignUIs()
+    public Collection<ComponentSurfaceDesignUI> getComponentSurfaceDesignUIs()
     {
-        return new ArrayList<IComponentSurfaceDesignUI>( componentSurfaceDesignUIs_.values() );
+        return new ArrayList<ComponentSurfaceDesignUI>( componentSurfaceDesignUIs_.values() );
     }
 
     /*
-     * @see org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry#registerComponentSurfaceDesignUI(org.gamegineer.table.ui.IComponentSurfaceDesignUI)
+     * @see org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry#registerComponentSurfaceDesignUI(org.gamegineer.table.ui.ComponentSurfaceDesignUI)
      */
     @Override
     public void registerComponentSurfaceDesignUI(
-        final IComponentSurfaceDesignUI componentSurfaceDesignUI )
+        final ComponentSurfaceDesignUI componentSurfaceDesignUI )
     {
         assertArgumentNotNull( componentSurfaceDesignUI, "componentSurfaceDesignUI" ); //$NON-NLS-1$
         assertArgumentLegal( componentSurfaceDesignUIs_.putIfAbsent( componentSurfaceDesignUI.getId(), componentSurfaceDesignUI ) == null, "componentSurfaceDesignUI", NonNlsMessages.ComponentSurfaceDesignUIRegistry_registerComponentSurfaceDesignUI_componentSurfaceDesignUI_registered( componentSurfaceDesignUI.getId() ) ); //$NON-NLS-1$
@@ -104,11 +104,11 @@ public final class ComponentSurfaceDesignUIRegistry
     }
 
     /*
-     * @see org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry#unregisterComponentSurfaceDesignUI(org.gamegineer.table.ui.IComponentSurfaceDesignUI)
+     * @see org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry#unregisterComponentSurfaceDesignUI(org.gamegineer.table.ui.ComponentSurfaceDesignUI)
      */
     @Override
     public void unregisterComponentSurfaceDesignUI(
-        final IComponentSurfaceDesignUI componentSurfaceDesignUI )
+        final ComponentSurfaceDesignUI componentSurfaceDesignUI )
     {
         assertArgumentNotNull( componentSurfaceDesignUI, "componentSurfaceDesignUI" ); //$NON-NLS-1$
         assertArgumentLegal( componentSurfaceDesignUIs_.remove( componentSurfaceDesignUI.getId(), componentSurfaceDesignUI ), "componentSurfaceDesignUI", NonNlsMessages.ComponentSurfaceDesignUIRegistry_unregisterComponentSurfaceDesignUI_componentSurfaceDesignUI_unregistered( componentSurfaceDesignUI.getId() ) ); //$NON-NLS-1$

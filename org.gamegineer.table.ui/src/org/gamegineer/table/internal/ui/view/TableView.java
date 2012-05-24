@@ -64,11 +64,11 @@ import org.gamegineer.common.ui.wizard.WizardDialog;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.CardPileLayouts;
 import org.gamegineer.table.core.CardPileOrientation;
+import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.IComponent;
-import org.gamegineer.table.core.IComponentSurfaceDesign;
 import org.gamegineer.table.core.IComponentSurfaceDesignRegistry;
 import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.core.ITableListener;
@@ -84,7 +84,7 @@ import org.gamegineer.table.internal.ui.wizards.hosttablenetwork.HostTableNetwor
 import org.gamegineer.table.internal.ui.wizards.jointablenetwork.JoinTableNetworkWizard;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.PlayerRole;
-import org.gamegineer.table.ui.IComponentSurfaceDesignUI;
+import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
 import org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry;
 
 /**
@@ -185,8 +185,8 @@ final class TableView
         {
             final IComponentSurfaceDesignRegistry componentSurfaceDesignRegistry = Activator.getDefault().getComponentSurfaceDesignRegistry();
             assert componentSurfaceDesignRegistry != null;
-            final IComponentSurfaceDesign backDesign = componentSurfaceDesignRegistry.getComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.cardSurfaces.back.red" ) ); //$NON-NLS-1$ );
-            final IComponentSurfaceDesign faceDesign = componentSurfaceDesignRegistry.getComponentSurfaceDesign( faceDesignId );
+            final ComponentSurfaceDesign backDesign = componentSurfaceDesignRegistry.getComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.cardSurfaces.back.red" ) ); //$NON-NLS-1$ );
+            final ComponentSurfaceDesign faceDesign = componentSurfaceDesignRegistry.getComponentSurfaceDesign( faceDesignId );
             final ICard card = model_.getTable().createCard();
             card.setSurfaceDesign( CardOrientation.BACK, backDesign );
             card.setSurfaceDesign( CardOrientation.FACE, faceDesign );
@@ -201,7 +201,7 @@ final class TableView
     {
         final IComponentSurfaceDesignRegistry componentSurfaceDesignRegistry = Activator.getDefault().getComponentSurfaceDesignRegistry();
         assert componentSurfaceDesignRegistry != null;
-        final IComponentSurfaceDesign baseDesign = componentSurfaceDesignRegistry.getComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.cardPileBases.default" ) ); //$NON-NLS-1$
+        final ComponentSurfaceDesign baseDesign = componentSurfaceDesignRegistry.getComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.cardPileBases.default" ) ); //$NON-NLS-1$
         final ICardPile cardPile = model_.getTable().createCardPile();
         cardPile.setSurfaceDesign( CardPileOrientation.BASE, baseDesign );
 
@@ -919,7 +919,7 @@ final class TableView
 
         final IComponentSurfaceDesignUIRegistry componentSurfaceDesignUIRegistry = Activator.getDefault().getComponentSurfaceDesignUIRegistry();
         assert componentSurfaceDesignUIRegistry != null;
-        final IComponentSurfaceDesignUI baseDesignUI = componentSurfaceDesignUIRegistry.getComponentSurfaceDesignUI( cardPile.getSurfaceDesign( CardPileOrientation.BASE ).getId() );
+        final ComponentSurfaceDesignUI baseDesignUI = componentSurfaceDesignUIRegistry.getComponentSurfaceDesignUI( cardPile.getSurfaceDesign( CardPileOrientation.BASE ).getId() );
         final CardPileView view = new CardPileView( model_.getCardPileModel( cardPile ), baseDesignUI );
         final CardPileView oldView = cardPileViews_.put( cardPile, view );
         assert oldView == null;

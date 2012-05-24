@@ -44,6 +44,7 @@ import org.gamegineer.table.core.CardPileLayouts;
 import org.gamegineer.table.core.CardPileOrientation;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ComponentOrientation;
+import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ContainerEvent;
@@ -51,7 +52,6 @@ import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentListener;
-import org.gamegineer.table.core.IComponentSurfaceDesign;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.core.IContainerListener;
@@ -82,7 +82,7 @@ final class CardPile
     private static final String CARDS_MEMENTO_ATTRIBUTE_NAME = "cards"; //$NON-NLS-1$
 
     /** The default card pile base design. */
-    private static final IComponentSurfaceDesign DEFAULT_BASE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.CardPile.DEFAULT_BASE_DESIGN" ), 0, 0 ); //$NON-NLS-1$
+    private static final ComponentSurfaceDesign DEFAULT_BASE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.CardPile.DEFAULT_BASE_DESIGN" ), 0, 0 ); //$NON-NLS-1$
 
     /**
      * The name of the memento attribute that stores the card pile layout.
@@ -97,7 +97,7 @@ final class CardPile
 
     /** The design of the card pile base. */
     @GuardedBy( "getLock()" )
-    private IComponentSurfaceDesign baseDesign_;
+    private ComponentSurfaceDesign baseDesign_;
 
     /** The collection of cards in this card pile ordered from bottom to top. */
     @GuardedBy( "getLock()" )
@@ -466,7 +466,7 @@ final class CardPile
 
         final CardPile cardPile = new CardPile( tableContext );
 
-        final IComponentSurfaceDesign baseDesign = MementoUtils.getAttribute( memento, BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, IComponentSurfaceDesign.class );
+        final ComponentSurfaceDesign baseDesign = MementoUtils.getAttribute( memento, BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ComponentSurfaceDesign.class );
         cardPile.setSurfaceDesign( CardPileOrientation.BASE, baseDesign );
 
         final Point location = MementoUtils.getAttribute( memento, ORIGIN_MEMENTO_ATTRIBUTE_NAME, Point.class );
@@ -729,7 +729,7 @@ final class CardPile
      * @see org.gamegineer.table.core.IComponent#getSurfaceDesign(org.gamegineer.table.core.ComponentOrientation)
      */
     @Override
-    public IComponentSurfaceDesign getSurfaceDesign(
+    public ComponentSurfaceDesign getSurfaceDesign(
         final ComponentOrientation orientation )
     {
         assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
@@ -1063,12 +1063,12 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponent#setSurfaceDesign(org.gamegineer.table.core.ComponentOrientation, org.gamegineer.table.core.IComponentSurfaceDesign)
+     * @see org.gamegineer.table.core.IComponent#setSurfaceDesign(org.gamegineer.table.core.ComponentOrientation, org.gamegineer.table.core.ComponentSurfaceDesign)
      */
     @Override
     public void setSurfaceDesign(
         final ComponentOrientation orientation,
-        final IComponentSurfaceDesign surfaceDesign )
+        final ComponentSurfaceDesign surfaceDesign )
     {
         assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
         assertArgumentLegal( orientation instanceof CardPileOrientation, "orientation", NonNlsMessages.CardPile_orientation_illegal ); //$NON-NLS-1$

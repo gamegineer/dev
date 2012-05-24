@@ -25,8 +25,8 @@ import static org.junit.Assert.assertEquals;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
+import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesigns;
-import org.gamegineer.table.internal.core.ComponentSurfaceDesign;
 
 /**
  * A fixture for testing the

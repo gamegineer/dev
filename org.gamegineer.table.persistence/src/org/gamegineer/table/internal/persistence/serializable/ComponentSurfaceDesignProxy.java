@@ -25,8 +25,8 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import java.io.Serializable;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
-import org.gamegineer.table.internal.core.ComponentSurfaceDesign;
 
 /**
  * A serializable proxy for the {@code ComponentSurfaceDesign} class.

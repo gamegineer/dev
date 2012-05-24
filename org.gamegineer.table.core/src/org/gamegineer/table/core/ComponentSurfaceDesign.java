@@ -19,21 +19,18 @@
  * Created on Apr 6, 2012 at 11:28:46 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.core.ComponentSurfaceDesignId;
-import org.gamegineer.table.core.IComponentSurfaceDesign;
 
 /**
- * Implementation of {@link org.gamegineer.table.core.IComponentSurfaceDesign}.
+ * A component surface design.
  */
 @Immutable
 public final class ComponentSurfaceDesign
-    implements IComponentSurfaceDesign
 {
     // ======================================================================
     // Fields
@@ -51,16 +48,39 @@ public final class ComponentSurfaceDesign
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ComponentSurfaceDesign} class.
+     * Initializes a new instance of the {@code ComponentSurfaceDesign} class
+     * from the specified size.
+     * 
+     * @param id
+     *        The component surface design identifier; must not be {@code null}.
+     * @param size
+     *        The component surface design size in table coordinates; must not
+     *        be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If the width or height of {@code size} is negative.
+     * @throws java.lang.NullPointerException
+     *         If {@code id} or {@code size} is {@code null}.
+     */
+    public ComponentSurfaceDesign(
+        /* @NonNull */
+        final ComponentSurfaceDesignId id,
+        /* @NonNull */
+        final Dimension size )
+    {
+        this( id, size.width, size.height );
+    }
+
+    /**
+     * Initializes a new instance of the {@code ComponentSurfaceDesign} class
+     * from the specified width and height.
      * 
      * @param id
      *        The component surface design identifier; must not be {@code null}.
      * @param width
-     *        The component surface design width in table coordinates; must not
-     *        be negative.
+     *        The component surface design width in table coordinates.
      * @param height
-     *        The component surface design height in table coordinates; must not
-     *        be negative.
+     *        The component surface design height in table coordinates.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code width} or {@code height} is negative.
@@ -86,21 +106,42 @@ public final class ComponentSurfaceDesign
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.core.IComponentSurfaceDesign#getId()
+    /**
+     * Gets the component surface design identifier.
+     * 
+     * @return The component surface design identifier; never {@code null}.
      */
-    @Override
+    /* @NonNull */
     public ComponentSurfaceDesignId getId()
     {
         return id_;
     }
 
-    /*
-     * @see org.gamegineer.table.core.IComponentSurfaceDesign#getSize()
+    /**
+     * Gets the component surface design size in table coordinates.
+     * 
+     * @return The component surface design size in table coordinates; never
+     *         {@code null}.
      */
-    @Override
+    /* @NonNull */
     public Dimension getSize()
     {
         return new Dimension( size_ );
+    }
+
+    /*
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString()
+    {
+        final StringBuilder sb = new StringBuilder();
+        sb.append( "ComponentSurfaceDesign[" ); //$NON-NLS-1$
+        sb.append( "id_=" ); //$NON-NLS-1$
+        sb.append( id_ );
+        sb.append( ", size_=" ); //$NON-NLS-1$
+        sb.append( size_ );
+        sb.append( "]" ); //$NON-NLS-1$
+        return sb.toString();
     }
 }

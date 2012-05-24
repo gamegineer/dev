@@ -853,7 +853,7 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     @Test( expected = IllegalArgumentException.class )
     public void testSetSurfaceDesign_Orientation_Illegal()
     {
-        component_.setSurfaceDesign( createIllegalOrientation(), EasyMock.createMock( IComponentSurfaceDesign.class ) );
+        component_.setSurfaceDesign( createIllegalOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
     }
 
     /**
@@ -863,7 +863,7 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     @Test( expected = NullPointerException.class )
     public void testSetSurfaceDesign_Orientation_Null()
     {
-        component_.setSurfaceDesign( null, EasyMock.createMock( IComponentSurfaceDesign.class ) );
+        component_.setSurfaceDesign( null, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
     }
 
     /**

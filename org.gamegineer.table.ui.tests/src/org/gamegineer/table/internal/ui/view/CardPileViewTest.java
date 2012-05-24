@@ -25,14 +25,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Rectangle;
 import org.gamegineer.table.core.CardPileOrientation;
+import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesigns;
 import org.gamegineer.table.core.ICardPile;
-import org.gamegineer.table.core.IComponentSurfaceDesign;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.model.CardPileModel;
+import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
 import org.gamegineer.table.ui.ComponentSurfaceDesignUIs;
-import org.gamegineer.table.ui.IComponentSurfaceDesignUI;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -47,7 +47,7 @@ public final class CardPileViewTest
     // ======================================================================
 
     /** The component surface design user interface for the card pile base. */
-    private IComponentSurfaceDesignUI baseDesignUI_;
+    private ComponentSurfaceDesignUI baseDesignUI_;
 
     /** A card pile model for use in the test fixture. */
     private CardPileModel cardPileModel_;
@@ -83,7 +83,7 @@ public final class CardPileViewTest
         throws Exception
     {
         final ITable table = TableFactory.createTable();
-        final IComponentSurfaceDesign baseDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
+        final ComponentSurfaceDesign baseDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
         baseDesignUI_ = ComponentSurfaceDesignUIs.createComponentSurfaceDesignUI( baseDesign );
         final ICardPile cardPile = table.createCardPile();
         cardPile.setSurfaceDesign( CardPileOrientation.BASE, baseDesign );

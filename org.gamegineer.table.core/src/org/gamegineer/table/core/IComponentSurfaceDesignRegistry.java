@@ -49,7 +49,7 @@ public interface IComponentSurfaceDesignRegistry
      *         If {@code id} is {@code null}.
      */
     /* @Nullable */
-    public IComponentSurfaceDesign getComponentSurfaceDesign(
+    public ComponentSurfaceDesign getComponentSurfaceDesign(
         /* @NonNull */
         ComponentSurfaceDesignId id );
 
@@ -63,7 +63,7 @@ public interface IComponentSurfaceDesignRegistry
      *         call.
      */
     /* @NonNull */
-    public Collection<IComponentSurfaceDesign> getComponentSurfaceDesigns();
+    public Collection<ComponentSurfaceDesign> getComponentSurfaceDesigns();
 
     /**
      * Registers the specified component surface design.
@@ -79,7 +79,7 @@ public interface IComponentSurfaceDesignRegistry
      */
     public void registerComponentSurfaceDesign(
         /* @NonNull */
-        IComponentSurfaceDesign componentSurfaceDesign );
+        ComponentSurfaceDesign componentSurfaceDesign );
 
     /**
      * Unregisters the specified component surface design.
@@ -95,5 +95,5 @@ public interface IComponentSurfaceDesignRegistry
      */
     public void unregisterComponentSurfaceDesign(
         /* @NonNull */
-        IComponentSurfaceDesign componentSurfaceDesign );
+        ComponentSurfaceDesign componentSurfaceDesign );
 }

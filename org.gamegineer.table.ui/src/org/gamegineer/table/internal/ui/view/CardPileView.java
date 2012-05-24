@@ -44,7 +44,7 @@ import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.model.CardPileModel;
 import org.gamegineer.table.internal.ui.model.CardPileModelEvent;
 import org.gamegineer.table.internal.ui.model.ICardPileModelListener;
-import org.gamegineer.table.ui.IComponentSurfaceDesignUI;
+import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
 import org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry;
 
 /**
@@ -70,7 +70,7 @@ final class CardPileView
     private static final int VERTICAL_PADDING = 2;
 
     /** The component surface design user interface for the card pile base. */
-    private final IComponentSurfaceDesignUI baseDesignUI_;
+    private final ComponentSurfaceDesignUI baseDesignUI_;
 
     /** The card pile model listener for this view. */
     private ICardPileModelListener cardPileModelListener_;
@@ -111,7 +111,7 @@ final class CardPileView
         /* @NonNull */
         final CardPileModel model,
         /* @NonNull */
-        final IComponentSurfaceDesignUI baseDesignUI )
+        final ComponentSurfaceDesignUI baseDesignUI )
     {
         assert model != null;
         assert baseDesignUI != null;
@@ -223,8 +223,8 @@ final class CardPileView
 
         final IComponentSurfaceDesignUIRegistry componentSurfaceDesignUIRegistry = Activator.getDefault().getComponentSurfaceDesignUIRegistry();
         assert componentSurfaceDesignUIRegistry != null;
-        final IComponentSurfaceDesignUI backDesignUI = componentSurfaceDesignUIRegistry.getComponentSurfaceDesignUI( card.getSurfaceDesign( CardOrientation.BACK ).getId() );
-        final IComponentSurfaceDesignUI faceDesignUI = componentSurfaceDesignUIRegistry.getComponentSurfaceDesignUI( card.getSurfaceDesign( CardOrientation.FACE ).getId() );
+        final ComponentSurfaceDesignUI backDesignUI = componentSurfaceDesignUIRegistry.getComponentSurfaceDesignUI( card.getSurfaceDesign( CardOrientation.BACK ).getId() );
+        final ComponentSurfaceDesignUI faceDesignUI = componentSurfaceDesignUIRegistry.getComponentSurfaceDesignUI( card.getSurfaceDesign( CardOrientation.FACE ).getId() );
         final CardView view = new CardView( model_.getCardModel( card ), backDesignUI, faceDesignUI );
         final CardView oldView = cardViews_.put( card, view );
         assert oldView == null;

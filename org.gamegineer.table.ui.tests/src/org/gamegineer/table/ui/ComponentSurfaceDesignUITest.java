@@ -19,7 +19,7 @@
  * Created on Apr 23, 2012 at 8:19:53 PM.
  */
 
-package org.gamegineer.table.internal.ui;
+package org.gamegineer.table.ui;
 
 import javax.swing.Icon;
 import org.easymock.EasyMock;
@@ -28,7 +28,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.ComponentSurfaceDesignUI} class.
+ * {@link org.gamegineer.table.ui.ComponentSurfaceDesignUI} class.
  */
 public final class ComponentSurfaceDesignUITest
 {

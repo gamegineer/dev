@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.core;
 
-import java.awt.Dimension;
 import java.util.concurrent.locks.Lock;
 
 // TODO: rename to ITableRuntime or something equivalent
@@ -54,55 +53,6 @@ public interface ITableContext
      */
     /* @NonNull */
     public ICardPile createCardPile();
-
-    /**
-     * Creates a new component surface design.
-     * 
-     * @param id
-     *        The component surface design identifier; must not be {@code null}.
-     * @param size
-     *        The component surface design size in table coordinates; no
-     *        component may be negative.
-     * 
-     * @return A new component surface design; never {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If any component of {@code size} is negative.
-     * @throws java.lang.NullPointerException
-     *         If {@code id} or {@code size} is {@code null}.
-     */
-    /* @NonNull */
-    public IComponentSurfaceDesign createComponentSurfaceDesign(
-        /* @NonNull */
-        ComponentSurfaceDesignId id,
-        /* @NonNull */
-        Dimension size );
-
-    /**
-     * Creates a new component surface design.
-     * 
-     * @param id
-     *        The component surface design identifier; must not be {@code null}.
-     * @param width
-     *        The component surface design width in table coordinates; must not
-     *        be negative.
-     * @param height
-     *        The component surface design height in table coordinates; must not
-     *        be negative.
-     * 
-     * @return A new component surface design; never {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code width} or {@code height} is negative.
-     * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
-     */
-    /* @NonNull */
-    public IComponentSurfaceDesign createComponentSurfaceDesign(
-        /* @NonNull */
-        ComponentSurfaceDesignId id,
-        int width,
-        int height );
 
     /**
      * Creates a new table.

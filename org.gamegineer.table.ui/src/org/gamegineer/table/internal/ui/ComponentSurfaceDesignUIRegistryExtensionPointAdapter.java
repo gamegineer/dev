@@ -43,9 +43,8 @@ import org.eclipse.core.runtime.IRegistryEventListener;
 import org.eclipse.core.runtime.Path;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.internal.ui.util.swing.IconProxy;
-import org.gamegineer.table.ui.IComponentSurfaceDesignUI;
+import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
 import org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry;
-import org.gamegineer.table.ui.TableUIFactory;
 import org.osgi.framework.Bundle;
 
 /**
@@ -491,7 +490,7 @@ public final class ComponentSurfaceDesignUIRegistryExtensionPointAdapter
          * The component surface design user interface contributed by the
          * extension.
          */
-        private final IComponentSurfaceDesignUI componentSurfaceDesignUI_;
+        private final ComponentSurfaceDesignUI componentSurfaceDesignUI_;
 
         /** The namespace identifier of the contributing extension. */
         private final String extensionNamespaceId_;
@@ -534,7 +533,7 @@ public final class ComponentSurfaceDesignUIRegistryExtensionPointAdapter
         {
             assert extension != null;
 
-            componentSurfaceDesignUI_ = TableUIFactory.createComponentSurfaceDesignUI( id, name, icon );
+            componentSurfaceDesignUI_ = new ComponentSurfaceDesignUI( id, name, icon );
             extensionNamespaceId_ = extension.getNamespaceIdentifier();
             extensionSimpleId_ = extension.getSimpleIdentifier();
         }
@@ -552,7 +551,7 @@ public final class ComponentSurfaceDesignUIRegistryExtensionPointAdapter
          *         the extension; never {@code null}.
          */
         /* @NonNull */
-        IComponentSurfaceDesignUI getComponentSurfaceDesignUI()
+        ComponentSurfaceDesignUI getComponentSurfaceDesignUI()
         {
             return componentSurfaceDesignUI_;
         }

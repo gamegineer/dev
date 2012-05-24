@@ -25,7 +25,7 @@ import java.awt.Point;
 import java.io.Serializable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.CardOrientation;
-import org.gamegineer.table.core.IComponentSurfaceDesign;
+import org.gamegineer.table.core.ComponentSurfaceDesign;
 
 /**
  * An incremental change to the state of a card.
@@ -46,14 +46,14 @@ public final class CardIncrement
      * 
      * @serial The new design on the back of the card.
      */
-    private IComponentSurfaceDesign backDesign_;
+    private ComponentSurfaceDesign backDesign_;
 
     /**
      * The new design on the face of the card or {@code null} if unchanged.
      * 
      * @serial The new design on the face of the card.
      */
-    private IComponentSurfaceDesign faceDesign_;
+    private ComponentSurfaceDesign faceDesign_;
 
     /**
      * The new card location or {@code null} if unchanged.
@@ -97,7 +97,7 @@ public final class CardIncrement
      *         back design is unchanged.
      */
     /* @Nullable */
-    public IComponentSurfaceDesign getBackDesign()
+    public ComponentSurfaceDesign getBackDesign()
     {
         return backDesign_;
     }
@@ -109,7 +109,7 @@ public final class CardIncrement
      *         face design is unchanged.
      */
     /* @Nullable */
-    public IComponentSurfaceDesign getFaceDesign()
+    public ComponentSurfaceDesign getFaceDesign()
     {
         return faceDesign_;
     }
@@ -148,7 +148,7 @@ public final class CardIncrement
      */
     public void setBackDesign(
         /* @Nullable */
-        final IComponentSurfaceDesign backDesign )
+        final ComponentSurfaceDesign backDesign )
     {
         backDesign_ = backDesign;
     }
@@ -162,7 +162,7 @@ public final class CardIncrement
      */
     public void setFaceDesign(
         /* @Nullable */
-        final IComponentSurfaceDesign faceDesign )
+        final ComponentSurfaceDesign faceDesign )
     {
         faceDesign_ = faceDesign;
     }

@@ -23,7 +23,6 @@ package org.gamegineer.table.core;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import java.awt.Dimension;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -108,102 +107,6 @@ public abstract class AbstractTableContextTestCase
 
         assertNotNull( cardPile );
         assertEquals( tableContext_, cardPile.getTableContext() );
-    }
-
-    /**
-     * Ensures the {@code createComponentSurfaceDesign(ComponentSurfaceDesignId,
-     * Dimension)} method throws an exception when passed a negative height.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testCreateComponentSurfaceDesignFromSize_Height_Negative()
-    {
-        tableContext_.createComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "id" ), new Dimension( 0, -1 ) ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@code createComponentSurfaceDesign(ComponentSurfaceDesignId,
-     * Dimension)} method throws an exception when passed a {@code null}
-     * identifier.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateComponentSurfaceDesignFromSize_Id_Null()
-    {
-        tableContext_.createComponentSurfaceDesign( null, new Dimension( 0, 0 ) );
-    }
-
-    /**
-     * Ensures the {@code createComponentSurfaceDesign(ComponentSurfaceDesignId,
-     * Dimension)} method does not return {@code null}.
-     */
-    @Test
-    public void testCreateComponentSurfaceDesignFromSize_ReturnValue_NonNull()
-    {
-        assertNotNull( tableContext_.createComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "id" ), new Dimension( 0, 0 ) ) ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@code createComponentSurfaceDesign(ComponentSurfaceDesignId,
-     * Dimension)} method throws an exception when passed a {@code null} size.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateComponentSurfaceDesignFromSize_Size_Null()
-    {
-        tableContext_.createComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "id" ), null ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@code createComponentSurfaceDesign(ComponentSurfaceDesignId,
-     * Dimension)} method throws an exception when passed a negative width.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testCreateComponentSurfaceDesignFromSize_Width_Negative()
-    {
-        tableContext_.createComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "id" ), new Dimension( -1, 0 ) ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the
-     * {@code createComponentSurfaceDesign(ComponentSurfaceDesignId, Integer,
-     * Integer)} method throws an exception when passed a negative height.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testCreateComponentSurfaceDesignFromWidthHeight_Height_Negative()
-    {
-        tableContext_.createComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "id" ), 0, -1 ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the
-     * {@code createComponentSurfaceDesign(ComponentSurfaceDesignId, Integer,
-     * Integer)} method throws an exception when passed a {@code null}
-     * identifier.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateComponentSurfaceDesignFromWidthHeight_Id_Null()
-    {
-        tableContext_.createComponentSurfaceDesign( null, 0, 0 );
-    }
-
-    /**
-     * Ensures the
-     * {@code createComponentSurfaceDesign(ComponentSurfaceDesignId, Integer,
-     * Integer)} method does not return {@code null}.
-     */
-    @Test
-    public void testCreateComponentSurfaceDesignFromWidthHeight_ReturnValue_NonNull()
-    {
-        assertNotNull( tableContext_.createComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "id" ), 0, 0 ) ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the
-     * {@code createComponentSurfaceDesign(ComponentSurfaceDesignId, Integer,
-     * Integer)} method throws an exception when passed a negative width.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testCreateComponentSurfaceDesignFromWidthHeight_Width_Negative()
-    {
-        tableContext_.createComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "id" ), -1, 0 ); //$NON-NLS-1$
     }
 
     /**
