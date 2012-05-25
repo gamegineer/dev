@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.core;
 
 import java.lang.reflect.Method;
 import org.gamegineer.table.core.AbstractComponentTestCase;
-import org.gamegineer.table.core.ITable;
 
 /**
  * A fixture for testing the {@link org.gamegineer.table.internal.core.Card}
@@ -31,7 +30,7 @@ import org.gamegineer.table.core.ITable;
  * {@link org.gamegineer.table.core.IComponent} interface.
  */
 public final class CardAsComponentTest
-    extends AbstractComponentTestCase<Card>
+    extends AbstractComponentTestCase<TableEnvironment, Card>
 {
     // ======================================================================
     // Constructors
@@ -50,22 +49,22 @@ public final class CardAsComponentTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractComponentTestCase#createComponent(org.gamegineer.table.core.ITable)
+     * @see org.gamegineer.table.core.AbstractComponentTestCase#createComponent(org.gamegineer.table.core.ITableEnvironment)
      */
     @Override
     protected Card createComponent(
-        final ITable table )
+        final TableEnvironment tableEnvironment )
     {
-        return new Card( ((Table)table).getTableEnvironment() );
+        return new Card( tableEnvironment );
     }
 
     /*
-     * @see org.gamegineer.table.core.AbstractComponentTestCase#createTable()
+     * @see org.gamegineer.table.core.AbstractComponentTestCase#createTableEnvironment()
      */
     @Override
-    protected ITable createTable()
+    protected TableEnvironment createTableEnvironment()
     {
-        return new Table( new TableEnvironment() );
+        return new TableEnvironment();
     }
 
     /*

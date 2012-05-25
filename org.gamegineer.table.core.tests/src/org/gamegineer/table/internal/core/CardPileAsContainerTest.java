@@ -28,7 +28,6 @@ import org.gamegineer.table.core.CardPiles;
 import org.gamegineer.table.core.Cards;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
-import org.gamegineer.table.core.ITable;
 
 /**
  * A fixture for testing the {@link org.gamegineer.table.internal.core.CardPile}
@@ -36,7 +35,7 @@ import org.gamegineer.table.core.ITable;
  * {@link org.gamegineer.table.core.ICardPile} interface.
  */
 public final class CardPileAsContainerTest
-    extends AbstractContainerTestCase<CardPile>
+    extends AbstractContainerTestCase<TableEnvironment, CardPile>
 {
     // ======================================================================
     // Constructors
@@ -55,51 +54,42 @@ public final class CardPileAsContainerTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractComponentTestCase#createComponent(org.gamegineer.table.core.ITable)
+     * @see org.gamegineer.table.core.AbstractComponentTestCase#createComponent(org.gamegineer.table.core.ITableEnvironment)
      */
     @Override
     protected CardPile createComponent(
-        final ITable table )
+        final TableEnvironment tableEnvironment )
     {
-        return new CardPile( ((Table)table).getTableEnvironment() );
+        return new CardPile( tableEnvironment );
     }
 
     /*
-     * @see org.gamegineer.table.core.AbstractComponentTestCase#createTable()
+     * @see org.gamegineer.table.core.AbstractComponentTestCase#createTableEnvironment()
      */
     @Override
-    protected ITable createTable()
+    protected TableEnvironment createTableEnvironment()
     {
-        return new Table( new TableEnvironment() );
+        return new TableEnvironment();
     }
 
     /*
-     * @see org.gamegineer.table.core.AbstractContainerTestCase#createUniqueComponent(org.gamegineer.table.core.ITable)
+     * @see org.gamegineer.table.core.AbstractContainerTestCase#createUniqueComponent(org.gamegineer.table.core.ITableEnvironment)
      */
     @Override
     protected IComponent createUniqueComponent(
-        final ITable table )
+        final TableEnvironment tableEnvironment )
     {
-        return Cards.createUniqueCard( table );
+        return Cards.createUniqueCard( tableEnvironment.createTable() );
     }
 
     /*
-     * @see org.gamegineer.table.core.AbstractContainerTestCase#createUniqueContainer(org.gamegineer.table.core.ITable)
+     * @see org.gamegineer.table.core.AbstractContainerTestCase#createUniqueContainer(org.gamegineer.table.core.ITableEnvironment)
      */
     @Override
     protected IContainer createUniqueContainer(
-        final ITable table )
+        final TableEnvironment tableEnvironment )
     {
-        return CardPiles.createUniqueCardPile( table );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.AbstractContainerTestCase#createUniqueTable()
-     */
-    @Override
-    protected ITable createUniqueTable()
-    {
-        return createTable();
+        return CardPiles.createUniqueCardPile( tableEnvironment.createTable() );
     }
 
     /*

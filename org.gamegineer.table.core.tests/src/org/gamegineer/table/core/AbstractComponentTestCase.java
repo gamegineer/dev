@@ -41,10 +41,12 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link org.gamegineer.table.core.IComponent} interface.
  * 
- * @param <T>
+ * @param <TableEnvironmentType>
+ *        The type of the table environment.
+ * @param <ComponentType>
  *        The type of the component.
  */
-public abstract class AbstractComponentTestCase<T extends IComponent>
+public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITableEnvironment, ComponentType extends IComponent>
     extends AbstractMementoOriginatorTestCase
 {
     // ======================================================================
@@ -52,13 +54,13 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     // ======================================================================
 
     /** The component under test in the fixture. */
-    private T component_;
+    private ComponentType component_;
 
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
 
-    /** The table for use in the fixture. */
-    private ITable table_;
+    /** The table environment for use in the fixture. */
+    private TableEnvironmentType tableEnvironment_;
 
 
     // ======================================================================
@@ -99,20 +101,20 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     /**
      * Creates the component to be tested.
      * 
-     * @param table
-     *        The fixture table; must not be {@code null}.
+     * @param tableEnvironment
+     *        The fixture table environment; must not be {@code null}.
      * 
      * @return The component to be tested; never {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      * @throws java.lang.NullPointerException
-     *         If {@code table} is {@code null}.
+     *         If {@code tableEnvironment} is {@code null}.
      */
     /* @NonNull */
-    protected abstract T createComponent(
+    protected abstract ComponentType createComponent(
         /* @NonNull */
-        final ITable table )
+        TableEnvironmentType tableEnvironment )
         throws Exception;
 
     /**
@@ -146,16 +148,12 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     }
 
     /**
-     * Creates the table for use in the fixture.
+     * Creates the table environment for use in the fixture.
      * 
-     * @return The table for use in the fixture; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
+     * @return The table environment for use in the fixture; never {@code null}.
      */
     /* @NonNull */
-    protected abstract ITable createTable()
-        throws Exception;
+    protected abstract TableEnvironmentType createTableEnvironment();
 
     /**
      * Fires a component bounds changed event for the specified component.
@@ -168,7 +166,7 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
      */
     protected abstract void fireComponentBoundsChanged(
         /* @NonNull */
-        T component );
+        ComponentType component );
 
     /**
      * Fires a component orientation changed event for the specified component.
@@ -181,7 +179,7 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
      */
     protected abstract void fireComponentOrientationChanged(
         /* @NonNull */
-        T component );
+        ComponentType component );
 
     /**
      * Fires a component surface design changed event for the specified
@@ -195,7 +193,7 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
      */
     protected abstract void fireComponentSurfaceDesignChanged(
         /* @NonNull */
-        T component );
+        ComponentType component );
 
     /**
      * Gets an alternate to the specified component orientation from the
@@ -255,22 +253,22 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
      * @return The component under test in the fixture; never {@code null}.
      */
     /* @NonNull */
-    protected final T getComponent()
+    protected final ComponentType getComponent()
     {
         assertNotNull( component_ );
         return component_;
     }
 
     /**
-     * Gets the table for use in the fixture.
+     * Gets the table environment for use in the fixture.
      * 
-     * @return The table for use in the fixture; never {@code null}.
+     * @return The table environment for use in the fixture; never {@code null}.
      */
     /* @NonNull */
-    protected final ITable getTable()
+    protected final TableEnvironmentType getTableEnvironment()
     {
-        assertNotNull( table_ );
-        return table_;
+        assertNotNull( tableEnvironment_ );
+        return tableEnvironment_;
     }
 
     /*
@@ -299,9 +297,9 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        table_ = createTable();
-        assertNotNull( table_ );
-        component_ = createComponent( table_ );
+        tableEnvironment_ = createTableEnvironment();
+        assertNotNull( tableEnvironment_ );
+        component_ = createComponent( tableEnvironment_ );
         assertNotNull( component_ );
 
         super.setUp();

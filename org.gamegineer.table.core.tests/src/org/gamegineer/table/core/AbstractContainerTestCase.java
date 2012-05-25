@@ -42,11 +42,13 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link org.gamegineer.table.core.IContainer} interface.
  * 
- * @param <T>
+ * @param <TableEnvironmentType>
+ *        The type of the table environment.
+ * @param <ContainerType>
  *        The type of the container.
  */
-public abstract class AbstractContainerTestCase<T extends IContainer>
-    extends AbstractComponentTestCase<T>
+public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITableEnvironment, ContainerType extends IContainer>
+    extends AbstractComponentTestCase<TableEnvironmentType, ContainerType>
 {
     // ======================================================================
     // Fields
@@ -74,68 +76,64 @@ public abstract class AbstractContainerTestCase<T extends IContainer>
     // ======================================================================
 
     /**
-     * Creates a new component with unique attributes using the fixture table.
+     * Creates a new component with unique attributes using the fixture table
+     * environment.
      * 
      * @return A new component; never {@code null}.
      */
     /* @NonNull */
     protected final IComponent createUniqueComponent()
     {
-        return createUniqueComponent( getTable() );
+        return createUniqueComponent( getTableEnvironment() );
     }
 
     /**
-     * Creates a new component with unique attributes using the specified table.
+     * Creates a new component with unique attributes using the specified table
+     * environment.
      * 
-     * @param table
-     *        The table used to create the new component; must not be
-     *        {@code null}.
+     * @param tableEnvironment
+     *        The table environment used to create the new component; must not
+     *        be {@code null}.
      * 
      * @return A new component; never {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code table} is {@code null}.
+     *         If {@code tableEnvironment} is {@code null}.
      */
     /* @NonNull */
     protected abstract IComponent createUniqueComponent(
         /* @NonNull */
-        ITable table );
+        TableEnvironmentType tableEnvironment );
 
     /**
-     * Creates a new container with unique attributes using the fixture table.
+     * Creates a new container with unique attributes using the fixture table
+     * environment.
      * 
      * @return A new container; never {@code null}.
      */
     /* @NonNull */
     protected final IContainer createUniqueContainer()
     {
-        return createUniqueContainer( getTable() );
+        return createUniqueContainer( getTableEnvironment() );
     }
 
     /**
-     * Creates a new container with unique attributes using the specified table.
+     * Creates a new container with unique attributes using the specified table
+     * environment.
      * 
-     * @param table
-     *        The table used to create the new container; must not be
-     *        {@code null}.
+     * @param tableEnvironment
+     *        The table environment used to create the new container; must not
+     *        be {@code null}.
      * 
      * @return A new container; never {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code table} is {@code null}.
+     *         If {@code tableEnvironment} is {@code null}.
      */
     /* @NonNull */
     protected abstract IContainer createUniqueContainer(
         /* @NonNull */
-        ITable table );
-
-    /**
-     * Creates a new table with unique attributes.
-     * 
-     * @return A new table; never {@code null}.
-     */
-    /* @NonNull */
-    protected abstract ITable createUniqueTable();
+        TableEnvironmentType tableEnvironment );
 
     /**
      * Fires a component added event for the specified container.
@@ -148,7 +146,7 @@ public abstract class AbstractContainerTestCase<T extends IContainer>
      */
     protected abstract void fireComponentAdded(
         /* @NonNull */
-        T container );
+        ContainerType container );
 
     /**
      * Fires a component removed event for the specified container.
@@ -161,7 +159,7 @@ public abstract class AbstractContainerTestCase<T extends IContainer>
      */
     protected abstract void fireComponentRemoved(
         /* @NonNull */
-        T container );
+        ContainerType container );
 
     /**
      * Fires a container layout changed event for the specified container.
@@ -174,7 +172,7 @@ public abstract class AbstractContainerTestCase<T extends IContainer>
      */
     protected abstract void fireContainerLayoutChanged(
         /* @NonNull */
-        T container );
+        ContainerType container );
 
     /**
      * Gets the container under test in the fixture.
@@ -182,7 +180,7 @@ public abstract class AbstractContainerTestCase<T extends IContainer>
      * @return The container under test in the fixture; never {@code null}.
      */
     /* @NonNull */
-    protected final T getContainer()
+    protected final ContainerType getContainer()
     {
         return getComponent();
     }
@@ -232,13 +230,13 @@ public abstract class AbstractContainerTestCase<T extends IContainer>
 
     /**
      * Ensures the {@code addComponent} method throws an exception when passed
-     * an illegal component that was created by a different table.
+     * an illegal component that was created by a different table environment.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testAddComponent_Component_Illegal_CreatedByDifferentTable()
+    public void testAddComponent_Component_Illegal_CreatedByDifferentTableEnvironment()
     {
-        final ITable otherTable = createUniqueTable();
-        final IComponent otherComponent = createUniqueComponent( otherTable );
+        final TableEnvironmentType otherTableEnvironment = createTableEnvironment();
+        final IComponent otherComponent = createUniqueComponent( otherTableEnvironment );
 
         getContainer().addComponent( otherComponent );
     }
@@ -349,13 +347,13 @@ public abstract class AbstractContainerTestCase<T extends IContainer>
     /**
      * Ensures the {@code addComponents} method throws an exception when passed
      * an illegal component collection that contains at least one component that
-     * was created by a different table.
+     * was created by a different table environment.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testAddComponents_Components_Illegal_ContainsComponentCreatedByDifferentTable()
+    public void testAddComponents_Components_Illegal_ContainsComponentCreatedByDifferentTableEnvironment()
     {
-        final ITable otherTable = createUniqueTable();
-        final IComponent otherComponent = createUniqueComponent( otherTable );
+        final TableEnvironmentType otherTableEnvironment = createTableEnvironment();
+        final IComponent otherComponent = createUniqueComponent( otherTableEnvironment );
 
         getContainer().addComponents( Arrays.asList( createUniqueComponent(), otherComponent ) );
     }

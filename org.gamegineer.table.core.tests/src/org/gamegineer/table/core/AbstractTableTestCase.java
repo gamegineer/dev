@@ -41,8 +41,13 @@ import org.junit.Test;
 /**
  * A fixture for testing the basic aspects of classes that implement the
  * {@link org.gamegineer.table.core.ITable} interface.
+ * 
+ * @param <TableEnvironmentType>
+ *        The type of the table environment.
+ * @param <TableType>
+ *        The type of the table.
  */
-public abstract class AbstractTableTestCase
+public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableEnvironment, TableType extends ITable>
     extends AbstractMementoOriginatorTestCase
 {
     // ======================================================================
@@ -53,7 +58,10 @@ public abstract class AbstractTableTestCase
     private IMocksControl mocksControl_;
 
     /** The table under test in the fixture. */
-    private ITable table_;
+    private TableType table_;
+
+    /** The table environment for use in the fixture. */
+    private TableEnvironmentType tableEnvironment_;
 
 
     // ======================================================================
@@ -97,14 +105,27 @@ public abstract class AbstractTableTestCase
     /**
      * Creates the table to be tested.
      * 
+     * @param tableEnvironment
+     *        The table environment; must not be {@code null}.
+     * 
      * @return The table to be tested; never {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract ITable createTable()
+    protected abstract TableType createTable(
+        /* @NonNull */
+        TableEnvironmentType tableEnvironment )
         throws Exception;
+
+    /**
+     * Creates the table environment for use in the fixture.
+     * 
+     * @return The table environment for use in the fixture; never {@code null}.
+     */
+    /* @NonNull */
+    protected abstract TableEnvironmentType createTableEnvironment();
 
     /**
      * Creates a new card pile with a unique base design for the fixture table.
@@ -139,7 +160,9 @@ public abstract class AbstractTableTestCase
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        table_ = createTable();
+        tableEnvironment_ = createTableEnvironment();
+        assertNotNull( tableEnvironment_ );
+        table_ = createTable( tableEnvironment_ );
         assertNotNull( table_ );
 
         super.setUp();
@@ -166,8 +189,8 @@ public abstract class AbstractTableTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testAddCardPile_CardPile_Illegal_CreatedByDifferentTableEnvironment()
     {
-        final ITable otherTable = TableEnvironmentFactory.createTableEnvironment().createTable();
-        final ICardPile cardPile = CardPiles.createUniqueCardPile( otherTable );
+        final ITableEnvironment otherTableEnvironment = createTableEnvironment();
+        final ICardPile cardPile = CardPiles.createUniqueCardPile( otherTableEnvironment.createTable() );
 
         table_.addCardPile( cardPile );
     }

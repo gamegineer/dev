@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.core;
 
 import org.gamegineer.table.core.AbstractTableTestCase;
-import org.gamegineer.table.core.ITable;
 
 /**
  * A fixture for testing the {@link org.gamegineer.table.internal.core.Table}
@@ -30,7 +29,7 @@ import org.gamegineer.table.core.ITable;
  * {@link org.gamegineer.table.core.ITable} interface.
  */
 public final class TableAsTableTest
-    extends AbstractTableTestCase
+    extends AbstractTableTestCase<TableEnvironment, Table>
 {
     // ======================================================================
     // Constructors
@@ -49,11 +48,21 @@ public final class TableAsTableTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractTableTestCase#createTable()
+     * @see org.gamegineer.table.core.AbstractTableTestCase#createTable(org.gamegineer.table.core.ITableEnvironment)
      */
     @Override
-    protected ITable createTable()
+    protected Table createTable(
+        final TableEnvironment tableEnvironment )
     {
-        return new Table( new TableEnvironment() );
+        return new Table( tableEnvironment );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.AbstractTableTestCase#createTableEnvironment()
+     */
+    @Override
+    protected TableEnvironment createTableEnvironment()
+    {
+        return new TableEnvironment();
     }
 }
