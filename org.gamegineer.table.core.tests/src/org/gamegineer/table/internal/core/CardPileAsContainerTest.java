@@ -70,7 +70,7 @@ public final class CardPileAsContainerTest
     @Override
     protected ITable createTable()
     {
-        return new Table();
+        return new Table( new TableEnvironment() );
     }
 
     /*

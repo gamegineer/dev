@@ -54,6 +54,6 @@ public final class TableAsTableTest
     @Override
     protected ITable createTable()
     {
-        return new Table();
+        return new Table( new TableEnvironment() );
     }
 }

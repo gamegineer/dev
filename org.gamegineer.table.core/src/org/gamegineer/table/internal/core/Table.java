@@ -41,12 +41,11 @@ import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
 
-// TODO: make package-private
 /**
  * Implementation of {@link org.gamegineer.table.core.ITable}.
  */
 @ThreadSafe
-public final class Table
+final class Table
     implements ITable
 {
     // ======================================================================
@@ -89,15 +88,6 @@ public final class Table
         cardPiles_ = new ArrayList<CardPile>();
         listeners_ = new CopyOnWriteArrayList<ITableListener>();
         tableEnvironment_ = tableEnvironment;
-    }
-
-    // TODO: remove ctor
-    /**
-     * Initializes a new instance of the {@code Table} class.
-     */
-    public Table()
-    {
-        this( new TableEnvironment() );
     }
 
 
