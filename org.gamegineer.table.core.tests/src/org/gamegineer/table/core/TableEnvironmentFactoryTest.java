@@ -48,15 +48,6 @@ public final class TableEnvironmentFactoryTest
     // ======================================================================
 
     /**
-     * Ensures the {@code createTable} method does not return {@code null}.
-     */
-    @Test
-    public void testCreateTable_ReturnValue_NonNull()
-    {
-        assertNotNull( TableEnvironmentFactory.createTable() );
-    }
-
-    /**
      * Ensures the {@code createTableEnvironment} method does not return
      * {@code null}.
      */

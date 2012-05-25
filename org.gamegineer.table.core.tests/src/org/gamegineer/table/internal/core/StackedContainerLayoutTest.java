@@ -95,7 +95,7 @@ public final class StackedContainerLayoutTest
     public void testGetComponentIndex_Location_ComponentPresent_NotTopComponent()
     {
         final StackedContainerLayout layout = new StackedContainerLayout( 1, 10, 10 );
-        final ITable table = TableEnvironmentFactory.createTable();
+        final ITable table = TableEnvironmentFactory.createTableEnvironment().createTable();
         final IContainer container = CardPiles.createUniqueCardPile( table );
         container.setOrigin( new Point( 0, 0 ) );
         container.setLayout( layout );
@@ -120,7 +120,7 @@ public final class StackedContainerLayoutTest
     public void testGetComponentIndex_Location_ComponentPresent_TopComponent()
     {
         final StackedContainerLayout layout = new StackedContainerLayout( 1, 10, 10 );
-        final ITable table = TableEnvironmentFactory.createTable();
+        final ITable table = TableEnvironmentFactory.createTableEnvironment().createTable();
         final IContainer container = CardPiles.createUniqueCardPile( table );
         container.setOrigin( new Point( 0, 0 ) );
         container.setLayout( layout );
@@ -162,7 +162,7 @@ public final class StackedContainerLayoutTest
         final int originX = 20, originY = 30;
         final int stackLevelOffsetX = 2, stackLevelOffsetY = 3;
         final StackedContainerLayout layout = new StackedContainerLayout( 2, stackLevelOffsetX, stackLevelOffsetY );
-        final ITable table = TableEnvironmentFactory.createTable();
+        final ITable table = TableEnvironmentFactory.createTableEnvironment().createTable();
         final IContainer container = CardPiles.createUniqueCardPile( table );
         container.setOrigin( new Point( originX, originY ) );
         final IComponent component1 = Cards.createUniqueCard( table );

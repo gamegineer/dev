@@ -91,7 +91,7 @@ public final class CardViewTest
     public void setUp()
         throws Exception
     {
-        final ITable table = TableEnvironmentFactory.createTable();
+        final ITable table = TableEnvironmentFactory.createTableEnvironment().createTable();
         final ComponentSurfaceDesign backDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
         backDesignUI_ = ComponentSurfaceDesignUIs.createComponentSurfaceDesignUI( backDesign );
         final ComponentSurfaceDesign faceDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();

@@ -161,12 +161,12 @@ public abstract class AbstractTableTestCase
 
     /**
      * Ensures the {@code addCardPile} method throws an exception when passed an
-     * illegal card pile that was created by a different table.
+     * illegal card pile that was created by a different table environment.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testAddCardPile_CardPile_Illegal_CreatedByDifferentTable()
+    public void testAddCardPile_CardPile_Illegal_CreatedByDifferentTableEnvironment()
     {
-        final ITable otherTable = TableEnvironmentFactory.createTable();
+        final ITable otherTable = TableEnvironmentFactory.createTableEnvironment().createTable();
         final ICardPile cardPile = CardPiles.createUniqueCardPile( otherTable );
 
         table_.addCardPile( cardPile );

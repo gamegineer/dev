@@ -113,7 +113,7 @@ public final class AccordianContainerLayoutTest
         final int originX = 20, originY = 30;
         final int offsetX = 2, offsetY = -3;
         final AccordianContainerLayout layout = new AccordianContainerLayout( offsetX, offsetY );
-        final ITable table = TableEnvironmentFactory.createTable();
+        final ITable table = TableEnvironmentFactory.createTableEnvironment().createTable();
         final IContainer container = CardPiles.createUniqueCardPile( table );
         container.setOrigin( new Point( originX, originY ) );
         final IComponent component1 = Cards.createUniqueCard( table );

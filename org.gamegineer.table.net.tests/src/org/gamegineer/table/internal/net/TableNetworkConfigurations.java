@@ -66,7 +66,7 @@ public final class TableNetworkConfigurations
             return builder //
                 .setHostName( "hostName" ) //$NON-NLS-1$
                 .setLocalPlayerName( "playerName" ) //$NON-NLS-1$
-                .setLocalTable( TableEnvironmentFactory.createTable() ) //
+                .setLocalTable( TableEnvironmentFactory.createTableEnvironment().createTable() ) //
                 .setPassword( password ) //
                 .setPort( TableNetworkConstants.DEFAULT_PORT ) //
                 .toTableNetworkConfiguration();

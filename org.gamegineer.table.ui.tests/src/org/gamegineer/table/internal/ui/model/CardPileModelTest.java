@@ -123,7 +123,7 @@ public final class CardPileModelTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        final ITable table = TableEnvironmentFactory.createTable();
+        final ITable table = TableEnvironmentFactory.createTableEnvironment().createTable();
         final ICardPile cardPile = CardPiles.createUniqueCardPile( table );
         table.addCardPile( cardPile );
         model_ = new CardPileModel( cardPile );

@@ -114,7 +114,7 @@ public final class TableModel
         listeners_ = new CopyOnWriteArrayList<ITableModelListener>();
         lock_ = new Object();
         originOffset_ = new Dimension( 0, 0 );
-        table_ = TableEnvironmentFactory.createTable();
+        table_ = TableEnvironmentFactory.createTableEnvironment().createTable();
         tableNetwork_ = TableNetworkFactory.createTableNetwork();
 
         table_.addTableListener( new TableListener() );

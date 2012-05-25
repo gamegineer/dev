@@ -128,7 +128,7 @@ public abstract class AbstractTableNetworkTestCase
         tableNetworkConfiguration_ = builder //
             .setHostName( "hostName" ) //$NON-NLS-1$
             .setLocalPlayerName( "playerName" ) //$NON-NLS-1$
-            .setLocalTable( TableEnvironmentFactory.createTable() ) //
+            .setLocalTable( TableEnvironmentFactory.createTableEnvironment().createTable() ) //
             .setPort( TableNetworkConstants.DEFAULT_PORT ) //
             .toTableNetworkConfiguration();
     }

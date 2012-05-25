@@ -335,7 +335,7 @@ public final class ServerNode
         final ITable masterTable;
         try
         {
-            masterTable = TableEnvironmentFactory.createTable();
+            masterTable = TableEnvironmentFactory.createTableEnvironment().createTable();
             masterTable.setMemento( table.createMemento() );
         }
         catch( final MementoException e )

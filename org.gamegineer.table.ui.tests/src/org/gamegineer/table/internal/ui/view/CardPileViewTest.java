@@ -82,7 +82,7 @@ public final class CardPileViewTest
     public void setUp()
         throws Exception
     {
-        final ITable table = TableEnvironmentFactory.createTable();
+        final ITable table = TableEnvironmentFactory.createTableEnvironment().createTable();
         final ComponentSurfaceDesign baseDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
         baseDesignUI_ = ComponentSurfaceDesignUIs.createComponentSurfaceDesignUI( baseDesign );
         final ICardPile cardPile = table.createCardPile();

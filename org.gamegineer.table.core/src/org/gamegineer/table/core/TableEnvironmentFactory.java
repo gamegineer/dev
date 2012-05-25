@@ -22,7 +22,6 @@
 package org.gamegineer.table.core;
 
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.core.Table;
 import org.gamegineer.table.internal.core.TableEnvironment;
 
 /**
@@ -46,18 +45,6 @@ public final class TableEnvironmentFactory
     // ======================================================================
     // Methods
     // ======================================================================
-
-    // TODO: remove method
-    /**
-     * Creates a new table.
-     * 
-     * @return A new table; never {@code null}.
-     */
-    /* @NonNull */
-    public static ITable createTable()
-    {
-        return new Table();
-    }
 
     /**
      * Creates a new table environment.
