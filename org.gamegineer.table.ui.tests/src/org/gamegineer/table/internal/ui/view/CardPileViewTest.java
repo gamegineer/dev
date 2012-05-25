@@ -29,7 +29,7 @@ import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesigns;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.core.TableFactory;
+import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.internal.ui.model.CardPileModel;
 import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
 import org.gamegineer.table.ui.ComponentSurfaceDesignUIs;
@@ -82,7 +82,7 @@ public final class CardPileViewTest
     public void setUp()
         throws Exception
     {
-        final ITable table = TableFactory.createTable();
+        final ITable table = TableEnvironmentFactory.createTable();
         final ComponentSurfaceDesign baseDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
         baseDesignUI_ = ComponentSurfaceDesignUIs.createComponentSurfaceDesignUI( baseDesign );
         final ICardPile cardPile = table.createCardPile();

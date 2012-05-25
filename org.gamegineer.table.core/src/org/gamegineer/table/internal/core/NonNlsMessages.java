@@ -252,10 +252,10 @@ final class NonNlsMessages
     /** The table listener is not registered. */
     public static String Table_removeTableListener_listener_notRegistered;
 
-    // --- TableContext -----------------------------------------------------
+    // --- TableEnvironment -------------------------------------------------
 
     /** Failed to queue the event notification. */
-    public static String TableContext_addEventNotification_queueFailed;
+    public static String TableEnvironment_addEventNotification_queueFailed;
 
 
     // ======================================================================

@@ -56,7 +56,7 @@ import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.core.IContainerListener;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.core.ITableContext;
+import org.gamegineer.table.core.ITableEnvironment;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ICardPile}.
@@ -124,8 +124,8 @@ final class CardPile
     @GuardedBy( "getLock()" )
     private Table table_;
 
-    /** The table context associated with the card pile. */
-    private final TableContext tableContext_;
+    /** The table environment associated with the card pile. */
+    private final TableEnvironment tableEnvironment_;
 
 
     // ======================================================================
@@ -135,15 +135,15 @@ final class CardPile
     /**
      * Initializes a new instance of the {@code CardPile} class.
      * 
-     * @param tableContext
-     *        The table context associated with the card pile; must not be
+     * @param tableEnvironment
+     *        The table environment associated with the card pile; must not be
      *        {@code null}.
      */
     CardPile(
         /* @NonNull */
-        final TableContext tableContext )
+        final TableEnvironment tableEnvironment )
     {
-        assert tableContext != null;
+        assert tableEnvironment != null;
 
         baseDesign_ = DEFAULT_BASE_DESIGN;
         cards_ = new ArrayList<Card>();
@@ -152,7 +152,7 @@ final class CardPile
         layout_ = CardPileLayouts.STACKED;
         origin_ = new Point( 0, 0 );
         table_ = null;
-        tableContext_ = tableContext;
+        tableEnvironment_ = tableEnvironment;
     }
 
 
@@ -210,7 +210,7 @@ final class CardPile
                     throw new IllegalArgumentException( NonNlsMessages.CardPile_addComponents_components_containsNullElement );
                 }
                 assertArgumentLegal( typedCard.getContainer() == null, "components", NonNlsMessages.CardPile_addComponents_components_containsOwnedComponent ); //$NON-NLS-1$
-                assertArgumentLegal( typedCard.getTableContext() == tableContext_, "components", NonNlsMessages.CardPile_addComponents_components_containsComponentCreatedByDifferentTable ); //$NON-NLS-1$
+                assertArgumentLegal( typedCard.getTableEnvironment() == tableEnvironment_, "components", NonNlsMessages.CardPile_addComponents_components_containsComponentCreatedByDifferentTable ); //$NON-NLS-1$
 
                 typedCard.setCardPile( this );
                 cards_.add( typedCard );
@@ -229,7 +229,7 @@ final class CardPile
 
         if( !addedCards.isEmpty() || cardPileBoundsChanged )
         {
-            tableContext_.addEventNotification( new Runnable()
+            tableEnvironment_.addEventNotification( new Runnable()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
@@ -441,9 +441,9 @@ final class CardPile
      * Creates a new instance of the {@code CardPile} class from the specified
      * memento.
      * 
-     * @param tableContext
-     *        The table context associated with the new card pile; must not be
-     *        {@code null}.
+     * @param tableEnvironment
+     *        The table environment associated with the new card pile; must not
+     *        be {@code null}.
      * @param memento
      *        The memento representing the initial card pile state; must not be
      *        {@code null}.
@@ -456,15 +456,15 @@ final class CardPile
     /* @NonNull */
     static CardPile fromMemento(
         /* @NonNull */
-        final TableContext tableContext,
+        final TableEnvironment tableEnvironment,
         /* @NonNull */
         final Object memento )
         throws MementoException
     {
-        assert tableContext != null;
+        assert tableEnvironment != null;
         assert memento != null;
 
-        final CardPile cardPile = new CardPile( tableContext );
+        final CardPile cardPile = new CardPile( tableEnvironment );
 
         final ComponentSurfaceDesign baseDesign = MementoUtils.getAttribute( memento, BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ComponentSurfaceDesign.class );
         cardPile.setSurfaceDesign( CardPileOrientation.BASE, baseDesign );
@@ -479,7 +479,7 @@ final class CardPile
         final List<Object> cardMementos = MementoUtils.getAttribute( memento, CARDS_MEMENTO_ATTRIBUTE_NAME, List.class );
         for( final Object cardMemento : cardMementos )
         {
-            cardPile.addComponent( Card.fromMemento( tableContext, cardMemento ) );
+            cardPile.addComponent( Card.fromMemento( tableEnvironment, cardMemento ) );
         }
 
         return cardPile;
@@ -678,7 +678,7 @@ final class CardPile
     /* @NonNull */
     private ReentrantLock getLock()
     {
-        return tableContext_.getLock();
+        return tableEnvironment_.getLock();
     }
 
     /*
@@ -769,12 +769,12 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponent#getTableContext()
+     * @see org.gamegineer.table.core.IComponent#getTableEnvironment()
      */
     @Override
-    public ITableContext getTableContext()
+    public ITableEnvironment getTableEnvironment()
     {
-        return tableContext_;
+        return tableEnvironment_;
     }
 
     /*
@@ -885,7 +885,7 @@ final class CardPile
 
         if( !removedCards.isEmpty() || cardPileBoundsChanged )
         {
-            tableContext_.addEventNotification( new Runnable()
+            tableEnvironment_.addEventNotification( new Runnable()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
@@ -957,7 +957,7 @@ final class CardPile
             getLock().unlock();
         }
 
-        tableContext_.addEventNotification( new Runnable()
+        tableEnvironment_.addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -1006,7 +1006,7 @@ final class CardPile
         getLock().lock();
         try
         {
-            final CardPile cardPile = fromMemento( tableContext_, memento );
+            final CardPile cardPile = fromMemento( tableEnvironment_, memento );
 
             setSurfaceDesign( CardPileOrientation.BASE, cardPile.getSurfaceDesign( CardPileOrientation.BASE ) );
             setOrigin( cardPile.getOrigin() );
@@ -1031,7 +1031,7 @@ final class CardPile
         assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
         assertArgumentLegal( orientation instanceof CardPileOrientation, "orientation", NonNlsMessages.CardPile_orientation_illegal ); //$NON-NLS-1$
 
-        tableContext_.addEventNotification( new Runnable()
+        tableEnvironment_.addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -1091,7 +1091,7 @@ final class CardPile
             getLock().unlock();
         }
 
-        tableContext_.addEventNotification( new Runnable()
+        tableEnvironment_.addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -1185,7 +1185,7 @@ final class CardPile
             getLock().unlock();
         }
 
-        tableContext_.addEventNotification( new Runnable()
+        tableEnvironment_.addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )

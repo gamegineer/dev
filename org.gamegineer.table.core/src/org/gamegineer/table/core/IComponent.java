@@ -163,13 +163,13 @@ public interface IComponent
     public ITable getTable();
 
     /**
-     * Gets the table context associated with this component.
+     * Gets the table environment associated with this component.
      * 
-     * @return The table context associated with this component; never
+     * @return The table environment associated with this component; never
      *         {@code null}.
      */
     /* @NonNull */
-    public ITableContext getTableContext();
+    public ITableEnvironment getTableEnvironment();
 
     /**
      * Removes the specified component listener from this component.

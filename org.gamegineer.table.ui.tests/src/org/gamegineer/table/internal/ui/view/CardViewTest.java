@@ -29,7 +29,7 @@ import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesigns;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.core.TableFactory;
+import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.internal.ui.model.CardModel;
 import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
 import org.gamegineer.table.ui.ComponentSurfaceDesignUIs;
@@ -91,7 +91,7 @@ public final class CardViewTest
     public void setUp()
         throws Exception
     {
-        final ITable table = TableFactory.createTable();
+        final ITable table = TableEnvironmentFactory.createTable();
         final ComponentSurfaceDesign backDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
         backDesignUI_ = ComponentSurfaceDesignUIs.createComponentSurfaceDesignUI( backDesign );
         final ComponentSurfaceDesign faceDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();

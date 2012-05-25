@@ -26,7 +26,7 @@ import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.core.Cards;
-import org.gamegineer.table.core.TableFactory;
+import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -91,7 +91,7 @@ public final class CardModelTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        model_ = new CardModel( Cards.createUniqueCard( TableFactory.createTable() ) );
+        model_ = new CardModel( Cards.createUniqueCard( TableEnvironmentFactory.createTable() ) );
     }
 
     /**

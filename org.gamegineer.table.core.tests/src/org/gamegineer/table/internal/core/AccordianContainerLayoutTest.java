@@ -29,7 +29,7 @@ import org.gamegineer.table.core.Cards;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.core.TableFactory;
+import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.junit.Test;
 
 /**
@@ -113,7 +113,7 @@ public final class AccordianContainerLayoutTest
         final int originX = 20, originY = 30;
         final int offsetX = 2, offsetY = -3;
         final AccordianContainerLayout layout = new AccordianContainerLayout( offsetX, offsetY );
-        final ITable table = TableFactory.createTable();
+        final ITable table = TableEnvironmentFactory.createTable();
         final IContainer container = CardPiles.createUniqueCardPile( table );
         container.setOrigin( new Point( originX, originY ) );
         final IComponent component1 = Cards.createUniqueCard( table );

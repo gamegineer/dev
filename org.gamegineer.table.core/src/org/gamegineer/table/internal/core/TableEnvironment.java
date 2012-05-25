@@ -1,5 +1,5 @@
 /*
- * TableContext.java
+ * TableEnvironment.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -28,14 +28,14 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.core.ITableContext;
+import org.gamegineer.table.core.ITableEnvironment;
 
 /**
- * The execution context for a virtual game table.
+ * Implementation of {@link org.gamegineer.table.core.ITableEnvironment}.
  */
 @ThreadSafe
-public final class TableContext
-    implements ITableContext
+public final class TableEnvironment
+    implements ITableEnvironment
 {
     // ======================================================================
     // Fields
@@ -44,13 +44,13 @@ public final class TableContext
     /** Indicates an event notification is in progress on the current thread. */
     private final ThreadLocal<Boolean> isEventNotificationInProgress_;
 
-    /** The table context lock. */
-    private final TableContextLock lock_;
+    /** The table environment lock. */
+    private final TableEnvironmentLock lock_;
 
     /**
      * The collection of pending event notifications queued on the current
-     * thread to be executed the next time the table context lock is released on
-     * this thread.
+     * thread to be executed the next time the table environment lock is
+     * released on this thread.
      */
     private final ThreadLocal<Queue<Runnable>> pendingEventNotifications_;
 
@@ -60,9 +60,9 @@ public final class TableContext
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableContext} class.
+     * Initializes a new instance of the {@code TableEnvironment} class.
      */
-    public TableContext()
+    public TableEnvironment()
     {
         isEventNotificationInProgress_ = new ThreadLocal<Boolean>()
         {
@@ -72,7 +72,7 @@ public final class TableContext
                 return Boolean.FALSE;
             }
         };
-        lock_ = new TableContextLock();
+        lock_ = new TableEnvironmentLock();
         pendingEventNotifications_ = new ThreadLocal<Queue<Runnable>>()
         {
             @Override
@@ -89,13 +89,13 @@ public final class TableContext
     // ======================================================================
 
     /**
-     * Adds an event notification to be fired as soon as the table context lock
-     * is not held by the current thread.
+     * Adds an event notification to be fired as soon as the table environment
+     * lock is not held by the current thread.
      * 
      * <p>
-     * If the current thread does not hold the table context lock, the event
+     * If the current thread does not hold the table environment lock, the event
      * notification will be fired immediately. Otherwise, it will be queued and
-     * fired as soon as this thread releases the table context lock.
+     * fired as soon as this thread releases the table environment lock.
      * </p>
      * 
      * @param notification
@@ -115,7 +115,7 @@ public final class TableContext
         {
             if( !pendingEventNotifications_.get().offer( notification ) )
             {
-                Loggers.getDefaultLogger().warning( NonNlsMessages.TableContext_addEventNotification_queueFailed );
+                Loggers.getDefaultLogger().warning( NonNlsMessages.TableEnvironment_addEventNotification_queueFailed );
             }
         }
     }
@@ -132,7 +132,7 @@ public final class TableContext
     }
 
     /*
-     * @see org.gamegineer.table.core.ITableContext#createCard()
+     * @see org.gamegineer.table.core.ITableEnvironment#createCard()
      */
     @Override
     public ICard createCard()
@@ -141,7 +141,7 @@ public final class TableContext
     }
 
     /*
-     * @see org.gamegineer.table.core.ITableContext#createCardPile()
+     * @see org.gamegineer.table.core.ITableEnvironment#createCardPile()
      */
     @Override
     public ICardPile createCardPile()
@@ -150,7 +150,7 @@ public final class TableContext
     }
 
     /*
-     * @see org.gamegineer.table.core.ITableContext#createTable()
+     * @see org.gamegineer.table.core.ITableEnvironment#createTable()
      */
     @Override
     public ITable createTable()
@@ -182,7 +182,7 @@ public final class TableContext
     }
 
     /*
-     * @see org.gamegineer.table.core.ITableContext#getLock()
+     * @see org.gamegineer.table.core.ITableEnvironment#getLock()
      */
     @Override
     public ReentrantLock getLock()
@@ -196,10 +196,10 @@ public final class TableContext
     // ======================================================================
 
     /**
-     * A reentrant mutual exclusion lock for a table context.
+     * A reentrant mutual exclusion lock for a table environment.
      */
     @ThreadSafe
-    private final class TableContextLock
+    private final class TableEnvironmentLock
         extends ReentrantLock
     {
         // ==================================================================
@@ -215,9 +215,9 @@ public final class TableContext
         // ==================================================================
 
         /**
-         * Initializes a new instance of the {@code TableContextLock} class.
+         * Initializes a new instance of the {@code TableEnvironmentLock} class.
          */
-        TableContextLock()
+        TableEnvironmentLock()
         {
         }
 

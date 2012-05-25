@@ -660,12 +660,13 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     }
 
     /**
-     * Ensures the {@code getTableContext} method does not return {@code null}.
+     * Ensures the {@code getTableEnvironment} method does not return
+     * {@code null}.
      */
     @Test
-    public void testGetTableContext_ReturnValue_NonNull()
+    public void testGetTableEnvironment_ReturnValue_NonNull()
     {
-        assertNotNull( component_.getTableContext() );
+        assertNotNull( component_.getTableEnvironment() );
     }
 
     /**

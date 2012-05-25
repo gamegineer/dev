@@ -91,7 +91,7 @@ public abstract class AbstractContainerLayoutTestCase
     @Test
     public void testGetComponentIndex_Container_Empty()
     {
-        layout_.getComponentIndex( CardPiles.createUniqueCardPile( TableFactory.createTable() ), new Point( 0, 0 ) );
+        layout_.getComponentIndex( CardPiles.createUniqueCardPile( TableEnvironmentFactory.createTable() ), new Point( 0, 0 ) );
     }
 
     /**

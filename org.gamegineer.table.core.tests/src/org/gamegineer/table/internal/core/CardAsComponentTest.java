@@ -56,7 +56,7 @@ public final class CardAsComponentTest
     protected Card createComponent(
         final ITable table )
     {
-        return new Card( ((Table)table).getTableContext() );
+        return new Card( ((Table)table).getTableEnvironment() );
     }
 
     /*

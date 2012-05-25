@@ -1,5 +1,5 @@
 /*
- * TableFactory.java
+ * TableEnvironmentFactoryTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,31 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 6, 2009 at 11:05:05 PM.
+ * Created on Oct 6, 2009 at 11:07:48 PM.
  */
 
 package org.gamegineer.table.core;
 
-import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.core.Table;
-import org.gamegineer.table.internal.core.TableContext;
-
-// TODO: rename to TableContextFactory
+import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
 
 /**
- * A factory for creating table components.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.core.TableEnvironmentFactory} class.
  */
-@ThreadSafe
-public final class TableFactory
+public final class TableEnvironmentFactoryTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableFactory} class.
+     * Initializes a new instance of the {@code TableEnvironmentFactoryTest}
+     * class.
      */
-    private TableFactory()
+    public TableEnvironmentFactoryTest()
     {
     }
 
@@ -49,26 +47,22 @@ public final class TableFactory
     // Methods
     // ======================================================================
 
-    // TODO: remove method
     /**
-     * Creates a new table.
-     * 
-     * @return A new table; never {@code null}.
+     * Ensures the {@code createTable} method does not return {@code null}.
      */
-    /* @NonNull */
-    public static ITable createTable()
+    @Test
+    public void testCreateTable_ReturnValue_NonNull()
     {
-        return new Table();
+        assertNotNull( TableEnvironmentFactory.createTable() );
     }
 
     /**
-     * Creates a new table context.
-     * 
-     * @return A new table context; never {@code null}.
+     * Ensures the {@code createTableEnvironment} method does not return
+     * {@code null}.
      */
-    /* @NonNull */
-    public static ITableContext createTableContext()
+    @Test
+    public void testCreateTableEnvironment_ReturnValue_NonNull()
     {
-        return new TableContext();
+        assertNotNull( TableEnvironmentFactory.createTableEnvironment() );
     }
 }

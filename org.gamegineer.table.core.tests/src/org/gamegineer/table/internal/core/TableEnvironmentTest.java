@@ -1,5 +1,5 @@
 /*
- * TableContextTest.java
+ * TableEnvironmentTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -31,9 +31,9 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.TableContext} class.
+ * {@link org.gamegineer.table.internal.core.TableEnvironment} class.
  */
-public final class TableContextTest
+public final class TableEnvironmentTest
 {
     // ======================================================================
     // Fields
@@ -42,8 +42,8 @@ public final class TableContextTest
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
 
-    /** The table context under test in the fixture. */
-    private TableContext tableContext_;
+    /** The table environment under test in the fixture. */
+    private TableEnvironment tableEnvironment_;
 
 
     // ======================================================================
@@ -51,9 +51,9 @@ public final class TableContextTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableContextTest} class.
+     * Initializes a new instance of the {@code TableEnvironmentTest} class.
      */
-    public TableContextTest()
+    public TableEnvironmentTest()
     {
     }
 
@@ -73,7 +73,7 @@ public final class TableContextTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        tableContext_ = new TableContext();
+        tableEnvironment_ = new TableEnvironment();
     }
 
     /**
@@ -86,8 +86,8 @@ public final class TableContextTest
         final Runnable notification = mocksControl_.createMock( Runnable.class );
         mocksControl_.replay();
 
-        tableContext_.getLock().lock();
-        tableContext_.addEventNotification( notification );
+        tableEnvironment_.getLock().lock();
+        tableEnvironment_.addEventNotification( notification );
 
         mocksControl_.verify();
     }
@@ -95,7 +95,7 @@ public final class TableContextTest
     /**
      * Ensures the {@code addEventNotification} method does not fire the event
      * notification if the lock is not held by the current thread but a call to
-     * {@code TableContextLock#unlock} is active on the call stack.
+     * {@code TableEnvironmentLock#unlock} is active on the call stack.
      */
     @Test
     public void testAddEventNotification_Unlocked_DoesNotFireEventNotification_EventNotificationsInProgress()
@@ -115,14 +115,14 @@ public final class TableContextTest
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                tableContext_.addEventNotification( notification2 ); // should not fire immediately
+                tableEnvironment_.addEventNotification( notification2 ); // should not fire immediately
                 notificationCallHistory.add( Integer.valueOf( 1 ) );
             }
         };
 
-        tableContext_.getLock().lock();
-        tableContext_.addEventNotification( notification1 );
-        tableContext_.getLock().unlock();
+        tableEnvironment_.getLock().lock();
+        tableEnvironment_.addEventNotification( notification1 );
+        tableEnvironment_.getLock().unlock();
 
         assertEquals( 2, notificationCallHistory.size() );
         assertEquals( Integer.valueOf( 1 ), notificationCallHistory.get( 0 ) );
@@ -140,14 +140,14 @@ public final class TableContextTest
         notification.run();
         mocksControl_.replay();
 
-        tableContext_.addEventNotification( notification );
+        tableEnvironment_.addEventNotification( notification );
 
         mocksControl_.verify();
     }
 
     /**
-     * Ensures the {@code TableContextLock#unlock} method does not fire pending
-     * event notifications if the lock is held by the current thread.
+     * Ensures the {@code TableEnvironmentLock#unlock} method does not fire
+     * pending event notifications if the lock is held by the current thread.
      */
     @Test
     public void testUnlock_Locked_DoesNotFirePendingEventNotifications()
@@ -155,19 +155,19 @@ public final class TableContextTest
         final Runnable notification = mocksControl_.createMock( Runnable.class );
         mocksControl_.replay();
 
-        tableContext_.getLock().lock();
-        tableContext_.getLock().lock();
-        tableContext_.addEventNotification( notification );
-        tableContext_.getLock().unlock();
+        tableEnvironment_.getLock().lock();
+        tableEnvironment_.getLock().lock();
+        tableEnvironment_.addEventNotification( notification );
+        tableEnvironment_.getLock().unlock();
 
         mocksControl_.verify();
     }
 
     /**
-     * Ensures the {@code TableContextLock#unlock} method does not fire pending
-     * event notifications if the lock is not held by the current thread but
-     * another call to {@code TableContextLock#unlock} is active on the call
-     * stack.
+     * Ensures the {@code TableEnvironmentLock#unlock} method does not fire
+     * pending event notifications if the lock is not held by the current thread
+     * but another call to {@code TableEnvironmentLock#unlock} is active on the
+     * call stack.
      */
     @Test
     public void testUnlock_Unlocked_DoesNotFirePendingEventNotifications_EventNotificationsInProgress()
@@ -179,8 +179,8 @@ public final class TableContextTest
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                tableContext_.getLock().lock();
-                tableContext_.getLock().unlock(); // should not fire notification2
+                tableEnvironment_.getLock().lock();
+                tableEnvironment_.getLock().unlock(); // should not fire notification2
                 notificationCallHistory.add( Integer.valueOf( 1 ) );
             }
         };
@@ -193,10 +193,10 @@ public final class TableContextTest
             }
         };
 
-        tableContext_.getLock().lock();
-        tableContext_.addEventNotification( notification1 );
-        tableContext_.addEventNotification( notification2 );
-        tableContext_.getLock().unlock();
+        tableEnvironment_.getLock().lock();
+        tableEnvironment_.addEventNotification( notification1 );
+        tableEnvironment_.addEventNotification( notification2 );
+        tableEnvironment_.getLock().unlock();
 
         assertEquals( 2, notificationCallHistory.size() );
         assertEquals( Integer.valueOf( 1 ), notificationCallHistory.get( 0 ) );

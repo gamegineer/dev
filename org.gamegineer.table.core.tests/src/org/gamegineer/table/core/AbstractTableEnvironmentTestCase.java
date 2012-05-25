@@ -1,5 +1,5 @@
 /*
- * AbstractTableContextTestCase.java
+ * AbstractTableEnvironmentTestCase.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -28,16 +28,16 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.core.ITableContext} interface.
+ * {@link org.gamegineer.table.core.ITableEnvironment} interface.
  */
-public abstract class AbstractTableContextTestCase
+public abstract class AbstractTableEnvironmentTestCase
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The table context under test in the fixture. */
-    private ITableContext tableContext_;
+    /** The table environment under test in the fixture. */
+    private ITableEnvironment tableEnvironment_;
 
 
     // ======================================================================
@@ -45,10 +45,10 @@ public abstract class AbstractTableContextTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractTableContextTestCase}
-     * class.
+     * Initializes a new instance of the
+     * {@code AbstractTableEnvironmentTestCase} class.
      */
-    protected AbstractTableContextTestCase()
+    protected AbstractTableEnvironmentTestCase()
     {
     }
 
@@ -58,15 +58,15 @@ public abstract class AbstractTableContextTestCase
     // ======================================================================
 
     /**
-     * Creates the table context to be tested.
+     * Creates the table environment to be tested.
      * 
-     * @return The table context to be tested; never {@code null}.
+     * @return The table environment to be tested; never {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract ITableContext createTableContext()
+    protected abstract ITableEnvironment createTableEnvironment()
         throws Exception;
 
     /**
@@ -79,46 +79,46 @@ public abstract class AbstractTableContextTestCase
     public void setUp()
         throws Exception
     {
-        tableContext_ = createTableContext();
-        assertNotNull( tableContext_ );
+        tableEnvironment_ = createTableEnvironment();
+        assertNotNull( tableEnvironment_ );
     }
 
     /**
      * Ensures the {@code createCard} method returns a card that is associated
-     * with the table context.
+     * with the table environment.
      */
     @Test
-    public void testCreateCard_ReturnValue_AssociatedWithTableContext()
+    public void testCreateCard_ReturnValue_AssociatedWithTableEnvironment()
     {
-        final ICard card = tableContext_.createCard();
+        final ICard card = tableEnvironment_.createCard();
 
         assertNotNull( card );
-        assertEquals( tableContext_, card.getTableContext() );
+        assertEquals( tableEnvironment_, card.getTableEnvironment() );
     }
 
     /**
      * Ensures the {@code createCardPile} method returns a card pile that is
-     * associated with the table context.
+     * associated with the table environment.
      */
     @Test
-    public void testCreateCardPile_ReturnValue_AssociatedWithTableContext()
+    public void testCreateCardPile_ReturnValue_AssociatedWithTableEnvironment()
     {
-        final ICardPile cardPile = tableContext_.createCardPile();
+        final ICardPile cardPile = tableEnvironment_.createCardPile();
 
         assertNotNull( cardPile );
-        assertEquals( tableContext_, cardPile.getTableContext() );
+        assertEquals( tableEnvironment_, cardPile.getTableEnvironment() );
     }
 
     /**
      * Ensures the {@code createTable} method returns a table that is associated
-     * with the table context.
+     * with the table environment.
      */
     @Test
-    public void testCreateTable_ReturnValue_AssociatedWithTableContext()
+    public void testCreateTable_ReturnValue_AssociatedWithTableEnvironment()
     {
-        final ITable table = tableContext_.createTable();
+        final ITable table = tableEnvironment_.createTable();
 
         assertNotNull( table );
-        assertEquals( tableContext_, table.getTableContext() );
+        assertEquals( tableEnvironment_, table.getTableEnvironment() );
     }
 }

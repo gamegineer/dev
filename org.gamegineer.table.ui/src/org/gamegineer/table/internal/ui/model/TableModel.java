@@ -42,7 +42,7 @@ import org.gamegineer.common.persistence.serializable.ObjectStreams;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableContentChangedEvent;
-import org.gamegineer.table.core.TableFactory;
+import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.ITableNetwork;
@@ -114,7 +114,7 @@ public final class TableModel
         listeners_ = new CopyOnWriteArrayList<ITableModelListener>();
         lock_ = new Object();
         originOffset_ = new Dimension( 0, 0 );
-        table_ = TableFactory.createTable();
+        table_ = TableEnvironmentFactory.createTable();
         tableNetwork_ = TableNetworkFactory.createTableNetwork();
 
         table_.addTableListener( new TableListener() );

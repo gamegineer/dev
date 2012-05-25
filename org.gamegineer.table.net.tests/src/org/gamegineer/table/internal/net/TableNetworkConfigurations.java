@@ -23,7 +23,7 @@ package org.gamegineer.table.internal.net;
 
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
-import org.gamegineer.table.core.TableFactory;
+import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.net.ITableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkConfigurationBuilder;
 import org.gamegineer.table.net.TableNetworkConstants;
@@ -66,7 +66,7 @@ public final class TableNetworkConfigurations
             return builder //
                 .setHostName( "hostName" ) //$NON-NLS-1$
                 .setLocalPlayerName( "playerName" ) //$NON-NLS-1$
-                .setLocalTable( TableFactory.createTable() ) //
+                .setLocalTable( TableEnvironmentFactory.createTable() ) //
                 .setPassword( password ) //
                 .setPort( TableNetworkConstants.DEFAULT_PORT ) //
                 .toTableNetworkConfiguration();

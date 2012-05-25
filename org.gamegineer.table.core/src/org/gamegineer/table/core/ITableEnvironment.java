@@ -1,5 +1,5 @@
 /*
- * ITableContext.java
+ * ITableEnvironment.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -23,16 +23,24 @@ package org.gamegineer.table.core;
 
 import java.util.concurrent.locks.Lock;
 
-// TODO: rename to ITableRuntime or something equivalent
-
 /**
- * The execution context for one or more virtual game tables.
+ * An environment for the execution of virtual game tables.
+ * 
+ * <p>
+ * A table environment is responsible for the creation and management of tables
+ * and their components. A table environment instance is isolated from all other
+ * table environment instances even if the table environments share the same
+ * implementation. Therefore, a table or component created by one table
+ * environment must not be used by a different table environment. Conversely, a
+ * component created by a table environment may be used by any table created by
+ * the same table environment.
+ * </p>
  * 
  * @noextend This interface is not intended to be extended by clients.
  * 
  * @noimplement This interface is not intended to be implemented by clients.
  */
-public interface ITableContext
+public interface ITableEnvironment
 {
     // ======================================================================
     // Methods
@@ -63,17 +71,17 @@ public interface ITableContext
     public ITable createTable();
 
     /**
-     * Gets the table context lock.
+     * Gets the table environment lock.
      * 
      * <p>
      * Any modification to a table or table component must be executed while the
-     * table context lock is held. All public methods of all public types in
-     * this package will acquire the table context lock as needed. Clients must
-     * manually acquire the table context lock when invoking multiple methods
-     * that should be treated as an atomic operation.
+     * table environment lock is held. All public methods of all public types in
+     * this package will acquire the table environment lock as needed. Clients
+     * must manually acquire the table environment lock when invoking multiple
+     * methods that should be treated as an atomic operation.
      * </p>
      * 
-     * @return The table context lock; never {@code null}.
+     * @return The table environment lock; never {@code null}.
      */
     /* @NonNull */
     public Lock getLock();

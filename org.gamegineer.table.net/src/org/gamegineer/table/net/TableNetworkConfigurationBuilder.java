@@ -25,7 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.core.TableFactory;
+import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.internal.net.TableNetworkConfiguration;
 
 /**
@@ -66,7 +66,7 @@ public final class TableNetworkConfigurationBuilder
     {
         hostName_ = "localhost"; //$NON-NLS-1$
         localPlayerName_ = "Player"; //$NON-NLS-1$
-        localTable_ = TableFactory.createTable();
+        localTable_ = TableEnvironmentFactory.createTable();
         password_ = new SecureString();
         port_ = TableNetworkConstants.DEFAULT_PORT;
     }

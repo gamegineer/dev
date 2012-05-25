@@ -187,12 +187,13 @@ public interface ITable
     public Lock getLock();
 
     /**
-     * Gets the table context.
+     * Gets the table environment associated with this table.
      * 
-     * @return The table context; never {@code null}.
+     * @return The table environment associated with this table; never
+     *         {@code null}.
      */
     /* @NonNull */
-    public ITableContext getTableContext();
+    public ITableEnvironment getTableEnvironment();
 
     /**
      * Removes the specified card pile from this table.

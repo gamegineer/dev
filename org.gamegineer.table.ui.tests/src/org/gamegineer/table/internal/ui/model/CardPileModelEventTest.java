@@ -24,7 +24,7 @@ package org.gamegineer.table.internal.ui.model;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import org.gamegineer.table.core.CardPiles;
-import org.gamegineer.table.core.TableFactory;
+import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -68,7 +68,7 @@ public final class CardPileModelEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new CardPileModelEvent( new CardPileModel( CardPiles.createUniqueCardPile( TableFactory.createTable() ) ) );
+        event_ = new CardPileModelEvent( new CardPileModel( CardPiles.createUniqueCardPile( TableEnvironmentFactory.createTable() ) ) );
     }
 
     /**

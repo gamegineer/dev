@@ -32,7 +32,7 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.core.TableFactory;
+import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.Loggers;
@@ -335,7 +335,7 @@ public final class ServerNode
         final ITable masterTable;
         try
         {
-            masterTable = TableFactory.createTable();
+            masterTable = TableEnvironmentFactory.createTable();
             masterTable.setMemento( table.createMemento() );
         }
         catch( final MementoException e )

@@ -61,7 +61,7 @@ public final class CardPileAsContainerTest
     protected CardPile createComponent(
         final ITable table )
     {
-        return new CardPile( ((Table)table).getTableContext() );
+        return new CardPile( ((Table)table).getTableEnvironment() );
     }
 
     /*

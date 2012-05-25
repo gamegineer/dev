@@ -1,5 +1,5 @@
 /*
- * TableContextAsTableContextTest.java
+ * TableEnvironmentFactory.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,30 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 19, 2012 at 9:37:22 PM.
+ * Created on Oct 6, 2009 at 11:05:05 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.core;
 
-import org.gamegineer.table.core.AbstractTableContextTestCase;
-import org.gamegineer.table.core.ITableContext;
+import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.internal.core.Table;
+import org.gamegineer.table.internal.core.TableEnvironment;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.internal.core.TableContext}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.ITableContext} interface.
+ * A factory for creating table environments.
  */
-public final class TableContextAsTableContextTest
-    extends AbstractTableContextTestCase
+@ThreadSafe
+public final class TableEnvironmentFactory
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableContextAsTableContextTest} class.
+     * Initializes a new instance of the {@code TableEnvironmentFactory} class.
      */
-    public TableContextAsTableContextTest()
+    private TableEnvironmentFactory()
     {
     }
 
@@ -48,12 +47,26 @@ public final class TableContextAsTableContextTest
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.core.AbstractTableContextTestCase#createTableContext()
+    // TODO: remove method
+    /**
+     * Creates a new table.
+     * 
+     * @return A new table; never {@code null}.
      */
-    @Override
-    protected ITableContext createTableContext()
+    /* @NonNull */
+    public static ITable createTable()
     {
-        return new TableContext();
+        return new Table();
+    }
+
+    /**
+     * Creates a new table environment.
+     * 
+     * @return A new table environment; never {@code null}.
+     */
+    /* @NonNull */
+    public static ITableEnvironment createTableEnvironment()
+    {
+        return new TableEnvironment();
     }
 }

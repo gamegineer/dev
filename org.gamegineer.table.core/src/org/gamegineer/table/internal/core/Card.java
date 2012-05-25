@@ -46,7 +46,7 @@ import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.core.ITableContext;
+import org.gamegineer.table.core.ITableEnvironment;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ICard}.
@@ -109,8 +109,8 @@ final class Card
     @GuardedBy( "getLock()" )
     private CardOrientation orientation_;
 
-    /** The table context associated with the card. */
-    private final TableContext tableContext_;
+    /** The table environment associated with the card. */
+    private final TableEnvironment tableEnvironment_;
 
 
     // ======================================================================
@@ -120,15 +120,15 @@ final class Card
     /**
      * Initializes a new instance of the {@code Card} class.
      * 
-     * @param tableContext
-     *        The table context associated with the card; must not be
+     * @param tableEnvironment
+     *        The table environment associated with the card; must not be
      *        {@code null}.
      */
     Card(
         /* @NonNull */
-        final TableContext tableContext )
+        final TableEnvironment tableEnvironment )
     {
-        assert tableContext != null;
+        assert tableEnvironment != null;
 
         backDesign_ = DEFAULT_SURFACE_DESIGN;
         cardPile_ = null;
@@ -136,7 +136,7 @@ final class Card
         listeners_ = new CopyOnWriteArrayList<IComponentListener>();
         location_ = new Point( 0, 0 );
         orientation_ = CardOrientation.FACE;
-        tableContext_ = tableContext;
+        tableEnvironment_ = tableEnvironment;
     }
 
 
@@ -246,8 +246,8 @@ final class Card
      * Creates a new instance of the {@code Card} class from the specified
      * memento.
      * 
-     * @param tableContext
-     *        The table context associated with the new card; must not be
+     * @param tableEnvironment
+     *        The table environment associated with the new card; must not be
      *        {@code null}.
      * @param memento
      *        The memento representing the initial card state; must not be
@@ -261,15 +261,15 @@ final class Card
     /* @NonNull */
     static Card fromMemento(
         /* @NonNull */
-        final TableContext tableContext,
+        final TableEnvironment tableEnvironment,
         /* @NonNull */
         final Object memento )
         throws MementoException
     {
-        assert tableContext != null;
+        assert tableEnvironment != null;
         assert memento != null;
 
-        final Card card = new Card( tableContext );
+        final Card card = new Card( tableEnvironment );
 
         final ComponentSurfaceDesign backDesign = MementoUtils.getAttribute( memento, BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, ComponentSurfaceDesign.class );
         final ComponentSurfaceDesign faceDesign = MementoUtils.getAttribute( memento, FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ComponentSurfaceDesign.class );
@@ -351,7 +351,7 @@ final class Card
     /* @NonNull */
     private ReentrantLock getLock()
     {
-        return tableContext_.getLock();
+        return tableEnvironment_.getLock();
     }
 
     /*
@@ -465,12 +465,12 @@ final class Card
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponent#getTableContext()
+     * @see org.gamegineer.table.core.IComponent#getTableEnvironment()
      */
     @Override
-    public ITableContext getTableContext()
+    public ITableEnvironment getTableEnvironment()
     {
-        return tableContext_;
+        return tableEnvironment_;
     }
 
     /*
@@ -525,7 +525,7 @@ final class Card
             getLock().unlock();
         }
 
-        tableContext_.addEventNotification( new Runnable()
+        tableEnvironment_.addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -549,7 +549,7 @@ final class Card
         getLock().lock();
         try
         {
-            final Card card = fromMemento( tableContext_, memento );
+            final Card card = fromMemento( tableEnvironment_, memento );
 
             setSurfaceDesign( CardOrientation.BACK, card.getSurfaceDesign( CardOrientation.BACK ) );
             setSurfaceDesign( CardOrientation.FACE, card.getSurfaceDesign( CardOrientation.FACE ) );
@@ -582,7 +582,7 @@ final class Card
             getLock().unlock();
         }
 
-        tableContext_.addEventNotification( new Runnable()
+        tableEnvironment_.addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -636,7 +636,7 @@ final class Card
             getLock().unlock();
         }
 
-        tableContext_.addEventNotification( new Runnable()
+        tableEnvironment_.addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )

@@ -31,7 +31,7 @@ import org.gamegineer.table.core.Cards;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.core.TableFactory;
+import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -123,7 +123,7 @@ public final class CardPileModelTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        final ITable table = TableFactory.createTable();
+        final ITable table = TableEnvironmentFactory.createTable();
         final ICardPile cardPile = CardPiles.createUniqueCardPile( table );
         table.addCardPile( cardPile );
         model_ = new CardPileModel( cardPile );

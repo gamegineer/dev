@@ -166,7 +166,7 @@ public abstract class AbstractTableTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testAddCardPile_CardPile_Illegal_CreatedByDifferentTable()
     {
-        final ITable otherTable = TableFactory.createTable();
+        final ITable otherTable = TableEnvironmentFactory.createTable();
         final ICardPile cardPile = CardPiles.createUniqueCardPile( otherTable );
 
         table_.addCardPile( cardPile );
@@ -480,12 +480,13 @@ public abstract class AbstractTableTestCase
     }
 
     /**
-     * Ensures the {@code getTableContext} method does not return {@code null}.
+     * Ensures the {@code getTableEnvironment} method does not return
+     * {@code null}.
      */
     @Test
-    public void testGetTableContext_ReturnValue_NonNull()
+    public void testGetTableEnvironment_ReturnValue_NonNull()
     {
-        assertNotNull( table_.getTableContext() );
+        assertNotNull( table_.getTableEnvironment() );
     }
 
     /**

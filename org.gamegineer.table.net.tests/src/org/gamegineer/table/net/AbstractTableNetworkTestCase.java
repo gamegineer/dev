@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.table.core.TableFactory;
+import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -128,7 +128,7 @@ public abstract class AbstractTableNetworkTestCase
         tableNetworkConfiguration_ = builder //
             .setHostName( "hostName" ) //$NON-NLS-1$
             .setLocalPlayerName( "playerName" ) //$NON-NLS-1$
-            .setLocalTable( TableFactory.createTable() ) //
+            .setLocalTable( TableEnvironmentFactory.createTable() ) //
             .setPort( TableNetworkConstants.DEFAULT_PORT ) //
             .toTableNetworkConfiguration();
     }

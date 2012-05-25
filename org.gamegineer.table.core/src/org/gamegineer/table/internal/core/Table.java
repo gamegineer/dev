@@ -66,8 +66,8 @@ public final class Table
     /** The collection of table listeners. */
     private final CopyOnWriteArrayList<ITableListener> listeners_;
 
-    /** The table context. */
-    private final TableContext tableContext_;
+    /** The table environment. */
+    private final TableEnvironment tableEnvironment_;
 
 
     // ======================================================================
@@ -77,18 +77,18 @@ public final class Table
     /**
      * Initializes a new instance of the {@code Table} class.
      * 
-     * @param tableContext
-     *        The table context; must not be {@code null}.
+     * @param tableEnvironment
+     *        The table environment; must not be {@code null}.
      */
     Table(
         /* @NonNull */
-        final TableContext tableContext )
+        final TableEnvironment tableEnvironment )
     {
-        assert tableContext != null;
+        assert tableEnvironment != null;
 
         cardPiles_ = new ArrayList<CardPile>();
         listeners_ = new CopyOnWriteArrayList<ITableListener>();
-        tableContext_ = tableContext;
+        tableEnvironment_ = tableEnvironment;
     }
 
     // TODO: remove ctor
@@ -97,7 +97,7 @@ public final class Table
      */
     public Table()
     {
-        this( new TableContext() );
+        this( new TableEnvironment() );
     }
 
 
@@ -121,7 +121,7 @@ public final class Table
         {
             final CardPile typedCardPile = (CardPile)cardPile;
             assertArgumentLegal( typedCardPile.getTable() == null, "cardPile", NonNlsMessages.Table_addCardPile_cardPile_owned ); //$NON-NLS-1$
-            assertArgumentLegal( typedCardPile.getTableContext() == tableContext_, "cardPile", NonNlsMessages.Table_addCardPile_cardPile_createdByDifferentTable ); //$NON-NLS-1$
+            assertArgumentLegal( typedCardPile.getTableEnvironment() == tableEnvironment_, "cardPile", NonNlsMessages.Table_addCardPile_cardPile_createdByDifferentTable ); //$NON-NLS-1$
 
             cardPiles_.add( typedCardPile );
             typedCardPile.setTable( this );
@@ -132,7 +132,7 @@ public final class Table
             getLock().unlock();
         }
 
-        tableContext_.addEventNotification( new Runnable()
+        tableEnvironment_.addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -160,7 +160,7 @@ public final class Table
     @Override
     public ICard createCard()
     {
-        return new Card( tableContext_ );
+        return new Card( tableEnvironment_ );
     }
 
     /*
@@ -169,7 +169,7 @@ public final class Table
     @Override
     public ICardPile createCardPile()
     {
-        return new CardPile( tableContext_ );
+        return new CardPile( tableEnvironment_ );
     }
 
     /*
@@ -264,8 +264,8 @@ public final class Table
      * Creates a new instance of the {@code Table} class from the specified
      * memento.
      * 
-     * @param tableContext
-     *        The table context associated with the new table; must not be
+     * @param tableEnvironment
+     *        The table environment associated with the new table; must not be
      *        {@code null}.
      * @param memento
      *        The memento representing the initial table state; must not be
@@ -279,21 +279,21 @@ public final class Table
     /* @NonNull */
     static Table fromMemento(
         /* @NonNull */
-        final TableContext tableContext,
+        final TableEnvironment tableEnvironment,
         /* @NonNull */
         final Object memento )
         throws MementoException
     {
-        assert tableContext != null;
+        assert tableEnvironment != null;
         assert memento != null;
 
-        final Table table = new Table( tableContext );
+        final Table table = new Table( tableEnvironment );
 
         @SuppressWarnings( "unchecked" )
         final List<Object> cardPileMementos = MementoUtils.getAttribute( memento, CARD_PILES_MEMENTO_ATTRIBUTE_NAME, List.class );
         for( final Object cardPileMemento : cardPileMementos )
         {
-            table.addCardPile( CardPile.fromMemento( table.tableContext_, cardPileMemento ) );
+            table.addCardPile( CardPile.fromMemento( table.tableEnvironment_, cardPileMemento ) );
         }
 
         return table;
@@ -412,16 +412,16 @@ public final class Table
     @Override
     public ReentrantLock getLock()
     {
-        return tableContext_.getLock();
+        return tableEnvironment_.getLock();
     }
 
     /*
-     * @see org.gamegineer.table.core.ITable#getTableContext()
+     * @see org.gamegineer.table.core.ITable#getTableEnvironment()
      */
     @Override
-    public TableContext getTableContext()
+    public TableEnvironment getTableEnvironment()
     {
-        return tableContext_;
+        return tableEnvironment_;
     }
 
     /*
@@ -450,7 +450,7 @@ public final class Table
             getLock().unlock();
         }
 
-        tableContext_.addEventNotification( new Runnable()
+        tableEnvironment_.addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -486,7 +486,7 @@ public final class Table
 
         if( !removedCardPiles.isEmpty() )
         {
-            tableContext_.addEventNotification( new Runnable()
+            tableEnvironment_.addEventNotification( new Runnable()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
@@ -531,7 +531,7 @@ public final class Table
         getLock().lock();
         try
         {
-            final Table table = fromMemento( tableContext_, memento );
+            final Table table = fromMemento( tableEnvironment_, memento );
 
             removeCardPiles();
             for( final ICardPile cardPile : table.removeCardPiles() )

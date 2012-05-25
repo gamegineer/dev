@@ -1,5 +1,5 @@
 /*
- * TableFactoryTest.java
+ * TableEnvironmentAsTableEnvironmentTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,28 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 6, 2009 at 11:07:48 PM.
+ * Created on May 19, 2012 at 9:37:22 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.internal.core;
 
-import static org.junit.Assert.assertNotNull;
-import org.junit.Test;
+import org.gamegineer.table.core.AbstractTableEnvironmentTestCase;
+import org.gamegineer.table.core.ITableEnvironment;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.core.TableFactory}
- * class.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.core.TableEnvironment} class to ensure
+ * it does not violate the contract of the
+ * {@link org.gamegineer.table.core.ITableEnvironment} interface.
  */
-public final class TableFactoryTest
+public final class TableEnvironmentAsTableEnvironmentTest
+    extends AbstractTableEnvironmentTestCase
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableFactoryTest} class.
+     * Initializes a new instance of the
+     * {@code TableEnvironmentAsTableEnvironmentTest} class.
      */
-    public TableFactoryTest()
+    public TableEnvironmentAsTableEnvironmentTest()
     {
     }
 
@@ -46,22 +50,12 @@ public final class TableFactoryTest
     // Methods
     // ======================================================================
 
-    /**
-     * Ensures the {@code createTable} method does not return {@code null}.
+    /*
+     * @see org.gamegineer.table.core.AbstractTableEnvironmentTestCase#createTableEnvironment()
      */
-    @Test
-    public void testCreateTable_ReturnValue_NonNull()
+    @Override
+    protected ITableEnvironment createTableEnvironment()
     {
-        assertNotNull( TableFactory.createTable() );
-    }
-
-    /**
-     * Ensures the {@code createTableContext} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testCreateTableContext_ReturnValue_NonNull()
-    {
-        assertNotNull( TableFactory.createTableContext() );
+        return new TableEnvironment();
     }
 }
