@@ -97,6 +97,15 @@ public abstract class AbstractTableEnvironmentTestCase
     }
 
     /**
+     * Ensures the {@code createCard} method does not return {@code null}.
+     */
+    @Test
+    public void testCreateCard_ReturnValue_NonNull()
+    {
+        assertNotNull( tableEnvironment_.createCard() );
+    }
+
+    /**
      * Ensures the {@code createCardPile} method returns a card pile that is
      * associated with the table environment.
      */
@@ -107,6 +116,15 @@ public abstract class AbstractTableEnvironmentTestCase
 
         assertNotNull( cardPile );
         assertEquals( tableEnvironment_, cardPile.getTableEnvironment() );
+    }
+
+    /**
+     * Ensures the {@code createCardPile} method does not return {@code null}.
+     */
+    @Test
+    public void testCreateCardPile_ReturnValue_NonNull()
+    {
+        assertNotNull( tableEnvironment_.createCardPile() );
     }
 
     /**

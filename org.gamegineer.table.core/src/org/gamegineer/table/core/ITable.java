@@ -71,26 +71,6 @@ public interface ITable
         ITableListener listener );
 
     /**
-     * Creates a new card.
-     * 
-     * @return A new card; never {@code null}. The new card is not contained in
-     *         any card pile.
-     */
-    // TODO: remove this method
-    /* @NonNull */
-    public ICard createCard();
-
-    /**
-     * Creates a new card pile.
-     * 
-     * @return A new card pile; never {@code null}. The new card pile is not
-     *         contained in the table.
-     */
-    // TODO: remove this method
-    /* @NonNull */
-    public ICardPile createCardPile();
-
-    /**
      * Gets the card pile in this table at the specified index.
      * 
      * @param index

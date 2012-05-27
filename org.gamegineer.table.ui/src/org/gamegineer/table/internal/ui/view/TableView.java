@@ -187,7 +187,7 @@ final class TableView
             assert componentSurfaceDesignRegistry != null;
             final ComponentSurfaceDesign backDesign = componentSurfaceDesignRegistry.getComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.cardSurfaces.back.red" ) ); //$NON-NLS-1$ );
             final ComponentSurfaceDesign faceDesign = componentSurfaceDesignRegistry.getComponentSurfaceDesign( faceDesignId );
-            final ICard card = model_.getTable().createCard();
+            final ICard card = model_.getTable().getTableEnvironment().createCard();
             card.setSurfaceDesign( CardOrientation.BACK, backDesign );
             card.setSurfaceDesign( CardOrientation.FACE, faceDesign );
             cardPile.addComponent( card );
@@ -202,7 +202,7 @@ final class TableView
         final IComponentSurfaceDesignRegistry componentSurfaceDesignRegistry = Activator.getDefault().getComponentSurfaceDesignRegistry();
         assert componentSurfaceDesignRegistry != null;
         final ComponentSurfaceDesign baseDesign = componentSurfaceDesignRegistry.getComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.cardPileBases.default" ) ); //$NON-NLS-1$
-        final ICardPile cardPile = model_.getTable().createCardPile();
+        final ICardPile cardPile = model_.getTable().getTableEnvironment().createCardPile();
         cardPile.setSurfaceDesign( CardPileOrientation.BASE, baseDesign );
 
         final Point location = getMouseLocation();
@@ -1702,7 +1702,7 @@ final class TableView
                 {
                     final Point draggedCardsOrigin = draggedComponents.get( 0 ).getLocation();
                     mobileCardPileOriginOffset_.setSize( draggedCardsOrigin.x - mouseLocation.x, draggedCardsOrigin.y - mouseLocation.y );
-                    mobileCardPile_ = model_.getTable().createCardPile();
+                    mobileCardPile_ = model_.getTable().getTableEnvironment().createCardPile();
                     mobileCardPile_.setSurfaceDesign( CardPileOrientation.BASE, sourceCardPile_.getSurfaceDesign( CardPileOrientation.BASE ) );
                     mobileCardPile_.setOrigin( draggedCardsOrigin );
                     mobileCardPile_.setLayout( sourceCardPile_.getLayout() );

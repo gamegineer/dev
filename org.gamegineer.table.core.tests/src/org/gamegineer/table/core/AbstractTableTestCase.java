@@ -307,24 +307,6 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
-     * Ensures the {@code createCard} method does not return {@code null}.
-     */
-    @Test
-    public void testCreateCard_ReturnValue_NonNull()
-    {
-        assertNotNull( table_.createCard() );
-    }
-
-    /**
-     * Ensures the {@code createCardPile} method does not return {@code null}.
-     */
-    @Test
-    public void testCreateCardPile_ReturnValue_NonNull()
-    {
-        assertNotNull( table_.createCardPile() );
-    }
-
-    /**
      * Ensures the {@code getCardPile(int)} method throws an exception when
      * passed an illegal index greater than the maximum legal value.
      */

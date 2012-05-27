@@ -35,7 +35,6 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
-import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
@@ -142,24 +141,6 @@ final class Table
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.Table_addTableListener_listener_registered ); //$NON-NLS-1$
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ITable#createCard()
-     */
-    @Override
-    public ICard createCard()
-    {
-        return new Card( tableEnvironment_ );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ITable#createCardPile()
-     */
-    @Override
-    public ICardPile createCardPile()
-    {
-        return new CardPile( tableEnvironment_ );
     }
 
     /*

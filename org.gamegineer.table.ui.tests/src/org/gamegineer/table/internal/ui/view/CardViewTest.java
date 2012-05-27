@@ -96,7 +96,7 @@ public final class CardViewTest
         backDesignUI_ = ComponentSurfaceDesignUIs.createComponentSurfaceDesignUI( backDesign );
         final ComponentSurfaceDesign faceDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
         faceDesignUI_ = ComponentSurfaceDesignUIs.createComponentSurfaceDesignUI( faceDesign );
-        final ICard card = table.createCard();
+        final ICard card = table.getTableEnvironment().createCard();
         card.setSurfaceDesign( CardOrientation.BACK, backDesign );
         card.setSurfaceDesign( CardOrientation.FACE, faceDesign );
         cardModel_ = new CardModel( card );

@@ -85,7 +85,7 @@ public final class CardPileViewTest
         final ITable table = TableEnvironmentFactory.createTableEnvironment().createTable();
         final ComponentSurfaceDesign baseDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
         baseDesignUI_ = ComponentSurfaceDesignUIs.createComponentSurfaceDesignUI( baseDesign );
-        final ICardPile cardPile = table.createCardPile();
+        final ICardPile cardPile = table.getTableEnvironment().createCardPile();
         cardPile.setSurfaceDesign( CardPileOrientation.BASE, baseDesign );
         cardPileModel_ = new CardPileModel( cardPile );
         cardPileView_ = new CardPileView( cardPileModel_, baseDesignUI_ );

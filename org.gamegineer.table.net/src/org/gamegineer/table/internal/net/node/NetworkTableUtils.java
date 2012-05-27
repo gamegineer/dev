@@ -124,7 +124,7 @@ public final class NetworkTableUtils
             {
                 for( final Object cardMemento : cardPileIncrement.getAddedCardMementos() )
                 {
-                    final ICard card = table.createCard();
+                    final ICard card = table.getTableEnvironment().createCard();
 
                     try
                     {
@@ -246,7 +246,7 @@ public final class NetworkTableUtils
             {
                 for( final Object cardPileMemento : tableIncrement.getAddedCardPileMementos() )
                 {
-                    final ICardPile cardPile = table.createCardPile();
+                    final ICardPile cardPile = table.getTableEnvironment().createCardPile();
 
                     try
                     {

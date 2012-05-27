@@ -316,7 +316,7 @@ public final class MainModelTest
         model_.addMainModelListener( listener );
 
         final ITable table = model_.getTableModel().getTable();
-        table.addCardPile( table.createCardPile() );
+        table.addCardPile( table.getTableEnvironment().createCardPile() );
 
         niceMocksControl_.verify();
     }

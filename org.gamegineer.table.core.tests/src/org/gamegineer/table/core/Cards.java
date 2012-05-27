@@ -61,7 +61,7 @@ public final class Cards
         /* @NonNull */
         final ITable table )
     {
-        final ICard card = table.createCard();
+        final ICard card = table.getTableEnvironment().createCard();
         card.setSurfaceDesign( CardOrientation.BACK, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         card.setSurfaceDesign( CardOrientation.FACE, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         return card;

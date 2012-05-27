@@ -63,7 +63,7 @@ public final class CardPiles
         /* @NonNull */
         final ITable table )
     {
-        final ICardPile cardPile = table.createCardPile();
+        final ICardPile cardPile = table.getTableEnvironment().createCardPile();
         cardPile.setSurfaceDesign( CardPileOrientation.BASE, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         return cardPile;
     }
