@@ -47,23 +47,23 @@ public final class CardPiles
 
     /**
      * Creates a new card pile with unique surface designs for the specified
-     * table.
+     * table environment.
      * 
-     * @param table
-     *        The table associated with the new card pile; must not be
-     *        {@code null}.
+     * @param tableEnvironment
+     *        The table environment associated with the new card pile; must not
+     *        be {@code null}.
      * 
      * @return A new card pile; never {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code table} is {@code null}.
+     *         If {@code tableEnvironment} is {@code null}.
      */
     /* @NonNull */
     public static ICardPile createUniqueCardPile(
         /* @NonNull */
-        final ITable table )
+        final ITableEnvironment tableEnvironment )
     {
-        final ICardPile cardPile = table.getTableEnvironment().createCardPile();
+        final ICardPile cardPile = tableEnvironment.createCardPile();
         cardPile.setSurfaceDesign( CardPileOrientation.BASE, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         return cardPile;
     }

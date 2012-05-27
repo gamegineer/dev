@@ -79,7 +79,7 @@ public final class CardPileAsContainerTest
     protected IComponent createUniqueComponent(
         final TableEnvironment tableEnvironment )
     {
-        return Cards.createUniqueCard( tableEnvironment.createTable() );
+        return Cards.createUniqueCard( tableEnvironment );
     }
 
     /*
@@ -89,7 +89,7 @@ public final class CardPileAsContainerTest
     protected IContainer createUniqueContainer(
         final TableEnvironment tableEnvironment )
     {
-        return CardPiles.createUniqueCardPile( tableEnvironment.createTable() );
+        return CardPiles.createUniqueCardPile( tableEnvironment );
     }
 
     /*

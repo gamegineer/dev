@@ -98,7 +98,7 @@ public final class TableModelTest
     /* @NonNull */
     private ICardPile createUniqueCardPile()
     {
-        return CardPiles.createUniqueCardPile( model_.getTable() );
+        return CardPiles.createUniqueCardPile( model_.getTable().getTableEnvironment() );
     }
 
     /**

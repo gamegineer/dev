@@ -91,7 +91,7 @@ public final class CardModelTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        model_ = new CardModel( Cards.createUniqueCard( TableEnvironmentFactory.createTableEnvironment().createTable() ) );
+        model_ = new CardModel( Cards.createUniqueCard( TableEnvironmentFactory.createTableEnvironment() ) );
     }
 
     /**

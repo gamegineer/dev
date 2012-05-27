@@ -28,7 +28,7 @@ import org.gamegineer.table.core.CardPiles;
 import org.gamegineer.table.core.Cards;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
-import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.ITableEnvironment;
 import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.junit.Test;
 
@@ -113,14 +113,14 @@ public final class AccordianContainerLayoutTest
         final int originX = 20, originY = 30;
         final int offsetX = 2, offsetY = -3;
         final AccordianContainerLayout layout = new AccordianContainerLayout( offsetX, offsetY );
-        final ITable table = TableEnvironmentFactory.createTableEnvironment().createTable();
-        final IContainer container = CardPiles.createUniqueCardPile( table );
+        final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment();
+        final IContainer container = CardPiles.createUniqueCardPile( tableEnvironment );
         container.setOrigin( new Point( originX, originY ) );
-        final IComponent component1 = Cards.createUniqueCard( table );
+        final IComponent component1 = Cards.createUniqueCard( tableEnvironment );
         container.addComponent( component1 );
-        final IComponent component2 = Cards.createUniqueCard( table );
+        final IComponent component2 = Cards.createUniqueCard( tableEnvironment );
         container.addComponent( component2 );
-        final IComponent component3 = Cards.createUniqueCard( table );
+        final IComponent component3 = Cards.createUniqueCard( tableEnvironment );
         container.addComponent( component3 );
 
         layout.layout( container );

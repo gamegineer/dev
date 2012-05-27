@@ -46,22 +46,24 @@ public final class Cards
     // ======================================================================
 
     /**
-     * Creates a new card with unique surface designs for the specified table.
+     * Creates a new card with unique surface designs for the specified table
+     * environment.
      * 
-     * @param table
-     *        The table associated with the new card; must not be {@code null}.
+     * @param tableEnvironment
+     *        The table environment associated with the new card; must not be
+     *        {@code null}.
      * 
      * @return A new card; never {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code table} is {@code null}.
+     *         If {@code tableEnvironment} is {@code null}.
      */
     /* @NonNull */
     public static ICard createUniqueCard(
         /* @NonNull */
-        final ITable table )
+        final ITableEnvironment tableEnvironment )
     {
-        final ICard card = table.getTableEnvironment().createCard();
+        final ICard card = tableEnvironment.createCard();
         card.setSurfaceDesign( CardOrientation.BACK, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         card.setSurfaceDesign( CardOrientation.FACE, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         return card;

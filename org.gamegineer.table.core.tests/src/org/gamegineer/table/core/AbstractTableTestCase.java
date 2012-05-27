@@ -135,7 +135,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     /* @NonNull */
     private ICardPile createUniqueCardPile()
     {
-        return CardPiles.createUniqueCardPile( table_ );
+        return CardPiles.createUniqueCardPile( tableEnvironment_ );
     }
 
     /*
@@ -146,8 +146,8 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
         final IMementoOriginator mementoOriginator )
     {
         final ITable table = (ITable)mementoOriginator;
-        final ICardPile cardPile = CardPiles.createUniqueCardPile( table );
-        cardPile.addComponent( Cards.createUniqueCard( table ) );
+        final ICardPile cardPile = CardPiles.createUniqueCardPile( table.getTableEnvironment() );
+        cardPile.addComponent( Cards.createUniqueCard( table.getTableEnvironment() ) );
         table.addCardPile( cardPile );
     }
 
@@ -190,7 +190,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     public void testAddCardPile_CardPile_Illegal_CreatedByDifferentTableEnvironment()
     {
         final ITableEnvironment otherTableEnvironment = createTableEnvironment();
-        final ICardPile cardPile = CardPiles.createUniqueCardPile( otherTableEnvironment.createTable() );
+        final ICardPile cardPile = CardPiles.createUniqueCardPile( otherTableEnvironment );
 
         table_.addCardPile( cardPile );
     }

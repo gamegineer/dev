@@ -31,6 +31,7 @@ import org.gamegineer.table.core.Cards;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.ITableEnvironment;
 import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -123,8 +124,9 @@ public final class CardPileModelTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        final ITable table = TableEnvironmentFactory.createTableEnvironment().createTable();
-        final ICardPile cardPile = CardPiles.createUniqueCardPile( table );
+        final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment();
+        final ITable table = tableEnvironment.createTable();
+        final ICardPile cardPile = CardPiles.createUniqueCardPile( tableEnvironment );
         table.addCardPile( cardPile );
         model_ = new CardPileModel( cardPile );
     }
@@ -178,7 +180,7 @@ public final class CardPileModelTest
     @Test
     public void testCardModel_CardChanged_FiresCardPileChangedEvent()
     {
-        final ICard card = Cards.createUniqueCard( model_.getCardPile().getTable() );
+        final ICard card = Cards.createUniqueCard( model_.getCardPile().getTableEnvironment() );
         model_.getCardPile().addComponent( card );
         final ICardPileModelListener listener = mocksControl_.createMock( ICardPileModelListener.class );
         listener.cardPileChanged( EasyMock.notNull( CardPileModelEvent.class ) );

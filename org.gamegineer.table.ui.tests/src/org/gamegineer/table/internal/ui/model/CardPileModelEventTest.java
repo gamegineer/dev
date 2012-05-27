@@ -68,7 +68,7 @@ public final class CardPileModelEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new CardPileModelEvent( new CardPileModel( CardPiles.createUniqueCardPile( TableEnvironmentFactory.createTableEnvironment().createTable() ) ) );
+        event_ = new CardPileModelEvent( new CardPileModel( CardPiles.createUniqueCardPile( TableEnvironmentFactory.createTableEnvironment() ) ) );
     }
 
     /**

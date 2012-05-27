@@ -68,7 +68,7 @@ public final class CardModelEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new CardModelEvent( new CardModel( Cards.createUniqueCard( TableEnvironmentFactory.createTableEnvironment().createTable() ) ) );
+        event_ = new CardModelEvent( new CardModel( Cards.createUniqueCard( TableEnvironmentFactory.createTableEnvironment() ) ) );
     }
 
     /**

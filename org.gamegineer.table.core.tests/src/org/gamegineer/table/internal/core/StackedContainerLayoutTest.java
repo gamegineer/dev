@@ -29,7 +29,7 @@ import org.gamegineer.table.core.CardPiles;
 import org.gamegineer.table.core.Cards;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
-import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.ITableEnvironment;
 import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.junit.Test;
 
@@ -95,13 +95,13 @@ public final class StackedContainerLayoutTest
     public void testGetComponentIndex_Location_ComponentPresent_NotTopComponent()
     {
         final StackedContainerLayout layout = new StackedContainerLayout( 1, 10, 10 );
-        final ITable table = TableEnvironmentFactory.createTableEnvironment().createTable();
-        final IContainer container = CardPiles.createUniqueCardPile( table );
+        final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment();
+        final IContainer container = CardPiles.createUniqueCardPile( tableEnvironment );
         container.setOrigin( new Point( 0, 0 ) );
         container.setLayout( layout );
-        final IComponent component1 = Cards.createUniqueCard( table );
+        final IComponent component1 = Cards.createUniqueCard( tableEnvironment );
         container.addComponent( component1 );
-        final IComponent component2 = Cards.createUniqueCard( table );
+        final IComponent component2 = Cards.createUniqueCard( tableEnvironment );
         container.addComponent( component2 );
 
         final Point location = new Point( 0, 0 );
@@ -120,13 +120,13 @@ public final class StackedContainerLayoutTest
     public void testGetComponentIndex_Location_ComponentPresent_TopComponent()
     {
         final StackedContainerLayout layout = new StackedContainerLayout( 1, 10, 10 );
-        final ITable table = TableEnvironmentFactory.createTableEnvironment().createTable();
-        final IContainer container = CardPiles.createUniqueCardPile( table );
+        final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment();
+        final IContainer container = CardPiles.createUniqueCardPile( tableEnvironment );
         container.setOrigin( new Point( 0, 0 ) );
         container.setLayout( layout );
-        final IComponent component1 = Cards.createUniqueCard( table );
+        final IComponent component1 = Cards.createUniqueCard( tableEnvironment );
         container.addComponent( component1 );
-        final IComponent component2 = Cards.createUniqueCard( table );
+        final IComponent component2 = Cards.createUniqueCard( tableEnvironment );
         container.addComponent( component2 );
 
         final Point location = new Point( 10, 10 );
@@ -162,18 +162,18 @@ public final class StackedContainerLayoutTest
         final int originX = 20, originY = 30;
         final int stackLevelOffsetX = 2, stackLevelOffsetY = 3;
         final StackedContainerLayout layout = new StackedContainerLayout( 2, stackLevelOffsetX, stackLevelOffsetY );
-        final ITable table = TableEnvironmentFactory.createTableEnvironment().createTable();
-        final IContainer container = CardPiles.createUniqueCardPile( table );
+        final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment();
+        final IContainer container = CardPiles.createUniqueCardPile( tableEnvironment );
         container.setOrigin( new Point( originX, originY ) );
-        final IComponent component1 = Cards.createUniqueCard( table );
+        final IComponent component1 = Cards.createUniqueCard( tableEnvironment );
         container.addComponent( component1 );
-        final IComponent component2 = Cards.createUniqueCard( table );
+        final IComponent component2 = Cards.createUniqueCard( tableEnvironment );
         container.addComponent( component2 );
-        final IComponent component3 = Cards.createUniqueCard( table );
+        final IComponent component3 = Cards.createUniqueCard( tableEnvironment );
         container.addComponent( component3 );
-        final IComponent component4 = Cards.createUniqueCard( table );
+        final IComponent component4 = Cards.createUniqueCard( tableEnvironment );
         container.addComponent( component4 );
-        final IComponent component5 = Cards.createUniqueCard( table );
+        final IComponent component5 = Cards.createUniqueCard( tableEnvironment );
         container.addComponent( component5 );
 
         layout.layout( container );
