@@ -146,14 +146,14 @@ final class LocalNetworkTable
     }
 
     /**
-     * Gets the table lock.
+     * Gets the table environment lock.
      * 
-     * @return The table lock; never {@code null}.
+     * @return The table environment lock; never {@code null}.
      */
     /* @NonNull */
-    private Lock getTableLock()
+    private Lock getTableEnvironmentLock()
     {
-        return table_.getLock();
+        return table_.getTableEnvironment().getLock();
     }
 
     /*
@@ -215,7 +215,7 @@ final class LocalNetworkTable
      */
     private void initializeListeners()
     {
-        getTableLock().lock();
+        getTableEnvironmentLock().lock();
         try
         {
             table_.addTableListener( tableListener_ );
@@ -233,7 +233,7 @@ final class LocalNetworkTable
         }
         finally
         {
-            getTableLock().unlock();
+            getTableEnvironmentLock().unlock();
         }
     }
 
@@ -289,7 +289,7 @@ final class LocalNetworkTable
      */
     private void uninitializeListeners()
     {
-        getTableLock().lock();
+        getTableEnvironmentLock().lock();
         try
         {
             table_.removeTableListener( tableListener_ );
@@ -307,7 +307,7 @@ final class LocalNetworkTable
         }
         finally
         {
-            getTableLock().unlock();
+            getTableEnvironmentLock().unlock();
         }
     }
 
@@ -380,7 +380,7 @@ final class LocalNetworkTable
 
             int cardPileIndex = -1, cardIndex = -1;
             final CardIncrement cardIncrement = new CardIncrement();
-            getTableLock().lock();
+            getTableEnvironmentLock().lock();
             try
             {
                 final ICard card = (ICard)event.getComponent(); // FIXME: remove cast
@@ -398,7 +398,7 @@ final class LocalNetworkTable
             }
             finally
             {
-                getTableLock().unlock();
+                getTableEnvironmentLock().unlock();
             }
 
             if( (cardPileIndex != -1) && (cardIndex != -1) )
@@ -425,7 +425,7 @@ final class LocalNetworkTable
 
             int cardPileIndex = -1, cardIndex = -1;
             final CardIncrement cardIncrement = new CardIncrement();
-            getTableLock().lock();
+            getTableEnvironmentLock().lock();
             try
             {
                 final ICard card = (ICard)event.getComponent(); // FIXME: remove cast
@@ -444,7 +444,7 @@ final class LocalNetworkTable
             }
             finally
             {
-                getTableLock().unlock();
+                getTableEnvironmentLock().unlock();
             }
 
             if( (cardPileIndex != -1) && (cardIndex != -1) )
@@ -496,7 +496,7 @@ final class LocalNetworkTable
 
             int cardPileIndex = -1;
             final CardPileIncrement cardPileIncrement = new CardPileIncrement();
-            getTableLock().lock();
+            getTableEnvironmentLock().lock();
             try
             {
                 final ICardPile cardPile = (ICardPile)event.getComponent(); // FIXME: remove cast
@@ -509,7 +509,7 @@ final class LocalNetworkTable
             }
             finally
             {
-                getTableLock().unlock();
+                getTableEnvironmentLock().unlock();
             }
 
             if( cardPileIndex != -1 )
@@ -548,7 +548,7 @@ final class LocalNetworkTable
 
             int cardPileIndex = -1;
             final CardPileIncrement cardPileIncrement = new CardPileIncrement();
-            getTableLock().lock();
+            getTableEnvironmentLock().lock();
             try
             {
                 final ICardPile cardPile = (ICardPile)event.getComponent(); // FIXME: remove cast
@@ -561,7 +561,7 @@ final class LocalNetworkTable
             }
             finally
             {
-                getTableLock().unlock();
+                getTableEnvironmentLock().unlock();
             }
 
             if( cardPileIndex != -1 )
@@ -616,7 +616,7 @@ final class LocalNetworkTable
 
             int cardPileIndex = -1;
             final CardPileIncrement cardPileIncrement = new CardPileIncrement();
-            getTableLock().lock();
+            getTableEnvironmentLock().lock();
             try
             {
                 final ICardPile cardPile = (ICardPile)event.getContainer(); // FIXME: remove cast
@@ -629,7 +629,7 @@ final class LocalNetworkTable
             }
             finally
             {
-                getTableLock().unlock();
+                getTableEnvironmentLock().unlock();
             }
 
             if( cardPileIndex != -1 )
@@ -661,7 +661,7 @@ final class LocalNetworkTable
 
             int cardPileIndex = -1;
             final CardPileIncrement cardPileIncrement = new CardPileIncrement();
-            getTableLock().lock();
+            getTableEnvironmentLock().lock();
             try
             {
                 final ICardPile cardPile = (ICardPile)event.getContainer(); // FIXME: remove cast
@@ -674,7 +674,7 @@ final class LocalNetworkTable
             }
             finally
             {
-                getTableLock().unlock();
+                getTableEnvironmentLock().unlock();
             }
 
             if( cardPileIndex != -1 )
@@ -701,7 +701,7 @@ final class LocalNetworkTable
 
             int cardPileIndex = -1;
             final CardPileIncrement cardPileIncrement = new CardPileIncrement();
-            getTableLock().lock();
+            getTableEnvironmentLock().lock();
             try
             {
                 final ICardPile cardPile = (ICardPile)event.getContainer(); // FIXME: remove cast
@@ -714,7 +714,7 @@ final class LocalNetworkTable
             }
             finally
             {
-                getTableLock().unlock();
+                getTableEnvironmentLock().unlock();
             }
 
             if( cardPileIndex != -1 )
@@ -950,7 +950,7 @@ final class LocalNetworkTable
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
             assert nodeLayer_.isNodeLayerThread();
 
-            getTableLock().lock();
+            getTableEnvironmentLock().lock();
             try
             {
                 final ICardPile cardPile = event.getCardPile();
@@ -964,7 +964,7 @@ final class LocalNetworkTable
             }
             finally
             {
-                getTableLock().unlock();
+                getTableEnvironmentLock().unlock();
             }
 
             if( ignoreEvents_ )
@@ -991,7 +991,7 @@ final class LocalNetworkTable
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
             assert nodeLayer_.isNodeLayerThread();
 
-            getTableLock().lock();
+            getTableEnvironmentLock().lock();
             try
             {
                 final ICardPile cardPile = event.getCardPile();
@@ -1005,7 +1005,7 @@ final class LocalNetworkTable
             }
             finally
             {
-                getTableLock().unlock();
+                getTableEnvironmentLock().unlock();
             }
 
             if( ignoreEvents_ )

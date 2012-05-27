@@ -344,9 +344,9 @@ final class Card
     }
 
     /**
-     * Gets the table lock.
+     * Gets the table environment lock.
      * 
-     * @return The table lock; never {@code null}.
+     * @return The table environment lock; never {@code null}.
      */
     /* @NonNull */
     private ReentrantLock getLock()

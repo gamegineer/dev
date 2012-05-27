@@ -121,4 +121,13 @@ public abstract class AbstractTableEnvironmentTestCase
         assertNotNull( table );
         assertEquals( tableEnvironment_, table.getTableEnvironment() );
     }
+
+    /**
+     * Ensures the {@code getLock} method does not return {@code null}.
+     */
+    @Test
+    public void testGetLock_ReturnValue_NonNull()
+    {
+        assertNotNull( tableEnvironment_.getLock() );
+    }
 }

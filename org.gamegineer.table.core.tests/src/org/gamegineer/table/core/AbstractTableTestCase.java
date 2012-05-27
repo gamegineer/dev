@@ -494,15 +494,6 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
-     * Ensures the {@code getLock} method does not return {@code null}.
-     */
-    @Test
-    public void testGetLock_ReturnValue_NonNull()
-    {
-        assertNotNull( table_.getLock() );
-    }
-
-    /**
      * Ensures the {@code getTableEnvironment} method does not return
      * {@code null}.
      */

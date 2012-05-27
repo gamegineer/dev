@@ -23,7 +23,6 @@ package org.gamegineer.table.core;
 
 import java.awt.Point;
 import java.util.List;
-import java.util.concurrent.locks.Lock;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
 
 /**
@@ -169,22 +168,6 @@ public interface ITable
      */
     /* @NonNull */
     public List<ICardPile> getCardPiles();
-
-    /**
-     * Gets the table lock.
-     * 
-     * <p>
-     * Any table modification must be executed while the table lock is held. All
-     * public methods of all public types in this package will acquire the table
-     * lock as needed. Clients must manually acquire the table lock when
-     * invoking multiple methods that should be treated as an atomic operation.
-     * </p>
-     * 
-     * @return The table lock; never {@code null}.
-     */
-    // TODO: remove this method
-    /* @NonNull */
-    public Lock getLock();
 
     /**
      * Gets the table environment associated with this table.

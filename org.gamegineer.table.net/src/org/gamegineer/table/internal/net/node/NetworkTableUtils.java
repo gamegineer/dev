@@ -84,7 +84,7 @@ public final class NetworkTableUtils
         assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
         assertArgumentNotNull( cardPileIncrement, "cardPileIncrement" ); //$NON-NLS-1$
 
-        table.getLock().lock();
+        table.getTableEnvironment().getLock().lock();
         try
         {
             final ICardPile cardPile = table.getCardPile( cardPileIndex );
@@ -141,7 +141,7 @@ public final class NetworkTableUtils
         }
         finally
         {
-            table.getLock().unlock();
+            table.getTableEnvironment().getLock().unlock();
         }
     }
 
@@ -177,7 +177,7 @@ public final class NetworkTableUtils
         assertArgumentLegal( cardIndex >= 0, "cardIndex" ); //$NON-NLS-1$
         assertArgumentNotNull( cardIncrement, "cardIncrement" ); //$NON-NLS-1$
 
-        table.getLock().lock();
+        table.getTableEnvironment().getLock().lock();
         try
         {
             final ICardPile cardPile = table.getCardPile( cardPileIndex );
@@ -205,7 +205,7 @@ public final class NetworkTableUtils
         }
         finally
         {
-            table.getLock().unlock();
+            table.getTableEnvironment().getLock().unlock();
         }
     }
 
@@ -231,7 +231,7 @@ public final class NetworkTableUtils
         assertArgumentNotNull( table, "table" ); //$NON-NLS-1$
         assertArgumentNotNull( tableIncrement, "tableIncrement" ); //$NON-NLS-1$
 
-        table.getLock().lock();
+        table.getTableEnvironment().getLock().lock();
         try
         {
             if( tableIncrement.getRemovedCardPileIndexes() != null )
@@ -263,7 +263,7 @@ public final class NetworkTableUtils
         }
         finally
         {
-            table.getLock().unlock();
+            table.getTableEnvironment().getLock().unlock();
         }
     }
 

@@ -396,11 +396,13 @@ final class Table
         }
     }
 
-    /*
-     * @see org.gamegineer.table.core.ITable#getLock()
+    /**
+     * Gets the table environment lock.
+     * 
+     * @return The table environment lock; never {@code null}.
      */
-    @Override
-    public ReentrantLock getLock()
+    /* @NonNull */
+    private ReentrantLock getLock()
     {
         return tableEnvironment_.getLock();
     }
