@@ -33,7 +33,6 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ContainerEvent;
-import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.internal.ui.Loggers;
@@ -48,15 +47,15 @@ public final class CardPileModel
     // Fields
     // ======================================================================
 
-    /** The card model listener for this model. */
-    private final ICardModelListener cardModelListener_;
-
-    /** The collection of card models. */
-    @GuardedBy( "lock_" )
-    private final Map<ICard, CardModel> cardModels_;
-
     /** The card pile associated with this model. */
     private final ICardPile cardPile_;
+
+    /** The component model listener for this model. */
+    private final IComponentModelListener componentModelListener_;
+
+    /** The collection of component models. */
+    @GuardedBy( "lock_" )
+    private final Map<IComponent, ComponentModel> componentModels_;
 
     /** Indicates the associated card pile has the focus. */
     @GuardedBy( "lock_" )
@@ -89,9 +88,9 @@ public final class CardPileModel
     {
         assertArgumentNotNull( cardPile, "cardPile" ); //$NON-NLS-1$
 
-        cardModelListener_ = new CardModelListener();
-        cardModels_ = new IdentityHashMap<ICard, CardModel>();
         cardPile_ = cardPile;
+        componentModelListener_ = new ComponentModelListener();
+        componentModels_ = new IdentityHashMap<IComponent, ComponentModel>();
         isFocused_ = false;
         listeners_ = new CopyOnWriteArrayList<ICardPileModelListener>();
         lock_ = new Object();
@@ -101,7 +100,7 @@ public final class CardPileModel
 
         for( final IComponent component : cardPile.getComponents() )
         {
-            createCardModel( (ICard)component ); // FIXME: remove cast
+            createComponentModel( component );
         }
     }
 
@@ -131,24 +130,24 @@ public final class CardPileModel
     }
 
     /**
-     * Creates a card model for the specified card.
+     * Creates a component model for the specified component.
      * 
-     * @param card
-     *        The card; must not be {@code null}.
+     * @param component
+     *        The component; must not be {@code null}.
      * 
-     * @return The card model; never {@code null}.
+     * @return The component model; never {@code null}.
      */
     /* @NonNull */
-    private CardModel createCardModel(
+    private ComponentModel createComponentModel(
         /* @NonNull */
-        final ICard card )
+        final IComponent component )
     {
-        assert card != null;
+        assert component != null;
 
-        final CardModel cardModel = new CardModel( card );
-        cardModels_.put( card, cardModel );
-        cardModel.addCardModelListener( cardModelListener_ );
-        return cardModel;
+        final ComponentModel componentModel = new ComponentModel( component );
+        componentModels_.put( component, componentModel );
+        componentModel.addComponentModelListener( componentModelListener_ );
+        return componentModel;
     }
 
     /**
@@ -190,38 +189,6 @@ public final class CardPileModel
     }
 
     /**
-     * Gets the card model associated with the specified card.
-     * 
-     * @param card
-     *        The card; must not be {@code null}.
-     * 
-     * @return The card model associated with the specified card; never
-     *         {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code card} does not exist in the card pile associated with
-     *         this model.
-     * @throws java.lang.NullPointerException
-     *         If {@code card} is {@code null}.
-     */
-    /* @NonNull */
-    public CardModel getCardModel(
-        /* @NonNull */
-        final ICard card )
-    {
-        assertArgumentNotNull( card, "card" ); //$NON-NLS-1$
-
-        final CardModel cardModel;
-        synchronized( lock_ )
-        {
-            cardModel = cardModels_.get( card );
-        }
-
-        assertArgumentLegal( cardModel != null, "card", NonNlsMessages.CardPileModel_getCardModel_card_absent ); //$NON-NLS-1$
-        return cardModel;
-    }
-
-    /**
      * Gets the card pile associated with this model.
      * 
      * @return The card pile associated with this model; never {@code null}.
@@ -230,6 +197,38 @@ public final class CardPileModel
     public ICardPile getCardPile()
     {
         return cardPile_;
+    }
+
+    /**
+     * Gets the component model associated with the specified component.
+     * 
+     * @param component
+     *        The component; must not be {@code null}.
+     * 
+     * @return The component model associated with the specified component;
+     *         never {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code component} does not exist in the card pile associated
+     *         with this model.
+     * @throws java.lang.NullPointerException
+     *         If {@code component} is {@code null}.
+     */
+    /* @NonNull */
+    public ComponentModel getComponentModel(
+        /* @NonNull */
+        final IComponent component )
+    {
+        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
+
+        final ComponentModel componentModel;
+        synchronized( lock_ )
+        {
+            componentModel = componentModels_.get( component );
+        }
+
+        assertArgumentLegal( componentModel != null, "component", NonNlsMessages.CardPileModel_getComponentModel_component_absent ); //$NON-NLS-1$
+        return componentModel;
     }
 
     /**
@@ -287,43 +286,6 @@ public final class CardPileModel
     // ======================================================================
     // Nested Types
     // ======================================================================
-
-    /**
-     * A card model listener for the card pile model.
-     */
-    @Immutable
-    private final class CardModelListener
-        extends org.gamegineer.table.internal.ui.model.CardModelListener
-    {
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code CardModelListener} class.
-         */
-        CardModelListener()
-        {
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.internal.ui.model.ICardModelListener#cardChanged(org.gamegineer.table.internal.ui.model.CardModelEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void cardChanged(
-            final CardModelEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            fireCardPileChanged();
-        }
-    }
 
     /**
      * A card pile component listener for the card pile model.
@@ -389,6 +351,44 @@ public final class CardPileModel
     }
 
     /**
+     * A component model listener for the card pile model.
+     */
+    @Immutable
+    private final class ComponentModelListener
+        extends org.gamegineer.table.internal.ui.model.ComponentModelListener
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code ComponentModelListener}
+         * class.
+         */
+        ComponentModelListener()
+        {
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.ui.model.ComponentModelListener#componentChanged(org.gamegineer.table.internal.ui.model.ComponentModelEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void componentChanged(
+            final ComponentModelEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            fireCardPileChanged();
+        }
+    }
+
+    /**
      * A card pile container listener for the card pile model.
      */
     @Immutable
@@ -423,7 +423,7 @@ public final class CardPileModel
 
             synchronized( lock_ )
             {
-                createCardModel( (ICard)event.getComponent() ); // FIXME: remove cast
+                createComponentModel( event.getComponent() );
             }
 
             fireCardPileChanged();
@@ -441,10 +441,10 @@ public final class CardPileModel
 
             synchronized( lock_ )
             {
-                final CardModel cardModel = cardModels_.remove( event.getComponent() );
-                if( cardModel != null )
+                final ComponentModel componentModel = componentModels_.remove( event.getComponent() );
+                if( componentModel != null )
                 {
-                    cardModel.removeCardModelListener( cardModelListener_ );
+                    componentModel.removeComponentModelListener( componentModelListener_ );
                 }
             }
 

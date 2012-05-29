@@ -1,5 +1,5 @@
 /*
- * CardModelListener.java
+ * ComponentModelListenerAsComponentModelListenerTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,33 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 3, 2011 at 8:35:08 PM.
+ * Created on Aug 3, 2011 at 8:36:26 PM.
  */
 
 package org.gamegineer.table.internal.ui.model;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import net.jcip.annotations.Immutable;
-
 /**
- * Default implementation of {@link ICardModelListener}.
- * 
- * <p>
- * All methods of this class do nothing.
- * </p>
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.ui.model.ComponentModelListener} class
+ * to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.ui.model.IComponentModelListener}
+ * interface.
  */
-@Immutable
-public class CardModelListener
-    implements ICardModelListener
+public final class ComponentModelListenerAsComponentModelListenerTest
+    extends AbstractComponentModelListenerTestCase
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardModelListener} class.
+     * Initializes a new instance of the
+     * {@code ComponentModelListenerAsComponentModelListenerTest} class.
      */
-    public CardModelListener()
+    public ComponentModelListenerAsComponentModelListenerTest()
     {
     }
 
@@ -51,15 +48,12 @@ public class CardModelListener
     // Methods
     // ======================================================================
 
-    /**
-     * This implementation does nothing.
-     * 
-     * @see org.gamegineer.table.internal.ui.model.ICardModelListener#cardChanged(org.gamegineer.table.internal.ui.model.CardModelEvent)
+    /*
+     * @see org.gamegineer.table.internal.ui.model.AbstractComponentModelListenerTestCase#createComponentModelListener()
      */
     @Override
-    public void cardChanged(
-        final CardModelEvent event )
+    protected IComponentModelListener createComponentModelListener()
     {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        return new ComponentModelListener();
     }
 }

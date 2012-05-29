@@ -32,8 +32,8 @@ import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.IComponentListener;
-import org.gamegineer.table.internal.ui.model.CardModel;
-import org.gamegineer.table.internal.ui.model.ICardModelListener;
+import org.gamegineer.table.internal.ui.model.ComponentModel;
+import org.gamegineer.table.internal.ui.model.IComponentModelListener;
 import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
 
 /**
@@ -49,20 +49,20 @@ final class CardView
     /** The component surface design user interface for the card back. */
     private final ComponentSurfaceDesignUI backDesignUI_;
 
-    /** The card model listener for this view. */
-    private ICardModelListener cardModelListener_;
-
     /** The card pile view that owns this view. */
     private CardPileView cardPileView_;
 
     /** The component listener for this view. */
     private IComponentListener componentListener_;
 
+    /** The component model listener for this view. */
+    private IComponentModelListener componentModelListener_;
+
     /** The component surface design user interface for the card face. */
     private final ComponentSurfaceDesignUI faceDesignUI_;
 
     /** The model associated with this view. */
-    private final CardModel model_;
+    private final ComponentModel model_;
 
 
     // ======================================================================
@@ -83,7 +83,7 @@ final class CardView
      */
     CardView(
         /* @NonNull */
-        final CardModel model,
+        final ComponentModel model,
         /* @NonNull */
         final ComponentSurfaceDesignUI backDesignUI,
         /* @NonNull */
@@ -94,9 +94,9 @@ final class CardView
         assert faceDesignUI != null;
 
         backDesignUI_ = backDesignUI;
-        cardModelListener_ = null;
         cardPileView_ = null;
         componentListener_ = null;
+        componentModelListener_ = null;
         faceDesignUI_ = faceDesignUI;
         model_ = model;
     }
@@ -137,7 +137,7 @@ final class CardView
     /* @NonNull */
     private ComponentSurfaceDesignUI getActiveComponentSurfaceDesignUI()
     {
-        final ComponentOrientation orientation = model_.getCard().getOrientation();
+        final ComponentOrientation orientation = model_.getComponent().getOrientation();
         if( orientation == CardOrientation.BACK )
         {
             return backDesignUI_;
@@ -158,7 +158,7 @@ final class CardView
     /* @NonNull */
     Rectangle getBounds()
     {
-        return model_.getCard().getBounds();
+        return model_.getComponent().getBounds();
     }
 
     /**
@@ -179,10 +179,10 @@ final class CardView
         assert !isInitialized();
 
         cardPileView_ = cardPileView;
-        cardModelListener_ = new CardModelListener();
-        model_.addCardModelListener( cardModelListener_ );
+        componentModelListener_ = new ComponentModelListener();
+        model_.addComponentModelListener( componentModelListener_ );
         componentListener_ = new ComponentListener();
-        model_.getCard().addComponentListener( componentListener_ );
+        model_.getComponent().addComponentListener( componentListener_ );
 
         cardPileView_.repaintCardPile( getBounds() );
     }
@@ -237,10 +237,10 @@ final class CardView
 
         cardPileView_.repaintCardPile( getBounds() );
 
-        model_.getCard().removeComponentListener( componentListener_ );
+        model_.getComponent().removeComponentListener( componentListener_ );
         componentListener_ = null;
-        model_.removeCardModelListener( cardModelListener_ );
-        cardModelListener_ = null;
+        model_.removeComponentModelListener( componentModelListener_ );
+        componentModelListener_ = null;
         cardPileView_ = null;
     }
 
@@ -248,25 +248,6 @@ final class CardView
     // ======================================================================
     // Nested Types
     // ======================================================================
-
-    /**
-     * A card model listener for the card view.
-     */
-    @Immutable
-    private final class CardModelListener
-        extends org.gamegineer.table.internal.ui.model.CardModelListener
-    {
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code CardModelListener} class.
-         */
-        CardModelListener()
-        {
-        }
-    }
 
     /**
      * A component listener for the card view.
@@ -329,6 +310,26 @@ final class CardView
                     CardView.this.componentSurfaceDesignChanged();
                 }
             } );
+        }
+    }
+
+    /**
+     * A component model listener for the card view.
+     */
+    @Immutable
+    private final class ComponentModelListener
+        extends org.gamegineer.table.internal.ui.model.ComponentModelListener
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code ComponentModelListener}
+         * class.
+         */
+        ComponentModelListener()
+        {
         }
     }
 }

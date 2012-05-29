@@ -225,7 +225,7 @@ final class CardPileView
         assert componentSurfaceDesignUIRegistry != null;
         final ComponentSurfaceDesignUI backDesignUI = componentSurfaceDesignUIRegistry.getComponentSurfaceDesignUI( card.getSurfaceDesign( CardOrientation.BACK ).getId() );
         final ComponentSurfaceDesignUI faceDesignUI = componentSurfaceDesignUIRegistry.getComponentSurfaceDesignUI( card.getSurfaceDesign( CardOrientation.FACE ).getId() );
-        final CardView view = new CardView( model_.getCardModel( card ), backDesignUI, faceDesignUI );
+        final CardView view = new CardView( model_.getComponentModel( card ), backDesignUI, faceDesignUI );
         final CardView oldView = cardViews_.put( card, view );
         assert oldView == null;
         view.initialize( this );

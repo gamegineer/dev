@@ -36,19 +36,6 @@ final class NonNlsMessages
     // Fields
     // ======================================================================
 
-    // --- CardModel --------------------------------------------------------
-
-    /** The card model listener is already registered. */
-    public static String CardModel_addCardModelListener_listener_registered;
-
-    /**
-     * An unexpected exception was thrown from ICardModelListener.cardChanged().
-     */
-    public static String CardModel_cardChanged_unexpectedException;
-
-    /** The card model listener is not registered. */
-    public static String CardModel_removeCardModelListener_listener_notRegistered;
-
     // --- CardPileModel ----------------------------------------------------
 
     /** The card pile model listener is already registered. */
@@ -66,11 +53,25 @@ final class NonNlsMessages
      */
     public static String CardPileModel_cardPileModelFocusChanged_unexpectedException;
 
-    /** The card is not present in the card pile. */
-    public static String CardPileModel_getCardModel_card_absent;
+    /** The component is not present in the card pile. */
+    public static String CardPileModel_getComponentModel_component_absent;
 
     /** The card pile model listener is not registered. */
     public static String CardPileModel_removeCardPileModelListener_listener_notRegistered;
+
+    // --- ComponentModel ---------------------------------------------------
+
+    /** The component model listener is already registered. */
+    public static String ComponentModel_addComponentModelListener_listener_registered;
+
+    /**
+     * An unexpected exception was thrown from
+     * IComponentModelListener.componentChanged().
+     */
+    public static String ComponentModel_componentChanged_unexpectedException;
+
+    /** The component model listener is not registered. */
+    public static String ComponentModel_removeComponentModelListener_listener_notRegistered;
 
     // --- MainModel --------------------------------------------------------
 

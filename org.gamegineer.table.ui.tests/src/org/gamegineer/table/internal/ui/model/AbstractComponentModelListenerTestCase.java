@@ -1,5 +1,5 @@
 /*
- * CardModelEventTest.java
+ * AbstractComponentModelListenerTestCase.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,30 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Dec 25, 2009 at 10:25:12 PM.
+ * Created on Dec 25, 2009 at 11:00:07 PM.
  */
 
 package org.gamegineer.table.internal.ui.model;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import org.gamegineer.table.core.Cards;
-import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.CardModelEvent} class.
+ * A fixture for testing the basic aspects of classes that implement the
+ * {@link org.gamegineer.table.internal.ui.model.IComponentModelListener}
+ * interface.
  */
-public final class CardModelEventTest
+public abstract class AbstractComponentModelListenerTestCase
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The card model event under test in the fixture. */
-    private CardModelEvent event_;
+    /** The component model listener under test in the fixture. */
+    private IComponentModelListener listener_;
 
 
     // ======================================================================
@@ -47,9 +45,10 @@ public final class CardModelEventTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardModelEventTest} class.
+     * Initializes a new instance of the
+     * {@code AbstractComponentModelListenerTestCase} class.
      */
-    public CardModelEventTest()
+    protected AbstractComponentModelListenerTestCase()
     {
     }
 
@@ -57,6 +56,18 @@ public final class CardModelEventTest
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Creates the component model listener to be tested.
+     * 
+     * @return The component model listener to be tested; never {@code null}.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    /* @NonNull */
+    protected abstract IComponentModelListener createComponentModelListener()
+        throws Exception;
 
     /**
      * Sets up the test fixture.
@@ -68,35 +79,17 @@ public final class CardModelEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new CardModelEvent( new CardModel( Cards.createUniqueCard( TableEnvironmentFactory.createTableEnvironment() ) ) );
+        listener_ = createComponentModelListener();
+        assertNotNull( listener_ );
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * source.
+     * Ensures the {@code componentChanged} method throws an exception when
+     * passed a {@code null} event.
      */
-    @Test( expected = IllegalArgumentException.class )
-    public void testConstructor_Source_Null()
+    @Test( expected = NullPointerException.class )
+    public void testComponentChanged_Event_Null()
     {
-        new CardModelEvent( null );
-    }
-
-    /**
-     * Ensures the {@code getCardModel} method does not return {@code null}.
-     */
-    @Test
-    public void testGetCardModel_ReturnValue_NonNull()
-    {
-        assertNotNull( event_.getCardModel() );
-    }
-
-    /**
-     * Ensures the {@code getSource} method returns the same instance as the
-     * {@code getCardModel} method.
-     */
-    @Test
-    public void testGetSource_ReturnValue_SameCardModel()
-    {
-        assertSame( event_.getCardModel(), event_.getSource() );
+        listener_.componentChanged( null );
     }
 }

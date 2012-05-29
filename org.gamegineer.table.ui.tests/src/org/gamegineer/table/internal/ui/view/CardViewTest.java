@@ -27,10 +27,10 @@ import java.awt.Rectangle;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesigns;
-import org.gamegineer.table.core.ICard;
+import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableEnvironmentFactory;
-import org.gamegineer.table.internal.ui.model.CardModel;
+import org.gamegineer.table.internal.ui.model.ComponentModel;
 import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
 import org.gamegineer.table.ui.ComponentSurfaceDesignUIs;
 import org.junit.Before;
@@ -52,11 +52,11 @@ public final class CardViewTest
      */
     private ComponentSurfaceDesignUI backDesignUI_;
 
-    /** A card model for use in the test fixture. */
-    private CardModel cardModel_;
-
     /** The card view under test in the fixture. */
     private CardView cardView_;
+
+    /** A component model for use in the test fixture. */
+    private ComponentModel componentModel_;
 
     /**
      * The component surface design user interface for the card face for use in
@@ -96,11 +96,11 @@ public final class CardViewTest
         backDesignUI_ = ComponentSurfaceDesignUIs.createComponentSurfaceDesignUI( backDesign );
         final ComponentSurfaceDesign faceDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
         faceDesignUI_ = ComponentSurfaceDesignUIs.createComponentSurfaceDesignUI( faceDesign );
-        final ICard card = table.getTableEnvironment().createCard();
-        card.setSurfaceDesign( CardOrientation.BACK, backDesign );
-        card.setSurfaceDesign( CardOrientation.FACE, faceDesign );
-        cardModel_ = new CardModel( card );
-        cardView_ = new CardView( cardModel_, backDesignUI_, faceDesignUI_ );
+        final IComponent component = table.getTableEnvironment().createCard();
+        component.setSurfaceDesign( CardOrientation.BACK, backDesign );
+        component.setSurfaceDesign( CardOrientation.FACE, faceDesign );
+        componentModel_ = new ComponentModel( component );
+        cardView_ = new CardView( componentModel_, backDesignUI_, faceDesignUI_ );
     }
 
     /**

@@ -28,8 +28,8 @@ import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.core.CardPiles;
 import org.gamegineer.table.core.Cards;
-import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
+import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableEnvironment;
 import org.gamegineer.table.core.TableEnvironmentFactory;
@@ -174,25 +174,6 @@ public final class CardPileModelTest
     }
 
     /**
-     * Ensures a change to a card associated with a card model owned by the card
-     * pile model fires a card pile state changed event.
-     */
-    @Test
-    public void testCardModel_CardChanged_FiresCardPileChangedEvent()
-    {
-        final ICard card = Cards.createUniqueCard( model_.getCardPile().getTableEnvironment() );
-        model_.getCardPile().addComponent( card );
-        final ICardPileModelListener listener = mocksControl_.createMock( ICardPileModelListener.class );
-        listener.cardPileChanged( EasyMock.notNull( CardPileModelEvent.class ) );
-        mocksControl_.replay();
-        model_.addCardPileModelListener( listener );
-
-        card.setOrientation( card.getOrientation().inverse() );
-
-        mocksControl_.verify();
-    }
-
-    /**
      * Ensures a change to the underlying card pile state fires a card pile
      * changed event.
      */
@@ -247,6 +228,25 @@ public final class CardPileModelTest
     }
 
     /**
+     * Ensures a change to a component associated with a component model owned
+     * by the card pile model fires a card pile state changed event.
+     */
+    @Test
+    public void testComponentModel_ComponentChanged_FiresCardPileChangedEvent()
+    {
+        final IComponent component = Cards.createUniqueCard( model_.getCardPile().getTableEnvironment() );
+        model_.getCardPile().addComponent( component );
+        final ICardPileModelListener listener = mocksControl_.createMock( ICardPileModelListener.class );
+        listener.cardPileChanged( EasyMock.notNull( CardPileModelEvent.class ) );
+        mocksControl_.replay();
+        model_.addCardPileModelListener( listener );
+
+        component.setOrientation( component.getOrientation().inverse() );
+
+        mocksControl_.verify();
+    }
+
+    /**
      * Ensures the constructor throws an exception when passed a {@code null}
      * card pile.
      */
@@ -257,32 +257,32 @@ public final class CardPileModelTest
     }
 
     /**
-     * Ensures the {@code getCardModel} throws an exception when passed a card
-     * that is absent from the card pile.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testGetCardModel_Card_Absent()
-    {
-        model_.getCardModel( EasyMock.createMock( ICard.class ) );
-    }
-
-    /**
-     * Ensures the {@code getCardModel} throws an exception when passed a
-     * {@code null} card.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetCardModel_Card_Null()
-    {
-        model_.getCardModel( null );
-    }
-
-    /**
      * Ensures the {@code getCardPile} method does not return {@code null}.
      */
     @Test
     public void testGetCardPile_ReturnValue_NonNull()
     {
         assertNotNull( model_.getCardPile() );
+    }
+
+    /**
+     * Ensures the {@code getComponentModel} throws an exception when passed a
+     * component that is absent from the card pile.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testGetComponentModel_Component_Absent()
+    {
+        model_.getComponentModel( EasyMock.createMock( IComponent.class ) );
+    }
+
+    /**
+     * Ensures the {@code getComponentModel} throws an exception when passed a
+     * {@code null} component.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGetComponentModel_Component_Null()
+    {
+        model_.getComponentModel( null );
     }
 
     /**

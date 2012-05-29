@@ -1,6 +1,6 @@
 /*
- * CardModelEvent.java
- * Copyright 2008-2010 Gamegineer.org
+ * ComponentModelEvent.java
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,10 +25,10 @@ import java.util.EventObject;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * An event fired by a card model.
+ * An event fired by a component model.
  */
 @ThreadSafe
-public final class CardModelEvent
+public final class ComponentModelEvent
     extends EventObject
 {
     // ======================================================================
@@ -44,18 +44,19 @@ public final class CardModelEvent
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardModelEvent} class.
+     * Initializes a new instance of the {@code ComponentModelEvent} class.
      * 
      * @param source
-     *        The card model that fired the event; must not be {@code null}.
+     *        The component model that fired the event; must not be {@code null}
+     *        .
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code source} is {@code null}.
      */
-    public CardModelEvent(
+    public ComponentModelEvent(
         /* @NonNull */
         @SuppressWarnings( "hiding" )
-        final CardModel source )
+        final ComponentModel source )
     {
         super( source );
     }
@@ -66,13 +67,13 @@ public final class CardModelEvent
     // ======================================================================
 
     /**
-     * Gets the card model that fired the event.
+     * Gets the component model that fired the event.
      * 
-     * @return The card model that fired the event; never {@code null}.
+     * @return The component model that fired the event; never {@code null}.
      */
     /* @NonNull */
-    public CardModel getCardModel()
+    public ComponentModel getComponentModel()
     {
-        return (CardModel)getSource();
+        return (ComponentModel)getSource();
     }
 }

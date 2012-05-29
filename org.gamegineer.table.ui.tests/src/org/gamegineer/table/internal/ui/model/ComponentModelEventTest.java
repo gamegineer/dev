@@ -1,5 +1,5 @@
 /*
- * AbstractCardModelListenerTestCase.java
+ * ComponentModelEventTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,27 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Dec 25, 2009 at 11:00:07 PM.
+ * Created on Dec 25, 2009 at 10:25:12 PM.
  */
 
 package org.gamegineer.table.internal.ui.model;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import org.gamegineer.table.core.Cards;
+import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.ui.model.ICardModelListener} interface.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.ui.model.ComponentModelEvent} class.
  */
-public abstract class AbstractCardModelListenerTestCase
+public final class ComponentModelEventTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The card model listener under test in the fixture. */
-    private ICardModelListener listener_;
+    /** The component model event under test in the fixture. */
+    private ComponentModelEvent event_;
 
 
     // ======================================================================
@@ -44,10 +47,9 @@ public abstract class AbstractCardModelListenerTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractCardModelListenerTestCase} class.
+     * Initializes a new instance of the {@code ComponentModelEventTest} class.
      */
-    protected AbstractCardModelListenerTestCase()
+    public ComponentModelEventTest()
     {
     }
 
@@ -55,18 +57,6 @@ public abstract class AbstractCardModelListenerTestCase
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Creates the card model listener to be tested.
-     * 
-     * @return The card model listener to be tested; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    /* @NonNull */
-    protected abstract ICardModelListener createCardModelListener()
-        throws Exception;
 
     /**
      * Sets up the test fixture.
@@ -78,17 +68,36 @@ public abstract class AbstractCardModelListenerTestCase
     public void setUp()
         throws Exception
     {
-        listener_ = createCardModelListener();
-        assertNotNull( listener_ );
+        event_ = new ComponentModelEvent( new ComponentModel( Cards.createUniqueCard( TableEnvironmentFactory.createTableEnvironment() ) ) );
     }
 
     /**
-     * Ensures the {@code cardChanged} method throws an exception when passed a
-     * {@code null} event.
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * source.
      */
-    @Test( expected = NullPointerException.class )
-    public void testCardChanged_Event_Null()
+    @Test( expected = IllegalArgumentException.class )
+    public void testConstructor_Source_Null()
     {
-        listener_.cardChanged( null );
+        new ComponentModelEvent( null );
+    }
+
+    /**
+     * Ensures the {@code getComponentModel} method does not return {@code null}
+     * .
+     */
+    @Test
+    public void testGetComponentModel_ReturnValue_NonNull()
+    {
+        assertNotNull( event_.getComponentModel() );
+    }
+
+    /**
+     * Ensures the {@code getSource} method returns the same instance as the
+     * {@code getComponentModel} method.
+     */
+    @Test
+    public void testGetSource_ReturnValue_SameComponentModel()
+    {
+        assertSame( event_.getComponentModel(), event_.getSource() );
     }
 }

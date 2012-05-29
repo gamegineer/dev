@@ -1,6 +1,6 @@
 /*
- * ICardModelListener.java
- * Copyright 2008-2011 Gamegineer.org
+ * IComponentModelListener.java
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,9 +25,9 @@ import java.util.EventListener;
 
 /**
  * The listener interface for use by clients to be notified of changes to the
- * card model state.
+ * component model state.
  */
-public interface ICardModelListener
+public interface IComponentModelListener
     extends EventListener
 {
     // ======================================================================
@@ -35,15 +35,16 @@ public interface ICardModelListener
     // ======================================================================
 
     /**
-     * Invoked after the card associated with the model has changed.
+     * Invoked after the component associated with the model has changed.
      * 
      * @param event
-     *        The event describing the card model; must not be {@code null}.
+     *        The event describing the component model; must not be {@code null}
+     *        .
      * 
      * @throws java.lang.NullPointerException
      *         If {@code event} is {@code null}.
      */
-    public void cardChanged(
+    public void componentChanged(
         /* @NonNull */
-        CardModelEvent event );
+        ComponentModelEvent event );
 }

@@ -1,5 +1,5 @@
 /*
- * CardModel.java
+ * ComponentModel.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -28,24 +28,24 @@ import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ComponentEvent;
-import org.gamegineer.table.core.ICard;
+import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.internal.ui.Loggers;
 
 /**
- * The card model.
+ * The component model.
  */
 @ThreadSafe
-public final class CardModel
+public final class ComponentModel
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The card associated with this model. */
-    private final ICard card_;
+    /** The component associated with this model. */
+    private final IComponent component_;
 
-    /** The collection of card model listeners. */
-    private final CopyOnWriteArrayList<ICardModelListener> listeners_;
+    /** The collection of component model listeners. */
+    private final CopyOnWriteArrayList<IComponentModelListener> listeners_;
 
 
     // ======================================================================
@@ -53,24 +53,25 @@ public final class CardModel
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardModel} class.
+     * Initializes a new instance of the {@code ComponentModel} class.
      * 
-     * @param card
-     *        The card associated with this model; must not be {@code null}.
+     * @param component
+     *        The component associated with this model; must not be {@code null}
+     *        .
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code card} is {@code null}.
+     *         If {@code component} is {@code null}.
      */
-    public CardModel(
+    public ComponentModel(
         /* @NonNull */
-        final ICard card )
+        final IComponent component )
     {
-        assertArgumentNotNull( card, "card" ); //$NON-NLS-1$
+        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
 
-        card_ = card;
-        listeners_ = new CopyOnWriteArrayList<ICardModelListener>();
+        component_ = component;
+        listeners_ = new CopyOnWriteArrayList<IComponentModelListener>();
 
-        card_.addComponentListener( new ComponentListener() );
+        component_.addComponentListener( new ComponentListener() );
     }
 
 
@@ -79,71 +80,72 @@ public final class CardModel
     // ======================================================================
 
     /**
-     * Adds the specified card model listener to this card model.
+     * Adds the specified component model listener to this component model.
      * 
      * @param listener
-     *        The card model listener; must not be {@code null}.
+     *        The component model listener; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code listener} is already a registered card model listener.
+     *         If {@code listener} is already a registered component model
+     *         listener.
      * @throws java.lang.NullPointerException
      *         If {@code listener} is {@code null}.
      */
-    public void addCardModelListener(
+    public void addComponentModelListener(
         /* @NonNull */
-        final ICardModelListener listener )
+        final IComponentModelListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.CardModel_addCardModelListener_listener_registered ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.ComponentModel_addComponentModelListener_listener_registered ); //$NON-NLS-1$
     }
 
     /**
-     * Fires a card changed event.
+     * Fires a component changed event.
      */
-    private void fireCardChanged()
+    private void fireComponentChanged()
     {
-        final CardModelEvent event = new CardModelEvent( this );
-        for( final ICardModelListener listener : listeners_ )
+        final ComponentModelEvent event = new ComponentModelEvent( this );
+        for( final IComponentModelListener listener : listeners_ )
         {
             try
             {
-                listener.cardChanged( event );
+                listener.componentChanged( event );
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardModel_cardChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ComponentModel_componentChanged_unexpectedException, e );
             }
         }
     }
 
     /**
-     * Gets the card associated with this model.
+     * Gets the component associated with this model.
      * 
-     * @return The card associated with this model; never {@code null}.
+     * @return The component associated with this model; never {@code null}.
      */
     /* @NonNull */
-    public ICard getCard()
+    public IComponent getComponent()
     {
-        return card_;
+        return component_;
     }
 
     /**
-     * Removes the specified card model listener from this card model.
+     * Removes the specified component model listener from this component model.
      * 
      * @param listener
-     *        The card model listener; must not be {@code null}.
+     *        The component model listener; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code listener} is not a registered card model listener.
+     *         If {@code listener} is not a registered component model listener.
      * @throws java.lang.NullPointerException
      *         If {@code listener} is {@code null}.
      */
-    public void removeCardModelListener(
+    public void removeComponentModelListener(
         /* @NonNull */
-        final ICardModelListener listener )
+        final IComponentModelListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.CardModel_removeCardModelListener_listener_notRegistered ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.ComponentModel_removeComponentModelListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
 
@@ -152,7 +154,7 @@ public final class CardModel
     // ======================================================================
 
     /**
-     * A component listener for the card model.
+     * A component listener for the component model.
      */
     @Immutable
     private final class ComponentListener
@@ -184,7 +186,7 @@ public final class CardModel
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            fireCardChanged();
+            fireComponentChanged();
         }
 
         /*
@@ -197,7 +199,7 @@ public final class CardModel
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            fireCardChanged();
+            fireComponentChanged();
         }
 
         /*
@@ -210,7 +212,7 @@ public final class CardModel
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            fireCardChanged();
+            fireComponentChanged();
         }
     }
 }
