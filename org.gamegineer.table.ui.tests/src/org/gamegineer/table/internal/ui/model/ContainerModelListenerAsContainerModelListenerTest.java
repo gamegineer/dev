@@ -1,5 +1,5 @@
 /*
- * CardPileModelListenerAsCardPileModelListenerTest.java
+ * ContainerModelListenerAsContainerModelListenerTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -23,13 +23,13 @@ package org.gamegineer.table.internal.ui.model;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.CardPileModelListener} class to
- * ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.ui.model.ICardPileModelListener}
+ * {@link org.gamegineer.table.internal.ui.model.ContainerModelListener} class
+ * to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.ui.model.IContainerModelListener}
  * interface.
  */
-public final class CardPileModelListenerAsCardPileModelListenerTest
-    extends AbstractCardPileModelListenerTestCase
+public final class ContainerModelListenerAsContainerModelListenerTest
+    extends AbstractContainerModelListenerTestCase
 {
     // ======================================================================
     // Constructors
@@ -37,9 +37,9 @@ public final class CardPileModelListenerAsCardPileModelListenerTest
 
     /**
      * Initializes a new instance of the
-     * {@code CardPileModelListenerAsCardPileModelListenerTest} class.
+     * {@code ContainerModelListenerAsContainerModelListenerTest} class.
      */
-    public CardPileModelListenerAsCardPileModelListenerTest()
+    public ContainerModelListenerAsContainerModelListenerTest()
     {
     }
 
@@ -49,11 +49,11 @@ public final class CardPileModelListenerAsCardPileModelListenerTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.AbstractCardPileModelListenerTestCase#createCardPileModelListener()
+     * @see org.gamegineer.table.internal.ui.model.AbstractContainerModelListenerTestCase#createContainerModelListener()
      */
     @Override
-    protected ICardPileModelListener createCardPileModelListener()
+    protected IContainerModelListener createContainerModelListener()
     {
-        return new CardPileModelListener();
+        return new ContainerModelListener();
     }
 }

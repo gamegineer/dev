@@ -1,6 +1,6 @@
 /*
- * ICardPileModelListener.java
- * Copyright 2008-2011 Gamegineer.org
+ * IContainerModelListener.java
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,9 +25,9 @@ import java.util.EventListener;
 
 /**
  * The listener interface for use by clients to be notified of changes to the
- * card pile model state.
+ * container model state.
  */
-public interface ICardPileModelListener
+public interface IContainerModelListener
     extends EventListener
 {
     // ======================================================================
@@ -35,30 +35,30 @@ public interface ICardPileModelListener
     // ======================================================================
 
     /**
-     * Invoked after the card pile associated with the model has changed.
+     * Invoked after the container associated with the model has changed.
      * 
      * @param event
-     *        The event describing the card pile model; must not be {@code null}
+     *        The event describing the container model; must not be {@code null}
      *        .
      * 
      * @throws java.lang.NullPointerException
      *         If {@code event} is {@code null}.
      */
-    public void cardPileChanged(
+    public void containerChanged(
         /* @NonNull */
-        CardPileModelEvent event );
+        ContainerModelEvent event );
 
     /**
-     * Invoked after the card pile model has gained or lost the logical focus.
+     * Invoked after the container model has gained or lost the logical focus.
      * 
      * @param event
-     *        The event describing the card pile model; must not be {@code null}
+     *        The event describing the container model; must not be {@code null}
      *        .
      * 
      * @throws java.lang.NullPointerException
      *         If {@code event} is {@code null}.
      */
-    public void cardPileModelFocusChanged(
+    public void containerModelFocusChanged(
         /* @NonNull */
-        CardPileModelEvent event );
+        ContainerModelEvent event );
 }

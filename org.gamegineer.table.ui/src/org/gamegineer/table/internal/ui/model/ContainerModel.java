@@ -1,5 +1,5 @@
 /*
- * CardPileModel.java
+ * ContainerModel.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -33,22 +33,19 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ContainerEvent;
-import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.internal.ui.Loggers;
 
 /**
- * The card pile model.
+ * The container model.
  */
 @ThreadSafe
-public final class CardPileModel
+public final class ContainerModel
 {
     // ======================================================================
     // Fields
     // ======================================================================
-
-    /** The card pile associated with this model. */
-    private final ICardPile cardPile_;
 
     /** The component model listener for this model. */
     private final IComponentModelListener componentModelListener_;
@@ -57,12 +54,15 @@ public final class CardPileModel
     @GuardedBy( "lock_" )
     private final Map<IComponent, ComponentModel> componentModels_;
 
-    /** Indicates the associated card pile has the focus. */
+    /** The container associated with this model. */
+    private final IContainer container_;
+
+    /** Indicates the associated container has the focus. */
     @GuardedBy( "lock_" )
     private boolean isFocused_;
 
-    /** The collection of card pile model listeners. */
-    private final CopyOnWriteArrayList<ICardPileModelListener> listeners_;
+    /** The collection of container model listeners. */
+    private final CopyOnWriteArrayList<IContainerModelListener> listeners_;
 
     /** The instance lock. */
     private final Object lock_;
@@ -73,32 +73,32 @@ public final class CardPileModel
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardPileModel} class.
+     * Initializes a new instance of the {@code ContainerModel} class.
      * 
-     * @param cardPile
-     *        The card pile associated with this model; must not be {@code null}
+     * @param container
+     *        The container associated with this model; must not be {@code null}
      *        .
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code cardPile} is {@code null}.
+     *         If {@code container} is {@code null}.
      */
-    public CardPileModel(
+    public ContainerModel(
         /* @NonNull */
-        final ICardPile cardPile )
+        final IContainer container )
     {
-        assertArgumentNotNull( cardPile, "cardPile" ); //$NON-NLS-1$
+        assertArgumentNotNull( container, "container" ); //$NON-NLS-1$
 
-        cardPile_ = cardPile;
         componentModelListener_ = new ComponentModelListener();
         componentModels_ = new IdentityHashMap<IComponent, ComponentModel>();
+        container_ = container;
         isFocused_ = false;
-        listeners_ = new CopyOnWriteArrayList<ICardPileModelListener>();
+        listeners_ = new CopyOnWriteArrayList<IContainerModelListener>();
         lock_ = new Object();
 
-        cardPile_.addComponentListener( new ComponentListener() );
-        cardPile_.addContainerListener( new ContainerListener() );
+        container_.addComponentListener( new ComponentListener() );
+        container_.addContainerListener( new ContainerListener() );
 
-        for( final IComponent component : cardPile.getComponents() )
+        for( final IComponent component : container.getComponents() )
         {
             createComponentModel( component );
         }
@@ -110,23 +110,23 @@ public final class CardPileModel
     // ======================================================================
 
     /**
-     * Adds the specified card pile model listener to this card pile model.
+     * Adds the specified container model listener to this container model.
      * 
      * @param listener
-     *        The card pile model listener; must not be {@code null}.
+     *        The container model listener; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code listener} is already a registered card pile model
+     *         If {@code listener} is already a registered container model
      *         listener.
      * @throws java.lang.NullPointerException
      *         If {@code listener} is {@code null}.
      */
-    public void addCardPileModelListener(
+    public void addContainerModelListener(
         /* @NonNull */
-        final ICardPileModelListener listener )
+        final IContainerModelListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.CardPileModel_addCardPileModelListener_listener_registered ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.ContainerModel_addContainerModelListener_listener_registered ); //$NON-NLS-1$
     }
 
     /**
@@ -151,52 +151,41 @@ public final class CardPileModel
     }
 
     /**
-     * Fires a card pile changed event.
+     * Fires a container changed event.
      */
-    private void fireCardPileChanged()
+    private void fireContainerChanged()
     {
-        final CardPileModelEvent event = new CardPileModelEvent( this );
-        for( final ICardPileModelListener listener : listeners_ )
+        final ContainerModelEvent event = new ContainerModelEvent( this );
+        for( final IContainerModelListener listener : listeners_ )
         {
             try
             {
-                listener.cardPileChanged( event );
+                listener.containerChanged( event );
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPileModel_cardPileChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ContainerModel_containerChanged_unexpectedException, e );
             }
         }
     }
 
     /**
-     * Fires a card pile model focus changed event.
+     * Fires a container model focus changed event.
      */
-    private void fireCardPileModelFocusChanged()
+    private void fireContainerModelFocusChanged()
     {
-        final CardPileModelEvent event = new CardPileModelEvent( this );
-        for( final ICardPileModelListener listener : listeners_ )
+        final ContainerModelEvent event = new ContainerModelEvent( this );
+        for( final IContainerModelListener listener : listeners_ )
         {
             try
             {
-                listener.cardPileModelFocusChanged( event );
+                listener.containerModelFocusChanged( event );
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPileModel_cardPileModelFocusChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ContainerModel_containerModelFocusChanged_unexpectedException, e );
             }
         }
-    }
-
-    /**
-     * Gets the card pile associated with this model.
-     * 
-     * @return The card pile associated with this model; never {@code null}.
-     */
-    /* @NonNull */
-    public ICardPile getCardPile()
-    {
-        return cardPile_;
     }
 
     /**
@@ -209,7 +198,7 @@ public final class CardPileModel
      *         never {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code component} does not exist in the card pile associated
+     *         If {@code component} does not exist in the container associated
      *         with this model.
      * @throws java.lang.NullPointerException
      *         If {@code component} is {@code null}.
@@ -227,14 +216,25 @@ public final class CardPileModel
             componentModel = componentModels_.get( component );
         }
 
-        assertArgumentLegal( componentModel != null, "component", NonNlsMessages.CardPileModel_getComponentModel_component_absent ); //$NON-NLS-1$
+        assertArgumentLegal( componentModel != null, "component", NonNlsMessages.ContainerModel_getComponentModel_component_absent ); //$NON-NLS-1$
         return componentModel;
     }
 
     /**
-     * Indicates the associated card pile has the focus.
+     * Gets the container associated with this model.
      * 
-     * @return {@code true} if the associated card pile has the focus; otherwise
+     * @return The container associated with this model; never {@code null}.
+     */
+    /* @NonNull */
+    public IContainer getContainer()
+    {
+        return container_;
+    }
+
+    /**
+     * Indicates the associated container has the focus.
+     * 
+     * @return {@code true} if the associated container has the focus; otherwise
      *         {@code false}.
      */
     public boolean isFocused()
@@ -246,29 +246,29 @@ public final class CardPileModel
     }
 
     /**
-     * Removes the specified card pile model listener from this card pile model.
+     * Removes the specified container model listener from this container model.
      * 
      * @param listener
-     *        The card pile model listener; must not be {@code null}.
+     *        The container model listener; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code listener} is not a registered card pile model listener.
+     *         If {@code listener} is not a registered container model listener.
      * @throws java.lang.NullPointerException
      *         If {@code listener} is {@code null}.
      */
-    public void removeCardPileModelListener(
+    public void removeContainerModelListener(
         /* @NonNull */
-        final ICardPileModelListener listener )
+        final IContainerModelListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.CardPileModel_removeCardPileModelListener_listener_notRegistered ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.ContainerModel_removeContainerModelListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
     /**
-     * Sets or removes the focus from the associated card pile.
+     * Sets or removes the focus from the associated container.
      * 
      * @param isFocused
-     *        {@code true} if the associated card pile has the focus; otherwise
+     *        {@code true} if the associated container has the focus; otherwise
      *        {@code false}.
      */
     public void setFocused(
@@ -279,7 +279,7 @@ public final class CardPileModel
             isFocused_ = isFocused;
         }
 
-        fireCardPileModelFocusChanged();
+        fireContainerModelFocusChanged();
     }
 
 
@@ -288,7 +288,7 @@ public final class CardPileModel
     // ======================================================================
 
     /**
-     * A card pile component listener for the card pile model.
+     * A component listener for the container model.
      */
     @Immutable
     private final class ComponentListener
@@ -320,7 +320,7 @@ public final class CardPileModel
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            fireCardPileChanged();
+            fireContainerChanged();
         }
 
         /*
@@ -333,7 +333,7 @@ public final class CardPileModel
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            fireCardPileChanged();
+            fireContainerChanged();
         }
 
         /*
@@ -346,12 +346,12 @@ public final class CardPileModel
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            fireCardPileChanged();
+            fireContainerChanged();
         }
     }
 
     /**
-     * A component model listener for the card pile model.
+     * A component model listener for the container model.
      */
     @Immutable
     private final class ComponentModelListener
@@ -384,12 +384,12 @@ public final class CardPileModel
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            fireCardPileChanged();
+            fireContainerChanged();
         }
     }
 
     /**
-     * A card pile container listener for the card pile model.
+     * A container listener for the container model.
      */
     @Immutable
     private final class ContainerListener
@@ -426,7 +426,7 @@ public final class CardPileModel
                 createComponentModel( event.getComponent() );
             }
 
-            fireCardPileChanged();
+            fireContainerChanged();
         }
 
         /*
@@ -448,7 +448,7 @@ public final class CardPileModel
                 }
             }
 
-            fireCardPileChanged();
+            fireContainerChanged();
         }
 
         /*
@@ -461,7 +461,7 @@ public final class CardPileModel
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            fireCardPileChanged();
+            fireContainerChanged();
         }
     }
 }

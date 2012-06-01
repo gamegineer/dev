@@ -36,29 +36,6 @@ final class NonNlsMessages
     // Fields
     // ======================================================================
 
-    // --- CardPileModel ----------------------------------------------------
-
-    /** The card pile model listener is already registered. */
-    public static String CardPileModel_addCardPileModelListener_listener_registered;
-
-    /**
-     * An unexpected exception was thrown from
-     * ICardPileModelListener.cardPileChanged().
-     */
-    public static String CardPileModel_cardPileChanged_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
-     * ICardPileModelListener.cardPileModelFocusChanged().
-     */
-    public static String CardPileModel_cardPileModelFocusChanged_unexpectedException;
-
-    /** The component is not present in the card pile. */
-    public static String CardPileModel_getComponentModel_component_absent;
-
-    /** The card pile model listener is not registered. */
-    public static String CardPileModel_removeCardPileModelListener_listener_notRegistered;
-
     // --- ComponentModel ---------------------------------------------------
 
     /** The component model listener is already registered. */
@@ -72,6 +49,29 @@ final class NonNlsMessages
 
     /** The component model listener is not registered. */
     public static String ComponentModel_removeComponentModelListener_listener_notRegistered;
+
+    // --- ContainerModel ---------------------------------------------------
+
+    /** The container model listener is already registered. */
+    public static String ContainerModel_addContainerModelListener_listener_registered;
+
+    /**
+     * An unexpected exception was thrown from
+     * IContainerModelListener.containerChanged().
+     */
+    public static String ContainerModel_containerChanged_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
+     * IContainerModelListener.containerModelFocusChanged().
+     */
+    public static String ContainerModel_containerModelFocusChanged_unexpectedException;
+
+    /** The component is not present in the container. */
+    public static String ContainerModel_getComponentModel_component_absent;
+
+    /** The container model listener is not registered. */
+    public static String ContainerModel_removeContainerModelListener_listener_notRegistered;
 
     // --- MainModel --------------------------------------------------------
 

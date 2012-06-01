@@ -1,5 +1,5 @@
 /*
- * CardPileModelEventTest.java
+ * ContainerModelEventTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -30,16 +30,16 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.CardPileModelEvent} class.
+ * {@link org.gamegineer.table.internal.ui.model.ContainerModelEvent} class.
  */
-public final class CardPileModelEventTest
+public final class ContainerModelEventTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The card pile model event under test in the fixture. */
-    private CardPileModelEvent event_;
+    /** The container model event under test in the fixture. */
+    private ContainerModelEvent event_;
 
 
     // ======================================================================
@@ -47,9 +47,9 @@ public final class CardPileModelEventTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardPileModelEventTest} class.
+     * Initializes a new instance of the {@code ContainerModelEventTest} class.
      */
-    public CardPileModelEventTest()
+    public ContainerModelEventTest()
     {
     }
 
@@ -68,7 +68,7 @@ public final class CardPileModelEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new CardPileModelEvent( new CardPileModel( CardPiles.createUniqueCardPile( TableEnvironmentFactory.createTableEnvironment() ) ) );
+        event_ = new ContainerModelEvent( new ContainerModel( CardPiles.createUniqueCardPile( TableEnvironmentFactory.createTableEnvironment() ) ) );
     }
 
     /**
@@ -78,25 +78,26 @@ public final class CardPileModelEventTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_Source_Null()
     {
-        new CardPileModelEvent( null );
+        new ContainerModelEvent( null );
     }
 
     /**
-     * Ensures the {@code getCardPileModel} method does not return {@code null}.
+     * Ensures the {@code getContainerModel} method does not return {@code null}
+     * .
      */
     @Test
-    public void testGetCardPileModel_ReturnValue_NonNull()
+    public void testGetContainerModel_ReturnValue_NonNull()
     {
-        assertNotNull( event_.getCardPileModel() );
+        assertNotNull( event_.getContainerModel() );
     }
 
     /**
      * Ensures the {@code getSource} method returns the same instance as the
-     * {@code getCardPileModel} method.
+     * {@code getContainerModel} method.
      */
     @Test
-    public void testGetSource_ReturnValue_SameCardPileModel()
+    public void testGetSource_ReturnValue_SameContainerModel()
     {
-        assertSame( event_.getCardPileModel(), event_.getSource() );
+        assertSame( event_.getContainerModel(), event_.getSource() );
     }
 }

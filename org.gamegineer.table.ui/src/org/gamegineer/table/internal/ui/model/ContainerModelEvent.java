@@ -1,6 +1,6 @@
 /*
- * CardPileModelEvent.java
- * Copyright 2008-2010 Gamegineer.org
+ * ContainerModelEvent.java
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,10 +25,10 @@ import java.util.EventObject;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * An event fired by a card pile model.
+ * An event fired by a container model.
  */
 @ThreadSafe
-public final class CardPileModelEvent
+public final class ContainerModelEvent
     extends EventObject
 {
     // ======================================================================
@@ -44,19 +44,19 @@ public final class CardPileModelEvent
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardPileModelEvent} class.
+     * Initializes a new instance of the {@code ContainerModelEvent} class.
      * 
      * @param source
-     *        The card pile model that fired the event; must not be {@code null}
+     *        The container model that fired the event; must not be {@code null}
      *        .
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code source} is {@code null}.
      */
-    public CardPileModelEvent(
+    public ContainerModelEvent(
         /* @NonNull */
         @SuppressWarnings( "hiding" )
-        final CardPileModel source )
+        final ContainerModel source )
     {
         super( source );
     }
@@ -67,13 +67,13 @@ public final class CardPileModelEvent
     // ======================================================================
 
     /**
-     * Gets the card pile model that fired the event.
+     * Gets the container model that fired the event.
      * 
-     * @return The card pile model that fired the event; never {@code null}.
+     * @return The container model that fired the event; never {@code null}.
      */
     /* @NonNull */
-    public CardPileModel getCardPileModel()
+    public ContainerModel getContainerModel()
     {
-        return (CardPileModel)getSource();
+        return (ContainerModel)getSource();
     }
 }

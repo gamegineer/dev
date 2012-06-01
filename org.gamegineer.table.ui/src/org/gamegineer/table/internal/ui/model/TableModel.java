@@ -40,6 +40,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.common.persistence.serializable.ObjectStreams;
 import org.gamegineer.table.core.ICardPile;
+import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableContentChangedEvent;
 import org.gamegineer.table.core.TableEnvironmentFactory;
@@ -61,12 +62,12 @@ public final class TableModel
     // Fields
     // ======================================================================
 
-    /** The card pile model listener for this model. */
-    private final ICardPileModelListener cardPileModelListener_;
+    /** The container model listener for this model. */
+    private final IContainerModelListener containerModelListener_;
 
-    /** The collection of card pile models. */
+    /** The collection of container models. */
     @GuardedBy( "lock_" )
-    private final Map<ICardPile, CardPileModel> cardPileModels_;
+    private final Map<IContainer, ContainerModel> containerModels_;
 
     /** The file to which the model was last saved. */
     @GuardedBy( "lock_" )
@@ -106,8 +107,8 @@ public final class TableModel
      */
     public TableModel()
     {
-        cardPileModelListener_ = new CardPileModelListener();
-        cardPileModels_ = new IdentityHashMap<ICardPile, CardPileModel>();
+        containerModelListener_ = new ContainerModelListener();
+        containerModels_ = new IdentityHashMap<IContainer, ContainerModel>();
         file_ = null;
         focusedCardPile_ = null;
         isDirty_ = false;
@@ -146,24 +147,24 @@ public final class TableModel
     }
 
     /**
-     * Creates a card pile model for the specified card pile.
+     * Creates a container model for the specified container.
      * 
-     * @param cardPile
-     *        The card pile; must not be {@code null}.
+     * @param container
+     *        The container; must not be {@code null}.
      * 
-     * @return The card pile model; never {@code null}.
+     * @return The container model; never {@code null}.
      */
     /* @NonNull */
-    private CardPileModel createCardPileModel(
+    private ContainerModel createContainerModel(
         /* @NonNull */
-        final ICardPile cardPile )
+        final IContainer container )
     {
-        assert cardPile != null;
+        assert container != null;
 
-        final CardPileModel cardPileModel = new CardPileModel( cardPile );
-        cardPileModels_.put( cardPile, cardPileModel );
-        cardPileModel.addCardPileModelListener( cardPileModelListener_ );
-        return cardPileModel;
+        final ContainerModel containerModel = new ContainerModel( container );
+        containerModels_.put( container, containerModel );
+        containerModel.addContainerModelListener( containerModelListener_ );
+        return containerModel;
     }
 
     /**
@@ -262,12 +263,12 @@ public final class TableModel
     }
 
     /**
-     * Gets the card pile model associated with the specified card pile.
+     * Gets the container model associated with the specified card pile.
      * 
      * @param cardPile
      *        The card pile; must not be {@code null}.
      * 
-     * @return The card pile model associated with the specified card pile;
+     * @return The container model associated with the specified card pile;
      *         never {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
@@ -277,20 +278,20 @@ public final class TableModel
      *         If {@code cardPile} is {@code null}.
      */
     /* @NonNull */
-    public CardPileModel getCardPileModel(
+    public ContainerModel getCardPileModel(
         /* @NonNull */
         final ICardPile cardPile )
     {
         assertArgumentNotNull( cardPile, "cardPile" ); //$NON-NLS-1$
 
-        final CardPileModel cardPileModel;
+        final ContainerModel containerModel;
         synchronized( lock_ )
         {
-            cardPileModel = cardPileModels_.get( cardPile );
+            containerModel = containerModels_.get( cardPile );
         }
 
-        assertArgumentLegal( cardPileModel != null, "cardPile", NonNlsMessages.TableModel_getCardPileModel_cardPile_absent ); //$NON-NLS-1$
-        return cardPileModel;
+        assertArgumentLegal( containerModel != null, "cardPile", NonNlsMessages.TableModel_getCardPileModel_cardPile_absent ); //$NON-NLS-1$
+        return containerModel;
     }
 
     /**
@@ -554,35 +555,35 @@ public final class TableModel
         final ICardPile cardPile )
     {
         final boolean cardPileFocusChanged;
-        final CardPileModel oldFocusedCardPileModel;
-        final CardPileModel newFocusedCardPileModel;
+        final ContainerModel oldFocusedContainerModel;
+        final ContainerModel newFocusedContainerModel;
 
         synchronized( lock_ )
         {
             if( cardPile != focusedCardPile_ )
             {
                 cardPileFocusChanged = true;
-                oldFocusedCardPileModel = (focusedCardPile_ != null) ? cardPileModels_.get( focusedCardPile_ ) : null;
-                newFocusedCardPileModel = (cardPile != null) ? cardPileModels_.get( cardPile ) : null;
+                oldFocusedContainerModel = (focusedCardPile_ != null) ? containerModels_.get( focusedCardPile_ ) : null;
+                newFocusedContainerModel = (cardPile != null) ? containerModels_.get( cardPile ) : null;
                 focusedCardPile_ = cardPile;
             }
             else
             {
                 cardPileFocusChanged = false;
-                oldFocusedCardPileModel = null;
-                newFocusedCardPileModel = null;
+                oldFocusedContainerModel = null;
+                newFocusedContainerModel = null;
             }
         }
 
         if( cardPileFocusChanged )
         {
-            if( oldFocusedCardPileModel != null )
+            if( oldFocusedContainerModel != null )
             {
-                oldFocusedCardPileModel.setFocused( false );
+                oldFocusedContainerModel.setFocused( false );
             }
-            if( newFocusedCardPileModel != null )
+            if( newFocusedContainerModel != null )
             {
-                newFocusedCardPileModel.setFocused( true );
+                newFocusedContainerModel.setFocused( true );
             }
         }
     }
@@ -691,21 +692,21 @@ public final class TableModel
     // ======================================================================
 
     /**
-     * A card pile model listener for the table model.
+     * A container model listener for the table model.
      */
     @Immutable
-    private final class CardPileModelListener
-        extends org.gamegineer.table.internal.ui.model.CardPileModelListener
+    private final class ContainerModelListener
+        extends org.gamegineer.table.internal.ui.model.ContainerModelListener
     {
         // ==================================================================
         // Constructors
         // ==================================================================
 
         /**
-         * Initializes a new instance of the {@code CardPileModelListener}
+         * Initializes a new instance of the {@code ContainerModelListener}
          * class.
          */
-        CardPileModelListener()
+        ContainerModelListener()
         {
         }
 
@@ -715,12 +716,12 @@ public final class TableModel
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.internal.ui.model.CardPileModelListener#cardPileChanged(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
+         * @see org.gamegineer.table.internal.ui.model.ContainerModelListener#containerChanged(org.gamegineer.table.internal.ui.model.ContainerModelEvent)
          */
         @Override
         @SuppressWarnings( "synthetic-access" )
-        public void cardPileChanged(
-            final CardPileModelEvent event )
+        public void containerChanged(
+            final ContainerModelEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
@@ -734,12 +735,12 @@ public final class TableModel
         }
 
         /*
-         * @see org.gamegineer.table.internal.ui.model.CardPileModelListener#cardPileModelFocusChanged(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
+         * @see org.gamegineer.table.internal.ui.model.ContainerModelListener#containerModelFocusChanged(org.gamegineer.table.internal.ui.model.ContainerModelEvent)
          */
         @Override
         @SuppressWarnings( "synthetic-access" )
-        public void cardPileModelFocusChanged(
-            final CardPileModelEvent event )
+        public void containerModelFocusChanged(
+            final ContainerModelEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
@@ -782,7 +783,7 @@ public final class TableModel
 
             synchronized( lock_ )
             {
-                createCardPileModel( event.getCardPile() );
+                createContainerModel( event.getCardPile() );
                 isDirty_ = true;
             }
 
@@ -804,10 +805,10 @@ public final class TableModel
             final boolean clearFocusedCardPile;
             synchronized( lock_ )
             {
-                final CardPileModel cardPileModel = cardPileModels_.remove( cardPile );
-                if( cardPileModel != null )
+                final ContainerModel containerModel = containerModels_.remove( cardPile );
+                if( containerModel != null )
                 {
-                    cardPileModel.removeCardPileModelListener( cardPileModelListener_ );
+                    containerModel.removeContainerModelListener( containerModelListener_ );
                 }
 
                 clearFocusedCardPile = (focusedCardPile_ == cardPile);

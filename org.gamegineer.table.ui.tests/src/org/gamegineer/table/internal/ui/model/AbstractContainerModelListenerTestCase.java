@@ -1,5 +1,5 @@
 /*
- * AbstractCardPileModelListenerTestCase.java
+ * AbstractContainerModelListenerTestCase.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -27,17 +27,17 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.ui.model.ICardPileModelListener}
+ * {@link org.gamegineer.table.internal.ui.model.IContainerModelListener}
  * interface.
  */
-public abstract class AbstractCardPileModelListenerTestCase
+public abstract class AbstractContainerModelListenerTestCase
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The card pile model listener under test in the fixture. */
-    private ICardPileModelListener listener_;
+    /** The container model listener under test in the fixture. */
+    private IContainerModelListener listener_;
 
 
     // ======================================================================
@@ -46,9 +46,9 @@ public abstract class AbstractCardPileModelListenerTestCase
 
     /**
      * Initializes a new instance of the
-     * {@code AbstractCardPileModelListenerTestCase} class.
+     * {@code AbstractContainerModelListenerTestCase} class.
      */
-    protected AbstractCardPileModelListenerTestCase()
+    protected AbstractContainerModelListenerTestCase()
     {
     }
 
@@ -58,15 +58,15 @@ public abstract class AbstractCardPileModelListenerTestCase
     // ======================================================================
 
     /**
-     * Creates the card pile model listener to be tested.
+     * Creates the container model listener to be tested.
      * 
-     * @return The card pile model listener to be tested; never {@code null}.
+     * @return The container model listener to be tested; never {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract ICardPileModelListener createCardPileModelListener()
+    protected abstract IContainerModelListener createContainerModelListener()
         throws Exception;
 
     /**
@@ -79,27 +79,27 @@ public abstract class AbstractCardPileModelListenerTestCase
     public void setUp()
         throws Exception
     {
-        listener_ = createCardPileModelListener();
+        listener_ = createContainerModelListener();
         assertNotNull( listener_ );
     }
 
     /**
-     * Ensures the {@code cardPileChanged} method throws an exception when
+     * Ensures the {@code containerChanged} method throws an exception when
      * passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
-    public void testCardPileChanged_Event_Null()
+    public void testContainerChanged_Event_Null()
     {
-        listener_.cardPileChanged( null );
+        listener_.containerChanged( null );
     }
 
     /**
-     * Ensures the {@code cardPileModelFocusChanged} method throws an exception
+     * Ensures the {@code containerModelFocusChanged} method throws an exception
      * when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
-    public void testCardPileModelFocusChanged_Event_Null()
+    public void testContainerModelFocusChanged_Event_Null()
     {
-        listener_.cardPileModelFocusChanged( null );
+        listener_.containerModelFocusChanged( null );
     }
 }

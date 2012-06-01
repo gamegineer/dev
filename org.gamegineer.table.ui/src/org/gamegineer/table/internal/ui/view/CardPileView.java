@@ -38,9 +38,9 @@ import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.IContainerListener;
-import org.gamegineer.table.internal.ui.model.CardPileModel;
-import org.gamegineer.table.internal.ui.model.CardPileModelEvent;
-import org.gamegineer.table.internal.ui.model.ICardPileModelListener;
+import org.gamegineer.table.internal.ui.model.ContainerModel;
+import org.gamegineer.table.internal.ui.model.ContainerModelEvent;
+import org.gamegineer.table.internal.ui.model.IContainerModelListener;
 import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
 
 /**
@@ -68,9 +68,6 @@ final class CardPileView
     /** The component surface design user interface for the card pile base. */
     private final ComponentSurfaceDesignUI baseDesignUI_;
 
-    /** The card pile model listener for this view. */
-    private ICardPileModelListener cardPileModelListener_;
-
     /** The card pile component listener for this view. */
     private IComponentListener componentListener_;
 
@@ -80,11 +77,14 @@ final class CardPileView
     /** The card pile container listener for this view. */
     private IContainerListener containerListener_;
 
+    /** The container model listener for this view. */
+    private IContainerModelListener containerModelListener_;
+
     /** The dirty bounds of this view in table coordinates. */
     private final Rectangle dirtyBounds_;
 
     /** The model associated with this view. */
-    private final CardPileModel model_;
+    private final ContainerModel model_;
 
     /** The table view that owns this view. */
     private TableView tableView_;
@@ -105,7 +105,7 @@ final class CardPileView
      */
     CardPileView(
         /* @NonNull */
-        final CardPileModel model,
+        final ContainerModel model,
         /* @NonNull */
         final ComponentSurfaceDesignUI baseDesignUI )
     {
@@ -113,10 +113,10 @@ final class CardPileView
         assert baseDesignUI != null;
 
         baseDesignUI_ = baseDesignUI;
-        cardPileModelListener_ = null;
         componentListener_ = null;
         componentViews_ = new IdentityHashMap<IComponent, ComponentView>();
         containerListener_ = null;
+        containerModelListener_ = null;
         dirtyBounds_ = new Rectangle();
         model_ = model;
         tableView_ = null;
@@ -126,17 +126,6 @@ final class CardPileView
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Invoked after the card pile model has gained or lost the logical focus.
-     */
-    private void cardPileModelFocusChanged()
-    {
-        if( isInitialized() )
-        {
-            tableView_.repaintTable( getBounds() );
-        }
-    }
 
     /**
      * Invoked when a new component is added to the container.
@@ -192,6 +181,17 @@ final class CardPileView
      * Invoked after a component surface design has changed.
      */
     private void componentSurfaceDesignChanged()
+    {
+        if( isInitialized() )
+        {
+            tableView_.repaintTable( getBounds() );
+        }
+    }
+
+    /**
+     * Invoked after the container model has gained or lost the logical focus.
+     */
+    private void containerModelFocusChanged()
     {
         if( isInitialized() )
         {
@@ -256,7 +256,7 @@ final class CardPileView
     /* @NonNull */
     Rectangle getBounds()
     {
-        final Rectangle bounds = model_.getCardPile().getBounds();
+        final Rectangle bounds = model_.getContainer().getBounds();
         bounds.grow( HORIZONTAL_PADDING, VERTICAL_PADDING );
         return bounds;
     }
@@ -280,14 +280,14 @@ final class CardPileView
 
         tableView_ = tableView;
         dirtyBounds_.setBounds( getBounds() );
-        cardPileModelListener_ = new CardPileModelListener();
-        model_.addCardPileModelListener( cardPileModelListener_ );
+        containerModelListener_ = new ContainerModelListener();
+        model_.addContainerModelListener( containerModelListener_ );
         componentListener_ = new ComponentListener();
-        model_.getCardPile().addComponentListener( componentListener_ );
+        model_.getContainer().addComponentListener( componentListener_ );
         containerListener_ = new ContainerListener();
-        model_.getCardPile().addContainerListener( containerListener_ );
+        model_.getContainer().addContainerListener( containerListener_ );
 
-        for( final IComponent component : model_.getCardPile().getComponents() )
+        for( final IComponent component : model_.getContainer().getComponents() )
         {
             createComponentView( component );
         }
@@ -330,7 +330,7 @@ final class CardPileView
 
         final Rectangle viewBounds = getBounds();
 
-        final List<IComponent> components = model_.getCardPile().getComponents();
+        final List<IComponent> components = model_.getContainer().getComponents();
         if( components.isEmpty() )
         {
             baseDesignUI_.getIcon().paintIcon( c, g, viewBounds.x + HORIZONTAL_PADDING, viewBounds.y + VERTICAL_PADDING );
@@ -389,12 +389,12 @@ final class CardPileView
             deleteComponentView( component );
         }
 
-        model_.getCardPile().removeContainerListener( containerListener_ );
+        model_.getContainer().removeContainerListener( containerListener_ );
         containerListener_ = null;
-        model_.getCardPile().removeComponentListener( componentListener_ );
+        model_.getContainer().removeComponentListener( componentListener_ );
         componentListener_ = null;
-        model_.removeCardPileModelListener( cardPileModelListener_ );
-        cardPileModelListener_ = null;
+        model_.removeContainerModelListener( containerModelListener_ );
+        containerModelListener_ = null;
         tableView_ = null;
     }
 
@@ -402,51 +402,6 @@ final class CardPileView
     // ======================================================================
     // Nested Types
     // ======================================================================
-
-    /**
-     * A card pile model listener for the card pile view.
-     */
-    @Immutable
-    private final class CardPileModelListener
-        extends org.gamegineer.table.internal.ui.model.CardPileModelListener
-    {
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code CardPileModelListener}
-         * class.
-         */
-        CardPileModelListener()
-        {
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.internal.ui.model.CardPileModelListener#cardPileModelFocusChanged(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
-         */
-        @Override
-        public void cardPileModelFocusChanged(
-            final CardPileModelEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    CardPileView.this.cardPileModelFocusChanged();
-                }
-            } );
-        }
-    }
 
     /**
      * A component listener for the card pile view.
@@ -571,6 +526,51 @@ final class CardPileView
                 public void run()
                 {
                     CardPileView.this.componentRemoved( event.getComponent() );
+                }
+            } );
+        }
+    }
+
+    /**
+     * A container model listener for the card pile view.
+     */
+    @Immutable
+    private final class ContainerModelListener
+        extends org.gamegineer.table.internal.ui.model.ContainerModelListener
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code ContainerModelListener}
+         * class.
+         */
+        ContainerModelListener()
+        {
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.ui.model.ContainerModelListener#containerModelFocusChanged(org.gamegineer.table.internal.ui.model.ContainerModelEvent)
+         */
+        @Override
+        public void containerModelFocusChanged(
+            final ContainerModelEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    CardPileView.this.containerModelFocusChanged();
                 }
             } );
         }

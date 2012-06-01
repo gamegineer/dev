@@ -28,9 +28,8 @@ import org.gamegineer.table.core.CardPileOrientation;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesigns;
 import org.gamegineer.table.core.ICardPile;
-import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableEnvironmentFactory;
-import org.gamegineer.table.internal.ui.model.CardPileModel;
+import org.gamegineer.table.internal.ui.model.ContainerModel;
 import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
 import org.gamegineer.table.ui.ComponentSurfaceDesignUIs;
 import org.junit.Before;
@@ -49,11 +48,11 @@ public final class CardPileViewTest
     /** The component surface design user interface for the card pile base. */
     private ComponentSurfaceDesignUI baseDesignUI_;
 
-    /** A card pile model for use in the test fixture. */
-    private CardPileModel cardPileModel_;
-
     /** The card pile view under test in the fixture. */
     private CardPileView cardPileView_;
+
+    /** A container model for use in the test fixture. */
+    private ContainerModel containerModel_;
 
 
     // ======================================================================
@@ -82,13 +81,12 @@ public final class CardPileViewTest
     public void setUp()
         throws Exception
     {
-        final ITable table = TableEnvironmentFactory.createTableEnvironment().createTable();
         final ComponentSurfaceDesign baseDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
         baseDesignUI_ = ComponentSurfaceDesignUIs.createComponentSurfaceDesignUI( baseDesign );
-        final ICardPile cardPile = table.getTableEnvironment().createCardPile();
+        final ICardPile cardPile = TableEnvironmentFactory.createTableEnvironment().createCardPile();
         cardPile.setSurfaceDesign( CardPileOrientation.BASE, baseDesign );
-        cardPileModel_ = new CardPileModel( cardPile );
-        cardPileView_ = new CardPileView( cardPileModel_, baseDesignUI_ );
+        containerModel_ = new ContainerModel( cardPile );
+        cardPileView_ = new CardPileView( containerModel_, baseDesignUI_ );
     }
 
     /**

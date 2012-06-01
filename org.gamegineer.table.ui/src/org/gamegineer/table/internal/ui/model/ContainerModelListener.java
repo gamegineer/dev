@@ -1,5 +1,5 @@
 /*
- * CardPileModelListener.java
+ * ContainerModelListener.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -24,23 +24,23 @@ package org.gamegineer.table.internal.ui.model;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 
 /**
- * Default implementation of {@link ICardPileModelListener}.
+ * Default implementation of {@link IContainerModelListener}.
  * 
  * <p>
  * All methods of this class do nothing.
  * </p>
  */
-public class CardPileModelListener
-    implements ICardPileModelListener
+public class ContainerModelListener
+    implements IContainerModelListener
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardPileModelListener} class.
+     * Initializes a new instance of the {@code ContainerModelListener} class.
      */
-    public CardPileModelListener()
+    public ContainerModelListener()
     {
     }
 
@@ -52,11 +52,11 @@ public class CardPileModelListener
     /**
      * This implementation does nothing.
      * 
-     * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileChanged(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
+     * @see org.gamegineer.table.internal.ui.model.IContainerModelListener#containerChanged(org.gamegineer.table.internal.ui.model.ContainerModelEvent)
      */
     @Override
-    public void cardPileChanged(
-        final CardPileModelEvent event )
+    public void containerChanged(
+        final ContainerModelEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
     }
@@ -64,11 +64,11 @@ public class CardPileModelListener
     /**
      * This implementation does nothing.
      * 
-     * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileModelFocusChanged(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
+     * @see org.gamegineer.table.internal.ui.model.IContainerModelListener#containerModelFocusChanged(org.gamegineer.table.internal.ui.model.ContainerModelEvent)
      */
     @Override
-    public void cardPileModelFocusChanged(
-        final CardPileModelEvent event )
+    public void containerModelFocusChanged(
+        final ContainerModelEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
     }
