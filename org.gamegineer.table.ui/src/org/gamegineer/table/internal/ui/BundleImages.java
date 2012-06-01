@@ -53,6 +53,9 @@ public final class BundleImages
     /** The bundle-relative path to the cursor icons folder. */
     private static final String FOLDER_CURSORS = FOLDER_ICONS + "/cursors"; //$NON-NLS-1$
 
+    /** The bundle-relative path to the object icons folder. */
+    private static final String FOLDER_OBJECTS = FOLDER_ICONS + "/objects"; //$NON-NLS-1$
+
     /** The bundle-relative path to the role icons folder. */
     private static final String FOLDER_ROLES = FOLDER_ICONS + "/roles"; //$NON-NLS-1$
 
@@ -64,6 +67,9 @@ public final class BundleImages
 
     /** The bundle-relative path to the hand cursor icon. */
     public static final String CURSOR_HAND = FOLDER_CURSORS + "/hand.png"; //$NON-NLS-1$
+
+    /** The bundle-relative path to the missing image object icon. */
+    public static final String OBJECT_MISSING_IMAGE = FOLDER_OBJECTS + "/missing-image.png"; //$NON-NLS-1$
 
     /** The bundle-relative path to the editor role icon. */
     public static final String ROLE_EDITOR = FOLDER_ROLES + "/editor.png"; //$NON-NLS-1$

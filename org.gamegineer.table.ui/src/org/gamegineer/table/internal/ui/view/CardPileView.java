@@ -33,19 +33,15 @@ import java.util.Map;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
-import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.IContainerListener;
-import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.model.CardPileModel;
 import org.gamegineer.table.internal.ui.model.CardPileModelEvent;
 import org.gamegineer.table.internal.ui.model.ICardPileModelListener;
 import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
-import org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry;
 
 /**
  * A view of a card pile.
@@ -75,11 +71,11 @@ final class CardPileView
     /** The card pile model listener for this view. */
     private ICardPileModelListener cardPileModelListener_;
 
-    /** The collection of card views. */
-    private final Map<ICard, CardView> cardViews_;
-
     /** The card pile component listener for this view. */
     private IComponentListener componentListener_;
+
+    /** The collection of component views. */
+    private final Map<IComponent, ComponentView> componentViews_;
 
     /** The card pile container listener for this view. */
     private IContainerListener containerListener_;
@@ -118,8 +114,8 @@ final class CardPileView
 
         baseDesignUI_ = baseDesignUI;
         cardPileModelListener_ = null;
-        cardViews_ = new IdentityHashMap<ICard, CardView>();
         componentListener_ = null;
+        componentViews_ = new IdentityHashMap<IComponent, ComponentView>();
         containerListener_ = null;
         dirtyBounds_ = new Rectangle();
         model_ = model;
@@ -156,7 +152,7 @@ final class CardPileView
 
         if( isInitialized() )
         {
-            createCardView( (ICard)component ); // FIXME: remove cast
+            createComponentView( component );
         }
     }
 
@@ -188,7 +184,7 @@ final class CardPileView
 
         if( isInitialized() )
         {
-            deleteCardView( (ICard)component ); // FIXME: remove cast
+            deleteComponentView( component );
         }
     }
 
@@ -204,52 +200,48 @@ final class CardPileView
     }
 
     /**
-     * Creates a card view for the specified card and adds it to the card pile
-     * view.
+     * Creates a component view for the specified component and adds it to the
+     * card pile view.
      * 
      * <p>
      * This method must only be called after the view is initialized.
      * </p>
      * 
-     * @param card
-     *        The card; must not be {@code null}.
+     * @param component
+     *        The component; must not be {@code null}.
      */
-    private void createCardView(
+    private void createComponentView(
         /* @NonNull */
-        final ICard card )
+        final IComponent component )
     {
-        assert card != null;
+        assert component != null;
         assert isInitialized();
 
-        final IComponentSurfaceDesignUIRegistry componentSurfaceDesignUIRegistry = Activator.getDefault().getComponentSurfaceDesignUIRegistry();
-        assert componentSurfaceDesignUIRegistry != null;
-        final ComponentSurfaceDesignUI backDesignUI = componentSurfaceDesignUIRegistry.getComponentSurfaceDesignUI( card.getSurfaceDesign( CardOrientation.BACK ).getId() );
-        final ComponentSurfaceDesignUI faceDesignUI = componentSurfaceDesignUIRegistry.getComponentSurfaceDesignUI( card.getSurfaceDesign( CardOrientation.FACE ).getId() );
-        final CardView view = new CardView( model_.getComponentModel( card ), backDesignUI, faceDesignUI );
-        final CardView oldView = cardViews_.put( card, view );
+        final ComponentView view = new ComponentView( model_.getComponentModel( component ) );
+        final ComponentView oldView = componentViews_.put( component, view );
         assert oldView == null;
         view.initialize( this );
     }
 
     /**
-     * Deletes the card view associated with the specified card and removes it
-     * from the card pile view.
+     * Deletes the component view associated with the specified component and
+     * removes it from the card pile view.
      * 
      * <p>
      * This method must only be called after the view is initialized.
      * </p>
      * 
-     * @param card
-     *        The card; must not be {@code null}.
+     * @param component
+     *        The component; must not be {@code null}.
      */
-    private void deleteCardView(
+    private void deleteComponentView(
         /* @NonNull */
-        final ICard card )
+        final IComponent component )
     {
-        assert card != null;
+        assert component != null;
         assert isInitialized();
 
-        final CardView view = cardViews_.remove( card );
+        final ComponentView view = componentViews_.remove( component );
         if( view != null )
         {
             view.uninitialize();
@@ -297,7 +289,7 @@ final class CardPileView
 
         for( final IComponent component : model_.getCardPile().getComponents() )
         {
-            createCardView( (ICard)component ); // FIXME: remove cast
+            createComponentView( component );
         }
 
         tableView_.repaintTable( dirtyBounds_ );
@@ -347,10 +339,10 @@ final class CardPileView
         {
             for( final IComponent component : components )
             {
-                final CardView cardView = cardViews_.get( component );
-                if( cardView != null )
+                final ComponentView componentView = componentViews_.get( component );
+                if( componentView != null )
                 {
-                    cardView.paint( c, g );
+                    componentView.paint( c, g );
                 }
             }
         }
@@ -392,9 +384,9 @@ final class CardPileView
 
         tableView_.repaintTable( dirtyBounds_ );
 
-        for( final ICard card : new ArrayList<ICard>( cardViews_.keySet() ) )
+        for( final IComponent component : new ArrayList<IComponent>( componentViews_.keySet() ) )
         {
-            deleteCardView( card );
+            deleteComponentView( component );
         }
 
         model_.getCardPile().removeContainerListener( containerListener_ );

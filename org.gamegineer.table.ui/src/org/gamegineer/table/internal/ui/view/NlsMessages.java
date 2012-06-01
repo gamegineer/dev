@@ -898,6 +898,11 @@ final class NlsMessages
     /** The text for the local role in the players list. */
     public static String TableNetworkPlayerView_playersList_role_local;
 
+    // --- ViewUtils --------------------------------------------------------
+
+    /** The name of the default component surface design user interface. */
+    public static String ViewUtils_defaultComponentSurfaceDesignUI_name;
+
 
     // ======================================================================
     // Constructors

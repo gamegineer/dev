@@ -1,5 +1,5 @@
 /*
- * CardViewTest.java
+ * ComponentViewTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -24,45 +24,26 @@ package org.gamegineer.table.internal.ui.view;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Rectangle;
-import org.gamegineer.table.core.CardOrientation;
-import org.gamegineer.table.core.ComponentSurfaceDesign;
-import org.gamegineer.table.core.ComponentSurfaceDesigns;
-import org.gamegineer.table.core.IComponent;
-import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.internal.ui.model.ComponentModel;
-import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
-import org.gamegineer.table.ui.ComponentSurfaceDesignUIs;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.view.CardView} class.
+ * {@link org.gamegineer.table.internal.ui.view.ComponentView} class.
  */
-public final class CardViewTest
+public final class ComponentViewTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /**
-     * The component surface design user interface for the card back for use in
-     * the test fixture.
-     */
-    private ComponentSurfaceDesignUI backDesignUI_;
-
-    /** The card view under test in the fixture. */
-    private CardView cardView_;
-
     /** A component model for use in the test fixture. */
     private ComponentModel componentModel_;
 
-    /**
-     * The component surface design user interface for the card face for use in
-     * the test fixture.
-     */
-    private ComponentSurfaceDesignUI faceDesignUI_;
+    /** The component view under test in the fixture. */
+    private ComponentView componentView_;
 
 
     // ======================================================================
@@ -70,9 +51,9 @@ public final class CardViewTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardViewTest} class.
+     * Initializes a new instance of the {@code ComponentViewTest} class.
      */
-    public CardViewTest()
+    public ComponentViewTest()
     {
     }
 
@@ -91,16 +72,8 @@ public final class CardViewTest
     public void setUp()
         throws Exception
     {
-        final ITable table = TableEnvironmentFactory.createTableEnvironment().createTable();
-        final ComponentSurfaceDesign backDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
-        backDesignUI_ = ComponentSurfaceDesignUIs.createComponentSurfaceDesignUI( backDesign );
-        final ComponentSurfaceDesign faceDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
-        faceDesignUI_ = ComponentSurfaceDesignUIs.createComponentSurfaceDesignUI( faceDesign );
-        final IComponent component = table.getTableEnvironment().createCard();
-        component.setSurfaceDesign( CardOrientation.BACK, backDesign );
-        component.setSurfaceDesign( CardOrientation.FACE, faceDesign );
-        componentModel_ = new ComponentModel( component );
-        cardView_ = new CardView( componentModel_, backDesignUI_, faceDesignUI_ );
+        componentModel_ = new ComponentModel( TableEnvironmentFactory.createTableEnvironment().createCard() );
+        componentView_ = new ComponentView( componentModel_ );
     }
 
     /**
@@ -109,12 +82,12 @@ public final class CardViewTest
     @Test
     public void testGetBounds_ReturnValue_Copy()
     {
-        final Rectangle bounds = cardView_.getBounds();
+        final Rectangle bounds = componentView_.getBounds();
         final Rectangle expectedBounds = new Rectangle( bounds );
 
         bounds.setBounds( 1010, 2020, 101, 202 );
 
-        assertEquals( expectedBounds, cardView_.getBounds() );
+        assertEquals( expectedBounds, componentView_.getBounds() );
     }
 
     /**
@@ -123,6 +96,6 @@ public final class CardViewTest
     @Test
     public void testGetBounds_ReturnValue_NonNull()
     {
-        assertNotNull( cardView_.getBounds() );
+        assertNotNull( componentView_.getBounds() );
     }
 }

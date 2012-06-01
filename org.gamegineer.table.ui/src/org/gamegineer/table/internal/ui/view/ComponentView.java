@@ -1,5 +1,5 @@
 /*
- * CardView.java
+ * ComponentView.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -28,26 +28,24 @@ import java.awt.Rectangle;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ComponentEvent;
-import org.gamegineer.table.core.ComponentOrientation;
+import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.IComponentListener;
+import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.model.ComponentModel;
 import org.gamegineer.table.internal.ui.model.IComponentModelListener;
 import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
+import org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry;
 
 /**
- * A view of a card.
+ * A view of a component.
  */
 @NotThreadSafe
-final class CardView
+final class ComponentView
 {
     // ======================================================================
     // Fields
     // ======================================================================
-
-    /** The component surface design user interface for the card back. */
-    private final ComponentSurfaceDesignUI backDesignUI_;
 
     /** The card pile view that owns this view. */
     private CardPileView cardPileView_;
@@ -58,9 +56,6 @@ final class CardView
     /** The component model listener for this view. */
     private IComponentModelListener componentModelListener_;
 
-    /** The component surface design user interface for the card face. */
-    private final ComponentSurfaceDesignUI faceDesignUI_;
-
     /** The model associated with this view. */
     private final ComponentModel model_;
 
@@ -70,34 +65,20 @@ final class CardView
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardView} class.
+     * Initializes a new instance of the {@code ComponentView} class.
      * 
      * @param model
      *        The model associated with this view; must not be {@code null}.
-     * @param backDesignUI
-     *        The component surface design user interface for the card back;
-     *        must not be {@code null}.
-     * @param faceDesignUI
-     *        The component surface design user interface for the card face;
-     *        must not be {@code null}.
      */
-    CardView(
+    ComponentView(
         /* @NonNull */
-        final ComponentModel model,
-        /* @NonNull */
-        final ComponentSurfaceDesignUI backDesignUI,
-        /* @NonNull */
-        final ComponentSurfaceDesignUI faceDesignUI )
+        final ComponentModel model )
     {
         assert model != null;
-        assert backDesignUI != null;
-        assert faceDesignUI != null;
 
-        backDesignUI_ = backDesignUI;
         cardPileView_ = null;
         componentListener_ = null;
         componentModelListener_ = null;
-        faceDesignUI_ = faceDesignUI;
         model_ = model;
     }
 
@@ -137,17 +118,19 @@ final class CardView
     /* @NonNull */
     private ComponentSurfaceDesignUI getActiveComponentSurfaceDesignUI()
     {
-        final ComponentOrientation orientation = model_.getComponent().getOrientation();
-        if( orientation == CardOrientation.BACK )
+        final ComponentSurfaceDesign componentSurfaceDesign = model_.getComponent().getSurfaceDesign( model_.getComponent().getOrientation() );
+
+        final IComponentSurfaceDesignUIRegistry componentSurfaceDesignUIRegistry = Activator.getDefault().getComponentSurfaceDesignUIRegistry();
+        if( componentSurfaceDesignUIRegistry != null )
         {
-            return backDesignUI_;
-        }
-        else if( orientation == CardOrientation.FACE )
-        {
-            return faceDesignUI_;
+            final ComponentSurfaceDesignUI componentSurfaceDesignUI = componentSurfaceDesignUIRegistry.getComponentSurfaceDesignUI( componentSurfaceDesign.getId() );
+            if( componentSurfaceDesignUI != null )
+            {
+                return componentSurfaceDesignUI;
+            }
         }
 
-        throw new AssertionError( "unknown card orientation" ); //$NON-NLS-1$
+        return ViewUtils.createDefaultComponentSurfaceDesignUI( componentSurfaceDesign );
     }
 
     /**
@@ -250,7 +233,7 @@ final class CardView
     // ======================================================================
 
     /**
-     * A component listener for the card view.
+     * A component listener for the component view.
      */
     @Immutable
     private final class ComponentListener
@@ -287,7 +270,7 @@ final class CardView
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
-                    CardView.this.componentOrientationChanged();
+                    ComponentView.this.componentOrientationChanged();
                 }
             } );
         }
@@ -307,14 +290,14 @@ final class CardView
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
-                    CardView.this.componentSurfaceDesignChanged();
+                    ComponentView.this.componentSurfaceDesignChanged();
                 }
             } );
         }
     }
 
     /**
-     * A component model listener for the card view.
+     * A component model listener for the component view.
      */
     @Immutable
     private final class ComponentModelListener
