@@ -51,9 +51,6 @@ public final class CardPileViewTest
     /** The card pile view under test in the fixture. */
     private CardPileView cardPileView_;
 
-    /** A container model for use in the test fixture. */
-    private ContainerModel containerModel_;
-
 
     // ======================================================================
     // Constructors
@@ -85,8 +82,7 @@ public final class CardPileViewTest
         baseDesignUI_ = ComponentSurfaceDesignUIs.createComponentSurfaceDesignUI( baseDesign );
         final ICardPile cardPile = TableEnvironmentFactory.createTableEnvironment().createCardPile();
         cardPile.setSurfaceDesign( CardPileOrientation.BASE, baseDesign );
-        containerModel_ = new ContainerModel( cardPile );
-        cardPileView_ = new CardPileView( containerModel_, baseDesignUI_ );
+        cardPileView_ = new CardPileView( new ContainerModel( cardPile ), baseDesignUI_ );
     }
 
     /**

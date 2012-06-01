@@ -39,9 +39,6 @@ public final class ComponentViewTest
     // Fields
     // ======================================================================
 
-    /** A component model for use in the test fixture. */
-    private ComponentModel componentModel_;
-
     /** The component view under test in the fixture. */
     private ComponentView componentView_;
 
@@ -72,8 +69,7 @@ public final class ComponentViewTest
     public void setUp()
         throws Exception
     {
-        componentModel_ = new ComponentModel( TableEnvironmentFactory.createTableEnvironment().createCard() );
-        componentView_ = new ComponentView( componentModel_ );
+        componentView_ = new ComponentView( new ComponentModel( TableEnvironmentFactory.createTableEnvironment().createCard() ) );
     }
 
     /**
