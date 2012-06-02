@@ -47,14 +47,14 @@ final class ComponentView
     // Fields
     // ======================================================================
 
-    /** The card pile view that owns this view. */
-    private CardPileView cardPileView_;
-
     /** The component listener for this view. */
     private IComponentListener componentListener_;
 
     /** The component model listener for this view. */
     private IComponentModelListener componentModelListener_;
+
+    /** The container view that owns this view. */
+    private ContainerView containerView_;
 
     /** The model associated with this view. */
     private final ComponentModel model_;
@@ -76,9 +76,9 @@ final class ComponentView
     {
         assert model != null;
 
-        cardPileView_ = null;
         componentListener_ = null;
         componentModelListener_ = null;
+        containerView_ = null;
         model_ = model;
     }
 
@@ -94,7 +94,7 @@ final class ComponentView
     {
         if( isInitialized() )
         {
-            cardPileView_.repaintCardPile( getBounds() );
+            containerView_.repaintContainer( getBounds() );
         }
     }
 
@@ -105,7 +105,7 @@ final class ComponentView
     {
         if( isInitialized() )
         {
-            cardPileView_.repaintCardPile( getBounds() );
+            containerView_.repaintContainer( getBounds() );
         }
     }
 
@@ -151,23 +151,23 @@ final class ComponentView
      * This method must only be called when the view is uninitialized.
      * </p>
      * 
-     * @param cardPileView
-     *        The card pile view that owns this view; must not be {@code null}.
+     * @param containerView
+     *        The container view that owns this view; must not be {@code null}.
      */
     void initialize(
         /* @NonNull */
-        final CardPileView cardPileView )
+        final ContainerView containerView )
     {
-        assert cardPileView != null;
+        assert containerView != null;
         assert !isInitialized();
 
-        cardPileView_ = cardPileView;
+        containerView_ = containerView;
         componentModelListener_ = new ComponentModelListener();
         model_.addComponentModelListener( componentModelListener_ );
         componentListener_ = new ComponentListener();
         model_.getComponent().addComponentListener( componentListener_ );
 
-        cardPileView_.repaintCardPile( getBounds() );
+        containerView_.repaintContainer( getBounds() );
     }
 
     /**
@@ -178,7 +178,7 @@ final class ComponentView
      */
     private boolean isInitialized()
     {
-        return cardPileView_ != null;
+        return containerView_ != null;
     }
 
     /**
@@ -218,13 +218,13 @@ final class ComponentView
     {
         assert isInitialized();
 
-        cardPileView_.repaintCardPile( getBounds() );
+        containerView_.repaintContainer( getBounds() );
 
         model_.getComponent().removeComponentListener( componentListener_ );
         componentListener_ = null;
         model_.removeComponentModelListener( componentModelListener_ );
         componentModelListener_ = null;
-        cardPileView_ = null;
+        containerView_ = null;
     }
 
 

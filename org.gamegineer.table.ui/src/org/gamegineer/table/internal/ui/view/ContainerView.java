@@ -1,5 +1,5 @@
 /*
- * CardPileView.java
+ * ContainerView.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -28,53 +28,52 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.ComponentEvent;
+import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.IContainerListener;
+import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.model.ContainerModel;
 import org.gamegineer.table.internal.ui.model.ContainerModelEvent;
 import org.gamegineer.table.internal.ui.model.IContainerModelListener;
 import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
+import org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry;
 
 /**
- * A view of a card pile.
+ * A view of a container.
  */
 @NotThreadSafe
-final class CardPileView
+final class ContainerView
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /**
-     * The horizontal padding between the focus border and the card pile in
+     * The horizontal padding between the focus border and the container in
      * table coordinates.
      */
     private static final int HORIZONTAL_PADDING = 2;
 
     /**
-     * The vertical padding between the focus border and the card pile in table
+     * The vertical padding between the focus border and the container in table
      * coordinates.
      */
     private static final int VERTICAL_PADDING = 2;
 
-    /** The component surface design user interface for the card pile base. */
-    private final ComponentSurfaceDesignUI baseDesignUI_;
-
-    /** The card pile component listener for this view. */
+    /** The component listener for this view. */
     private IComponentListener componentListener_;
 
     /** The collection of component views. */
     private final Map<IComponent, ComponentView> componentViews_;
 
-    /** The card pile container listener for this view. */
+    /** The container listener for this view. */
     private IContainerListener containerListener_;
 
     /** The container model listener for this view. */
@@ -95,24 +94,17 @@ final class CardPileView
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardPileView} class.
+     * Initializes a new instance of the {@code ContainerView} class.
      * 
      * @param model
      *        The model associated with this view; must not be {@code null}.
-     * @param baseDesignUI
-     *        The component surface design user interface for the card pile
-     *        base; must not be {@code null}.
      */
-    CardPileView(
+    ContainerView(
         /* @NonNull */
-        final ContainerModel model,
-        /* @NonNull */
-        final ComponentSurfaceDesignUI baseDesignUI )
+        final ContainerModel model )
     {
         assert model != null;
-        assert baseDesignUI != null;
 
-        baseDesignUI_ = baseDesignUI;
         componentListener_ = null;
         componentViews_ = new IdentityHashMap<IComponent, ComponentView>();
         containerListener_ = null;
@@ -201,7 +193,7 @@ final class CardPileView
 
     /**
      * Creates a component view for the specified component and adds it to the
-     * card pile view.
+     * container view.
      * 
      * <p>
      * This method must only be called after the view is initialized.
@@ -225,7 +217,7 @@ final class CardPileView
 
     /**
      * Deletes the component view associated with the specified component and
-     * removes it from the card pile view.
+     * removes it from the container view.
      * 
      * <p>
      * This method must only be called after the view is initialized.
@@ -246,6 +238,30 @@ final class CardPileView
         {
             view.uninitialize();
         }
+    }
+
+    /**
+     * Gets the active component surface design user interface.
+     * 
+     * @return The active component surface design user interface; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    private ComponentSurfaceDesignUI getActiveComponentSurfaceDesignUI()
+    {
+        final ComponentSurfaceDesign componentSurfaceDesign = model_.getContainer().getSurfaceDesign( model_.getContainer().getOrientation() );
+
+        final IComponentSurfaceDesignUIRegistry componentSurfaceDesignUIRegistry = Activator.getDefault().getComponentSurfaceDesignUIRegistry();
+        if( componentSurfaceDesignUIRegistry != null )
+        {
+            final ComponentSurfaceDesignUI componentSurfaceDesignUI = componentSurfaceDesignUIRegistry.getComponentSurfaceDesignUI( componentSurfaceDesign.getId() );
+            if( componentSurfaceDesignUI != null )
+            {
+                return componentSurfaceDesignUI;
+            }
+        }
+
+        return ViewUtils.createDefaultComponentSurfaceDesignUI( componentSurfaceDesign );
     }
 
     /**
@@ -330,20 +346,14 @@ final class CardPileView
 
         final Rectangle viewBounds = getBounds();
 
-        final List<IComponent> components = model_.getContainer().getComponents();
-        if( components.isEmpty() )
+        getActiveComponentSurfaceDesignUI().getIcon().paintIcon( c, g, viewBounds.x + HORIZONTAL_PADDING, viewBounds.y + VERTICAL_PADDING );
+
+        for( final IComponent component : model_.getContainer().getComponents() )
         {
-            baseDesignUI_.getIcon().paintIcon( c, g, viewBounds.x + HORIZONTAL_PADDING, viewBounds.y + VERTICAL_PADDING );
-        }
-        else
-        {
-            for( final IComponent component : components )
+            final ComponentView componentView = componentViews_.get( component );
+            if( componentView != null )
             {
-                final ComponentView componentView = componentViews_.get( component );
-                if( componentView != null )
-                {
-                    componentView.paint( c, g );
-                }
+                componentView.paint( c, g );
             }
         }
 
@@ -357,12 +367,12 @@ final class CardPileView
     }
 
     /**
-     * Repaints the specified region of the card pile.
+     * Repaints the specified region of the container.
      * 
      * @param region
-     *        The region of the card pile to repaint in table coordinates.
+     *        The region of the container to repaint in table coordinates.
      */
-    void repaintCardPile(
+    void repaintContainer(
         /* @NonNull */
         final Rectangle region )
     {
@@ -404,7 +414,7 @@ final class CardPileView
     // ======================================================================
 
     /**
-     * A component listener for the card pile view.
+     * A component listener for the container view.
      */
     @Immutable
     private final class ComponentListener
@@ -441,7 +451,7 @@ final class CardPileView
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
-                    CardPileView.this.componentBoundsChanged();
+                    ContainerView.this.componentBoundsChanged();
                 }
             } );
         }
@@ -461,14 +471,14 @@ final class CardPileView
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
-                    CardPileView.this.componentSurfaceDesignChanged();
+                    ContainerView.this.componentSurfaceDesignChanged();
                 }
             } );
         }
     }
 
     /**
-     * A container listener for the card pile view.
+     * A container listener for the container view.
      */
     @Immutable
     private final class ContainerListener
@@ -505,7 +515,7 @@ final class CardPileView
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
-                    CardPileView.this.componentAdded( event.getComponent() );
+                    ContainerView.this.componentAdded( event.getComponent() );
                 }
             } );
         }
@@ -525,14 +535,14 @@ final class CardPileView
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
-                    CardPileView.this.componentRemoved( event.getComponent() );
+                    ContainerView.this.componentRemoved( event.getComponent() );
                 }
             } );
         }
     }
 
     /**
-     * A container model listener for the card pile view.
+     * A container model listener for the container view.
      */
     @Immutable
     private final class ContainerModelListener
@@ -570,7 +580,7 @@ final class CardPileView
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
-                    CardPileView.this.containerModelFocusChanged();
+                    ContainerView.this.containerModelFocusChanged();
                 }
             } );
         }

@@ -1,5 +1,5 @@
 /*
- * CardPileViewTest.java
+ * ContainerViewTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -24,32 +24,23 @@ package org.gamegineer.table.internal.ui.view;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Rectangle;
-import org.gamegineer.table.core.CardPileOrientation;
-import org.gamegineer.table.core.ComponentSurfaceDesign;
-import org.gamegineer.table.core.ComponentSurfaceDesigns;
-import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.internal.ui.model.ContainerModel;
-import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
-import org.gamegineer.table.ui.ComponentSurfaceDesignUIs;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.view.CardPileView} class.
+ * {@link org.gamegineer.table.internal.ui.view.ContainerView} class.
  */
-public final class CardPileViewTest
+public final class ContainerViewTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The component surface design user interface for the card pile base. */
-    private ComponentSurfaceDesignUI baseDesignUI_;
-
-    /** The card pile view under test in the fixture. */
-    private CardPileView cardPileView_;
+    /** The container view under test in the fixture. */
+    private ContainerView containerView_;
 
 
     // ======================================================================
@@ -57,9 +48,9 @@ public final class CardPileViewTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardPileViewTest} class.
+     * Initializes a new instance of the {@code ContainerViewTest} class.
      */
-    public CardPileViewTest()
+    public ContainerViewTest()
     {
     }
 
@@ -78,11 +69,7 @@ public final class CardPileViewTest
     public void setUp()
         throws Exception
     {
-        final ComponentSurfaceDesign baseDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
-        baseDesignUI_ = ComponentSurfaceDesignUIs.createComponentSurfaceDesignUI( baseDesign );
-        final ICardPile cardPile = TableEnvironmentFactory.createTableEnvironment().createCardPile();
-        cardPile.setSurfaceDesign( CardPileOrientation.BASE, baseDesign );
-        cardPileView_ = new CardPileView( new ContainerModel( cardPile ), baseDesignUI_ );
+        containerView_ = new ContainerView( new ContainerModel( TableEnvironmentFactory.createTableEnvironment().createCardPile() ) );
     }
 
     /**
@@ -91,12 +78,12 @@ public final class CardPileViewTest
     @Test
     public void testGetBounds_ReturnValue_Copy()
     {
-        final Rectangle bounds = cardPileView_.getBounds();
+        final Rectangle bounds = containerView_.getBounds();
         final Rectangle expectedBounds = new Rectangle( bounds );
 
         bounds.setBounds( 1010, 2020, 101, 202 );
 
-        assertEquals( expectedBounds, cardPileView_.getBounds() );
+        assertEquals( expectedBounds, containerView_.getBounds() );
     }
 
     /**
@@ -105,6 +92,6 @@ public final class CardPileViewTest
     @Test
     public void testGetBounds_ReturnValue_NonNull()
     {
-        assertNotNull( cardPileView_.getBounds() );
+        assertNotNull( containerView_.getBounds() );
     }
 }

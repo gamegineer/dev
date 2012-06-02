@@ -97,8 +97,8 @@ final class NonNlsMessages
     /** The table model listener is already registered. */
     public static String TableModel_addTableModelListener_listener_registered;
 
-    /** The card pile is not present in the table. */
-    public static String TableModel_getCardPileModel_cardPile_absent;
+    /** The container is not present in the table. */
+    public static String TableModel_getContainerModel_container_absent;
 
     /** An error occurred while reading the table memento. */
     public static String TableModel_readTableMemento_error;

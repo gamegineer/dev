@@ -70,6 +70,7 @@ import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentSurfaceDesignRegistry;
+import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
@@ -84,8 +85,6 @@ import org.gamegineer.table.internal.ui.wizards.hosttablenetwork.HostTableNetwor
 import org.gamegineer.table.internal.ui.wizards.jointablenetwork.JoinTableNetworkWizard;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.PlayerRole;
-import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
-import org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry;
 
 /**
  * A view of the table.
@@ -107,8 +106,8 @@ final class TableView
     /** The background paint. */
     private final Paint backgroundPaint_;
 
-    /** The collection of card pile views. */
-    private final Map<ICardPile, CardPileView> cardPileViews_;
+    /** The collection of container views. */
+    private final Map<IContainer, ContainerView> containerViews_;
 
     /** The key listener for this view. */
     private final KeyListener keyListener_;
@@ -150,7 +149,7 @@ final class TableView
 
         actionMediator_ = new ActionMediator();
         backgroundPaint_ = createBackgroundPaint();
-        cardPileViews_ = new IdentityHashMap<ICardPile, CardPileView>();
+        containerViews_ = new IdentityHashMap<IContainer, ContainerView>();
         keyListener_ = createKeyListener();
         model_ = model;
         mouseInputHandlers_ = createMouseInputHandlers();
@@ -250,7 +249,7 @@ final class TableView
 
         for( final ICardPile cardPile : model_.getTable().getCardPiles() )
         {
-            createCardPileView( cardPile );
+            createContainerView( cardPile );
         }
     }
 
@@ -835,7 +834,7 @@ final class TableView
     {
         assert cardPile != null;
 
-        createCardPileView( cardPile );
+        createContainerView( cardPile );
     }
 
     /**
@@ -850,7 +849,7 @@ final class TableView
     {
         assert cardPile != null;
 
-        deleteCardPileView( cardPile );
+        deleteContainerView( cardPile );
     }
 
     /**
@@ -905,23 +904,20 @@ final class TableView
     }
 
     /**
-     * Creates a card pile view for the specified card pile and adds it to the
+     * Creates a container view for the specified container and adds it to the
      * table view.
      * 
-     * @param cardPile
-     *        The card pile; must not be {@code null}.
+     * @param container
+     *        The container; must not be {@code null}.
      */
-    private void createCardPileView(
+    private void createContainerView(
         /* @NonNull */
-        final ICardPile cardPile )
+        final IContainer container )
     {
-        assert cardPile != null;
+        assert container != null;
 
-        final IComponentSurfaceDesignUIRegistry componentSurfaceDesignUIRegistry = Activator.getDefault().getComponentSurfaceDesignUIRegistry();
-        assert componentSurfaceDesignUIRegistry != null;
-        final ComponentSurfaceDesignUI baseDesignUI = componentSurfaceDesignUIRegistry.getComponentSurfaceDesignUI( cardPile.getSurfaceDesign( CardPileOrientation.BASE ).getId() );
-        final CardPileView view = new CardPileView( model_.getCardPileModel( cardPile ), baseDesignUI );
-        final CardPileView oldView = cardPileViews_.put( cardPile, view );
+        final ContainerView view = new ContainerView( model_.getContainerModel( container ) );
+        final ContainerView oldView = containerViews_.put( container, view );
         assert oldView == null;
         view.initialize( this );
     }
@@ -1013,19 +1009,19 @@ final class TableView
     }
 
     /**
-     * Deletes the card pile view associated with the specified card pile and
+     * Deletes the container view associated with the specified container and
      * removes it from the table view.
      * 
-     * @param cardPile
-     *        The card pile; must not be {@code null}.
+     * @param container
+     *        The container; must not be {@code null}.
      */
-    private void deleteCardPileView(
+    private void deleteContainerView(
         /* @NonNull */
-        final ICardPile cardPile )
+        final IContainer container )
     {
-        assert cardPile != null;
+        assert container != null;
 
-        final CardPileView view = cardPileViews_.remove( cardPile );
+        final ContainerView view = containerViews_.remove( container );
         if( view != null )
         {
             view.uninitialize();
@@ -1146,7 +1142,7 @@ final class TableView
 
         for( final ICardPile cardPile : model_.getTable().getCardPiles() )
         {
-            final CardPileView view = cardPileViews_.get( cardPile );
+            final ContainerView view = containerViews_.get( cardPile );
             if( view != null )
             {
                 if( clipBounds.intersects( view.getBounds() ) )
@@ -1207,9 +1203,9 @@ final class TableView
     @Override
     public void removeNotify()
     {
-        for( final ICardPile cardPile : new ArrayList<ICardPile>( cardPileViews_.keySet() ) )
+        for( final IContainer container : new ArrayList<IContainer>( containerViews_.keySet() ) )
         {
-            deleteCardPileView( cardPile );
+            deleteContainerView( container );
         }
 
         removeMouseMotionListener( mouseInputListener_ );

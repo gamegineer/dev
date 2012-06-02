@@ -263,34 +263,34 @@ public final class TableModel
     }
 
     /**
-     * Gets the container model associated with the specified card pile.
+     * Gets the container model associated with the specified container.
      * 
-     * @param cardPile
-     *        The card pile; must not be {@code null}.
+     * @param container
+     *        The container; must not be {@code null}.
      * 
-     * @return The container model associated with the specified card pile;
+     * @return The container model associated with the specified container;
      *         never {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code cardPile} does not exist in the table associated with
+     *         If {@code container} does not exist in the table associated with
      *         this model.
      * @throws java.lang.NullPointerException
-     *         If {@code cardPile} is {@code null}.
+     *         If {@code container} is {@code null}.
      */
     /* @NonNull */
-    public ContainerModel getCardPileModel(
+    public ContainerModel getContainerModel(
         /* @NonNull */
-        final ICardPile cardPile )
+        final IContainer container )
     {
-        assertArgumentNotNull( cardPile, "cardPile" ); //$NON-NLS-1$
+        assertArgumentNotNull( container, "container" ); //$NON-NLS-1$
 
         final ContainerModel containerModel;
         synchronized( lock_ )
         {
-            containerModel = containerModels_.get( cardPile );
+            containerModel = containerModels_.get( container );
         }
 
-        assertArgumentLegal( containerModel != null, "cardPile", NonNlsMessages.TableModel_getCardPileModel_cardPile_absent ); //$NON-NLS-1$
+        assertArgumentLegal( containerModel != null, "container", NonNlsMessages.TableModel_getContainerModel_container_absent ); //$NON-NLS-1$
         return containerModel;
     }
 

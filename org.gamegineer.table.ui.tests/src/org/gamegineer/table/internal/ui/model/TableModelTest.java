@@ -34,6 +34,7 @@ import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.core.CardPiles;
 import org.gamegineer.table.core.ICardPile;
+import org.gamegineer.table.core.IContainer;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -228,11 +229,11 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures a change to a card pile associated with a card pile model owned
+     * Ensures a change to a container associated with a container model owned
      * by the table model fires a table model dirty flag changed event.
      */
     @Test
-    public void testCardPileModel_CardPileChanged_FiresTableModelDirtyFlagChangedEvent()
+    public void testContainerModel_ContainerChanged_FiresTableModelDirtyFlagChangedEvent()
     {
         final ICardPile cardPile = createUniqueCardPile();
         model_.getTable().addCardPile( cardPile );
@@ -247,11 +248,11 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures a change to a card pile associated with a card pile model owned
+     * Ensures a change to a container associated with a container model owned
      * by the table model fires a table changed event.
      */
     @Test
-    public void testCardPileModel_CardPileChanged_FiresTableChangedEvent()
+    public void testContainerModel_ContainerChanged_FiresTableChangedEvent()
     {
         final ICardPile cardPile = createUniqueCardPile();
         model_.getTable().addCardPile( cardPile );
@@ -266,23 +267,23 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code getCardPileModel} throws an exception when passed a
-     * card pile that is absent from the table.
+     * Ensures the {@code getContainerModel} throws an exception when passed a
+     * container that is absent from the table.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testGetCardPileModel_CardPile_Absent()
+    public void testGetContainerModel_Container_Absent()
     {
-        model_.getCardPileModel( EasyMock.createMock( ICardPile.class ) );
+        model_.getContainerModel( EasyMock.createMock( IContainer.class ) );
     }
 
     /**
-     * Ensures the {@code getCardPileModel} throws an exception when passed a
-     * {@code null} card pile.
+     * Ensures the {@code getContainerModel} throws an exception when passed a
+     * {@code null} container.
      */
     @Test( expected = NullPointerException.class )
-    public void testGetCardPileModel_CardPile_Null()
+    public void testGetContainerModel_Container_Null()
     {
-        model_.getCardPileModel( null );
+        model_.getContainerModel( null );
     }
 
     /**
@@ -611,11 +612,11 @@ public final class TableModelTest
         model_.getTable().addCardPile( cardPile2 );
 
         model_.setFocus( cardPile1 );
-        assertTrue( model_.getCardPileModel( cardPile1 ).isFocused() );
-        assertFalse( model_.getCardPileModel( cardPile2 ).isFocused() );
+        assertTrue( model_.getContainerModel( cardPile1 ).isFocused() );
+        assertFalse( model_.getContainerModel( cardPile2 ).isFocused() );
         model_.setFocus( cardPile2 );
-        assertFalse( model_.getCardPileModel( cardPile1 ).isFocused() );
-        assertTrue( model_.getCardPileModel( cardPile2 ).isFocused() );
+        assertFalse( model_.getContainerModel( cardPile1 ).isFocused() );
+        assertTrue( model_.getContainerModel( cardPile2 ).isFocused() );
     }
 
     /**
