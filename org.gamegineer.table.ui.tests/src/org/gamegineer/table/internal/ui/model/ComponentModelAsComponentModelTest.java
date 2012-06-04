@@ -1,5 +1,5 @@
 /*
- * ContainerModelListener.java
+ * ComponentModelAsComponentModelTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,31 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 3, 2011 at 8:46:12 PM.
+ * Created on Jun 1, 2012 at 9:45:36 PM.
  */
 
 package org.gamegineer.table.internal.ui.model;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import org.gamegineer.table.core.Cards;
+import org.gamegineer.table.core.TableEnvironmentFactory;
 
 /**
- * Default implementation of {@link IContainerModelListener}.
- * 
- * <p>
- * All methods of this class do nothing.
- * </p>
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.ui.model.ComponentModel} class.
  */
-public class ContainerModelListener
-    implements IContainerModelListener
+public final class ComponentModelAsComponentModelTest
+    extends AbstractComponentModelTestCase<ComponentModel>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ContainerModelListener} class.
+     * Initializes a new instance of the
+     * {@code ComponentModelAsComponentModelTest} class.
      */
-    public ContainerModelListener()
+    public ComponentModelAsComponentModelTest()
     {
     }
 
@@ -49,15 +48,12 @@ public class ContainerModelListener
     // Methods
     // ======================================================================
 
-    /**
-     * This implementation does nothing.
-     * 
-     * @see org.gamegineer.table.internal.ui.model.IContainerModelListener#containerModelFocusChanged(org.gamegineer.table.internal.ui.model.ContainerModelEvent)
+    /*
+     * @see org.gamegineer.table.internal.ui.model.AbstractComponentModelTestCase#createComponentModel()
      */
     @Override
-    public void containerModelFocusChanged(
-        final ContainerModelEvent event )
+    protected ComponentModel createComponentModel()
     {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        return new ComponentModel( Cards.createUniqueCard( TableEnvironmentFactory.createTableEnvironment() ) );
     }
 }

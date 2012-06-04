@@ -1,5 +1,5 @@
 /*
- * ContainerModelListener.java
+ * ComponentModelFactoryTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,31 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 3, 2011 at 8:46:12 PM.
+ * Created on Jun 1, 2012 at 9:00:48 PM.
  */
 
 package org.gamegineer.table.internal.ui.model;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import org.junit.Test;
 
 /**
- * Default implementation of {@link IContainerModelListener}.
- * 
- * <p>
- * All methods of this class do nothing.
- * </p>
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.ui.model.ComponentModelFactory} class.
  */
-public class ContainerModelListener
-    implements IContainerModelListener
+public final class ComponentModelFactoryTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ContainerModelListener} class.
+     * Initializes a new instance of the {@code ComponentModelFactoryTest}
+     * class.
      */
-    public ContainerModelListener()
+    public ComponentModelFactoryTest()
     {
     }
 
@@ -50,14 +47,22 @@ public class ContainerModelListener
     // ======================================================================
 
     /**
-     * This implementation does nothing.
-     * 
-     * @see org.gamegineer.table.internal.ui.model.IContainerModelListener#containerModelFocusChanged(org.gamegineer.table.internal.ui.model.ContainerModelEvent)
+     * Ensures the {@code createComponentModel} method throws an exception when
+     * passed a {@code null} component.
      */
-    @Override
-    public void containerModelFocusChanged(
-        final ContainerModelEvent event )
+    @Test( expected = NullPointerException.class )
+    public void testCreateComponentModel_Component_Null()
     {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        ComponentModelFactory.createComponentModel( null );
+    }
+
+    /**
+     * Ensures the {@code createContainerModel} method throws an exception when
+     * passed a {@code null} container.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateContainerModel_Container_Null()
+    {
+        ComponentModelFactory.createContainerModel( null );
     }
 }

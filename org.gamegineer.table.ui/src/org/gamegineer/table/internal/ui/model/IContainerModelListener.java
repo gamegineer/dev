@@ -35,20 +35,6 @@ public interface IContainerModelListener
     // ======================================================================
 
     /**
-     * Invoked after the container associated with the model has changed.
-     * 
-     * @param event
-     *        The event describing the container model; must not be {@code null}
-     *        .
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
-     */
-    public void containerChanged(
-        /* @NonNull */
-        ContainerModelEvent event );
-
-    /**
      * Invoked after the container model has gained or lost the logical focus.
      * 
      * @param event

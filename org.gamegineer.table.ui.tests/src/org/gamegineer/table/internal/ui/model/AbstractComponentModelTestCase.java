@@ -1,5 +1,5 @@
 /*
- * ComponentModelTest.java
+ * AbstractComponentModelTestCase.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -22,29 +22,30 @@
 package org.gamegineer.table.internal.ui.model;
 
 import static org.junit.Assert.assertNotNull;
-import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.table.core.Cards;
-import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.ComponentModel} class.
+ * {@link org.gamegineer.table.internal.ui.model.ComponentModel} class and any
+ * classes that extend it.
+ * 
+ * @param <T>
+ *        The type of the component model.
  */
-public final class ComponentModelTest
+public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
+    /** The component model under test in the fixture. */
+    private T componentModel_;
+
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
-
-    /** The component model under test in the fixture. */
-    private ComponentModel model_;
 
 
     // ======================================================================
@@ -52,9 +53,10 @@ public final class ComponentModelTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ComponentModelTest} class.
+     * Initializes a new instance of the {@code AbstractComponentModelTestCase}
+     * class.
      */
-    public ComponentModelTest()
+    protected AbstractComponentModelTestCase()
     {
     }
 
@@ -64,21 +66,36 @@ public final class ComponentModelTest
     // ======================================================================
 
     /**
-     * Fires a component changed event for the component model under test in the
-     * fixture.
+     * Creates the component model to be tested.
+     * 
+     * @return The component model to be tested; never {@code null}.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    /* @NonNull */
+    protected abstract T createComponentModel()
+        throws Exception;
+
+    /**
+     * Fires a component changed event for the fixture component model.
      */
     private void fireComponentChangedEvent()
     {
-        try
-        {
-            final Method method = ComponentModel.class.getDeclaredMethod( "fireComponentChanged" ); //$NON-NLS-1$
-            method.setAccessible( true );
-            method.invoke( model_ );
-        }
-        catch( final Exception e )
-        {
-            throw new AssertionError( e );
-        }
+        componentModel_.fireComponentChanged();
+    }
+
+    /**
+     * Gets the component model under test in the fixture.
+     * 
+     * @return The component model under test in the fixture; never {@code null}
+     *         .
+     */
+    /* @NonNull */
+    protected final T getComponentModel()
+    {
+        assertNotNull( componentModel_ );
+        return componentModel_;
     }
 
     /**
@@ -92,7 +109,8 @@ public final class ComponentModelTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        model_ = new ComponentModel( Cards.createUniqueCard( TableEnvironmentFactory.createTableEnvironment() ) );
+        componentModel_ = createComponentModel();
+        assertNotNull( componentModel_ );
     }
 
     /**
@@ -107,7 +125,7 @@ public final class ComponentModelTest
         mocksControl_.replay();
 
         fireComponentChangedEvent();
-        model_.addComponentModelListener( listener );
+        componentModel_.addComponentModelListener( listener );
         fireComponentChangedEvent();
 
         mocksControl_.verify();
@@ -120,7 +138,7 @@ public final class ComponentModelTest
     @Test( expected = NullPointerException.class )
     public void testAddComponentModelListener_Listener_Null()
     {
-        model_.addComponentModelListener( null );
+        componentModel_.addComponentModelListener( null );
     }
 
     /**
@@ -132,9 +150,9 @@ public final class ComponentModelTest
     public void testAddComponentModelListener_Listener_Present()
     {
         final IComponentModelListener listener = EasyMock.createMock( IComponentModelListener.class );
-        model_.addComponentModelListener( listener );
+        componentModel_.addComponentModelListener( listener );
 
-        model_.addComponentModelListener( listener );
+        componentModel_.addComponentModelListener( listener );
     }
 
     /**
@@ -147,9 +165,9 @@ public final class ComponentModelTest
         final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
         listener.componentChanged( EasyMock.notNull( ComponentModelEvent.class ) );
         mocksControl_.replay();
-        model_.addComponentModelListener( listener );
+        componentModel_.addComponentModelListener( listener );
 
-        model_.getComponent().setOrientation( model_.getComponent().getOrientation().inverse() );
+        componentModel_.getComponent().setOrientation( componentModel_.getComponent().getOrientation().inverse() );
 
         mocksControl_.verify();
     }
@@ -165,21 +183,11 @@ public final class ComponentModelTest
         listener.componentChanged( EasyMock.notNull( ComponentModelEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         mocksControl_.replay();
-        model_.addComponentModelListener( listener );
+        componentModel_.addComponentModelListener( listener );
 
         fireComponentChangedEvent();
 
         mocksControl_.verify();
-    }
-
-    /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * component.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_Component_Null()
-    {
-        new ComponentModel( null );
     }
 
     /**
@@ -188,7 +196,7 @@ public final class ComponentModelTest
     @Test
     public void testGetComponent_ReturnValue_NonNull()
     {
-        assertNotNull( model_.getComponent() );
+        assertNotNull( componentModel_.getComponent() );
     }
 
     /**
@@ -199,7 +207,7 @@ public final class ComponentModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveComponentModelListener_Listener_Absent()
     {
-        model_.removeComponentModelListener( EasyMock.createMock( IComponentModelListener.class ) );
+        componentModel_.removeComponentModelListener( EasyMock.createMock( IComponentModelListener.class ) );
     }
 
     /**
@@ -209,7 +217,7 @@ public final class ComponentModelTest
     @Test( expected = NullPointerException.class )
     public void testRemoveComponentModelListener_Listener_Null()
     {
-        model_.removeComponentModelListener( null );
+        componentModel_.removeComponentModelListener( null );
     }
 
     /**
@@ -222,10 +230,10 @@ public final class ComponentModelTest
         final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
         listener.componentChanged( EasyMock.notNull( ComponentModelEvent.class ) );
         mocksControl_.replay();
-        model_.addComponentModelListener( listener );
+        componentModel_.addComponentModelListener( listener );
 
         fireComponentChangedEvent();
-        model_.removeComponentModelListener( listener );
+        componentModel_.removeComponentModelListener( listener );
         fireComponentChangedEvent();
 
         mocksControl_.verify();

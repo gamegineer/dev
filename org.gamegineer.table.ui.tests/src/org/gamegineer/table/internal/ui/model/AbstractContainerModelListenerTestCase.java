@@ -84,16 +84,6 @@ public abstract class AbstractContainerModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code containerChanged} method throws an exception when
-     * passed a {@code null} event.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testContainerChanged_Event_Null()
-    {
-        listener_.containerChanged( null );
-    }
-
-    /**
      * Ensures the {@code containerModelFocusChanged} method throws an exception
      * when passed a {@code null} event.
      */

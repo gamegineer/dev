@@ -57,12 +57,6 @@ final class NonNlsMessages
 
     /**
      * An unexpected exception was thrown from
-     * IContainerModelListener.containerChanged().
-     */
-    public static String ContainerModel_containerChanged_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
      * IContainerModelListener.containerModelFocusChanged().
      */
     public static String ContainerModel_containerModelFocusChanged_unexpectedException;

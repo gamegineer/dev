@@ -30,7 +30,6 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ContainerEvent;
 import org.gamegineer.table.core.IComponent;
@@ -42,6 +41,7 @@ import org.gamegineer.table.internal.ui.Loggers;
  */
 @ThreadSafe
 public final class ContainerModel
+    extends ComponentModel
 {
     // ======================================================================
     // Fields
@@ -54,8 +54,8 @@ public final class ContainerModel
     @GuardedBy( "lock_" )
     private final Map<IComponent, ComponentModel> componentModels_;
 
-    /** The container associated with this model. */
-    private final IContainer container_;
+    /** The container model listener for this model. */
+    private final IContainerModelListener containerModelListener_;
 
     /** Indicates the associated container has the focus. */
     @GuardedBy( "lock_" )
@@ -78,25 +78,21 @@ public final class ContainerModel
      * @param container
      *        The container associated with this model; must not be {@code null}
      *        .
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code container} is {@code null}.
      */
-    public ContainerModel(
+    ContainerModel(
         /* @NonNull */
         final IContainer container )
     {
-        assertArgumentNotNull( container, "container" ); //$NON-NLS-1$
+        super( container );
 
         componentModelListener_ = new ComponentModelListener();
         componentModels_ = new IdentityHashMap<IComponent, ComponentModel>();
-        container_ = container;
+        containerModelListener_ = new ContainerModelListener();
         isFocused_ = false;
         listeners_ = new CopyOnWriteArrayList<IContainerModelListener>();
         lock_ = new Object();
 
-        container_.addComponentListener( new ComponentListener() );
-        container_.addContainerListener( new ContainerListener() );
+        container.addContainerListener( new ContainerListener() );
 
         for( final IComponent component : container.getComponents() )
         {
@@ -144,29 +140,14 @@ public final class ContainerModel
     {
         assert component != null;
 
-        final ComponentModel componentModel = new ComponentModel( component );
+        final ComponentModel componentModel = ComponentModelFactory.createComponentModel( component );
         componentModels_.put( component, componentModel );
         componentModel.addComponentModelListener( componentModelListener_ );
-        return componentModel;
-    }
-
-    /**
-     * Fires a container changed event.
-     */
-    private void fireContainerChanged()
-    {
-        final ContainerModelEvent event = new ContainerModelEvent( this );
-        for( final IContainerModelListener listener : listeners_ )
+        if( componentModel instanceof ContainerModel )
         {
-            try
-            {
-                listener.containerChanged( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ContainerModel_containerChanged_unexpectedException, e );
-            }
+            ((ContainerModel)componentModel).addContainerModelListener( containerModelListener_ );
         }
+        return componentModel;
     }
 
     /**
@@ -228,7 +209,7 @@ public final class ContainerModel
     /* @NonNull */
     public IContainer getContainer()
     {
-        return container_;
+        return (IContainer)getComponent();
     }
 
     /**
@@ -288,69 +269,6 @@ public final class ContainerModel
     // ======================================================================
 
     /**
-     * A component listener for the container model.
-     */
-    @Immutable
-    private final class ComponentListener
-        extends org.gamegineer.table.core.ComponentListener
-    {
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code ComponentListener} class.
-         */
-        ComponentListener()
-        {
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.core.ComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void componentBoundsChanged(
-            final ComponentEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            fireContainerChanged();
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ComponentListener#componentOrientationChanged(org.gamegineer.table.core.ComponentEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void componentOrientationChanged(
-            final ComponentEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            fireContainerChanged();
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ComponentListener#componentSurfaceDesignChanged(org.gamegineer.table.core.ComponentEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void componentSurfaceDesignChanged(
-            final ComponentEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            fireContainerChanged();
-        }
-    }
-
-    /**
      * A component model listener for the container model.
      */
     @Immutable
@@ -378,13 +296,12 @@ public final class ContainerModel
          * @see org.gamegineer.table.internal.ui.model.ComponentModelListener#componentChanged(org.gamegineer.table.internal.ui.model.ComponentModelEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void componentChanged(
             final ComponentModelEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            fireContainerChanged();
+            fireComponentChanged();
         }
     }
 
@@ -426,7 +343,7 @@ public final class ContainerModel
                 createComponentModel( event.getComponent() );
             }
 
-            fireContainerChanged();
+            fireComponentChanged();
         }
 
         /*
@@ -445,23 +362,63 @@ public final class ContainerModel
                 if( componentModel != null )
                 {
                     componentModel.removeComponentModelListener( componentModelListener_ );
+                    if( componentModel instanceof ContainerModel )
+                    {
+                        ((ContainerModel)componentModel).removeContainerModelListener( containerModelListener_ );
+                    }
                 }
             }
 
-            fireContainerChanged();
+            fireComponentChanged();
         }
 
         /*
          * @see org.gamegineer.table.core.ContainerListener#containerLayoutChanged(org.gamegineer.table.core.ContainerEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void containerLayoutChanged(
             final ContainerEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            fireContainerChanged();
+            fireComponentChanged();
+        }
+    }
+
+    /**
+     * A container model listener for the container model.
+     */
+    @Immutable
+    private final class ContainerModelListener
+        extends org.gamegineer.table.internal.ui.model.ContainerModelListener
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code ContainerModelListener}
+         * class.
+         */
+        ContainerModelListener()
+        {
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.ui.model.ContainerModelListener#containerModelFocusChanged(org.gamegineer.table.internal.ui.model.ContainerModelEvent)
+         */
+        @Override
+        public void containerModelFocusChanged(
+            final ContainerModelEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            // TODO: currently do not support nested focus
         }
     }
 }

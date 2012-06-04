@@ -62,6 +62,9 @@ public final class TableModel
     // Fields
     // ======================================================================
 
+    /** The component model listener for this model. */
+    private final IComponentModelListener componentModelListener_;
+
     /** The container model listener for this model. */
     private final IContainerModelListener containerModelListener_;
 
@@ -107,6 +110,7 @@ public final class TableModel
      */
     public TableModel()
     {
+        componentModelListener_ = new ComponentModelListener();
         containerModelListener_ = new ContainerModelListener();
         containerModels_ = new IdentityHashMap<IContainer, ContainerModel>();
         file_ = null;
@@ -163,6 +167,7 @@ public final class TableModel
 
         final ContainerModel containerModel = new ContainerModel( container );
         containerModels_.put( container, containerModel );
+        containerModel.addComponentModelListener( componentModelListener_ );
         containerModel.addContainerModelListener( containerModelListener_ );
         return containerModel;
     }
@@ -692,6 +697,50 @@ public final class TableModel
     // ======================================================================
 
     /**
+     * A component model listener for the table model.
+     */
+    @Immutable
+    private final class ComponentModelListener
+        extends org.gamegineer.table.internal.ui.model.ComponentModelListener
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code ComponentModelListener}
+         * class.
+         */
+        ComponentModelListener()
+        {
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.ui.model.ComponentModelListener#componentChanged(org.gamegineer.table.internal.ui.model.ComponentModelEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void componentChanged(
+            final ComponentModelEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            synchronized( lock_ )
+            {
+                isDirty_ = true;
+            }
+
+            fireTableChanged();
+            fireTableModelDirtyFlagChanged();
+        }
+    }
+
+    /**
      * A container model listener for the table model.
      */
     @Immutable
@@ -714,25 +763,6 @@ public final class TableModel
         // ==================================================================
         // Methods
         // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.internal.ui.model.ContainerModelListener#containerChanged(org.gamegineer.table.internal.ui.model.ContainerModelEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void containerChanged(
-            final ContainerModelEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            synchronized( lock_ )
-            {
-                isDirty_ = true;
-            }
-
-            fireTableChanged();
-            fireTableModelDirtyFlagChanged();
-        }
 
         /*
          * @see org.gamegineer.table.internal.ui.model.ContainerModelListener#containerModelFocusChanged(org.gamegineer.table.internal.ui.model.ContainerModelEvent)
@@ -808,6 +838,7 @@ public final class TableModel
                 final ContainerModel containerModel = containerModels_.remove( cardPile );
                 if( containerModel != null )
                 {
+                    containerModel.removeComponentModelListener( componentModelListener_ );
                     containerModel.removeContainerModelListener( containerModelListener_ );
                 }
 

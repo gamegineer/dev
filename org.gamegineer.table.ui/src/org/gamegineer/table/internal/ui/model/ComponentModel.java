@@ -35,7 +35,7 @@ import org.gamegineer.table.internal.ui.Loggers;
  * The component model.
  */
 @ThreadSafe
-public final class ComponentModel
+public class ComponentModel
 {
     // ======================================================================
     // Fields
@@ -58,15 +58,12 @@ public final class ComponentModel
      * @param component
      *        The component associated with this model; must not be {@code null}
      *        .
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code component} is {@code null}.
      */
-    public ComponentModel(
+    ComponentModel(
         /* @NonNull */
         final IComponent component )
     {
-        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
+        assert component != null;
 
         component_ = component;
         listeners_ = new CopyOnWriteArrayList<IComponentModelListener>();
@@ -91,7 +88,7 @@ public final class ComponentModel
      * @throws java.lang.NullPointerException
      *         If {@code listener} is {@code null}.
      */
-    public void addComponentModelListener(
+    public final void addComponentModelListener(
         /* @NonNull */
         final IComponentModelListener listener )
     {
@@ -102,7 +99,7 @@ public final class ComponentModel
     /**
      * Fires a component changed event.
      */
-    private void fireComponentChanged()
+    protected final void fireComponentChanged()
     {
         final ComponentModelEvent event = new ComponentModelEvent( this );
         for( final IComponentModelListener listener : listeners_ )
@@ -124,7 +121,7 @@ public final class ComponentModel
      * @return The component associated with this model; never {@code null}.
      */
     /* @NonNull */
-    public IComponent getComponent()
+    public final IComponent getComponent()
     {
         return component_;
     }
@@ -140,7 +137,7 @@ public final class ComponentModel
      * @throws java.lang.NullPointerException
      *         If {@code listener} is {@code null}.
      */
-    public void removeComponentModelListener(
+    public final void removeComponentModelListener(
         /* @NonNull */
         final IComponentModelListener listener )
     {
@@ -180,7 +177,6 @@ public final class ComponentModel
          * @see org.gamegineer.table.core.ComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void componentBoundsChanged(
             final ComponentEvent event )
         {
@@ -193,7 +189,6 @@ public final class ComponentModel
          * @see org.gamegineer.table.core.ComponentListener#componentOrientationChanged(org.gamegineer.table.core.ComponentEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void componentOrientationChanged(
             final ComponentEvent event )
         {
@@ -206,7 +201,6 @@ public final class ComponentModel
          * @see org.gamegineer.table.core.ComponentListener#componentSurfaceDesignChanged(org.gamegineer.table.core.ComponentEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void componentSurfaceDesignChanged(
             final ComponentEvent event )
         {

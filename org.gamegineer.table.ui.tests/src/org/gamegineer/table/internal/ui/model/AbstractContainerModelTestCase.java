@@ -1,5 +1,5 @@
 /*
- * ContainerModelTest.java
+ * AbstractContainerModelTestCase.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -22,14 +22,10 @@
 package org.gamegineer.table.internal.ui.model;
 
 import static org.junit.Assert.assertNotNull;
-import java.awt.Point;
-import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.table.core.CardPiles;
 import org.gamegineer.table.core.Cards;
 import org.gamegineer.table.core.IComponent;
-import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,7 +33,8 @@ import org.junit.Test;
  * A fixture for testing the
  * {@link org.gamegineer.table.internal.ui.model.ContainerModel} class.
  */
-public final class ContainerModelTest
+public abstract class AbstractContainerModelTestCase
+    extends AbstractComponentModelTestCase<ContainerModel>
 {
     // ======================================================================
     // Fields
@@ -46,18 +43,16 @@ public final class ContainerModelTest
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
 
-    /** The container model under test in the fixture. */
-    private ContainerModel model_;
-
 
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ContainerModelTest} class.
+     * Initializes a new instance of the {@code AbstractContainerModelTestCase}
+     * class.
      */
-    public ContainerModelTest()
+    protected AbstractContainerModelTestCase()
     {
     }
 
@@ -67,47 +62,37 @@ public final class ContainerModelTest
     // ======================================================================
 
     /**
-     * Fires a container changed event for the container model under test in the
-     * fixture.
-     */
-    private void fireContainerChangedEvent()
-    {
-        fireContainerModelEvent( "fireContainerChanged" ); //$NON-NLS-1$
-    }
-
-    /**
-     * Fires the specified container model event for the container model under
-     * test in the fixture.
-     * 
-     * @param methodName
-     *        The name of the method that fires the container model event; must
-     *        not be {@code null}.
-     */
-    private void fireContainerModelEvent(
-        /* @NonNull */
-        final String methodName )
-    {
-        assert methodName != null;
-
-        try
-        {
-            final Method method = ContainerModel.class.getDeclaredMethod( methodName );
-            method.setAccessible( true );
-            method.invoke( model_ );
-        }
-        catch( final Exception e )
-        {
-            throw new AssertionError( e );
-        }
-    }
-
-    /**
      * Fires a container model focus changed event for the container model under
      * test in the fixture.
      */
     private void fireContainerModelFocusChangedEvent()
     {
-        fireContainerModelEvent( "fireContainerModelFocusChanged" ); //$NON-NLS-1$
+        fireContainerModelFocusChangedEvent( getContainerModel() );
+    }
+
+    /**
+     * Fires a container model focus changed event for the specified container
+     * model.
+     * 
+     * @param containerModel
+     *        The container model; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     */
+    protected abstract void fireContainerModelFocusChangedEvent(
+        /* @NonNull */
+        ContainerModel containerModel );
+
+    /**
+     * Gets the container model under test in the fixture.
+     * 
+     * @return The container model under test in the fixture; never {@code null}
+     *         .
+     */
+    /* @NonNull */
+    protected final ContainerModel getContainerModel()
+    {
+        return getComponentModel();
     }
 
     /**
@@ -117,11 +102,13 @@ public final class ContainerModelTest
      *         If an error occurs.
      */
     @Before
+    @Override
     public void setUp()
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        model_ = new ContainerModel( CardPiles.createUniqueCardPile( TableEnvironmentFactory.createTableEnvironment() ) );
+
+        super.setUp();
     }
 
     /**
@@ -132,12 +119,12 @@ public final class ContainerModelTest
     public void testAddContainerModelListener_Listener_Absent()
     {
         final IContainerModelListener listener = mocksControl_.createMock( IContainerModelListener.class );
-        listener.containerChanged( EasyMock.notNull( ContainerModelEvent.class ) );
+        listener.containerModelFocusChanged( EasyMock.notNull( ContainerModelEvent.class ) );
         mocksControl_.replay();
 
-        fireContainerChangedEvent();
-        model_.addContainerModelListener( listener );
-        fireContainerChangedEvent();
+        fireContainerModelFocusChangedEvent();
+        getContainerModel().addContainerModelListener( listener );
+        fireContainerModelFocusChangedEvent();
 
         mocksControl_.verify();
     }
@@ -149,7 +136,7 @@ public final class ContainerModelTest
     @Test( expected = NullPointerException.class )
     public void testAddContainerModelListener_Listener_Null()
     {
-        model_.addContainerModelListener( null );
+        getContainerModel().addContainerModelListener( null );
     }
 
     /**
@@ -161,71 +148,26 @@ public final class ContainerModelTest
     public void testAddContainerModelListener_Listener_Present()
     {
         final IContainerModelListener listener = EasyMock.createMock( IContainerModelListener.class );
-        model_.addContainerModelListener( listener );
+        getContainerModel().addContainerModelListener( listener );
 
-        model_.addContainerModelListener( listener );
+        getContainerModel().addContainerModelListener( listener );
     }
 
     /**
      * Ensures a change to a component associated with a component model owned
-     * by the container model fires a container changed event.
+     * by the container model fires a component changed event.
      */
     @Test
-    public void testComponentModel_ComponentChanged_FiresContainerChangedEvent()
+    public void testComponentModel_ComponentChanged_FiresComponentChangedEvent()
     {
-        final IComponent component = Cards.createUniqueCard( model_.getContainer().getTableEnvironment() );
-        model_.getContainer().addComponent( component );
-        final IContainerModelListener listener = mocksControl_.createMock( IContainerModelListener.class );
-        listener.containerChanged( EasyMock.notNull( ContainerModelEvent.class ) );
+        final IComponent component = Cards.createUniqueCard( getContainerModel().getContainer().getTableEnvironment() );
+        getContainerModel().getContainer().addComponent( component );
+        final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
+        listener.componentChanged( EasyMock.notNull( ComponentModelEvent.class ) );
         mocksControl_.replay();
-        model_.addContainerModelListener( listener );
+        getContainerModel().addComponentModelListener( listener );
 
         component.setOrientation( component.getOrientation().inverse() );
-
-        mocksControl_.verify();
-    }
-
-    /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * container.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_Container_Null()
-    {
-        new ContainerModel( null );
-    }
-
-    /**
-     * Ensures a change to the underlying container state fires a container
-     * changed event.
-     */
-    @Test
-    public void testContainer_StateChanged_FiresContainerChangedEvent()
-    {
-        final IContainerModelListener listener = mocksControl_.createMock( IContainerModelListener.class );
-        listener.containerChanged( EasyMock.notNull( ContainerModelEvent.class ) );
-        mocksControl_.replay();
-        model_.addContainerModelListener( listener );
-
-        model_.getContainer().setLocation( new Point( 101, 102 ) );
-
-        mocksControl_.verify();
-    }
-
-    /**
-     * Ensures the container changed event catches any exception thrown by the
-     * {@code containerChanged} method of a container model listener.
-     */
-    @Test
-    public void testContainerChanged_CatchesListenerException()
-    {
-        final IContainerModelListener listener = mocksControl_.createMock( IContainerModelListener.class );
-        listener.containerChanged( EasyMock.notNull( ContainerModelEvent.class ) );
-        EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        mocksControl_.replay();
-        model_.addContainerModelListener( listener );
-
-        fireContainerChangedEvent();
 
         mocksControl_.verify();
     }
@@ -242,7 +184,7 @@ public final class ContainerModelTest
         listener.containerModelFocusChanged( EasyMock.notNull( ContainerModelEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         mocksControl_.replay();
-        model_.addContainerModelListener( listener );
+        getContainerModel().addContainerModelListener( listener );
 
         fireContainerModelFocusChangedEvent();
 
@@ -256,7 +198,7 @@ public final class ContainerModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testGetComponentModel_Component_Absent()
     {
-        model_.getComponentModel( EasyMock.createMock( IComponent.class ) );
+        getContainerModel().getComponentModel( EasyMock.createMock( IComponent.class ) );
     }
 
     /**
@@ -266,7 +208,7 @@ public final class ContainerModelTest
     @Test( expected = NullPointerException.class )
     public void testGetComponentModel_Component_Null()
     {
-        model_.getComponentModel( null );
+        getContainerModel().getComponentModel( null );
     }
 
     /**
@@ -275,7 +217,7 @@ public final class ContainerModelTest
     @Test
     public void testGetContainer_ReturnValue_NonNull()
     {
-        assertNotNull( model_.getContainer() );
+        assertNotNull( getContainerModel().getContainer() );
     }
 
     /**
@@ -286,7 +228,7 @@ public final class ContainerModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveContainerModelListener_Listener_Absent()
     {
-        model_.removeContainerModelListener( EasyMock.createMock( IContainerModelListener.class ) );
+        getContainerModel().removeContainerModelListener( EasyMock.createMock( IContainerModelListener.class ) );
     }
 
     /**
@@ -296,7 +238,7 @@ public final class ContainerModelTest
     @Test( expected = NullPointerException.class )
     public void testRemoveContainerModelListener_Listener_Null()
     {
-        model_.removeContainerModelListener( null );
+        getContainerModel().removeContainerModelListener( null );
     }
 
     /**
@@ -307,13 +249,13 @@ public final class ContainerModelTest
     public void testRemoveContainerModelListener_Listener_Present()
     {
         final IContainerModelListener listener = mocksControl_.createMock( IContainerModelListener.class );
-        listener.containerChanged( EasyMock.notNull( ContainerModelEvent.class ) );
+        listener.containerModelFocusChanged( EasyMock.notNull( ContainerModelEvent.class ) );
         mocksControl_.replay();
-        model_.addContainerModelListener( listener );
+        getContainerModel().addContainerModelListener( listener );
 
-        fireContainerChangedEvent();
-        model_.removeContainerModelListener( listener );
-        fireContainerChangedEvent();
+        fireContainerModelFocusChangedEvent();
+        getContainerModel().removeContainerModelListener( listener );
+        fireContainerModelFocusChangedEvent();
 
         mocksControl_.verify();
     }
@@ -328,9 +270,9 @@ public final class ContainerModelTest
         final IContainerModelListener listener = mocksControl_.createMock( IContainerModelListener.class );
         listener.containerModelFocusChanged( EasyMock.notNull( ContainerModelEvent.class ) );
         mocksControl_.replay();
-        model_.addContainerModelListener( listener );
+        getContainerModel().addContainerModelListener( listener );
 
-        model_.setFocused( true );
+        getContainerModel().setFocused( true );
 
         mocksControl_.verify();
     }
@@ -345,8 +287,8 @@ public final class ContainerModelTest
         final IContainerModelListener listener = mocksControl_.createMock( IContainerModelListener.class );
         listener.containerModelFocusChanged( EasyMock.notNull( ContainerModelEvent.class ) );
         mocksControl_.replay();
-        model_.addContainerModelListener( listener );
+        getContainerModel().addContainerModelListener( listener );
 
-        model_.setFocused( false );
+        getContainerModel().setFocused( false );
     }
 }
