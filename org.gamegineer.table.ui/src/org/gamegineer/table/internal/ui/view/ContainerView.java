@@ -32,24 +32,20 @@ import java.util.Map;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.core.ComponentEvent;
-import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
+import org.gamegineer.table.core.ContainerEvent;
 import org.gamegineer.table.core.IComponent;
-import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.IContainerListener;
-import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.model.ContainerModel;
 import org.gamegineer.table.internal.ui.model.ContainerModelEvent;
 import org.gamegineer.table.internal.ui.model.IContainerModelListener;
-import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
-import org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry;
 
 /**
  * A view of a container.
  */
 @NotThreadSafe
 final class ContainerView
+    extends ComponentView
 {
     // ======================================================================
     // Fields
@@ -67,26 +63,17 @@ final class ContainerView
      */
     private static final int VERTICAL_PADDING = 2;
 
-    /** The component listener for this view. */
-    private IComponentListener componentListener_;
-
     /** The collection of component views. */
     private final Map<IComponent, ComponentView> componentViews_;
 
     /** The container listener for this view. */
     private IContainerListener containerListener_;
 
+    /** The model associated with this view. */
+    private final ContainerModel containerModel_;
+
     /** The container model listener for this view. */
     private IContainerModelListener containerModelListener_;
-
-    /** The dirty bounds of this view in table coordinates. */
-    private final Rectangle dirtyBounds_;
-
-    /** The model associated with this view. */
-    private final ContainerModel model_;
-
-    /** The table view that owns this view. */
-    private TableView tableView_;
 
 
     // ======================================================================
@@ -96,22 +83,19 @@ final class ContainerView
     /**
      * Initializes a new instance of the {@code ContainerView} class.
      * 
-     * @param model
+     * @param containerModel
      *        The model associated with this view; must not be {@code null}.
      */
     ContainerView(
         /* @NonNull */
-        final ContainerModel model )
+        final ContainerModel containerModel )
     {
-        assert model != null;
+        super( containerModel );
 
-        componentListener_ = null;
         componentViews_ = new IdentityHashMap<IComponent, ComponentView>();
         containerListener_ = null;
+        containerModel_ = containerModel;
         containerModelListener_ = null;
-        dirtyBounds_ = new Rectangle();
-        model_ = model;
-        tableView_ = null;
     }
 
 
@@ -138,20 +122,6 @@ final class ContainerView
     }
 
     /**
-     * Invoked after the component bounds have changed.
-     */
-    private void componentBoundsChanged()
-    {
-        if( isInitialized() )
-        {
-            final Rectangle viewBounds = getBounds();
-            dirtyBounds_.add( viewBounds );
-            tableView_.repaintTable( dirtyBounds_ );
-            dirtyBounds_.setBounds( viewBounds );
-        }
-    }
-
-    /**
      * Invoked when a component is removed from the container.
      * 
      * @param component
@@ -170,13 +140,13 @@ final class ContainerView
     }
 
     /**
-     * Invoked after a component surface design has changed.
+     * Invoked after the container layout has changed.
      */
-    private void componentSurfaceDesignChanged()
+    private void containerLayoutChanged()
     {
         if( isInitialized() )
         {
-            tableView_.repaintTable( getBounds() );
+            repaint();
         }
     }
 
@@ -187,7 +157,7 @@ final class ContainerView
     {
         if( isInitialized() )
         {
-            tableView_.repaintTable( getBounds() );
+            repaint();
         }
     }
 
@@ -209,10 +179,10 @@ final class ContainerView
         assert component != null;
         assert isInitialized();
 
-        final ComponentView view = new ComponentView( model_.getComponentModel( component ) );
+        final ComponentView view = ComponentViewFactory.createComponentView( containerModel_.getComponentModel( component ) );
         final ComponentView oldView = componentViews_.put( component, view );
         assert oldView == null;
-        view.initialize( this );
+        view.initialize( getTableView() );
     }
 
     /**
@@ -240,104 +210,45 @@ final class ContainerView
         }
     }
 
-    /**
-     * Gets the active component surface design user interface.
-     * 
-     * @return The active component surface design user interface; never
-     *         {@code null}.
+    /*
+     * @see org.gamegineer.table.internal.ui.view.ComponentView#getBounds()
      */
-    /* @NonNull */
-    private ComponentSurfaceDesignUI getActiveComponentSurfaceDesignUI()
-    {
-        final ComponentSurfaceDesign componentSurfaceDesign = model_.getContainer().getSurfaceDesign( model_.getContainer().getOrientation() );
-
-        final IComponentSurfaceDesignUIRegistry componentSurfaceDesignUIRegistry = Activator.getDefault().getComponentSurfaceDesignUIRegistry();
-        if( componentSurfaceDesignUIRegistry != null )
-        {
-            final ComponentSurfaceDesignUI componentSurfaceDesignUI = componentSurfaceDesignUIRegistry.getComponentSurfaceDesignUI( componentSurfaceDesign.getId() );
-            if( componentSurfaceDesignUI != null )
-            {
-                return componentSurfaceDesignUI;
-            }
-        }
-
-        return ViewUtils.createDefaultComponentSurfaceDesignUI( componentSurfaceDesign );
-    }
-
-    /**
-     * Gets the bounds of this view in table coordinates.
-     * 
-     * @return The bounds of this view in table coordinates; never {@code null}.
-     */
-    /* @NonNull */
+    @Override
     Rectangle getBounds()
     {
-        final Rectangle bounds = model_.getContainer().getBounds();
+        final Rectangle bounds = super.getBounds();
         bounds.grow( HORIZONTAL_PADDING, VERTICAL_PADDING );
         return bounds;
     }
 
-    /**
-     * Initializes this view.
-     * 
-     * <p>
-     * This method must only be called when the view is uninitialized.
-     * </p>
-     * 
-     * @param tableView
-     *        The table view that owns this view; must not be {@code null}.
+    /*
+     * @see org.gamegineer.table.internal.ui.view.ComponentView#initialize(org.gamegineer.table.internal.ui.view.TableView)
      */
+    @Override
     void initialize(
-        /* @NonNull */
         final TableView tableView )
     {
-        assert tableView != null;
-        assert !isInitialized();
+        super.initialize( tableView );
 
-        tableView_ = tableView;
-        dirtyBounds_.setBounds( getBounds() );
         containerModelListener_ = new ContainerModelListener();
-        model_.addContainerModelListener( containerModelListener_ );
-        componentListener_ = new ComponentListener();
-        model_.getContainer().addComponentListener( componentListener_ );
+        containerModel_.addContainerModelListener( containerModelListener_ );
         containerListener_ = new ContainerListener();
-        model_.getContainer().addContainerListener( containerListener_ );
+        containerModel_.getContainer().addContainerListener( containerListener_ );
 
-        for( final IComponent component : model_.getContainer().getComponents() )
+        for( final IComponent component : containerModel_.getContainer().getComponents() )
         {
             createComponentView( component );
         }
 
-        tableView_.repaintTable( dirtyBounds_ );
+        repaint();
     }
 
-    /**
-     * Indicates this view has been initialized.
-     * 
-     * @return {@code true} if this view has been initialized; otherwise
-     *         {@code false}.
+    /*
+     * @see org.gamegineer.table.internal.ui.view.ComponentView#paint(java.awt.Component, java.awt.Graphics)
      */
-    private boolean isInitialized()
-    {
-        return tableView_ != null;
-    }
-
-    /**
-     * Paints this view.
-     * 
-     * <p>
-     * This method must only be called after the view is initialized.
-     * </p>
-     * 
-     * @param c
-     *        The component in which to paint; must not be {@code null}.
-     * @param g
-     *        The graphics context in which to paint; must not be {@code null}.
-     */
+    @Override
     void paint(
-        /* @NonNull */
         final Component c,
-        /* @NonNull */
         final Graphics g )
     {
         assert c != null;
@@ -348,7 +259,7 @@ final class ContainerView
 
         getActiveComponentSurfaceDesignUI().getIcon().paintIcon( c, g, viewBounds.x + HORIZONTAL_PADDING, viewBounds.y + VERTICAL_PADDING );
 
-        for( final IComponent component : model_.getContainer().getComponents() )
+        for( final IComponent component : containerModel_.getContainer().getComponents() )
         {
             final ComponentView componentView = componentViews_.get( component );
             if( componentView != null )
@@ -357,7 +268,7 @@ final class ContainerView
             }
         }
 
-        if( model_.isFocused() )
+        if( containerModel_.isFocused() )
         {
             final Color oldColor = g.getColor();
             g.setColor( Color.GREEN );
@@ -366,116 +277,33 @@ final class ContainerView
         }
     }
 
-    /**
-     * Repaints the specified region of the container.
-     * 
-     * @param region
-     *        The region of the container to repaint in table coordinates.
+    /*
+     * @see org.gamegineer.table.internal.ui.view.ComponentView#uninitialize()
      */
-    void repaintContainer(
-        /* @NonNull */
-        final Rectangle region )
-    {
-        assert region != null;
-
-        tableView_.repaintTable( region );
-    }
-
-    /**
-     * Uninitializes this view.
-     * 
-     * <p>
-     * This method must only be called after the view is initialized.
-     * </p>
-     */
+    @Override
     void uninitialize()
     {
         assert isInitialized();
 
-        tableView_.repaintTable( dirtyBounds_ );
+        repaint();
 
         for( final IComponent component : new ArrayList<IComponent>( componentViews_.keySet() ) )
         {
             deleteComponentView( component );
         }
 
-        model_.getContainer().removeContainerListener( containerListener_ );
+        containerModel_.getContainer().removeContainerListener( containerListener_ );
         containerListener_ = null;
-        model_.getContainer().removeComponentListener( componentListener_ );
-        componentListener_ = null;
-        model_.removeContainerModelListener( containerModelListener_ );
+        containerModel_.removeContainerModelListener( containerModelListener_ );
         containerModelListener_ = null;
-        tableView_ = null;
+
+        super.uninitialize();
     }
 
 
     // ======================================================================
     // Nested Types
     // ======================================================================
-
-    /**
-     * A component listener for the container view.
-     */
-    @Immutable
-    private final class ComponentListener
-        extends org.gamegineer.table.core.ComponentListener
-    {
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code ComponentListener} class.
-         */
-        ComponentListener()
-        {
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.core.ComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
-         */
-        @Override
-        public void componentBoundsChanged(
-            final ComponentEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    ContainerView.this.componentBoundsChanged();
-                }
-            } );
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ComponentListener#componentSurfaceDesignChanged(org.gamegineer.table.core.ComponentEvent)
-         */
-        @Override
-        public void componentSurfaceDesignChanged(
-            final ComponentEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    ContainerView.this.componentSurfaceDesignChanged();
-                }
-            } );
-        }
-    }
 
     /**
      * A container listener for the container view.
@@ -516,6 +344,26 @@ final class ContainerView
                 public void run()
                 {
                     ContainerView.this.componentAdded( event.getComponent() );
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.ContainerListener#containerLayoutChanged(org.gamegineer.table.core.ContainerEvent)
+         */
+        @Override
+        public void containerLayoutChanged(
+            final ContainerEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    ContainerView.this.containerLayoutChanged();
                 }
             } );
         }

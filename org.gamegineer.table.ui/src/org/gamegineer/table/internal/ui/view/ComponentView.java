@@ -41,7 +41,7 @@ import org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry;
  * A view of a component.
  */
 @NotThreadSafe
-final class ComponentView
+class ComponentView
 {
     // ======================================================================
     // Fields
@@ -50,14 +50,17 @@ final class ComponentView
     /** The component listener for this view. */
     private IComponentListener componentListener_;
 
+    /** The model associated with this view. */
+    private final ComponentModel componentModel_;
+
     /** The component model listener for this view. */
     private IComponentModelListener componentModelListener_;
 
-    /** The container view that owns this view. */
-    private ContainerView containerView_;
+    /** The dirty bounds of this view in table coordinates. */
+    private final Rectangle dirtyBounds_;
 
-    /** The model associated with this view. */
-    private final ComponentModel model_;
+    /** The table view that owns this view. */
+    private TableView tableView_;
 
 
     // ======================================================================
@@ -67,19 +70,20 @@ final class ComponentView
     /**
      * Initializes a new instance of the {@code ComponentView} class.
      * 
-     * @param model
+     * @param componentModel
      *        The model associated with this view; must not be {@code null}.
      */
     ComponentView(
         /* @NonNull */
-        final ComponentModel model )
+        final ComponentModel componentModel )
     {
-        assert model != null;
+        assert componentModel != null;
 
         componentListener_ = null;
+        componentModel_ = componentModel;
         componentModelListener_ = null;
-        containerView_ = null;
-        model_ = model;
+        dirtyBounds_ = new Rectangle();
+        tableView_ = null;
     }
 
 
@@ -88,13 +92,27 @@ final class ComponentView
     // ======================================================================
 
     /**
+     * Invoked after the component bounds have changed.
+     */
+    private void componentBoundsChanged()
+    {
+        if( isInitialized() )
+        {
+            final Rectangle viewBounds = getBounds();
+            dirtyBounds_.add( viewBounds );
+            repaint();
+            dirtyBounds_.setBounds( viewBounds );
+        }
+    }
+
+    /**
      * Invoked after the component orientation has changed.
      */
     private void componentOrientationChanged()
     {
         if( isInitialized() )
         {
-            containerView_.repaintContainer( getBounds() );
+            repaint();
         }
     }
 
@@ -105,20 +123,25 @@ final class ComponentView
     {
         if( isInitialized() )
         {
-            containerView_.repaintContainer( getBounds() );
+            repaint();
         }
     }
 
     /**
      * Gets the active component surface design user interface.
      * 
+     * <p>
+     * This method is not intended to be called by clients; it is only for the
+     * use of subclasses.
+     * </p>
+     * 
      * @return The active component surface design user interface; never
      *         {@code null}.
      */
     /* @NonNull */
-    private ComponentSurfaceDesignUI getActiveComponentSurfaceDesignUI()
+    final ComponentSurfaceDesignUI getActiveComponentSurfaceDesignUI()
     {
-        final ComponentSurfaceDesign componentSurfaceDesign = model_.getComponent().getSurfaceDesign( model_.getComponent().getOrientation() );
+        final ComponentSurfaceDesign componentSurfaceDesign = componentModel_.getComponent().getSurfaceDesign( componentModel_.getComponent().getOrientation() );
 
         final IComponentSurfaceDesignUIRegistry componentSurfaceDesignUIRegistry = Activator.getDefault().getComponentSurfaceDesignUIRegistry();
         if( componentSurfaceDesignUIRegistry != null )
@@ -136,12 +159,32 @@ final class ComponentView
     /**
      * Gets the bounds of this view in table coordinates.
      * 
+     * <p>
+     * Subclasses are not required to call the superclass method.
+     * </p>
+     * 
      * @return The bounds of this view in table coordinates; never {@code null}.
      */
     /* @NonNull */
     Rectangle getBounds()
     {
-        return model_.getComponent().getBounds();
+        return componentModel_.getComponent().getBounds();
+    }
+
+    /**
+     * Gets the table view that owns this view.
+     * 
+     * <p>
+     * This method is not intended to be called by clients; it is only for the
+     * use of subclasses.
+     * </p>
+     * 
+     * @return The table view that owns this view; never {@code null}.
+     */
+    /* @NonNull */
+    final TableView getTableView()
+    {
+        return tableView_;
     }
 
     /**
@@ -149,25 +192,27 @@ final class ComponentView
      * 
      * <p>
      * This method must only be called when the view is uninitialized.
+     * Subclasses must call the superclass implementation.
      * </p>
      * 
-     * @param containerView
-     *        The container view that owns this view; must not be {@code null}.
+     * @param tableView
+     *        The table view that owns this view; must not be {@code null}.
      */
     void initialize(
         /* @NonNull */
-        final ContainerView containerView )
+        final TableView tableView )
     {
-        assert containerView != null;
+        assert tableView != null;
         assert !isInitialized();
 
-        containerView_ = containerView;
+        tableView_ = tableView;
+        dirtyBounds_.setBounds( getBounds() );
         componentModelListener_ = new ComponentModelListener();
-        model_.addComponentModelListener( componentModelListener_ );
+        componentModel_.addComponentModelListener( componentModelListener_ );
         componentListener_ = new ComponentListener();
-        model_.getComponent().addComponentListener( componentListener_ );
+        componentModel_.getComponent().addComponentListener( componentListener_ );
 
-        containerView_.repaintContainer( getBounds() );
+        repaint();
     }
 
     /**
@@ -176,16 +221,17 @@ final class ComponentView
      * @return {@code true} if this view has been initialized; otherwise
      *         {@code false}.
      */
-    private boolean isInitialized()
+    final boolean isInitialized()
     {
-        return containerView_ != null;
+        return tableView_ != null;
     }
 
     /**
      * Paints this view.
      * 
      * <p>
-     * This method must only be called after the view is initialized.
+     * This method must only be called after the view is initialized. Subclasses
+     * are not required to call the superclass implementation.
      * </p>
      * 
      * @param component
@@ -208,23 +254,40 @@ final class ComponentView
     }
 
     /**
+     * Repaints this view.
+     * 
+     * <p>
+     * This method must only be called after the view is initialized. This
+     * method is not intended to be called by clients; it is only for the use of
+     * subclasses.
+     * </p>
+     */
+    final void repaint()
+    {
+        assert isInitialized();
+
+        tableView_.repaintTable( dirtyBounds_ );
+    }
+
+    /**
      * Uninitializes this view.
      * 
      * <p>
-     * This method must only be called after the view is initialized.
+     * This method must only be called after the view is initialized. Subclasses
+     * must call the superclass implementation.
      * </p>
      */
     void uninitialize()
     {
         assert isInitialized();
 
-        containerView_.repaintContainer( getBounds() );
+        repaint();
 
-        model_.getComponent().removeComponentListener( componentListener_ );
+        componentModel_.getComponent().removeComponentListener( componentListener_ );
         componentListener_ = null;
-        model_.removeComponentModelListener( componentModelListener_ );
+        componentModel_.removeComponentModelListener( componentModelListener_ );
         componentModelListener_ = null;
-        containerView_ = null;
+        tableView_ = null;
     }
 
 
@@ -254,6 +317,26 @@ final class ComponentView
         // ==================================================================
         // Methods
         // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.core.ComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
+         */
+        @Override
+        public void componentBoundsChanged(
+            final ComponentEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    ComponentView.this.componentBoundsChanged();
+                }
+            } );
+        }
 
         /*
          * @see org.gamegineer.table.core.ComponentListener#componentOrientationChanged(org.gamegineer.table.core.ComponentEvent)
