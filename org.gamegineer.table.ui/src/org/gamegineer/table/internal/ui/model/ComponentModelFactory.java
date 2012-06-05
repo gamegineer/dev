@@ -75,7 +75,6 @@ public final class ComponentModelFactory
         return new ComponentModel( component );
     }
 
-    // TODO: may remove this method... it only exists to make ContainerView ctor test type safe
     /**
      * Creates a new container model for the specified container.
      * 
