@@ -235,6 +235,12 @@
                     <exclude name="plugins/*.tests*/src" />
                 </dirset>
             </sourcepath>
+            <tag
+                    description="No Extend"
+                    name="noextend" />
+            <tag
+                    description="No Implement"
+                    name="noimplement" />
         </javadoc>
     </target>
 
