@@ -229,6 +229,10 @@
                     <include name="plugins/**/lib/*.jar" />
                 </fileset>
             </classpath>
+            <link
+                    href="http://docs.oracle.com/javase/6/docs/api/"
+                    offline="true"
+                    packagelistURL="http://docs.oracle.com/javase/6/docs/api/" />
             <sourcepath>
                 <dirset dir="${buildDirectory}">
                     <include name="plugins/**/src" />
