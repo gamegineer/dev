@@ -35,6 +35,11 @@ final class NonNlsMessages
     // Fields
     // ======================================================================
 
+    // --- ComponentPath ----------------------------------------------------
+
+    /** The component path index must not be negative. */
+    public static String ComponentPath_ctor_index_negative;
+
     // --- ComponentSurfaceDesign -------------------------------------------
 
     /** The component surface design height must not be negative. */
