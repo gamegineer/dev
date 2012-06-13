@@ -95,4 +95,27 @@ public final class ObjectUtils
 
         return obj.hashCode();
     }
+
+    /**
+     * Gets a string representation of the specified object.
+     * 
+     * @param obj
+     *        The object for which a string representation is desired; may be
+     *        {@code null}.
+     * 
+     * @return A string representation of the specified object; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    public static String toString(
+        /* @Nullable */
+        final Object obj )
+    {
+        if( obj == null )
+        {
+            return "(null)"; //$NON-NLS-1$
+        }
+
+        return obj.toString();
+    }
 }

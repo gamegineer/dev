@@ -23,6 +23,7 @@ package org.gamegineer.common.core.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
@@ -125,5 +126,30 @@ public final class ObjectUtilsTest
     public void testHashCode_Obj_Null()
     {
         assertEquals( 0, ObjectUtils.hashCode( null ) );
+    }
+
+    /**
+     * Ensures the {@code toString} method returns the correct value when the
+     * object is not {@code null}.
+     */
+    @Test
+    public void testToString_Obj_NonNull()
+    {
+        final Object obj = new Object();
+        final String expectedValue = obj.toString();
+
+        final String actualValue = ObjectUtils.toString( obj );
+
+        assertEquals( expectedValue, actualValue );
+    }
+
+    /**
+     * Ensures the {@code toString} method returns the correct value when the
+     * object is {@code null}.
+     */
+    @Test
+    public void testToString_Obj_Null()
+    {
+        assertNotNull( ObjectUtils.toString( null ) );
     }
 }
