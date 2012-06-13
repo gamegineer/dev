@@ -26,6 +26,7 @@ import static org.gamegineer.test.core.Assert.assertImmutableCollection;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -535,6 +536,17 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
         final Point actualOrigin = component_.getOrigin();
 
         assertEquals( expectedOrigin, actualOrigin );
+    }
+
+    /**
+     * Ensures the {@code getPath} method returns {@code null} when the
+     * component is not associated with a table.
+     */
+    @Test
+    public void testGetPath_NoAssociatedTable()
+    {
+        assertNull( component_.getTable() );
+        assertNull( component_.getPath() );
     }
 
     /**

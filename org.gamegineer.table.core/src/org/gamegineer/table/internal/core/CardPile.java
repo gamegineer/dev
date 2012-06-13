@@ -44,6 +44,7 @@ import org.gamegineer.table.core.CardPileLayouts;
 import org.gamegineer.table.core.CardPileOrientation;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ComponentOrientation;
+import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
@@ -700,6 +701,28 @@ final class CardPile
         try
         {
             return new Point( origin_ );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#getPath()
+     */
+    @Override
+    public ComponentPath getPath()
+    {
+        getLock().lock();
+        try
+        {
+            if( table_ == null )
+            {
+                return null;
+            }
+
+            return new ComponentPath( null, table_.getCardPileIndex( this ) );
         }
         finally
         {

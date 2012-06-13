@@ -113,6 +113,15 @@ public interface IComponent
     public Point getOrigin();
 
     /**
+     * Gets the path to this component from its associated table.
+     * 
+     * @return The path to this component from its associated table or
+     *         {@code null} if the component is not associated with a table.
+     */
+    /* @Nullable */
+    public ComponentPath getPath();
+
+    /**
      * Gets the size of this component in table coordinates.
      * 
      * @return The size of this component in table coordinates; never

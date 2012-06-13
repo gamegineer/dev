@@ -40,6 +40,7 @@ import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ComponentOrientation;
+import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ICard;
@@ -378,6 +379,34 @@ final class Card
     public Point getOrigin()
     {
         return getLocation();
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#getPath()
+     */
+    @Override
+    public ComponentPath getPath()
+    {
+        getLock().lock();
+        try
+        {
+            if( cardPile_ == null )
+            {
+                return null;
+            }
+
+            final ComponentPath parentPath = cardPile_.getPath();
+            if( parentPath == null )
+            {
+                return null;
+            }
+
+            return new ComponentPath( parentPath, cardPile_.getComponentIndex( this ) );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
     }
 
     /*
