@@ -388,21 +388,21 @@ final class Table
     {
         assertArgumentNotNull( path, "path" ); //$NON-NLS-1$
 
-        final ComponentPath[] pathSegments = path.toArray();
-        assertArgumentLegal( pathSegments.length <= 2, "path", NonNlsMessages.Table_getComponent_path_notExists ); //$NON-NLS-1$
+        final List<ComponentPath> paths = path.toList();
+        assertArgumentLegal( paths.size() <= 2, "path", NonNlsMessages.Table_getComponent_path_notExists ); //$NON-NLS-1$
 
         getLock().lock();
         try
         {
-            final ComponentPath cardPilePath = pathSegments[ 0 ];
+            final ComponentPath cardPilePath = paths.get( 0 );
             assertArgumentLegal( cardPilePath.getIndex() < cardPiles_.size(), "path", NonNlsMessages.Table_getComponent_path_notExists ); //$NON-NLS-1$
             final CardPile cardPile = cardPiles_.get( cardPilePath.getIndex() );
-            if( pathSegments.length == 1 )
+            if( paths.size() == 1 )
             {
                 return cardPile;
             }
 
-            final ComponentPath cardPath = pathSegments[ 1 ];
+            final ComponentPath cardPath = paths.get( 1 );
             return cardPile.getComponent( cardPath.getIndex() );
         }
         finally

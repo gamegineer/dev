@@ -21,7 +21,9 @@
 
 package org.gamegineer.table.core;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.Test;
 
 /**
@@ -57,57 +59,56 @@ public final class ComponentPathTest
     }
 
     /**
-     * Ensures the {@code toArray} method returns the correct value when the
+     * Ensures the {@code toList} method returns the correct value when the
      * component hierarchy is one level deep.
      */
     @Test
-    public void testToArray_OneLevelDeep()
+    public void testToList_OneLevelDeep()
     {
         final ComponentPath componentPath0 = new ComponentPath( null, 0 );
-        final ComponentPath[] expectedValue = new ComponentPath[] {
-            componentPath0
-        };
+        final List<ComponentPath> expectedValue = Arrays.asList( //
+            componentPath0 );
 
-        final ComponentPath[] actualValue = componentPath0.toArray();
+        final List<ComponentPath> actualValue = componentPath0.toList();
 
-        assertArrayEquals( actualValue, expectedValue );
+        assertEquals( actualValue, expectedValue );
     }
 
     /**
-     * Ensures the {@code toArray} method returns the correct value when the
+     * Ensures the {@code toList} method returns the correct value when the
      * component hierarchy is three levels deep.
      */
     @Test
-    public void testToArray_ThreeLevelsDeep()
+    public void testToList_ThreeLevelsDeep()
     {
         final ComponentPath componentPath0 = new ComponentPath( null, 0 );
         final ComponentPath componentPath1 = new ComponentPath( componentPath0, 10 );
         final ComponentPath componentPath2 = new ComponentPath( componentPath1, 100 );
-        final ComponentPath[] expectedValue = new ComponentPath[] {
-            componentPath0, componentPath1, componentPath2
-        };
+        final List<ComponentPath> expectedValue = Arrays.asList( //
+            componentPath0, //
+            componentPath1, //
+            componentPath2 );
 
-        final ComponentPath[] actualValue = componentPath2.toArray();
+        final List<ComponentPath> actualValue = componentPath2.toList();
 
-        assertArrayEquals( actualValue, expectedValue );
-        System.out.println( componentPath2.toString() );
+        assertEquals( actualValue, expectedValue );
     }
 
     /**
-     * Ensures the {@code toArray} method returns the correct value when the
+     * Ensures the {@code toList} method returns the correct value when the
      * component hierarchy is two levels deep.
      */
     @Test
-    public void testToArray_TwoLevelsDeep()
+    public void testToList_TwoLevelsDeep()
     {
         final ComponentPath componentPath0 = new ComponentPath( null, 0 );
         final ComponentPath componentPath1 = new ComponentPath( componentPath0, 10 );
-        final ComponentPath[] expectedValue = new ComponentPath[] {
-            componentPath0, componentPath1
-        };
+        final List<ComponentPath> expectedValue = Arrays.asList( //
+            componentPath0, //
+            componentPath1 );
 
-        final ComponentPath[] actualValue = componentPath1.toArray();
+        final List<ComponentPath> actualValue = componentPath1.toList();
 
-        assertArrayEquals( actualValue, expectedValue );
+        assertEquals( actualValue, expectedValue );
     }
 }

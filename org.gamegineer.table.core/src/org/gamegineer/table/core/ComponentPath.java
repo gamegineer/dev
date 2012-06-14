@@ -143,15 +143,14 @@ public final class ComponentPath
     }
 
     /**
-     * Converts this component path to an array of its constituent component
-     * paths ordered from the path to the top-most ancestor component to this
-     * component.
+     * Converts this component path to a list of its constituent component paths
+     * ordered from the top-most ancestor component to this component.
      * 
-     * @return An array of component paths ordered from the path to the top-most
-     *         ancestor component to this component; never {@code null}.
+     * @return A list of component paths ordered from the top-most ancestor
+     *         component to this component; never {@code null}.
      */
     /* @NonNull */
-    public ComponentPath[] toArray()
+    public List<ComponentPath> toList()
     {
         final List<ComponentPath> componentPaths = new ArrayList<ComponentPath>();
 
@@ -163,8 +162,7 @@ public final class ComponentPath
         }
 
         Collections.reverse( componentPaths );
-
-        return componentPaths.toArray( new ComponentPath[ componentPaths.size() ] );
+        return componentPaths;
     }
 
     /*
@@ -176,11 +174,11 @@ public final class ComponentPath
         final StringBuilder sb = new StringBuilder();
         sb.append( "ComponentPath[" ); //$NON-NLS-1$
 
-        final ComponentPath[] componentPaths = toArray();
-        for( int index = 0; index < componentPaths.length; ++index )
+        final List<ComponentPath> componentPaths = toList();
+        for( int index = 0, size = componentPaths.size(); index < size; ++index )
         {
-            sb.append( componentPaths[ index ].getIndex() );
-            if( index < componentPaths.length - 1 )
+            sb.append( componentPaths.get( index ).getIndex() );
+            if( index < size - 1 )
             {
                 sb.append( '.' );
             }
