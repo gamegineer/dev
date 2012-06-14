@@ -128,7 +128,19 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     protected abstract TableEnvironmentType createTableEnvironment();
 
     /**
-     * Creates a new card pile with a unique base design for the fixture table.
+     * Creates a new card with unique surface designs for the fixture table.
+     * 
+     * @return A new card; never {@code null}.
+     */
+    /* @NonNull */
+    private ICard createUniqueCard()
+    {
+        return Cards.createUniqueCard( tableEnvironment_ );
+    }
+
+    /**
+     * Creates a new card pile with unique surface designs for the fixture
+     * table.
      * 
      * @return A new card pile; never {@code null}.
      */
@@ -473,6 +485,47 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     public void testGetCardPiles_ReturnValue_NonNull()
     {
         assertNotNull( table_.getCardPiles() );
+    }
+
+    /**
+     * Ensures the {@code getComponent} method throws an exception when passed a
+     * path that is illegal because it does not exist.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testGetComponent_Path_Illegal_NotExists()
+    {
+        table_.getComponent( new ComponentPath( null, 0 ) );
+    }
+
+    /**
+     * Ensures the {@code getComponent} method returns the correct component
+     * when passed a legal path.
+     */
+    @Test
+    public void testGetComponent_Path_Legal()
+    {
+        final ICardPile expectedCardPile = createUniqueCardPile();
+        table_.addCardPile( expectedCardPile );
+        expectedCardPile.addComponent( createUniqueCard() );
+        expectedCardPile.addComponent( createUniqueCard() );
+        final IComponent expectedCard = createUniqueCard();
+        expectedCardPile.addComponent( expectedCard );
+
+        final IComponent actualCardPile = table_.getComponent( expectedCardPile.getPath() );
+        final IComponent actualCard = table_.getComponent( expectedCard.getPath() );
+
+        assertSame( expectedCardPile, actualCardPile );
+        assertSame( expectedCard, actualCard );
+    }
+
+    /**
+     * Ensures the {@code getComponent} method throws an exception when passed a
+     * {@code null} path.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGetComponent_Path_Null()
+    {
+        table_.getComponent( null );
     }
 
     /**

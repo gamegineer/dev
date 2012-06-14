@@ -150,6 +150,25 @@ public interface ITable
     public List<ICardPile> getCardPiles();
 
     /**
+     * Gets the component in this table at the specified path.
+     * 
+     * @param path
+     *        The component path; must not be {@code null}.
+     * 
+     * @return The component in this table at the specified path; never
+     *         {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If no component exists at the specified path.
+     * @throws java.lang.NullPointerException
+     *         If {@code path} is {@code null}.
+     */
+    /* @NonNull */
+    public IComponent getComponent(
+        /* @NonNull */
+        ComponentPath path );
+
+    /**
      * Gets the table environment associated with this table.
      * 
      * @return The table environment associated with this table; never

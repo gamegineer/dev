@@ -35,7 +35,9 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
+import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ICardPile;
+import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
@@ -370,6 +372,38 @@ final class Table
         try
         {
             return new ArrayList<ICardPile>( cardPiles_ );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITable#getComponent(org.gamegineer.table.core.ComponentPath)
+     */
+    @Override
+    public IComponent getComponent(
+        final ComponentPath path )
+    {
+        assertArgumentNotNull( path, "path" ); //$NON-NLS-1$
+
+        final ComponentPath[] pathSegments = path.toArray();
+        assertArgumentLegal( pathSegments.length <= 2, "path", NonNlsMessages.Table_getComponent_path_notExists ); //$NON-NLS-1$
+
+        getLock().lock();
+        try
+        {
+            final ComponentPath cardPilePath = pathSegments[ 0 ];
+            assertArgumentLegal( cardPilePath.getIndex() < cardPiles_.size(), "path", NonNlsMessages.Table_getComponent_path_notExists ); //$NON-NLS-1$
+            final CardPile cardPile = cardPiles_.get( cardPilePath.getIndex() );
+            if( pathSegments.length == 1 )
+            {
+                return cardPile;
+            }
+
+            final ComponentPath cardPath = pathSegments[ 1 ];
+            return cardPile.getComponent( cardPath.getIndex() );
         }
         finally
         {
