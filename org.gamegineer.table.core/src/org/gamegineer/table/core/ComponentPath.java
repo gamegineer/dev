@@ -178,7 +178,7 @@ public final class ComponentPath
         for( int index = 0, size = componentPaths.size(); index < size; ++index )
         {
             sb.append( componentPaths.get( index ).getIndex() );
-            if( index < size - 1 )
+            if( index < (size - 1) )
             {
                 sb.append( '.' );
             }
