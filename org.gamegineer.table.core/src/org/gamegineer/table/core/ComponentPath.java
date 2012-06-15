@@ -144,10 +144,11 @@ public final class ComponentPath
 
     /**
      * Converts this component path to a list of its constituent component paths
-     * ordered from the top-most ancestor component to this component.
+     * ordered from the root-most component to the leaf-most component.
      * 
-     * @return A list of component paths ordered from the top-most ancestor
-     *         component to this component; never {@code null}.
+     * @return A list of component paths ordered from the root-most component to
+     *         the leaf-most component; never {@code null}. The returned
+     *         collection is guaranteed to have at least one element.
      */
     /* @NonNull */
     public List<ComponentPath> toList()
