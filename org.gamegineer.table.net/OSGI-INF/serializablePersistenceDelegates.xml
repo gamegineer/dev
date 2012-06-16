@@ -12,14 +12,13 @@
 		<property
 				name="delegators"
 				type="String">
-			org.gamegineer.table.internal.net.node.CardIncrement
-			org.gamegineer.table.internal.net.node.CardPileIncrement
+			org.gamegineer.table.internal.net.node.ComponentIncrement
+			org.gamegineer.table.internal.net.node.ContainerIncrement
 			org.gamegineer.table.internal.net.node.TableIncrement
 			org.gamegineer.table.internal.net.node.common.messages.BeginAuthenticationRequestMessage
 			org.gamegineer.table.internal.net.node.common.messages.BeginAuthenticationResponseMessage
 			org.gamegineer.table.internal.net.node.common.messages.CancelControlRequestMessage
-			org.gamegineer.table.internal.net.node.common.messages.CardIncrementMessage
-			org.gamegineer.table.internal.net.node.common.messages.CardPileIncrementMessage
+			org.gamegineer.table.internal.net.node.common.messages.ComponentIncrementMessage
 			org.gamegineer.table.internal.net.node.common.messages.EchoRequestMessage
 			org.gamegineer.table.internal.net.node.common.messages.EchoResponseMessage
 			org.gamegineer.table.internal.net.node.common.messages.EndAuthenticationMessage

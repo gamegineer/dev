@@ -37,6 +37,7 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
+import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.internal.net.Activator;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.ITableNetworkController;
@@ -1464,60 +1465,27 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          * Subclasses may override but must call the superclass implementation.
          * </p>
          * 
-         * @see org.gamegineer.table.internal.net.node.ITableManager#incrementCardPileState(org.gamegineer.table.internal.net.node.INetworkTable,
-         *      int, org.gamegineer.table.internal.net.node.CardPileIncrement)
+         * @see org.gamegineer.table.internal.net.node.ITableManager#incrementComponentState(org.gamegineer.table.internal.net.node.INetworkTable,
+         *      org.gamegineer.table.core.ComponentPath,
+         *      org.gamegineer.table.internal.net.node.ComponentIncrement)
          */
         @Override
         @SuppressWarnings( "synthetic-access" )
-        public void incrementCardPileState(
+        public void incrementComponentState(
             final INetworkTable sourceTable,
-            final int cardPileIndex,
-            final CardPileIncrement cardPileIncrement )
+            final ComponentPath componentPath,
+            final ComponentIncrement componentIncrement )
         {
             assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
-            assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
-            assertArgumentNotNull( cardPileIncrement, "cardPileIncrement" ); //$NON-NLS-1$
+            assertArgumentNotNull( componentPath, "componentPath" ); //$NON-NLS-1$
+            assertArgumentNotNull( componentIncrement, "componentIncrement" ); //$NON-NLS-1$
             assert isNodeLayerThread();
 
             for( final INetworkTable table : getTables() )
             {
                 if( table != sourceTable )
                 {
-                    table.incrementCardPileState( cardPileIndex, cardPileIncrement );
-                }
-            }
-        }
-
-        /**
-         * This implementation forwards the request to all tables connected to
-         * the node, not including the originator of the request.
-         * 
-         * <p>
-         * Subclasses may override but must call the superclass implementation.
-         * </p>
-         * 
-         * @see org.gamegineer.table.internal.net.node.ITableManager#incrementCardState(org.gamegineer.table.internal.net.node.INetworkTable,
-         *      int, int, org.gamegineer.table.internal.net.node.CardIncrement)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void incrementCardState(
-            final INetworkTable sourceTable,
-            final int cardPileIndex,
-            final int cardIndex,
-            final CardIncrement cardIncrement )
-        {
-            assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
-            assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
-            assertArgumentLegal( cardIndex >= 0, "cardIndex" ); //$NON-NLS-1$
-            assertArgumentNotNull( cardIncrement, "cardIncrement" ); //$NON-NLS-1$
-            assert isNodeLayerThread();
-
-            for( final INetworkTable table : getTables() )
-            {
-                if( table != sourceTable )
-                {
-                    table.incrementCardState( cardPileIndex, cardIndex, cardIncrement );
+                    table.incrementComponentState( componentPath, componentIncrement );
                 }
             }
         }

@@ -1,6 +1,6 @@
 /*
- * CardPileIncrementMessage.java
- * Copyright 2008-2011 Gamegineer.org
+ * ComponentIncrementMessage.java
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,22 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jul 12, 2011 at 8:42:31 PM.
+ * Created on Jun 30, 2011 at 10:29:37 PM.
  */
 
 package org.gamegineer.table.internal.net.node.common.messages;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.internal.net.node.CardPileIncrement;
+import org.gamegineer.table.core.ComponentPath;
+import org.gamegineer.table.internal.net.node.ComponentIncrement;
 import org.gamegineer.table.internal.net.transport.AbstractMessage;
 
 /**
- * A message sent by a node to increment the state of a card pile.
+ * A message sent by a node to increment the state of a component.
  */
 @NotThreadSafe
-public final class CardPileIncrementMessage
+public final class ComponentIncrementMessage
     extends AbstractMessage
 {
     // ======================================================================
@@ -39,21 +39,21 @@ public final class CardPileIncrementMessage
     // ======================================================================
 
     /** Serializable class version number. */
-    private static final long serialVersionUID = 57895247573982620L;
+    private static final long serialVersionUID = -3587077290756850335L;
 
     /**
-     * The incremental change to the state of the card pile.
+     * The incremental change to the state of the component.
      * 
-     * @serial The incremental change to the state of the card pile.
+     * @serial The incremental change to the state of the component.
      */
-    private CardPileIncrement increment_;
+    private ComponentIncrement increment_;
 
     /**
-     * The card pile index.
+     * The component path.
      * 
-     * @serial The card pile index.
+     * @serial The component path.
      */
-    private int index_;
+    private ComponentPath path_;
 
 
     // ======================================================================
@@ -61,12 +61,13 @@ public final class CardPileIncrementMessage
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardPileIncrementMessage} class.
+     * Initializes a new instance of the {@code ComponentIncrementMessage}
+     * class.
      */
-    public CardPileIncrementMessage()
+    public ComponentIncrementMessage()
     {
-        increment_ = new CardPileIncrement();
-        index_ = 0;
+        increment_ = new ComponentIncrement();
+        path_ = new ComponentPath( null, 0 );
     }
 
 
@@ -75,32 +76,33 @@ public final class CardPileIncrementMessage
     // ======================================================================
 
     /**
-     * Gets the incremental change to the state of the card pile.
+     * Gets the incremental change to the state of the component.
      * 
-     * @return The incremental change to the state of the card pile; never
+     * @return The incremental change to the state of the component; never
      *         {@code null}.
      */
     /* @NonNull */
-    public CardPileIncrement getIncrement()
+    public ComponentIncrement getIncrement()
     {
         return increment_;
     }
 
     /**
-     * Gets the card pile index.
+     * Gets the component path.
      * 
-     * @return The card pile index.
+     * @return The component path; never {@code null}.
      */
-    public int getIndex()
+    /* @NonNull */
+    public ComponentPath getPath()
     {
-        return index_;
+        return path_;
     }
 
     /**
-     * Sets the incremental change to the state of the card pile.
+     * Sets the incremental change to the state of the component.
      * 
      * @param increment
-     *        The incremental change to the state of the card pile; must not be
+     *        The incremental change to the state of the component; must not be
      *        {@code null}.
      * 
      * @throws java.lang.NullPointerException
@@ -108,7 +110,7 @@ public final class CardPileIncrementMessage
      */
     public void setIncrement(
         /* @NonNull */
-        final CardPileIncrement increment )
+        final ComponentIncrement increment )
     {
         assertArgumentNotNull( increment, "increment" ); //$NON-NLS-1$
 
@@ -116,19 +118,20 @@ public final class CardPileIncrementMessage
     }
 
     /**
-     * Sets the card pile index.
+     * Sets the component path.
      * 
-     * @param index
-     *        The card pile index.
+     * @param path
+     *        The component path; must not be {@code null}.
      * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code index} is negative.
+     * @throws java.lang.NullPointerException
+     *         If {@code path} is {@code null}.
      */
-    public void setIndex(
-        final int index )
+    public void setPath(
+        /* @NonNull */
+        final ComponentPath path )
     {
-        assertArgumentLegal( index >= 0, "index" ); //$NON-NLS-1$
+        assertArgumentNotNull( path, "path" ); //$NON-NLS-1$
 
-        index_ = index;
+        path_ = path;
     }
 }

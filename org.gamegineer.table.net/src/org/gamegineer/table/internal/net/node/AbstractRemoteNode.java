@@ -33,12 +33,10 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.Loggers;
-import org.gamegineer.table.internal.net.node.common.handlers.CardIncrementMessageHandler;
-import org.gamegineer.table.internal.net.node.common.handlers.CardPileIncrementMessageHandler;
+import org.gamegineer.table.internal.net.node.common.handlers.ComponentIncrementMessageHandler;
 import org.gamegineer.table.internal.net.node.common.handlers.TableIncrementMessageHandler;
 import org.gamegineer.table.internal.net.node.common.handlers.TableMessageHandler;
-import org.gamegineer.table.internal.net.node.common.messages.CardIncrementMessage;
-import org.gamegineer.table.internal.net.node.common.messages.CardPileIncrementMessage;
+import org.gamegineer.table.internal.net.node.common.messages.ComponentIncrementMessage;
 import org.gamegineer.table.internal.net.node.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.node.common.messages.GoodbyeMessage;
 import org.gamegineer.table.internal.net.node.common.messages.TableIncrementMessage;
@@ -148,8 +146,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
         table_ = new RemoteNetworkTable( this );
         uncorrelatedMessageHandlers_ = new IdentityHashMap<Class<? extends IMessage>, IMessageHandler>();
 
-        registerUncorrelatedMessageHandler( CardIncrementMessage.class, CardIncrementMessageHandler.INSTANCE );
-        registerUncorrelatedMessageHandler( CardPileIncrementMessage.class, CardPileIncrementMessageHandler.INSTANCE );
+        registerUncorrelatedMessageHandler( ComponentIncrementMessage.class, ComponentIncrementMessageHandler.INSTANCE );
         registerUncorrelatedMessageHandler( ErrorMessage.class, ErrorMessageHandler.INSTANCE );
         registerUncorrelatedMessageHandler( TableIncrementMessage.class, TableIncrementMessageHandler.INSTANCE );
         registerUncorrelatedMessageHandler( TableMessage.class, TableMessageHandler.INSTANCE );

@@ -1,5 +1,5 @@
 /*
- * CardIncrementMessageTest.java
+ * ComponentIncrementMessageTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -26,17 +26,17 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.node.common.messages.CardIncrementMessage}
+ * {@link org.gamegineer.table.internal.net.node.common.messages.ComponentIncrementMessage}
  * class.
  */
-public final class CardIncrementMessageTest
+public final class ComponentIncrementMessageTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The card increment message under test in the fixture. */
-    private CardIncrementMessage message_;
+    /** The component increment message under test in the fixture. */
+    private ComponentIncrementMessage message_;
 
 
     // ======================================================================
@@ -44,9 +44,10 @@ public final class CardIncrementMessageTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardIncrementMessageTest} class.
+     * Initializes a new instance of the {@code ComponentIncrementMessageTest}
+     * class.
      */
-    public CardIncrementMessageTest()
+    public ComponentIncrementMessageTest()
     {
     }
 
@@ -65,17 +66,7 @@ public final class CardIncrementMessageTest
     public void setUp()
         throws Exception
     {
-        message_ = new CardIncrementMessage();
-    }
-
-    /**
-     * Ensures the {@code setCardPileIndex} method throws an exception when
-     * passed an illegal card pile index that is negative.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testSetCardPileIndex_CardPileIndex_Null()
-    {
-        message_.setCardPileIndex( -1 );
+        message_ = new ComponentIncrementMessage();
     }
 
     /**
@@ -89,12 +80,12 @@ public final class CardIncrementMessageTest
     }
 
     /**
-     * Ensures the {@code setIndex} method throws an exception when passed an
-     * illegal index that is negative.
+     * Ensures the {@code setPath} method throws an exception when passed a
+     * {@code null} path.
      */
-    @Test( expected = IllegalArgumentException.class )
-    public void testSetIndex_Index_Null()
+    @Test( expected = NullPointerException.class )
+    public void testSetPath_Path_Null()
     {
-        message_.setIndex( -1 );
+        message_.setPath( null );
     }
 }

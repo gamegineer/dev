@@ -21,23 +21,25 @@
 
 package org.gamegineer.table.internal.net.node;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.locks.Lock;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.core.CardOrientation;
-import org.gamegineer.table.core.CardPileOrientation;
 import org.gamegineer.table.core.ComponentEvent;
+import org.gamegineer.table.core.ComponentOrientation;
+import org.gamegineer.table.core.ComponentPath;
+import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ContainerEvent;
-import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentListener;
+import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerListener;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
@@ -157,40 +159,20 @@ final class LocalNetworkTable
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.node.INetworkTable#incrementCardPileState(int, org.gamegineer.table.internal.net.node.CardPileIncrement)
+     * @see org.gamegineer.table.internal.net.node.INetworkTable#incrementComponentState(org.gamegineer.table.core.ComponentPath, org.gamegineer.table.internal.net.node.ComponentIncrement)
      */
     @Override
-    public void incrementCardPileState(
-        final int cardPileIndex,
-        final CardPileIncrement cardPileIncrement )
+    public void incrementComponentState(
+        final ComponentPath componentPath,
+        final ComponentIncrement componentIncrement )
     {
-        assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
-        assertArgumentNotNull( cardPileIncrement, "cardPileIncrement" ); //$NON-NLS-1$
+        assertArgumentNotNull( componentPath, "componentPath" ); //$NON-NLS-1$
+        assertArgumentNotNull( componentIncrement, "componentIncrement" ); //$NON-NLS-1$
         assert nodeLayer_.isNodeLayerThread();
 
         final boolean oldIgnoreEvents = ignoreEvents_;
         ignoreEvents_ = true;
-        NetworkTableUtils.incrementCardPileState( table_, cardPileIndex, cardPileIncrement );
-        ignoreEvents_ = oldIgnoreEvents;
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.node.INetworkTable#incrementCardState(int, int, org.gamegineer.table.internal.net.node.CardIncrement)
-     */
-    @Override
-    public void incrementCardState(
-        final int cardPileIndex,
-        final int cardIndex,
-        final CardIncrement cardIncrement )
-    {
-        assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
-        assertArgumentLegal( cardIndex >= 0, "cardIndex" ); //$NON-NLS-1$
-        assertArgumentNotNull( cardIncrement, "cardIncrement" ); //$NON-NLS-1$
-        assert nodeLayer_.isNodeLayerThread();
-
-        final boolean oldIgnoreEvents = ignoreEvents_;
-        ignoreEvents_ = true;
-        NetworkTableUtils.incrementCardState( table_, cardPileIndex, cardIndex, cardIncrement );
+        NetworkTableUtils.incrementComponentState( table_, componentPath, componentIncrement );
         ignoreEvents_ = oldIgnoreEvents;
     }
 
@@ -227,7 +209,7 @@ final class LocalNetworkTable
 
                 for( final IComponent component : cardPile.getComponents() )
                 {
-                    ((ICard)component).addComponentListener( cardComponentListener_ ); // FIXME: remove cast
+                    component.addComponentListener( cardComponentListener_ );
                 }
             }
         }
@@ -301,7 +283,7 @@ final class LocalNetworkTable
 
                 for( final IComponent component : cardPile.getComponents() )
                 {
-                    ((ICard)component).removeComponentListener( cardComponentListener_ ); // FIXME: remove cast
+                    component.removeComponentListener( cardComponentListener_ );
                 }
             }
         }
@@ -349,6 +331,15 @@ final class LocalNetworkTable
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
+            // --------------------------------
+            // TODO: Combine card and card pile component listeners into a single class.
+            //
+            // Will need to merge the behavior of both, including the comment below.
+            // Probably will only handle the event if the component has no parent (i.e. is
+            // at the root of the table, which is currently only a card pile; but this won't
+            // work forever once we introduce the concept of a primary component on the table).
+            // --------------------------------
+
             // do nothing
 
             // In the current implementation, handling this event is unnecessary because a
@@ -378,22 +369,16 @@ final class LocalNetworkTable
                 return;
             }
 
-            int cardPileIndex = -1, cardIndex = -1;
-            final CardIncrement cardIncrement = new CardIncrement();
+            final ComponentPath componentPath;
+            final ComponentIncrement componentIncrement = new ComponentIncrement();
             getTableEnvironmentLock().lock();
             try
             {
-                final ICard card = (ICard)event.getComponent(); // FIXME: remove cast
-                final ICardPile cardPile = (ICardPile)card.getContainer(); // FIXME: remove cast
-                if( cardPile != null )
+                final IComponent component = event.getComponent();
+                componentPath = component.getPath();
+                if( componentPath != null )
                 {
-                    final ITable table = cardPile.getTable();
-                    if( table != null )
-                    {
-                        cardIndex = cardPile.getComponentIndex( card );
-                        cardPileIndex = table.getCardPileIndex( cardPile );
-                        cardIncrement.setOrientation( (CardOrientation)card.getOrientation() ); // FIXME: remove cast
-                    }
+                    componentIncrement.setOrientation( component.getOrientation() );
                 }
             }
             finally
@@ -401,9 +386,9 @@ final class LocalNetworkTable
                 getTableEnvironmentLock().unlock();
             }
 
-            if( (cardPileIndex != -1) && (cardIndex != -1) )
+            if( componentPath != null )
             {
-                tableManager_.incrementCardState( LocalNetworkTable.this, cardPileIndex, cardIndex, cardIncrement );
+                tableManager_.incrementComponentState( LocalNetworkTable.this, componentPath, componentIncrement );
             }
         }
 
@@ -423,23 +408,22 @@ final class LocalNetworkTable
                 return;
             }
 
-            int cardPileIndex = -1, cardIndex = -1;
-            final CardIncrement cardIncrement = new CardIncrement();
+            final ComponentPath componentPath;
+            final ComponentIncrement componentIncrement = new ComponentIncrement();
             getTableEnvironmentLock().lock();
             try
             {
-                final ICard card = (ICard)event.getComponent(); // FIXME: remove cast
-                final ICardPile cardPile = (ICardPile)card.getContainer(); // FIXME: remove cast
-                if( cardPile != null )
+                final IComponent component = event.getComponent();
+                componentPath = component.getPath();
+                if( componentPath != null )
                 {
-                    final ITable table = cardPile.getTable();
-                    if( table != null )
+                    // TODO: consider adding bulk accessor
+                    final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new HashMap<ComponentOrientation, ComponentSurfaceDesign>();
+                    for( final ComponentOrientation orientation : component.getSupportedOrientations() )
                     {
-                        cardIndex = cardPile.getComponentIndex( card );
-                        cardPileIndex = table.getCardPileIndex( cardPile );
-                        cardIncrement.setBackDesign( card.getSurfaceDesign( CardOrientation.BACK ) );
-                        cardIncrement.setFaceDesign( card.getSurfaceDesign( CardOrientation.FACE ) );
+                        surfaceDesigns.put( orientation, component.getSurfaceDesign( orientation ) );
                     }
+                    componentIncrement.setSurfaceDesigns( surfaceDesigns );
                 }
             }
             finally
@@ -447,9 +431,9 @@ final class LocalNetworkTable
                 getTableEnvironmentLock().unlock();
             }
 
-            if( (cardPileIndex != -1) && (cardIndex != -1) )
+            if( componentPath != null )
             {
-                tableManager_.incrementCardState( LocalNetworkTable.this, cardPileIndex, cardIndex, cardIncrement );
+                tableManager_.incrementComponentState( LocalNetworkTable.this, componentPath, componentIncrement );
             }
         }
     }
@@ -494,17 +478,16 @@ final class LocalNetworkTable
                 return;
             }
 
-            int cardPileIndex = -1;
-            final CardPileIncrement cardPileIncrement = new CardPileIncrement();
+            final ComponentPath componentPath;
+            final ComponentIncrement componentIncrement = new ComponentIncrement();
             getTableEnvironmentLock().lock();
             try
             {
-                final ICardPile cardPile = (ICardPile)event.getComponent(); // FIXME: remove cast
-                final ITable table = cardPile.getTable();
-                if( table != null )
+                final IComponent component = event.getComponent();
+                componentPath = component.getPath();
+                if( componentPath != null )
                 {
-                    cardPileIndex = table.getCardPileIndex( cardPile );
-                    cardPileIncrement.setOrigin( cardPile.getOrigin() );
+                    componentIncrement.setLocation( component.getLocation() );
                 }
             }
             finally
@@ -512,9 +495,9 @@ final class LocalNetworkTable
                 getTableEnvironmentLock().unlock();
             }
 
-            if( cardPileIndex != -1 )
+            if( componentPath != null )
             {
-                tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
+                tableManager_.incrementComponentState( LocalNetworkTable.this, componentPath, componentIncrement );
             }
         }
 
@@ -546,17 +529,22 @@ final class LocalNetworkTable
                 return;
             }
 
-            int cardPileIndex = -1;
-            final CardPileIncrement cardPileIncrement = new CardPileIncrement();
+            final ComponentPath componentPath;
+            final ComponentIncrement componentIncrement = new ComponentIncrement();
             getTableEnvironmentLock().lock();
             try
             {
-                final ICardPile cardPile = (ICardPile)event.getComponent(); // FIXME: remove cast
-                final ITable table = cardPile.getTable();
-                if( table != null )
+                final IComponent component = event.getComponent();
+                componentPath = component.getPath();
+                if( componentPath != null )
                 {
-                    cardPileIndex = table.getCardPileIndex( cardPile );
-                    cardPileIncrement.setBaseDesign( cardPile.getSurfaceDesign( CardPileOrientation.BASE ) );
+                    // TODO: consider adding bulk accessor
+                    final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new HashMap<ComponentOrientation, ComponentSurfaceDesign>();
+                    for( final ComponentOrientation orientation : component.getSupportedOrientations() )
+                    {
+                        surfaceDesigns.put( orientation, component.getSurfaceDesign( orientation ) );
+                    }
+                    componentIncrement.setSurfaceDesigns( surfaceDesigns );
                 }
             }
             finally
@@ -564,9 +552,9 @@ final class LocalNetworkTable
                 getTableEnvironmentLock().unlock();
             }
 
-            if( cardPileIndex != -1 )
+            if( componentPath != null )
             {
-                tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
+                tableManager_.incrementComponentState( LocalNetworkTable.this, componentPath, componentIncrement );
             }
         }
     }
@@ -606,25 +594,24 @@ final class LocalNetworkTable
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
             assert nodeLayer_.isNodeLayerThread();
 
-            final ICard card = (ICard)event.getComponent(); // FIXME: remove cast
-            card.addComponentListener( cardComponentListener_ );
+            final IComponent component = event.getComponent();
+            component.addComponentListener( cardComponentListener_ );
 
             if( ignoreEvents_ )
             {
                 return;
             }
 
-            int cardPileIndex = -1;
-            final CardPileIncrement cardPileIncrement = new CardPileIncrement();
+            final ComponentPath containerPath;
+            final ContainerIncrement containerIncrement = new ContainerIncrement();
             getTableEnvironmentLock().lock();
             try
             {
-                final ICardPile cardPile = (ICardPile)event.getContainer(); // FIXME: remove cast
-                final ITable table = cardPile.getTable();
-                if( table != null )
+                final IContainer container = event.getContainer();
+                containerPath = container.getPath();
+                if( containerPath != null )
                 {
-                    cardPileIndex = table.getCardPileIndex( cardPile );
-                    cardPileIncrement.setAddedCardMementos( Collections.singletonList( card.createMemento() ) );
+                    containerIncrement.setAddedComponentMementos( Collections.singletonList( component.createMemento() ) );
                 }
             }
             finally
@@ -632,9 +619,9 @@ final class LocalNetworkTable
                 getTableEnvironmentLock().unlock();
             }
 
-            if( cardPileIndex != -1 )
+            if( containerPath != null )
             {
-                tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
+                tableManager_.incrementComponentState( LocalNetworkTable.this, containerPath, containerIncrement );
             }
         }
 
@@ -651,25 +638,24 @@ final class LocalNetworkTable
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
             assert nodeLayer_.isNodeLayerThread();
 
-            final ICard card = (ICard)event.getComponent(); // FIXME: remove cast
-            card.removeComponentListener( cardComponentListener_ );
+            final IComponent component = event.getComponent();
+            component.removeComponentListener( cardComponentListener_ );
 
             if( ignoreEvents_ )
             {
                 return;
             }
 
-            int cardPileIndex = -1;
-            final CardPileIncrement cardPileIncrement = new CardPileIncrement();
+            final ComponentPath containerPath;
+            final ContainerIncrement containerIncrement = new ContainerIncrement();
             getTableEnvironmentLock().lock();
             try
             {
-                final ICardPile cardPile = (ICardPile)event.getContainer(); // FIXME: remove cast
-                final ITable table = cardPile.getTable();
-                if( table != null )
+                final IContainer container = event.getContainer();
+                containerPath = container.getPath();
+                if( containerPath != null )
                 {
-                    cardPileIndex = table.getCardPileIndex( cardPile );
-                    cardPileIncrement.setRemovedCardCount( 1 );
+                    containerIncrement.setRemovedComponentCount( 1 );
                 }
             }
             finally
@@ -677,9 +663,9 @@ final class LocalNetworkTable
                 getTableEnvironmentLock().unlock();
             }
 
-            if( cardPileIndex != -1 )
+            if( containerPath != null )
             {
-                tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
+                tableManager_.incrementComponentState( LocalNetworkTable.this, containerPath, containerIncrement );
             }
         }
 
@@ -699,17 +685,16 @@ final class LocalNetworkTable
                 return;
             }
 
-            int cardPileIndex = -1;
-            final CardPileIncrement cardPileIncrement = new CardPileIncrement();
+            final ComponentPath containerPath;
+            final ContainerIncrement containerIncrement = new ContainerIncrement();
             getTableEnvironmentLock().lock();
             try
             {
-                final ICardPile cardPile = (ICardPile)event.getContainer(); // FIXME: remove cast
-                final ITable table = cardPile.getTable();
-                if( table != null )
+                final IContainer container = event.getContainer();
+                containerPath = container.getPath();
+                if( containerPath != null )
                 {
-                    cardPileIndex = table.getCardPileIndex( cardPile );
-                    cardPileIncrement.setLayout( cardPile.getLayout() );
+                    containerIncrement.setLayout( container.getLayout() );
                 }
             }
             finally
@@ -717,9 +702,9 @@ final class LocalNetworkTable
                 getTableEnvironmentLock().unlock();
             }
 
-            if( cardPileIndex != -1 )
+            if( containerPath != null )
             {
-                tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
+                tableManager_.incrementComponentState( LocalNetworkTable.this, containerPath, containerIncrement );
             }
         }
     }
@@ -959,7 +944,7 @@ final class LocalNetworkTable
 
                 for( final IComponent component : cardPile.getComponents() )
                 {
-                    ((ICard)component).addComponentListener( cardComponentListener_ ); // FIXME: remove cast
+                    component.addComponentListener( cardComponentListener_ );
                 }
             }
             finally
@@ -997,7 +982,7 @@ final class LocalNetworkTable
                 final ICardPile cardPile = event.getCardPile();
                 for( final IComponent component : cardPile.getComponents() )
                 {
-                    ((ICard)component).removeComponentListener( cardComponentListener_ ); // FIXME: remove cast
+                    component.removeComponentListener( cardComponentListener_ );
                 }
 
                 cardPile.removeComponentListener( cardPileComponentListener_ );

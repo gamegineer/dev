@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.node.server;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,6 +30,7 @@ import java.util.Map;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
+import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.internal.net.Debug;
@@ -38,8 +38,7 @@ import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.Player;
 import org.gamegineer.table.internal.net.node.AbstractNode;
-import org.gamegineer.table.internal.net.node.CardIncrement;
-import org.gamegineer.table.internal.net.node.CardPileIncrement;
+import org.gamegineer.table.internal.net.node.ComponentIncrement;
 import org.gamegineer.table.internal.net.node.INetworkTable;
 import org.gamegineer.table.internal.net.node.INodeLayer;
 import org.gamegineer.table.internal.net.node.ITableManager;
@@ -542,45 +541,23 @@ public final class ServerNode
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#incrementCardPileState(org.gamegineer.table.internal.net.node.INetworkTable, int, org.gamegineer.table.internal.net.node.CardPileIncrement)
+         * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#incrementComponentState(org.gamegineer.table.internal.net.node.INetworkTable, org.gamegineer.table.core.ComponentPath, org.gamegineer.table.internal.net.node.ComponentIncrement)
          */
         @Override
         @SuppressWarnings( "synthetic-access" )
-        public void incrementCardPileState(
+        public void incrementComponentState(
             final INetworkTable sourceTable,
-            final int cardPileIndex,
-            final CardPileIncrement cardPileIncrement )
-        {
-            assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
-            assertArgumentNotNull( cardPileIncrement, "cardPileIncrement" ); //$NON-NLS-1$
-
-            if( verifyRequestingPlayerIsEditor() )
-            {
-                NetworkTableUtils.incrementCardPileState( masterTable_, cardPileIndex, cardPileIncrement );
-                super.incrementCardPileState( sourceTable, cardPileIndex, cardPileIncrement );
-            }
-        }
-
-        /*
-         * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#incrementCardState(org.gamegineer.table.internal.net.node.INetworkTable, int, int, org.gamegineer.table.internal.net.node.CardIncrement)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void incrementCardState(
-            final INetworkTable sourceTable,
-            final int cardPileIndex,
-            final int cardIndex,
-            final CardIncrement cardIncrement )
+            final ComponentPath componentPath,
+            final ComponentIncrement componentIncrement )
         {
             assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
-            assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
-            assertArgumentLegal( cardIndex >= 0, "cardIndex" ); //$NON-NLS-1$
-            assertArgumentNotNull( cardIncrement, "cardIncrement" ); //$NON-NLS-1$
+            assertArgumentNotNull( componentPath, "componentPath" ); //$NON-NLS-1$
+            assertArgumentNotNull( componentIncrement, "componentIncrement" ); //$NON-NLS-1$
 
             if( verifyRequestingPlayerIsEditor() )
             {
-                NetworkTableUtils.incrementCardState( masterTable_, cardPileIndex, cardIndex, cardIncrement );
-                super.incrementCardState( sourceTable, cardPileIndex, cardIndex, cardIncrement );
+                NetworkTableUtils.incrementComponentState( masterTable_, componentPath, componentIncrement );
+                super.incrementComponentState( sourceTable, componentPath, componentIncrement );
             }
         }
 
@@ -692,39 +669,18 @@ public final class ServerNode
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.internal.net.node.ITableManager#incrementCardPileState(org.gamegineer.table.internal.net.node.INetworkTable, int, org.gamegineer.table.internal.net.node.CardPileIncrement)
+         * @see org.gamegineer.table.internal.net.node.ITableManager#incrementComponentState(org.gamegineer.table.internal.net.node.INetworkTable, org.gamegineer.table.core.ComponentPath, org.gamegineer.table.internal.net.node.ComponentIncrement)
          */
         @Override
-        public void incrementCardPileState(
+        public void incrementComponentState(
             final INetworkTable sourceTable,
-            final int cardPileIndex,
-            final CardPileIncrement cardPileIncrement )
+            final ComponentPath componentPath,
+            final ComponentIncrement componentIncrement )
         {
             ThreadPlayer.setPlayerName( localPlayerName_ );
             try
             {
-                tableManagerDecoratee_.incrementCardPileState( sourceTable, cardPileIndex, cardPileIncrement );
-            }
-            finally
-            {
-                ThreadPlayer.setPlayerName( null );
-            }
-        }
-
-        /*
-         * @see org.gamegineer.table.internal.net.node.ITableManager#incrementCardState(org.gamegineer.table.internal.net.node.INetworkTable, int, int, org.gamegineer.table.internal.net.node.CardIncrement)
-         */
-        @Override
-        public void incrementCardState(
-            final INetworkTable sourceTable,
-            final int cardPileIndex,
-            final int cardIndex,
-            final CardIncrement cardIncrement )
-        {
-            ThreadPlayer.setPlayerName( localPlayerName_ );
-            try
-            {
-                tableManagerDecoratee_.incrementCardState( sourceTable, cardPileIndex, cardIndex, cardIncrement );
+                tableManagerDecoratee_.incrementComponentState( sourceTable, componentPath, componentIncrement );
             }
             finally
             {

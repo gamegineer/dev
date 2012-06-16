@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.node;
 
 import org.easymock.EasyMock;
+import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ITable;
 import org.junit.Test;
 
@@ -48,73 +49,33 @@ public final class NetworkTableUtilsTest
     // ======================================================================
 
     /**
-     * Ensures the {@code incrementCardPileState} method throws an exception
-     * when passed a {@code null} card pile increment.
+     * Ensures the {@code incrementComponentState} method throws an exception
+     * when passed a {@code null} component increment.
      */
     @Test( expected = NullPointerException.class )
-    public void testIncrementCardPileState_CardPileIncrement_Null()
+    public void testIncrementComponentState_ComponentIncrement_Null()
     {
-        NetworkTableUtils.incrementCardPileState( EasyMock.createMock( ITable.class ), 0, null );
+        NetworkTableUtils.incrementComponentState( EasyMock.createMock( ITable.class ), new ComponentPath( null, 0 ), null );
     }
 
     /**
-     * Ensures the {@code incrementCardPileState} method throws an exception
-     * when passed an illegal card pile index that is negative.
+     * Ensures the {@code incrementComponentState} method throws an exception
+     * when passed a {@code null} component path.
      */
-    @Test( expected = IllegalArgumentException.class )
-    public void testIncrementCardPileState_CardPileIndex_Illegal_Negative()
+    @Test( expected = NullPointerException.class )
+    public void testIncrementComponentState_ComponentPath_Null()
     {
-        NetworkTableUtils.incrementCardPileState( EasyMock.createMock( ITable.class ), -1, new CardPileIncrement() );
+        NetworkTableUtils.incrementComponentState( EasyMock.createMock( ITable.class ), null, new ComponentIncrement() );
     }
 
     /**
-     * Ensures the {@code incrementCardPileState} method throws an exception
+     * Ensures the {@code incrementComponentState} method throws an exception
      * when passed a {@code null} table.
      */
     @Test( expected = NullPointerException.class )
-    public void testIncrementCardPileState_Table_Null()
+    public void testIncrementComponentState_Table_Null()
     {
-        NetworkTableUtils.incrementCardPileState( null, 0, new CardPileIncrement() );
-    }
-
-    /**
-     * Ensures the {@code incrementCardState} method throws an exception when
-     * passed a {@code null} card increment.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testIncrementCardState_CardIncrement_Null()
-    {
-        NetworkTableUtils.incrementCardState( EasyMock.createMock( ITable.class ), 0, 0, null );
-    }
-
-    /**
-     * Ensures the {@code incrementCardState} method throws an exception when
-     * passed an illegal card index that is negative.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testIncrementCardState_CardIndex_Illegal_Negative()
-    {
-        NetworkTableUtils.incrementCardState( EasyMock.createMock( ITable.class ), 0, -1, new CardIncrement() );
-    }
-
-    /**
-     * Ensures the {@code incrementCardState} method throws an exception when
-     * passed an illegal card pile index that is negative.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testIncrementCardState_CardPileIndex_Illegal_Negative()
-    {
-        NetworkTableUtils.incrementCardState( EasyMock.createMock( ITable.class ), -1, 0, new CardIncrement() );
-    }
-
-    /**
-     * Ensures the {@code incrementCardState} method throws an exception when
-     * passed a {@code null} table.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testIncrementCardState_Table_Null()
-    {
-        NetworkTableUtils.incrementCardState( null, 0, 0, new CardIncrement() );
+        NetworkTableUtils.incrementComponentState( null, new ComponentPath( null, 0 ), new ComponentIncrement() );
     }
 
     /**

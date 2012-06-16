@@ -1,6 +1,6 @@
 /*
  * INetworkTable.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.internal.net.node;
 
+import org.gamegineer.table.core.ComponentPath;
+
 /**
  * A table connected to the table network.
  * 
@@ -38,45 +40,24 @@ public interface INetworkTable
     public void dispose();
 
     /**
-     * Increments the state of the specified card pile.
+     * Increments the state of the component at the specified path associated
+     * with the table.
      * 
-     * @param cardPileIndex
-     *        The card pile index.
-     * @param cardPileIncrement
-     *        The incremental change to the state of the card pile; must not be
+     * @param componentPath
+     *        The component path; must not be {@code null}.
+     * @param componentIncrement
+     *        The incremental change to the state of the component; must not be
      *        {@code null}.
      * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code cardPileIndex} is negative.
      * @throws java.lang.NullPointerException
-     *         If {@code cardPileIncrement} is {@code null}.
+     *         If {@code componentPath} or {@code componentIncrement} is
+     *         {@code null}.
      */
-    public void incrementCardPileState(
-        int cardPileIndex,
+    public void incrementComponentState(
         /* @NonNull */
-        CardPileIncrement cardPileIncrement );
-
-    /**
-     * Increments the state of the specified card.
-     * 
-     * @param cardPileIndex
-     *        The card pile index.
-     * @param cardIndex
-     *        The card index.
-     * @param cardIncrement
-     *        The incremental change to the state of the card; must not be
-     *        {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code cardPileIndex} or {@code cardIndex} is negative.
-     * @throws java.lang.NullPointerException
-     *         If {@code cardIncrement} is {@code null}.
-     */
-    public void incrementCardState(
-        int cardPileIndex,
-        int cardIndex,
+        ComponentPath componentPath,
         /* @NonNull */
-        CardIncrement cardIncrement );
+        ComponentIncrement componentIncrement );
 
     /**
      * Increments the state of the table.

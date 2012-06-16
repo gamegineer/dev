@@ -98,8 +98,8 @@ final class NonNlsMessages
 
     // --- NetworkTableUtils ------------------------------------------------
 
-    /** Failed to set the card state. */
-    public static String NetworkTableUtils_incrementCardPileState_setCardStateFailed;
+    /** Failed to set the component state. */
+    public static String NetworkTableUtils_incrementContainerState_setComponentStateFailed;
 
     /** Failed to set the card pile state. */
     public static String NetworkTableUtils_incrementTableState_setCardPileStateFailed;

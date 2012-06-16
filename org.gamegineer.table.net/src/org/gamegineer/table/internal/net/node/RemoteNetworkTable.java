@@ -1,6 +1,6 @@
 /*
  * RemoteNetworkTable.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,11 +21,10 @@
 
 package org.gamegineer.table.internal.net.node;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.internal.net.node.common.messages.CardIncrementMessage;
-import org.gamegineer.table.internal.net.node.common.messages.CardPileIncrementMessage;
+import org.gamegineer.table.core.ComponentPath;
+import org.gamegineer.table.internal.net.node.common.messages.ComponentIncrementMessage;
 import org.gamegineer.table.internal.net.node.common.messages.TableIncrementMessage;
 import org.gamegineer.table.internal.net.node.common.messages.TableMessage;
 
@@ -79,39 +78,19 @@ final class RemoteNetworkTable
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.node.INetworkTable#incrementCardPileState(int, org.gamegineer.table.internal.net.node.CardPileIncrement)
+     * @see org.gamegineer.table.internal.net.node.INetworkTable#incrementComponentState(org.gamegineer.table.core.ComponentPath, org.gamegineer.table.internal.net.node.ComponentIncrement)
      */
     @Override
-    public void incrementCardPileState(
-        final int cardPileIndex,
-        final CardPileIncrement cardPileIncrement )
+    public void incrementComponentState(
+        final ComponentPath componentPath,
+        final ComponentIncrement componentIncrement )
     {
-        assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
-        assertArgumentNotNull( cardPileIncrement, "cardPileIncrement" ); //$NON-NLS-1$
+        assertArgumentNotNull( componentPath, "componentPath" ); //$NON-NLS-1$
+        assertArgumentNotNull( componentIncrement, "componentIncrement" ); //$NON-NLS-1$
 
-        final CardPileIncrementMessage message = new CardPileIncrementMessage();
-        message.setIncrement( cardPileIncrement );
-        message.setIndex( cardPileIndex );
-        remoteNodeController_.sendMessage( message, null );
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.node.INetworkTable#incrementCardState(int, int, org.gamegineer.table.internal.net.node.CardIncrement)
-     */
-    @Override
-    public void incrementCardState(
-        final int cardPileIndex,
-        final int cardIndex,
-        final CardIncrement cardIncrement )
-    {
-        assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
-        assertArgumentLegal( cardIndex >= 0, "cardIndex" ); //$NON-NLS-1$
-        assertArgumentNotNull( cardIncrement, "cardIncrement" ); //$NON-NLS-1$
-
-        final CardIncrementMessage message = new CardIncrementMessage();
-        message.setCardPileIndex( cardPileIndex );
-        message.setIncrement( cardIncrement );
-        message.setIndex( cardIndex );
+        final ComponentIncrementMessage message = new ComponentIncrementMessage();
+        message.setIncrement( componentIncrement );
+        message.setPath( componentPath );
         remoteNodeController_.sendMessage( message, null );
     }
 

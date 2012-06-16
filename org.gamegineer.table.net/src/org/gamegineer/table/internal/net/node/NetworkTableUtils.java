@@ -21,15 +21,17 @@
 
 package org.gamegineer.table.internal.net.node;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.Map;
 import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
-import org.gamegineer.table.core.CardOrientation;
-import org.gamegineer.table.core.CardPileOrientation;
-import org.gamegineer.table.core.ICard;
+import org.gamegineer.table.core.ComponentOrientation;
+import org.gamegineer.table.core.ComponentPath;
+import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ICardPile;
+import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.internal.net.Loggers;
 
@@ -56,87 +58,41 @@ public final class NetworkTableUtils
     // ======================================================================
 
     /**
-     * Increments the state of the specified card pile associated with the
-     * specified table.
+     * Increments the state of the component at the specified path associated
+     * with the specified table.
      * 
      * @param table
      *        The table; must not be {@code null}.
-     * @param cardPileIndex
-     *        The card pile index.
-     * @param cardPileIncrement
-     *        The incremental change to the state of the card pile; must not be
+     * @param componentPath
+     *        The component path; must not be {@code null}.
+     * @param componentIncrement
+     *        The incremental change to the state of the component; must not be
      *        {@code null}.
      * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code cardPileIndex} is negative.
      * @throws java.lang.NullPointerException
-     *         If {@code table} or {@code cardPileIncrement} is {@code null}.
+     *         If {@code table}, {@code componentPath}, or
+     *         {@code componentIncrement} is {@code null}.
      */
-    @SuppressWarnings( "boxing" )
-    public static void incrementCardPileState(
+    public static void incrementComponentState(
         /* @NonNull */
         final ITable table,
-        final int cardPileIndex,
         /* @NonNull */
-        final CardPileIncrement cardPileIncrement )
+        final ComponentPath componentPath,
+        /* @NonNull */
+        final ComponentIncrement componentIncrement )
     {
         assertArgumentNotNull( table, "table" ); //$NON-NLS-1$
-        assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
-        assertArgumentNotNull( cardPileIncrement, "cardPileIncrement" ); //$NON-NLS-1$
+        assertArgumentNotNull( componentPath, "componentPath" ); //$NON-NLS-1$
+        assertArgumentNotNull( componentIncrement, "componentIncrement" ); //$NON-NLS-1$
 
         table.getTableEnvironment().getLock().lock();
         try
         {
-            final ICardPile cardPile = table.getCardPile( cardPileIndex );
-
-            if( cardPileIncrement.getBaseDesign() != null )
+            final IComponent component = table.getComponent( componentPath );
+            incrementComponentState( component, componentIncrement );
+            if( (component instanceof IContainer) && (componentIncrement instanceof ContainerIncrement) )
             {
-                cardPile.setSurfaceDesign( CardPileOrientation.BASE, cardPileIncrement.getBaseDesign() );
-            }
-
-            if( cardPileIncrement.getLayout() != null )
-            {
-                cardPile.setLayout( cardPileIncrement.getLayout() );
-            }
-
-            if( cardPileIncrement.getOrigin() != null )
-            {
-                cardPile.setOrigin( cardPileIncrement.getOrigin() );
-            }
-
-            if( cardPileIncrement.getRemovedCardCount() != null )
-            {
-                final int removedCardCount = cardPileIncrement.getRemovedCardCount();
-                if( removedCardCount == cardPile.getComponentCount() )
-                {
-                    cardPile.removeComponents();
-                }
-                else
-                {
-                    for( int index = 0; index < removedCardCount; ++index )
-                    {
-                        cardPile.removeComponent();
-                    }
-                }
-            }
-
-            if( cardPileIncrement.getAddedCardMementos() != null )
-            {
-                for( final Object cardMemento : cardPileIncrement.getAddedCardMementos() )
-                {
-                    final ICard card = table.getTableEnvironment().createCard();
-
-                    try
-                    {
-                        card.setMemento( cardMemento );
-                    }
-                    catch( final MementoException e )
-                    {
-                        Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.NetworkTableUtils_incrementCardPileState_setCardStateFailed, e );
-                    }
-
-                    cardPile.addComponent( card );
-                }
+                incrementContainerState( (IContainer)component, (ContainerIncrement)componentIncrement );
             }
         }
         finally
@@ -146,66 +102,101 @@ public final class NetworkTableUtils
     }
 
     /**
-     * Increments the state of the specified card associated with the specified
-     * table.
+     * Increments the state of the specified component.
      * 
-     * @param table
-     *        The table; must not be {@code null}.
-     * @param cardPileIndex
-     *        The card pile index.
-     * @param cardIndex
-     *        The card index.
-     * @param cardIncrement
-     *        The incremental change to the state of the card; must not be
+     * @param component
+     *        The component; must not be {@code null}.
+     * @param componentIncrement
+     *        The incremental change to the state of the component; must not be
      *        {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code cardPileIndex} or {@code cardIndex} is negative.
-     * @throws java.lang.NullPointerException
-     *         If {@code table} or {@code cardIncrement} is {@code null}.
      */
-    public static void incrementCardState(
+    private static void incrementComponentState(
         /* @NonNull */
-        final ITable table,
-        final int cardPileIndex,
-        final int cardIndex,
+        final IComponent component,
         /* @NonNull */
-        final CardIncrement cardIncrement )
+        final ComponentIncrement componentIncrement )
     {
-        assertArgumentNotNull( table, "table" ); //$NON-NLS-1$
-        assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
-        assertArgumentLegal( cardIndex >= 0, "cardIndex" ); //$NON-NLS-1$
-        assertArgumentNotNull( cardIncrement, "cardIncrement" ); //$NON-NLS-1$
+        assert component != null;
+        assert componentIncrement != null;
 
-        table.getTableEnvironment().getLock().lock();
-        try
+        if( componentIncrement.getLocation() != null )
         {
-            final ICardPile cardPile = table.getCardPile( cardPileIndex );
-            final ICard card = (ICard)cardPile.getComponent( cardIndex ); // FIXME: remove cast
+            component.setLocation( componentIncrement.getLocation() );
+        }
 
-            if( cardIncrement.getBackDesign() != null )
-            {
-                card.setSurfaceDesign( CardOrientation.BACK, cardIncrement.getBackDesign() );
-            }
+        if( componentIncrement.getOrientation() != null )
+        {
+            component.setOrientation( componentIncrement.getOrientation() );
+        }
 
-            if( cardIncrement.getFaceDesign() != null )
+        if( componentIncrement.getSurfaceDesigns() != null )
+        {
+            // TODO: consider adding bulk mutator
+            for( final Map.Entry<ComponentOrientation, ComponentSurfaceDesign> entry : componentIncrement.getSurfaceDesigns().entrySet() )
             {
-                card.setSurfaceDesign( CardOrientation.FACE, cardIncrement.getFaceDesign() );
-            }
-
-            if( cardIncrement.getLocation() != null )
-            {
-                card.setLocation( cardIncrement.getLocation() );
-            }
-
-            if( cardIncrement.getOrientation() != null )
-            {
-                card.setOrientation( cardIncrement.getOrientation() );
+                component.setSurfaceDesign( entry.getKey(), entry.getValue() );
             }
         }
-        finally
+    }
+
+    /**
+     * Increments the state of the specified container.
+     * 
+     * @param container
+     *        The container; must not be {@code null}.
+     * @param containerIncrement
+     *        The incremental change to the state of the container; must not be
+     *        {@code null}.
+     */
+    private static void incrementContainerState(
+        /* @NonNull */
+        final IContainer container,
+        /* @NonNull */
+        final ContainerIncrement containerIncrement )
+    {
+        assert container != null;
+        assert containerIncrement != null;
+
+        if( containerIncrement.getLayout() != null )
         {
-            table.getTableEnvironment().getLock().unlock();
+            container.setLayout( containerIncrement.getLayout() );
+        }
+
+        if( containerIncrement.getRemovedComponentCount() != null )
+        {
+            @SuppressWarnings( "boxing" )
+            final int removedComponentCount = containerIncrement.getRemovedComponentCount();
+            if( removedComponentCount == container.getComponentCount() )
+            {
+                container.removeComponents();
+            }
+            else
+            {
+                for( int index = 0; index < removedComponentCount; ++index )
+                {
+                    container.removeComponent();
+                }
+            }
+        }
+
+        if( containerIncrement.getAddedComponentMementos() != null )
+        {
+            for( final Object componentMemento : containerIncrement.getAddedComponentMementos() )
+            {
+                // FIXME: use factory to create component based on memento
+                final IComponent component = container.getTableEnvironment().createCard();
+
+                try
+                {
+                    component.setMemento( componentMemento );
+                }
+                catch( final MementoException e )
+                {
+                    Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.NetworkTableUtils_incrementContainerState_setComponentStateFailed, e );
+                }
+
+                container.addComponent( component );
+            }
         }
     }
 

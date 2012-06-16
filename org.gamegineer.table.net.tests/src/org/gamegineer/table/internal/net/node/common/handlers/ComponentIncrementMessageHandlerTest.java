@@ -1,5 +1,5 @@
 /*
- * CardPileIncrementMessageHandlerTest.java
+ * ComponentIncrementMessageHandlerTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,29 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jul 12, 2011 at 9:00:16 PM.
+ * Created on Jun 30, 2011 at 11:59:36 PM.
  */
 
 package org.gamegineer.table.internal.net.node.common.handlers;
 
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.table.internal.net.node.CardPileIncrement;
+import org.gamegineer.table.core.ComponentPath;
+import org.gamegineer.table.internal.net.node.ComponentIncrement;
 import org.gamegineer.table.internal.net.node.IMessageHandler;
 import org.gamegineer.table.internal.net.node.INetworkTable;
 import org.gamegineer.table.internal.net.node.INode;
 import org.gamegineer.table.internal.net.node.IRemoteNodeController;
 import org.gamegineer.table.internal.net.node.ITableManager;
-import org.gamegineer.table.internal.net.node.common.messages.CardPileIncrementMessage;
+import org.gamegineer.table.internal.net.node.common.messages.ComponentIncrementMessage;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.node.common.handlers.CardPileIncrementMessageHandler}
+ * {@link org.gamegineer.table.internal.net.node.common.handlers.ComponentIncrementMessageHandler}
  * class.
  */
-public final class CardPileIncrementMessageHandlerTest
+public final class ComponentIncrementMessageHandlerTest
 {
     // ======================================================================
     // Fields
@@ -57,9 +58,9 @@ public final class CardPileIncrementMessageHandlerTest
 
     /**
      * Initializes a new instance of the
-     * {@code CardPileIncrementMessageHandlerTest} class.
+     * {@code ComponentIncrementMessageHandlerTest} class.
      */
-    public CardPileIncrementMessageHandlerTest()
+    public ComponentIncrementMessageHandlerTest()
     {
     }
 
@@ -79,11 +80,11 @@ public final class CardPileIncrementMessageHandlerTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        messageHandler_ = CardPileIncrementMessageHandler.INSTANCE;
+        messageHandler_ = ComponentIncrementMessageHandler.INSTANCE;
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles a card pile
+     * Ensures the {@code handleMessage} method correctly handles a component
      * increment message.
      * 
      * @throws java.lang.Exception
@@ -91,14 +92,14 @@ public final class CardPileIncrementMessageHandlerTest
      */
     @SuppressWarnings( "rawtypes" )
     @Test
-    public void testHandleMessage_CardPileIncrementMessage()
+    public void testHandleMessage_ComponentIncrementMessage()
         throws Exception
     {
-        final int cardPileIndex = 3;
-        final CardPileIncrement cardPileIncrement = new CardPileIncrement();
+        final ComponentPath componentPath = new ComponentPath( new ComponentPath( new ComponentPath( null, 0 ), 1 ), 2 );
+        final ComponentIncrement componentIncrement = new ComponentIncrement();
         final INetworkTable table = mocksControl_.createMock( INetworkTable.class );
         final ITableManager tableManager = mocksControl_.createMock( ITableManager.class );
-        tableManager.incrementCardPileState( table, cardPileIndex, cardPileIncrement );
+        tableManager.incrementComponentState( table, componentPath, componentIncrement );
         final INode localNode = mocksControl_.createMock( INode.class );
         EasyMock.expect( localNode.getTableManager() ).andReturn( tableManager ).anyTimes();
         final IRemoteNodeController remoteNodeController = mocksControl_.createMock( IRemoteNodeController.class );
@@ -106,9 +107,9 @@ public final class CardPileIncrementMessageHandlerTest
         EasyMock.expect( remoteNodeController.getTable() ).andReturn( table ).anyTimes();
         mocksControl_.replay();
 
-        final CardPileIncrementMessage message = new CardPileIncrementMessage();
-        message.setIncrement( cardPileIncrement );
-        message.setIndex( cardPileIndex );
+        final ComponentIncrementMessage message = new ComponentIncrementMessage();
+        message.setIncrement( componentIncrement );
+        message.setPath( componentPath );
         messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();

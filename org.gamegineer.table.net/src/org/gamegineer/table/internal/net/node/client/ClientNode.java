@@ -34,11 +34,11 @@ import java.util.concurrent.locks.ReentrantLock;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.Player;
 import org.gamegineer.table.internal.net.node.AbstractNode;
-import org.gamegineer.table.internal.net.node.CardIncrement;
-import org.gamegineer.table.internal.net.node.CardPileIncrement;
+import org.gamegineer.table.internal.net.node.ComponentIncrement;
 import org.gamegineer.table.internal.net.node.INetworkTable;
 import org.gamegineer.table.internal.net.node.INodeLayer;
 import org.gamegineer.table.internal.net.node.ITableManager;
@@ -475,33 +475,17 @@ public final class ClientNode
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.internal.net.node.ITableManager#incrementCardPileState(org.gamegineer.table.internal.net.node.INetworkTable, int, org.gamegineer.table.internal.net.node.CardPileIncrement)
+         * @see org.gamegineer.table.internal.net.node.ITableManager#incrementComponentState(org.gamegineer.table.internal.net.node.INetworkTable, org.gamegineer.table.core.ComponentPath, org.gamegineer.table.internal.net.node.ComponentIncrement)
          */
         @Override
-        public void incrementCardPileState(
+        public void incrementComponentState(
             final INetworkTable sourceTable,
-            final int cardPileIndex,
-            final CardPileIncrement cardPileIncrement )
+            final ComponentPath componentPath,
+            final ComponentIncrement componentIncrement )
         {
             if( getPlayer().hasRole( PlayerRole.EDITOR ) )
             {
-                tableManagerDecoratee_.incrementCardPileState( sourceTable, cardPileIndex, cardPileIncrement );
-            }
-        }
-
-        /*
-         * @see org.gamegineer.table.internal.net.node.ITableManager#incrementCardState(org.gamegineer.table.internal.net.node.INetworkTable, int, int, org.gamegineer.table.internal.net.node.CardIncrement)
-         */
-        @Override
-        public void incrementCardState(
-            final INetworkTable sourceTable,
-            final int cardPileIndex,
-            final int cardIndex,
-            final CardIncrement cardIncrement )
-        {
-            if( getPlayer().hasRole( PlayerRole.EDITOR ) )
-            {
-                tableManagerDecoratee_.incrementCardState( sourceTable, cardPileIndex, cardIndex, cardIncrement );
+                tableManagerDecoratee_.incrementComponentState( sourceTable, componentPath, componentIncrement );
             }
         }
 
