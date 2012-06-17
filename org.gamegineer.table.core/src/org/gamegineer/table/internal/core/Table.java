@@ -409,6 +409,35 @@ final class Table
         }
     }
 
+    /*
+     * @see org.gamegineer.table.core.ITable#getComponent(java.awt.Point)
+     */
+    @Override
+    public IComponent getComponent(
+        final Point location )
+    {
+        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
+
+        getLock().lock();
+        try
+        {
+            for( int index = cardPiles_.size() - 1; index >= 0; --index )
+            {
+                final ICardPile cardPile = cardPiles_.get( index );
+                if( cardPile.getBounds().contains( location ) )
+                {
+                    return (cardPile.getComponentCount() == 0) ? cardPile : cardPile.getComponent( location );
+                }
+            }
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+
+        return null;
+    }
+
     /**
      * Gets the table environment lock.
      * 

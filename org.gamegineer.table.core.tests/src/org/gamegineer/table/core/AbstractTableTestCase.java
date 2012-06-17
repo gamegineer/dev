@@ -452,21 +452,80 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
-     * Ensures the {@code getComponent} method throws an exception when passed a
-     * path that is illegal because it does not exist.
+     * Ensures the {@code getComponent(Point)} method returns {@code null} when
+     * a component is absent at the specified location.
+     */
+    @Test
+    public void testGetComponentFromLocation_Location_ComponentAbsent()
+    {
+        assertNull( table_.getComponent( new Point( 0, 0 ) ) );
+    }
+
+    /**
+     * Ensures the {@code getComponent(Point)} method returns the top-most
+     * component when multiple components are present at the specified location.
+     */
+    @Test
+    public void testGetComponentFromLocation_Location_ComponentPresent_MultipleComponents()
+    {
+        final Point location = new Point( 7, 42 );
+        final ICardPile initialComponent = createUniqueCardPile();
+        initialComponent.setLocation( location );
+        table_.addCardPile( initialComponent );
+        final ICardPile expectedComponent = createUniqueCardPile();
+        expectedComponent.setLocation( location );
+        table_.addCardPile( expectedComponent );
+
+        final IComponent actualComponent = table_.getComponent( location );
+
+        assertSame( expectedComponent, actualComponent );
+    }
+
+    /**
+     * Ensures the {@code getComponent(Point)} method returns the appropriate
+     * component when a single component is present at the specified location.
+     */
+    @Test
+    public void testGetComponentFromLocation_Location_ComponentPresent_SingleComponent()
+    {
+        final Point location = new Point( 7, 42 );
+        final ICardPile cardPile = createUniqueCardPile();
+        final IComponent expectedComponent = createUniqueCard();
+        cardPile.addComponent( expectedComponent );
+        cardPile.setLocation( location );
+        table_.addCardPile( cardPile );
+
+        final IComponent actualComponent = table_.getComponent( location );
+
+        assertSame( expectedComponent, actualComponent );
+    }
+
+    /**
+     * Ensures the {@code getComponent(Point)} method throws an exception when
+     * passed a {@code null} location.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGetComponentFromLocation_Location_Null()
+    {
+        table_.getComponent( (Point)null );
+    }
+
+    /**
+     * Ensures the {@code getComponent(ComponentPath)} method throws an
+     * exception when passed a path that is illegal because it does not exist.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testGetComponent_Path_Illegal_NotExists()
+    public void testGetComponentFromPath_Path_Illegal_NotExists()
     {
         table_.getComponent( new ComponentPath( null, 0 ) );
     }
 
     /**
-     * Ensures the {@code getComponent} method returns the correct component
-     * when passed a legal path.
+     * Ensures the {@code getComponent(ComponentPath)} method returns the
+     * correct component when passed a legal path.
      */
     @Test
-    public void testGetComponent_Path_Legal()
+    public void testGetComponentFromPath_Path_Legal()
     {
         final ICardPile expectedCardPile = createUniqueCardPile();
         table_.addCardPile( expectedCardPile );
@@ -483,13 +542,13 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
-     * Ensures the {@code getComponent} method throws an exception when passed a
-     * {@code null} path.
+     * Ensures the {@code getComponent(ComponentPath)} method throws an
+     * exception when passed a {@code null} path.
      */
     @Test( expected = NullPointerException.class )
-    public void testGetComponent_Path_Null()
+    public void testGetComponentFromPath_Path_Null()
     {
-        table_.getComponent( null );
+        table_.getComponent( (ComponentPath)null );
     }
 
     /**

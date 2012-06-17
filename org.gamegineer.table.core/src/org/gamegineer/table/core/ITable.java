@@ -152,6 +152,34 @@ public interface ITable
         ComponentPath path );
 
     /**
+     * Gets the component in this table at the specified location.
+     * 
+     * <p>
+     * If two or more components occupy the specified location, the top-most
+     * component will be returned.
+     * </p>
+     * 
+     * <p>
+     * Note that the returned component may have been moved by the time this
+     * method returns to the caller. Therefore, callers should not cache the
+     * results of this method for an extended period of time.
+     * </p>
+     * 
+     * @param location
+     *        The location in table coordinates; must not be {@code null}.
+     * 
+     * @return The component in this table at the specified location or
+     *         {@code null} if no component in this table is at that location.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code location} is {@code null}.
+     */
+    /* @Nullable */
+    public IComponent getComponent(
+        /* @NonNull */
+        Point location );
+
+    /**
      * Gets the table environment associated with this table.
      * 
      * @return The table environment associated with this table; never
