@@ -144,23 +144,6 @@ public interface IContainer
     public int getComponentCount();
 
     /**
-     * Gets the index of the specified component in this container.
-     * 
-     * @param component
-     *        The component; must not be {@code null}.
-     * 
-     * @return The index of the specified component in this container.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code component} is not contained in this container.
-     * @throws java.lang.NullPointerException
-     *         If {@code component} is {@code null}.
-     */
-    public int getComponentIndex(
-        /* @NonNull */
-        IComponent component );
-
-    /**
      * Gets the collection of components in this container.
      * 
      * @return The collection of components in this container; never

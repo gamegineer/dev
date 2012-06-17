@@ -123,23 +123,6 @@ public interface ITable
     public int getCardPileCount();
 
     /**
-     * Gets the index of the specified card pile in this table.
-     * 
-     * @param cardPile
-     *        The card pile; must not be {@code null}.
-     * 
-     * @return The index of the specified card pile in this table.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code cardPile} is not contained in this table.
-     * @throws java.lang.NullPointerException
-     *         If {@code cardPile} is {@code null}.
-     */
-    public int getCardPileIndex(
-        /* @NonNull */
-        ICardPile cardPile );
-
-    /**
      * Gets the collection of card piles on this table.
      * 
      * @return The collection of card piles on this table; never {@code null}.

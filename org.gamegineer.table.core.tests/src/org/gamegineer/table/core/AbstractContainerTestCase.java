@@ -638,43 +638,6 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getComponentIndex} method throws an exception when
-     * passed a component that is absent from the component collection.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testGetComponentIndex_Component_Absent()
-    {
-        getContainer().getComponentIndex( createUniqueComponent() );
-    }
-
-    /**
-     * Ensures the {@code getComponentIndex} method throws an exception when
-     * passed a {@code null} component.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetComponentIndex_Component_Null()
-    {
-        getContainer().getComponentIndex( null );
-    }
-
-    /**
-     * Ensures the {@code getComponentIndex} method returns the correct value
-     * when passed a component present in the component collection.
-     */
-    @Test
-    public void testGetComponentIndex_Component_Present()
-    {
-        final IComponent component = createUniqueComponent();
-        getContainer().addComponent( createUniqueComponent() );
-        getContainer().addComponent( component );
-        getContainer().addComponent( createUniqueComponent() );
-
-        final int actualValue = getContainer().getComponentIndex( component );
-
-        assertEquals( 1, actualValue );
-    }
-
-    /**
      * Ensures the {@code getComponents} method returns a copy of the component
      * collection.
      */

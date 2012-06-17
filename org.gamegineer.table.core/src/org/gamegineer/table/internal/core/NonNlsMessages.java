@@ -138,9 +138,6 @@ final class NonNlsMessages
     /** The component index is out of range. */
     public static String CardPile_getComponentFromIndex_index_outOfRange;
 
-    /** The component is not contained in the container. */
-    public static String CardPile_getComponentIndex_component_notOwned;
-
     /** The orientation is illegal. */
     public static String CardPile_orientation_illegal;
 
@@ -242,9 +239,6 @@ final class NonNlsMessages
 
     /** The card pile index is out of range. */
     public static String Table_getCardPileFromIndex_index_outOfRange;
-
-    /** The card pile is not contained in the table. */
-    public static String Table_getCardPileIndex_cardPile_notOwned;
 
     /** The component path does not exist in the table. */
     public static String Table_getComponent_path_notExists;

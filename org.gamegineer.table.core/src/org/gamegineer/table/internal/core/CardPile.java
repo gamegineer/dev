@@ -568,27 +568,24 @@ final class CardPile
         }
     }
 
-    /*
-     * @see org.gamegineer.table.core.IContainer#getComponentIndex(org.gamegineer.table.core.IComponent)
+    /**
+     * Gets the index of the specified component in this container.
+     * 
+     * @param component
+     *        The component; must not be {@code null}.
+     * 
+     * @return The index of the specified component in this container.
      */
-    @Override
-    public int getComponentIndex(
+    @GuardedBy( "getLock()" )
+    int getComponentIndex(
+        /* @NonNull */
         final IComponent component )
     {
-        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
+        assert component != null;
+        assert getLock().isHeldByCurrentThread();
 
-        final int index;
-        getLock().lock();
-        try
-        {
-            index = cards_.indexOf( component );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-
-        assertArgumentLegal( index != -1, "component", NonNlsMessages.CardPile_getComponentIndex_component_notOwned ); //$NON-NLS-1$
+        final int index = cards_.indexOf( component );
+        assert index != -1;
         return index;
     }
 

@@ -128,7 +128,8 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     protected abstract TableEnvironmentType createTableEnvironment();
 
     /**
-     * Creates a new card with unique surface designs for the fixture table.
+     * Creates a new card with unique attributes using the fixture table
+     * environment.
      * 
      * @return A new card; never {@code null}.
      */
@@ -139,8 +140,8 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
-     * Creates a new card pile with unique surface designs for the fixture
-     * table.
+     * Creates a new card pile with unique attributes using the fixture table
+     * environment.
      * 
      * @return A new card pile; never {@code null}.
      */
@@ -424,43 +425,6 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
         final int actualValue = table_.getCardPileCount();
 
         assertEquals( 3, actualValue );
-    }
-
-    /**
-     * Ensures the {@code getCardPileIndex} method throws an exception when
-     * passed a card pile that is absent from the card pile collection.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testGetCardPileIndex_CardPile_Absent()
-    {
-        table_.getCardPileIndex( createUniqueCardPile() );
-    }
-
-    /**
-     * Ensures the {@code getCardPileIndex} method throws an exception when
-     * passed a {@code null} card pile.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetCardPileIndex_CardPile_Null()
-    {
-        table_.getCardPileIndex( null );
-    }
-
-    /**
-     * Ensures the {@code getCardPileIndex} method returns the correct value
-     * when passed a card pile present in the card pile collection.
-     */
-    @Test
-    public void testGetCardPileIndex_CardPile_Present()
-    {
-        final ICardPile cardPile = createUniqueCardPile();
-        table_.addCardPile( createUniqueCardPile() );
-        table_.addCardPile( cardPile );
-        table_.addCardPile( createUniqueCardPile() );
-
-        final int actualValue = table_.getCardPileIndex( cardPile );
-
-        assertEquals( 1, actualValue );
     }
 
     /**

@@ -338,27 +338,25 @@ final class Table
         }
     }
 
-    /*
-     * @see org.gamegineer.table.core.ITable#getCardPileIndex(org.gamegineer.table.core.ICardPile)
+    /**
+     * Gets the index of the specified card pile in this table.
+     * 
+     * @param cardPile
+     *        The card pile; must not be {@code null}.
+     * 
+     * @return The index of the specified card pile in this table.
      */
-    @Override
-    public int getCardPileIndex(
+    @GuardedBy( "getLock()" )
+    int getCardPileIndex(
+        /* @NonNull */
         final ICardPile cardPile )
     {
+        assert cardPile != null;
+        assert getLock().isHeldByCurrentThread();
         assertArgumentNotNull( cardPile, "cardPile" ); //$NON-NLS-1$
 
-        final int index;
-        getLock().lock();
-        try
-        {
-            index = cardPiles_.indexOf( cardPile );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-
-        assertArgumentLegal( index != -1, "cardPile", NonNlsMessages.Table_getCardPileIndex_cardPile_notOwned ); //$NON-NLS-1$
+        final int index = cardPiles_.indexOf( cardPile );
+        assert index != -1;
         return index;
     }
 

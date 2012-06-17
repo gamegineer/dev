@@ -22,11 +22,14 @@
 package org.gamegineer.table.internal.core;
 
 import static org.junit.Assert.assertEquals;
+import org.gamegineer.table.core.Cards;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ICardPile;
+import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableEnvironment;
 import org.gamegineer.table.core.TableEnvironmentFactory;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -35,6 +38,17 @@ import org.junit.Test;
  */
 public final class CardPileTest
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The card pile under test in the fixture. */
+    private CardPile cardPile_;
+
+    /** The table environment for use in the fixture. */
+    private TableEnvironment tableEnvironment_;
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -50,6 +64,76 @@ public final class CardPileTest
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Creates a new component with unique attributes using the fixture table
+     * environment.
+     * 
+     * @return A new component; never {@code null}.
+     */
+    /* @NonNull */
+    private IComponent createUniqueComponent()
+    {
+        return Cards.createUniqueCard( tableEnvironment_ );
+    }
+
+    /**
+     * Sets up the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Before
+    public void setUp()
+        throws Exception
+    {
+        tableEnvironment_ = new TableEnvironment();
+        cardPile_ = new CardPile( tableEnvironment_ );
+    }
+
+    /**
+     * Ensures the {@code getComponentIndex} method throws an exception when
+     * passed a component that is absent from the component collection.
+     */
+    @Test( expected = AssertionError.class )
+    public void testGetComponentIndex_Component_Absent()
+    {
+        cardPile_.getTableEnvironment().getLock().lock();
+        try
+        {
+            cardPile_.getComponentIndex( createUniqueComponent() );
+        }
+        finally
+        {
+            cardPile_.getTableEnvironment().getLock().unlock();
+        }
+    }
+
+    /**
+     * Ensures the {@code getComponentIndex} method returns the correct value
+     * when passed a component present in the component collection.
+     */
+    @Test
+    public void testGetComponentIndex_Component_Present()
+    {
+        final IComponent component = createUniqueComponent();
+        cardPile_.addComponent( createUniqueComponent() );
+        cardPile_.addComponent( component );
+        cardPile_.addComponent( createUniqueComponent() );
+
+        final int actualValue;
+        cardPile_.getTableEnvironment().getLock().lock();
+        try
+        {
+            actualValue = cardPile_.getComponentIndex( component );
+        }
+        finally
+        {
+            cardPile_.getTableEnvironment().getLock().unlock();
+        }
+
+        assertEquals( 1, actualValue );
+    }
 
     /**
      * Ensures the {@code getPath} method returns the correct value when the
