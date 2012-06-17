@@ -131,7 +131,6 @@ public final class NetworkTableUtils
 
         if( componentIncrement.getSurfaceDesigns() != null )
         {
-            // TODO: consider adding bulk mutator
             for( final Map.Entry<ComponentOrientation, ComponentSurfaceDesign> entry : componentIncrement.getSurfaceDesigns().entrySet() )
             {
                 component.setSurfaceDesign( entry.getKey(), entry.getValue() );

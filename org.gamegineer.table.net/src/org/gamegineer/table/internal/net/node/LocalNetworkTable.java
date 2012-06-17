@@ -417,7 +417,6 @@ final class LocalNetworkTable
                 componentPath = component.getPath();
                 if( componentPath != null )
                 {
-                    // TODO: consider adding bulk accessor
                     final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new HashMap<ComponentOrientation, ComponentSurfaceDesign>();
                     for( final ComponentOrientation orientation : component.getSupportedOrientations() )
                     {
@@ -538,7 +537,6 @@ final class LocalNetworkTable
                 componentPath = component.getPath();
                 if( componentPath != null )
                 {
-                    // TODO: consider adding bulk accessor
                     final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new HashMap<ComponentOrientation, ComponentSurfaceDesign>();
                     for( final ComponentOrientation orientation : component.getSupportedOrientations() )
                     {
