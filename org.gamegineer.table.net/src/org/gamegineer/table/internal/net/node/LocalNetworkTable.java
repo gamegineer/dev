@@ -57,11 +57,8 @@ final class LocalNetworkTable
     // Fields
     // ======================================================================
 
-    /** The local card component listener. */
-    private final IComponentListener cardComponentListener_;
-
-    /** The local card pile component listener. */
-    private final IComponentListener cardPileComponentListener_;
+    /** The local component listener. */
+    private final IComponentListener componentListener_;
 
     /** The local container listener. */
     private final IContainerListener containerListener_;
@@ -110,17 +107,7 @@ final class LocalNetworkTable
         assert tableManager != null;
         assert table != null;
 
-        cardComponentListener_ = new ComponentListenerProxy( new CardComponentListener() )
-        {
-            @Override
-            public void componentBoundsChanged(
-                @SuppressWarnings( "unused" )
-                final ComponentEvent event )
-            {
-                // do nothing - see comment in CardComponentListener#componentBoundsChanged
-            }
-        };
-        cardPileComponentListener_ = new ComponentListenerProxy( new CardPileComponentListener() );
+        componentListener_ = new ComponentListenerProxy( new ComponentListener() );
         containerListener_ = new ContainerListenerProxy( new ContainerListener() );
         ignoreEvents_ = false;
         nodeLayer_ = nodeLayer;
@@ -204,12 +191,12 @@ final class LocalNetworkTable
 
             for( final ICardPile cardPile : table_.getCardPiles() )
             {
-                cardPile.addComponentListener( cardPileComponentListener_ );
+                cardPile.addComponentListener( componentListener_ );
                 cardPile.addContainerListener( containerListener_ );
 
                 for( final IComponent component : cardPile.getComponents() )
                 {
-                    component.addComponentListener( cardComponentListener_ );
+                    component.addComponentListener( componentListener_ );
                 }
             }
         }
@@ -278,12 +265,12 @@ final class LocalNetworkTable
 
             for( final ICardPile cardPile : table_.getCardPiles() )
             {
-                cardPile.removeComponentListener( cardPileComponentListener_ );
+                cardPile.removeComponentListener( componentListener_ );
                 cardPile.removeContainerListener( containerListener_ );
 
                 for( final IComponent component : cardPile.getComponents() )
                 {
-                    component.removeComponentListener( cardComponentListener_ );
+                    component.removeComponentListener( componentListener_ );
                 }
             }
         }
@@ -299,10 +286,10 @@ final class LocalNetworkTable
     // ======================================================================
 
     /**
-     * A card component listener for the local table adapter.
+     * A component listener for the local table adapter.
      */
     @Immutable
-    private final class CardComponentListener
+    private final class ComponentListener
         implements IComponentListener
     {
         // ==================================================================
@@ -310,10 +297,9 @@ final class LocalNetworkTable
         // ==================================================================
 
         /**
-         * Initializes a new instance of the {@code CardComponentListener}
-         * class.
+         * Initializes a new instance of the {@code ComponentListener} class.
          */
-        CardComponentListener()
+        ComponentListener()
         {
         }
 
@@ -326,31 +312,58 @@ final class LocalNetworkTable
          * @see org.gamegineer.table.core.IComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
          */
         @Override
+        @SuppressWarnings( "synthetic-access" )
         public void componentBoundsChanged(
             final ComponentEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+            assert nodeLayer_.isNodeLayerThread();
 
-            // --------------------------------
-            // TODO: Combine card and card pile component listeners into a single class.
-            //
-            // Will need to merge the behavior of both, including the comment below.
-            // Probably will only handle the event if the component has no parent (i.e. is
-            // at the root of the table, which is currently only a card pile; but this won't
-            // work forever once we introduce the concept of a primary component on the table).
-            // --------------------------------
+            if( ignoreEvents_ )
+            {
+                return;
+            }
 
-            // do nothing
+            final ComponentPath componentPath;
+            final ComponentIncrement componentIncrement = new ComponentIncrement();
+            getTableEnvironmentLock().lock();
+            try
+            {
+                // In the current implementation, handling this event for non-root components
+                // is unnecessary because a non-root component can only be moved by moving a
+                // root component that contains the non-root component. Thus, when the
+                // component bounds changed event is fired for the root component, it will
+                // automatically set the non-root component location when the root component
+                // location is changed.
+                //
+                // If we send the component bounds changed events for all components over the
+                // network, the non-root component movement on remote tables will appear
+                // "jumpy" because multiple IComponent.setLocation() calls will be made that
+                // may be a few pixels off.
 
-            // In the current implementation, handling this event is unnecessary because a
-            // card can only be moved by moving a card pile that contains the card. Thus,
-            // when the corresponding card pile bounds changed event is fired, it will
-            // automatically set the new card location when the card pile location is changed.
-            //
-            // If we send both the card pile bounds changed event and the card location
-            // changed event over the network, the card movement on remote tables will appear
-            // "jumpy" because two ICard.setLocation() calls will be made that may be a few
-            // pixels off.
+                final IComponent component = event.getComponent();
+                if( component.getContainer() == null )
+                {
+                    componentPath = component.getPath();
+                    if( componentPath != null )
+                    {
+                        componentIncrement.setLocation( component.getLocation() );
+                    }
+                }
+                else
+                {
+                    componentPath = null;
+                }
+            }
+            finally
+            {
+                getTableEnvironmentLock().unlock();
+            }
+
+            if( componentPath != null )
+            {
+                tableManager_.incrementComponentState( LocalNetworkTable.this, componentPath, componentIncrement );
+            }
         }
 
         /*
@@ -390,126 +403,6 @@ final class LocalNetworkTable
             {
                 tableManager_.incrementComponentState( LocalNetworkTable.this, componentPath, componentIncrement );
             }
-        }
-
-        /*
-         * @see org.gamegineer.table.core.IComponentListener#componentSurfaceDesignChanged(org.gamegineer.table.core.ComponentEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void componentSurfaceDesignChanged(
-            final ComponentEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-            assert nodeLayer_.isNodeLayerThread();
-
-            if( ignoreEvents_ )
-            {
-                return;
-            }
-
-            final ComponentPath componentPath;
-            final ComponentIncrement componentIncrement = new ComponentIncrement();
-            getTableEnvironmentLock().lock();
-            try
-            {
-                final IComponent component = event.getComponent();
-                componentPath = component.getPath();
-                if( componentPath != null )
-                {
-                    final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new HashMap<ComponentOrientation, ComponentSurfaceDesign>();
-                    for( final ComponentOrientation orientation : component.getSupportedOrientations() )
-                    {
-                        surfaceDesigns.put( orientation, component.getSurfaceDesign( orientation ) );
-                    }
-                    componentIncrement.setSurfaceDesigns( surfaceDesigns );
-                }
-            }
-            finally
-            {
-                getTableEnvironmentLock().unlock();
-            }
-
-            if( componentPath != null )
-            {
-                tableManager_.incrementComponentState( LocalNetworkTable.this, componentPath, componentIncrement );
-            }
-        }
-    }
-
-    /**
-     * A card pile component listener for the local table adapter.
-     */
-    @Immutable
-    private final class CardPileComponentListener
-        implements IComponentListener
-    {
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code CardPileComponentListener}
-         * class.
-         */
-        CardPileComponentListener()
-        {
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.core.IComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void componentBoundsChanged(
-            final ComponentEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-            assert nodeLayer_.isNodeLayerThread();
-
-            if( ignoreEvents_ )
-            {
-                return;
-            }
-
-            final ComponentPath componentPath;
-            final ComponentIncrement componentIncrement = new ComponentIncrement();
-            getTableEnvironmentLock().lock();
-            try
-            {
-                final IComponent component = event.getComponent();
-                componentPath = component.getPath();
-                if( componentPath != null )
-                {
-                    componentIncrement.setLocation( component.getLocation() );
-                }
-            }
-            finally
-            {
-                getTableEnvironmentLock().unlock();
-            }
-
-            if( componentPath != null )
-            {
-                tableManager_.incrementComponentState( LocalNetworkTable.this, componentPath, componentIncrement );
-            }
-        }
-
-        /*
-         * @see org.gamegineer.table.core.IComponentListener#componentOrientationChanged(org.gamegineer.table.core.ComponentEvent)
-         */
-        @Override
-        public void componentOrientationChanged(
-            final ComponentEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            // TODO
         }
 
         /*
@@ -688,7 +581,7 @@ final class LocalNetworkTable
             assert nodeLayer_.isNodeLayerThread();
 
             final IComponent component = event.getComponent();
-            component.addComponentListener( cardComponentListener_ );
+            component.addComponentListener( componentListener_ );
 
             if( ignoreEvents_ )
             {
@@ -732,7 +625,7 @@ final class LocalNetworkTable
             assert nodeLayer_.isNodeLayerThread();
 
             final IComponent component = event.getComponent();
-            component.removeComponentListener( cardComponentListener_ );
+            component.removeComponentListener( componentListener_ );
 
             if( ignoreEvents_ )
             {
@@ -936,12 +829,12 @@ final class LocalNetworkTable
             try
             {
                 final ICardPile cardPile = event.getCardPile();
-                cardPile.addComponentListener( cardPileComponentListener_ );
+                cardPile.addComponentListener( componentListener_ );
                 cardPile.addContainerListener( containerListener_ );
 
                 for( final IComponent component : cardPile.getComponents() )
                 {
-                    component.addComponentListener( cardComponentListener_ );
+                    component.addComponentListener( componentListener_ );
                 }
             }
             finally
@@ -979,10 +872,10 @@ final class LocalNetworkTable
                 final ICardPile cardPile = event.getCardPile();
                 for( final IComponent component : cardPile.getComponents() )
                 {
-                    component.removeComponentListener( cardComponentListener_ );
+                    component.removeComponentListener( componentListener_ );
                 }
 
-                cardPile.removeComponentListener( cardPileComponentListener_ );
+                cardPile.removeComponentListener( componentListener_ );
                 cardPile.removeContainerListener( containerListener_ );
             }
             finally
