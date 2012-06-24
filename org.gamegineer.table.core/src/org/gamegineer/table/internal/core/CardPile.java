@@ -530,25 +530,32 @@ final class CardPile
         }
     }
 
-    /*
-     * @see org.gamegineer.table.core.IContainer#getComponent(java.awt.Point)
+    /**
+     * Gets the component in this container at the specified location.
+     * 
+     * <p>
+     * If two or more components occupy the specified location, the top-most
+     * component will be returned.
+     * </p>
+     * 
+     * @param location
+     *        The location in table coordinates; must not be {@code null}.
+     * 
+     * @return The component in this container at the specified location or
+     *         {@code null} if no component in this container is at that
+     *         location.
      */
-    @Override
-    public IComponent getComponent(
+    @GuardedBy( "getLock()" )
+    /* @Nullable */
+    IComponent getComponent(
+        /* @NonNull */
         final Point location )
     {
-        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
+        assert location != null;
+        assert getLock().isHeldByCurrentThread();
 
-        getLock().lock();
-        try
-        {
-            final int index = getComponentIndex( location );
-            return (index != -1) ? cards_.get( index ) : null;
-        }
-        finally
-        {
-            getLock().unlock();
-        }
+        final int index = getComponentIndex( location );
+        return (index != -1) ? cards_.get( index ) : null;
     }
 
     /*

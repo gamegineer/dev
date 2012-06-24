@@ -536,31 +536,31 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getComponent(int)} method throws an exception when
-     * passed an illegal index greater than the maximum legal value.
+     * Ensures the {@code getComponent} method throws an exception when passed
+     * an illegal index greater than the maximum legal value.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testGetComponentFromIndex_Index_Illegal_GreaterThanMaximumLegalValue()
+    public void testGetComponent_Index_Illegal_GreaterThanMaximumLegalValue()
     {
         getContainer().getComponent( 0 );
     }
 
     /**
-     * Ensures the {@code getComponent(int)} method throws an exception when
-     * passed an illegal index less than the minimum legal value.
+     * Ensures the {@code getComponent} method throws an exception when passed
+     * an illegal index less than the minimum legal value.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testGetComponentFromIndex_Index_Illegal_LessThanMinimumLegalValue()
+    public void testGetComponent_Index_Illegal_LessThanMinimumLegalValue()
     {
         getContainer().getComponent( -1 );
     }
 
     /**
-     * Ensures the {@code getComponent(int)} method returns the correct
-     * component when passed a legal index.
+     * Ensures the {@code getComponent} method returns the correct component
+     * when passed a legal index.
      */
     @Test
-    public void testGetComponentFromIndex_Index_Legal()
+    public void testGetComponent_Index_Legal()
     {
         final IComponent expectedValue = createUniqueComponent();
         getContainer().addComponent( expectedValue );
@@ -568,58 +568,6 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         final IComponent actualValue = getContainer().getComponent( 0 );
 
         assertSame( expectedValue, actualValue );
-    }
-
-    /**
-     * Ensures the {@code getComponent(Point)} method returns {@code null} when
-     * a component is absent at the specified location.
-     */
-    @Test
-    public void testGetComponentFromLocation_Location_ComponentAbsent()
-    {
-        assertNull( getContainer().getComponent( new Point( 0, 0 ) ) );
-    }
-
-    /**
-     * Ensures the {@code getComponent(Point)} method returns the top-most
-     * component when multiple components are present at the specified location.
-     */
-    @Test
-    public void testGetComponentFromLocation_Location_ComponentPresent_MultipleComponents()
-    {
-        final IComponent initialComponent = createUniqueComponent();
-        getContainer().addComponent( initialComponent );
-        final IComponent expectedComponent = createUniqueComponent();
-        getContainer().addComponent( expectedComponent );
-
-        final IComponent actualComponent = getContainer().getComponent( new Point( 0, 0 ) );
-
-        assertSame( expectedComponent, actualComponent );
-    }
-
-    /**
-     * Ensures the {@code getComponent(Point)} method returns the appropriate
-     * component when a single component is present at the specified location.
-     */
-    @Test
-    public void testGetComponentFromLocation_Location_ComponentPresent_SingleComponent()
-    {
-        final IComponent expectedComponent = createUniqueComponent();
-        getContainer().addComponent( expectedComponent );
-
-        final IComponent actualComponent = getContainer().getComponent( new Point( 0, 0 ) );
-
-        assertSame( expectedComponent, actualComponent );
-    }
-
-    /**
-     * Ensures the {@code getComponent(Point)} method throws an exception when
-     * passed a {@code null} location.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetComponentFromLocation_Location_Null()
-    {
-        getContainer().getComponent( null );
     }
 
     /**

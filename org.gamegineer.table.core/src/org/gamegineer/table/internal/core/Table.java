@@ -395,7 +395,7 @@ final class Table
         {
             for( int index = cardPiles_.size() - 1; index >= 0; --index )
             {
-                final ICardPile cardPile = cardPiles_.get( index );
+                final CardPile cardPile = cardPiles_.get( index );
                 if( cardPile.getBounds().contains( location ) )
                 {
                     return (cardPile.getComponentCount() == 0) ? cardPile : cardPile.getComponent( location );
