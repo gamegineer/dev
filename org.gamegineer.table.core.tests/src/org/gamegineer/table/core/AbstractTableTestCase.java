@@ -355,64 +355,6 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
-     * Ensures the {@code getCardPile(Point)} method returns {@code null} when a
-     * card pile is absent at the specified location.
-     */
-    @Test
-    public void testGetCardPileFromLocation_Location_CardPileAbsent()
-    {
-        assertNull( table_.getCardPile( new Point( 0, 0 ) ) );
-    }
-
-    /**
-     * Ensures the {@code getCardPile(Point)} method returns the most recently
-     * added card pile when multiple card piles are present at the specified
-     * location.
-     */
-    @Test
-    public void testGetCardPileFromLocation_Location_MultipleCardPilesPresent()
-    {
-        final Point location = new Point( 7, 42 );
-        final ICardPile initialCardPile = createUniqueCardPile();
-        initialCardPile.setLocation( location );
-        table_.addCardPile( initialCardPile );
-        final ICardPile expectedCardPile = createUniqueCardPile();
-        expectedCardPile.setLocation( location );
-        table_.addCardPile( expectedCardPile );
-
-        final ICardPile actualCardPile = table_.getCardPile( location );
-
-        assertSame( expectedCardPile, actualCardPile );
-    }
-
-    /**
-     * Ensures the {@code getCardPile(Point)} method returns the appropriate
-     * card pile when a single card pile is present at the specified location.
-     */
-    @Test
-    public void testGetCardPileFromLocation_Location_SingleCardPilePresent()
-    {
-        final Point location = new Point( 7, 42 );
-        final ICardPile expectedCardPile = createUniqueCardPile();
-        expectedCardPile.setLocation( location );
-        table_.addCardPile( expectedCardPile );
-
-        final ICardPile actualCardPile = table_.getCardPile( location );
-
-        assertSame( expectedCardPile, actualCardPile );
-    }
-
-    /**
-     * Ensures the {@code getCardPile(Point)} method throws an exception when
-     * passed a {@code null} location.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetCardPileFromLocation_Location_Null()
-    {
-        table_.getCardPile( null );
-    }
-
-    /**
      * Ensures the {@code getCardPileCount} method returns the correct value.
      */
     @Test
@@ -512,20 +454,30 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
 
     /**
      * Ensures the {@code getComponent(ComponentPath)} method throws an
-     * exception when passed a path that is illegal because it does not exist.
+     * exception when passed a path that is absent.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testGetComponentFromPath_Path_Illegal_NotExists()
+    public void testGetComponentFromPath_Path_Absent()
     {
         table_.getComponent( new ComponentPath( null, 0 ) );
     }
 
     /**
+     * Ensures the {@code getComponent(ComponentPath)} method throws an
+     * exception when passed a {@code null} path.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGetComponentFromPath_Path_Null()
+    {
+        table_.getComponent( (ComponentPath)null );
+    }
+
+    /**
      * Ensures the {@code getComponent(ComponentPath)} method returns the
-     * correct component when passed a legal path.
+     * correct component when passed a path that is present.
      */
     @Test
-    public void testGetComponentFromPath_Path_Legal()
+    public void testGetComponentFromPath_Path_Present()
     {
         final ICardPile expectedCardPile = createUniqueCardPile();
         table_.addCardPile( expectedCardPile );
@@ -539,16 +491,6 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
 
         assertSame( expectedCardPile, actualCardPile );
         assertSame( expectedCard, actualCard );
-    }
-
-    /**
-     * Ensures the {@code getComponent(ComponentPath)} method throws an
-     * exception when passed a {@code null} path.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetComponentFromPath_Path_Null()
-    {
-        table_.getComponent( (ComponentPath)null );
     }
 
     /**

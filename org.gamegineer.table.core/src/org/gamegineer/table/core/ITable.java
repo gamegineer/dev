@@ -88,34 +88,6 @@ public interface ITable
         int index );
 
     /**
-     * Gets the card pile at the specified location.
-     * 
-     * <p>
-     * If two or more card piles occupy the specified location, the card pile
-     * most recently added to the table will be returned.
-     * </p>
-     * 
-     * <p>
-     * Note that the returned card pile may have been moved by the time this
-     * method returns to the caller. Therefore, callers should not cache the
-     * results of this method for an extended period of time.
-     * </p>
-     * 
-     * @param location
-     *        The location in table coordinates; must not be {@code null}.
-     * 
-     * @return The card pile at the specified location or {@code null} if no
-     *         card pile is at that location.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code location} is {@code null}.
-     */
-    /* @Nullable */
-    public ICardPile getCardPile(
-        /* @NonNull */
-        Point location );
-
-    /**
      * Gets the count of card piles contained in this table.
      * 
      * @return The count of card piles contained in this table.

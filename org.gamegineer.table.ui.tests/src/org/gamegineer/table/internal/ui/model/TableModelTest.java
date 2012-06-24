@@ -24,6 +24,8 @@ package org.gamegineer.table.internal.ui.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -33,7 +35,11 @@ import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.core.CardPiles;
+import org.gamegineer.table.core.Cards;
+import org.gamegineer.table.core.ComponentPath;
+import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
+import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.junit.Before;
 import org.junit.Test;
@@ -92,7 +98,20 @@ public final class TableModelTest
     }
 
     /**
-     * Creates a new card pile with a unique base design for the fixture table.
+     * Creates a new card with unique attributes using the fixture table
+     * environment.
+     * 
+     * @return A new card; never {@code null}.
+     */
+    /* @NonNull */
+    private ICard createUniqueCard()
+    {
+        return Cards.createUniqueCard( model_.getTable().getTableEnvironment() );
+    }
+
+    /**
+     * Creates a new card pile with unique attributes using the fixture table
+     * environment.
      * 
      * @return A new card pile; never {@code null}.
      */
@@ -267,8 +286,49 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code getContainerModel} throws an exception when passed a
-     * container that is absent from the table.
+     * Ensures the {@code getComponentModel} method throws an exception when
+     * passed a path that is absent.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testGetComponentModel_Path_Absent()
+    {
+        model_.getComponentModel( new ComponentPath( null, 0 ) );
+    }
+
+    /**
+     * Ensures the {@code getComponentModel} method throws an exception when
+     * passed a {@code null} path.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGetComponentModel_Path_Null()
+    {
+        model_.getComponentModel( null );
+    }
+
+    /**
+     * Ensures the {@code getComponentModel} method returns the correct
+     * component model when passed a path that is present.
+     */
+    @Test
+    public void testGetComponentModel_Path_Present()
+    {
+        final ICardPile expectedCardPile = createUniqueCardPile();
+        model_.getTable().addCardPile( expectedCardPile );
+        expectedCardPile.addComponent( createUniqueCard() );
+        expectedCardPile.addComponent( createUniqueCard() );
+        final IComponent expectedCard = createUniqueCard();
+        expectedCardPile.addComponent( expectedCard );
+
+        final ComponentModel actualCardPileModel = model_.getComponentModel( expectedCardPile.getPath() );
+        final ComponentModel actualCardModel = model_.getComponentModel( expectedCard.getPath() );
+
+        assertSame( expectedCardPile, actualCardPileModel.getComponent() );
+        assertSame( expectedCard, actualCardModel.getComponent() );
+    }
+
+    /**
+     * Ensures the {@code getContainerModel} method throws an exception when
+     * passed a container that is absent from the table.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testGetContainerModel_Container_Absent()
@@ -277,13 +337,48 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code getContainerModel} throws an exception when passed a
-     * {@code null} container.
+     * Ensures the {@code getContainerModel} method throws an exception when
+     * passed a {@code null} container.
      */
     @Test( expected = NullPointerException.class )
     public void testGetContainerModel_Container_Null()
     {
         model_.getContainerModel( null );
+    }
+
+    /**
+     * Ensures the {@code getFocusableComponent} method returns the expected
+     * component when a focusable component exists at the specified location.
+     */
+    @Test
+    public void testGetFocusableComponent_Location_FocusableComponent()
+    {
+        final ICardPile expectedCardPile = createUniqueCardPile();
+        model_.getTable().addCardPile( expectedCardPile );
+
+        final IComponent actualComponent = model_.getFocusableComponent( new Point( 0, 0 ) );
+
+        assertSame( expectedCardPile, actualComponent );
+    }
+
+    /**
+     * Ensures the {@code getFocusableComponent} method returns {@code null}
+     * when no component exists at the specified location.
+     */
+    @Test
+    public void testGetFocusableComponent_Location_NoComponent()
+    {
+        assertNull( model_.getFocusableComponent( new Point( 0, 0 ) ) );
+    }
+
+    /**
+     * Ensures the {@code getFocusableComponent} method throws an exception when
+     * passed a {@code null} location.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGetFocusableComponent_Location_Null()
+    {
+        model_.getFocusableComponent( null );
     }
 
     /**

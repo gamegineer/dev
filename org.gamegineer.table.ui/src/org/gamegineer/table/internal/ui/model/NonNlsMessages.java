@@ -91,6 +91,9 @@ final class NonNlsMessages
     /** The table model listener is already registered. */
     public static String TableModel_addTableModelListener_listener_registered;
 
+    /** The component path does not exist in the table. */
+    public static String TableModel_getComponentModel_path_notExists;
+
     /** The container is not present in the table. */
     public static String TableModel_getContainerModel_container_absent;
 

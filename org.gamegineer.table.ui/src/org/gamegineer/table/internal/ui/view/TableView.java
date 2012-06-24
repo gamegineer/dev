@@ -1441,7 +1441,7 @@ final class TableView
         public void mousePressed(
             final MouseEvent event )
         {
-            final ICardPile cardPile = model_.getTable().getCardPile( getMouseLocation( event ) );
+            final ICardPile cardPile = (ICardPile)model_.getFocusableComponent( getMouseLocation( event ) ); // FIXME: remove cast
             model_.setFocus( cardPile );
 
             if( event.isPopupTrigger() )
@@ -1487,7 +1487,7 @@ final class TableView
             /* @Nullable */
             final MouseEvent event )
         {
-            final ICardPile cardPile = model_.getTable().getCardPile( getMouseLocation( event ) );
+            final ICardPile cardPile = (ICardPile)model_.getFocusableComponent( getMouseLocation( event ) ); // FIXME: remove cast
             final Cursor newCursor;
             if( cardPile != null )
             {
@@ -1599,7 +1599,7 @@ final class TableView
             final Point location = getMouseLocation( event );
             if( canBeginDrag( location ) )
             {
-                if( model_.getTable().getCardPile( location ) != null )
+                if( (ICardPile)model_.getFocusableComponent( location ) != null ) // FIXME: remove cast
                 {
                     if( model_.isEditable() )
                     {
@@ -1690,7 +1690,7 @@ final class TableView
             final MouseEvent event )
         {
             final Point mouseLocation = getMouseLocation( event );
-            sourceCardPile_ = model_.getTable().getCardPile( mouseLocation );
+            sourceCardPile_ = (ICardPile)model_.getFocusableComponent( mouseLocation ); // FIXME: remove cast
             if( sourceCardPile_ != null )
             {
                 final List<IComponent> draggedComponents = sourceCardPile_.removeComponents( mouseLocation );
@@ -1753,7 +1753,7 @@ final class TableView
                 model_.getTable().removeCardPile( mobileCardPile_ );
 
                 final Point mouseLocation = getMouseLocation( event );
-                final ICardPile cardPile = model_.getTable().getCardPile( mouseLocation );
+                final ICardPile cardPile = (ICardPile)model_.getFocusableComponent( mouseLocation ); // FIXME: remove cast
                 final ICardPile targetCardPile = (cardPile != null) ? cardPile : sourceCardPile_;
                 targetCardPile.addComponents( mobileCardPile_.removeComponents() );
                 model_.setFocus( targetCardPile );
@@ -1811,7 +1811,7 @@ final class TableView
             final MouseEvent event )
         {
             final Point mouseLocation = getMouseLocation( event );
-            draggedCardPile_ = model_.getTable().getCardPile( mouseLocation );
+            draggedCardPile_ = (ICardPile)model_.getFocusableComponent( mouseLocation );
             if( draggedCardPile_ != null )
             {
                 final Point cardPileLocation = draggedCardPile_.getLocation();

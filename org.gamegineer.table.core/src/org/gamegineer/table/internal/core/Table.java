@@ -293,35 +293,6 @@ final class Table
     }
 
     /*
-     * @see org.gamegineer.table.core.ITable#getCardPile(java.awt.Point)
-     */
-    @Override
-    public ICardPile getCardPile(
-        final Point location )
-    {
-        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
-
-        getLock().lock();
-        try
-        {
-            for( int index = cardPiles_.size() - 1; index >= 0; --index )
-            {
-                final ICardPile cardPile = cardPiles_.get( index );
-                if( cardPile.getBounds().contains( location ) )
-                {
-                    return cardPile;
-                }
-            }
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-
-        return null;
-    }
-
-    /*
      * @see org.gamegineer.table.core.ITable#getCardPileCount()
      */
     @Override
@@ -392,6 +363,7 @@ final class Table
         getLock().lock();
         try
         {
+            // FIXME: this is hard-coded to assume only card piles and cards exist in the table
             final ComponentPath cardPilePath = paths.get( 0 );
             assertArgumentLegal( cardPilePath.getIndex() < cardPiles_.size(), "path", NonNlsMessages.Table_getComponent_path_notExists ); //$NON-NLS-1$
             final CardPile cardPile = cardPiles_.get( cardPilePath.getIndex() );

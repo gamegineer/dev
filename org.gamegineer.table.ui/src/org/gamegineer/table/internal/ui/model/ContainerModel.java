@@ -212,6 +212,15 @@ public final class ContainerModel
         return (IContainer)getComponent();
     }
 
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ComponentModel#isFocusable()
+     */
+    @Override
+    public boolean isFocusable()
+    {
+        return true;
+    }
+
     /**
      * Indicates the associated container has the focus.
      * 

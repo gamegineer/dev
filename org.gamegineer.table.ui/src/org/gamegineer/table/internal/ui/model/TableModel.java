@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.ui.model;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -31,6 +32,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
@@ -39,7 +41,9 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.common.persistence.serializable.ObjectStreams;
+import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ICardPile;
+import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableContentChangedEvent;
@@ -268,6 +272,45 @@ public final class TableModel
     }
 
     /**
+     * Gets the component model in this table model at the specified path.
+     * 
+     * @param path
+     *        The component path; must not be {@code null}.
+     * 
+     * @return The component model in this table model at the specified path;
+     *         never {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If no component model exists at the specified path.
+     * @throws java.lang.NullPointerException
+     *         If {@code path} is {@code null}.
+     */
+    /* @NonNull */
+    public ComponentModel getComponentModel(
+        /* @NonNull */
+        final ComponentPath path )
+    {
+        assertArgumentNotNull( path, "componentPath" ); //$NON-NLS-1$
+
+        final List<ComponentPath> paths = path.toList();
+        assertArgumentLegal( paths.size() <= 2, "path", NonNlsMessages.TableModel_getComponentModel_path_notExists ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            // FIXME: this is hard-coded to assume only card piles and cards exist in the table
+            final ComponentPath cardPilePath = paths.get( 0 );
+            final ContainerModel cardPileModel = containerModels_.get( table_.getComponent( cardPilePath ) );
+            if( paths.size() == 1 )
+            {
+                return cardPileModel;
+            }
+
+            final ComponentPath cardPath = paths.get( 1 );
+            return cardPileModel.getComponentModel( table_.getComponent( cardPath ) );
+        }
+    }
+
+    /**
      * Gets the container model associated with the specified container.
      * 
      * @param container
@@ -312,6 +355,46 @@ public final class TableModel
         {
             return file_;
         }
+    }
+
+    /**
+     * Gets the focusable component in the table at the specified location.
+     * 
+     * @param location
+     *        The location in table coordinates; must not be {@code null}.
+     * 
+     * @return The focusable component in the table at the specified location or
+     *         {@code null} if no focusable component in the table is at that
+     *         location.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code location} is {@code null}.
+     */
+    /* @Nullable */
+    public IComponent getFocusableComponent(
+        /* @NonNull */
+        final Point location )
+    {
+        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            final IComponent component = table_.getComponent( location );
+            if( component == null )
+            {
+                return null;
+            }
+
+            for( ComponentModel componentModel = getComponentModel( component.getPath() ); componentModel != null; componentModel = getComponentModel( component.getContainer().getPath() ) )
+            {
+                if( componentModel.isFocusable() )
+                {
+                    return componentModel.getComponent();
+                }
+            }
+        }
+
+        return null;
     }
 
     /**

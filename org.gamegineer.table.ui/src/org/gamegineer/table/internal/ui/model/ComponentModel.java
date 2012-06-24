@@ -127,6 +127,22 @@ public class ComponentModel
     }
 
     /**
+     * Indicates the component associated with this model can receive the focus.
+     * 
+     * <p>
+     * This implementation always returns {@code false}. Subclasses may override
+     * and are not required to call the superclass implementation.
+     * </p>
+     * 
+     * @return {@code true} if the component associated with this model can
+     *         receive the focus; otherwise {@code false}.
+     */
+    public boolean isFocusable()
+    {
+        return false;
+    }
+
+    /**
      * Removes the specified component model listener from this component model.
      * 
      * @param listener
