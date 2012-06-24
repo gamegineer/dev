@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
@@ -393,12 +394,12 @@ final class Table
         getLock().lock();
         try
         {
-            for( int index = cardPiles_.size() - 1; index >= 0; --index )
+            for( final ListIterator<CardPile> iterator = cardPiles_.listIterator( cardPiles_.size() ); iterator.hasPrevious(); )
             {
-                final CardPile cardPile = cardPiles_.get( index );
-                if( cardPile.getBounds().contains( location ) )
+                final IComponent component = iterator.previous().getComponent( location );
+                if( component != null )
                 {
-                    return (cardPile.getComponentCount() == 0) ? cardPile : cardPile.getComponent( location );
+                    return component;
                 }
             }
         }

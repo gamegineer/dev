@@ -531,7 +531,8 @@ final class CardPile
     }
 
     /**
-     * Gets the component in this container at the specified location.
+     * Gets the component within this container's bounds (including the
+     * container itself) at the specified location.
      * 
      * <p>
      * If two or more components occupy the specified location, the top-most
@@ -541,9 +542,8 @@ final class CardPile
      * @param location
      *        The location in table coordinates; must not be {@code null}.
      * 
-     * @return The component in this container at the specified location or
-     *         {@code null} if no component in this container is at that
-     *         location.
+     * @return The component within this container's bounds at the specified
+     *         location or {@code null} if no component is at that location.
      */
     @GuardedBy( "getLock()" )
     /* @Nullable */
@@ -554,8 +554,21 @@ final class CardPile
         assert location != null;
         assert getLock().isHeldByCurrentThread();
 
-        final int index = getComponentIndex( location );
-        return (index != -1) ? cards_.get( index ) : null;
+        if( getBounds().contains( location ) )
+        {
+            if( cards_.isEmpty() )
+            {
+                return this;
+            }
+
+            final int index = getComponentIndex( location );
+            if( index != -1 )
+            {
+                return cards_.get( index );
+            }
+        }
+
+        return null;
     }
 
     /*
