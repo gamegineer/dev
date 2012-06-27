@@ -249,6 +249,12 @@ final class NonNlsMessages
     /** The table listener is not registered. */
     public static String Table_removeTableListener_listener_notRegistered;
 
+    /**
+     * An unexpected exception was thrown from
+     * ITableListener.rootComponentChanged().
+     */
+    public static String Table_rootComponentChanged_unexpectedException;
+
     // --- TableEnvironment -------------------------------------------------
 
     /** Failed to queue the event notification. */

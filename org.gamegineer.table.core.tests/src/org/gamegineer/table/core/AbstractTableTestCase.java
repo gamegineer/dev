@@ -151,6 +151,45 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
         return CardPiles.createUniqueCardPile( tableEnvironment_ );
     }
 
+    /**
+     * Fires a card pile added event for the specified table.
+     * 
+     * @param table
+     *        The table; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code table} is {@code null}.
+     */
+    protected abstract void fireCardPileAdded(
+        /* @NonNull */
+        TableType table );
+
+    /**
+     * Fires a card pile removed event for the specified table.
+     * 
+     * @param table
+     *        The table; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code table} is {@code null}.
+     */
+    protected abstract void fireCardPileRemoved(
+        /* @NonNull */
+        TableType table );
+
+    /**
+     * Fires a root component changed event for the specified table.
+     * 
+     * @param table
+     *        The table; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code table} is {@code null}.
+     */
+    protected abstract void fireRootComponentChanged(
+        /* @NonNull */
+        TableType table );
+
     /*
      * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#initializeMementoOriginator(org.gamegineer.common.core.util.memento.IMementoOriginator)
      */
@@ -291,7 +330,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
         table_.addTableListener( listener1 );
         table_.addTableListener( listener2 );
 
-        table_.addCardPile( createUniqueCardPile() );
+        fireCardPileAdded( table_ );
 
         mocksControl_.verify();
     }
@@ -303,8 +342,6 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     @Test
     public void testCardPileRemoved_CatchesListenerException()
     {
-        final ICardPile cardPile = createUniqueCardPile();
-        table_.addCardPile( cardPile );
         final ITableListener listener1 = mocksControl_.createMock( ITableListener.class );
         listener1.cardPileRemoved( EasyMock.notNull( TableContentChangedEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
@@ -314,37 +351,37 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
         table_.addTableListener( listener1 );
         table_.addTableListener( listener2 );
 
-        table_.removeCardPile( cardPile );
+        fireCardPileRemoved( table_ );
 
         mocksControl_.verify();
     }
 
     /**
-     * Ensures the {@code getCardPile(int)} method throws an exception when
-     * passed an illegal index greater than the maximum legal value.
+     * Ensures the {@code getCardPile} method throws an exception when passed an
+     * illegal index greater than the maximum legal value.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testGetCardPileFromIndex_Index_Illegal_GreaterThanMaximumLegalValue()
+    public void testGetCardPile_Index_Illegal_GreaterThanMaximumLegalValue()
     {
         table_.getCardPile( 0 );
     }
 
     /**
-     * Ensures the {@code getCardPile(int)} method throws an exception when
-     * passed an illegal index less than the minimum legal value.
+     * Ensures the {@code getCardPile} method throws an exception when passed an
+     * illegal index less than the minimum legal value.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testGetCardPileFromIndex_Index_Illegal_LessThanMinimumLegalValue()
+    public void testGetCardPile_Index_Illegal_LessThanMinimumLegalValue()
     {
         table_.getCardPile( -1 );
     }
 
     /**
-     * Ensures the {@code getCardPile(int)} method returns the correct card pile
-     * when passed a legal index.
+     * Ensures the {@code getCardPile} method returns the correct card pile when
+     * passed a legal index.
      */
     @Test
-    public void testGetCardPileFromIndex_Index_Legal()
+    public void testGetCardPile_Index_Legal()
     {
         final ICardPile expectedValue = createUniqueCardPile();
         table_.addCardPile( expectedValue );
@@ -665,5 +702,59 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
         table_.addCardPile( createUniqueCardPile() );
 
         mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the root component changed event catches any exception thrown by
+     * the {@code rootComponentChanged} method of a table listener.
+     */
+    @Test
+    public void testRootComponentChanged_CatchesListenerException()
+    {
+        final ITableListener listener1 = mocksControl_.createMock( ITableListener.class );
+        listener1.rootComponentChanged( EasyMock.notNull( TableEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final ITableListener listener2 = mocksControl_.createMock( ITableListener.class );
+        listener2.rootComponentChanged( EasyMock.notNull( TableEvent.class ) );
+        mocksControl_.replay();
+        table_.addTableListener( listener1 );
+        table_.addTableListener( listener2 );
+
+        fireRootComponentChanged( table_ );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code setRootComponent} method fires a root component
+     * changed event.
+     */
+    @Test
+    public void testSetRootComponent_FiresRootComponentChangedEvent()
+    {
+        final ITableListener listener = mocksControl_.createMock( ITableListener.class );
+        final Capture<TableEvent> eventCapture = new Capture<TableEvent>();
+        listener.rootComponentChanged( EasyMock.capture( eventCapture ) );
+        mocksControl_.replay();
+        table_.addTableListener( listener );
+
+        table_.setRootComponent( createUniqueCard() );
+
+        mocksControl_.verify();
+        assertSame( table_, eventCapture.getValue().getTable() );
+    }
+
+    /**
+     * Ensures the {@code setRootComponent} method sets the root component.
+     */
+    @Test
+    public void testSetRootComponent_SetsRootComponent()
+    {
+        final IComponent component = createUniqueCard();
+
+        table_.setRootComponent( component );
+        assertEquals( component, table_.getRootComponent() );
+        table_.setRootComponent( null );
+        assertNull( table_.getRootComponent() );
     }
 }

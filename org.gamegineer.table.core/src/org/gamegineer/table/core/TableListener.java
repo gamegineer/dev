@@ -74,4 +74,16 @@ public class TableListener
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
     }
+
+    /**
+     * This implementation does nothing.
+     * 
+     * @see org.gamegineer.table.core.ITableListener#rootComponentChanged(org.gamegineer.table.core.TableEvent)
+     */
+    @Override
+    public void rootComponentChanged(
+        final TableEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+    }
 }

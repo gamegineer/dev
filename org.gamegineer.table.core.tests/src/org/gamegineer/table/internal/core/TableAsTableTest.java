@@ -21,7 +21,10 @@
 
 package org.gamegineer.table.internal.core;
 
+import java.lang.reflect.Method;
+import org.easymock.EasyMock;
 import org.gamegineer.table.core.AbstractTableTestCase;
+import org.gamegineer.table.core.ICardPile;
 
 /**
  * A fixture for testing the {@link org.gamegineer.table.internal.core.Table}
@@ -64,5 +67,62 @@ public final class TableAsTableTest
     protected TableEnvironment createTableEnvironment()
     {
         return new TableEnvironment();
+    }
+
+    /*
+     * @see org.gamegineer.table.core.AbstractTableTestCase#fireCardPileAdded(org.gamegineer.table.core.ITable)
+     */
+    @Override
+    protected void fireCardPileAdded(
+        final Table table )
+    {
+        try
+        {
+            final Method method = Table.class.getDeclaredMethod( "fireCardPileAdded", ICardPile.class, Integer.TYPE ); //$NON-NLS-1$
+            method.setAccessible( true );
+            method.invoke( table, EasyMock.createMock( ICardPile.class ), Integer.valueOf( 0 ) );
+        }
+        catch( final Exception e )
+        {
+            throw new AssertionError( e );
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.AbstractTableTestCase#fireCardPileRemoved(org.gamegineer.table.core.ITable)
+     */
+    @Override
+    protected void fireCardPileRemoved(
+        final Table table )
+    {
+        try
+        {
+            final Method method = Table.class.getDeclaredMethod( "fireCardPileRemoved", ICardPile.class, Integer.TYPE ); //$NON-NLS-1$
+            method.setAccessible( true );
+            method.invoke( table, EasyMock.createMock( ICardPile.class ), Integer.valueOf( 0 ) );
+        }
+        catch( final Exception e )
+        {
+            throw new AssertionError( e );
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.AbstractTableTestCase#fireRootComponentChanged(org.gamegineer.table.core.ITable)
+     */
+    @Override
+    protected void fireRootComponentChanged(
+        final Table table )
+    {
+        try
+        {
+            final Method method = Table.class.getDeclaredMethod( "fireRootComponentChanged" ); //$NON-NLS-1$
+            method.setAccessible( true );
+            method.invoke( table );
+        }
+        catch( final Exception e )
+        {
+            throw new AssertionError( e );
+        }
     }
 }

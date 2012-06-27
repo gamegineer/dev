@@ -152,6 +152,14 @@ public interface ITable
         Point location );
 
     /**
+     * Gets the root component for this table.
+     * 
+     * @return The root component or {@code null} if none.
+     */
+    /* @Nullable */
+    public IComponent getRootComponent();
+
+    /**
      * Gets the table environment associated with this table.
      * 
      * @return The table environment associated with this table; never
@@ -198,4 +206,14 @@ public interface ITable
     public void removeTableListener(
         /* @NonNull */
         ITableListener listener );
+
+    /**
+     * Sets the root component for this table.
+     * 
+     * @param component
+     *        The root component or {@code null} to remove the root component.
+     */
+    public void setRootComponent(
+        /* @Nullable */
+        IComponent component );
 }

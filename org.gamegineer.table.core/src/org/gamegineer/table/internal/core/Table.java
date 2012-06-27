@@ -42,6 +42,7 @@ import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
+import org.gamegineer.table.core.TableEvent;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ITable}.
@@ -67,6 +68,10 @@ final class Table
     /** The collection of table listeners. */
     private final CopyOnWriteArrayList<ITableListener> listeners_;
 
+    /** The root component or {@code null} if none. */
+    @GuardedBy( "getLock()" )
+    private IComponent rootComponent_;
+
     /** The table environment. */
     private final TableEnvironment tableEnvironment_;
 
@@ -89,6 +94,7 @@ final class Table
 
         cardPiles_ = new ArrayList<CardPile>();
         listeners_ = new CopyOnWriteArrayList<ITableListener>();
+        rootComponent_ = null;
         tableEnvironment_ = tableEnvironment;
     }
 
@@ -230,6 +236,27 @@ final class Table
             catch( final RuntimeException e )
             {
                 Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Table_cardPileRemoved_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a root component changed event.
+     */
+    private void fireRootComponentChanged()
+    {
+        assert !getLock().isHeldByCurrentThread();
+
+        final TableEvent event = new TableEvent( this );
+        for( final ITableListener listener : listeners_ )
+        {
+            try
+            {
+                listener.rootComponentChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Table_rootComponentChanged_unexpectedException, e );
             }
         }
     }
@@ -423,6 +450,23 @@ final class Table
     }
 
     /*
+     * @see org.gamegineer.table.core.ITable#getRootComponent()
+     */
+    @Override
+    public IComponent getRootComponent()
+    {
+        getLock().lock();
+        try
+        {
+            return rootComponent_;
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.core.ITable#getTableEnvironment()
      */
     @Override
@@ -553,6 +597,34 @@ final class Table
     }
 
     /*
+     * @see org.gamegineer.table.core.ITable#setRootComponent(org.gamegineer.table.core.IComponent)
+     */
+    @Override
+    public void setRootComponent(
+        final IComponent component )
+    {
+        getLock().lock();
+        try
+        {
+            rootComponent_ = component;
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+
+        tableEnvironment_.addEventNotification( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                fireRootComponentChanged();
+            }
+        } );
+    }
+
+    /*
      * @see java.lang.Object#toString()
      */
     @Override
@@ -564,7 +636,9 @@ final class Table
         getLock().lock();
         try
         {
-            sb.append( "cardPiles_.size()=" ); //$NON-NLS-1$
+            sb.append( "rootComponent_=" ); //$NON-NLS-1$
+            sb.append( rootComponent_ );
+            sb.append( ", cardPiles_.size()=" ); //$NON-NLS-1$
             sb.append( cardPiles_.size() );
         }
         finally

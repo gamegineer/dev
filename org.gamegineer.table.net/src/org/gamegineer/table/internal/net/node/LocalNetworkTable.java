@@ -44,6 +44,7 @@ import org.gamegineer.table.core.IContainerListener;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
+import org.gamegineer.table.core.TableEvent;
 import org.gamegineer.table.internal.net.Loggers;
 
 /**
@@ -929,6 +930,20 @@ final class LocalNetworkTable
 
             tableManager_.incrementTableState( LocalNetworkTable.this, tableIncrement );
         }
+
+        /*
+         * @see org.gamegineer.table.core.ITableListener#rootComponentChanged(org.gamegineer.table.core.TableEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void rootComponentChanged(
+            final TableEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+            assert nodeLayer_.isNodeLayerThread();
+
+            // TODO: add support for root component
+        }
     }
 
     /**
@@ -1003,6 +1018,24 @@ final class LocalNetworkTable
                 public void run()
                 {
                     actualTableListener_.cardPileRemoved( event );
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.ITableListener#rootComponentChanged(org.gamegineer.table.core.TableEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void rootComponentChanged(
+            final TableEvent event )
+        {
+            syncExec( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    actualTableListener_.rootComponentChanged( event );
                 }
             } );
         }

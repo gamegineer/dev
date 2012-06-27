@@ -1,6 +1,6 @@
 /*
  * ITableListener.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -54,8 +54,8 @@ public interface ITableListener
      * Invoked after a card pile has been removed from the table.
      * 
      * @param event
-     *        The event describing the removed card pile; must not be {@code
-     *        null}.
+     *        The event describing the removed card pile; must not be
+     *        {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code event} is {@code null}.
@@ -63,4 +63,17 @@ public interface ITableListener
     public void cardPileRemoved(
         /* @NonNull */
         TableContentChangedEvent event );
+
+    /**
+     * Invoked after the root component for the table has changed.
+     * 
+     * @param event
+     *        The event describing the table; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void rootComponentChanged(
+        /* @NonNull */
+        TableEvent event );
 }
