@@ -80,8 +80,13 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#assertMementoOriginatorEquals(org.gamegineer.common.core.util.memento.IMementoOriginator, org.gamegineer.common.core.util.memento.IMementoOriginator)
+    /**
+     * This implementation compares the expected and actual values according to
+     * the specification of the
+     * {@link org.gamegineer.table.core.Assert#assertTableEquals} method.
+     * 
+     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#assertMementoOriginatorEquals(org.gamegineer.common.core.util.memento.IMementoOriginator,
+     *      org.gamegineer.common.core.util.memento.IMementoOriginator)
      */
     @Override
     protected void assertMementoOriginatorEquals(
@@ -97,9 +102,10 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
      * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#createMementoOriginator()
      */
     @Override
-    protected IMementoOriginator createMementoOriginator()
+    protected final IMementoOriginator createMementoOriginator()
+        throws Exception
     {
-        return table_;
+        return createTable( tableEnvironment_ );
     }
 
     /**
@@ -198,9 +204,14 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
         final IMementoOriginator mementoOriginator )
     {
         final ITable table = (ITable)mementoOriginator;
-        final ICardPile cardPile = CardPiles.createUniqueCardPile( table.getTableEnvironment() );
-        cardPile.addComponent( Cards.createUniqueCard( table.getTableEnvironment() ) );
-        table.addCardPile( cardPile );
+
+        final ICardPile cardPile1 = CardPiles.createUniqueCardPile( table.getTableEnvironment() );
+        cardPile1.addComponent( Cards.createUniqueCard( table.getTableEnvironment() ) );
+        table.addCardPile( cardPile1 );
+
+        final ICardPile cardPile2 = CardPiles.createUniqueCardPile( table.getTableEnvironment() );
+        cardPile2.addComponent( Cards.createUniqueCard( table.getTableEnvironment() ) );
+        table.setRootComponent( cardPile2 );
     }
 
     /*

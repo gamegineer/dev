@@ -144,8 +144,9 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      */
     @Override
     protected final IMementoOriginator createMementoOriginator()
+        throws Exception
     {
-        return component_;
+        return createComponent( tableEnvironment_ );
     }
 
     /**

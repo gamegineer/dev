@@ -216,4 +216,10 @@ public interface ITable
     public void setRootComponent(
         /* @Nullable */
         IComponent component );
+
+    // TODO: NEXT...  should we add the IComponent.isMoveable method?
+    // or just plow into removing all card pile references?
+    //
+    // --> actually, will just go ahead and implement more root component stuff in the memento
+    // and the network layer (skipping UI for now)
 }

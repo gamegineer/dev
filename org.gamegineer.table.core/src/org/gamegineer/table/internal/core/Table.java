@@ -61,6 +61,12 @@ final class Table
      */
     private static final String CARD_PILES_MEMENTO_ATTRIBUTE_NAME = "cardPiles"; //$NON-NLS-1$
 
+    /**
+     * The name of the memento attribute that stores the root component of the
+     * table.
+     */
+    private static final String ROOT_COMPONENT_MEMENTO_ATTRIBUTE_NAME = "rootComponent"; //$NON-NLS-1$
+
     /** The collection of card piles on this table. */
     @GuardedBy( "getLock()" )
     private final List<CardPile> cardPiles_;
@@ -169,6 +175,11 @@ final class Table
                 cardPileMementos.add( cardPile.createMemento() );
             }
             memento.put( CARD_PILES_MEMENTO_ATTRIBUTE_NAME, Collections.unmodifiableList( cardPileMementos ) );
+
+            if( rootComponent_ != null )
+            {
+                memento.put( ROOT_COMPONENT_MEMENTO_ATTRIBUTE_NAME, rootComponent_.createMemento() );
+            }
         }
         finally
         {
@@ -291,10 +302,17 @@ final class Table
         final Table table = new Table( tableEnvironment );
 
         @SuppressWarnings( "unchecked" )
-        final List<Object> cardPileMementos = MementoUtils.getAttribute( memento, CARD_PILES_MEMENTO_ATTRIBUTE_NAME, List.class );
+        final List<Object> cardPileMementos = MementoUtils.getRequiredAttribute( memento, CARD_PILES_MEMENTO_ATTRIBUTE_NAME, List.class );
         for( final Object cardPileMemento : cardPileMementos )
         {
             table.addCardPile( CardPile.fromMemento( table.tableEnvironment_, cardPileMemento ) );
+        }
+
+        final Object rootComponentMemento = MementoUtils.getOptionalAttribute( memento, ROOT_COMPONENT_MEMENTO_ATTRIBUTE_NAME, Object.class );
+        if( rootComponentMemento != null )
+        {
+            // FIXME: create component from a factory -- not necessarily a card pile
+            table.setRootComponent( CardPile.fromMemento( table.tableEnvironment_, rootComponentMemento ) );
         }
 
         return table;
@@ -589,6 +607,8 @@ final class Table
             {
                 addCardPile( cardPile );
             }
+
+            setRootComponent( table.getRootComponent() );
         }
         finally
         {

@@ -272,8 +272,8 @@ final class Card
 
         final Card card = new Card( tableEnvironment );
 
-        final ComponentSurfaceDesign backDesign = MementoUtils.getAttribute( memento, BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, ComponentSurfaceDesign.class );
-        final ComponentSurfaceDesign faceDesign = MementoUtils.getAttribute( memento, FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ComponentSurfaceDesign.class );
+        final ComponentSurfaceDesign backDesign = MementoUtils.getRequiredAttribute( memento, BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, ComponentSurfaceDesign.class );
+        final ComponentSurfaceDesign faceDesign = MementoUtils.getRequiredAttribute( memento, FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ComponentSurfaceDesign.class );
         try
         {
             card.setSurfaceDesign( CardOrientation.BACK, backDesign );
@@ -284,10 +284,10 @@ final class Card
             throw new MementoException( e );
         }
 
-        final Point location = MementoUtils.getAttribute( memento, LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
+        final Point location = MementoUtils.getRequiredAttribute( memento, LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
         card.setLocation( location );
 
-        final CardOrientation orientation = MementoUtils.getAttribute( memento, ORIENTATION_MEMENTO_ATTRIBUTE_NAME, CardOrientation.class );
+        final CardOrientation orientation = MementoUtils.getRequiredAttribute( memento, ORIENTATION_MEMENTO_ATTRIBUTE_NAME, CardOrientation.class );
         card.setOrientation( orientation );
 
         return card;
