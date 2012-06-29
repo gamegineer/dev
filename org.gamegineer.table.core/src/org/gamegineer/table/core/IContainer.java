@@ -46,8 +46,8 @@ public interface IContainer
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code component} is already contained in a container or if
-     *         {@code component} was created by a table other than the table
-     *         that created this container.
+     *         {@code component} was created by a table environment other than
+     *         the table environment that created this container.
      * @throws java.lang.NullPointerException
      *         If {@code component} is {@code null}.
      */
@@ -66,8 +66,8 @@ public interface IContainer
      * @throws java.lang.IllegalArgumentException
      *         If {@code components} contains a {@code null} element; if any
      *         component is already contained in a container; or if any
-     *         component was created by a table other than the table that
-     *         created this container.
+     *         component was created by a table environment other than the table
+     *         environment that created this container.
      * @throws java.lang.NullPointerException
      *         If {@code components} is {@code null}.
      */
