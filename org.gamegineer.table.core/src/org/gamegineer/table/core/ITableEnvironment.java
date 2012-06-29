@@ -63,6 +63,14 @@ public interface ITableEnvironment
     public ICardPile createCardPile();
 
     /**
+     * Creates a new null component.
+     * 
+     * @return A new null component; never {@code null}.
+     */
+    /* @NonNull */
+    public IComponent createNullComponent();
+
+    /**
      * Creates a new table.
      * 
      * @return A new table; never {@code null}.

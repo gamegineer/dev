@@ -100,8 +100,11 @@ final class Table
 
         cardPiles_ = new ArrayList<CardPile>();
         listeners_ = new CopyOnWriteArrayList<ITableListener>();
-        rootComponent_ = null;
         tableEnvironment_ = tableEnvironment;
+
+        final NullComponent rootComponent = new NullComponent( tableEnvironment );
+        rootComponent.setTable( this );
+        rootComponent_ = rootComponent;
     }
 
 
@@ -176,10 +179,7 @@ final class Table
             }
             memento.put( CARD_PILES_MEMENTO_ATTRIBUTE_NAME, Collections.unmodifiableList( cardPileMementos ) );
 
-            if( rootComponent_ != null )
-            {
-                memento.put( ROOT_COMPONENT_MEMENTO_ATTRIBUTE_NAME, rootComponent_.createMemento() );
-            }
+            memento.put( ROOT_COMPONENT_MEMENTO_ATTRIBUTE_NAME, rootComponent_.createMemento() );
         }
         finally
         {
@@ -302,18 +302,15 @@ final class Table
         final Table table = new Table( tableEnvironment );
 
         @SuppressWarnings( "unchecked" )
-        final List<Object> cardPileMementos = MementoUtils.getRequiredAttribute( memento, CARD_PILES_MEMENTO_ATTRIBUTE_NAME, List.class );
+        final List<Object> cardPileMementos = MementoUtils.getAttribute( memento, CARD_PILES_MEMENTO_ATTRIBUTE_NAME, List.class );
         for( final Object cardPileMemento : cardPileMementos )
         {
             table.addCardPile( CardPile.fromMemento( table.tableEnvironment_, cardPileMemento ) );
         }
 
-        final Object rootComponentMemento = MementoUtils.getOptionalAttribute( memento, ROOT_COMPONENT_MEMENTO_ATTRIBUTE_NAME, Object.class );
-        if( rootComponentMemento != null )
-        {
-            // FIXME: create component from a factory -- not necessarily a card pile
-            table.setRootComponent( CardPile.fromMemento( table.tableEnvironment_, rootComponentMemento ) );
-        }
+        final Object rootComponentMemento = MementoUtils.getAttribute( memento, ROOT_COMPONENT_MEMENTO_ATTRIBUTE_NAME, Object.class );
+        // FIXME: create component from a factory -- not necessarily a null component
+        table.setRootComponent( NullComponent.fromMemento( table.tableEnvironment_, rootComponentMemento ) );
 
         return table;
     }
@@ -608,7 +605,10 @@ final class Table
                 addCardPile( cardPile );
             }
 
-            setRootComponent( table.getRootComponent() );
+            // TODO: should setRootComponent return the old root component?
+            final IComponent rootComponent = table.getRootComponent();
+            table.setRootComponent( tableEnvironment_.createNullComponent() );
+            setRootComponent( rootComponent );
         }
         finally
         {
@@ -623,10 +623,20 @@ final class Table
     public void setRootComponent(
         final IComponent component )
     {
+        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
+
         getLock().lock();
         try
         {
-            rootComponent_ = component;
+            assertArgumentLegal( component.getTable() == null, "component", NonNlsMessages.Table_setRootComponent_component_owned ); //$NON-NLS-1$
+            assertArgumentLegal( component.getTableEnvironment() == tableEnvironment_, "component", NonNlsMessages.Table_setRootComponent_component_createdByDifferentTable ); //$NON-NLS-1$
+
+            // FIXME: should not be restricted to null components
+            final NullComponent oldRootComponent = (NullComponent)rootComponent_;
+            oldRootComponent.setTable( null );
+            final NullComponent newRootComponent = (NullComponent)component;
+            rootComponent_ = newRootComponent;
+            newRootComponent.setTable( this );
         }
         finally
         {

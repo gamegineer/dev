@@ -467,17 +467,17 @@ final class CardPile
 
         final CardPile cardPile = new CardPile( tableEnvironment );
 
-        final ComponentSurfaceDesign baseDesign = MementoUtils.getRequiredAttribute( memento, BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ComponentSurfaceDesign.class );
+        final ComponentSurfaceDesign baseDesign = MementoUtils.getAttribute( memento, BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ComponentSurfaceDesign.class );
         cardPile.setSurfaceDesign( CardPileOrientation.BASE, baseDesign );
 
-        final Point location = MementoUtils.getRequiredAttribute( memento, ORIGIN_MEMENTO_ATTRIBUTE_NAME, Point.class );
+        final Point location = MementoUtils.getAttribute( memento, ORIGIN_MEMENTO_ATTRIBUTE_NAME, Point.class );
         cardPile.setLocation( location );
 
-        final IContainerLayout layout = MementoUtils.getRequiredAttribute( memento, LAYOUT_MEMENTO_ATTRIBUTE_NAME, IContainerLayout.class );
+        final IContainerLayout layout = MementoUtils.getAttribute( memento, LAYOUT_MEMENTO_ATTRIBUTE_NAME, IContainerLayout.class );
         cardPile.setLayout( layout );
 
         @SuppressWarnings( "unchecked" )
-        final List<Object> cardMementos = MementoUtils.getRequiredAttribute( memento, CARDS_MEMENTO_ATTRIBUTE_NAME, List.class );
+        final List<Object> cardMementos = MementoUtils.getAttribute( memento, CARDS_MEMENTO_ATTRIBUTE_NAME, List.class );
         for( final Object cardMemento : cardMementos )
         {
             cardPile.addComponent( Card.fromMemento( tableEnvironment, cardMemento ) );

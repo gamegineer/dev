@@ -207,6 +207,35 @@ final class NonNlsMessages
     /** The memento is of the wrong type. */
     public static String MementoUtils_memento_wrongType;
 
+    // --- NullComponent ----------------------------------------------------
+
+    /** The component listener is already registered. */
+    public static String NullComponent_addComponentListener_listener_registered;
+
+    /**
+     * An unexpected exception was thrown from
+     * IComponentListener.componentBoundsChanged().
+     */
+    public static String NullComponent_componentBoundsChanged_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
+     * IComponentListener.componentOrientationChanged().
+     */
+    public static String NullComponent_componentOrientationChanged_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
+     * IComponentListener.componentSurfaceDesignChanged().
+     */
+    public static String NullComponent_componentSurfaceDesignChanged_unexpectedException;
+
+    /** The orientation is illegal. */
+    public static String NullComponent_orientation_illegal;
+
+    /** The component listener is not registered. */
+    public static String NullComponent_removeComponentListener_listener_notRegistered;
+
     // --- StackedContainerLayout -------------------------------------------
 
     /** The components per stack level count is not positive. */
@@ -254,6 +283,12 @@ final class NonNlsMessages
      * ITableListener.rootComponentChanged().
      */
     public static String Table_rootComponentChanged_unexpectedException;
+
+    /** The component was created by a different table. */
+    public static String Table_setRootComponent_component_createdByDifferentTable;
+
+    /** The component is already contained in a container. */
+    public static String Table_setRootComponent_component_owned;
 
     // --- TableEnvironment -------------------------------------------------
 

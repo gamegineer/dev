@@ -158,6 +158,18 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
+     * Creates a new null component with unique attributes using the fixture
+     * table environment.
+     * 
+     * @return A new null component; never {@code null}.
+     */
+    /* @NonNull */
+    private IComponent createUniqueNullComponent()
+    {
+        return tableEnvironment_.createNullComponent();
+    }
+
+    /**
      * Fires a card pile added event for the specified table.
      * 
      * @param table
@@ -209,9 +221,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
         cardPile1.addComponent( Cards.createUniqueCard( table.getTableEnvironment() ) );
         table.addCardPile( cardPile1 );
 
-        final ICardPile cardPile2 = CardPiles.createUniqueCardPile( table.getTableEnvironment() );
-        cardPile2.addComponent( Cards.createUniqueCard( table.getTableEnvironment() ) );
-        table.setRootComponent( cardPile2 );
+        table.setRootComponent( table.getTableEnvironment().createNullComponent() ); // FIXME: should not be restricted to null components
     }
 
     /*
@@ -542,6 +552,15 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
+     * Ensures the {@code getRootComponent} method does not return {@code null}.
+     */
+    @Test
+    public void testGetRootComponent_ReturnValue_NonNull()
+    {
+        assertNotNull( table_.getRootComponent() );
+    }
+
+    /**
      * Ensures the {@code getTableEnvironment} method does not return
      * {@code null}.
      */
@@ -737,6 +756,44 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
+     * Ensures the {@code setRootComponent} method throws an exception when
+     * passed an illegal component that was created by a different table
+     * environment.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testSetRootComponent_Component_Illegal_CreatedByDifferentTableEnvironment()
+    {
+        final TableEnvironmentType otherTableEnvironment = createTableEnvironment();
+        final IComponent otherComponent = otherTableEnvironment.createNullComponent(); // FIXME: should not be restricted to null components
+
+        table_.setRootComponent( otherComponent );
+    }
+
+    /**
+     * Ensures the {@code setRootComponent} method throws an exception when
+     * passed an illegal component that is already contained in a container.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testSetRootComponent_Component_Illegal_Owned()
+    {
+        final ITable otherTable = table_.getTableEnvironment().createTable();
+        final IComponent otherComponent = createUniqueNullComponent(); // FIXME: should not be restricted to null components
+        otherTable.setRootComponent( otherComponent );
+
+        table_.setRootComponent( otherComponent );
+    }
+
+    /**
+     * Ensures the {@code setRootComponent} method throws an exception when
+     * passed a {@code null} component.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testSetRootComponent_Component_Null()
+    {
+        table_.setRootComponent( null );
+    }
+
+    /**
      * Ensures the {@code setRootComponent} method fires a root component
      * changed event.
      */
@@ -749,7 +806,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
         mocksControl_.replay();
         table_.addTableListener( listener );
 
-        table_.setRootComponent( createUniqueCard() );
+        table_.setRootComponent( createUniqueNullComponent() ); // FIXME: should not be restricted to null components
 
         mocksControl_.verify();
         assertSame( table_, eventCapture.getValue().getTable() );
@@ -761,11 +818,10 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     @Test
     public void testSetRootComponent_SetsRootComponent()
     {
-        final IComponent component = createUniqueCard();
+        final IComponent component = createUniqueNullComponent(); // FIXME: should not be restricted to null components
 
         table_.setRootComponent( component );
+
         assertEquals( component, table_.getRootComponent() );
-        table_.setRootComponent( null );
-        assertNull( table_.getRootComponent() );
     }
 }

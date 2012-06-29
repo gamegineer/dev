@@ -49,8 +49,7 @@ final class MementoUtils
     // ======================================================================
 
     /**
-     * Gets the specified non-nullable optional attribute from the specified
-     * memento.
+     * Gets the specified non-nullable attribute from the specified memento.
      * 
      * @param <T>
      *        The type of the attribute value.
@@ -61,15 +60,15 @@ final class MementoUtils
      * @param type
      *        The type of the attribute value; must not be {@code null}.
      * 
-     * @return The attribute value or {@code null} if the attribute is not
-     *         present in the memento.
+     * @return The attribute value; never {@code null}.
      * 
      * @throws org.gamegineer.common.core.util.memento.MementoException
-     *         If the memento is not of type {@code Map}, the attribute value is
-     *         {@code null}, or the attribute value is of the wrong type.
+     *         If the memento is not of type {@code Map}, the memento does not
+     *         contain the attribute, the attribute value is {@code null}, or
+     *         the attribute value is of the wrong type.
      */
-    /* @Nullable */
-    static <T> T getOptionalAttribute(
+    /* @NonNull */
+    static <T> T getAttribute(
         /* @NonNull */
         final Object memento,
         /* @NonNull */
@@ -91,7 +90,7 @@ final class MementoUtils
         final Map<String, Object> attributes = (Map<String, Object>)memento;
         if( !attributes.containsKey( name ) )
         {
-            return null;
+            throw new MementoException( NonNlsMessages.MementoUtils_attribute_absent( name ) );
         }
 
         final T value;
@@ -107,45 +106,6 @@ final class MementoUtils
         if( value == null )
         {
             throw new MementoException( NonNlsMessages.MementoUtils_attributeValue_null( name ) );
-        }
-
-        return value;
-    }
-
-    /**
-     * Gets the specified non-nullable required attribute from the specified
-     * memento.
-     * 
-     * @param <T>
-     *        The type of the attribute value.
-     * @param memento
-     *        The memento; must not be {@code null}.
-     * @param name
-     *        The attribute name; must not be {@code null}.
-     * @param type
-     *        The type of the attribute value; must not be {@code null}.
-     * 
-     * @return The attribute value; never {@code null}.
-     * 
-     * @throws org.gamegineer.common.core.util.memento.MementoException
-     *         If the memento is not of type {@code Map}, the memento does not
-     *         contain the attribute, the attribute value is {@code null}, or
-     *         the attribute value is of the wrong type.
-     */
-    /* @NonNull */
-    static <T> T getRequiredAttribute(
-        /* @NonNull */
-        final Object memento,
-        /* @NonNull */
-        final String name,
-        /* @NonNull */
-        final Class<T> type )
-        throws MementoException
-    {
-        final T value = getOptionalAttribute( memento, name, type );
-        if( value == null )
-        {
-            throw new MementoException( NonNlsMessages.MementoUtils_attribute_absent( name ) );
         }
 
         return value;

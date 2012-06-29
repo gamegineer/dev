@@ -128,6 +128,29 @@ public abstract class AbstractTableEnvironmentTestCase
     }
 
     /**
+     * Ensures the {@code createNullComponent} method returns a null component
+     * that is associated with the table environment.
+     */
+    @Test
+    public void testCreateNullComponent_ReturnValue_AssociatedWithTableEnvironment()
+    {
+        final IComponent component = tableEnvironment_.createNullComponent();
+
+        assertNotNull( component );
+        assertEquals( tableEnvironment_, component.getTableEnvironment() );
+    }
+
+    /**
+     * Ensures the {@code createNullComponent} method does not return
+     * {@code null}.
+     */
+    @Test
+    public void testCreateNullComponent_ReturnValue_NonNull()
+    {
+        assertNotNull( tableEnvironment_.createNullComponent() );
+    }
+
+    /**
      * Ensures the {@code createTable} method returns a table that is associated
      * with the table environment.
      */

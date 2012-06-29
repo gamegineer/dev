@@ -47,7 +47,7 @@ public interface ITable
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code cardPile} is already contained in the table or if
-     *         {@code cardPile} was created by a different table.
+     *         {@code cardPile} was created by a different table environment.
      * @throws java.lang.NullPointerException
      *         If {@code cardPile} is {@code null}.
      */
@@ -154,9 +154,9 @@ public interface ITable
     /**
      * Gets the root component for this table.
      * 
-     * @return The root component or {@code null} if none.
+     * @return The root component; never {@code null}.
      */
-    /* @Nullable */
+    /* @NonNull */
     public IComponent getRootComponent();
 
     /**
@@ -211,15 +211,15 @@ public interface ITable
      * Sets the root component for this table.
      * 
      * @param component
-     *        The root component or {@code null} to remove the root component.
+     *        The root component; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code component} is already contained in a container or if
+     *         {@code component} was created by a different table environment.
+     * @throws java.lang.NullPointerException
+     *         If {@code component} is {@code null}.
      */
     public void setRootComponent(
-        /* @Nullable */
+        /* @NonNull */
         IComponent component );
-
-    // TODO: NEXT...  should we add the IComponent.isMoveable method?
-    // or just plow into removing all card pile references?
-    //
-    // --> actually, will just go ahead and implement more root component stuff in the memento
-    // and the network layer (skipping UI for now)
 }

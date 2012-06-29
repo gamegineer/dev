@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.core;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import java.util.HashMap;
 import java.util.Map;
 import org.gamegineer.common.core.util.memento.MementoException;
@@ -90,120 +89,60 @@ public final class MementoUtilsTest
     }
 
     /**
-     * Ensures the {@code getOptionalAttribute} method returns {@code null} when
-     * the attribute is absent.
+     * Ensures the {@code getAttribute} method throws an exception when the
+     * attribute is absent.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Test
-    public void testGetOptionalAttribute_Attribute_Absent()
+    @Test( expected = MementoException.class )
+    public void testGetAttribute_Attribute_Absent()
         throws Exception
     {
-        final String actualValue = MementoUtils.getOptionalAttribute( memento_, ABSENT_ATTRIBUTE_NAME, String.class );
-
-        assertNull( actualValue );
+        MementoUtils.getAttribute( memento_, ABSENT_ATTRIBUTE_NAME, String.class );
     }
 
     /**
-     * Ensures the {@code getOptionalAttribute} method returns the attribute
-     * value when the attribute is present.
+     * Ensures the {@code getAttribute} method returns the attribute value when
+     * the attribute is present.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test
-    public void testGetOptionalAttribute_Attribute_Present()
+    public void testGetAttribute_Attribute_Present()
         throws Exception
     {
-        final String actualValue = MementoUtils.getOptionalAttribute( memento_, PRESENT_ATTRIBUTE_NAME, PRESENT_ATTRIBUTE_VALUE.getClass() );
+        final String actualValue = MementoUtils.getAttribute( memento_, PRESENT_ATTRIBUTE_NAME, PRESENT_ATTRIBUTE_VALUE.getClass() );
 
         assertEquals( PRESENT_ATTRIBUTE_VALUE, actualValue );
     }
 
     /**
-     * Ensures the {@code getOptionalAttribute} method throws an exception when
-     * the attribute is present but is {@code null}.
+     * Ensures the {@code getAttribute} method throws an exception when the
+     * attribute is present but is {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test( expected = MementoException.class )
-    public void testGetOptionalAttribute_Attribute_Present_Null()
+    public void testGetAttribute_Attribute_Present_Null()
         throws Exception
     {
-        MementoUtils.getOptionalAttribute( memento_, NULL_ATTRIBUTE_NAME, String.class );
+        MementoUtils.getAttribute( memento_, NULL_ATTRIBUTE_NAME, String.class );
     }
 
     /**
-     * Ensures the {@code getOptionalAttribute} method throws an exception when
-     * the attribute is present but is of the wrong type.
+     * Ensures the {@code getAttribute} method throws an exception when the
+     * attribute is present but is of the wrong type.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test( expected = MementoException.class )
-    public void testGetOptionalAttribute_Attribute_Present_WrongType()
+    public void testGetAttribute_Attribute_Present_WrongType()
         throws Exception
     {
-        MementoUtils.getOptionalAttribute( memento_, PRESENT_ATTRIBUTE_NAME, Integer.class );
-    }
-
-    /**
-     * Ensures the {@code getRequiredAttribute} method throws an exception when
-     * the attribute is absent.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = MementoException.class )
-    public void testGetRequiredAttribute_Attribute_Absent()
-        throws Exception
-    {
-        MementoUtils.getRequiredAttribute( memento_, ABSENT_ATTRIBUTE_NAME, String.class );
-    }
-
-    /**
-     * Ensures the {@code getRequiredAttribute} method returns the attribute
-     * value when the attribute is present.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test
-    public void testGetRequiredAttribute_Attribute_Present()
-        throws Exception
-    {
-        final String actualValue = MementoUtils.getRequiredAttribute( memento_, PRESENT_ATTRIBUTE_NAME, PRESENT_ATTRIBUTE_VALUE.getClass() );
-
-        assertEquals( PRESENT_ATTRIBUTE_VALUE, actualValue );
-    }
-
-    /**
-     * Ensures the {@code getRequiredAttribute} method throws an exception when
-     * the attribute is present but is {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = MementoException.class )
-    public void testGetRequiredAttribute_Attribute_Present_Null()
-        throws Exception
-    {
-        MementoUtils.getRequiredAttribute( memento_, NULL_ATTRIBUTE_NAME, String.class );
-    }
-
-    /**
-     * Ensures the {@code getRequiredAttribute} method throws an exception when
-     * the attribute is present but is of the wrong type.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = MementoException.class )
-    public void testGetRequiredAttribute_Attribute_Present_WrongType()
-        throws Exception
-    {
-        MementoUtils.getRequiredAttribute( memento_, PRESENT_ATTRIBUTE_NAME, Integer.class );
+        MementoUtils.getAttribute( memento_, PRESENT_ATTRIBUTE_NAME, Integer.class );
     }
 }
