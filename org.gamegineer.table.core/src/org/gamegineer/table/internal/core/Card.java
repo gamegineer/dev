@@ -273,16 +273,10 @@ final class Card
         final Card card = new Card( tableEnvironment );
 
         final ComponentSurfaceDesign backDesign = MementoUtils.getAttribute( memento, BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, ComponentSurfaceDesign.class );
+        card.setSurfaceDesign( CardOrientation.BACK, backDesign );
+
         final ComponentSurfaceDesign faceDesign = MementoUtils.getAttribute( memento, FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ComponentSurfaceDesign.class );
-        try
-        {
-            card.setSurfaceDesign( CardOrientation.BACK, backDesign );
-            card.setSurfaceDesign( CardOrientation.FACE, faceDesign );
-        }
-        catch( final IllegalArgumentException e )
-        {
-            throw new MementoException( e );
-        }
+        card.setSurfaceDesign( CardOrientation.FACE, faceDesign );
 
         final Point location = MementoUtils.getAttribute( memento, LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
         card.setLocation( location );
