@@ -600,7 +600,7 @@ public final class NullComponent
      * Enumerates the possible orientations of a {@code NullComponent}.
      */
     @Immutable
-    private static final class Orientation
+    public static final class Orientation
         extends ComponentOrientation
     {
         // ======================================================================
@@ -611,7 +611,7 @@ public final class NullComponent
         private static final long serialVersionUID = -6305741270318957331L;
 
         /** The default orientation. */
-        static final Orientation DEFAULT = new Orientation( "default", 0 ); //$NON-NLS-1$
+        public static final Orientation DEFAULT = new Orientation( "default", 0 ); //$NON-NLS-1$
 
 
         // ======================================================================
