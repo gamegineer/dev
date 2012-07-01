@@ -42,7 +42,7 @@ import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
-import org.gamegineer.table.core.TableEvent;
+import org.gamegineer.table.core.TableRootComponentChangedEvent;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ITable}.
@@ -253,12 +253,23 @@ final class Table
 
     /**
      * Fires a root component changed event.
+     * 
+     * @param oldRootComponent
+     *        The old root component; must not be {@code null}.
+     * @param newRootComponent
+     *        The new root component; must not be {@code null}.
      */
-    private void fireRootComponentChanged()
+    private void fireRootComponentChanged(
+        /* @NonNull */
+        final IComponent oldRootComponent,
+        /* @NonNull */
+        final IComponent newRootComponent )
     {
+        assert oldRootComponent != null;
+        assert newRootComponent != null;
         assert !getLock().isHeldByCurrentThread();
 
-        final TableEvent event = new TableEvent( this );
+        final TableRootComponentChangedEvent event = new TableRootComponentChangedEvent( this, oldRootComponent, newRootComponent );
         for( final ITableListener listener : listeners_ )
         {
             try
@@ -625,6 +636,7 @@ final class Table
     {
         assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
 
+        final NullComponent oldRootComponent, newRootComponent;
         getLock().lock();
         try
         {
@@ -632,9 +644,9 @@ final class Table
             assertArgumentLegal( component.getTableEnvironment() == tableEnvironment_, "component", NonNlsMessages.Table_setRootComponent_component_createdByDifferentTable ); //$NON-NLS-1$
 
             // FIXME: should not be restricted to null components
-            final NullComponent oldRootComponent = (NullComponent)rootComponent_;
+            oldRootComponent = (NullComponent)rootComponent_;
             oldRootComponent.setTable( null );
-            final NullComponent newRootComponent = (NullComponent)component;
+            newRootComponent = (NullComponent)component;
             rootComponent_ = newRootComponent;
             newRootComponent.setTable( this );
         }
@@ -649,7 +661,7 @@ final class Table
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                fireRootComponentChanged();
+                fireRootComponentChanged( oldRootComponent, newRootComponent );
             }
         } );
     }

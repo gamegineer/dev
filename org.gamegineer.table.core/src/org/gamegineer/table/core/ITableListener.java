@@ -75,5 +75,5 @@ public interface ITableListener
      */
     public void rootComponentChanged(
         /* @NonNull */
-        TableEvent event );
+        TableRootComponentChangedEvent event );
 }

@@ -48,7 +48,7 @@ import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableContentChangedEvent;
 import org.gamegineer.table.core.TableEnvironmentFactory;
-import org.gamegineer.table.core.TableEvent;
+import org.gamegineer.table.core.TableRootComponentChangedEvent;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.ITableNetwork;
@@ -940,11 +940,11 @@ public final class TableModel
         }
 
         /*
-         * @see org.gamegineer.table.core.TableListener#rootComponentChanged(org.gamegineer.table.core.TableEvent)
+         * @see org.gamegineer.table.core.TableListener#rootComponentChanged(org.gamegineer.table.core.TableRootComponentChangedEvent)
          */
         @Override
         public void rootComponentChanged(
-            final TableEvent event )
+            final TableRootComponentChangedEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 

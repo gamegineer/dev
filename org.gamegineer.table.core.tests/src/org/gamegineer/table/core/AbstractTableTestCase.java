@@ -742,10 +742,10 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     public void testRootComponentChanged_CatchesListenerException()
     {
         final ITableListener listener1 = mocksControl_.createMock( ITableListener.class );
-        listener1.rootComponentChanged( EasyMock.notNull( TableEvent.class ) );
+        listener1.rootComponentChanged( EasyMock.notNull( TableRootComponentChangedEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final ITableListener listener2 = mocksControl_.createMock( ITableListener.class );
-        listener2.rootComponentChanged( EasyMock.notNull( TableEvent.class ) );
+        listener2.rootComponentChanged( EasyMock.notNull( TableRootComponentChangedEvent.class ) );
         mocksControl_.replay();
         table_.addTableListener( listener1 );
         table_.addTableListener( listener2 );
@@ -801,7 +801,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     public void testSetRootComponent_FiresRootComponentChangedEvent()
     {
         final ITableListener listener = mocksControl_.createMock( ITableListener.class );
-        final Capture<TableEvent> eventCapture = new Capture<TableEvent>();
+        final Capture<TableRootComponentChangedEvent> eventCapture = new Capture<TableRootComponentChangedEvent>();
         listener.rootComponentChanged( EasyMock.capture( eventCapture ) );
         mocksControl_.replay();
         table_.addTableListener( listener );

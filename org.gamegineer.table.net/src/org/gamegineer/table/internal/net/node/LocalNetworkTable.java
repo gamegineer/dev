@@ -44,7 +44,7 @@ import org.gamegineer.table.core.IContainerListener;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
-import org.gamegineer.table.core.TableEvent;
+import org.gamegineer.table.core.TableRootComponentChangedEvent;
 import org.gamegineer.table.internal.net.Loggers;
 
 /**
@@ -932,12 +932,12 @@ final class LocalNetworkTable
         }
 
         /*
-         * @see org.gamegineer.table.core.ITableListener#rootComponentChanged(org.gamegineer.table.core.TableEvent)
+         * @see org.gamegineer.table.core.ITableListener#rootComponentChanged(org.gamegineer.table.core.TableRootComponentChangedEvent)
          */
         @Override
         @SuppressWarnings( "synthetic-access" )
         public void rootComponentChanged(
-            final TableEvent event )
+            final TableRootComponentChangedEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
             assert nodeLayer_.isNodeLayerThread();
@@ -1023,12 +1023,12 @@ final class LocalNetworkTable
         }
 
         /*
-         * @see org.gamegineer.table.core.ITableListener#rootComponentChanged(org.gamegineer.table.core.TableEvent)
+         * @see org.gamegineer.table.core.ITableListener#rootComponentChanged(org.gamegineer.table.core.TableRootComponentChangedEvent)
          */
         @Override
         @SuppressWarnings( "synthetic-access" )
         public void rootComponentChanged(
-            final TableEvent event )
+            final TableRootComponentChangedEvent event )
         {
             syncExec( new Runnable()
             {

@@ -74,7 +74,7 @@ import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
-import org.gamegineer.table.core.TableEvent;
+import org.gamegineer.table.core.TableRootComponentChangedEvent;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.BundleImages;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
@@ -2129,11 +2129,11 @@ final class TableView
         }
 
         /*
-         * @see org.gamegineer.table.core.TableListener#rootComponentChanged(org.gamegineer.table.core.TableEvent)
+         * @see org.gamegineer.table.core.TableListener#rootComponentChanged(org.gamegineer.table.core.TableRootComponentChangedEvent)
          */
         @Override
         public void rootComponentChanged(
-            final TableEvent event )
+            final TableRootComponentChangedEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
