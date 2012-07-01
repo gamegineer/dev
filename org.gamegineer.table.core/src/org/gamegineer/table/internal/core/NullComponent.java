@@ -29,6 +29,8 @@ import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
@@ -61,11 +63,28 @@ public final class NullComponent
     /** The default component surface design. */
     private static final ComponentSurfaceDesign DEFAULT_SURFACE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.NullComponent.DEFAULT_SURFACE_DESIGN" ), 0, 0 ); //$NON-NLS-1$
 
+    /** The name of the memento attribute that stores the component location. */
+    private static final String LOCATION_MEMENTO_ATTRIBUTE_NAME = "location"; //$NON-NLS-1$
+
     /** The collection of supported component orientations. */
     private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( Orientation.values( Orientation.class ) ) );
 
+    /**
+     * The name of the memento attribute that stores the component surface
+     * design.
+     */
+    private static final String SURFACE_DESIGN_MEMENTO_ATTRIBUTE_NAME = "surfaceDesign"; //$NON-NLS-1$
+
     /** The collection of component listeners. */
     private final CopyOnWriteArrayList<IComponentListener> listeners_;
+
+    /** The component location in table coordinates. */
+    @GuardedBy( "getLock()" )
+    private final Point location_;
+
+    /** The component surface design. */
+    @GuardedBy( "getLock()" )
+    private ComponentSurfaceDesign surfaceDesign_;
 
     /**
      * The table that contains this component or {@code null} if this component
@@ -96,6 +115,8 @@ public final class NullComponent
         assert tableEnvironment != null;
 
         listeners_ = new CopyOnWriteArrayList<IComponentListener>();
+        location_ = new Point( 0, 0 );
+        surfaceDesign_ = DEFAULT_SURFACE_DESIGN;
         table_ = null;
         tableEnvironment_ = tableEnvironment;
     }
@@ -122,13 +143,25 @@ public final class NullComponent
     @Override
     public Object createMemento()
     {
-        return Collections.emptyMap();
+        final Map<String, Object> memento = new HashMap<String, Object>();
+
+        getLock().lock();
+        try
+        {
+            memento.put( LOCATION_MEMENTO_ATTRIBUTE_NAME, new Point( location_ ) );
+            memento.put( SURFACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, surfaceDesign_ );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+
+        return Collections.unmodifiableMap( memento );
     }
 
     /**
      * Fires a component bounds changed event.
      */
-    @SuppressWarnings( "unused" )
     private void fireComponentBoundsChanged()
     {
         assert !getLock().isHeldByCurrentThread();
@@ -150,7 +183,6 @@ public final class NullComponent
     /**
      * Fires a component orientation changed event.
      */
-    @SuppressWarnings( "unused" )
     private void fireComponentOrientationChanged()
     {
         assert !getLock().isHeldByCurrentThread();
@@ -172,7 +204,6 @@ public final class NullComponent
     /**
      * Fires a component surface design changed event.
      */
-    @SuppressWarnings( "unused" )
     private void fireComponentSurfaceDesignChanged()
     {
         assert !getLock().isHeldByCurrentThread();
@@ -219,7 +250,15 @@ public final class NullComponent
         assert tableEnvironment != null;
         assert memento != null;
 
-        return new NullComponent( tableEnvironment );
+        final NullComponent component = new NullComponent( tableEnvironment );
+
+        final Point location = MementoUtils.getAttribute( memento, LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
+        component.setLocation( location );
+
+        final ComponentSurfaceDesign surfaceDesign = MementoUtils.getAttribute( memento, SURFACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ComponentSurfaceDesign.class );
+        component.setSurfaceDesign( Orientation.DEFAULT, surfaceDesign );
+
+        return component;
     }
 
     /*
@@ -228,7 +267,15 @@ public final class NullComponent
     @Override
     public Rectangle getBounds()
     {
-        return new Rectangle();
+        getLock().lock();
+        try
+        {
+            return new Rectangle( location_, getSize() );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
     }
 
     /*
@@ -246,7 +293,15 @@ public final class NullComponent
     @Override
     public Point getLocation()
     {
-        return new Point();
+        getLock().lock();
+        try
+        {
+            return new Point( location_ );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
     }
 
     /**
@@ -306,7 +361,15 @@ public final class NullComponent
     @Override
     public Dimension getSize()
     {
-        return new Dimension();
+        getLock().lock();
+        try
+        {
+            return surfaceDesign_.getSize();
+        }
+        finally
+        {
+            getLock().unlock();
+        }
     }
 
     /*
@@ -328,12 +391,20 @@ public final class NullComponent
         assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
         assertArgumentLegal( orientation instanceof Orientation, "orientation", NonNlsMessages.NullComponent_orientation_illegal ); //$NON-NLS-1$
 
-        if( orientation == Orientation.DEFAULT )
+        getLock().lock();
+        try
         {
-            return DEFAULT_SURFACE_DESIGN;
-        }
+            if( orientation == Orientation.DEFAULT )
+            {
+                return surfaceDesign_;
+            }
 
-        throw new AssertionError( "unknown null component orientation" ); //$NON-NLS-1$
+            throw new AssertionError( "unknown null component orientation" ); //$NON-NLS-1$
+        }
+        finally
+        {
+            getLock().unlock();
+        }
     }
 
     /*
@@ -381,6 +452,26 @@ public final class NullComponent
         final Point location )
     {
         assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
+
+        getLock().lock();
+        try
+        {
+            location_.setLocation( location );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+
+        tableEnvironment_.addEventNotification( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                fireComponentBoundsChanged();
+            }
+        } );
     }
 
     /*
@@ -389,8 +480,22 @@ public final class NullComponent
     @Override
     public void setMemento(
         final Object memento )
+        throws MementoException
     {
         assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
+
+        getLock().lock();
+        try
+        {
+            final NullComponent component = fromMemento( tableEnvironment_, memento );
+
+            setLocation( component.getLocation() );
+            setSurfaceDesign( Orientation.DEFAULT, component.getSurfaceDesign( Orientation.DEFAULT ) );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
     }
 
     /*
@@ -402,6 +507,16 @@ public final class NullComponent
     {
         assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
         assertArgumentLegal( orientation instanceof Orientation, "orientation", NonNlsMessages.NullComponent_orientation_illegal ); //$NON-NLS-1$
+
+        tableEnvironment_.addEventNotification( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                fireComponentOrientationChanged();
+            }
+        } );
     }
 
     /*
@@ -411,7 +526,7 @@ public final class NullComponent
     public void setOrigin(
         final Point origin )
     {
-        assertArgumentNotNull( origin, "origin" ); //$NON-NLS-1$
+        setLocation( origin );
     }
 
     /*
@@ -425,6 +540,33 @@ public final class NullComponent
         assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
         assertArgumentLegal( orientation instanceof Orientation, "orientation", NonNlsMessages.NullComponent_orientation_illegal ); //$NON-NLS-1$
         assertArgumentNotNull( surfaceDesign, "surfaceDesign" ); //$NON-NLS-1$
+
+        getLock().lock();
+        try
+        {
+            if( orientation == Orientation.DEFAULT )
+            {
+                surfaceDesign_ = surfaceDesign;
+            }
+            else
+            {
+                throw new AssertionError( "unknown null component orientation" ); //$NON-NLS-1$
+            }
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+
+        tableEnvironment_.addEventNotification( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                fireComponentSurfaceDesignChanged();
+            }
+        } );
     }
 
     /**
