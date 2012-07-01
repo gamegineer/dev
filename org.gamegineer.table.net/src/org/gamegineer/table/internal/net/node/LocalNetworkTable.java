@@ -140,9 +140,14 @@ final class LocalNetworkTable
 
         if( component instanceof IContainer )
         {
-            ((IContainer)component).addContainerListener( containerListener_ );
+            final IContainer container = (IContainer)component;
 
-            // TODO: need to add listeners for children
+            container.addContainerListener( containerListener_ );
+
+            for( final IComponent childComponent : container.getComponents() )
+            {
+                addComponentListeners( childComponent );
+            }
         }
     }
 
@@ -215,12 +220,6 @@ final class LocalNetworkTable
             for( final ICardPile cardPile : table_.getCardPiles() )
             {
                 addComponentListeners( cardPile );
-
-                // TODO: should only have to call addComponentListeners on card pile
-                for( final IComponent component : cardPile.getComponents() )
-                {
-                    addComponentListeners( component );
-                }
             }
 
             addComponentListeners( table_.getRootComponent() );
@@ -247,9 +246,14 @@ final class LocalNetworkTable
 
         if( component instanceof IContainer )
         {
-            ((IContainer)component).removeContainerListener( containerListener_ );
+            final IContainer container = (IContainer)component;
 
-            // TODO: need to remove listeners for children
+            container.removeContainerListener( containerListener_ );
+
+            for( final IComponent childComponent : container.getComponents() )
+            {
+                removeComponentListeners( childComponent );
+            }
         }
     }
 
@@ -313,12 +317,6 @@ final class LocalNetworkTable
             for( final ICardPile cardPile : table_.getCardPiles() )
             {
                 removeComponentListeners( cardPile );
-
-                // TODO: should only have to call removeComponentListeners on card pile
-                for( final IComponent component : cardPile.getComponents() )
-                {
-                    removeComponentListeners( component );
-                }
             }
 
             removeComponentListeners( table_.getRootComponent() );
@@ -877,14 +875,7 @@ final class LocalNetworkTable
             getTableEnvironmentLock().lock();
             try
             {
-                final ICardPile cardPile = event.getCardPile();
-                addComponentListeners( cardPile );
-
-                // TODO: should only have to call addComponentListeners on card pile
-                for( final IComponent component : cardPile.getComponents() )
-                {
-                    addComponentListeners( component );
-                }
+                addComponentListeners( event.getCardPile() );
             }
             finally
             {
@@ -918,14 +909,7 @@ final class LocalNetworkTable
             getTableEnvironmentLock().lock();
             try
             {
-                final ICardPile cardPile = event.getCardPile();
-                // TODO: should only have to call removeComponentListeners on card pile
-                for( final IComponent component : cardPile.getComponents() )
-                {
-                    removeComponentListeners( component );
-                }
-
-                removeComponentListeners( cardPile );
+                removeComponentListeners( event.getCardPile() );
             }
             finally
             {
