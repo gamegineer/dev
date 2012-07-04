@@ -92,3 +92,4 @@ deserializes
 editable
 enqueuing
 unpublishes
+tabletops
