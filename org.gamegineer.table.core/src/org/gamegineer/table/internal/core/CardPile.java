@@ -1134,20 +1134,14 @@ final class CardPile
      *        The table that contains this card pile or {@code null} if this
      *        card pile is not contained in a table.
      */
+    @GuardedBy( "getLock()" )
     void setTable(
         /* @Nullable */
         final Table table )
     {
-        // TODO: remove lock and replace with @GuardedBy
-        getLock().lock();
-        try
-        {
-            table_ = table;
-        }
-        finally
-        {
-            getLock().unlock();
-        }
+        assert getLock().isHeldByCurrentThread();
+
+        table_ = table;
     }
 
     /*
