@@ -848,7 +848,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * Ensures the {@code removeComponents(Point)} method changes the container
      * bounds when a component is present at the specified location.
      */
-    @Test
+    @Test( timeout = 1000 )
     public void testRemoveComponentsFromPoint_Location_ComponentPresent_ChangesContainerBounds()
     {
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
