@@ -222,8 +222,7 @@ final class Tabletop
 
         if( !addedComponents.isEmpty() || containerBoundsChanged )
         {
-            // TODO: replace with addEventNotification method in base class
-            getTableEnvironment().addEventNotification( new Runnable()
+            addEventNotification( new Runnable()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
@@ -842,7 +841,7 @@ final class Tabletop
 
         if( !removedComponents.isEmpty() || containerBoundsChanged )
         {
-            getTableEnvironment().addEventNotification( new Runnable()
+            addEventNotification( new Runnable()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
@@ -914,7 +913,7 @@ final class Tabletop
             getLock().unlock();
         }
 
-        getTableEnvironment().addEventNotification( new Runnable()
+        addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -988,7 +987,7 @@ final class Tabletop
         assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
         assertArgumentLegal( orientation instanceof TabletopOrientation, "orientation", NonNlsMessages.Tabletop_orientation_illegal ); //$NON-NLS-1$
 
-        getTableEnvironment().addEventNotification( new Runnable()
+        addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -1038,7 +1037,7 @@ final class Tabletop
             getLock().unlock();
         }
 
-        getTableEnvironment().addEventNotification( new Runnable()
+        addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -1132,7 +1131,7 @@ final class Tabletop
             getLock().unlock();
         }
 
-        getTableEnvironment().addEventNotification( new Runnable()
+        addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )

@@ -76,6 +76,20 @@ abstract class Component
     // ======================================================================
 
     /**
+     * Adds an event notification to the table environment associated with the
+     * component.
+     * 
+     * @param notification
+     *        The event notification; must not be {@code null}.
+     */
+    final void addEventNotification(
+        /* @NonNull */
+        final Runnable notification )
+    {
+        tableEnvironment_.addEventNotification( notification );
+    }
+
+    /**
      * Creates a new component from the specified memento.
      * 
      * @param tableEnvironment

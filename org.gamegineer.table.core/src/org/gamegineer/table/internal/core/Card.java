@@ -494,7 +494,7 @@ final class Card
             getLock().unlock();
         }
 
-        getTableEnvironment().addEventNotification( new Runnable()
+        addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -551,7 +551,7 @@ final class Card
             getLock().unlock();
         }
 
-        getTableEnvironment().addEventNotification( new Runnable()
+        addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -605,8 +605,7 @@ final class Card
             getLock().unlock();
         }
 
-        // TODO: replace with addEventNotification method in base class
-        getTableEnvironment().addEventNotification( new Runnable()
+        addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
