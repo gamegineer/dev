@@ -101,14 +101,4 @@ public abstract class AbstractTableListenerTestCase
     {
         listener_.cardPileRemoved( null );
     }
-
-    /**
-     * Ensures the {@code rootComponentChanged} method throws an exception when
-     * passed a {@code null} event.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRootComponentChanged_Event_Null()
-    {
-        listener_.rootComponentChanged( null );
-    }
 }

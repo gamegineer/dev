@@ -110,4 +110,38 @@ final class MementoUtils
 
         return value;
     }
+
+    /**
+     * Indicates the specified memento contains an attribute with the specified
+     * name.
+     * 
+     * @param memento
+     *        The memento; must not be {@code null}.
+     * @param name
+     *        The attribute name; must not be {@code null}.
+     * 
+     * @return {@code true} if the memento contains an attribute with the
+     *         specified name; otherwise {@code false}.
+     * 
+     * @throws org.gamegineer.common.core.util.memento.MementoException
+     *         If the memento is not of type {@code Map}.     */
+    static boolean hasAttribute(
+        /* @NonNull */
+        final Object memento,
+        /* @NonNull */
+        final String name )
+        throws MementoException
+    {
+        assert memento != null;
+        assert name != null;
+
+        if( !(memento instanceof Map<?, ?>) )
+        {
+            throw new MementoException( NonNlsMessages.MementoUtils_memento_wrongType );
+        }
+
+        @SuppressWarnings( "unchecked" )
+        final Map<String, Object> attributes = (Map<String, Object>)memento;
+        return attributes.containsKey( name );
+    }
 }

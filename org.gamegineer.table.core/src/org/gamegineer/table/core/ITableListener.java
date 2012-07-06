@@ -63,17 +63,4 @@ public interface ITableListener
     public void cardPileRemoved(
         /* @NonNull */
         TableContentChangedEvent event );
-
-    /**
-     * Invoked after the root component for the table has changed.
-     * 
-     * @param event
-     *        The event describing the table; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
-     */
-    public void rootComponentChanged(
-        /* @NonNull */
-        TableRootComponentChangedEvent event );
 }

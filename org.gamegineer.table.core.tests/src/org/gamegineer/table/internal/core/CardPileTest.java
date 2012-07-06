@@ -25,7 +25,6 @@ import static org.junit.Assert.assertEquals;
 import org.gamegineer.table.core.Cards;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ICardPile;
-import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableEnvironment;
 import org.gamegineer.table.core.TableEnvironmentFactory;
@@ -72,9 +71,9 @@ public final class CardPileTest
      * @return A new component; never {@code null}.
      */
     /* @NonNull */
-    private IComponent createUniqueComponent()
+    private Component createUniqueComponent()
     {
-        return Cards.createUniqueCard( tableEnvironment_ );
+        return (Component)Cards.createUniqueCard( tableEnvironment_ ); // FIXME: remove cast
     }
 
     /**
@@ -116,7 +115,7 @@ public final class CardPileTest
     @Test
     public void testGetComponentIndex_Component_Present()
     {
-        final IComponent component = createUniqueComponent();
+        final Component component = createUniqueComponent();
         cardPile_.addComponent( createUniqueComponent() );
         cardPile_.addComponent( component );
         cardPile_.addComponent( createUniqueComponent() );

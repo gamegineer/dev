@@ -158,18 +158,6 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
-     * Creates a new null component with unique attributes using the fixture
-     * table environment.
-     * 
-     * @return A new null component; never {@code null}.
-     */
-    /* @NonNull */
-    private IComponent createUniqueNullComponent()
-    {
-        return tableEnvironment_.createNullComponent();
-    }
-
-    /**
      * Fires a card pile added event for the specified table.
      * 
      * @param table
@@ -195,19 +183,6 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
         /* @NonNull */
         TableType table );
 
-    /**
-     * Fires a root component changed event for the specified table.
-     * 
-     * @param table
-     *        The table; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code table} is {@code null}.
-     */
-    protected abstract void fireRootComponentChanged(
-        /* @NonNull */
-        TableType table );
-
     /*
      * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#initializeMementoOriginator(org.gamegineer.common.core.util.memento.IMementoOriginator)
      */
@@ -221,7 +196,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
         cardPile1.addComponent( Cards.createUniqueCard( table.getTableEnvironment() ) );
         table.addCardPile( cardPile1 );
 
-        table.setRootComponent( table.getTableEnvironment().createNullComponent() ); // FIXME: should not be restricted to null components
+        table.getTabletop().addComponent( Cards.createUniqueCard( table.getTableEnvironment() ) );
     }
 
     /*
@@ -552,15 +527,6 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
-     * Ensures the {@code getRootComponent} method does not return {@code null}.
-     */
-    @Test
-    public void testGetRootComponent_ReturnValue_NonNull()
-    {
-        assertNotNull( table_.getRootComponent() );
-    }
-
-    /**
      * Ensures the {@code getTableEnvironment} method does not return
      * {@code null}.
      */
@@ -568,6 +534,15 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     public void testGetTableEnvironment_ReturnValue_NonNull()
     {
         assertNotNull( table_.getTableEnvironment() );
+    }
+
+    /**
+     * Ensures the {@code getTabletop} method does not return {@code null}.
+     */
+    @Test
+    public void testGetTabletop_ReturnValue_NonNull()
+    {
+        assertNotNull( table_.getTabletop() );
     }
 
     /**
@@ -732,96 +707,5 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
         table_.addCardPile( createUniqueCardPile() );
 
         mocksControl_.verify();
-    }
-
-    /**
-     * Ensures the root component changed event catches any exception thrown by
-     * the {@code rootComponentChanged} method of a table listener.
-     */
-    @Test
-    public void testRootComponentChanged_CatchesListenerException()
-    {
-        final ITableListener listener1 = mocksControl_.createMock( ITableListener.class );
-        listener1.rootComponentChanged( EasyMock.notNull( TableRootComponentChangedEvent.class ) );
-        EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        final ITableListener listener2 = mocksControl_.createMock( ITableListener.class );
-        listener2.rootComponentChanged( EasyMock.notNull( TableRootComponentChangedEvent.class ) );
-        mocksControl_.replay();
-        table_.addTableListener( listener1 );
-        table_.addTableListener( listener2 );
-
-        fireRootComponentChanged( table_ );
-
-        mocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code setRootComponent} method throws an exception when
-     * passed an illegal component that was created by a different table
-     * environment.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testSetRootComponent_Component_Illegal_CreatedByDifferentTableEnvironment()
-    {
-        final TableEnvironmentType otherTableEnvironment = createTableEnvironment();
-        final IComponent otherComponent = otherTableEnvironment.createNullComponent(); // FIXME: should not be restricted to null components
-
-        table_.setRootComponent( otherComponent );
-    }
-
-    /**
-     * Ensures the {@code setRootComponent} method throws an exception when
-     * passed an illegal component that is already contained in a container.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testSetRootComponent_Component_Illegal_Owned()
-    {
-        final ITable otherTable = table_.getTableEnvironment().createTable();
-        final IComponent otherComponent = createUniqueNullComponent(); // FIXME: should not be restricted to null components
-        otherTable.setRootComponent( otherComponent );
-
-        table_.setRootComponent( otherComponent );
-    }
-
-    /**
-     * Ensures the {@code setRootComponent} method throws an exception when
-     * passed a {@code null} component.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetRootComponent_Component_Null()
-    {
-        table_.setRootComponent( null );
-    }
-
-    /**
-     * Ensures the {@code setRootComponent} method fires a root component
-     * changed event.
-     */
-    @Test
-    public void testSetRootComponent_FiresRootComponentChangedEvent()
-    {
-        final ITableListener listener = mocksControl_.createMock( ITableListener.class );
-        final Capture<TableRootComponentChangedEvent> eventCapture = new Capture<TableRootComponentChangedEvent>();
-        listener.rootComponentChanged( EasyMock.capture( eventCapture ) );
-        mocksControl_.replay();
-        table_.addTableListener( listener );
-
-        table_.setRootComponent( createUniqueNullComponent() ); // FIXME: should not be restricted to null components
-
-        mocksControl_.verify();
-        assertSame( table_, eventCapture.getValue().getTable() );
-    }
-
-    /**
-     * Ensures the {@code setRootComponent} method sets the root component.
-     */
-    @Test
-    public void testSetRootComponent_SetsRootComponent()
-    {
-        final IComponent component = createUniqueNullComponent(); // FIXME: should not be restricted to null components
-
-        table_.setRootComponent( component );
-
-        assertEquals( component, table_.getRootComponent() );
     }
 }

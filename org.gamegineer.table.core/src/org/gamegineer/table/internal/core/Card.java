@@ -32,7 +32,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
@@ -45,15 +44,14 @@ import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.IComponentListener;
-import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.core.ITableEnvironment;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ICard}.
  */
 @ThreadSafe
 final class Card
+    extends Component
     implements ICard
 {
     // ======================================================================
@@ -88,13 +86,6 @@ final class Card
     @GuardedBy( "getLock()" )
     private ComponentSurfaceDesign backDesign_;
 
-    /**
-     * The card pile that contains this card or {@code null} if this card is not
-     * contained in a card pile.
-     */
-    @GuardedBy( "getLock()" )
-    private CardPile cardPile_;
-
     /** The design on the face of the card. */
     @GuardedBy( "getLock()" )
     private ComponentSurfaceDesign faceDesign_;
@@ -109,9 +100,6 @@ final class Card
     /** The card orientation. */
     @GuardedBy( "getLock()" )
     private CardOrientation orientation_;
-
-    /** The table environment associated with the card. */
-    private final TableEnvironment tableEnvironment_;
 
 
     // ======================================================================
@@ -129,15 +117,13 @@ final class Card
         /* @NonNull */
         final TableEnvironment tableEnvironment )
     {
-        assert tableEnvironment != null;
+        super( tableEnvironment );
 
         backDesign_ = DEFAULT_SURFACE_DESIGN;
-        cardPile_ = null;
         faceDesign_ = DEFAULT_SURFACE_DESIGN;
         listeners_ = new CopyOnWriteArrayList<IComponentListener>();
         location_ = new Point( 0, 0 );
         orientation_ = CardOrientation.FACE;
-        tableEnvironment_ = tableEnvironment;
     }
 
 
@@ -305,23 +291,6 @@ final class Card
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponent#getContainer()
-     */
-    @Override
-    public IContainer getContainer()
-    {
-        getLock().lock();
-        try
-        {
-            return cardPile_;
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-    }
-
-    /*
      * @see org.gamegineer.table.core.IComponent#getLocation()
      */
     @Override
@@ -336,17 +305,6 @@ final class Card
         {
             getLock().unlock();
         }
-    }
-
-    /**
-     * Gets the table environment lock.
-     * 
-     * @return The table environment lock; never {@code null}.
-     */
-    /* @NonNull */
-    private ReentrantLock getLock()
-    {
-        return tableEnvironment_.getLock();
     }
 
     /*
@@ -384,18 +342,19 @@ final class Card
         getLock().lock();
         try
         {
-            if( cardPile_ == null )
+            final Container container = getContainer();
+            if( container == null )
             {
                 return null;
             }
 
-            final ComponentPath parentPath = cardPile_.getPath();
+            final ComponentPath parentPath = container.getPath();
             if( parentPath == null )
             {
                 return null;
             }
 
-            return new ComponentPath( parentPath, cardPile_.getComponentIndex( this ) );
+            return new ComponentPath( parentPath, container.getComponentIndex( this ) );
         }
         finally
         {
@@ -476,24 +435,33 @@ final class Card
     @Override
     public ITable getTable()
     {
-        getLock().lock();
-        try
-        {
-            return (cardPile_ != null) ? cardPile_.getTable() : null;
-        }
-        finally
-        {
-            getLock().unlock();
-        }
+        final Container container = getContainer();
+        return (container != null) ? container.getTable() : null;
     }
 
-    /*
-     * @see org.gamegineer.table.core.IComponent#getTableEnvironment()
+    /**
+     * Indicates the specified memento is a {@code Card} memento.
+     * 
+     * @param memento
+     *        The memento; must not be {@code null}.
+     * 
+     * @return {@code true} if the specified memento is a {@code Card} memento;
+     *         otherwise {@code false}.
+     * 
+     * @throws org.gamegineer.common.core.util.memento.MementoException
+     *         If {@code memento} is malformed.
      */
-    @Override
-    public ITableEnvironment getTableEnvironment()
+    static boolean isMemento(
+        /* @NonNull */
+        final Object memento )
+        throws MementoException
     {
-        return tableEnvironment_;
+        assert memento != null;
+
+        return MementoUtils.hasAttribute( memento, BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME ) //
+            && MementoUtils.hasAttribute( memento, FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME ) //
+            && MementoUtils.hasAttribute( memento, LOCATION_MEMENTO_ATTRIBUTE_NAME ) //
+            && MementoUtils.hasAttribute( memento, ORIENTATION_MEMENTO_ATTRIBUTE_NAME );
     }
 
     /*
@@ -505,28 +473,6 @@ final class Card
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.Card_removeComponentListener_listener_notRegistered ); //$NON-NLS-1$
-    }
-
-    /**
-     * Sets the card pile that contains this card.
-     * 
-     * @param cardPile
-     *        The card pile that contains this card or {@code null} if this card
-     *        is not contained in a card pile.
-     */
-    void setCardPile(
-        /* @Nullable */
-        final CardPile cardPile )
-    {
-        getLock().lock();
-        try
-        {
-            cardPile_ = cardPile;
-        }
-        finally
-        {
-            getLock().unlock();
-        }
     }
 
     /*
@@ -548,7 +494,7 @@ final class Card
             getLock().unlock();
         }
 
-        tableEnvironment_.addEventNotification( new Runnable()
+        getTableEnvironment().addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -572,7 +518,7 @@ final class Card
         getLock().lock();
         try
         {
-            final Card card = fromMemento( tableEnvironment_, memento );
+            final Card card = fromMemento( getTableEnvironment(), memento );
 
             setSurfaceDesign( CardOrientation.BACK, card.getSurfaceDesign( CardOrientation.BACK ) );
             setSurfaceDesign( CardOrientation.FACE, card.getSurfaceDesign( CardOrientation.FACE ) );
@@ -605,7 +551,7 @@ final class Card
             getLock().unlock();
         }
 
-        tableEnvironment_.addEventNotification( new Runnable()
+        getTableEnvironment().addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -659,7 +605,8 @@ final class Card
             getLock().unlock();
         }
 
-        tableEnvironment_.addEventNotification( new Runnable()
+        // TODO: replace with addEventNotification method in base class
+        getTableEnvironment().addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )

@@ -27,7 +27,6 @@ import java.util.concurrent.locks.ReentrantLock;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
-import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableEnvironment;
 
@@ -148,15 +147,6 @@ public final class TableEnvironment
     public ICardPile createCardPile()
     {
         return new CardPile( this );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ITableEnvironment#createNullComponent()
-     */
-    @Override
-    public IComponent createNullComponent()
-    {
-        return new NullComponent( this );
     }
 
     /*

@@ -1,5 +1,5 @@
 /*
- * NullComponentOrientationPersistenceDelegateAsPersistenceDelegateTest.java
+ * TabletopOrientationPersistenceDelegateAsPersistenceDelegateTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -24,16 +24,16 @@ package org.gamegineer.table.internal.persistence.serializable;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
-import org.gamegineer.table.internal.core.NullComponent;
+import org.gamegineer.table.core.TabletopOrientation;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.persistence.serializable.NullComponentOrientationPersistenceDelegate}
+ * {@link org.gamegineer.table.internal.persistence.serializable.TabletopOrientationPersistenceDelegate}
  * class to ensure it does not violate the contract of the
  * {@link org.gamegineer.common.persistence.serializable.IPersistenceDelegate}
  * interface.
  */
-public final class NullComponentOrientationPersistenceDelegateAsPersistenceDelegateTest
+public final class TabletopOrientationPersistenceDelegateAsPersistenceDelegateTest
     extends AbstractPersistenceDelegateTestCase
 {
     // ======================================================================
@@ -42,10 +42,10 @@ public final class NullComponentOrientationPersistenceDelegateAsPersistenceDeleg
 
     /**
      * Initializes a new instance of the
-     * {@code NullComponentOrientationPersistenceDelegateAsPersistenceDelegateTest}
+     * {@code TabletopOrientationPersistenceDelegateAsPersistenceDelegateTest}
      * class.
      */
-    public NullComponentOrientationPersistenceDelegateAsPersistenceDelegateTest()
+    public TabletopOrientationPersistenceDelegateAsPersistenceDelegateTest()
     {
     }
 
@@ -60,7 +60,7 @@ public final class NullComponentOrientationPersistenceDelegateAsPersistenceDeleg
     @Override
     protected IPersistenceDelegate createPersistenceDelegate()
     {
-        return new NullComponentOrientationPersistenceDelegate();
+        return new TabletopOrientationPersistenceDelegate();
     }
 
     /*
@@ -69,7 +69,7 @@ public final class NullComponentOrientationPersistenceDelegateAsPersistenceDeleg
     @Override
     protected Object createSubject()
     {
-        return NullComponent.Orientation.DEFAULT;
+        return TabletopOrientation.DEFAULT;
     }
 
     /*
@@ -79,6 +79,6 @@ public final class NullComponentOrientationPersistenceDelegateAsPersistenceDeleg
     protected void registerPersistenceDelegates(
         final IPersistenceDelegateRegistry persistenceDelegateRegistry )
     {
-        persistenceDelegateRegistry.registerPersistenceDelegate( NullComponent.Orientation.class, new NullComponentOrientationPersistenceDelegate() );
+        persistenceDelegateRegistry.registerPersistenceDelegate( TabletopOrientation.class, new TabletopOrientationPersistenceDelegate() );
     }
 }

@@ -1,5 +1,5 @@
 /*
- * NullComponentOrientationPersistenceDelegate.java
+ * TabletopLayouts.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,30 +16,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jun 30, 2012 at 9:25:04 PM.
+ * Created on Jul 4, 2012 at 7:49:48 PM.
  */
 
-package org.gamegineer.table.internal.persistence.serializable;
+package org.gamegineer.table.core;
 
-import net.jcip.annotations.Immutable;
-import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
+import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.internal.core.AbsoluteContainerLayout;
 
 /**
- * A persistence delegate for the {@code NullComponent.Orientation} class.
+ * A collection of layouts for tabletops.
  */
-@Immutable
-public final class NullComponentOrientationPersistenceDelegate
-    extends AbstractPersistenceDelegate
+@ThreadSafe
+public final class TabletopLayouts
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /**
+     * Indicates the tabletop is laid out with all components at their absolute
+     * position in table coordinates.
+     */
+    public static final IContainerLayout ABSOLUTE = new AbsoluteContainerLayout();
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code NullComponentOrientationPersistenceDelegate} class.
+     * Initializes a new instance of the {@code TabletopLayouts} class.
      */
-    public NullComponentOrientationPersistenceDelegate()
+    private TabletopLayouts()
     {
     }
 }

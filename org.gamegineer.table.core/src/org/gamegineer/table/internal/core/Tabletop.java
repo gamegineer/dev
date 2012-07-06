@@ -1,5 +1,5 @@
 /*
- * CardPile.java
+ * Tabletop.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 14, 2010 at 11:11:09 PM.
+ * Created on Jun 28, 2012 at 8:07:30 PM.
  */
 
 package org.gamegineer.table.internal.core;
@@ -39,8 +39,6 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
-import org.gamegineer.table.core.CardPileLayouts;
-import org.gamegineer.table.core.CardPileOrientation;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentPath;
@@ -48,76 +46,76 @@ import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ContainerEvent;
-import org.gamegineer.table.core.ICard;
-import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.core.IContainerListener;
 import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.TabletopLayouts;
+import org.gamegineer.table.core.TabletopOrientation;
 
 /**
- * Implementation of {@link org.gamegineer.table.core.ICardPile}.
+ * A tabletop.
  */
 @ThreadSafe
-final class CardPile
+final class Tabletop
     extends Container
-    implements ICardPile
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /**
-     * The name of the memento attribute that stores the design of the card pile
-     * base.
-     */
-    private static final String BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME = "baseDesign"; //$NON-NLS-1$
+    // TODO: should default design have maximum size? if so, need to adjust default location as well.
+    /** The default component surface design. */
+    private static final ComponentSurfaceDesign DEFAULT_SURFACE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.Tabletop.DEFAULT_SURFACE_DESIGN" ), 0, 0 ); //$NON-NLS-1$
 
     /**
-     * The name of the memento attribute that stores the collection of cards in
-     * the card pile.
+     * The name of the memento attribute that stores the collection of
+     * components on the tabletop.
      */
-    private static final String CARDS_MEMENTO_ATTRIBUTE_NAME = "cards"; //$NON-NLS-1$
+    private static final String COMPONENTS_MEMENTO_ATTRIBUTE_NAME = "components"; //$NON-NLS-1$
 
-    /** The default card pile base design. */
-    private static final ComponentSurfaceDesign DEFAULT_BASE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.CardPile.DEFAULT_BASE_DESIGN" ), 0, 0 ); //$NON-NLS-1$
-
-    /**
-     * The name of the memento attribute that stores the card pile layout.
-     */
+    /** The name of the memento attribute that stores the tabletop layout. */
     private static final String LAYOUT_MEMENTO_ATTRIBUTE_NAME = "layout"; //$NON-NLS-1$
 
-    /** The name of the memento attribute that stores the card pile origin. */
-    private static final String ORIGIN_MEMENTO_ATTRIBUTE_NAME = "origin"; //$NON-NLS-1$
+    /** The name of the memento attribute that stores the tabletop location. */
+    private static final String LOCATION_MEMENTO_ATTRIBUTE_NAME = "location"; //$NON-NLS-1$
 
-    /** The collection of supported card pile orientations. */
-    private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( CardPileOrientation.values( CardPileOrientation.class ) ) );
+    /** The collection of supported component orientations. */
+    private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( TabletopOrientation.values( TabletopOrientation.class ) ) );
 
-    /** The design of the card pile base. */
-    @GuardedBy( "getLock()" )
-    private ComponentSurfaceDesign baseDesign_;
-
-    /** The collection of cards in this card pile ordered from bottom to top. */
-    @GuardedBy( "getLock()" )
-    private final List<Card> cards_;
+    /**
+     * The name of the memento attribute that stores the component surface
+     * design.
+     */
+    private static final String SURFACE_DESIGN_MEMENTO_ATTRIBUTE_NAME = "surfaceDesign"; //$NON-NLS-1$
 
     /** The collection of component listeners. */
     private final CopyOnWriteArrayList<IComponentListener> componentListeners_;
 
+    /**
+     * The collection of components on this tabletop ordered from bottom to top.
+     */
+    @GuardedBy( "getLock()" )
+    private final List<Component> components_;
+
     /** The collection of container listeners. */
     private final CopyOnWriteArrayList<IContainerListener> containerListeners_;
 
-    /** The card pile layout. */
+    /** The tabletop layout. */
     @GuardedBy( "getLock()" )
     private IContainerLayout layout_;
 
-    /** The card pile origin in table coordinates. */
+    /** The tabletop location in table coordinates. */
     @GuardedBy( "getLock()" )
-    private final Point origin_;
+    private final Point location_;
+
+    /** The tabletop surface design. */
+    @GuardedBy( "getLock()" )
+    private ComponentSurfaceDesign surfaceDesign_;
 
     /**
-     * The table that contains this card pile or {@code null} if this card pile
+     * The table that contains this component or {@code null} if this component
      * is not contained in a table.
      */
     @GuardedBy( "getLock()" )
@@ -129,24 +127,24 @@ final class CardPile
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardPile} class.
+     * Initializes a new instance of the {@code Tabletop} class.
      * 
      * @param tableEnvironment
-     *        The table environment associated with the card pile; must not be
+     *        The table environment associated with the tabletop; must not be
      *        {@code null}.
      */
-    CardPile(
+    Tabletop(
         /* @NonNull */
         final TableEnvironment tableEnvironment )
     {
         super( tableEnvironment );
 
-        baseDesign_ = DEFAULT_BASE_DESIGN;
-        cards_ = new ArrayList<Card>();
         componentListeners_ = new CopyOnWriteArrayList<IComponentListener>();
+        components_ = new ArrayList<Component>();
         containerListeners_ = new CopyOnWriteArrayList<IContainerListener>();
-        layout_ = CardPileLayouts.STACKED;
-        origin_ = new Point( 0, 0 );
+        layout_ = TabletopLayouts.ABSOLUTE;
+        location_ = new Point( 0, 0 );
+        surfaceDesign_ = DEFAULT_SURFACE_DESIGN;
         table_ = null;
     }
 
@@ -175,7 +173,7 @@ final class CardPile
         final IComponentListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( componentListeners_.addIfAbsent( listener ), "listener", NonNlsMessages.CardPile_addComponentListener_listener_registered ); //$NON-NLS-1$
+        assertArgumentLegal( componentListeners_.addIfAbsent( listener ), "listener", NonNlsMessages.Tabletop_addComponentListener_listener_registered ); //$NON-NLS-1$
     }
 
     /*
@@ -187,42 +185,42 @@ final class CardPile
     {
         assertArgumentNotNull( components, "components" ); //$NON-NLS-1$
 
-        final List<Card> addedCards = new ArrayList<Card>();
-        final int firstCardIndex;
-        final boolean cardPileBoundsChanged;
+        final List<Component> addedComponents = new ArrayList<Component>();
+        final int firstComponentIndex;
+        final boolean containerBoundsChanged;
 
         getLock().lock();
         try
         {
             final Rectangle oldBounds = getBounds();
-            firstCardIndex = cards_.size();
+            firstComponentIndex = components_.size();
 
             for( final IComponent component : components )
             {
-                final Card typedCard = (Card)component;
-                if( typedCard == null )
+                final Component typedComponent = (Component)component;
+                if( typedComponent == null )
                 {
-                    throw new IllegalArgumentException( NonNlsMessages.CardPile_addComponents_components_containsNullElement );
+                    throw new IllegalArgumentException( NonNlsMessages.Tabletop_addComponents_components_containsNullElement );
                 }
-                assertArgumentLegal( typedCard.getContainer() == null, "components", NonNlsMessages.CardPile_addComponents_components_containsOwnedComponent ); //$NON-NLS-1$
-                assertArgumentLegal( typedCard.getTableEnvironment() == getTableEnvironment(), "components", NonNlsMessages.CardPile_addComponents_components_containsComponentCreatedByDifferentTableEnvironment ); //$NON-NLS-1$
+                assertArgumentLegal( typedComponent.getContainer() == null, "components", NonNlsMessages.Tabletop_addComponents_components_containsOwnedComponent ); //$NON-NLS-1$
+                assertArgumentLegal( typedComponent.getTableEnvironment() == getTableEnvironment(), "components", NonNlsMessages.Tabletop_addComponents_components_containsComponentCreatedByDifferentTableEnvironment ); //$NON-NLS-1$
 
-                typedCard.setContainer( this );
-                cards_.add( typedCard );
-                addedCards.add( typedCard );
+                typedComponent.setContainer( this );
+                components_.add( typedComponent );
+                addedComponents.add( typedComponent );
             }
 
             layout_.layout( this );
 
             final Rectangle newBounds = getBounds();
-            cardPileBoundsChanged = !newBounds.equals( oldBounds );
+            containerBoundsChanged = !newBounds.equals( oldBounds );
         }
         finally
         {
             getLock().unlock();
         }
 
-        if( !addedCards.isEmpty() || cardPileBoundsChanged )
+        if( !addedComponents.isEmpty() || containerBoundsChanged )
         {
             // TODO: replace with addEventNotification method in base class
             getTableEnvironment().addEventNotification( new Runnable()
@@ -231,13 +229,13 @@ final class CardPile
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
-                    int cardIndex = firstCardIndex;
-                    for( final ICard card : addedCards )
+                    int componentIndex = firstComponentIndex;
+                    for( final IComponent component : addedComponents )
                     {
-                        fireComponentAdded( card, cardIndex++ );
+                        fireComponentAdded( component, componentIndex++ );
                     }
 
-                    if( cardPileBoundsChanged )
+                    if( containerBoundsChanged )
                     {
                         fireComponentBoundsChanged();
                     }
@@ -254,7 +252,7 @@ final class CardPile
         final IContainerListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( containerListeners_.addIfAbsent( listener ), "listener", NonNlsMessages.CardPile_addContainerListener_listener_registered ); //$NON-NLS-1$
+        assertArgumentLegal( containerListeners_.addIfAbsent( listener ), "listener", NonNlsMessages.Tabletop_addContainerListener_listener_registered ); //$NON-NLS-1$
     }
 
     /*
@@ -268,16 +266,16 @@ final class CardPile
         getLock().lock();
         try
         {
-            memento.put( BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, baseDesign_ );
             memento.put( LAYOUT_MEMENTO_ATTRIBUTE_NAME, layout_ );
-            memento.put( ORIGIN_MEMENTO_ATTRIBUTE_NAME, new Point( origin_ ) );
+            memento.put( LOCATION_MEMENTO_ATTRIBUTE_NAME, new Point( location_ ) );
+            memento.put( SURFACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, surfaceDesign_ );
 
-            final List<Object> cardMementos = new ArrayList<Object>( cards_.size() );
-            for( final ICard card : cards_ )
+            final List<Object> componentMementos = new ArrayList<Object>( components_.size() );
+            for( final IComponent component : components_ )
             {
-                cardMementos.add( card.createMemento() );
+                componentMementos.add( component.createMemento() );
             }
-            memento.put( CARDS_MEMENTO_ATTRIBUTE_NAME, Collections.unmodifiableList( cardMementos ) );
+            memento.put( COMPONENTS_MEMENTO_ATTRIBUTE_NAME, Collections.unmodifiableList( componentMementos ) );
         }
         finally
         {
@@ -313,7 +311,7 @@ final class CardPile
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentAdded_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Tabletop_componentAdded_unexpectedException, e );
             }
         }
     }
@@ -334,7 +332,7 @@ final class CardPile
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentBoundsChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Tabletop_componentBoundsChanged_unexpectedException, e );
             }
         }
     }
@@ -355,7 +353,7 @@ final class CardPile
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentOrientationChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Tabletop_componentOrientationChanged_unexpectedException, e );
             }
         }
     }
@@ -386,7 +384,7 @@ final class CardPile
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentRemoved_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Tabletop_componentRemoved_unexpectedException, e );
             }
         }
     }
@@ -407,7 +405,7 @@ final class CardPile
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentSurfaceDesignChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Tabletop_componentSurfaceDesignChanged_unexpectedException, e );
             }
         }
     }
@@ -428,29 +426,29 @@ final class CardPile
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_containerLayoutChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Tabletop_containerLayoutChanged_unexpectedException, e );
             }
         }
     }
 
     /**
-     * Creates a new instance of the {@code CardPile} class from the specified
+     * Creates a new instance of the {@code Tabletop} class from the specified
      * memento.
      * 
      * @param tableEnvironment
-     *        The table environment associated with the new card pile; must not
+     *        The table environment associated with the new tabletop; must not
      *        be {@code null}.
      * @param memento
-     *        The memento representing the initial card pile state; must not be
+     *        The memento representing the initial tabletop state; must not be
      *        {@code null}.
      * 
-     * @return A new instance of the {@code CardPile} class; never {@code null}.
+     * @return A new instance of the {@code Tabletop} class; never {@code null}.
      * 
      * @throws org.gamegineer.common.core.util.memento.MementoException
      *         If {@code memento} is malformed.
      */
     /* @NonNull */
-    static CardPile fromMemento(
+    static Tabletop fromMemento(
         /* @NonNull */
         final TableEnvironment tableEnvironment,
         /* @NonNull */
@@ -460,25 +458,25 @@ final class CardPile
         assert tableEnvironment != null;
         assert memento != null;
 
-        final CardPile cardPile = new CardPile( tableEnvironment );
-
-        final ComponentSurfaceDesign baseDesign = MementoUtils.getAttribute( memento, BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ComponentSurfaceDesign.class );
-        cardPile.setSurfaceDesign( CardPileOrientation.BASE, baseDesign );
-
-        final Point location = MementoUtils.getAttribute( memento, ORIGIN_MEMENTO_ATTRIBUTE_NAME, Point.class );
-        cardPile.setLocation( location );
+        final Tabletop tabletop = new Tabletop( tableEnvironment );
 
         final IContainerLayout layout = MementoUtils.getAttribute( memento, LAYOUT_MEMENTO_ATTRIBUTE_NAME, IContainerLayout.class );
-        cardPile.setLayout( layout );
+        tabletop.setLayout( layout );
+
+        final Point location = MementoUtils.getAttribute( memento, LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
+        tabletop.setLocation( location );
+
+        final ComponentSurfaceDesign surfaceDesign = MementoUtils.getAttribute( memento, SURFACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ComponentSurfaceDesign.class );
+        tabletop.setSurfaceDesign( TabletopOrientation.DEFAULT, surfaceDesign );
 
         @SuppressWarnings( "unchecked" )
-        final List<Object> cardMementos = MementoUtils.getAttribute( memento, CARDS_MEMENTO_ATTRIBUTE_NAME, List.class );
-        for( final Object cardMemento : cardMementos )
+        final List<Object> componentMementos = MementoUtils.getAttribute( memento, COMPONENTS_MEMENTO_ATTRIBUTE_NAME, List.class );
+        for( final Object componentMemento : componentMementos )
         {
-            cardPile.addComponent( Card.fromMemento( tableEnvironment, cardMemento ) );
+            tabletop.addComponent( Component.fromMemento( tableEnvironment, componentMemento ) );
         }
 
-        return cardPile;
+        return tabletop;
     }
 
     /*
@@ -490,14 +488,14 @@ final class CardPile
         getLock().lock();
         try
         {
-            if( cards_.isEmpty() )
+            if( components_.isEmpty() )
             {
-                return new Rectangle( origin_, baseDesign_.getSize() );
+                return new Rectangle( location_, surfaceDesign_.getSize() );
             }
 
-            final Rectangle topCardBounds = cards_.get( cards_.size() - 1 ).getBounds();
-            final Rectangle bottomCardBounds = cards_.get( 0 ).getBounds();
-            return topCardBounds.union( bottomCardBounds );
+            final Rectangle topComponentBounds = components_.get( components_.size() - 1 ).getBounds();
+            final Rectangle bottomComponentBounds = components_.get( 0 ).getBounds();
+            return topComponentBounds.union( bottomComponentBounds );
         }
         finally
         {
@@ -515,55 +513,14 @@ final class CardPile
         getLock().lock();
         try
         {
-            assertArgumentLegal( (index >= 0) && (index < cards_.size()), "index", NonNlsMessages.CardPile_getComponentFromIndex_index_outOfRange ); //$NON-NLS-1$
+            assertArgumentLegal( (index >= 0) && (index < components_.size()), "index", NonNlsMessages.Tabletop_getComponentFromIndex_index_outOfRange ); //$NON-NLS-1$
 
-            return cards_.get( index );
+            return components_.get( index );
         }
         finally
         {
             getLock().unlock();
         }
-    }
-
-    /**
-     * Gets the component within this container's bounds (including the
-     * container itself) at the specified location.
-     * 
-     * <p>
-     * If two or more components occupy the specified location, the top-most
-     * component will be returned.
-     * </p>
-     * 
-     * @param location
-     *        The location in table coordinates; must not be {@code null}.
-     * 
-     * @return The component within this container's bounds at the specified
-     *         location or {@code null} if no component is at that location.
-     */
-    @GuardedBy( "getLock()" )
-    /* @Nullable */
-    IComponent getComponent(
-        /* @NonNull */
-        final Point location )
-    {
-        assert location != null;
-        assert getLock().isHeldByCurrentThread();
-
-        if( getBounds().contains( location ) )
-        {
-            if( cards_.isEmpty() )
-            {
-                return this;
-            }
-
-            final int index = getComponentIndex( location );
-            if( index != -1 )
-            {
-                return cards_.get( index );
-            }
-        }
-
-        return null;
     }
 
     /*
@@ -575,7 +532,7 @@ final class CardPile
         getLock().lock();
         try
         {
-            return cards_.size();
+            return components_.size();
         }
         finally
         {
@@ -588,13 +545,12 @@ final class CardPile
      */
     @Override
     int getComponentIndex(
-        /* @NonNull */
         final Component component )
     {
         assert component != null;
         assert getLock().isHeldByCurrentThread();
 
-        final int index = cards_.indexOf( component );
+        final int index = components_.indexOf( component );
         assert index != -1;
         return index;
     }
@@ -604,8 +560,8 @@ final class CardPile
      * location.
      * 
      * <p>
-     * This method follows the same rules defined by
-     * {@link #getComponent(Point)}.
+     * If two or more components occupy the specified location, the top-most
+     * component will be returned.
      * </p>
      * 
      * @param location
@@ -635,7 +591,7 @@ final class CardPile
         getLock().lock();
         try
         {
-            return new ArrayList<IComponent>( cards_ );
+            return new ArrayList<IComponent>( components_ );
         }
         finally
         {
@@ -666,7 +622,15 @@ final class CardPile
     @Override
     public Point getLocation()
     {
-        return getBounds().getLocation();
+        getLock().lock();
+        try
+        {
+            return new Point( location_ );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
     }
 
     /*
@@ -675,7 +639,7 @@ final class CardPile
     @Override
     public ComponentOrientation getOrientation()
     {
-        return CardPileOrientation.BASE;
+        return TabletopOrientation.DEFAULT;
     }
 
     /*
@@ -684,15 +648,7 @@ final class CardPile
     @Override
     public Point getOrigin()
     {
-        getLock().lock();
-        try
-        {
-            return new Point( origin_ );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
+        return getLocation();
     }
 
     /*
@@ -709,7 +665,7 @@ final class CardPile
                 return null;
             }
 
-            return new ComponentPath( null, table_.getCardPileIndex( this ) );
+            return new ComponentPath( null, 0 );
         }
         finally
         {
@@ -743,17 +699,17 @@ final class CardPile
         final ComponentOrientation orientation )
     {
         assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
-        assertArgumentLegal( orientation instanceof CardPileOrientation, "orientation", NonNlsMessages.CardPile_orientation_illegal ); //$NON-NLS-1$
+        assertArgumentLegal( orientation instanceof TabletopOrientation, "orientation", NonNlsMessages.Tabletop_orientation_illegal ); //$NON-NLS-1$
 
         getLock().lock();
         try
         {
-            if( orientation == CardPileOrientation.BASE )
+            if( orientation == TabletopOrientation.DEFAULT )
             {
-                return baseDesign_;
+                return surfaceDesign_;
             }
 
-            throw new AssertionError( "unknown card pile orientation" ); //$NON-NLS-1$
+            throw new AssertionError( "unknown tabletop orientation" ); //$NON-NLS-1$
         }
         finally
         {
@@ -778,31 +734,6 @@ final class CardPile
         }
     }
 
-    /**
-     * Indicates the specified memento is a {@code CardPile} memento.
-     * 
-     * @param memento
-     *        The memento; must not be {@code null}.
-     * 
-     * @return {@code true} if the specified memento is a {@code CardPile}
-     *         memento; otherwise {@code false}.
-     * 
-     * @throws org.gamegineer.common.core.util.memento.MementoException
-     *         If {@code memento} is malformed.
-     */
-    static boolean isMemento(
-        /* @NonNull */
-        final Object memento )
-        throws MementoException
-    {
-        assert memento != null;
-
-        return MementoUtils.hasAttribute( memento, BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME ) //
-            && MementoUtils.hasAttribute( memento, CARDS_MEMENTO_ATTRIBUTE_NAME ) //
-            && MementoUtils.hasAttribute( memento, LAYOUT_MEMENTO_ATTRIBUTE_NAME ) //
-            && MementoUtils.hasAttribute( memento, ORIGIN_MEMENTO_ATTRIBUTE_NAME );
-    }
-
     /*
      * @see org.gamegineer.table.core.IContainer#removeComponent()
      */
@@ -815,7 +746,7 @@ final class CardPile
             @SuppressWarnings( "synthetic-access" )
             int getLowerIndex()
             {
-                return cards_.isEmpty() ? 0 : cards_.size() - 1;
+                return components_.isEmpty() ? 0 : components_.size() - 1;
             }
         };
         final List<IComponent> components = removeComponents( componentRangeStrategy );
@@ -831,7 +762,7 @@ final class CardPile
         final IComponentListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( componentListeners_.remove( listener ), "listener", NonNlsMessages.CardPile_removeComponentListener_listener_notRegistered ); //$NON-NLS-1$
+        assertArgumentLegal( componentListeners_.remove( listener ), "listener", NonNlsMessages.Tabletop_removeComponentListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
     /*
@@ -859,7 +790,7 @@ final class CardPile
             int getLowerIndex()
             {
                 final int componentIndex = getComponentIndex( location );
-                return (componentIndex != -1) ? componentIndex : cards_.size();
+                return (componentIndex != -1) ? componentIndex : components_.size();
             }
         };
         return removeComponents( componentRangeStrategy );
@@ -885,31 +816,31 @@ final class CardPile
     {
         assert componentRangeStrategy != null;
 
-        final List<Card> removedCards = new ArrayList<Card>();
-        final int upperCardIndex = componentRangeStrategy.getUpperIndex() - 1;
-        final boolean cardPileBoundsChanged;
+        final List<Component> removedComponents = new ArrayList<Component>();
+        final int upperComponentIndex = componentRangeStrategy.getUpperIndex() - 1;
+        final boolean containerBoundsChanged;
 
         getLock().lock();
         try
         {
             final Rectangle oldBounds = getBounds();
 
-            removedCards.addAll( cards_.subList( componentRangeStrategy.getLowerIndex(), componentRangeStrategy.getUpperIndex() ) );
-            cards_.removeAll( removedCards );
-            for( final Card card : removedCards )
+            removedComponents.addAll( components_.subList( componentRangeStrategy.getLowerIndex(), componentRangeStrategy.getUpperIndex() ) );
+            components_.removeAll( removedComponents );
+            for( final Component component : removedComponents )
             {
-                card.setContainer( null );
+                component.setContainer( null );
             }
 
             final Rectangle newBounds = getBounds();
-            cardPileBoundsChanged = !newBounds.equals( oldBounds );
+            containerBoundsChanged = !newBounds.equals( oldBounds );
         }
         finally
         {
             getLock().unlock();
         }
 
-        if( !removedCards.isEmpty() || cardPileBoundsChanged )
+        if( !removedComponents.isEmpty() || containerBoundsChanged )
         {
             getTableEnvironment().addEventNotification( new Runnable()
             {
@@ -918,15 +849,15 @@ final class CardPile
                 public void run()
                 {
                     // ensure events are fired in order from highest index to lowest index
-                    final List<ICard> reversedRemovedCards = new ArrayList<ICard>( removedCards );
-                    Collections.reverse( reversedRemovedCards );
-                    int cardIndex = upperCardIndex;
-                    for( final ICard card : reversedRemovedCards )
+                    final List<IComponent> reversedRemovedComponents = new ArrayList<IComponent>( removedComponents );
+                    Collections.reverse( reversedRemovedComponents );
+                    int componentIndex = upperComponentIndex;
+                    for( final IComponent component : reversedRemovedComponents )
                     {
-                        fireComponentRemoved( card, cardIndex-- );
+                        fireComponentRemoved( component, componentIndex-- );
                     }
 
-                    if( cardPileBoundsChanged )
+                    if( containerBoundsChanged )
                     {
                         fireComponentBoundsChanged();
                     }
@@ -934,7 +865,7 @@ final class CardPile
             } );
         }
 
-        return new ArrayList<IComponent>( removedCards );
+        return new ArrayList<IComponent>( removedComponents );
     }
 
     /*
@@ -945,7 +876,7 @@ final class CardPile
         final IContainerListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( containerListeners_.remove( listener ), "listener", NonNlsMessages.CardPile_removeContainerListener_listener_notRegistered ); //$NON-NLS-1$
+        assertArgumentLegal( containerListeners_.remove( listener ), "listener", NonNlsMessages.Tabletop_removeContainerListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
     /*
@@ -957,16 +888,16 @@ final class CardPile
     {
         assertArgumentNotNull( layout, "layout" ); //$NON-NLS-1$
 
-        final boolean cardPileBoundsChanged;
+        final boolean containerBoundsChanged;
 
         getLock().lock();
         try
         {
             layout_ = layout;
 
-            if( cards_.isEmpty() )
+            if( components_.isEmpty() )
             {
-                cardPileBoundsChanged = false;
+                containerBoundsChanged = false;
             }
             else
             {
@@ -975,7 +906,7 @@ final class CardPile
                 layout_.layout( this );
 
                 final Rectangle newBounds = getBounds();
-                cardPileBoundsChanged = !newBounds.equals( oldBounds );
+                containerBoundsChanged = !newBounds.equals( oldBounds );
             }
         }
         finally
@@ -991,7 +922,7 @@ final class CardPile
             {
                 fireContainerLayoutChanged();
 
-                if( cardPileBoundsChanged )
+                if( containerBoundsChanged )
                 {
                     fireComponentBoundsChanged();
                 }
@@ -1008,7 +939,7 @@ final class CardPile
     {
         assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
 
-        translateOrigin( new TranslationOffsetStrategy()
+        translateLocation( new TranslationOffsetStrategy()
         {
             @Override
             Dimension getOffset()
@@ -1032,14 +963,14 @@ final class CardPile
         getLock().lock();
         try
         {
-            final CardPile cardPile = fromMemento( getTableEnvironment(), memento );
+            final Tabletop tabletop = fromMemento( getTableEnvironment(), memento );
 
-            setSurfaceDesign( CardPileOrientation.BASE, cardPile.getSurfaceDesign( CardPileOrientation.BASE ) );
-            setOrigin( cardPile.getOrigin() );
-            setLayout( cardPile.getLayout() );
+            setLayout( tabletop.getLayout() );
+            setLocation( tabletop.getLocation() );
+            setSurfaceDesign( TabletopOrientation.DEFAULT, tabletop.getSurfaceDesign( TabletopOrientation.DEFAULT ) );
 
             removeComponents();
-            addComponents( cardPile.removeComponents() );
+            addComponents( tabletop.removeComponents() );
         }
         finally
         {
@@ -1055,7 +986,7 @@ final class CardPile
         final ComponentOrientation orientation )
     {
         assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
-        assertArgumentLegal( orientation instanceof CardPileOrientation, "orientation", NonNlsMessages.CardPile_orientation_illegal ); //$NON-NLS-1$
+        assertArgumentLegal( orientation instanceof TabletopOrientation, "orientation", NonNlsMessages.Tabletop_orientation_illegal ); //$NON-NLS-1$
 
         getTableEnvironment().addEventNotification( new Runnable()
         {
@@ -1075,17 +1006,7 @@ final class CardPile
     public void setOrigin(
         final Point origin )
     {
-        assertArgumentNotNull( origin, "origin" ); //$NON-NLS-1$
-
-        translateOrigin( new TranslationOffsetStrategy()
-        {
-            @Override
-            Dimension getOffset()
-            {
-                final Point oldOrigin = getOrigin();
-                return new Dimension( origin.x - oldOrigin.x, origin.y - oldOrigin.y );
-            }
-        } );
+        setLocation( origin );
     }
 
     /*
@@ -1097,19 +1018,19 @@ final class CardPile
         final ComponentSurfaceDesign surfaceDesign )
     {
         assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
-        assertArgumentLegal( orientation instanceof CardPileOrientation, "orientation", NonNlsMessages.CardPile_orientation_illegal ); //$NON-NLS-1$
+        assertArgumentLegal( orientation instanceof TabletopOrientation, "orientation", NonNlsMessages.Tabletop_orientation_illegal ); //$NON-NLS-1$
         assertArgumentNotNull( surfaceDesign, "surfaceDesign" ); //$NON-NLS-1$
 
         getLock().lock();
         try
         {
-            if( orientation == CardPileOrientation.BASE )
+            if( orientation == TabletopOrientation.DEFAULT )
             {
-                baseDesign_ = surfaceDesign;
+                surfaceDesign_ = surfaceDesign;
             }
             else
             {
-                throw new AssertionError( "unknown card pile orientation" ); //$NON-NLS-1$
+                throw new AssertionError( "unknown tabletop orientation" ); //$NON-NLS-1$
             }
         }
         finally
@@ -1129,17 +1050,16 @@ final class CardPile
     }
 
     /**
-     * Sets the table that contains this card pile.
+     * Sets the table that contains this tabletop.
      * 
      * @param table
-     *        The table that contains this card pile or {@code null} if this
-     *        card pile is not contained in a table.
+     *        The table that contains this tabletop or {@code null} if this
+     *        tabletop is not contained in a table.
      */
     void setTable(
         /* @Nullable */
         final Table table )
     {
-        // TODO: remove lock and replace with @GuardedBy
         getLock().lock();
         try
         {
@@ -1158,17 +1078,17 @@ final class CardPile
     public String toString()
     {
         final StringBuilder sb = new StringBuilder();
-        sb.append( "CardPile[" ); //$NON-NLS-1$
+        sb.append( "Tabletop[" ); //$NON-NLS-1$
 
         getLock().lock();
         try
         {
-            sb.append( "baseDesign_=" ); //$NON-NLS-1$
-            sb.append( baseDesign_ );
-            sb.append( ", origin_=" ); //$NON-NLS-1$
-            sb.append( origin_ );
-            sb.append( ", cards_.size()=" ); //$NON-NLS-1$
-            sb.append( cards_.size() );
+            sb.append( "surfaceDesign_=" ); //$NON-NLS-1$
+            sb.append( surfaceDesign_ );
+            sb.append( ", location_=" ); //$NON-NLS-1$
+            sb.append( location_ );
+            sb.append( ", components_.size()=" ); //$NON-NLS-1$
+            sb.append( components_.size() );
             sb.append( ", layout_=" ); //$NON-NLS-1$
             sb.append( layout_ );
         }
@@ -1182,14 +1102,14 @@ final class CardPile
     }
 
     /**
-     * Translates the card pile origin by the specified amount.
+     * Translates the tabletop location by the specified amount.
      * 
      * @param translationOffsetStrategy
-     *        The strategy used to calculate the amount to translate the origin;
-     *        must not be {@code null}. The strategy will be invoked while the
-     *        table environment lock is held.
+     *        The strategy used to calculate the amount to translate the
+     *        location; must not be {@code null}. The strategy will be invoked
+     *        while the table environment lock is held.
      */
-    private void translateOrigin(
+    private void translateLocation(
         /* @NonNull */
         final TranslationOffsetStrategy translationOffsetStrategy )
     {
@@ -1199,12 +1119,12 @@ final class CardPile
         try
         {
             final Dimension offset = translationOffsetStrategy.getOffset();
-            origin_.translate( offset.width, offset.height );
-            for( final ICard card : cards_ )
+            location_.translate( offset.width, offset.height );
+            for( final Component component : components_ )
             {
-                final Point cardLocation = card.getLocation();
-                cardLocation.translate( offset.width, offset.height );
-                card.setLocation( cardLocation );
+                final Point componentLocation = component.getLocation();
+                componentLocation.translate( offset.width, offset.height );
+                component.setLocation( componentLocation );
             }
         }
         finally
@@ -1229,7 +1149,7 @@ final class CardPile
     // ======================================================================
 
     /**
-     * A strategy to calculate a contiguous range of components in a card pile.
+     * A strategy to calculate a contiguous range of components in a container.
      */
     @Immutable
     private class ComponentRangeStrategy
@@ -1278,7 +1198,7 @@ final class CardPile
         @SuppressWarnings( "synthetic-access" )
         int getUpperIndex()
         {
-            return cards_.size();
+            return components_.size();
         }
     }
 

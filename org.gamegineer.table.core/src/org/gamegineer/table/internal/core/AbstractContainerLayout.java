@@ -84,6 +84,8 @@ abstract class AbstractContainerLayout
      * Gets the offset from the container origin in table coordinates of the
      * component at the specified index.
      * 
+     * @param container
+     *        The container; must not be {@code null}.
      * @param index
      *        The component index; must be non-negative.
      * 
@@ -92,6 +94,8 @@ abstract class AbstractContainerLayout
      */
     /* @NonNull */
     abstract Dimension getComponentOffsetAt(
+        /* @NonNull */
+        IContainer container,
         int index );
 
     /*
@@ -108,7 +112,7 @@ abstract class AbstractContainerLayout
         for( int index = 0, size = container.getComponentCount(); index < size; ++index )
         {
             componentLocation.setLocation( containerOrigin );
-            final Dimension componentOffset = getComponentOffsetAt( index );
+            final Dimension componentOffset = getComponentOffsetAt( container, index );
             componentLocation.translate( componentOffset.width, componentOffset.height );
             container.getComponent( index ).setLocation( componentLocation );
         }

@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.core;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import java.awt.Dimension;
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerLayout;
 
 /**
@@ -79,12 +80,14 @@ public final class AccordianContainerLayout
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.core.AbstractContainerLayout#getComponentOffsetAt(int)
+     * @see org.gamegineer.table.internal.core.AbstractContainerLayout#getComponentOffsetAt(org.gamegineer.table.core.IContainer, int)
      */
     @Override
     Dimension getComponentOffsetAt(
+        final IContainer container,
         final int index )
     {
+        assert container != null;
         assert index >= 0;
 
         return new Dimension( index * offset_.width, index * offset_.height );

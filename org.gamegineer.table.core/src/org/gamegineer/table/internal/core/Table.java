@@ -39,10 +39,10 @@ import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
-import org.gamegineer.table.core.TableRootComponentChangedEvent;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ITable}.
@@ -61,11 +61,8 @@ final class Table
      */
     private static final String CARD_PILES_MEMENTO_ATTRIBUTE_NAME = "cardPiles"; //$NON-NLS-1$
 
-    /**
-     * The name of the memento attribute that stores the root component of the
-     * table.
-     */
-    private static final String ROOT_COMPONENT_MEMENTO_ATTRIBUTE_NAME = "rootComponent"; //$NON-NLS-1$
+    /** The name of the memento attribute that stores the tabletop memento. */
+    private static final String TABLETOP_MEMENTO_ATTRIBUTE_NAME = "tabletop"; //$NON-NLS-1$
 
     /** The collection of card piles on this table. */
     @GuardedBy( "getLock()" )
@@ -74,12 +71,12 @@ final class Table
     /** The collection of table listeners. */
     private final CopyOnWriteArrayList<ITableListener> listeners_;
 
-    /** The root component or {@code null} if none. */
-    @GuardedBy( "getLock()" )
-    private IComponent rootComponent_;
-
     /** The table environment. */
     private final TableEnvironment tableEnvironment_;
+
+    /** The tabletop. */
+    @GuardedBy( "getLock()" )
+    private IContainer tabletop_;
 
 
     // ======================================================================
@@ -102,9 +99,9 @@ final class Table
         listeners_ = new CopyOnWriteArrayList<ITableListener>();
         tableEnvironment_ = tableEnvironment;
 
-        final NullComponent rootComponent = new NullComponent( tableEnvironment );
-        rootComponent.setTable( this );
-        rootComponent_ = rootComponent;
+        final Tabletop tabletop = new Tabletop( tableEnvironment );
+        tabletop.setTable( this );
+        tabletop_ = tabletop;
     }
 
 
@@ -128,7 +125,7 @@ final class Table
         {
             final CardPile typedCardPile = (CardPile)cardPile;
             assertArgumentLegal( typedCardPile.getTable() == null, "cardPile", NonNlsMessages.Table_addCardPile_cardPile_owned ); //$NON-NLS-1$
-            assertArgumentLegal( typedCardPile.getTableEnvironment() == tableEnvironment_, "cardPile", NonNlsMessages.Table_addCardPile_cardPile_createdByDifferentTable ); //$NON-NLS-1$
+            assertArgumentLegal( typedCardPile.getTableEnvironment() == tableEnvironment_, "cardPile", NonNlsMessages.Table_addCardPile_cardPile_createdByDifferentTableEnvironment ); //$NON-NLS-1$
 
             cardPiles_.add( typedCardPile );
             typedCardPile.setTable( this );
@@ -179,7 +176,7 @@ final class Table
             }
             memento.put( CARD_PILES_MEMENTO_ATTRIBUTE_NAME, Collections.unmodifiableList( cardPileMementos ) );
 
-            memento.put( ROOT_COMPONENT_MEMENTO_ATTRIBUTE_NAME, rootComponent_.createMemento() );
+            memento.put( TABLETOP_MEMENTO_ATTRIBUTE_NAME, tabletop_.createMemento() );
         }
         finally
         {
@@ -252,38 +249,6 @@ final class Table
     }
 
     /**
-     * Fires a root component changed event.
-     * 
-     * @param oldRootComponent
-     *        The old root component; must not be {@code null}.
-     * @param newRootComponent
-     *        The new root component; must not be {@code null}.
-     */
-    private void fireRootComponentChanged(
-        /* @NonNull */
-        final IComponent oldRootComponent,
-        /* @NonNull */
-        final IComponent newRootComponent )
-    {
-        assert oldRootComponent != null;
-        assert newRootComponent != null;
-        assert !getLock().isHeldByCurrentThread();
-
-        final TableRootComponentChangedEvent event = new TableRootComponentChangedEvent( this, oldRootComponent, newRootComponent );
-        for( final ITableListener listener : listeners_ )
-        {
-            try
-            {
-                listener.rootComponentChanged( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Table_rootComponentChanged_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
      * Creates a new instance of the {@code Table} class from the specified
      * memento.
      * 
@@ -319,9 +284,8 @@ final class Table
             table.addCardPile( CardPile.fromMemento( table.tableEnvironment_, cardPileMemento ) );
         }
 
-        final Object rootComponentMemento = MementoUtils.getAttribute( memento, ROOT_COMPONENT_MEMENTO_ATTRIBUTE_NAME, Object.class );
-        // FIXME: create component from a factory -- not necessarily a null component
-        table.setRootComponent( NullComponent.fromMemento( table.tableEnvironment_, rootComponentMemento ) );
+        final Object tabletopMemento = MementoUtils.getAttribute( memento, TABLETOP_MEMENTO_ATTRIBUTE_NAME, Object.class );
+        table.tabletop_.setMemento( tabletopMemento );
 
         return table;
     }
@@ -476,29 +440,29 @@ final class Table
     }
 
     /*
-     * @see org.gamegineer.table.core.ITable#getRootComponent()
-     */
-    @Override
-    public IComponent getRootComponent()
-    {
-        getLock().lock();
-        try
-        {
-            return rootComponent_;
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-    }
-
-    /*
      * @see org.gamegineer.table.core.ITable#getTableEnvironment()
      */
     @Override
     public TableEnvironment getTableEnvironment()
     {
         return tableEnvironment_;
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITable#getTabletop()
+     */
+    @Override
+    public IContainer getTabletop()
+    {
+        getLock().lock();
+        try
+        {
+            return tabletop_;
+        }
+        finally
+        {
+            getLock().unlock();
+        }
     }
 
     /*
@@ -616,54 +580,12 @@ final class Table
                 addCardPile( cardPile );
             }
 
-            // TODO: should setRootComponent return the old root component?
-            final IComponent rootComponent = table.getRootComponent();
-            table.setRootComponent( tableEnvironment_.createNullComponent() );
-            setRootComponent( rootComponent );
+            tabletop_.setMemento( table.tabletop_.createMemento() );
         }
         finally
         {
             getLock().unlock();
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ITable#setRootComponent(org.gamegineer.table.core.IComponent)
-     */
-    @Override
-    public void setRootComponent(
-        final IComponent component )
-    {
-        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
-
-        final NullComponent oldRootComponent, newRootComponent;
-        getLock().lock();
-        try
-        {
-            assertArgumentLegal( component.getTable() == null, "component", NonNlsMessages.Table_setRootComponent_component_owned ); //$NON-NLS-1$
-            assertArgumentLegal( component.getTableEnvironment() == tableEnvironment_, "component", NonNlsMessages.Table_setRootComponent_component_createdByDifferentTable ); //$NON-NLS-1$
-
-            // FIXME: should not be restricted to null components
-            oldRootComponent = (NullComponent)rootComponent_;
-            oldRootComponent.setTable( null );
-            newRootComponent = (NullComponent)component;
-            rootComponent_ = newRootComponent;
-            newRootComponent.setTable( this );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-
-        tableEnvironment_.addEventNotification( new Runnable()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                fireRootComponentChanged( oldRootComponent, newRootComponent );
-            }
-        } );
     }
 
     /*
@@ -678,8 +600,8 @@ final class Table
         getLock().lock();
         try
         {
-            sb.append( "rootComponent_=" ); //$NON-NLS-1$
-            sb.append( rootComponent_ );
+            sb.append( "tabletop_=" ); //$NON-NLS-1$
+            sb.append( tabletop_ );
             sb.append( ", cardPiles_.size()=" ); //$NON-NLS-1$
             sb.append( cardPiles_.size() );
         }

@@ -83,9 +83,9 @@ final class NonNlsMessages
 
     /**
      * The component collection contains a component created by a different
-     * table.
+     * table environment.
      */
-    public static String CardPile_addComponents_components_containsComponentCreatedByDifferentTable;
+    public static String CardPile_addComponents_components_containsComponentCreatedByDifferentTableEnvironment;
 
     /** The component collection contains a {@code null} element. */
     public static String CardPile_addComponents_components_containsNullElement;
@@ -147,6 +147,11 @@ final class NonNlsMessages
     /** The container listener is not registered. */
     public static String CardPile_removeContainerListener_listener_notRegistered;
 
+    // --- Component --------------------------------------------------------
+
+    /** The memento is for an unknown component type. */
+    public static String Component_fromMemento_unknown;
+
     // --- ComponentSurfaceDesignRegistry -----------------------------------
 
     /**
@@ -207,35 +212,6 @@ final class NonNlsMessages
     /** The memento is of the wrong type. */
     public static String MementoUtils_memento_wrongType;
 
-    // --- NullComponent ----------------------------------------------------
-
-    /** The component listener is already registered. */
-    public static String NullComponent_addComponentListener_listener_registered;
-
-    /**
-     * An unexpected exception was thrown from
-     * IComponentListener.componentBoundsChanged().
-     */
-    public static String NullComponent_componentBoundsChanged_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
-     * IComponentListener.componentOrientationChanged().
-     */
-    public static String NullComponent_componentOrientationChanged_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
-     * IComponentListener.componentSurfaceDesignChanged().
-     */
-    public static String NullComponent_componentSurfaceDesignChanged_unexpectedException;
-
-    /** The orientation is illegal. */
-    public static String NullComponent_orientation_illegal;
-
-    /** The component listener is not registered. */
-    public static String NullComponent_removeComponentListener_listener_notRegistered;
-
     // --- StackedContainerLayout -------------------------------------------
 
     /** The components per stack level count is not positive. */
@@ -249,8 +225,8 @@ final class NonNlsMessages
 
     // --- Table ------------------------------------------------------------
 
-    /** The card pile was created by a different table. */
-    public static String Table_addCardPile_cardPile_createdByDifferentTable;
+    /** The card pile was created by a different table environment. */
+    public static String Table_addCardPile_cardPile_createdByDifferentTableEnvironment;
 
     /** The card pile is already contained in a table. */
     public static String Table_addCardPile_cardPile_owned;
@@ -278,17 +254,76 @@ final class NonNlsMessages
     /** The table listener is not registered. */
     public static String Table_removeTableListener_listener_notRegistered;
 
+    // --- Tabletop ---------------------------------------------------------
+
+    /** The component listener is already registered. */
+    public static String Tabletop_addComponentListener_listener_registered;
+
+    /**
+     * The component collection contains a component created by a different
+     * table environment.
+     */
+    public static String Tabletop_addComponents_components_containsComponentCreatedByDifferentTableEnvironment;
+
+    /** The component collection contains a {@code null} element. */
+    public static String Tabletop_addComponents_components_containsNullElement;
+
+    /**
+     * The component collection contains a component already contained in a
+     * container.
+     */
+    public static String Tabletop_addComponents_components_containsOwnedComponent;
+
+    /** The container listener is already registered. */
+    public static String Tabletop_addContainerListener_listener_registered;
+
     /**
      * An unexpected exception was thrown from
-     * ITableListener.rootComponentChanged().
+     * IContainerListener.componentAdded().
      */
-    public static String Table_rootComponentChanged_unexpectedException;
+    public static String Tabletop_componentAdded_unexpectedException;
 
-    /** The component was created by a different table. */
-    public static String Table_setRootComponent_component_createdByDifferentTable;
+    /**
+     * An unexpected exception was thrown from
+     * IComponentListener.componentBoundsChanged().
+     */
+    public static String Tabletop_componentBoundsChanged_unexpectedException;
 
-    /** The component is already contained in a container. */
-    public static String Table_setRootComponent_component_owned;
+    /**
+     * An unexpected exception was thrown from
+     * IComponentListener.componentOrientationChanged().
+     */
+    public static String Tabletop_componentOrientationChanged_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
+     * IContainerListener.componentRemoved().
+     */
+    public static String Tabletop_componentRemoved_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
+     * IComponentListener.componentSurfaceDesignChanged().
+     */
+    public static String Tabletop_componentSurfaceDesignChanged_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
+     * IContainerListener.containerLayoutChanged().
+     */
+    public static String Tabletop_containerLayoutChanged_unexpectedException;
+
+    /** The component index is out of range. */
+    public static String Tabletop_getComponentFromIndex_index_outOfRange;
+
+    /** The orientation is illegal. */
+    public static String Tabletop_orientation_illegal;
+
+    /** The component listener is not registered. */
+    public static String Tabletop_removeComponentListener_listener_notRegistered;
+
+    /** The container listener is not registered. */
+    public static String Tabletop_removeContainerListener_listener_notRegistered;
 
     // --- TableEnvironment -------------------------------------------------
 

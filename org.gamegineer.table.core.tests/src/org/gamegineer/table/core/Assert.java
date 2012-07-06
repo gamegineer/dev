@@ -165,7 +165,7 @@ public final class Assert
                 assertComponentEquals( expectedCardPiles.get( index ), actualCardPiles.get( index ) );
             }
 
-            assertComponentEquals( expected.getRootComponent(), actual.getRootComponent() );
+            assertComponentEquals( expected.getTabletop(), actual.getTabletop() );
         }
     }
 }

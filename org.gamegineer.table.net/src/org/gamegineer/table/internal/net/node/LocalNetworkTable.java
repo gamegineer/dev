@@ -44,7 +44,6 @@ import org.gamegineer.table.core.IContainerListener;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
-import org.gamegineer.table.core.TableRootComponentChangedEvent;
 import org.gamegineer.table.internal.net.Loggers;
 
 /**
@@ -222,7 +221,7 @@ final class LocalNetworkTable
                 addComponentListeners( cardPile );
             }
 
-            addComponentListeners( table_.getRootComponent() );
+            addComponentListeners( table_.getTabletop() );
         }
         finally
         {
@@ -319,7 +318,7 @@ final class LocalNetworkTable
                 removeComponentListeners( cardPile );
             }
 
-            removeComponentListeners( table_.getRootComponent() );
+            removeComponentListeners( table_.getTabletop() );
         }
         finally
         {
@@ -926,39 +925,6 @@ final class LocalNetworkTable
 
             tableManager_.incrementTableState( LocalNetworkTable.this, tableIncrement );
         }
-
-        /*
-         * @see org.gamegineer.table.core.ITableListener#rootComponentChanged(org.gamegineer.table.core.TableRootComponentChangedEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void rootComponentChanged(
-            final TableRootComponentChangedEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-            assert nodeLayer_.isNodeLayerThread();
-
-            getTableEnvironmentLock().lock();
-            try
-            {
-                removeComponentListeners( event.getOldRootComponent() );
-                addComponentListeners( event.getNewRootComponent() );
-            }
-            finally
-            {
-                getTableEnvironmentLock().unlock();
-            }
-
-            if( ignoreEvents_ )
-            {
-                return;
-            }
-
-            final TableIncrement tableIncrement = new TableIncrement();
-            tableIncrement.setRootComponentMemento( event.getNewRootComponent().createMemento() );
-
-            tableManager_.incrementTableState( LocalNetworkTable.this, tableIncrement );
-        }
     }
 
     /**
@@ -1033,24 +999,6 @@ final class LocalNetworkTable
                 public void run()
                 {
                     actualTableListener_.cardPileRemoved( event );
-                }
-            } );
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ITableListener#rootComponentChanged(org.gamegineer.table.core.TableRootComponentChangedEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void rootComponentChanged(
-            final TableRootComponentChangedEvent event )
-        {
-            syncExec( new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    actualTableListener_.rootComponentChanged( event );
                 }
             } );
         }

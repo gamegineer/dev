@@ -74,7 +74,6 @@ import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
-import org.gamegineer.table.core.TableRootComponentChangedEvent;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.BundleImages;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
@@ -252,6 +251,8 @@ final class TableView
         {
             createContainerView( cardPile );
         }
+
+        // TODO: create tabletop view
     }
 
     /**
@@ -1254,14 +1255,6 @@ final class TableView
     }
 
     /**
-     * Invoked when when the root component of the table has changed.
-     */
-    private void rootComponentChanged()
-    {
-        // TODO: add support for root component
-    }
-
-    /**
      * Sets the layout of the focused card pile to the specified value.
      * 
      * @param layout
@@ -2124,26 +2117,6 @@ final class TableView
                 public void run()
                 {
                     TableView.this.cardPileRemoved( event.getCardPile() );
-                }
-            } );
-        }
-
-        /*
-         * @see org.gamegineer.table.core.TableListener#rootComponentChanged(org.gamegineer.table.core.TableRootComponentChangedEvent)
-         */
-        @Override
-        public void rootComponentChanged(
-            final TableRootComponentChangedEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    TableView.this.rootComponentChanged();
                 }
             } );
         }

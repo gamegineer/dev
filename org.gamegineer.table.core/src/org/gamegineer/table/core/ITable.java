@@ -152,14 +152,6 @@ public interface ITable
         Point location );
 
     /**
-     * Gets the root component for this table.
-     * 
-     * @return The root component; never {@code null}.
-     */
-    /* @NonNull */
-    public IComponent getRootComponent();
-
-    /**
      * Gets the table environment associated with this table.
      * 
      * @return The table environment associated with this table; never
@@ -167,6 +159,18 @@ public interface ITable
      */
     /* @NonNull */
     public ITableEnvironment getTableEnvironment();
+
+    /**
+     * Gets the tabletop for this table.
+     * 
+     * <p>
+     * The tabletop represents the root component of the table.
+     * </p>
+     * 
+     * @return The tabletop; never {@code null}.
+     */
+    /* @NonNull */
+    public IContainer getTabletop();
 
     /**
      * Removes the specified card pile from this table.
@@ -206,20 +210,4 @@ public interface ITable
     public void removeTableListener(
         /* @NonNull */
         ITableListener listener );
-
-    /**
-     * Sets the root component for this table.
-     * 
-     * @param component
-     *        The root component; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code component} is already contained in a container or if
-     *         {@code component} was created by a different table environment.
-     * @throws java.lang.NullPointerException
-     *         If {@code component} is {@code null}.
-     */
-    public void setRootComponent(
-        /* @NonNull */
-        IComponent component );
 }

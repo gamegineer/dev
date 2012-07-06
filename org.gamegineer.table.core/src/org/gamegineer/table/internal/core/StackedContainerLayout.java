@@ -112,12 +112,14 @@ public final class StackedContainerLayout
     }
 
     /*
-     * @see org.gamegineer.table.internal.core.AbstractContainerLayout#getComponentOffsetAt(int)
+     * @see org.gamegineer.table.internal.core.AbstractContainerLayout#getComponentOffsetAt(org.gamegineer.table.core.IContainer, int)
      */
     @Override
     Dimension getComponentOffsetAt(
+        final IContainer container,
         final int index )
     {
+        assert container != null;
         assert index >= 0;
 
         final int stackLevel = index / componentsPerStackLevel_;

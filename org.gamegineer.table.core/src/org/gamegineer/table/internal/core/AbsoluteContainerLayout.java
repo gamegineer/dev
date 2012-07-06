@@ -1,5 +1,5 @@
 /*
- * TableListener.java
+ * AbsoluteContainerLayout.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,33 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 3, 2011 at 8:39:38 PM.
+ * Created on Jul 4, 2012 at 7:52:26 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.internal.core;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.awt.Dimension;
+import java.awt.Point;
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.core.IContainer;
+import org.gamegineer.table.core.IContainerLayout;
 
 /**
- * Default implementation of {@link ITableListener}.
- * 
- * <p>
- * All methods of this class do nothing.
- * </p>
+ * Implementation of {@link IContainerLayout} that lays out the components of a
+ * container at their absolute table coordinates.
  */
 @Immutable
-public class TableListener
-    implements ITableListener
+public final class AbsoluteContainerLayout
+    extends AbstractContainerLayout
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableListener} class.
+     * Initializes a new instance of the {@code AbsoluteContainerLayout} class.
      */
-    public TableListener()
+    public AbsoluteContainerLayout()
     {
     }
 
@@ -51,27 +51,19 @@ public class TableListener
     // Methods
     // ======================================================================
 
-    /**
-     * This implementation does nothing.
-     * 
-     * @see org.gamegineer.table.core.ITableListener#cardPileAdded(org.gamegineer.table.core.TableContentChangedEvent)
+    /*
+     * @see org.gamegineer.table.internal.core.AbstractContainerLayout#getComponentOffsetAt(org.gamegineer.table.core.IContainer, int)
      */
     @Override
-    public void cardPileAdded(
-        final TableContentChangedEvent event )
+    Dimension getComponentOffsetAt(
+        final IContainer container,
+        final int index )
     {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-    }
+        assert container != null;
+        assert index >= 0;
 
-    /**
-     * This implementation does nothing.
-     * 
-     * @see org.gamegineer.table.core.ITableListener#cardPileRemoved(org.gamegineer.table.core.TableContentChangedEvent)
-     */
-    @Override
-    public void cardPileRemoved(
-        final TableContentChangedEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        final Point containerOrigin = container.getOrigin();
+        final Point componentLocation = container.getComponent( index ).getLocation();
+        return new Dimension( containerOrigin.x - componentLocation.x, containerOrigin.y - componentLocation.y );
     }
 }

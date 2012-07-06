@@ -22,6 +22,8 @@
 package org.gamegineer.table.internal.core;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
 import org.gamegineer.common.core.util.memento.MementoException;
@@ -144,5 +146,33 @@ public final class MementoUtilsTest
         throws Exception
     {
         MementoUtils.getAttribute( memento_, PRESENT_ATTRIBUTE_NAME, Integer.class );
+    }
+
+    /**
+     * Ensures the {@code hasAttribute} method returns {@code false} when the
+     * attribute is absent.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testHasAttribute_Attribute_Absent()
+        throws Exception
+    {
+        assertFalse( MementoUtils.hasAttribute( memento_, ABSENT_ATTRIBUTE_NAME ) );
+    }
+
+    /**
+     * Ensures the {@code hasAttribute} method returns {@code true} when the
+     * attribute is present.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testHasAttribute_Attribute_Present()
+        throws Exception
+    {
+        assertTrue( MementoUtils.hasAttribute( memento_, PRESENT_ATTRIBUTE_NAME ) );
     }
 }

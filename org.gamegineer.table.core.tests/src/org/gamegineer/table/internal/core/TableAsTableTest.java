@@ -25,7 +25,6 @@ import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.gamegineer.table.core.AbstractTableTestCase;
 import org.gamegineer.table.core.ICardPile;
-import org.gamegineer.table.core.IComponent;
 
 /**
  * A fixture for testing the {@link org.gamegineer.table.internal.core.Table}
@@ -101,25 +100,6 @@ public final class TableAsTableTest
             final Method method = Table.class.getDeclaredMethod( "fireCardPileRemoved", ICardPile.class, Integer.TYPE ); //$NON-NLS-1$
             method.setAccessible( true );
             method.invoke( table, EasyMock.createMock( ICardPile.class ), Integer.valueOf( 0 ) );
-        }
-        catch( final Exception e )
-        {
-            throw new AssertionError( e );
-        }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.AbstractTableTestCase#fireRootComponentChanged(org.gamegineer.table.core.ITable)
-     */
-    @Override
-    protected void fireRootComponentChanged(
-        final Table table )
-    {
-        try
-        {
-            final Method method = Table.class.getDeclaredMethod( "fireRootComponentChanged", IComponent.class, IComponent.class ); //$NON-NLS-1$
-            method.setAccessible( true );
-            method.invoke( table, EasyMock.createMock( ICardPile.class ), EasyMock.createMock( ICardPile.class ) );
         }
         catch( final Exception e )
         {

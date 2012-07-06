@@ -1,5 +1,5 @@
 /*
- * TableListener.java
+ * AbsoluteContainerLayoutPersistenceDelegate.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,33 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 3, 2011 at 8:39:38 PM.
+ * Created on Jul 5, 2012 at 8:46:59 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.internal.persistence.serializable;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.io.IOException;
 import net.jcip.annotations.Immutable;
+import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
+import org.gamegineer.table.internal.core.AbsoluteContainerLayout;
 
 /**
- * Default implementation of {@link ITableListener}.
- * 
- * <p>
- * All methods of this class do nothing.
- * </p>
+ * A persistence delegate for the {@link AbsoluteContainerLayout} class.
  */
 @Immutable
-public class TableListener
-    implements ITableListener
+public final class AbsoluteContainerLayoutPersistenceDelegate
+    extends AbstractPersistenceDelegate
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableListener} class.
+     * Initializes a new instance of the
+     * {@code AbsoluteContainerLayoutPersistenceDelegate} class.
      */
-    public TableListener()
+    public AbsoluteContainerLayoutPersistenceDelegate()
     {
     }
 
@@ -51,27 +50,19 @@ public class TableListener
     // Methods
     // ======================================================================
 
-    /**
-     * This implementation does nothing.
-     * 
-     * @see org.gamegineer.table.core.ITableListener#cardPileAdded(org.gamegineer.table.core.TableContentChangedEvent)
+    /*
+     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate#replaceObject(java.lang.Object)
      */
     @Override
-    public void cardPileAdded(
-        final TableContentChangedEvent event )
+    public Object replaceObject(
+        final Object obj )
+        throws IOException
     {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-    }
+        if( obj instanceof AbsoluteContainerLayout )
+        {
+            return new AbsoluteContainerLayoutProxy( (AbsoluteContainerLayout)obj );
+        }
 
-    /**
-     * This implementation does nothing.
-     * 
-     * @see org.gamegineer.table.core.ITableListener#cardPileRemoved(org.gamegineer.table.core.TableContentChangedEvent)
-     */
-    @Override
-    public void cardPileRemoved(
-        final TableContentChangedEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        return super.replaceObject( obj );
     }
 }
