@@ -57,14 +57,6 @@ public final class TableIncrement
      */
     private List<Integer> removedCardPileIndexes_;
 
-    /**
-     * The memento representing the root component of the table or {@code null}
-     * if the root component is unchanged.
-     * 
-     * @serial The memento representing the root component of the table.
-     */
-    private Object rootComponentMemento_;
-
 
     // ======================================================================
     // Constructors
@@ -77,7 +69,6 @@ public final class TableIncrement
     {
         addedCardPileMementos_ = null;
         removedCardPileIndexes_ = null;
-        rootComponentMemento_ = null;
     }
 
 
@@ -115,18 +106,6 @@ public final class TableIncrement
     }
 
     /**
-     * Gets the memento representing the root component of the table.
-     * 
-     * @return The memento representing the root component of the table or
-     *         {@code null} if the root component is unchanged.
-     */
-    /* @Nullable */
-    public Object getRootComponentMemento()
-    {
-        return rootComponentMemento_;
-    }
-
-    /**
      * Sets the collection of mementos representing the card piles added to the
      * table.
      * 
@@ -157,19 +136,5 @@ public final class TableIncrement
         final List<Integer> removedCardPileIndexes )
     {
         removedCardPileIndexes_ = removedCardPileIndexes;
-    }
-
-    /**
-     * Sets the memento representing the root component of the table.
-     * 
-     * @param rootComponentMemento
-     *        The memento representing the root component of the table or
-     *        {@code null} if the root component is unchanged.
-     */
-    public void setRootComponentMemento(
-        /* @Nullable */
-        final Object rootComponentMemento )
-    {
-        rootComponentMemento_ = rootComponentMemento;
     }
 }
