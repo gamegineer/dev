@@ -165,7 +165,7 @@ public interface IComponent
     /**
      * Gets the table associated with this component.
      * 
-     * @return The table associated with this card pile or {@code null} if this
+     * @return The table associated with this component or {@code null} if this
      *         component is not associated with a table.
      */
     /* @Nullable */
@@ -210,10 +210,10 @@ public interface IComponent
         Point location );
 
     /**
-     * Sets the orientation of this card.
+     * Sets the orientation of this component.
      * 
      * @param orientation
-     *        The orientation of this card; must not be {@code null}.
+     *        The orientation of this component; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code orientation} is not a legal orientation for this
