@@ -64,6 +64,6 @@ public final class AbsoluteContainerLayout
 
         final Point containerOrigin = container.getOrigin();
         final Point componentLocation = container.getComponent( index ).getLocation();
-        return new Dimension( containerOrigin.x - componentLocation.x, containerOrigin.y - componentLocation.y );
+        return new Dimension( componentLocation.x - containerOrigin.x, componentLocation.y - containerOrigin.y );
     }
 }
