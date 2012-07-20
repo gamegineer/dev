@@ -133,6 +133,7 @@ public interface IContainer
     /* @NonNull */
     public IContainerLayout getLayout();
 
+    // TODO: may rename this method removeTopComponent
     /**
      * Removes the component at the top of this container.
      * 
@@ -141,6 +142,21 @@ public interface IContainer
      */
     /* @Nullable */
     public IComponent removeComponent();
+
+    /**
+     * Removes the specified component from this container.
+     * 
+     * @param component
+     *        The component to remove; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code component} is not contained within this container.
+     * @throws java.lang.NullPointerException
+     *         If {@code component} is {@code null}.
+     */
+    public void removeComponent(
+        /* @NonNull */
+        IComponent component );
 
     /**
      * Removes all components in this container.

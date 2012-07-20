@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.ui.model;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import net.jcip.annotations.Immutable;
 
 /**
  * Default implementation of {@link IContainerModelListener}.
@@ -30,6 +31,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
  * All methods of this class do nothing.
  * </p>
  */
+@Immutable
 public class ContainerModelListener
     implements IContainerModelListener
 {
@@ -52,10 +54,10 @@ public class ContainerModelListener
     /**
      * This implementation does nothing.
      * 
-     * @see org.gamegineer.table.internal.ui.model.IContainerModelListener#containerModelFocusChanged(org.gamegineer.table.internal.ui.model.ContainerModelEvent)
+     * @see org.gamegineer.table.internal.ui.model.IContainerModelListener#containerChanged(org.gamegineer.table.internal.ui.model.ContainerModelEvent)
      */
     @Override
-    public void containerModelFocusChanged(
+    public void containerChanged(
         final ContainerModelEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$

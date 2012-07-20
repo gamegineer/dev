@@ -43,7 +43,6 @@ import org.gamegineer.table.core.CardPileLayouts;
 import org.gamegineer.table.core.CardPileOrientation;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ComponentOrientation;
-import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
@@ -54,7 +53,6 @@ import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.core.IContainerListener;
-import org.gamegineer.table.core.ITable;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ICardPile}.
@@ -116,13 +114,6 @@ final class CardPile
     @GuardedBy( "getLock()" )
     private final Point origin_;
 
-    /**
-     * The table that contains this card pile or {@code null} if this card pile
-     * is not contained in a table.
-     */
-    @GuardedBy( "getLock()" )
-    private Table table_;
-
 
     // ======================================================================
     // Constructors
@@ -147,7 +138,6 @@ final class CardPile
         containerListeners_ = new CopyOnWriteArrayList<IContainerListener>();
         layout_ = CardPileLayouts.STACKED;
         origin_ = new Point( 0, 0 );
-        table_ = null;
     }
 
 
@@ -505,10 +495,10 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.IContainer#getComponent(int)
+     * @see org.gamegineer.table.internal.core.Container#getComponent(int)
      */
     @Override
-    public IComponent getComponent(
+    public Component getComponent(
         final int index )
     {
         getLock().lock();
@@ -522,47 +512,6 @@ final class CardPile
         {
             getLock().unlock();
         }
-    }
-
-    /**
-     * Gets the component within this container's bounds (including the
-     * container itself) at the specified location.
-     * 
-     * <p>
-     * If two or more components occupy the specified location, the top-most
-     * component will be returned.
-     * </p>
-     * 
-     * @param location
-     *        The location in table coordinates; must not be {@code null}.
-     * 
-     * @return The component within this container's bounds at the specified
-     *         location or {@code null} if no component is at that location.
-     */
-    @GuardedBy( "getLock()" )
-    /* @Nullable */
-    IComponent getComponent(
-        /* @NonNull */
-        final Point location )
-    {
-        assert location != null;
-        assert getLock().isHeldByCurrentThread();
-
-        if( getBounds().contains( location ) )
-        {
-            if( cards_.isEmpty() )
-            {
-                return this;
-            }
-
-            final int index = getComponentIndex( location );
-            if( index != -1 )
-            {
-                return cards_.get( index );
-            }
-        }
-
-        return null;
     }
 
     /*
@@ -587,7 +536,6 @@ final class CardPile
      */
     @Override
     int getComponentIndex(
-        /* @NonNull */
         final Component component )
     {
         assert component != null;
@@ -598,25 +546,11 @@ final class CardPile
         return index;
     }
 
-    /**
-     * Gets the index of the component in this container at the specified
-     * location.
-     * 
-     * <p>
-     * This method follows the same rules defined by
-     * {@link #getComponent(Point)}.
-     * </p>
-     * 
-     * @param location
-     *        The location in table coordinates; must not be {@code null}.
-     * 
-     * @return The index of the component in this container at the specified
-     *         location or -1 if no component in this container is at that
-     *         location.
+    /*
+     * @see org.gamegineer.table.internal.core.Container#getComponentIndex(java.awt.Point)
      */
-    @GuardedBy( "getLock()" )
-    private int getComponentIndex(
-        /* @NonNull */
+    @Override
+    int getComponentIndex(
         final Point location )
     {
         assert location != null;
@@ -695,28 +629,6 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponent#getPath()
-     */
-    @Override
-    public ComponentPath getPath()
-    {
-        getLock().lock();
-        try
-        {
-            if( table_ == null )
-            {
-                return null;
-            }
-
-            return new ComponentPath( null, table_.getCardPileIndex( this ) );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-    }
-
-    /*
      * @see org.gamegineer.table.core.IComponent#getSize()
      */
     @Override
@@ -761,20 +673,23 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponent#getTable()
+     * @see org.gamegineer.table.internal.core.Container#hasComponents()
      */
     @Override
-    public ITable getTable()
+    boolean hasComponents()
     {
-        getLock().lock();
-        try
-        {
-            return table_;
-        }
-        finally
-        {
-            getLock().unlock();
-        }
+        assert getLock().isHeldByCurrentThread();
+
+        return !cards_.isEmpty();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.core.Component#isFocusable()
+     */
+    @Override
+    public boolean isFocusable()
+    {
+        return true;
     }
 
     /**
@@ -820,6 +735,44 @@ final class CardPile
         final List<IComponent> components = removeComponents( componentRangeStrategy );
         assert components.size() <= 1;
         return components.isEmpty() ? null : components.get( 0 );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IContainer#removeComponent(org.gamegineer.table.core.IComponent)
+     */
+    @Override
+    public void removeComponent(
+        final IComponent component )
+    {
+        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
+
+        final int componentIndex;
+
+        getLock().lock();
+        try
+        {
+            assertArgumentLegal( component.getContainer() == this, "component", NonNlsMessages.CardPile_removeComponent_component_notOwned ); //$NON-NLS-1$
+
+            componentIndex = cards_.indexOf( component );
+            assert componentIndex != -1;
+            final Component typedComponent = cards_.remove( componentIndex );
+            assert typedComponent != null;
+            typedComponent.setContainer( null );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+
+        addEventNotification( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                fireComponentRemoved( component, componentIndex );
+            }
+        } );
     }
 
     /*
@@ -1125,23 +1078,6 @@ final class CardPile
                 fireComponentSurfaceDesignChanged();
             }
         } );
-    }
-
-    /**
-     * Sets the table that contains this card pile.
-     * 
-     * @param table
-     *        The table that contains this card pile or {@code null} if this
-     *        card pile is not contained in a table.
-     */
-    @GuardedBy( "getLock()" )
-    void setTable(
-        /* @Nullable */
-        final Table table )
-    {
-        assert getLock().isHeldByCurrentThread();
-
-        table_ = table;
     }
 
     /*

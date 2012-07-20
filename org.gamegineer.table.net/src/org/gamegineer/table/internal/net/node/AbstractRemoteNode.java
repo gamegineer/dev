@@ -34,12 +34,10 @@ import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.node.common.handlers.ComponentIncrementMessageHandler;
-import org.gamegineer.table.internal.net.node.common.handlers.TableIncrementMessageHandler;
 import org.gamegineer.table.internal.net.node.common.handlers.TableMessageHandler;
 import org.gamegineer.table.internal.net.node.common.messages.ComponentIncrementMessage;
 import org.gamegineer.table.internal.net.node.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.node.common.messages.GoodbyeMessage;
-import org.gamegineer.table.internal.net.node.common.messages.TableIncrementMessage;
 import org.gamegineer.table.internal.net.node.common.messages.TableMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.IService;
@@ -148,7 +146,6 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
 
         registerUncorrelatedMessageHandler( ComponentIncrementMessage.class, ComponentIncrementMessageHandler.INSTANCE );
         registerUncorrelatedMessageHandler( ErrorMessage.class, ErrorMessageHandler.INSTANCE );
-        registerUncorrelatedMessageHandler( TableIncrementMessage.class, TableIncrementMessageHandler.INSTANCE );
         registerUncorrelatedMessageHandler( TableMessage.class, TableMessageHandler.INSTANCE );
     }
 

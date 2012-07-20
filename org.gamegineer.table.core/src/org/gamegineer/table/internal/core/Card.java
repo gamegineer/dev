@@ -39,12 +39,10 @@ import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ComponentOrientation;
-import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.IComponentListener;
-import org.gamegineer.table.core.ITable;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ICard}.
@@ -334,35 +332,6 @@ final class Card
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponent#getPath()
-     */
-    @Override
-    public ComponentPath getPath()
-    {
-        getLock().lock();
-        try
-        {
-            final Container container = getContainer();
-            if( container == null )
-            {
-                return null;
-            }
-
-            final ComponentPath parentPath = container.getPath();
-            if( parentPath == null )
-            {
-                return null;
-            }
-
-            return new ComponentPath( parentPath, container.getComponentIndex( this ) );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-    }
-
-    /*
      * @see org.gamegineer.table.core.IComponent#getSize()
      */
     @Override
@@ -427,16 +396,6 @@ final class Card
         {
             getLock().unlock();
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponent#getTable()
-     */
-    @Override
-    public ITable getTable()
-    {
-        final Container container = getContainer();
-        return (container != null) ? container.getTable() : null;
     }
 
     /**

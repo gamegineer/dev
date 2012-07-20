@@ -50,7 +50,6 @@ import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.core.IContainerListener;
-import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TabletopLayouts;
 import org.gamegineer.table.core.TabletopOrientation;
 
@@ -64,10 +63,6 @@ final class Tabletop
     // ======================================================================
     // Fields
     // ======================================================================
-
-    // TODO: should default design have maximum size? if so, need to adjust default location as well.
-    /** The default component surface design. */
-    private static final ComponentSurfaceDesign DEFAULT_SURFACE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.Tabletop.DEFAULT_SURFACE_DESIGN" ), 0, 0 ); //$NON-NLS-1$
 
     /**
      * The name of the memento attribute that stores the collection of
@@ -115,7 +110,7 @@ final class Tabletop
     private ComponentSurfaceDesign surfaceDesign_;
 
     /**
-     * The table that contains this component or {@code null} if this component
+     * The table that contains this tabletop or {@code null} if this component
      * is not contained in a table.
      */
     @GuardedBy( "getLock()" )
@@ -143,8 +138,8 @@ final class Tabletop
         components_ = new ArrayList<Component>();
         containerListeners_ = new CopyOnWriteArrayList<IContainerListener>();
         layout_ = TabletopLayouts.ABSOLUTE;
-        location_ = new Point( 0, 0 );
-        surfaceDesign_ = DEFAULT_SURFACE_DESIGN;
+        location_ = new Point( Short.MIN_VALUE / 2, Short.MIN_VALUE / 2 );
+        surfaceDesign_ = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.Tabletop.DEFAULT_SURFACE_DESIGN" ), Short.MAX_VALUE, Short.MAX_VALUE ); //$NON-NLS-1$
         table_ = null;
     }
 
@@ -487,14 +482,13 @@ final class Tabletop
         getLock().lock();
         try
         {
-            if( components_.isEmpty() )
+            Rectangle bounds = new Rectangle( location_, surfaceDesign_.getSize() );
+            for( final IComponent component : components_ )
             {
-                return new Rectangle( location_, surfaceDesign_.getSize() );
+                bounds = bounds.union( component.getBounds() );
             }
 
-            final Rectangle topComponentBounds = components_.get( components_.size() - 1 ).getBounds();
-            final Rectangle bottomComponentBounds = components_.get( 0 ).getBounds();
-            return topComponentBounds.union( bottomComponentBounds );
+            return bounds;
         }
         finally
         {
@@ -503,10 +497,10 @@ final class Tabletop
     }
 
     /*
-     * @see org.gamegineer.table.core.IContainer#getComponent(int)
+     * @see org.gamegineer.table.internal.core.Container#getComponent(int)
      */
     @Override
-    public IComponent getComponent(
+    public Component getComponent(
         final int index )
     {
         getLock().lock();
@@ -554,25 +548,11 @@ final class Tabletop
         return index;
     }
 
-    /**
-     * Gets the index of the component in this container at the specified
-     * location.
-     * 
-     * <p>
-     * If two or more components occupy the specified location, the top-most
-     * component will be returned.
-     * </p>
-     * 
-     * @param location
-     *        The location in table coordinates; must not be {@code null}.
-     * 
-     * @return The index of the component in this container at the specified
-     *         location or -1 if no component in this container is at that
-     *         location.
+    /*
+     * @see org.gamegineer.table.internal.core.Container#getComponentIndex(java.awt.Point)
      */
-    @GuardedBy( "getLock()" )
-    private int getComponentIndex(
-        /* @NonNull */
+    @Override
+    int getComponentIndex(
         final Point location )
     {
         assert location != null;
@@ -717,20 +697,25 @@ final class Tabletop
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponent#getTable()
+     * @see org.gamegineer.table.internal.core.Component#getTableInternal()
      */
     @Override
-    public ITable getTable()
+    Table getTableInternal()
     {
-        getLock().lock();
-        try
-        {
-            return table_;
-        }
-        finally
-        {
-            getLock().unlock();
-        }
+        assert getLock().isHeldByCurrentThread();
+
+        return table_;
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.core.Container#hasComponents()
+     */
+    @Override
+    boolean hasComponents()
+    {
+        assert getLock().isHeldByCurrentThread();
+
+        return !components_.isEmpty();
     }
 
     /*
@@ -751,6 +736,44 @@ final class Tabletop
         final List<IComponent> components = removeComponents( componentRangeStrategy );
         assert components.size() <= 1;
         return components.isEmpty() ? null : components.get( 0 );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IContainer#removeComponent(org.gamegineer.table.core.IComponent)
+     */
+    @Override
+    public void removeComponent(
+        final IComponent component )
+    {
+        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
+
+        final int componentIndex;
+
+        getLock().lock();
+        try
+        {
+            assertArgumentLegal( component.getContainer() == this, "component", NonNlsMessages.Tabletop_removeComponent_component_notOwned ); //$NON-NLS-1$
+
+            componentIndex = components_.indexOf( component );
+            assert componentIndex != -1;
+            final Component typedComponent = components_.remove( componentIndex );
+            assert typedComponent != null;
+            typedComponent.setContainer( null );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+
+        addEventNotification( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                fireComponentRemoved( component, componentIndex );
+            }
+        } );
     }
 
     /*
@@ -1055,19 +1078,14 @@ final class Tabletop
      *        The table that contains this tabletop or {@code null} if this
      *        tabletop is not contained in a table.
      */
+    @GuardedBy( "getLock()" )
     void setTable(
         /* @Nullable */
         final Table table )
     {
-        getLock().lock();
-        try
-        {
-            table_ = table;
-        }
-        finally
-        {
-            getLock().unlock();
-        }
+        assert getLock().isHeldByCurrentThread();
+
+        table_ = table;
     }
 
     /*

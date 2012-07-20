@@ -22,7 +22,6 @@
 package org.gamegineer.table.core;
 
 import java.awt.Point;
-import java.util.List;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
 
 /**
@@ -38,71 +37,6 @@ public interface ITable
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Adds the specified card pile to this table.
-     * 
-     * @param cardPile
-     *        The card pile; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code cardPile} is already contained in the table or if
-     *         {@code cardPile} was created by a different table environment.
-     * @throws java.lang.NullPointerException
-     *         If {@code cardPile} is {@code null}.
-     */
-    public void addCardPile(
-        /* @NonNull */
-        ICardPile cardPile );
-
-    /**
-     * Adds the specified table listener to this table.
-     * 
-     * @param listener
-     *        The table listener; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code listener} is already a registered table listener.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
-     */
-    public void addTableListener(
-        /* @NonNull */
-        ITableListener listener );
-
-    /**
-     * Gets the card pile in this table at the specified index.
-     * 
-     * @param index
-     *        The card pile index.
-     * 
-     * @return The card pile in this table at the specified index; never
-     *         {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code index} is less than zero or greater than or equal to
-     *         the card pile count.
-     */
-    /* @NonNull */
-    public ICardPile getCardPile(
-        int index );
-
-    /**
-     * Gets the count of card piles contained in this table.
-     * 
-     * @return The count of card piles contained in this table.
-     */
-    public int getCardPileCount();
-
-    /**
-     * Gets the collection of card piles on this table.
-     * 
-     * @return The collection of card piles on this table; never {@code null}.
-     *         The card piles are returned in the order they were added to the
-     *         table from oldest to newest.
-     */
-    /* @NonNull */
-    public List<ICardPile> getCardPiles();
 
     /**
      * Gets the component in this table at the specified path.
@@ -171,43 +105,4 @@ public interface ITable
      */
     /* @NonNull */
     public IContainer getTabletop();
-
-    /**
-     * Removes the specified card pile from this table.
-     * 
-     * @param cardPile
-     *        The card pile; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code cardPile} is not contained in this table.
-     * @throws java.lang.NullPointerException
-     *         If {@code cardPile} is {@code null}.
-     */
-    public void removeCardPile(
-        /* @NonNull */
-        ICardPile cardPile );
-
-    /**
-     * Removes all card piles from this table.
-     * 
-     * @return The collection of card piles removed from this table; never
-     *         {@code null}. The card piles are returned in the order they were
-     *         added to the table from oldest to newest.
-     */
-    public List<ICardPile> removeCardPiles();
-
-    /**
-     * Removes the specified table listener from this table.
-     * 
-     * @param listener
-     *        The table listener; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code listener} is not a registered table listener.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
-     */
-    public void removeTableListener(
-        /* @NonNull */
-        ITableListener listener );
 }

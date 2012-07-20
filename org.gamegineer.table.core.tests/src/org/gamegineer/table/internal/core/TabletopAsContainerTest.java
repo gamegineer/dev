@@ -26,8 +26,10 @@ import org.easymock.EasyMock;
 import org.gamegineer.table.core.AbstractContainerTestCase;
 import org.gamegineer.table.core.CardPiles;
 import org.gamegineer.table.core.Cards;
+import org.gamegineer.table.core.ComponentSurfaceDesigns;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
+import org.gamegineer.table.core.TabletopOrientation;
 
 /**
  * A fixture for testing the {@link org.gamegineer.table.internal.core.Tabletop}
@@ -60,7 +62,13 @@ public final class TabletopAsContainerTest
     protected Tabletop createComponent(
         final TableEnvironment tableEnvironment )
     {
-        return new Tabletop( tableEnvironment );
+        // TODO: We are explicitly setting the surface design to accommodate the
+        // tests that add child components in an attempt to cause the container
+        // bounds to expand.  Consider having the test cases themselves to set
+        // the surface design instead of doing it here.
+        final Tabletop tabletop = new Tabletop( tableEnvironment );
+        tabletop.setSurfaceDesign( TabletopOrientation.DEFAULT, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+        return tabletop;
     }
 
     /*

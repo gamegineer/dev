@@ -34,8 +34,9 @@ public interface IContainerModelListener
     // Methods
     // ======================================================================
 
+    // TODO: This is a temporary method.  Will probably remove this entire interface.
     /**
-     * Invoked after the container model has gained or lost the logical focus.
+     * Invoked after the container associated with the model has changed.
      * 
      * @param event
      *        The event describing the container model; must not be {@code null}
@@ -44,7 +45,7 @@ public interface IContainerModelListener
      * @throws java.lang.NullPointerException
      *         If {@code event} is {@code null}.
      */
-    public void containerModelFocusChanged(
+    public void containerChanged(
         /* @NonNull */
         ContainerModelEvent event );
 }

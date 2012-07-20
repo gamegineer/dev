@@ -37,7 +37,6 @@ import org.gamegineer.table.core.ContainerEvent;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainerListener;
 import org.gamegineer.table.internal.ui.model.ContainerModel;
-import org.gamegineer.table.internal.ui.model.ContainerModelEvent;
 import org.gamegineer.table.internal.ui.model.IContainerModelListener;
 
 /**
@@ -143,17 +142,6 @@ final class ContainerView
      * Invoked after the container layout has changed.
      */
     private void containerLayoutChanged()
-    {
-        if( isInitialized() )
-        {
-            repaint();
-        }
-    }
-
-    /**
-     * Invoked after the container model has gained or lost the logical focus.
-     */
-    private void containerModelFocusChanged()
     {
         if( isInitialized() )
         {
@@ -406,31 +394,6 @@ final class ContainerView
          */
         ContainerModelListener()
         {
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.internal.ui.model.ContainerModelListener#containerModelFocusChanged(org.gamegineer.table.internal.ui.model.ContainerModelEvent)
-         */
-        @Override
-        public void containerModelFocusChanged(
-            final ContainerModelEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    ContainerView.this.containerModelFocusChanged();
-                }
-            } );
         }
     }
 }

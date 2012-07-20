@@ -62,4 +62,16 @@ public class ComponentModelListener
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
     }
+
+    /**
+     * This implementation does nothing.
+     * 
+     * @see org.gamegineer.table.internal.ui.model.IComponentModelListener#componentModelFocusChanged(org.gamegineer.table.internal.ui.model.ComponentModelEvent)
+     */
+    @Override
+    public void componentModelFocusChanged(
+        final ComponentModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+    }
 }

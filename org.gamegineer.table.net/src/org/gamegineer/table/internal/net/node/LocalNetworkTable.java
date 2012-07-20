@@ -36,14 +36,11 @@ import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ContainerEvent;
-import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerListener;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.core.ITableListener;
-import org.gamegineer.table.core.TableContentChangedEvent;
 import org.gamegineer.table.internal.net.Loggers;
 
 /**
@@ -71,9 +68,6 @@ final class LocalNetworkTable
 
     /** The local table. */
     private final ITable table_;
-
-    /** The local table listener. */
-    private final ITableListener tableListener_;
 
     /** The table manager for the local table network node. */
     private final ITableManager tableManager_;
@@ -112,7 +106,6 @@ final class LocalNetworkTable
         ignoreEvents_ = false;
         nodeLayer_ = nodeLayer;
         table_ = table;
-        tableListener_ = new TableListenerProxy( new TableListener() );
         tableManager_ = tableManager;
 
         initializeListeners();
@@ -190,22 +183,6 @@ final class LocalNetworkTable
         ignoreEvents_ = oldIgnoreEvents;
     }
 
-    /*
-     * @see org.gamegineer.table.internal.net.node.INetworkTable#incrementTableState(org.gamegineer.table.internal.net.node.TableIncrement)
-     */
-    @Override
-    public void incrementTableState(
-        final TableIncrement tableIncrement )
-    {
-        assertArgumentNotNull( tableIncrement, "tableIncrement" ); //$NON-NLS-1$
-        assert nodeLayer_.isNodeLayerThread();
-
-        final boolean oldIgnoreEvents = ignoreEvents_;
-        ignoreEvents_ = true;
-        NetworkTableUtils.incrementTableState( table_, tableIncrement );
-        ignoreEvents_ = oldIgnoreEvents;
-    }
-
     /**
      * Initializes the listeners for the local table.
      */
@@ -214,13 +191,6 @@ final class LocalNetworkTable
         getTableEnvironmentLock().lock();
         try
         {
-            table_.addTableListener( tableListener_ );
-
-            for( final ICardPile cardPile : table_.getCardPiles() )
-            {
-                addComponentListeners( cardPile );
-            }
-
             addComponentListeners( table_.getTabletop() );
         }
         finally
@@ -311,13 +281,6 @@ final class LocalNetworkTable
         getTableEnvironmentLock().lock();
         try
         {
-            table_.removeTableListener( tableListener_ );
-
-            for( final ICardPile cardPile : table_.getCardPiles() )
-            {
-                removeComponentListeners( cardPile );
-            }
-
             removeComponentListeners( table_.getTabletop() );
         }
         finally
@@ -375,20 +338,22 @@ final class LocalNetworkTable
             getTableEnvironmentLock().lock();
             try
             {
-                // In the current implementation, handling this event for non-root components
-                // is unnecessary because a non-root component can only be moved by moving a
-                // root component that contains the non-root component. Thus, when the
-                // component bounds changed event is fired for the root component, it will
-                // automatically set the non-root component location when the root component
-                // location is changed.
+                // TODO: Review the following implementation -- it probably will not apply
+                // once the table contains more than simply cards and card piles.
+
+                // In the current implementation, handling this event for non-containers
+                // is unnecessary because a non-container can only be moved by moving any
+                // of its ancestor containers.  Thus, when the component bounds changed
+                // event is fired for the container, it will automatically set the
+                // non-container location when the container location is changed.
                 //
-                // If we send the component bounds changed events for all components over the
-                // network, the non-root component movement on remote tables will appear
-                // "jumpy" because multiple IComponent.setLocation() calls will be made that
-                // may be a few pixels off.
+                // If we send the component bounds changed events for all components over
+                // the network, the non-container movement on remote tables will appear
+                // "jumpy" because multiple IComponent.setLocation() calls will be made
+                // for the same component that may be a few pixels off.
 
                 final IComponent component = event.getComponent();
-                if( component.getContainer() == null )
+                if( component instanceof IContainer )
                 {
                     componentPath = component.getPath();
                     if( componentPath != null )
@@ -832,173 +797,6 @@ final class LocalNetworkTable
                 public void run()
                 {
                     actualContainerListener_.containerLayoutChanged( event );
-                }
-            } );
-        }
-    }
-
-    /**
-     * A table listener for the local table adapter.
-     */
-    @Immutable
-    private final class TableListener
-        implements ITableListener
-    {
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code TableListener} class.
-         */
-        TableListener()
-        {
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.core.ITableListener#cardPileAdded(org.gamegineer.table.core.TableContentChangedEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void cardPileAdded(
-            final TableContentChangedEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-            assert nodeLayer_.isNodeLayerThread();
-
-            getTableEnvironmentLock().lock();
-            try
-            {
-                addComponentListeners( event.getCardPile() );
-            }
-            finally
-            {
-                getTableEnvironmentLock().unlock();
-            }
-
-            if( ignoreEvents_ )
-            {
-                return;
-            }
-
-            final TableIncrement tableIncrement = new TableIncrement();
-            tableIncrement.setAddedCardPileMementos( Collections.singletonList( event.getCardPile().createMemento() ) );
-
-            tableManager_.incrementTableState( LocalNetworkTable.this, tableIncrement );
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ITableListener#cardPileRemoved(org.gamegineer.table.core.TableContentChangedEvent)
-         */
-        @Override
-        @SuppressWarnings( {
-            "boxing", "synthetic-access"
-        } )
-        public void cardPileRemoved(
-            final TableContentChangedEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-            assert nodeLayer_.isNodeLayerThread();
-
-            getTableEnvironmentLock().lock();
-            try
-            {
-                removeComponentListeners( event.getCardPile() );
-            }
-            finally
-            {
-                getTableEnvironmentLock().unlock();
-            }
-
-            if( ignoreEvents_ )
-            {
-                return;
-            }
-
-            final TableIncrement tableIncrement = new TableIncrement();
-            tableIncrement.setRemovedCardPileIndexes( Collections.singletonList( event.getCardPileIndex() ) );
-
-            tableManager_.incrementTableState( LocalNetworkTable.this, tableIncrement );
-        }
-    }
-
-    /**
-     * A proxy for instances of {@link ITableListener} that ensures all methods
-     * are called on the associated node layer thread.
-     */
-    @Immutable
-    private final class TableListenerProxy
-        implements ITableListener
-    {
-        // ==================================================================
-        // Fields
-        // ==================================================================
-
-        /** The actual table listener. */
-        private final ITableListener actualTableListener_;
-
-
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code TableListenerProxy} class.
-         * 
-         * @param actualTableListener
-         *        The actual table listener; must not be {@code null}.
-         */
-        TableListenerProxy(
-            /* @NonNull */
-            final ITableListener actualTableListener )
-        {
-            assert actualTableListener != null;
-
-            actualTableListener_ = actualTableListener;
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.core.ITableListener#cardPileAdded(org.gamegineer.table.core.TableContentChangedEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void cardPileAdded(
-            final TableContentChangedEvent event )
-        {
-            syncExec( new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    actualTableListener_.cardPileAdded( event );
-                }
-            } );
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ITableListener#cardPileRemoved(org.gamegineer.table.core.TableContentChangedEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void cardPileRemoved(
-            final TableContentChangedEvent event )
-        {
-            syncExec( new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    actualTableListener_.cardPileRemoved( event );
                 }
             } );
         }

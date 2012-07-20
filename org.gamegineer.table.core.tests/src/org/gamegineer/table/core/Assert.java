@@ -157,14 +157,6 @@ public final class Assert
         }
         else
         {
-            final List<ICardPile> expectedCardPiles = expected.getCardPiles();
-            final List<ICardPile> actualCardPiles = actual.getCardPiles();
-            assertEquals( expectedCardPiles.size(), actualCardPiles.size() );
-            for( int index = 0, size = expectedCardPiles.size(); index < size; ++index )
-            {
-                assertComponentEquals( expectedCardPiles.get( index ), actualCardPiles.get( index ) );
-            }
-
             assertComponentEquals( expected.getTabletop(), actual.getTabletop() );
         }
     }

@@ -1498,36 +1498,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          * Subclasses may override but must call the superclass implementation.
          * </p>
          * 
-         * @see org.gamegineer.table.internal.net.node.ITableManager#incrementTableState(org.gamegineer.table.internal.net.node.INetworkTable,
-         *      org.gamegineer.table.internal.net.node.TableIncrement)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void incrementTableState(
-            final INetworkTable sourceTable,
-            final TableIncrement tableIncrement )
-        {
-            assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
-            assertArgumentNotNull( tableIncrement, "tableIncrement" ); //$NON-NLS-1$
-            assert isNodeLayerThread();
-
-            for( final INetworkTable table : getTables() )
-            {
-                if( table != sourceTable )
-                {
-                    table.incrementTableState( tableIncrement );
-                }
-            }
-        }
-
-        /**
-         * This implementation forwards the request to all tables connected to
-         * the node, not including the originator of the request.
-         * 
-         * <p>
-         * Subclasses may override but must call the superclass implementation.
-         * </p>
-         * 
          * @see org.gamegineer.table.internal.net.node.ITableManager#setTableState(org.gamegineer.table.internal.net.node.INetworkTable,
          *      java.lang.Object)
          */

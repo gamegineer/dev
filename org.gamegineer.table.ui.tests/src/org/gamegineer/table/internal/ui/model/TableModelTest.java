@@ -37,8 +37,6 @@ import org.easymock.IMocksControl;
 import org.gamegineer.table.core.CardPiles;
 import org.gamegineer.table.core.Cards;
 import org.gamegineer.table.core.ComponentPath;
-import org.gamegineer.table.core.ICard;
-import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.junit.Before;
@@ -98,25 +96,25 @@ public final class TableModelTest
     }
 
     /**
-     * Creates a new card with unique attributes using the fixture table
+     * Creates a new component with unique attributes using the fixture table
      * environment.
      * 
-     * @return A new card; never {@code null}.
+     * @return A new component; never {@code null}.
      */
     /* @NonNull */
-    private ICard createUniqueCard()
+    private IComponent createUniqueComponent()
     {
         return Cards.createUniqueCard( model_.getTable().getTableEnvironment() );
     }
 
     /**
-     * Creates a new card pile with unique attributes using the fixture table
+     * Creates a new container with unique attributes using the fixture table
      * environment.
      * 
-     * @return A new card pile; never {@code null}.
+     * @return A new container; never {@code null}.
      */
     /* @NonNull */
-    private ICardPile createUniqueCardPile()
+    private IContainer createUniqueContainer()
     {
         return CardPiles.createUniqueCardPile( model_.getTable().getTableEnvironment() );
     }
@@ -254,14 +252,14 @@ public final class TableModelTest
     @Test
     public void testContainerModel_ContainerChanged_FiresTableModelDirtyFlagChangedEvent()
     {
-        final ICardPile cardPile = createUniqueCardPile();
-        model_.getTable().addCardPile( cardPile );
+        final IComponent component = createUniqueContainer();
+        model_.getTable().getTabletop().addComponent( component );
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableModelDirtyFlagChanged( EasyMock.notNull( TableModelEvent.class ) );
         niceMocksControl_.replay();
         model_.addTableModelListener( listener );
 
-        cardPile.setLocation( new Point( 1000, 1000 ) );
+        component.setLocation( new Point( 1000, 1000 ) );
 
         niceMocksControl_.verify();
     }
@@ -273,14 +271,14 @@ public final class TableModelTest
     @Test
     public void testContainerModel_ContainerChanged_FiresTableChangedEvent()
     {
-        final ICardPile cardPile = createUniqueCardPile();
-        model_.getTable().addCardPile( cardPile );
+        final IComponent component = createUniqueContainer();
+        model_.getTable().getTabletop().addComponent( component );
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableChanged( EasyMock.notNull( TableModelEvent.class ) );
         niceMocksControl_.replay();
         model_.addTableModelListener( listener );
 
-        cardPile.setLocation( new Point( 1000, 1000 ) );
+        component.setLocation( new Point( 1000, 1000 ) );
 
         niceMocksControl_.verify();
     }
@@ -292,7 +290,7 @@ public final class TableModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testGetComponentModel_Path_Absent()
     {
-        model_.getComponentModel( new ComponentPath( null, 0 ) );
+        model_.getComponentModel( new ComponentPath( null, 1 ) );
     }
 
     /**
@@ -312,38 +310,18 @@ public final class TableModelTest
     @Test
     public void testGetComponentModel_Path_Present()
     {
-        final ICardPile expectedCardPile = createUniqueCardPile();
-        model_.getTable().addCardPile( expectedCardPile );
-        expectedCardPile.addComponent( createUniqueCard() );
-        expectedCardPile.addComponent( createUniqueCard() );
-        final IComponent expectedCard = createUniqueCard();
-        expectedCardPile.addComponent( expectedCard );
+        final IContainer expectedContainer = createUniqueContainer();
+        model_.getTable().getTabletop().addComponent( expectedContainer );
+        expectedContainer.addComponent( createUniqueComponent() );
+        expectedContainer.addComponent( createUniqueComponent() );
+        final IComponent expectedComponent = createUniqueComponent();
+        expectedContainer.addComponent( expectedComponent );
 
-        final ComponentModel actualCardPileModel = model_.getComponentModel( expectedCardPile.getPath() );
-        final ComponentModel actualCardModel = model_.getComponentModel( expectedCard.getPath() );
+        final ComponentModel actualContainerModel = model_.getComponentModel( expectedContainer.getPath() );
+        final ComponentModel actualComponentModel = model_.getComponentModel( expectedComponent.getPath() );
 
-        assertSame( expectedCardPile, actualCardPileModel.getComponent() );
-        assertSame( expectedCard, actualCardModel.getComponent() );
-    }
-
-    /**
-     * Ensures the {@code getContainerModel} method throws an exception when
-     * passed a container that is absent from the table.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testGetContainerModel_Container_Absent()
-    {
-        model_.getContainerModel( EasyMock.createMock( IContainer.class ) );
-    }
-
-    /**
-     * Ensures the {@code getContainerModel} method throws an exception when
-     * passed a {@code null} container.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetContainerModel_Container_Null()
-    {
-        model_.getContainerModel( null );
+        assertSame( expectedContainer, actualContainerModel.getComponent() );
+        assertSame( expectedComponent, actualComponentModel.getComponent() );
     }
 
     /**
@@ -353,12 +331,12 @@ public final class TableModelTest
     @Test
     public void testGetFocusableComponent_Location_FocusableComponent()
     {
-        final ICardPile expectedCardPile = createUniqueCardPile();
-        model_.getTable().addCardPile( expectedCardPile );
+        final IComponent expectedComponent = createUniqueContainer();
+        model_.getTable().getTabletop().addComponent( expectedComponent );
 
         final IComponent actualComponent = model_.getFocusableComponent( new Point( 0, 0 ) );
 
-        assertSame( expectedCardPile, actualComponent );
+        assertSame( expectedComponent, actualComponent );
     }
 
     /**
@@ -368,7 +346,7 @@ public final class TableModelTest
     @Test
     public void testGetFocusableComponent_Location_NoComponent()
     {
-        assertNull( model_.getFocusableComponent( new Point( 0, 0 ) ) );
+        assertNull( model_.getFocusableComponent( new Point( Integer.MIN_VALUE, Integer.MIN_VALUE ) ) );
     }
 
     /**
@@ -613,6 +591,26 @@ public final class TableModelTest
     }
 
     /**
+     * Ensures a table model focus changed event is fired if the component with
+     * the focus is removed from the table.
+     */
+    @Test
+    public void testRemoveFocusedComponent_FiresTableModelFocusChangedEvent()
+    {
+        final IComponent component = createUniqueContainer();
+        model_.getTable().getTabletop().addComponent( component );
+        model_.setFocus( component );
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableModelFocusChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
+
+        model_.getTable().getTabletop().removeComponent( component );
+
+        niceMocksControl_.verify();
+    }
+
+    /**
      * Ensures the {@code removeTableModelListener} method throws an exception
      * when passed a listener that is absent from the table model listener
      * collection.
@@ -701,25 +699,25 @@ public final class TableModelTest
     @Test
     public void testSetFocus()
     {
-        final ICardPile cardPile1 = createUniqueCardPile();
-        model_.getTable().addCardPile( cardPile1 );
-        final ICardPile cardPile2 = createUniqueCardPile();
-        model_.getTable().addCardPile( cardPile2 );
+        final IContainer container1 = createUniqueContainer();
+        model_.getTable().getTabletop().addComponent( container1 );
+        final IContainer container2 = createUniqueContainer();
+        model_.getTable().getTabletop().addComponent( container2 );
 
-        model_.setFocus( cardPile1 );
-        assertTrue( model_.getContainerModel( cardPile1 ).isFocused() );
-        assertFalse( model_.getContainerModel( cardPile2 ).isFocused() );
-        model_.setFocus( cardPile2 );
-        assertFalse( model_.getContainerModel( cardPile1 ).isFocused() );
-        assertTrue( model_.getContainerModel( cardPile2 ).isFocused() );
+        model_.setFocus( container1 );
+        assertTrue( model_.getComponentModel( container1.getPath() ).isFocused() );
+        assertFalse( model_.getComponentModel( container2.getPath() ).isFocused() );
+        model_.setFocus( container2 );
+        assertFalse( model_.getComponentModel( container1.getPath() ).isFocused() );
+        assertTrue( model_.getComponentModel( container2.getPath() ).isFocused() );
     }
 
     /**
      * Ensures the {@code setFocus} method does not throw an exception when
-     * passed a {@code null} card pile.
+     * passed a {@code null} container.
      */
     @Test
-    public void testSetFocus_CardPile_Null()
+    public void testSetFocus_Container_Null()
     {
         model_.setFocus( null );
     }
@@ -731,14 +729,14 @@ public final class TableModelTest
     @Test
     public void testSetFocus_FiresTableModelFocusChangedEvent()
     {
-        final ICardPile cardPile = createUniqueCardPile();
-        model_.getTable().addCardPile( cardPile );
+        final IContainer container = createUniqueContainer();
+        model_.getTable().getTabletop().addComponent( container );
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableModelFocusChanged( EasyMock.notNull( TableModelEvent.class ) );
         niceMocksControl_.replay();
         model_.addTableModelListener( listener );
 
-        model_.setFocus( cardPile );
+        model_.setFocus( container );
 
         niceMocksControl_.verify();
     }
@@ -782,7 +780,7 @@ public final class TableModelTest
         niceMocksControl_.replay();
         model_.addTableModelListener( listener );
 
-        model_.getTable().addCardPile( createUniqueCardPile() );
+        model_.getTable().getTabletop().addComponent( createUniqueContainer() );
 
         niceMocksControl_.verify();
     }

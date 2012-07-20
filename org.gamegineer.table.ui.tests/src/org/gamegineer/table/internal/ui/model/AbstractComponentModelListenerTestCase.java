@@ -92,4 +92,14 @@ public abstract class AbstractComponentModelListenerTestCase
     {
         listener_.componentChanged( null );
     }
+
+    /**
+     * Ensures the {@code componentModelFocusChanged} method throws an exception
+     * when passed a {@code null} event.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testComponentModelFocusChanged_Event_Null()
+    {
+        listener_.componentModelFocusChanged( null );
+    }
 }

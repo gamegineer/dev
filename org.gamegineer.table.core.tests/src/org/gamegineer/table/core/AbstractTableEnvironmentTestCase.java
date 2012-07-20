@@ -128,6 +128,20 @@ public abstract class AbstractTableEnvironmentTestCase
     }
 
     /**
+     * Ensures the {@code createComponent} method throws an exception when
+     * passed a {@code null} memento.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateComponent_Memento_Null()
+        throws Exception
+    {
+        tableEnvironment_.createComponent( null );
+    }
+
+    /**
      * Ensures the {@code createTable} method returns a table that is associated
      * with the table environment.
      */

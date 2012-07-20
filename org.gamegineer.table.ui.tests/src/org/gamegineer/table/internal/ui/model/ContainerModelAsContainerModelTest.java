@@ -59,15 +59,15 @@ public final class ContainerModelAsContainerModelTest
     }
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.AbstractContainerModelTestCase#fireContainerModelFocusChangedEvent(org.gamegineer.table.internal.ui.model.ContainerModel)
+     * @see org.gamegineer.table.internal.ui.model.AbstractContainerModelTestCase#fireContainerChangedEvent(org.gamegineer.table.internal.ui.model.ContainerModel)
      */
     @Override
-    protected void fireContainerModelFocusChangedEvent(
+    protected void fireContainerChangedEvent(
         final ContainerModel containerModel )
     {
         try
         {
-            final Method method = ContainerModel.class.getDeclaredMethod( "fireContainerModelFocusChanged" ); //$NON-NLS-1$
+            final Method method = ContainerModel.class.getDeclaredMethod( "fireContainerChanged" ); //$NON-NLS-1$
             method.setAccessible( true );
             method.invoke( containerModel );
         }

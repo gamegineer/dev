@@ -60,20 +60,6 @@ public interface INetworkTable
         ComponentIncrement componentIncrement );
 
     /**
-     * Increments the state of the table.
-     * 
-     * @param tableIncrement
-     *        The incremental change to the state of the table; must not be
-     *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code tableIncrement} is {@code null}.
-     */
-    public void incrementTableState(
-        /* @NonNull */
-        TableIncrement tableIncrement );
-
-    /**
      * Sets the state of the table.
      * 
      * @param tableMemento

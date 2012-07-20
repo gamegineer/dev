@@ -22,6 +22,7 @@
 package org.gamegineer.table.core;
 
 import java.util.concurrent.locks.Lock;
+import org.gamegineer.common.core.util.memento.MementoException;
 
 /**
  * An environment for the execution of virtual game tables.
@@ -61,6 +62,26 @@ public interface ITableEnvironment
      */
     /* @NonNull */
     public ICardPile createCardPile();
+
+    /**
+     * Creates a new component from the specified memento.
+     * 
+     * @param memento
+     *        The memento that represents the state of the component; must not
+     *        be {@code null}.
+     * 
+     * @return A new component; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code memento} is {@code null}.
+     * @throws org.gamegineer.common.core.util.memento.MementoException
+     *         If the memento is unknown or malformed.
+     */
+    /* @NonNull */
+    public IComponent createComponent(
+        /* @NonNull */
+        Object memento )
+        throws MementoException;
 
     /**
      * Creates a new table.

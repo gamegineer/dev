@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.ui.view;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -33,6 +34,7 @@ import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.model.ComponentModel;
+import org.gamegineer.table.internal.ui.model.ComponentModelEvent;
 import org.gamegineer.table.internal.ui.model.IComponentModelListener;
 import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
 import org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry;
@@ -102,6 +104,17 @@ class ComponentView
             dirtyBounds_.add( viewBounds );
             repaint();
             dirtyBounds_.setBounds( viewBounds );
+        }
+    }
+
+    /**
+     * Invoked after the component model has gained or lost the logical focus.
+     */
+    private void componentModelFocusChanged()
+    {
+        if( isInitialized() )
+        {
+            repaint();
         }
     }
 
@@ -251,6 +264,14 @@ class ComponentView
 
         final Rectangle viewBounds = getBounds();
         getActiveComponentSurfaceDesignUI().getIcon().paintIcon( component, g, viewBounds.x, viewBounds.y );
+
+        if( componentModel_.isFocused() )
+        {
+            final Color oldColor = g.getColor();
+            g.setColor( Color.GREEN );
+            g.drawRect( viewBounds.x, viewBounds.y, viewBounds.width - 1, viewBounds.height - 1 );
+            g.setColor( oldColor );
+        }
     }
 
     /**
@@ -396,6 +417,31 @@ class ComponentView
          */
         ComponentModelListener()
         {
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.ui.model.ComponentModelListener#componentModelFocusChanged(org.gamegineer.table.internal.ui.model.ComponentModelEvent)
+         */
+        @Override
+        public void componentModelFocusChanged(
+            final ComponentModelEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    ComponentView.this.componentModelFocusChanged();
+                }
+            } );
         }
     }
 }

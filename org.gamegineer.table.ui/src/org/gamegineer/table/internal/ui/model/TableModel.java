@@ -31,9 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.IdentityHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
@@ -42,11 +40,8 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.common.persistence.serializable.ObjectStreams;
 import org.gamegineer.table.core.ComponentPath;
-import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.IComponent;
-import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.core.TableContentChangedEvent;
 import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.net.IPlayer;
@@ -66,23 +61,13 @@ public final class TableModel
     // Fields
     // ======================================================================
 
-    /** The component model listener for this model. */
-    private final IComponentModelListener componentModelListener_;
-
-    /** The container model listener for this model. */
-    private final IContainerModelListener containerModelListener_;
-
-    /** The collection of container models. */
-    @GuardedBy( "lock_" )
-    private final Map<IContainer, ContainerModel> containerModels_;
-
     /** The file to which the model was last saved. */
     @GuardedBy( "lock_" )
     private File file_;
 
-    /** The focused card pile or {@code null} if no card pile has the focus. */
+    /** The focused component or {@code null} if no component has the focus. */
     @GuardedBy( "lock_" )
-    private ICardPile focusedCardPile_;
+    private IComponent focusedComponent_;
 
     /** Indicates the table model is dirty. */
     @GuardedBy( "lock_" )
@@ -104,6 +89,9 @@ public final class TableModel
     /** The table network associated with this model. */
     private final ITableNetwork tableNetwork_;
 
+    /** The tabletop model. */
+    private final ContainerModel tabletopModel_;
+
 
     // ======================================================================
     // Constructors
@@ -114,22 +102,19 @@ public final class TableModel
      */
     public TableModel()
     {
-        componentModelListener_ = new ComponentModelListener();
-        containerModelListener_ = new ContainerModelListener();
-        containerModels_ = new IdentityHashMap<IContainer, ContainerModel>();
         file_ = null;
-        focusedCardPile_ = null;
+        focusedComponent_ = null;
         isDirty_ = false;
         listeners_ = new CopyOnWriteArrayList<ITableModelListener>();
         lock_ = new Object();
         originOffset_ = new Dimension( 0, 0 );
         table_ = TableEnvironmentFactory.createTableEnvironment().createTable();
         tableNetwork_ = TableNetworkFactory.createTableNetwork();
+        tabletopModel_ = new ContainerModel( table_.getTabletop() );
 
-        table_.addTableListener( new TableListener() );
         tableNetwork_.addTableNetworkListener( new TableNetworkListener() );
-
-        // TODO: create tabletop model
+        tabletopModel_.addComponentModelListener( new ComponentModelListener() );
+        tabletopModel_.addContainerModelListener( new ContainerModelListener() );
     }
 
 
@@ -154,28 +139,6 @@ public final class TableModel
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.TableModel_addTableModelListener_listener_registered ); //$NON-NLS-1$
-    }
-
-    /**
-     * Creates a container model for the specified container.
-     * 
-     * @param container
-     *        The container; must not be {@code null}.
-     * 
-     * @return The container model; never {@code null}.
-     */
-    /* @NonNull */
-    private ContainerModel createContainerModel(
-        /* @NonNull */
-        final IContainer container )
-    {
-        assert container != null;
-
-        final ContainerModel containerModel = new ContainerModel( container );
-        containerModels_.put( container, containerModel );
-        containerModel.addComponentModelListener( componentModelListener_ );
-        containerModel.addContainerModelListener( containerModelListener_ );
-        return containerModel;
     }
 
     /**
@@ -292,56 +255,57 @@ public final class TableModel
         /* @NonNull */
         final ComponentPath path )
     {
-        assertArgumentNotNull( path, "componentPath" ); //$NON-NLS-1$
+        assertArgumentNotNull( path, "path" ); //$NON-NLS-1$
 
         final List<ComponentPath> paths = path.toList();
-        assertArgumentLegal( paths.size() <= 2, "path", NonNlsMessages.TableModel_getComponentModel_path_notExists ); //$NON-NLS-1$
-
-        synchronized( lock_ )
+        final ComponentPath tabletopPath = paths.get( 0 );
+        assertArgumentLegal( tabletopPath.getIndex() == 0, "path", NonNlsMessages.TableModel_getComponentModel_path_notExists ); //$NON-NLS-1$
+        if( paths.size() == 1 )
         {
-            // FIXME: this is hard-coded to assume only card piles and cards exist in the table
-            final ComponentPath cardPilePath = paths.get( 0 );
-            final ContainerModel cardPileModel = containerModels_.get( table_.getComponent( cardPilePath ) );
-            if( paths.size() == 1 )
-            {
-                return cardPileModel;
-            }
-
-            final ComponentPath cardPath = paths.get( 1 );
-            return cardPileModel.getComponentModel( table_.getComponent( cardPath ) );
+            return tabletopModel_;
         }
+
+        return tabletopModel_.getComponentModel( paths.subList( 1, paths.size() ) );
     }
 
     /**
-     * Gets the container model associated with the specified container.
+     * Gets the component model in this table model associated with the
+     * specified component.
      * 
-     * @param container
-     *        The container; must not be {@code null}.
+     * @param component
+     *        The component; may be {@code null}.
      * 
-     * @return The container model associated with the specified container;
-     *         never {@code null}.
+     * @return The component model in this table model associated with the
+     *         specified component or {@code null} if {@code component} is
+     *         {@code null} or {@code component} is not associated with a table.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code container} does not exist in the table associated with
-     *         this model.
-     * @throws java.lang.NullPointerException
-     *         If {@code container} is {@code null}.
+     *         If no component model is associated with the specified component.
      */
-    /* @NonNull */
-    public ContainerModel getContainerModel(
-        /* @NonNull */
-        final IContainer container )
+    /* @Nullable */
+    private ComponentModel getComponentModel(
+        /* @Nullable */
+        final IComponent component )
     {
-        assertArgumentNotNull( container, "container" ); //$NON-NLS-1$
-
-        final ContainerModel containerModel;
-        synchronized( lock_ )
+        if( component == null )
         {
-            containerModel = containerModels_.get( container );
+            return null;
         }
 
-        assertArgumentLegal( containerModel != null, "container", NonNlsMessages.TableModel_getContainerModel_container_absent ); //$NON-NLS-1$
-        return containerModel;
+        final ComponentPath componentPath = component.getPath();
+        if( componentPath == null )
+        {
+            return null;
+        }
+
+        final ComponentModel componentModel = getComponentModel( componentPath );
+        if( componentModel == null )
+        {
+            return null;
+        }
+
+        assertArgumentLegal( component == componentModel.getComponent(), "component", NonNlsMessages.TableModel_getComponentModel_component_notExists ); //$NON-NLS-1$
+        return componentModel;
     }
 
     /**
@@ -387,7 +351,7 @@ public final class TableModel
                 return null;
             }
 
-            for( ComponentModel componentModel = getComponentModel( component.getPath() ); componentModel != null; componentModel = getComponentModel( component.getContainer().getPath() ) )
+            for( ComponentModel componentModel = getComponentModel( component.getPath() ); (componentModel != null) && (componentModel.getComponent().getContainer() != null); componentModel = getComponentModel( componentModel.getComponent().getContainer().getPath() ) )
             {
                 if( componentModel.isFocusable() )
                 {
@@ -400,17 +364,17 @@ public final class TableModel
     }
 
     /**
-     * Gets the focused card pile.
+     * Gets the focused component.
      * 
-     * @return The focused card pile or {@code null} if no card pile has the
+     * @return The focused component or {@code null} if no component has the
      *         focus.
      */
     /* @Nullable */
-    public ICardPile getFocusedCardPile()
+    public IComponent getFocusedComponent()
     {
         synchronized( lock_ )
         {
-            return focusedCardPile_;
+            return focusedComponent_;
         }
     }
 
@@ -450,6 +414,17 @@ public final class TableModel
     public ITableNetwork getTableNetwork()
     {
         return tableNetwork_;
+    }
+
+    /**
+     * Gets the tabletop model.
+     * 
+     * @return The tabletop model; never {@code null}.
+     */
+    /* @NonNull */
+    public ContainerModel getTabletopModel()
+    {
+        return tabletopModel_;
     }
 
     /**
@@ -493,10 +468,10 @@ public final class TableModel
     {
         synchronized( lock_ )
         {
-            table_.removeCardPiles();
+            table_.getTabletop().removeComponents();
 
             file_ = null;
-            focusedCardPile_ = null;
+            focusedComponent_ = null;
             isDirty_ = false;
             originOffset_.setSize( new Dimension( 0, 0 ) );
         }
@@ -530,7 +505,7 @@ public final class TableModel
             setTableMemento( table_, file );
 
             file_ = file;
-            focusedCardPile_ = null;
+            focusedComponent_ = null;
             isDirty_ = false;
             originOffset_.setSize( new Dimension( 0, 0 ) );
         }
@@ -634,46 +609,46 @@ public final class TableModel
     }
 
     /**
-     * Sets the focus to the specified card pile.
+     * Sets the focus to the specified component.
      * 
-     * @param cardPile
-     *        The card pile to receive the focus or {@code null} if no card pile
+     * @param component
+     *        The component to receive the focus or {@code null} if no component
      *        should have the focus.
      */
     public void setFocus(
         /* @Nullable */
-        final ICardPile cardPile )
+        final IComponent component )
     {
-        final boolean cardPileFocusChanged;
-        final ContainerModel oldFocusedContainerModel;
-        final ContainerModel newFocusedContainerModel;
+        final boolean componentFocusChanged;
+        final ComponentModel oldFocusedComponentModel;
+        final ComponentModel newFocusedComponentModel;
 
         synchronized( lock_ )
         {
-            if( cardPile != focusedCardPile_ )
+            if( component != focusedComponent_ )
             {
-                cardPileFocusChanged = true;
-                oldFocusedContainerModel = (focusedCardPile_ != null) ? containerModels_.get( focusedCardPile_ ) : null;
-                newFocusedContainerModel = (cardPile != null) ? containerModels_.get( cardPile ) : null;
-                focusedCardPile_ = cardPile;
+                componentFocusChanged = true;
+                oldFocusedComponentModel = getComponentModel( focusedComponent_ );
+                newFocusedComponentModel = getComponentModel( component );
+                focusedComponent_ = component;
             }
             else
             {
-                cardPileFocusChanged = false;
-                oldFocusedContainerModel = null;
-                newFocusedContainerModel = null;
+                componentFocusChanged = false;
+                oldFocusedComponentModel = null;
+                newFocusedComponentModel = null;
             }
         }
 
-        if( cardPileFocusChanged )
+        if( componentFocusChanged )
         {
-            if( oldFocusedContainerModel != null )
+            if( oldFocusedComponentModel != null )
             {
-                oldFocusedContainerModel.setFocused( false );
+                oldFocusedComponentModel.setFocused( false );
             }
-            if( newFocusedContainerModel != null )
+            if( newFocusedComponentModel != null )
             {
-                newFocusedContainerModel.setFocused( true );
+                newFocusedComponentModel.setFocused( true );
             }
         }
     }
@@ -823,6 +798,19 @@ public final class TableModel
             fireTableChanged();
             fireTableModelDirtyFlagChanged();
         }
+
+        /*
+         * @see org.gamegineer.table.internal.ui.model.ComponentModelListener#componentModelFocusChanged(org.gamegineer.table.internal.ui.model.ComponentModelEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void componentModelFocusChanged(
+            final ComponentModelEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            fireTableModelFocusChanged();
+        }
     }
 
     /**
@@ -842,102 +830,6 @@ public final class TableModel
          */
         ContainerModelListener()
         {
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.internal.ui.model.ContainerModelListener#containerModelFocusChanged(org.gamegineer.table.internal.ui.model.ContainerModelEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void containerModelFocusChanged(
-            final ContainerModelEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            fireTableModelFocusChanged();
-        }
-    }
-
-    /**
-     * A table listener for the table model.
-     */
-    @Immutable
-    private final class TableListener
-        extends org.gamegineer.table.core.TableListener
-    {
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code TableListener} class.
-         */
-        TableListener()
-        {
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.core.TableListener#cardPileAdded(org.gamegineer.table.core.TableContentChangedEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void cardPileAdded(
-            final TableContentChangedEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            synchronized( lock_ )
-            {
-                createContainerModel( event.getCardPile() );
-                isDirty_ = true;
-            }
-
-            fireTableChanged();
-            fireTableModelDirtyFlagChanged();
-        }
-
-        /*
-         * @see org.gamegineer.table.core.TableListener#cardPileRemoved(org.gamegineer.table.core.TableContentChangedEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void cardPileRemoved(
-            final TableContentChangedEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            final ICardPile cardPile = event.getCardPile();
-            final boolean clearFocusedCardPile;
-            synchronized( lock_ )
-            {
-                final ContainerModel containerModel = containerModels_.remove( cardPile );
-                if( containerModel != null )
-                {
-                    containerModel.removeComponentModelListener( componentModelListener_ );
-                    containerModel.removeContainerModelListener( containerModelListener_ );
-                }
-
-                clearFocusedCardPile = (focusedCardPile_ == cardPile);
-                isDirty_ = true;
-            }
-
-            if( clearFocusedCardPile )
-            {
-                setFocus( null );
-            }
-
-            fireTableChanged();
-            fireTableModelDirtyFlagChanged();
         }
     }
 

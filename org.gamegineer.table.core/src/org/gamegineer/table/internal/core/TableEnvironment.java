@@ -21,12 +21,15 @@
 
 package org.gamegineer.table.internal.core;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.locks.ReentrantLock;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
+import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableEnvironment;
 
@@ -147,6 +150,19 @@ public final class TableEnvironment
     public ICardPile createCardPile()
     {
         return new CardPile( this );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITableEnvironment#createComponent(java.lang.Object)
+     */
+    @Override
+    public IComponent createComponent(
+        final Object memento )
+        throws MementoException
+    {
+        assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
+
+        return Component.fromMemento( this, memento );
     }
 
     /*

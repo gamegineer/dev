@@ -47,4 +47,18 @@ public interface IComponentModelListener
     public void componentChanged(
         /* @NonNull */
         ComponentModelEvent event );
+
+    /**
+     * Invoked after the component model has gained or lost the logical focus.
+     * 
+     * @param event
+     *        The event describing the component model; must not be {@code null}
+     *        .
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void componentModelFocusChanged(
+        /* @NonNull */
+        ComponentModelEvent event );
 }

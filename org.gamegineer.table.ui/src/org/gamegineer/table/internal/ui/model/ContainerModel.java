@@ -24,12 +24,14 @@ package org.gamegineer.table.internal.ui.model;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ContainerEvent;
 import org.gamegineer.table.core.IComponent;
@@ -51,21 +53,14 @@ public final class ContainerModel
     private final IComponentModelListener componentModelListener_;
 
     /** The collection of component models. */
-    @GuardedBy( "lock_" )
+    @GuardedBy( "getLock()" )
     private final Map<IComponent, ComponentModel> componentModels_;
 
     /** The container model listener for this model. */
     private final IContainerModelListener containerModelListener_;
 
-    /** Indicates the associated container has the focus. */
-    @GuardedBy( "lock_" )
-    private boolean isFocused_;
-
     /** The collection of container model listeners. */
     private final CopyOnWriteArrayList<IContainerModelListener> listeners_;
-
-    /** The instance lock. */
-    private final Object lock_;
 
 
     // ======================================================================
@@ -88,15 +83,16 @@ public final class ContainerModel
         componentModelListener_ = new ComponentModelListener();
         componentModels_ = new IdentityHashMap<IComponent, ComponentModel>();
         containerModelListener_ = new ContainerModelListener();
-        isFocused_ = false;
         listeners_ = new CopyOnWriteArrayList<IContainerModelListener>();
-        lock_ = new Object();
 
         container.addContainerListener( new ContainerListener() );
 
         for( final IComponent component : container.getComponents() )
         {
-            createComponentModel( component );
+            synchronized( getLock() )
+            {
+                createComponentModel( component );
+            }
         }
     }
 
@@ -133,38 +129,70 @@ public final class ContainerModel
      * 
      * @return The component model; never {@code null}.
      */
+    @GuardedBy( "getLock()" )
     /* @NonNull */
     private ComponentModel createComponentModel(
         /* @NonNull */
         final IComponent component )
     {
         assert component != null;
+        assert Thread.holdsLock( getLock() );
 
         final ComponentModel componentModel = ComponentModelFactory.createComponentModel( component );
         componentModels_.put( component, componentModel );
+
         componentModel.addComponentModelListener( componentModelListener_ );
         if( componentModel instanceof ContainerModel )
         {
             ((ContainerModel)componentModel).addContainerModelListener( containerModelListener_ );
         }
+
         return componentModel;
     }
 
     /**
-     * Fires a container model focus changed event.
+     * Deletes the component model associated with the specified component.
+     * 
+     * @param component
+     *        The component; must not be {@code null}.
      */
-    private void fireContainerModelFocusChanged()
+    @GuardedBy( "getLock()" )
+    private void deleteComponentModel(
+        /* @NonNull */
+        final IComponent component )
+    {
+        assert component != null;
+        assert Thread.holdsLock( getLock() );
+
+        final ComponentModel componentModel = componentModels_.remove( component );
+        if( componentModel != null )
+        {
+            componentModel.setFocused( false );
+
+            componentModel.removeComponentModelListener( componentModelListener_ );
+            if( componentModel instanceof ContainerModel )
+            {
+                ((ContainerModel)componentModel).removeContainerModelListener( containerModelListener_ );
+            }
+        }
+    }
+
+    /**
+     * Fires a container changed event.
+     */
+    @SuppressWarnings( "unused" )
+    private void fireContainerChanged()
     {
         final ContainerModelEvent event = new ContainerModelEvent( this );
         for( final IContainerModelListener listener : listeners_ )
         {
             try
             {
-                listener.containerModelFocusChanged( event );
+                listener.containerChanged( event );
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ContainerModel_containerModelFocusChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ContainerModel_containerChanged_unexpectedException, e );
             }
         }
     }
@@ -192,13 +220,45 @@ public final class ContainerModel
         assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
 
         final ComponentModel componentModel;
-        synchronized( lock_ )
+        synchronized( getLock() )
         {
             componentModel = componentModels_.get( component );
         }
 
         assertArgumentLegal( componentModel != null, "component", NonNlsMessages.ContainerModel_getComponentModel_component_absent ); //$NON-NLS-1$
         return componentModel;
+    }
+
+    /**
+     * Gets the component model in this container model at the specified path.
+     * 
+     * @param paths
+     *        The collection of constituent component paths of the overall
+     *        component path; must not be {@code null} and must not be empty.
+     * 
+     * @return The component model in this container model at the specified
+     *         path; never {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If no component model exists at the specified path.
+     */
+    /* @NonNull */
+    ComponentModel getComponentModel(
+        /* @NonNull */
+        final List<ComponentPath> paths )
+    {
+        assert paths != null;
+        assert !paths.isEmpty();
+
+        final ComponentPath path = paths.get( 0 );
+        final ComponentModel componentModel = getComponentModel( getContainer().getComponent( path.getIndex() ) );
+        if( paths.size() == 1 )
+        {
+            return componentModel;
+        }
+
+        assertArgumentLegal( componentModel instanceof ContainerModel, "paths", NonNlsMessages.ContainerModel_getComponentModel_path_notExists ); //$NON-NLS-1$
+        return ((ContainerModel)componentModel).getComponentModel( paths.subList( 1, paths.size() ) );
     }
 
     /**
@@ -210,29 +270,6 @@ public final class ContainerModel
     public IContainer getContainer()
     {
         return (IContainer)getComponent();
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ComponentModel#isFocusable()
-     */
-    @Override
-    public boolean isFocusable()
-    {
-        return true;
-    }
-
-    /**
-     * Indicates the associated container has the focus.
-     * 
-     * @return {@code true} if the associated container has the focus; otherwise
-     *         {@code false}.
-     */
-    public boolean isFocused()
-    {
-        synchronized( lock_ )
-        {
-            return isFocused_;
-        }
     }
 
     /**
@@ -252,24 +289,6 @@ public final class ContainerModel
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.ContainerModel_removeContainerModelListener_listener_notRegistered ); //$NON-NLS-1$
-    }
-
-    /**
-     * Sets or removes the focus from the associated container.
-     * 
-     * @param isFocused
-     *        {@code true} if the associated container has the focus; otherwise
-     *        {@code false}.
-     */
-    public void setFocused(
-        final boolean isFocused )
-    {
-        synchronized( lock_ )
-        {
-            isFocused_ = isFocused;
-        }
-
-        fireContainerModelFocusChanged();
     }
 
 
@@ -312,6 +331,18 @@ public final class ContainerModel
 
             fireComponentChanged();
         }
+
+        /*
+         * @see org.gamegineer.table.internal.ui.model.ComponentModelListener#componentModelFocusChanged(org.gamegineer.table.internal.ui.model.ComponentModelEvent)
+         */
+        @Override
+        public void componentModelFocusChanged(
+            final ComponentModelEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            fireComponentModelFocusChanged();
+        }
     }
 
     /**
@@ -347,7 +378,7 @@ public final class ContainerModel
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            synchronized( lock_ )
+            synchronized( getLock() )
             {
                 createComponentModel( event.getComponent() );
             }
@@ -365,17 +396,9 @@ public final class ContainerModel
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            synchronized( lock_ )
+            synchronized( getLock() )
             {
-                final ComponentModel componentModel = componentModels_.remove( event.getComponent() );
-                if( componentModel != null )
-                {
-                    componentModel.removeComponentModelListener( componentModelListener_ );
-                    if( componentModel instanceof ContainerModel )
-                    {
-                        ((ContainerModel)componentModel).removeContainerModelListener( containerModelListener_ );
-                    }
-                }
+                deleteComponentModel( event.getComponent() );
             }
 
             fireComponentChanged();
@@ -411,23 +434,6 @@ public final class ContainerModel
          */
         ContainerModelListener()
         {
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.internal.ui.model.ContainerModelListener#containerModelFocusChanged(org.gamegineer.table.internal.ui.model.ContainerModelEvent)
-         */
-        @Override
-        public void containerModelFocusChanged(
-            final ContainerModelEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            // TODO: currently do not support nested focus
         }
     }
 }

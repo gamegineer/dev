@@ -25,7 +25,6 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.internal.net.node.common.messages.ComponentIncrementMessage;
-import org.gamegineer.table.internal.net.node.common.messages.TableIncrementMessage;
 import org.gamegineer.table.internal.net.node.common.messages.TableMessage;
 
 /**
@@ -91,20 +90,6 @@ final class RemoteNetworkTable
         final ComponentIncrementMessage message = new ComponentIncrementMessage();
         message.setIncrement( componentIncrement );
         message.setPath( componentPath );
-        remoteNodeController_.sendMessage( message, null );
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.node.INetworkTable#incrementTableState(org.gamegineer.table.internal.net.node.TableIncrement)
-     */
-    @Override
-    public void incrementTableState(
-        final TableIncrement tableIncrement )
-    {
-        assertArgumentNotNull( tableIncrement, "tableIncrement" ); //$NON-NLS-1$
-
-        final TableIncrementMessage message = new TableIncrementMessage();
-        message.setIncrement( tableIncrement );
         remoteNodeController_.sendMessage( message, null );
     }
 

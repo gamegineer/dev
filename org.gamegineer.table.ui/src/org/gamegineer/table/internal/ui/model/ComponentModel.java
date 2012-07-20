@@ -25,6 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
+import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ComponentEvent;
@@ -44,8 +45,15 @@ public class ComponentModel
     /** The component associated with this model. */
     private final IComponent component_;
 
+    /** Indicates the associated component has the focus. */
+    @GuardedBy( "getLock()" )
+    private boolean isFocused_;
+
     /** The collection of component model listeners. */
     private final CopyOnWriteArrayList<IComponentModelListener> listeners_;
+
+    /** The instance lock. */
+    private final Object lock_;
 
 
     // ======================================================================
@@ -66,7 +74,9 @@ public class ComponentModel
         assert component != null;
 
         component_ = component;
+        isFocused_ = false;
         listeners_ = new CopyOnWriteArrayList<IComponentModelListener>();
+        lock_ = new Object();
 
         component_.addComponentListener( new ComponentListener() );
     }
@@ -99,7 +109,7 @@ public class ComponentModel
     /**
      * Fires a component changed event.
      */
-    protected final void fireComponentChanged()
+    final void fireComponentChanged()
     {
         final ComponentModelEvent event = new ComponentModelEvent( this );
         for( final IComponentModelListener listener : listeners_ )
@@ -116,6 +126,25 @@ public class ComponentModel
     }
 
     /**
+     * Fires a component model focus changed event.
+     */
+    final void fireComponentModelFocusChanged()
+    {
+        final ComponentModelEvent event = new ComponentModelEvent( this );
+        for( final IComponentModelListener listener : listeners_ )
+        {
+            try
+            {
+                listener.componentModelFocusChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ComponentModel_componentModelFocusChanged_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
      * Gets the component associated with this model.
      * 
      * @return The component associated with this model; never {@code null}.
@@ -127,19 +156,39 @@ public class ComponentModel
     }
 
     /**
-     * Indicates the component associated with this model can receive the focus.
+     * Gets the instance lock.
      * 
-     * <p>
-     * This implementation always returns {@code false}. Subclasses may override
-     * and are not required to call the superclass implementation.
-     * </p>
+     * @return The instance lock; never {@code null}.
+     */
+    /* @NonNull */
+    final Object getLock()
+    {
+        return lock_;
+    }
+
+    /**
+     * Indicates the component associated with this model can receive the focus.
      * 
      * @return {@code true} if the component associated with this model can
      *         receive the focus; otherwise {@code false}.
      */
-    public boolean isFocusable()
+    public final boolean isFocusable()
     {
-        return false;
+        return component_.isFocusable();
+    }
+
+    /**
+     * Indicates the associated component has the focus.
+     * 
+     * @return {@code true} if the associated component has the focus; otherwise
+     *         {@code false}.
+     */
+    public final boolean isFocused()
+    {
+        synchronized( getLock() )
+        {
+            return isFocused_;
+        }
     }
 
     /**
@@ -159,6 +208,24 @@ public class ComponentModel
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.ComponentModel_removeComponentModelListener_listener_notRegistered ); //$NON-NLS-1$
+    }
+
+    /**
+     * Sets or removes the focus from the associated component.
+     * 
+     * @param isFocused
+     *        {@code true} if the associated component has the focus; otherwise
+     *        {@code false}.
+     */
+    public void setFocused(
+        final boolean isFocused )
+    {
+        synchronized( getLock() )
+        {
+            isFocused_ = isFocused;
+        }
+
+        fireComponentModelFocusChanged();
     }
 
 

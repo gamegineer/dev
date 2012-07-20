@@ -24,25 +24,17 @@ package org.gamegineer.table.internal.core;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
-import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ComponentPath;
-import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.core.ITableListener;
-import org.gamegineer.table.core.TableContentChangedEvent;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ITable}.
@@ -55,28 +47,14 @@ final class Table
     // Fields
     // ======================================================================
 
-    /**
-     * The name of the memento attribute that stores the collection of card
-     * piles on the table.
-     */
-    private static final String CARD_PILES_MEMENTO_ATTRIBUTE_NAME = "cardPiles"; //$NON-NLS-1$
-
     /** The name of the memento attribute that stores the tabletop memento. */
     private static final String TABLETOP_MEMENTO_ATTRIBUTE_NAME = "tabletop"; //$NON-NLS-1$
-
-    /** The collection of card piles on this table. */
-    @GuardedBy( "getLock()" )
-    private final List<CardPile> cardPiles_;
-
-    /** The collection of table listeners. */
-    private final CopyOnWriteArrayList<ITableListener> listeners_;
 
     /** The table environment. */
     private final TableEnvironment tableEnvironment_;
 
     /** The tabletop. */
-    @GuardedBy( "getLock()" )
-    private IContainer tabletop_;
+    private final Tabletop tabletop_;
 
 
     // ======================================================================
@@ -95,68 +73,24 @@ final class Table
     {
         assert tableEnvironment != null;
 
-        cardPiles_ = new ArrayList<CardPile>();
-        listeners_ = new CopyOnWriteArrayList<ITableListener>();
         tableEnvironment_ = tableEnvironment;
+        tabletop_ = new Tabletop( tableEnvironment );
 
-        final Tabletop tabletop = new Tabletop( tableEnvironment );
-        tabletop.setTable( this );
-        tabletop_ = tabletop;
+        getLock().lock();
+        try
+        {
+            tabletop_.setTable( this );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /*
-     * @see org.gamegineer.table.core.ITable#addCardPile(org.gamegineer.table.core.ICardPile)
-     */
-    @Override
-    public void addCardPile(
-        final ICardPile cardPile )
-    {
-        assertArgumentNotNull( cardPile, "cardPile" ); //$NON-NLS-1$
-
-        final int cardPileIndex;
-
-        getLock().lock();
-        try
-        {
-            final CardPile typedCardPile = (CardPile)cardPile;
-            assertArgumentLegal( typedCardPile.getTable() == null, "cardPile", NonNlsMessages.Table_addCardPile_cardPile_owned ); //$NON-NLS-1$
-            assertArgumentLegal( typedCardPile.getTableEnvironment() == tableEnvironment_, "cardPile", NonNlsMessages.Table_addCardPile_cardPile_createdByDifferentTableEnvironment ); //$NON-NLS-1$
-
-            cardPiles_.add( typedCardPile );
-            typedCardPile.setTable( this );
-            cardPileIndex = cardPiles_.size() - 1;
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-
-        tableEnvironment_.addEventNotification( new Runnable()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                fireCardPileAdded( cardPile, cardPileIndex );
-            }
-        } );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ITable#addTableListener(org.gamegineer.table.core.ITableListener)
-     */
-    @Override
-    public void addTableListener(
-        final ITableListener listener )
-    {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.Table_addTableListener_listener_registered ); //$NON-NLS-1$
-    }
 
     /*
      * @see org.gamegineer.common.core.util.memento.IMementoOriginator#createMemento()
@@ -169,13 +103,6 @@ final class Table
         getLock().lock();
         try
         {
-            final List<Object> cardPileMementos = new ArrayList<Object>( cardPiles_.size() );
-            for( final ICardPile cardPile : cardPiles_ )
-            {
-                cardPileMementos.add( cardPile.createMemento() );
-            }
-            memento.put( CARD_PILES_MEMENTO_ATTRIBUTE_NAME, Collections.unmodifiableList( cardPileMementos ) );
-
             memento.put( TABLETOP_MEMENTO_ATTRIBUTE_NAME, tabletop_.createMemento() );
         }
         finally
@@ -184,68 +111,6 @@ final class Table
         }
 
         return Collections.unmodifiableMap( memento );
-    }
-
-    /**
-     * Fires a card pile added event.
-     * 
-     * @param cardPile
-     *        The added card pile; must not be {@code null}.
-     * @param cardPileIndex
-     *        The index of the added card pile; must not be negative.
-     */
-    private void fireCardPileAdded(
-        /* @NonNull */
-        final ICardPile cardPile,
-        final int cardPileIndex )
-    {
-        assert cardPile != null;
-        assert cardPileIndex >= 0;
-        assert !getLock().isHeldByCurrentThread();
-
-        final TableContentChangedEvent event = new TableContentChangedEvent( this, cardPile, cardPileIndex );
-        for( final ITableListener listener : listeners_ )
-        {
-            try
-            {
-                listener.cardPileAdded( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Table_cardPileAdded_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
-     * Fires a card pile removed event.
-     * 
-     * @param cardPile
-     *        The removed card pile; must not be {@code null}.
-     * @param cardPileIndex
-     *        The index of the removed card pile; must not be negative.
-     */
-    private void fireCardPileRemoved(
-        /* @NonNull */
-        final ICardPile cardPile,
-        final int cardPileIndex )
-    {
-        assert cardPile != null;
-        assert cardPileIndex >= 0;
-        assert !getLock().isHeldByCurrentThread();
-
-        final TableContentChangedEvent event = new TableContentChangedEvent( this, cardPile, cardPileIndex );
-        for( final ITableListener listener : listeners_ )
-        {
-            try
-            {
-                listener.cardPileRemoved( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Table_cardPileRemoved_unexpectedException, e );
-            }
-        }
     }
 
     /**
@@ -277,93 +142,10 @@ final class Table
 
         final Table table = new Table( tableEnvironment );
 
-        @SuppressWarnings( "unchecked" )
-        final List<Object> cardPileMementos = MementoUtils.getAttribute( memento, CARD_PILES_MEMENTO_ATTRIBUTE_NAME, List.class );
-        for( final Object cardPileMemento : cardPileMementos )
-        {
-            table.addCardPile( CardPile.fromMemento( table.tableEnvironment_, cardPileMemento ) );
-        }
-
         final Object tabletopMemento = MementoUtils.getAttribute( memento, TABLETOP_MEMENTO_ATTRIBUTE_NAME, Object.class );
         table.tabletop_.setMemento( tabletopMemento );
 
         return table;
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ITable#getCardPile(int)
-     */
-    @Override
-    public ICardPile getCardPile(
-        final int index )
-    {
-        getLock().lock();
-        try
-        {
-            assertArgumentLegal( (index >= 0) && (index < cardPiles_.size()), "index", NonNlsMessages.Table_getCardPileFromIndex_index_outOfRange ); //$NON-NLS-1$
-
-            return cardPiles_.get( index );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ITable#getCardPileCount()
-     */
-    @Override
-    public int getCardPileCount()
-    {
-        getLock().lock();
-        try
-        {
-            return cardPiles_.size();
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-    }
-
-    /**
-     * Gets the index of the specified card pile in this table.
-     * 
-     * @param cardPile
-     *        The card pile; must not be {@code null}.
-     * 
-     * @return The index of the specified card pile in this table.
-     */
-    @GuardedBy( "getLock()" )
-    int getCardPileIndex(
-        /* @NonNull */
-        final ICardPile cardPile )
-    {
-        assert cardPile != null;
-        assert getLock().isHeldByCurrentThread();
-        assertArgumentNotNull( cardPile, "cardPile" ); //$NON-NLS-1$
-
-        final int index = cardPiles_.indexOf( cardPile );
-        assert index != -1;
-        return index;
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ITable#getCardPiles()
-     */
-    @Override
-    public List<ICardPile> getCardPiles()
-    {
-        getLock().lock();
-        try
-        {
-            return new ArrayList<ICardPile>( cardPiles_ );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
     }
 
     /*
@@ -376,22 +158,17 @@ final class Table
         assertArgumentNotNull( path, "path" ); //$NON-NLS-1$
 
         final List<ComponentPath> paths = path.toList();
-        assertArgumentLegal( paths.size() <= 2, "path", NonNlsMessages.Table_getComponent_path_notExists ); //$NON-NLS-1$
+        final ComponentPath tabletopPath = paths.get( 0 );
+        assertArgumentLegal( tabletopPath.getIndex() == 0, "path", NonNlsMessages.Table_getComponent_path_notExists ); //$NON-NLS-1$
+        if( paths.size() == 1 )
+        {
+            return tabletop_;
+        }
 
         getLock().lock();
         try
         {
-            // FIXME: this is hard-coded to assume only card piles and cards exist in the table
-            final ComponentPath cardPilePath = paths.get( 0 );
-            assertArgumentLegal( cardPilePath.getIndex() < cardPiles_.size(), "path", NonNlsMessages.Table_getComponent_path_notExists ); //$NON-NLS-1$
-            final CardPile cardPile = cardPiles_.get( cardPilePath.getIndex() );
-            if( paths.size() == 1 )
-            {
-                return cardPile;
-            }
-
-            final ComponentPath cardPath = paths.get( 1 );
-            return cardPile.getComponent( cardPath.getIndex() );
+            return tabletop_.getComponent( paths.subList( 1, paths.size() ) );
         }
         finally
         {
@@ -411,21 +188,12 @@ final class Table
         getLock().lock();
         try
         {
-            for( final ListIterator<CardPile> iterator = cardPiles_.listIterator( cardPiles_.size() ); iterator.hasPrevious(); )
-            {
-                final IComponent component = iterator.previous().getComponent( location );
-                if( component != null )
-                {
-                    return component;
-                }
-            }
+            return tabletop_.getComponent( location );
         }
         finally
         {
             getLock().unlock();
         }
-
-        return null;
     }
 
     /**
@@ -454,109 +222,7 @@ final class Table
     @Override
     public IContainer getTabletop()
     {
-        getLock().lock();
-        try
-        {
-            return tabletop_;
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ITable#removeCardPile(org.gamegineer.table.core.ICardPile)
-     */
-    @Override
-    public void removeCardPile(
-        final ICardPile cardPile )
-    {
-        assertArgumentNotNull( cardPile, "cardPile" ); //$NON-NLS-1$
-
-        final int cardPileIndex;
-
-        getLock().lock();
-        try
-        {
-            assertArgumentLegal( cardPile.getTable() == this, "cardPile", NonNlsMessages.Table_removeCardPile_cardPile_notOwned ); //$NON-NLS-1$
-
-            cardPileIndex = cardPiles_.indexOf( cardPile );
-            final CardPile typedCardPile = cardPiles_.remove( cardPileIndex );
-            assert typedCardPile != null;
-            typedCardPile.setTable( null );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-
-        tableEnvironment_.addEventNotification( new Runnable()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                fireCardPileRemoved( cardPile, cardPileIndex );
-            }
-        } );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ITable#removeCardPiles()
-     */
-    @Override
-    public List<ICardPile> removeCardPiles()
-    {
-        final List<CardPile> removedCardPiles;
-
-        getLock().lock();
-        try
-        {
-            removedCardPiles = new ArrayList<CardPile>( cardPiles_ );
-            cardPiles_.clear();
-            for( final CardPile cardPile : removedCardPiles )
-            {
-                cardPile.setTable( null );
-            }
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-
-        if( !removedCardPiles.isEmpty() )
-        {
-            tableEnvironment_.addEventNotification( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    // ensure events are fired in order from highest index to lowest index
-                    final List<ICardPile> reversedRemovedCardPiles = new ArrayList<ICardPile>( removedCardPiles );
-                    Collections.reverse( reversedRemovedCardPiles );
-                    int cardPileIndex = removedCardPiles.size() - 1;
-                    for( final ICardPile cardPile : reversedRemovedCardPiles )
-                    {
-                        fireCardPileRemoved( cardPile, cardPileIndex-- );
-                    }
-                }
-            } );
-        }
-
-        return new ArrayList<ICardPile>( removedCardPiles );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ITable#removeTableListener(org.gamegineer.table.core.ITableListener)
-     */
-    @Override
-    public void removeTableListener(
-        final ITableListener listener )
-    {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.Table_removeTableListener_listener_notRegistered ); //$NON-NLS-1$
+        return tabletop_;
     }
 
     /*
@@ -573,12 +239,6 @@ final class Table
         try
         {
             final Table table = fromMemento( tableEnvironment_, memento );
-
-            removeCardPiles();
-            for( final ICardPile cardPile : table.removeCardPiles() )
-            {
-                addCardPile( cardPile );
-            }
 
             tabletop_.setMemento( table.tabletop_.createMemento() );
         }
@@ -602,8 +262,6 @@ final class Table
         {
             sb.append( "tabletop_=" ); //$NON-NLS-1$
             sb.append( tabletop_ );
-            sb.append( ", cardPiles_.size()=" ); //$NON-NLS-1$
-            sb.append( cardPiles_.size() );
         }
         finally
         {

@@ -62,24 +62,22 @@ public abstract class AbstractContainerModelTestCase
     // ======================================================================
 
     /**
-     * Fires a container model focus changed event for the container model under
-     * test in the fixture.
+     * Fires a container changed event for the fixture container model.
      */
-    private void fireContainerModelFocusChangedEvent()
+    private void fireContainerChangedEvent()
     {
-        fireContainerModelFocusChangedEvent( getContainerModel() );
+        fireContainerChangedEvent( getContainerModel() );
     }
 
     /**
-     * Fires a container model focus changed event for the specified container
-     * model.
+     * Fires a container changed event for the specified container model.
      * 
      * @param containerModel
      *        The container model; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
      */
-    protected abstract void fireContainerModelFocusChangedEvent(
+    protected abstract void fireContainerChangedEvent(
         /* @NonNull */
         ContainerModel containerModel );
 
@@ -119,12 +117,12 @@ public abstract class AbstractContainerModelTestCase
     public void testAddContainerModelListener_Listener_Absent()
     {
         final IContainerModelListener listener = mocksControl_.createMock( IContainerModelListener.class );
-        listener.containerModelFocusChanged( EasyMock.notNull( ContainerModelEvent.class ) );
+        listener.containerChanged( EasyMock.notNull( ContainerModelEvent.class ) );
         mocksControl_.replay();
 
-        fireContainerModelFocusChangedEvent();
+        fireContainerChangedEvent();
         getContainerModel().addContainerModelListener( listener );
-        fireContainerModelFocusChangedEvent();
+        fireContainerChangedEvent();
 
         mocksControl_.verify();
     }
@@ -173,25 +171,6 @@ public abstract class AbstractContainerModelTestCase
     }
 
     /**
-     * Ensures the container model focus changed event catches any exception
-     * thrown by the {@code containerModelFocusChanged} method of a container
-     * model listener.
-     */
-    @Test
-    public void testContainerModelFocusChanged_CatchesListenerException()
-    {
-        final IContainerModelListener listener = mocksControl_.createMock( IContainerModelListener.class );
-        listener.containerModelFocusChanged( EasyMock.notNull( ContainerModelEvent.class ) );
-        EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        mocksControl_.replay();
-        getContainerModel().addContainerModelListener( listener );
-
-        fireContainerModelFocusChangedEvent();
-
-        mocksControl_.verify();
-    }
-
-    /**
      * Ensures the {@code getComponentModel} throws an exception when passed a
      * component that is absent from the container.
      */
@@ -208,7 +187,7 @@ public abstract class AbstractContainerModelTestCase
     @Test( expected = NullPointerException.class )
     public void testGetComponentModel_Component_Null()
     {
-        getContainerModel().getComponentModel( null );
+        getContainerModel().getComponentModel( (IComponent)null );
     }
 
     /**
@@ -249,46 +228,14 @@ public abstract class AbstractContainerModelTestCase
     public void testRemoveContainerModelListener_Listener_Present()
     {
         final IContainerModelListener listener = mocksControl_.createMock( IContainerModelListener.class );
-        listener.containerModelFocusChanged( EasyMock.notNull( ContainerModelEvent.class ) );
+        listener.containerChanged( EasyMock.notNull( ContainerModelEvent.class ) );
         mocksControl_.replay();
         getContainerModel().addContainerModelListener( listener );
 
-        fireContainerModelFocusChangedEvent();
+        fireContainerChangedEvent();
         getContainerModel().removeContainerModelListener( listener );
-        fireContainerModelFocusChangedEvent();
+        fireContainerChangedEvent();
 
         mocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code setFocused} method fires a container model focus
-     * changed event after the container model gained the focus.
-     */
-    @Test
-    public void testSetFocused_GainedFocus_FiresContainerModelFocusChangedEvent()
-    {
-        final IContainerModelListener listener = mocksControl_.createMock( IContainerModelListener.class );
-        listener.containerModelFocusChanged( EasyMock.notNull( ContainerModelEvent.class ) );
-        mocksControl_.replay();
-        getContainerModel().addContainerModelListener( listener );
-
-        getContainerModel().setFocused( true );
-
-        mocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code setFocused} method fires a container model focus
-     * changed event after the container model lost the focus.
-     */
-    @Test
-    public void testSetFocused_LostFocus_FiresContainerModelFocusChangedEvent()
-    {
-        final IContainerModelListener listener = mocksControl_.createMock( IContainerModelListener.class );
-        listener.containerModelFocusChanged( EasyMock.notNull( ContainerModelEvent.class ) );
-        mocksControl_.replay();
-        getContainerModel().addContainerModelListener( listener );
-
-        getContainerModel().setFocused( false );
     }
 }

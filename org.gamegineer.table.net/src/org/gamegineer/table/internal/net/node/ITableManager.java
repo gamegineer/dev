@@ -60,24 +60,6 @@ public interface ITableManager
         ComponentIncrement componentIncrement );
 
     /**
-     * Increments the state of the table throughout the table network
-     * 
-     * @param sourceTable
-     *        The table that originated the request; must not be {@code null}.
-     * @param tableIncrement
-     *        The incremental change to the state of the table; must not be
-     *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code sourceTable} or {@code tableIncrement} is {@code null}.
-     */
-    public void incrementTableState(
-        /* @NonNull */
-        INetworkTable sourceTable,
-        /* @NonNull */
-        TableIncrement tableIncrement );
-
-    /**
      * Sets the state of the table throughout the table network.
      * 
      * @param sourceTable

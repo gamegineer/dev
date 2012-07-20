@@ -29,7 +29,6 @@ import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
-import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
@@ -182,78 +181,15 @@ public final class NetworkTableUtils
         {
             for( final Object componentMemento : containerIncrement.getAddedComponentMementos() )
             {
-                // FIXME: use factory to create component based on memento
-                final IComponent component = container.getTableEnvironment().createCard();
-
                 try
                 {
-                    component.setMemento( componentMemento );
+                    container.addComponent( container.getTableEnvironment().createComponent( componentMemento ) );
                 }
                 catch( final MementoException e )
                 {
                     Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.NetworkTableUtils_incrementContainerState_setComponentStateFailed, e );
                 }
-
-                container.addComponent( component );
             }
-        }
-    }
-
-    /**
-     * Increments the state of the specified table.
-     * 
-     * @param table
-     *        The table; must not be {@code null}.
-     * @param tableIncrement
-     *        The incremental change to the state of the table; must not be
-     *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code table} or {@code tableIncrement} is {@code null}.
-     */
-    @SuppressWarnings( "boxing" )
-    public static void incrementTableState(
-        /* @NonNull */
-        final ITable table,
-        /* @NonNull */
-        final TableIncrement tableIncrement )
-    {
-        assertArgumentNotNull( table, "table" ); //$NON-NLS-1$
-        assertArgumentNotNull( tableIncrement, "tableIncrement" ); //$NON-NLS-1$
-
-        table.getTableEnvironment().getLock().lock();
-        try
-        {
-            if( tableIncrement.getRemovedCardPileIndexes() != null )
-            {
-                for( final Integer index : tableIncrement.getRemovedCardPileIndexes() )
-                {
-                    table.removeCardPile( table.getCardPile( index ) );
-                }
-            }
-
-            if( tableIncrement.getAddedCardPileMementos() != null )
-            {
-                for( final Object cardPileMemento : tableIncrement.getAddedCardPileMementos() )
-                {
-                    final ICardPile cardPile = table.getTableEnvironment().createCardPile();
-
-                    try
-                    {
-                        cardPile.setMemento( cardPileMemento );
-                    }
-                    catch( final MementoException e )
-                    {
-                        Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.NetworkTableUtils_incrementTableState_setCardPileStateFailed, e );
-                    }
-
-                    table.addCardPile( cardPile );
-                }
-            }
-        }
-        finally
-        {
-            table.getTableEnvironment().getLock().unlock();
         }
     }
 

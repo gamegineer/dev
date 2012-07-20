@@ -43,7 +43,6 @@ import org.gamegineer.table.internal.net.node.INetworkTable;
 import org.gamegineer.table.internal.net.node.INodeLayer;
 import org.gamegineer.table.internal.net.node.ITableManager;
 import org.gamegineer.table.internal.net.node.NetworkTableUtils;
-import org.gamegineer.table.internal.net.node.TableIncrement;
 import org.gamegineer.table.internal.net.node.ThreadPlayer;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
@@ -562,24 +561,6 @@ public final class ServerNode
         }
 
         /*
-         * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#incrementTableState(org.gamegineer.table.internal.net.node.INetworkTable, org.gamegineer.table.internal.net.node.TableIncrement)
-         */
-        @SuppressWarnings( "synthetic-access" )
-        @Override
-        public void incrementTableState(
-            final INetworkTable sourceTable,
-            final TableIncrement tableIncrement )
-        {
-            assertArgumentNotNull( tableIncrement, "tableIncrement" ); //$NON-NLS-1$
-
-            if( verifyRequestingPlayerIsEditor() )
-            {
-                NetworkTableUtils.incrementTableState( masterTable_, tableIncrement );
-                super.incrementTableState( sourceTable, tableIncrement );
-            }
-        }
-
-        /*
          * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#setTableState(org.gamegineer.table.internal.net.node.INetworkTable, java.lang.Object)
          */
         @Override
@@ -681,25 +662,6 @@ public final class ServerNode
             try
             {
                 tableManagerDecoratee_.incrementComponentState( sourceTable, componentPath, componentIncrement );
-            }
-            finally
-            {
-                ThreadPlayer.setPlayerName( null );
-            }
-        }
-
-        /*
-         * @see org.gamegineer.table.internal.net.node.ITableManager#incrementTableState(org.gamegineer.table.internal.net.node.INetworkTable, org.gamegineer.table.internal.net.node.TableIncrement)
-         */
-        @Override
-        public void incrementTableState(
-            final INetworkTable sourceTable,
-            final TableIncrement tableIncrement )
-        {
-            ThreadPlayer.setPlayerName( localPlayerName_ );
-            try
-            {
-                tableManagerDecoratee_.incrementTableState( sourceTable, tableIncrement );
             }
             finally
             {

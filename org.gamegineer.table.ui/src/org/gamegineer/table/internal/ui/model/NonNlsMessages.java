@@ -47,6 +47,12 @@ final class NonNlsMessages
      */
     public static String ComponentModel_componentChanged_unexpectedException;
 
+    /**
+     * An unexpected exception was thrown from
+     * IComponentModelListener.componentModelFocusChanged().
+     */
+    public static String ComponentModel_componentModelFocusChanged_unexpectedException;
+
     /** The component model listener is not registered. */
     public static String ComponentModel_removeComponentModelListener_listener_notRegistered;
 
@@ -57,12 +63,15 @@ final class NonNlsMessages
 
     /**
      * An unexpected exception was thrown from
-     * IContainerModelListener.containerModelFocusChanged().
+     * IContainerModelListener.containerChanged().
      */
-    public static String ContainerModel_containerModelFocusChanged_unexpectedException;
+    public static String ContainerModel_containerChanged_unexpectedException;
 
     /** The component is not present in the container. */
     public static String ContainerModel_getComponentModel_component_absent;
+
+    /** The component path does not exist in the container. */
+    public static String ContainerModel_getComponentModel_path_notExists;
 
     /** The container model listener is not registered. */
     public static String ContainerModel_removeContainerModelListener_listener_notRegistered;
@@ -91,11 +100,11 @@ final class NonNlsMessages
     /** The table model listener is already registered. */
     public static String TableModel_addTableModelListener_listener_registered;
 
+    /** The component does not exist in the table. */
+    public static String TableModel_getComponentModel_component_notExists;
+
     /** The component path does not exist in the table. */
     public static String TableModel_getComponentModel_path_notExists;
-
-    /** The container is not present in the table. */
-    public static String TableModel_getContainerModel_container_absent;
 
     /** An error occurred while reading the table memento. */
     public static String TableModel_readTableMemento_error;

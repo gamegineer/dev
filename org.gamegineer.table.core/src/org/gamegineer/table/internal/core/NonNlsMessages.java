@@ -141,6 +141,9 @@ final class NonNlsMessages
     /** The orientation is illegal. */
     public static String CardPile_orientation_illegal;
 
+    /** The component is not contained in the container. */
+    public static String CardPile_removeComponent_component_notOwned;
+
     /** The component listener is not registered. */
     public static String CardPile_removeComponentListener_listener_notRegistered;
 
@@ -198,6 +201,11 @@ final class NonNlsMessages
     /** The extension registry service is not bound. */
     public static String ComponentSurfaceDesignRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound;
 
+    // --- Container --------------------------------------------------------
+
+    /** The component path does not exist in the container. */
+    public static String Container_getComponent_path_notExists;
+
     // --- MementoUtils -----------------------------------------------------
 
     /** The required attribute is absent. */
@@ -225,34 +233,8 @@ final class NonNlsMessages
 
     // --- Table ------------------------------------------------------------
 
-    /** The card pile was created by a different table environment. */
-    public static String Table_addCardPile_cardPile_createdByDifferentTableEnvironment;
-
-    /** The card pile is already contained in a table. */
-    public static String Table_addCardPile_cardPile_owned;
-
-    /** The table listener is already registered. */
-    public static String Table_addTableListener_listener_registered;
-
-    /** An unexpected exception was thrown from ITableListener.cardPileAdded(). */
-    public static String Table_cardPileAdded_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from ITableListener.cardPileRemoved().
-     */
-    public static String Table_cardPileRemoved_unexpectedException;
-
-    /** The card pile index is out of range. */
-    public static String Table_getCardPileFromIndex_index_outOfRange;
-
     /** The component path does not exist in the table. */
     public static String Table_getComponent_path_notExists;
-
-    /** The card pile is not contained in the table. */
-    public static String Table_removeCardPile_cardPile_notOwned;
-
-    /** The table listener is not registered. */
-    public static String Table_removeTableListener_listener_notRegistered;
 
     // --- Tabletop ---------------------------------------------------------
 
@@ -318,6 +300,9 @@ final class NonNlsMessages
 
     /** The orientation is illegal. */
     public static String Tabletop_orientation_illegal;
+
+    /** The component is not contained in the container. */
+    public static String Tabletop_removeComponent_component_notOwned;
 
     /** The component listener is not registered. */
     public static String Tabletop_removeComponentListener_listener_notRegistered;

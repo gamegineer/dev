@@ -144,14 +144,15 @@ public final class CardPileTest
         final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment();
         final ITable table = tableEnvironment.createTable();
         final ICardPile cardPile1 = tableEnvironment.createCardPile();
-        table.addCardPile( cardPile1 );
+        table.getTabletop().addComponent( cardPile1 );
         final ICardPile cardPile2 = tableEnvironment.createCardPile();
-        table.addCardPile( cardPile2 );
+        table.getTabletop().addComponent( cardPile2 );
         final ICardPile cardPile3 = tableEnvironment.createCardPile();
-        table.addCardPile( cardPile3 );
-        final ComponentPath expectedComponentPath1 = new ComponentPath( null, 0 );
-        final ComponentPath expectedComponentPath2 = new ComponentPath( null, 1 );
-        final ComponentPath expectedComponentPath3 = new ComponentPath( null, 2 );
+        table.getTabletop().addComponent( cardPile3 );
+        final ComponentPath tabletopPath = new ComponentPath( null, 0 );
+        final ComponentPath expectedComponentPath1 = new ComponentPath( tabletopPath, 0 );
+        final ComponentPath expectedComponentPath2 = new ComponentPath( tabletopPath, 1 );
+        final ComponentPath expectedComponentPath3 = new ComponentPath( tabletopPath, 2 );
 
         final ComponentPath actualComponentPath1 = cardPile1.getPath();
         final ComponentPath actualComponentPath2 = cardPile2.getPath();

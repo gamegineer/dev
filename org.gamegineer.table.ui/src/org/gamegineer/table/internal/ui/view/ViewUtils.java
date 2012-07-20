@@ -145,19 +145,28 @@ final class ViewUtils
     {
         assert size != null;
 
-        final BufferedImage image = new BufferedImage( size.width, size.height, BufferedImage.TYPE_INT_ARGB_PRE );
+        // FIXME: temporary hack to avoid out of memory exceptions
+        //
+        // the correct fix is to have the component surface design UI type paint the image
+        // directly on the graphics context instead of returning an image object.  that will
+        // allow different implementations to draw the surface design using code or by using
+        // an image.  will probably require changing the component surface design UI type
+        // back to an interface.
+        final Dimension maxSize = new Dimension( 1024, 1024 );
+        final Dimension actualSize = new Dimension( Math.min( size.width, maxSize.width ), Math.min( size.height, maxSize.height ) );
+        final BufferedImage image = new BufferedImage( actualSize.width, actualSize.height, BufferedImage.TYPE_INT_ARGB_PRE );
 
         final Graphics2D g = image.createGraphics();
         try
         {
             g.setColor( Color.WHITE );
-            g.fillRect( 0, 0, size.width, size.height );
+            g.fillRect( 0, 0, actualSize.width, actualSize.height );
             g.setColor( Color.BLACK );
-            g.drawRect( 0, 0, size.width - 1, size.height - 1 );
+            g.drawRect( 0, 0, actualSize.width - 1, actualSize.height - 1 );
 
             final ImageIcon icon = Activator.getDefault().getBundleImages().getIcon( BundleImages.OBJECT_MISSING_IMAGE );
             assert icon != null;
-            g.drawImage( icon.getImage(), (size.width - icon.getIconWidth()) / 2, (size.height - icon.getIconHeight()) / 2, null );
+            g.drawImage( icon.getImage(), (actualSize.width - icon.getIconWidth()) / 2, (actualSize.height - icon.getIconHeight()) / 2, null );
         }
         finally
         {

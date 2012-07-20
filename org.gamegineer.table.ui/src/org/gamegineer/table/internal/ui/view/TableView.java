@@ -41,9 +41,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.Action;
@@ -72,8 +70,6 @@ import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentSurfaceDesignRegistry;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerLayout;
-import org.gamegineer.table.core.ITableListener;
-import org.gamegineer.table.core.TableContentChangedEvent;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.BundleImages;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
@@ -85,6 +81,8 @@ import org.gamegineer.table.internal.ui.wizards.hosttablenetwork.HostTableNetwor
 import org.gamegineer.table.internal.ui.wizards.jointablenetwork.JoinTableNetworkWizard;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.PlayerRole;
+
+// TODO: Remove all references to "card" and "card pile".
 
 /**
  * A view of the table.
@@ -106,9 +104,6 @@ final class TableView
     /** The background paint. */
     private final Paint backgroundPaint_;
 
-    /** The collection of container views. */
-    private final Map<IContainer, ContainerView> containerViews_;
-
     /** The key listener for this view. */
     private final KeyListener keyListener_;
 
@@ -124,11 +119,11 @@ final class TableView
     /** The mouse input listener for this view. */
     private final MouseInputListener mouseInputListener_;
 
-    /** The table listener for this view. */
-    private ITableListener tableListener_;
-
     /** The table model listener for this view. */
     private ITableModelListener tableModelListener_;
+
+    /** The tabletop view. */
+    private ContainerView tabletopView_;
 
 
     // ======================================================================
@@ -149,14 +144,13 @@ final class TableView
 
         actionMediator_ = new ActionMediator();
         backgroundPaint_ = createBackgroundPaint();
-        containerViews_ = new IdentityHashMap<IContainer, ContainerView>();
         keyListener_ = createKeyListener();
         model_ = model;
         mouseInputHandlers_ = createMouseInputHandlers();
         mouseInputHandler_ = mouseInputHandlers_.get( DefaultMouseInputHandler.class );
         mouseInputListener_ = createMouseInputListener();
-        tableListener_ = null;
         tableModelListener_ = null;
+        tabletopView_ = null;
 
         initializeComponent();
     }
@@ -179,8 +173,8 @@ final class TableView
     {
         assert faceDesignId != null;
 
-        final ICardPile cardPile = model_.getFocusedCardPile();
-        if( cardPile != null )
+        final IContainer container = getFocusedContainer();
+        if( container != null )
         {
             final IComponentSurfaceDesignRegistry componentSurfaceDesignRegistry = Activator.getDefault().getComponentSurfaceDesignRegistry();
             assert componentSurfaceDesignRegistry != null;
@@ -189,7 +183,7 @@ final class TableView
             final ICard card = model_.getTable().getTableEnvironment().createCard();
             card.setSurfaceDesign( CardOrientation.BACK, backDesign );
             card.setSurfaceDesign( CardOrientation.FACE, faceDesign );
-            cardPile.addComponent( card );
+            container.addComponent( card );
         }
     }
 
@@ -227,7 +221,7 @@ final class TableView
         convertPointToTable( location );
         cardPile.setLocation( location );
 
-        model_.getTable().addCardPile( cardPile );
+        model_.getTable().getTabletop().addComponent( cardPile );
     }
 
     /*
@@ -241,18 +235,11 @@ final class TableView
         bindActions();
         tableModelListener_ = new TableModelListener();
         model_.addTableModelListener( tableModelListener_ );
-        tableListener_ = new TableListener();
-        model_.getTable().addTableListener( tableListener_ );
         addKeyListener( keyListener_ );
         addMouseListener( mouseInputListener_ );
         addMouseMotionListener( mouseInputListener_ );
 
-        for( final ICardPile cardPile : model_.getTable().getCardPiles() )
-        {
-            createContainerView( cardPile );
-        }
-
-        // TODO: create tabletop view
+        createTabletopView();
     }
 
     /**
@@ -590,7 +577,7 @@ final class TableView
                 @SuppressWarnings( "unused" )
                 final Action obj )
             {
-                if( model_.getTable().getCardPileCount() == 0 )
+                if( model_.getTable().getTabletop().getComponentCount() == 0 )
                 {
                     return false;
                 }
@@ -606,13 +593,13 @@ final class TableView
                 @SuppressWarnings( "unused" )
                 final Action obj )
             {
-                final ICardPile cardPile = model_.getFocusedCardPile();
-                if( cardPile == null )
+                final IContainer container = getFocusedContainer();
+                if( container == null )
                 {
                     return false;
                 }
 
-                if( cardPile.getComponentCount() == 0 )
+                if( container.getComponentCount() == 0 )
                 {
                     return false;
                 }
@@ -628,7 +615,7 @@ final class TableView
                 @SuppressWarnings( "unused" )
                 final Action obj )
             {
-                if( model_.getFocusedCardPile() == null )
+                if( getFocusedContainer() == null )
                 {
                     return false;
                 }
@@ -754,6 +741,7 @@ final class TableView
         actionMediator_.bindShouldEnablePredicate( Actions.getHostTableNetworkAction(), isNetworkDisconnectedPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getJoinTableNetworkAction(), isNetworkDisconnectedPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getRemoveAllCardPilesAction(), hasEditableCardPilePredicate );
+        // FIXME: this action should really only be enabled if the editable focused card pile has at least one card
         actionMediator_.bindShouldEnablePredicate( Actions.getRemoveAllCardsAction(), hasEditableFocusedCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getRemoveCardAction(), hasEditableCardPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getRemoveCardPileAction(), hasEditableFocusedCardPilePredicate );
@@ -782,13 +770,13 @@ final class TableView
             public boolean evaluate(
                 final Action obj )
             {
-                final ICardPile cardPile = model_.getFocusedCardPile();
-                if( cardPile == null )
+                final IContainer container = getFocusedContainer();
+                if( container == null )
                 {
                     return false;
                 }
 
-                return cardPile.getLayout() == CardPileLayouts.fromId( (String)obj.getValue( Action.ACTION_COMMAND_KEY ) );
+                return container.getLayout() == CardPileLayouts.fromId( (String)obj.getValue( Action.ACTION_COMMAND_KEY ) );
             }
 
         };
@@ -822,36 +810,6 @@ final class TableView
         }
 
         return new Color( 0, 128, 0 );
-    }
-
-    /**
-     * Invoked when a new card pile is added to the table.
-     * 
-     * @param cardPile
-     *        The added card pile; must not be {@code null}.
-     */
-    private void cardPileAdded(
-        /* @NonNull */
-        final ICardPile cardPile )
-    {
-        assert cardPile != null;
-
-        createContainerView( cardPile );
-    }
-
-    /**
-     * Invoked when a card pile is removed from the table.
-     * 
-     * @param cardPile
-     *        The removed card pile; must not be {@code null}.
-     */
-    private void cardPileRemoved(
-        /* @NonNull */
-        final ICardPile cardPile )
-    {
-        assert cardPile != null;
-
-        deleteContainerView( cardPile );
     }
 
     /**
@@ -906,22 +864,14 @@ final class TableView
     }
 
     /**
-     * Creates a container view for the specified container and adds it to the
-     * table view.
-     * 
-     * @param container
-     *        The container; must not be {@code null}.
+     * Creates a view for the tabletop and adds it to the table view.
      */
-    private void createContainerView(
-        /* @NonNull */
-        final IContainer container )
+    private void createTabletopView()
     {
-        assert container != null;
+        assert tabletopView_ == null;
 
-        final ContainerView view = new ContainerView( model_.getContainerModel( container ) );
-        final ContainerView oldView = containerViews_.put( container, view );
-        assert oldView == null;
-        view.initialize( this );
+        tabletopView_ = new ContainerView( model_.getTabletopModel() );
+        tabletopView_.initialize( this );
     }
 
     /**
@@ -1011,22 +961,15 @@ final class TableView
     }
 
     /**
-     * Deletes the container view associated with the specified container and
-     * removes it from the table view.
-     * 
-     * @param container
-     *        The container; must not be {@code null}.
+     * Deletes the view associated with the tabletop and removes it from the
+     * table view.
      */
-    private void deleteContainerView(
-        /* @NonNull */
-        final IContainer container )
+    private void deleteTabletopView()
     {
-        assert container != null;
-
-        final ContainerView view = containerViews_.remove( container );
-        if( view != null )
+        if( tabletopView_ != null )
         {
-            view.uninitialize();
+            tabletopView_.uninitialize();
+            tabletopView_ = null;
         }
     }
 
@@ -1043,16 +986,50 @@ final class TableView
      */
     private void flipTopCard()
     {
-        final ICardPile cardPile = model_.getFocusedCardPile();
-        if( cardPile != null )
+        final IContainer container = getFocusedContainer();
+        if( container != null )
         {
-            final List<IComponent> components = cardPile.getComponents();
+            final List<IComponent> components = container.getComponents();
             if( !components.isEmpty() )
             {
                 final IComponent component = components.get( components.size() - 1 );
                 component.setOrientation( component.getOrientation().inverse() );
             }
         }
+    }
+
+    /**
+     * Gets the focusable container in the table at the specified location.
+     * 
+     * @param location
+     *        The location in table coordinates; must not be {@code null}.
+     * 
+     * @return The focusable container in the table at the specified location or
+     *         {@code null} if no focusable container in the table is at that
+     *         location.
+     */
+    /* @Nullable */
+    private IContainer getFocusableContainer(
+        /* @NonNull */
+        final Point location )
+    {
+        assert location != null;
+
+        final IComponent component = model_.getFocusableComponent( location );
+        return (component instanceof IContainer) ? (IContainer)component : null;
+    }
+
+    /**
+     * Gets the focused container.
+     * 
+     * @return The focused container or {@code null} if no container has the
+     *         focus.
+     */
+    /* @Nullable */
+    private IContainer getFocusedContainer()
+    {
+        final IComponent component = model_.getFocusedComponent();
+        return (component instanceof IContainer) ? (IContainer)component : null;
     }
 
     /**
@@ -1142,15 +1119,11 @@ final class TableView
         g2d.setPaint( backgroundPaint_ );
         g2d.fillRect( -originOffset.width, -originOffset.height, getWidth(), getHeight() );
 
-        for( final ICardPile cardPile : model_.getTable().getCardPiles() )
+        if( tabletopView_ != null )
         {
-            final ContainerView view = containerViews_.get( cardPile );
-            if( view != null )
+            if( clipBounds.intersects( tabletopView_.getBounds() ) )
             {
-                if( clipBounds.intersects( view.getBounds() ) )
-                {
-                    view.paint( this, g );
-                }
+                tabletopView_.paint( this, g );
             }
         }
     }
@@ -1160,7 +1133,7 @@ final class TableView
      */
     private void removeAllCardPiles()
     {
-        model_.getTable().removeCardPiles();
+        model_.getTable().getTabletop().removeComponents();
     }
 
     /**
@@ -1168,10 +1141,10 @@ final class TableView
      */
     private void removeAllCards()
     {
-        final ICardPile cardPile = model_.getFocusedCardPile();
-        if( cardPile != null )
+        final IContainer container = getFocusedContainer();
+        if( container != null )
         {
-            cardPile.removeComponents();
+            container.removeComponents();
         }
     }
 
@@ -1180,10 +1153,10 @@ final class TableView
      */
     private void removeFocusedCardPile()
     {
-        final ICardPile cardPile = model_.getFocusedCardPile();
-        if( cardPile != null )
+        final IContainer container = getFocusedContainer();
+        if( container != null )
         {
-            model_.getTable().removeCardPile( cardPile );
+            model_.getTable().getTabletop().removeComponent( container );
         }
     }
 
@@ -1192,10 +1165,10 @@ final class TableView
      */
     private void removeTopCard()
     {
-        final ICardPile cardPile = model_.getFocusedCardPile();
-        if( cardPile != null )
+        final IContainer container = getFocusedContainer();
+        if( container != null )
         {
-            cardPile.removeComponent();
+            container.removeComponent();
         }
     }
 
@@ -1205,16 +1178,11 @@ final class TableView
     @Override
     public void removeNotify()
     {
-        for( final IContainer container : new ArrayList<IContainer>( containerViews_.keySet() ) )
-        {
-            deleteContainerView( container );
-        }
+        deleteTabletopView();
 
         removeMouseMotionListener( mouseInputListener_ );
         removeMouseListener( mouseInputListener_ );
         removeKeyListener( keyListener_ );
-        model_.getTable().removeTableListener( tableListener_ );
-        tableListener_ = null;
         model_.removeTableModelListener( tableModelListener_ );
         tableModelListener_ = null;
         actionMediator_.unbindAll();
@@ -1266,10 +1234,10 @@ final class TableView
     {
         assert layout != null;
 
-        final ICardPile cardPile = model_.getFocusedCardPile();
-        if( cardPile != null )
+        final IContainer container = getFocusedContainer();
+        if( container != null )
         {
-            cardPile.setLayout( layout );
+            container.setLayout( layout );
         }
     }
 
@@ -1443,8 +1411,8 @@ final class TableView
         public void mousePressed(
             final MouseEvent event )
         {
-            final ICardPile cardPile = (ICardPile)model_.getFocusableComponent( getMouseLocation( event ) ); // FIXME: remove cast
-            model_.setFocus( cardPile );
+            final IContainer container = getFocusableContainer( getMouseLocation( event ) );
+            model_.setFocus( container );
 
             if( event.isPopupTrigger() )
             {
@@ -1452,7 +1420,7 @@ final class TableView
             }
             else if( SwingUtilities.isLeftMouseButton( event ) )
             {
-                if( cardPile != null )
+                if( container != null )
                 {
                     setMouseInputHandler( DragPrimedMouseInputHandler.class, event );
                 }
@@ -1489,9 +1457,9 @@ final class TableView
             /* @Nullable */
             final MouseEvent event )
         {
-            final ICardPile cardPile = (ICardPile)model_.getFocusableComponent( getMouseLocation( event ) ); // FIXME: remove cast
+            final IComponent component = model_.getFocusableComponent( getMouseLocation( event ) );
             final Cursor newCursor;
-            if( cardPile != null )
+            if( component != null )
             {
                 newCursor = model_.isEditable() ? Cursors.getDefaultCursor() : Cursors.getInvalidCursor();
             }
@@ -1601,7 +1569,7 @@ final class TableView
             final Point location = getMouseLocation( event );
             if( canBeginDrag( location ) )
             {
-                if( (ICardPile)model_.getFocusableComponent( location ) != null ) // FIXME: remove cast
+                if( model_.getFocusableComponent( location ) != null )
                 {
                     if( model_.isEditable() )
                     {
@@ -1654,7 +1622,7 @@ final class TableView
         // ==================================================================
 
         /** The card pile that temporarily holds the cards being dragged. */
-        private ICardPile mobileCardPile_;
+        private IContainer mobileCardPile_;
 
         /**
          * The offset between the mouse pointer and the mobile card pile origin.
@@ -1662,7 +1630,7 @@ final class TableView
         private final Dimension mobileCardPileOriginOffset_;
 
         /** The card pile that is the source of the cards being dragged. */
-        private ICardPile sourceCardPile_;
+        private IContainer sourceCardPile_;
 
 
         // ==================================================================
@@ -1692,7 +1660,7 @@ final class TableView
             final MouseEvent event )
         {
             final Point mouseLocation = getMouseLocation( event );
-            sourceCardPile_ = (ICardPile)model_.getFocusableComponent( mouseLocation ); // FIXME: remove cast
+            sourceCardPile_ = getFocusableContainer( mouseLocation );
             if( sourceCardPile_ != null )
             {
                 final List<IComponent> draggedComponents = sourceCardPile_.removeComponents( mouseLocation );
@@ -1704,7 +1672,7 @@ final class TableView
                     mobileCardPile_.setSurfaceDesign( CardPileOrientation.BASE, sourceCardPile_.getSurfaceDesign( CardPileOrientation.BASE ) );
                     mobileCardPile_.setOrigin( draggedCardsOrigin );
                     mobileCardPile_.setLayout( sourceCardPile_.getLayout() );
-                    model_.getTable().addCardPile( mobileCardPile_ );
+                    model_.getTable().getTabletop().addComponent( mobileCardPile_ );
                     mobileCardPile_.addComponents( draggedComponents );
                     model_.setFocus( mobileCardPile_ );
                 }
@@ -1752,11 +1720,11 @@ final class TableView
         {
             if( SwingUtilities.isLeftMouseButton( event ) )
             {
-                model_.getTable().removeCardPile( mobileCardPile_ );
+                model_.getTable().getTabletop().removeComponent( mobileCardPile_ );
 
                 final Point mouseLocation = getMouseLocation( event );
-                final ICardPile cardPile = (ICardPile)model_.getFocusableComponent( mouseLocation ); // FIXME: remove cast
-                final ICardPile targetCardPile = (cardPile != null) ? cardPile : sourceCardPile_;
+                final IContainer cardPile = getFocusableContainer( mouseLocation );
+                final IContainer targetCardPile = (cardPile != null) ? cardPile : sourceCardPile_;
                 targetCardPile.addComponents( mobileCardPile_.removeComponents() );
                 model_.setFocus( targetCardPile );
 
@@ -1777,7 +1745,7 @@ final class TableView
         // ==================================================================
 
         /** The card pile being dragged. */
-        private ICardPile draggedCardPile_;
+        private IContainer draggedCardPile_;
 
         /**
          * The offset between the mouse pointer and the dragged card pile
@@ -1813,7 +1781,7 @@ final class TableView
             final MouseEvent event )
         {
             final Point mouseLocation = getMouseLocation( event );
-            draggedCardPile_ = (ICardPile)model_.getFocusableComponent( mouseLocation );
+            draggedCardPile_ = getFocusableContainer( mouseLocation );
             if( draggedCardPile_ != null )
             {
                 final Point cardPileLocation = draggedCardPile_.getLocation();
@@ -2014,7 +1982,7 @@ final class TableView
         {
             assert location != null;
 
-            if( model_.getFocusedCardPile() != null )
+            if( getFocusedContainer() != null )
             {
                 return new CardPilePopupMenu();
             }
@@ -2055,70 +2023,6 @@ final class TableView
             final PopupMenuEvent event )
         {
             // do nothing
-        }
-    }
-
-    /**
-     * A table listener for the table view.
-     */
-    @Immutable
-    private final class TableListener
-        extends org.gamegineer.table.core.TableListener
-    {
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code TableListener} class.
-         */
-        TableListener()
-        {
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.core.TableListener#cardPileAdded(org.gamegineer.table.core.TableContentChangedEvent)
-         */
-        @Override
-        public void cardPileAdded(
-            final TableContentChangedEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    TableView.this.cardPileAdded( event.getCardPile() );
-                }
-            } );
-        }
-
-        /*
-         * @see org.gamegineer.table.core.TableListener#cardPileRemoved(org.gamegineer.table.core.TableContentChangedEvent)
-         */
-        @Override
-        public void cardPileRemoved(
-            final TableContentChangedEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    TableView.this.cardPileRemoved( event.getCardPile() );
-                }
-            } );
         }
     }
 

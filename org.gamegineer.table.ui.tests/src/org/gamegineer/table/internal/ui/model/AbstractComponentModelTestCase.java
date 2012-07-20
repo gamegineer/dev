@@ -86,6 +86,15 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     }
 
     /**
+     * Fires a component model focus changed event for the fixture component
+     * model.
+     */
+    private void fireComponentModelFocusChangedEvent()
+    {
+        componentModel_.fireComponentModelFocusChanged();
+    }
+
+    /**
      * Gets the component model under test in the fixture.
      * 
      * @return The component model under test in the fixture; never {@code null}
@@ -191,6 +200,25 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     }
 
     /**
+     * Ensures the component model focus changed event catches any exception
+     * thrown by the {@code componentModelFocusChanged} method of a component
+     * model listener.
+     */
+    @Test
+    public void testComponentModelFocusChanged_CatchesListenerException()
+    {
+        final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
+        listener.componentModelFocusChanged( EasyMock.notNull( ComponentModelEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        mocksControl_.replay();
+        componentModel_.addComponentModelListener( listener );
+
+        fireComponentModelFocusChangedEvent();
+
+        mocksControl_.verify();
+    }
+
+    /**
      * Ensures the {@code getComponent} method does not return {@code null}.
      */
     @Test
@@ -235,6 +263,40 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
         fireComponentChangedEvent();
         componentModel_.removeComponentModelListener( listener );
         fireComponentChangedEvent();
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code setFocused} method fires a component model focus
+     * changed event after the component model gained the focus.
+     */
+    @Test
+    public void testSetFocused_GainedFocus_FiresComponentModelFocusChangedEvent()
+    {
+        final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
+        listener.componentModelFocusChanged( EasyMock.notNull( ComponentModelEvent.class ) );
+        mocksControl_.replay();
+        componentModel_.addComponentModelListener( listener );
+
+        componentModel_.setFocused( true );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code setFocused} method fires a component model focus
+     * changed event after the component model lost the focus.
+     */
+    @Test
+    public void testSetFocused_LostFocus_FiresComponentModelFocusChangedEvent()
+    {
+        final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
+        listener.componentModelFocusChanged( EasyMock.notNull( ComponentModelEvent.class ) );
+        mocksControl_.replay();
+        componentModel_.addComponentModelListener( listener );
+
+        componentModel_.setFocused( false );
 
         mocksControl_.verify();
     }

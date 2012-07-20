@@ -42,7 +42,6 @@ import org.gamegineer.table.internal.net.node.ComponentIncrement;
 import org.gamegineer.table.internal.net.node.INetworkTable;
 import org.gamegineer.table.internal.net.node.INodeLayer;
 import org.gamegineer.table.internal.net.node.ITableManager;
-import org.gamegineer.table.internal.net.node.TableIncrement;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.internal.net.transport.TransportException;
@@ -486,20 +485,6 @@ public final class ClientNode
             if( getPlayer().hasRole( PlayerRole.EDITOR ) )
             {
                 tableManagerDecoratee_.incrementComponentState( sourceTable, componentPath, componentIncrement );
-            }
-        }
-
-        /*
-         * @see org.gamegineer.table.internal.net.node.ITableManager#incrementTableState(org.gamegineer.table.internal.net.node.INetworkTable, org.gamegineer.table.internal.net.node.TableIncrement)
-         */
-        @Override
-        public void incrementTableState(
-            final INetworkTable sourceTable,
-            final TableIncrement tableIncrement )
-        {
-            if( getPlayer().hasRole( PlayerRole.EDITOR ) )
-            {
-                tableManagerDecoratee_.incrementTableState( sourceTable, tableIncrement );
             }
         }
 

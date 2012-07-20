@@ -25,7 +25,9 @@ import java.util.concurrent.locks.ReentrantLock;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
+import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.ITable;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.IComponent}.
@@ -112,6 +114,9 @@ abstract class Component
         final Object memento )
         throws MementoException
     {
+        assert tableEnvironment != null;
+        assert memento != null;
+
         if( Card.isMemento( memento ) )
         {
             return Card.fromMemento( tableEnvironment, memento );
@@ -153,12 +158,84 @@ abstract class Component
     }
 
     /*
+     * @see org.gamegineer.table.core.IComponent#getPath()
+     */
+    @Override
+    public ComponentPath getPath()
+    {
+        getLock().lock();
+        try
+        {
+            if( container_ == null )
+            {
+                return null;
+            }
+
+            final ComponentPath parentPath = container_.getPath();
+            if( parentPath == null )
+            {
+                return null;
+            }
+
+            return new ComponentPath( parentPath, container_.getComponentIndex( this ) );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#getTable()
+     */
+    @Override
+    public final ITable getTable()
+    {
+        getLock().lock();
+        try
+        {
+            return getTableInternal();
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.core.IComponent#getTableEnvironment()
      */
     @Override
     public final TableEnvironment getTableEnvironment()
     {
         return tableEnvironment_;
+    }
+
+    /**
+     * Gets the table associated with this component.
+     * 
+     * @return The table associated with this component or {@code null} if this
+     *         component is not associated with a table.
+     */
+    @GuardedBy( "getLock()" )
+    /* @Nullable */
+    Table getTableInternal()
+    {
+        assert getLock().isHeldByCurrentThread();
+
+        return (container_ != null) ? container_.getTableInternal() : null;
+    }
+
+    /**
+     * This implementation always returns {@code false}. Subclasses may override
+     * and are not required to call the superclass implementation.
+     * 
+     * @see org.gamegineer.table.core.IComponent#isFocusable()
+     */
+    @Override
+    public boolean isFocusable()
+    {
+        return false;
     }
 
     /**

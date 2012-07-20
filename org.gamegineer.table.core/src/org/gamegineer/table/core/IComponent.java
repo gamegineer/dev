@@ -180,6 +180,17 @@ public interface IComponent
     /* @NonNull */
     public ITableEnvironment getTableEnvironment();
 
+    // TODO: This is a temporary method.
+    //
+    // It will eventually be moved to the new IComponentUI interface.
+    /**
+     * Indicates the component can receive the focus.
+     * 
+     * @return {@code true} if the component can receive the focus; otherwise
+     *         {@code false}.
+     */
+    public boolean isFocusable();
+
     /**
      * Removes the specified component listener from this component.
      * 

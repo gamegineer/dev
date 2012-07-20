@@ -79,26 +79,6 @@ public final class NetworkTableUtilsTest
     }
 
     /**
-     * Ensures the {@code incrementTableState} method throws an exception when
-     * passed a {@code null} table.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testIncrementTableState_Table_Null()
-    {
-        NetworkTableUtils.incrementTableState( null, new TableIncrement() );
-    }
-
-    /**
-     * Ensures the {@code incrementTableState} method throws an exception when
-     * passed a {@code null} table increment.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testIncrementTableState_TableIncrement_Null()
-    {
-        NetworkTableUtils.incrementTableState( EasyMock.createMock( ITable.class ), null );
-    }
-
-    /**
      * Ensures the {@code setTableState} method throws an exception when passed
      * a {@code null} table.
      */
