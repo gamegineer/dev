@@ -290,6 +290,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test( timeout = 1000 )
     public void testAddComponent_ChangesContainerBounds()
     {
+        getContainer().setSurfaceDesign( getContainer().getOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
         mocksControl_.replay();
@@ -418,6 +419,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test( timeout = 1000 )
     public void testAddComponents_ChangesContainerBounds()
     {
+        getContainer().setSurfaceDesign( getContainer().getOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
         mocksControl_.replay();
@@ -654,6 +656,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test( timeout = 1000 )
     public void testRemoveComponent_NotEmpty_ChangesContainerBounds()
     {
+        getContainer().setSurfaceDesign( getContainer().getOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
         EasyMock.expectLastCall().times( 2 );
@@ -809,6 +812,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test( timeout = 1000 )
     public void testRemoveComponents_NotEmpty_ChangesContainerBounds()
     {
+        getContainer().setSurfaceDesign( getContainer().getOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
         EasyMock.expectLastCall().times( 2 );
@@ -914,6 +918,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test( timeout = 1000 )
     public void testRemoveComponentsFromPoint_Location_ComponentPresent_ChangesContainerBounds()
     {
+        getContainer().setSurfaceDesign( getContainer().getOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
         EasyMock.expectLastCall().times( 2 );
@@ -1044,6 +1049,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test
     public void testSetLayout_ChangesContainerBounds()
     {
+        getContainer().setSurfaceDesign( getContainer().getOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         getContainer().setLayout( ContainerLayouts.createHorizontalContainerLayout() );
         getContainer().addComponent( createUniqueComponent() );
         getContainer().addComponent( createUniqueComponent() );
