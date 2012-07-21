@@ -94,7 +94,7 @@ abstract class Container
 
         if( getBounds().contains( location ) )
         {
-            if( !hasComponents() )
+            if( getComponentCount() == 0 )
             {
                 return this;
             }
@@ -177,12 +177,4 @@ abstract class Container
     abstract int getComponentIndex(
         /* @NonNull */
         Point location );
-
-    /**
-     * Indicates the container has at least one component.
-     * 
-     * @return {@code true} if the container has at least one component;
-     *         otherwise {@code false}.
-     */
-    abstract boolean hasComponents();
 }

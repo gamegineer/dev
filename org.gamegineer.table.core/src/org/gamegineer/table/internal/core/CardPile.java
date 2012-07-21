@@ -673,17 +673,6 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.internal.core.Container#hasComponents()
-     */
-    @Override
-    boolean hasComponents()
-    {
-        assert getLock().isHeldByCurrentThread();
-
-        return !cards_.isEmpty();
-    }
-
-    /*
      * @see org.gamegineer.table.internal.core.Component#isFocusable()
      */
     @Override

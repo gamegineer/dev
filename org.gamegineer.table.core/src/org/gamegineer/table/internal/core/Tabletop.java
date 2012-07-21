@@ -708,17 +708,6 @@ final class Tabletop
     }
 
     /*
-     * @see org.gamegineer.table.internal.core.Container#hasComponents()
-     */
-    @Override
-    boolean hasComponents()
-    {
-        assert getLock().isHeldByCurrentThread();
-
-        return !components_.isEmpty();
-    }
-
-    /*
      * @see org.gamegineer.table.core.IContainer#removeComponent(org.gamegineer.table.core.IComponent)
      */
     @Override
