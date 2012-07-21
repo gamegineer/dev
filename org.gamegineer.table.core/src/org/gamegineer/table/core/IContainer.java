@@ -133,16 +133,6 @@ public interface IContainer
     /* @NonNull */
     public IContainerLayout getLayout();
 
-    // TODO: may rename this method removeTopComponent
-    /**
-     * Removes the component at the top of this container.
-     * 
-     * @return The component that was removed or {@code null} if this container
-     *         is empty.
-     */
-    /* @Nullable */
-    public IComponent removeComponent();
-
     /**
      * Removes the specified component from this container.
      * 
@@ -200,6 +190,15 @@ public interface IContainer
     public void removeContainerListener(
         /* @NonNull */
         IContainerListener listener );
+
+    /**
+     * Removes the component at the top of this container.
+     * 
+     * @return The component that was removed or {@code null} if this container
+     *         is empty.
+     */
+    /* @Nullable */
+    public IComponent removeTopComponent();
 
     /**
      * Sets the layout of components in this container.

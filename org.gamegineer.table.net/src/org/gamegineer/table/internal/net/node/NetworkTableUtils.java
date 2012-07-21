@@ -172,7 +172,7 @@ public final class NetworkTableUtils
             {
                 for( int index = 0; index < removedComponentCount; ++index )
                 {
-                    container.removeComponent();
+                    container.removeTopComponent();
                 }
             }
         }

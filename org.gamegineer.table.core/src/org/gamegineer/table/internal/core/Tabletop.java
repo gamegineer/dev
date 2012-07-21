@@ -719,26 +719,6 @@ final class Tabletop
     }
 
     /*
-     * @see org.gamegineer.table.core.IContainer#removeComponent()
-     */
-    @Override
-    public IComponent removeComponent()
-    {
-        final ComponentRangeStrategy componentRangeStrategy = new ComponentRangeStrategy()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            int getLowerIndex()
-            {
-                return components_.isEmpty() ? 0 : components_.size() - 1;
-            }
-        };
-        final List<IComponent> components = removeComponents( componentRangeStrategy );
-        assert components.size() <= 1;
-        return components.isEmpty() ? null : components.get( 0 );
-    }
-
-    /*
      * @see org.gamegineer.table.core.IContainer#removeComponent(org.gamegineer.table.core.IComponent)
      */
     @Override
@@ -899,6 +879,26 @@ final class Tabletop
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( containerListeners_.remove( listener ), "listener", NonNlsMessages.Tabletop_removeContainerListener_listener_notRegistered ); //$NON-NLS-1$
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IContainer#removeTopComponent()
+     */
+    @Override
+    public IComponent removeTopComponent()
+    {
+        final ComponentRangeStrategy componentRangeStrategy = new ComponentRangeStrategy()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            int getLowerIndex()
+            {
+                return components_.isEmpty() ? 0 : components_.size() - 1;
+            }
+        };
+        final List<IComponent> components = removeComponents( componentRangeStrategy );
+        assert components.size() <= 1;
+        return components.isEmpty() ? null : components.get( 0 );
     }
 
     /*

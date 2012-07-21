@@ -1168,7 +1168,7 @@ final class TableView
         final IContainer container = getFocusedContainer();
         if( container != null )
         {
-            container.removeComponent();
+            container.removeTopComponent();
         }
     }
 

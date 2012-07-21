@@ -718,26 +718,6 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.IContainer#removeComponent()
-     */
-    @Override
-    public IComponent removeComponent()
-    {
-        final ComponentRangeStrategy componentRangeStrategy = new ComponentRangeStrategy()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            int getLowerIndex()
-            {
-                return cards_.isEmpty() ? 0 : cards_.size() - 1;
-            }
-        };
-        final List<IComponent> components = removeComponents( componentRangeStrategy );
-        assert components.size() <= 1;
-        return components.isEmpty() ? null : components.get( 0 );
-    }
-
-    /*
      * @see org.gamegineer.table.core.IContainer#removeComponent(org.gamegineer.table.core.IComponent)
      */
     @Override
@@ -898,6 +878,26 @@ final class CardPile
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( containerListeners_.remove( listener ), "listener", NonNlsMessages.CardPile_removeContainerListener_listener_notRegistered ); //$NON-NLS-1$
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IContainer#removeTopComponent()
+     */
+    @Override
+    public IComponent removeTopComponent()
+    {
+        final ComponentRangeStrategy componentRangeStrategy = new ComponentRangeStrategy()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            int getLowerIndex()
+            {
+                return cards_.isEmpty() ? 0 : cards_.size() - 1;
+            }
+        };
+        final List<IComponent> components = removeComponents( componentRangeStrategy );
+        assert components.size() <= 1;
+        return components.isEmpty() ? null : components.get( 0 );
     }
 
     /*
