@@ -22,8 +22,9 @@
 package org.gamegineer.table.internal.core;
 
 import static org.junit.Assert.assertEquals;
-import org.gamegineer.table.core.Cards;
+import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentPath;
+import org.gamegineer.table.core.ComponentSurfaceDesigns;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableEnvironment;
@@ -73,7 +74,13 @@ public final class CardPileTest
     /* @NonNull */
     private Component createUniqueComponent()
     {
-        return (Component)Cards.createUniqueCard( tableEnvironment_ ); // FIXME: remove cast
+        final Component component = new Card( tableEnvironment_ );
+        for( final ComponentOrientation orientation : component.getSupportedOrientations() )
+        {
+            component.setSurfaceDesign( orientation, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+        }
+
+        return component;
     }
 
     /**
