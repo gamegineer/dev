@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.ui.model;
 
 import java.lang.reflect.Method;
-import org.gamegineer.table.core.CardPiles;
+import org.gamegineer.table.core.Components;
 import org.gamegineer.table.core.TableEnvironmentFactory;
 
 /**
@@ -55,7 +55,7 @@ public final class ContainerModelAsContainerModelTest
     @Override
     protected ContainerModel createComponentModel()
     {
-        return new ContainerModel( CardPiles.createUniqueCardPile( TableEnvironmentFactory.createTableEnvironment() ) );
+        return new ContainerModel( Components.createUniqueContainer( TableEnvironmentFactory.createTableEnvironment() ) );
     }
 
     /*

@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.ui.model;
 
-import org.gamegineer.table.core.Cards;
+import org.gamegineer.table.core.Components;
 import org.gamegineer.table.core.TableEnvironmentFactory;
 
 /**
@@ -54,6 +54,6 @@ public final class ComponentModelAsComponentModelTest
     @Override
     protected ComponentModel createComponentModel()
     {
-        return new ComponentModel( Cards.createUniqueCard( TableEnvironmentFactory.createTableEnvironment() ) );
+        return new ComponentModel( Components.createUniqueComponent( TableEnvironmentFactory.createTableEnvironment() ) );
     }
 }

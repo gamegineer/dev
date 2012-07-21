@@ -132,7 +132,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     /* @NonNull */
     private IComponent createUniqueComponent()
     {
-        return Cards.createUniqueCard( tableEnvironment_ );
+        return Components.createUniqueComponent( tableEnvironment_ );
     }
 
     /**
@@ -144,7 +144,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     /* @NonNull */
     private IContainer createUniqueContainer()
     {
-        return CardPiles.createUniqueCardPile( tableEnvironment_ );
+        return Components.createUniqueContainer( tableEnvironment_ );
     }
 
     /*
@@ -156,7 +156,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     {
         final ITable table = (ITable)mementoOriginator;
 
-        table.getTabletop().addComponent( Cards.createUniqueCard( table.getTableEnvironment() ) );
+        table.getTabletop().addComponent( Components.createUniqueComponent( table.getTableEnvironment() ) );
     }
 
     /*

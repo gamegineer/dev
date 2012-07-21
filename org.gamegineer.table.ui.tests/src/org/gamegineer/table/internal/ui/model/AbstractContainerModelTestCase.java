@@ -24,7 +24,7 @@ package org.gamegineer.table.internal.ui.model;
 import static org.junit.Assert.assertNotNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.table.core.Cards;
+import org.gamegineer.table.core.Components;
 import org.gamegineer.table.core.IComponent;
 import org.junit.Before;
 import org.junit.Test;
@@ -158,7 +158,7 @@ public abstract class AbstractContainerModelTestCase
     @Test
     public void testComponentModel_ComponentChanged_FiresComponentChangedEvent()
     {
-        final IComponent component = Cards.createUniqueCard( getContainerModel().getContainer().getTableEnvironment() );
+        final IComponent component = Components.createUniqueComponent( getContainerModel().getContainer().getTableEnvironment() );
         getContainerModel().getContainer().addComponent( component );
         final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
         listener.componentChanged( EasyMock.notNull( ComponentModelEvent.class ) );
