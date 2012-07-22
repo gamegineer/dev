@@ -540,6 +540,45 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
+     * Ensures the {@code getPath} method returns the correct value when the
+     * component is associated with a table.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testGetPath_AssociatedTable()
+        throws Exception
+    {
+        final ITable table = tableEnvironment_.createTable();
+        final IContainer container = tableEnvironment_.createCardPile();
+        table.getTabletop().addComponent( container );
+        final IComponent component1 = createComponent( tableEnvironment_ );
+        container.addComponent( component1 );
+        final IComponent component2 = createComponent( tableEnvironment_ );
+        container.addComponent( component2 );
+        final IComponent component3 = createComponent( tableEnvironment_ );
+        container.addComponent( component3 );
+        final ComponentPath expectedTabletopPath = new ComponentPath( null, 0 );
+        final ComponentPath expectedContainerPath = new ComponentPath( expectedTabletopPath, 0 );
+        final ComponentPath expectedComponentPath1 = new ComponentPath( expectedContainerPath, 0 );
+        final ComponentPath expectedComponentPath2 = new ComponentPath( expectedContainerPath, 1 );
+        final ComponentPath expectedComponentPath3 = new ComponentPath( expectedContainerPath, 2 );
+
+        final ComponentPath actualTabletopPath = table.getTabletop().getPath();
+        final ComponentPath actualContainerPath = container.getPath();
+        final ComponentPath actualComponentPath1 = component1.getPath();
+        final ComponentPath actualComponentPath2 = component2.getPath();
+        final ComponentPath actualComponentPath3 = component3.getPath();
+
+        assertEquals( expectedTabletopPath, actualTabletopPath );
+        assertEquals( expectedContainerPath, actualContainerPath );
+        assertEquals( expectedComponentPath1, actualComponentPath1 );
+        assertEquals( expectedComponentPath2, actualComponentPath2 );
+        assertEquals( expectedComponentPath3, actualComponentPath3 );
+    }
+
+    /**
      * Ensures the {@code getPath} method returns {@code null} when the
      * component is not associated with a table.
      */

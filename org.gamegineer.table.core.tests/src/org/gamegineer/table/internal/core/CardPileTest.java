@@ -23,12 +23,7 @@ package org.gamegineer.table.internal.core;
 
 import static org.junit.Assert.assertEquals;
 import org.gamegineer.table.core.ComponentOrientation;
-import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentSurfaceDesigns;
-import org.gamegineer.table.core.ICardPile;
-import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.core.ITableEnvironment;
-import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -139,34 +134,5 @@ public final class CardPileTest
         }
 
         assertEquals( 1, actualValue );
-    }
-
-    /**
-     * Ensures the {@code getPath} method returns the correct value when the
-     * card pile is associated with a table.
-     */
-    @Test
-    public void testGetPath()
-    {
-        final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment();
-        final ITable table = tableEnvironment.createTable();
-        final ICardPile cardPile1 = tableEnvironment.createCardPile();
-        table.getTabletop().addComponent( cardPile1 );
-        final ICardPile cardPile2 = tableEnvironment.createCardPile();
-        table.getTabletop().addComponent( cardPile2 );
-        final ICardPile cardPile3 = tableEnvironment.createCardPile();
-        table.getTabletop().addComponent( cardPile3 );
-        final ComponentPath tabletopPath = new ComponentPath( null, 0 );
-        final ComponentPath expectedComponentPath1 = new ComponentPath( tabletopPath, 0 );
-        final ComponentPath expectedComponentPath2 = new ComponentPath( tabletopPath, 1 );
-        final ComponentPath expectedComponentPath3 = new ComponentPath( tabletopPath, 2 );
-
-        final ComponentPath actualComponentPath1 = cardPile1.getPath();
-        final ComponentPath actualComponentPath2 = cardPile2.getPath();
-        final ComponentPath actualComponentPath3 = cardPile3.getPath();
-
-        assertEquals( expectedComponentPath1, actualComponentPath1 );
-        assertEquals( expectedComponentPath2, actualComponentPath2 );
-        assertEquals( expectedComponentPath3, actualComponentPath3 );
     }
 }
