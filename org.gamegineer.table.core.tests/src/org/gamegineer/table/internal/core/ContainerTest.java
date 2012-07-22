@@ -1,5 +1,5 @@
 /*
- * CardPileTest.java
+ * ContainerTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -28,17 +28,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.internal.core.CardPile}
- * class.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.core.Container} class.
  */
-public final class CardPileTest
+public final class ContainerTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The card pile under test in the fixture. */
-    private CardPile cardPile_;
+    /** The container under test in the fixture. */
+    private Container container_;
 
     /** The table environment for use in the fixture. */
     private TableEnvironment tableEnvironment_;
@@ -49,9 +49,9 @@ public final class CardPileTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardPileTest} class.
+     * Initializes a new instance of the {@code ContainerTest} class.
      */
-    public CardPileTest()
+    public ContainerTest()
     {
     }
 
@@ -69,7 +69,7 @@ public final class CardPileTest
     /* @NonNull */
     private Component createUniqueComponent()
     {
-        final Component component = new Card( tableEnvironment_ );
+        final Component component = new Card( tableEnvironment_ ); // FIXME: change to Component once it is no longer abstract
         for( final ComponentOrientation orientation : component.getSupportedOrientations() )
         {
             component.setSurfaceDesign( orientation, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
@@ -89,48 +89,50 @@ public final class CardPileTest
         throws Exception
     {
         tableEnvironment_ = new TableEnvironment();
-        cardPile_ = new CardPile( tableEnvironment_ );
+        container_ = new CardPile( tableEnvironment_ ); // FIXME: change to Container once it is no longer abstract
     }
 
     /**
-     * Ensures the {@code getComponentIndex} method throws an exception when
-     * passed a component that is absent from the component collection.
+     * Ensures the {@code getComponentIndex(Component)} method throws an
+     * exception when passed a component that is absent from the component
+     * collection.
      */
     @Test( expected = AssertionError.class )
-    public void testGetComponentIndex_Component_Absent()
+    public void testGetComponentIndexFromComponent_Component_Absent()
     {
-        cardPile_.getTableEnvironment().getLock().lock();
+        container_.getTableEnvironment().getLock().lock();
         try
         {
-            cardPile_.getComponentIndex( createUniqueComponent() );
+            container_.getComponentIndex( createUniqueComponent() );
         }
         finally
         {
-            cardPile_.getTableEnvironment().getLock().unlock();
+            container_.getTableEnvironment().getLock().unlock();
         }
     }
 
     /**
-     * Ensures the {@code getComponentIndex} method returns the correct value
-     * when passed a component present in the component collection.
+     * Ensures the {@code getComponentIndex(Component)} method returns the
+     * correct value when passed a component present in the component
+     * collection.
      */
     @Test
-    public void testGetComponentIndex_Component_Present()
+    public void testGetComponentIndexFromComponent_Component_Present()
     {
         final Component component = createUniqueComponent();
-        cardPile_.addComponent( createUniqueComponent() );
-        cardPile_.addComponent( component );
-        cardPile_.addComponent( createUniqueComponent() );
+        container_.addComponent( createUniqueComponent() );
+        container_.addComponent( component );
+        container_.addComponent( createUniqueComponent() );
 
         final int actualValue;
-        cardPile_.getTableEnvironment().getLock().lock();
+        container_.getTableEnvironment().getLock().lock();
         try
         {
-            actualValue = cardPile_.getComponentIndex( component );
+            actualValue = container_.getComponentIndex( component );
         }
         finally
         {
-            cardPile_.getTableEnvironment().getLock().unlock();
+            container_.getTableEnvironment().getLock().unlock();
         }
 
         assertEquals( 1, actualValue );
