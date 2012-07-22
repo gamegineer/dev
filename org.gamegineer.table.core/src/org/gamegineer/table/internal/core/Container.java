@@ -22,13 +22,19 @@
 package org.gamegineer.table.internal.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Point;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ComponentPath;
+import org.gamegineer.table.core.ContainerContentChangedEvent;
+import org.gamegineer.table.core.ContainerEvent;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
+import org.gamegineer.table.core.IContainerListener;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.IContainer}.
@@ -38,6 +44,14 @@ abstract class Container
     extends Component
     implements IContainer
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The collection of container listeners. */
+    private final CopyOnWriteArrayList<IContainerListener> containerListeners_;
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -54,12 +68,108 @@ abstract class Container
         final TableEnvironment tableEnvironment )
     {
         super( tableEnvironment );
+
+        containerListeners_ = new CopyOnWriteArrayList<IContainerListener>();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /*
+     * @see org.gamegineer.table.core.IContainer#addContainerListener(org.gamegineer.table.core.IContainerListener)
+     */
+    @Override
+    public final void addContainerListener(
+        final IContainerListener listener )
+    {
+        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
+        assertArgumentLegal( containerListeners_.addIfAbsent( listener ), "listener", NonNlsMessages.Container_addContainerListener_listener_registered ); //$NON-NLS-1$
+    }
+
+    /**
+     * Fires a component added event.
+     * 
+     * @param component
+     *        The added component; must not be {@code null}.
+     * @param componentIndex
+     *        The index of the added component; must not be negative.
+     */
+    final void fireComponentAdded(
+        /* @NonNull */
+        final IComponent component,
+        final int componentIndex )
+    {
+        assert component != null;
+        assert componentIndex >= 0;
+        assert !getLock().isHeldByCurrentThread();
+
+        final ContainerContentChangedEvent event = new ContainerContentChangedEvent( this, component, componentIndex );
+        for( final IContainerListener listener : containerListeners_ )
+        {
+            try
+            {
+                listener.componentAdded( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Container_componentAdded_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a component removed event.
+     * 
+     * @param component
+     *        The removed component; must not be {@code null}.
+     * @param componentIndex
+     *        The index of the removed component; must not be negative.
+     */
+    final void fireComponentRemoved(
+        /* @NonNull */
+        final IComponent component,
+        final int componentIndex )
+    {
+        assert component != null;
+        assert componentIndex >= 0;
+        assert !getLock().isHeldByCurrentThread();
+
+        final ContainerContentChangedEvent event = new ContainerContentChangedEvent( this, component, componentIndex );
+        for( final IContainerListener listener : containerListeners_ )
+        {
+            try
+            {
+                listener.componentRemoved( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Container_componentRemoved_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a container layout changed event.
+     */
+    final void fireContainerLayoutChanged()
+    {
+        assert !getLock().isHeldByCurrentThread();
+
+        final ContainerEvent event = new ContainerEvent( this );
+        for( final IContainerListener listener : containerListeners_ )
+        {
+            try
+            {
+                listener.containerLayoutChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Container_containerLayoutChanged_unexpectedException, e );
+            }
+        }
+    }
 
     /*
      * @see org.gamegineer.table.core.IContainer#getComponent(int)
@@ -177,4 +287,15 @@ abstract class Container
     abstract int getComponentIndex(
         /* @NonNull */
         Point location );
+
+    /*
+     * @see org.gamegineer.table.core.IContainer#removeContainerListener(org.gamegineer.table.core.IContainerListener)
+     */
+    @Override
+    public final void removeContainerListener(
+        final IContainerListener listener )
+    {
+        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
+        assertArgumentLegal( containerListeners_.remove( listener ), "listener", NonNlsMessages.Container_removeContainerListener_listener_notRegistered ); //$NON-NLS-1$
+    }
 }

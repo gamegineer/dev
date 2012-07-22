@@ -33,8 +33,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
@@ -43,11 +41,8 @@ import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
-import org.gamegineer.table.core.ContainerContentChangedEvent;
-import org.gamegineer.table.core.ContainerEvent;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainerLayout;
-import org.gamegineer.table.core.IContainerListener;
 import org.gamegineer.table.core.TabletopLayouts;
 import org.gamegineer.table.core.TabletopOrientation;
 
@@ -89,9 +84,6 @@ final class Tabletop
     @GuardedBy( "getLock()" )
     private final List<Component> components_;
 
-    /** The collection of container listeners. */
-    private final CopyOnWriteArrayList<IContainerListener> containerListeners_;
-
     /** The tabletop layout. */
     @GuardedBy( "getLock()" )
     private IContainerLayout layout_;
@@ -130,7 +122,6 @@ final class Tabletop
         super( tableEnvironment );
 
         components_ = new ArrayList<Component>();
-        containerListeners_ = new CopyOnWriteArrayList<IContainerListener>();
         layout_ = TabletopLayouts.ABSOLUTE;
         location_ = new Point( Short.MIN_VALUE / 2, Short.MIN_VALUE / 2 );
         surfaceDesign_ = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.Tabletop.DEFAULT_SURFACE_DESIGN" ), Short.MAX_VALUE, Short.MAX_VALUE ); //$NON-NLS-1$
@@ -203,7 +194,6 @@ final class Tabletop
             addEventNotification( new Runnable()
             {
                 @Override
-                @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
                     int componentIndex = firstComponentIndex;
@@ -219,17 +209,6 @@ final class Tabletop
                 }
             } );
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IContainer#addContainerListener(org.gamegineer.table.core.IContainerListener)
-     */
-    @Override
-    public void addContainerListener(
-        final IContainerListener listener )
-    {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( containerListeners_.addIfAbsent( listener ), "listener", NonNlsMessages.Tabletop_addContainerListener_listener_registered ); //$NON-NLS-1$
     }
 
     /*
@@ -260,89 +239,6 @@ final class Tabletop
         }
 
         return Collections.unmodifiableMap( memento );
-    }
-
-    /**
-     * Fires a component added event.
-     * 
-     * @param component
-     *        The added component; must not be {@code null}.
-     * @param componentIndex
-     *        The index of the added component; must not be negative.
-     */
-    private void fireComponentAdded(
-        /* @NonNull */
-        final IComponent component,
-        final int componentIndex )
-    {
-        assert component != null;
-        assert componentIndex >= 0;
-        assert !getLock().isHeldByCurrentThread();
-
-        final ContainerContentChangedEvent event = new ContainerContentChangedEvent( this, component, componentIndex );
-        for( final IContainerListener listener : containerListeners_ )
-        {
-            try
-            {
-                listener.componentAdded( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Tabletop_componentAdded_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
-     * Fires a component removed event.
-     * 
-     * @param component
-     *        The removed component; must not be {@code null}.
-     * @param componentIndex
-     *        The index of the removed component; must not be negative.
-     */
-    private void fireComponentRemoved(
-        /* @NonNull */
-        final IComponent component,
-        final int componentIndex )
-    {
-        assert component != null;
-        assert componentIndex >= 0;
-        assert !getLock().isHeldByCurrentThread();
-
-        final ContainerContentChangedEvent event = new ContainerContentChangedEvent( this, component, componentIndex );
-        for( final IContainerListener listener : containerListeners_ )
-        {
-            try
-            {
-                listener.componentRemoved( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Tabletop_componentRemoved_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
-     * Fires a container layout changed event.
-     */
-    private void fireContainerLayoutChanged()
-    {
-        assert !getLock().isHeldByCurrentThread();
-
-        final ContainerEvent event = new ContainerEvent( this );
-        for( final IContainerListener listener : containerListeners_ )
-        {
-            try
-            {
-                listener.containerLayoutChanged( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Tabletop_containerLayoutChanged_unexpectedException, e );
-            }
-        }
     }
 
     /**
@@ -657,7 +553,6 @@ final class Tabletop
         addEventNotification( new Runnable()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void run()
             {
                 fireComponentRemoved( component, componentIndex );
@@ -745,7 +640,6 @@ final class Tabletop
             addEventNotification( new Runnable()
             {
                 @Override
-                @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
                     // ensure events are fired in order from highest index to lowest index
@@ -766,17 +660,6 @@ final class Tabletop
         }
 
         return new ArrayList<IComponent>( removedComponents );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IContainer#removeContainerListener(org.gamegineer.table.core.IContainerListener)
-     */
-    @Override
-    public void removeContainerListener(
-        final IContainerListener listener )
-    {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( containerListeners_.remove( listener ), "listener", NonNlsMessages.Tabletop_removeContainerListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
     /*
@@ -837,7 +720,6 @@ final class Tabletop
         addEventNotification( new Runnable()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void run()
             {
                 fireContainerLayoutChanged();

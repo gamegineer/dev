@@ -33,8 +33,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
@@ -44,13 +42,10 @@ import org.gamegineer.table.core.CardPileOrientation;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
-import org.gamegineer.table.core.ContainerContentChangedEvent;
-import org.gamegineer.table.core.ContainerEvent;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainerLayout;
-import org.gamegineer.table.core.IContainerListener;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ICardPile}.
@@ -98,9 +93,6 @@ final class CardPile
     @GuardedBy( "getLock()" )
     private final List<Card> cards_;
 
-    /** The collection of container listeners. */
-    private final CopyOnWriteArrayList<IContainerListener> containerListeners_;
-
     /** The card pile layout. */
     @GuardedBy( "getLock()" )
     private IContainerLayout layout_;
@@ -129,7 +121,6 @@ final class CardPile
 
         baseDesign_ = DEFAULT_BASE_DESIGN;
         cards_ = new ArrayList<Card>();
-        containerListeners_ = new CopyOnWriteArrayList<IContainerListener>();
         layout_ = CardPileLayouts.STACKED;
         origin_ = new Point( 0, 0 );
     }
@@ -200,7 +191,6 @@ final class CardPile
             addEventNotification( new Runnable()
             {
                 @Override
-                @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
                     int cardIndex = firstCardIndex;
@@ -216,17 +206,6 @@ final class CardPile
                 }
             } );
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IContainer#addContainerListener(org.gamegineer.table.core.IContainerListener)
-     */
-    @Override
-    public void addContainerListener(
-        final IContainerListener listener )
-    {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( containerListeners_.addIfAbsent( listener ), "listener", NonNlsMessages.CardPile_addContainerListener_listener_registered ); //$NON-NLS-1$
     }
 
     /*
@@ -257,89 +236,6 @@ final class CardPile
         }
 
         return Collections.unmodifiableMap( memento );
-    }
-
-    /**
-     * Fires a component added event.
-     * 
-     * @param component
-     *        The added component; must not be {@code null}.
-     * @param componentIndex
-     *        The index of the added component; must not be negative.
-     */
-    private void fireComponentAdded(
-        /* @NonNull */
-        final IComponent component,
-        final int componentIndex )
-    {
-        assert component != null;
-        assert componentIndex >= 0;
-        assert !getLock().isHeldByCurrentThread();
-
-        final ContainerContentChangedEvent event = new ContainerContentChangedEvent( this, component, componentIndex );
-        for( final IContainerListener listener : containerListeners_ )
-        {
-            try
-            {
-                listener.componentAdded( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentAdded_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
-     * Fires a component removed event.
-     * 
-     * @param component
-     *        The removed component; must not be {@code null}.
-     * @param componentIndex
-     *        The index of the removed component; must not be negative.
-     */
-    private void fireComponentRemoved(
-        /* @NonNull */
-        final IComponent component,
-        final int componentIndex )
-    {
-        assert component != null;
-        assert componentIndex >= 0;
-        assert !getLock().isHeldByCurrentThread();
-
-        final ContainerContentChangedEvent event = new ContainerContentChangedEvent( this, component, componentIndex );
-        for( final IContainerListener listener : containerListeners_ )
-        {
-            try
-            {
-                listener.componentRemoved( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentRemoved_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
-     * Fires a container layout changed event.
-     */
-    private void fireContainerLayoutChanged()
-    {
-        assert !getLock().isHeldByCurrentThread();
-
-        final ContainerEvent event = new ContainerEvent( this );
-        for( final IContainerListener listener : containerListeners_ )
-        {
-            try
-            {
-                listener.containerLayoutChanged( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_containerLayoutChanged_unexpectedException, e );
-            }
-        }
     }
 
     /**
@@ -656,7 +552,6 @@ final class CardPile
         addEventNotification( new Runnable()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void run()
             {
                 fireComponentRemoved( component, componentIndex );
@@ -744,7 +639,6 @@ final class CardPile
             addEventNotification( new Runnable()
             {
                 @Override
-                @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
                     // ensure events are fired in order from highest index to lowest index
@@ -765,17 +659,6 @@ final class CardPile
         }
 
         return new ArrayList<IComponent>( removedCards );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IContainer#removeContainerListener(org.gamegineer.table.core.IContainerListener)
-     */
-    @Override
-    public void removeContainerListener(
-        final IContainerListener listener )
-    {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( containerListeners_.remove( listener ), "listener", NonNlsMessages.CardPile_removeContainerListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
     /*
@@ -836,7 +719,6 @@ final class CardPile
         addEventNotification( new Runnable()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void run()
             {
                 fireContainerLayoutChanged();

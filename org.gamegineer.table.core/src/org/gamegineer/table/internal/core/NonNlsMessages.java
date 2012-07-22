@@ -66,27 +66,6 @@ final class NonNlsMessages
      */
     public static String CardPile_addComponents_components_containsOwnedComponent;
 
-    /** The container listener is already registered. */
-    public static String CardPile_addContainerListener_listener_registered;
-
-    /**
-     * An unexpected exception was thrown from
-     * IContainerListener.componentAdded().
-     */
-    public static String CardPile_componentAdded_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
-     * IContainerListener.componentRemoved().
-     */
-    public static String CardPile_componentRemoved_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
-     * IContainerListener.containerLayoutChanged().
-     */
-    public static String CardPile_containerLayoutChanged_unexpectedException;
-
     /** The component index is out of range. */
     public static String CardPile_getComponentFromIndex_index_outOfRange;
 
@@ -95,9 +74,6 @@ final class NonNlsMessages
 
     /** The component is not contained in the container. */
     public static String CardPile_removeComponent_component_notOwned;
-
-    /** The container listener is not registered. */
-    public static String CardPile_removeContainerListener_listener_notRegistered;
 
     // --- Component --------------------------------------------------------
 
@@ -176,8 +152,32 @@ final class NonNlsMessages
 
     // --- Container --------------------------------------------------------
 
+    /** The container listener is already registered. */
+    public static String Container_addContainerListener_listener_registered;
+
+    /**
+     * An unexpected exception was thrown from
+     * IContainerListener.componentAdded().
+     */
+    public static String Container_componentAdded_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
+     * IContainerListener.componentRemoved().
+     */
+    public static String Container_componentRemoved_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
+     * IContainerListener.containerLayoutChanged().
+     */
+    public static String Container_containerLayoutChanged_unexpectedException;
+
     /** The component path does not exist in the container. */
     public static String Container_getComponent_path_notExists;
+
+    /** The container listener is not registered. */
+    public static String Container_removeContainerListener_listener_notRegistered;
 
     // --- MementoUtils -----------------------------------------------------
 
@@ -226,27 +226,6 @@ final class NonNlsMessages
      */
     public static String Tabletop_addComponents_components_containsOwnedComponent;
 
-    /** The container listener is already registered. */
-    public static String Tabletop_addContainerListener_listener_registered;
-
-    /**
-     * An unexpected exception was thrown from
-     * IContainerListener.componentAdded().
-     */
-    public static String Tabletop_componentAdded_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
-     * IContainerListener.componentRemoved().
-     */
-    public static String Tabletop_componentRemoved_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
-     * IContainerListener.containerLayoutChanged().
-     */
-    public static String Tabletop_containerLayoutChanged_unexpectedException;
-
     /** The component index is out of range. */
     public static String Tabletop_getComponentFromIndex_index_outOfRange;
 
@@ -255,9 +234,6 @@ final class NonNlsMessages
 
     /** The component is not contained in the container. */
     public static String Tabletop_removeComponent_component_notOwned;
-
-    /** The container listener is not registered. */
-    public static String Tabletop_removeContainerListener_listener_notRegistered;
 
     // --- TableEnvironment -------------------------------------------------
 
