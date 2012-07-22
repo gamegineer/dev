@@ -42,7 +42,6 @@ import org.gamegineer.table.core.CardPileOrientation;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
-import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainerLayout;
@@ -66,10 +65,10 @@ final class CardPile
     private static final String BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME = "baseDesign"; //$NON-NLS-1$
 
     /**
-     * The name of the memento attribute that stores the collection of cards in
-     * the card pile.
+     * The name of the memento attribute that stores the collection of
+     * components in the card pile.
      */
-    private static final String CARDS_MEMENTO_ATTRIBUTE_NAME = "cards"; //$NON-NLS-1$
+    private static final String COMPONENTS_MEMENTO_ATTRIBUTE_NAME = "components"; //$NON-NLS-1$
 
     /** The default card pile base design. */
     private static final ComponentSurfaceDesign DEFAULT_BASE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.CardPile.DEFAULT_BASE_DESIGN" ), 0, 0 ); //$NON-NLS-1$
@@ -88,14 +87,6 @@ final class CardPile
     /** The design of the card pile base. */
     @GuardedBy( "getLock()" )
     private ComponentSurfaceDesign baseDesign_;
-
-    /** The collection of cards in this card pile ordered from bottom to top. */
-    @GuardedBy( "getLock()" )
-    private final List<Card> cards_;
-
-    /** The card pile layout. */
-    @GuardedBy( "getLock()" )
-    private IContainerLayout layout_;
 
     /** The card pile origin in table coordinates. */
     @GuardedBy( "getLock()" )
@@ -120,8 +111,6 @@ final class CardPile
         super( tableEnvironment );
 
         baseDesign_ = DEFAULT_BASE_DESIGN;
-        cards_ = new ArrayList<Card>();
-        layout_ = CardPileLayouts.STACKED;
         origin_ = new Point( 0, 0 );
     }
 
@@ -129,84 +118,6 @@ final class CardPile
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /*
-     * @see org.gamegineer.table.core.IContainer#addComponent(org.gamegineer.table.core.IComponent)
-     */
-    @Override
-    public void addComponent(
-        final IComponent component )
-    {
-        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
-
-        addComponents( Collections.singletonList( component ) );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IContainer#addComponents(java.util.List)
-     */
-    @Override
-    public void addComponents(
-        final List<IComponent> components )
-    {
-        assertArgumentNotNull( components, "components" ); //$NON-NLS-1$
-
-        final List<Card> addedCards = new ArrayList<Card>();
-        final int firstCardIndex;
-        final boolean cardPileBoundsChanged;
-
-        getLock().lock();
-        try
-        {
-            final Rectangle oldBounds = getBounds();
-            firstCardIndex = cards_.size();
-
-            for( final IComponent component : components )
-            {
-                final Card typedCard = (Card)component;
-                if( typedCard == null )
-                {
-                    throw new IllegalArgumentException( NonNlsMessages.CardPile_addComponents_components_containsNullElement );
-                }
-                assertArgumentLegal( typedCard.getContainer() == null, "components", NonNlsMessages.CardPile_addComponents_components_containsOwnedComponent ); //$NON-NLS-1$
-                assertArgumentLegal( typedCard.getTableEnvironment() == getTableEnvironment(), "components", NonNlsMessages.CardPile_addComponents_components_containsComponentCreatedByDifferentTableEnvironment ); //$NON-NLS-1$
-
-                typedCard.setContainer( this );
-                cards_.add( typedCard );
-                addedCards.add( typedCard );
-            }
-
-            layout_.layout( this );
-
-            final Rectangle newBounds = getBounds();
-            cardPileBoundsChanged = !newBounds.equals( oldBounds );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-
-        if( !addedCards.isEmpty() || cardPileBoundsChanged )
-        {
-            addEventNotification( new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    int cardIndex = firstCardIndex;
-                    for( final ICard card : addedCards )
-                    {
-                        fireComponentAdded( card, cardIndex++ );
-                    }
-
-                    if( cardPileBoundsChanged )
-                    {
-                        fireComponentBoundsChanged();
-                    }
-                }
-            } );
-        }
-    }
 
     /*
      * @see org.gamegineer.common.core.util.memento.IMementoOriginator#createMemento()
@@ -220,15 +131,15 @@ final class CardPile
         try
         {
             memento.put( BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, baseDesign_ );
-            memento.put( LAYOUT_MEMENTO_ATTRIBUTE_NAME, layout_ );
+            memento.put( LAYOUT_MEMENTO_ATTRIBUTE_NAME, getLayout() );
             memento.put( ORIGIN_MEMENTO_ATTRIBUTE_NAME, new Point( origin_ ) );
 
-            final List<Object> cardMementos = new ArrayList<Object>( cards_.size() );
-            for( final ICard card : cards_ )
+            final List<Object> componentMementos = new ArrayList<Object>();
+            for( final IComponent component : getComponents() )
             {
-                cardMementos.add( card.createMemento() );
+                componentMementos.add( component.createMemento() );
             }
-            memento.put( CARDS_MEMENTO_ATTRIBUTE_NAME, Collections.unmodifiableList( cardMementos ) );
+            memento.put( COMPONENTS_MEMENTO_ATTRIBUTE_NAME, Collections.unmodifiableList( componentMementos ) );
         }
         finally
         {
@@ -277,10 +188,10 @@ final class CardPile
         cardPile.setLayout( layout );
 
         @SuppressWarnings( "unchecked" )
-        final List<Object> cardMementos = MementoUtils.getAttribute( memento, CARDS_MEMENTO_ATTRIBUTE_NAME, List.class );
-        for( final Object cardMemento : cardMementos )
+        final List<Object> componentMementos = MementoUtils.getAttribute( memento, COMPONENTS_MEMENTO_ATTRIBUTE_NAME, List.class );
+        for( final Object componentMemento : componentMementos )
         {
-            cardPile.addComponent( Card.fromMemento( tableEnvironment, cardMemento ) );
+            cardPile.addComponent( Component.fromMemento( tableEnvironment, componentMemento ) );
         }
 
         return cardPile;
@@ -295,14 +206,15 @@ final class CardPile
         getLock().lock();
         try
         {
-            if( cards_.isEmpty() )
+            if( getComponentCount() == 0 )
             {
                 return new Rectangle( origin_, baseDesign_.getSize() );
             }
 
-            final Rectangle topCardBounds = cards_.get( cards_.size() - 1 ).getBounds();
-            final Rectangle bottomCardBounds = cards_.get( 0 ).getBounds();
-            return topCardBounds.union( bottomCardBounds );
+            final List<IComponent> components = getComponents();
+            final Rectangle topComponentBounds = components.get( components.size() - 1 ).getBounds();
+            final Rectangle bottomComponentBounds = components.get( 0 ).getBounds();
+            return topComponentBounds.union( bottomComponentBounds );
         }
         finally
         {
@@ -311,102 +223,12 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.internal.core.Container#getComponent(int)
+     * @see org.gamegineer.table.internal.core.Container#getDefaultLayout()
      */
     @Override
-    public Component getComponent(
-        final int index )
+    IContainerLayout getDefaultLayout()
     {
-        getLock().lock();
-        try
-        {
-            assertArgumentLegal( (index >= 0) && (index < cards_.size()), "index", NonNlsMessages.CardPile_getComponentFromIndex_index_outOfRange ); //$NON-NLS-1$
-
-            return cards_.get( index );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IContainer#getComponentCount()
-     */
-    @Override
-    public int getComponentCount()
-    {
-        getLock().lock();
-        try
-        {
-            return cards_.size();
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.core.Container#getComponentIndex(org.gamegineer.table.internal.core.Component)
-     */
-    @Override
-    int getComponentIndex(
-        final Component component )
-    {
-        assert component != null;
-        assert getLock().isHeldByCurrentThread();
-
-        final int index = cards_.indexOf( component );
-        assert index != -1;
-        return index;
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.core.Container#getComponentIndex(java.awt.Point)
-     */
-    @Override
-    int getComponentIndex(
-        final Point location )
-    {
-        assert location != null;
-        assert getLock().isHeldByCurrentThread();
-
-        return layout_.getComponentIndex( this, location );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IContainer#getComponents()
-     */
-    @Override
-    public List<IComponent> getComponents()
-    {
-        getLock().lock();
-        try
-        {
-            return new ArrayList<IComponent>( cards_ );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IContainer#getLayout()
-     */
-    @Override
-    public IContainerLayout getLayout()
-    {
-        getLock().lock();
-        try
-        {
-            return layout_;
-        }
-        finally
-        {
-            getLock().unlock();
-        }
+        return CardPileLayouts.STACKED;
     }
 
     /*
@@ -517,218 +339,9 @@ final class CardPile
         assert memento != null;
 
         return MementoUtils.hasAttribute( memento, BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME ) //
-            && MementoUtils.hasAttribute( memento, CARDS_MEMENTO_ATTRIBUTE_NAME ) //
+            && MementoUtils.hasAttribute( memento, COMPONENTS_MEMENTO_ATTRIBUTE_NAME ) //
             && MementoUtils.hasAttribute( memento, LAYOUT_MEMENTO_ATTRIBUTE_NAME ) //
             && MementoUtils.hasAttribute( memento, ORIGIN_MEMENTO_ATTRIBUTE_NAME );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IContainer#removeComponent(org.gamegineer.table.core.IComponent)
-     */
-    @Override
-    public void removeComponent(
-        final IComponent component )
-    {
-        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
-
-        final int componentIndex;
-
-        getLock().lock();
-        try
-        {
-            assertArgumentLegal( component.getContainer() == this, "component", NonNlsMessages.CardPile_removeComponent_component_notOwned ); //$NON-NLS-1$
-
-            componentIndex = cards_.indexOf( component );
-            assert componentIndex != -1;
-            final Component typedComponent = cards_.remove( componentIndex );
-            assert typedComponent != null;
-            typedComponent.setContainer( null );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-
-        addEventNotification( new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                fireComponentRemoved( component, componentIndex );
-            }
-        } );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IContainer#removeComponents()
-     */
-    @Override
-    public List<IComponent> removeComponents()
-    {
-        return removeComponents( new ComponentRangeStrategy() );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IContainer#removeComponents(java.awt.Point)
-     */
-    @Override
-    public List<IComponent> removeComponents(
-        final Point location )
-    {
-        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
-
-        final ComponentRangeStrategy componentRangeStrategy = new ComponentRangeStrategy()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            int getLowerIndex()
-            {
-                final int componentIndex = getComponentIndex( location );
-                return (componentIndex != -1) ? componentIndex : cards_.size();
-            }
-        };
-        return removeComponents( componentRangeStrategy );
-    }
-
-    /**
-     * Removes all components from this container in the specified range.
-     * 
-     * @param componentRangeStrategy
-     *        The strategy used to determine the range of components to remove;
-     *        must not be {@code null}. The strategy will be invoked while the
-     *        table lock is held.
-     * 
-     * @return The collection of components removed from this container; never
-     *         {@code null}. The components are returned in order from the
-     *         component nearest the bottom of the container to the component
-     *         nearest the top of the container.
-     */
-    /* @NonNull */
-    private List<IComponent> removeComponents(
-        /* @NonNull */
-        final ComponentRangeStrategy componentRangeStrategy )
-    {
-        assert componentRangeStrategy != null;
-
-        final List<Card> removedCards = new ArrayList<Card>();
-        final int upperCardIndex = componentRangeStrategy.getUpperIndex() - 1;
-        final boolean cardPileBoundsChanged;
-
-        getLock().lock();
-        try
-        {
-            final Rectangle oldBounds = getBounds();
-
-            removedCards.addAll( cards_.subList( componentRangeStrategy.getLowerIndex(), componentRangeStrategy.getUpperIndex() ) );
-            cards_.removeAll( removedCards );
-            for( final Card card : removedCards )
-            {
-                card.setContainer( null );
-            }
-
-            final Rectangle newBounds = getBounds();
-            cardPileBoundsChanged = !newBounds.equals( oldBounds );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-
-        if( !removedCards.isEmpty() || cardPileBoundsChanged )
-        {
-            addEventNotification( new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    // ensure events are fired in order from highest index to lowest index
-                    final List<ICard> reversedRemovedCards = new ArrayList<ICard>( removedCards );
-                    Collections.reverse( reversedRemovedCards );
-                    int cardIndex = upperCardIndex;
-                    for( final ICard card : reversedRemovedCards )
-                    {
-                        fireComponentRemoved( card, cardIndex-- );
-                    }
-
-                    if( cardPileBoundsChanged )
-                    {
-                        fireComponentBoundsChanged();
-                    }
-                }
-            } );
-        }
-
-        return new ArrayList<IComponent>( removedCards );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IContainer#removeTopComponent()
-     */
-    @Override
-    public IComponent removeTopComponent()
-    {
-        final ComponentRangeStrategy componentRangeStrategy = new ComponentRangeStrategy()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            int getLowerIndex()
-            {
-                return cards_.isEmpty() ? 0 : cards_.size() - 1;
-            }
-        };
-        final List<IComponent> components = removeComponents( componentRangeStrategy );
-        assert components.size() <= 1;
-        return components.isEmpty() ? null : components.get( 0 );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IContainer#setLayout(org.gamegineer.table.core.IContainerLayout)
-     */
-    @Override
-    public void setLayout(
-        final IContainerLayout layout )
-    {
-        assertArgumentNotNull( layout, "layout" ); //$NON-NLS-1$
-
-        final boolean cardPileBoundsChanged;
-
-        getLock().lock();
-        try
-        {
-            layout_ = layout;
-
-            if( cards_.isEmpty() )
-            {
-                cardPileBoundsChanged = false;
-            }
-            else
-            {
-                final Rectangle oldBounds = getBounds();
-
-                layout_.layout( this );
-
-                final Rectangle newBounds = getBounds();
-                cardPileBoundsChanged = !newBounds.equals( oldBounds );
-            }
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-
-        addEventNotification( new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                fireContainerLayoutChanged();
-
-                if( cardPileBoundsChanged )
-                {
-                    fireComponentBoundsChanged();
-                }
-            }
-        } );
     }
 
     /*
@@ -875,9 +488,9 @@ final class CardPile
             sb.append( ", origin_=" ); //$NON-NLS-1$
             sb.append( origin_ );
             sb.append( ", cards_.size()=" ); //$NON-NLS-1$
-            sb.append( cards_.size() );
+            sb.append( getComponentCount() );
             sb.append( ", layout_=" ); //$NON-NLS-1$
-            sb.append( layout_ );
+            sb.append( getLayout() );
         }
         finally
         {
@@ -907,11 +520,11 @@ final class CardPile
         {
             final Dimension offset = translationOffsetStrategy.getOffset();
             origin_.translate( offset.width, offset.height );
-            for( final ICard card : cards_ )
+            for( final IComponent component : getComponents() )
             {
-                final Point cardLocation = card.getLocation();
-                cardLocation.translate( offset.width, offset.height );
-                card.setLocation( cardLocation );
+                final Point componentLocation = component.getLocation();
+                componentLocation.translate( offset.width, offset.height );
+                component.setLocation( componentLocation );
             }
         }
         finally
@@ -933,60 +546,6 @@ final class CardPile
     // ======================================================================
     // Nested Types
     // ======================================================================
-
-    /**
-     * A strategy to calculate a contiguous range of components in a card pile.
-     */
-    @Immutable
-    private class ComponentRangeStrategy
-    {
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code ComponentRangeStrategy}
-         * class.
-         */
-        ComponentRangeStrategy()
-        {
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /**
-         * Gets the lower index of the component range, inclusive.
-         * 
-         * <p>
-         * The default implementation returns 0.
-         * </p>
-         * 
-         * @return The lower index of the component range, inclusive.
-         */
-        int getLowerIndex()
-        {
-            return 0;
-        }
-
-        /**
-         * Gets the upper index of the component range, exclusive.
-         * 
-         * <p>
-         * The default implementation returns the size of the component
-         * collection.
-         * </p>
-         * 
-         * @return The upper index of the component range, exclusive.
-         */
-        @SuppressWarnings( "synthetic-access" )
-        int getUpperIndex()
-        {
-            return cards_.size();
-        }
-    }
 
     /**
      * A strategy to calculate a translation offset.

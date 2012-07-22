@@ -51,29 +51,8 @@ final class NonNlsMessages
 
     // --- CardPile ---------------------------------------------------------
 
-    /**
-     * The component collection contains a component created by a different
-     * table environment.
-     */
-    public static String CardPile_addComponents_components_containsComponentCreatedByDifferentTableEnvironment;
-
-    /** The component collection contains a {@code null} element. */
-    public static String CardPile_addComponents_components_containsNullElement;
-
-    /**
-     * The component collection contains a component already contained in a
-     * container.
-     */
-    public static String CardPile_addComponents_components_containsOwnedComponent;
-
-    /** The component index is out of range. */
-    public static String CardPile_getComponentFromIndex_index_outOfRange;
-
     /** The orientation is illegal. */
     public static String CardPile_orientation_illegal;
-
-    /** The component is not contained in the container. */
-    public static String CardPile_removeComponent_component_notOwned;
 
     // --- Component --------------------------------------------------------
 
@@ -152,6 +131,21 @@ final class NonNlsMessages
 
     // --- Container --------------------------------------------------------
 
+    /**
+     * The component collection contains a component created by a different
+     * table environment.
+     */
+    public static String Container_addComponents_components_containsComponentCreatedByDifferentTableEnvironment;
+
+    /** The component collection contains a {@code null} element. */
+    public static String Container_addComponents_components_containsNullElement;
+
+    /**
+     * The component collection contains a component already contained in a
+     * container.
+     */
+    public static String Container_addComponents_components_containsOwnedComponent;
+
     /** The container listener is already registered. */
     public static String Container_addContainerListener_listener_registered;
 
@@ -173,8 +167,14 @@ final class NonNlsMessages
      */
     public static String Container_containerLayoutChanged_unexpectedException;
 
+    /** The component index is out of range. */
+    public static String Container_getComponentFromIndex_index_outOfRange;
+
     /** The component path does not exist in the container. */
-    public static String Container_getComponent_path_notExists;
+    public static String Container_getComponentFromPath_path_notExists;
+
+    /** The component is not contained in the container. */
+    public static String Container_removeComponent_component_notOwned;
 
     /** The container listener is not registered. */
     public static String Container_removeContainerListener_listener_notRegistered;
@@ -211,29 +211,8 @@ final class NonNlsMessages
 
     // --- Tabletop ---------------------------------------------------------
 
-    /**
-     * The component collection contains a component created by a different
-     * table environment.
-     */
-    public static String Tabletop_addComponents_components_containsComponentCreatedByDifferentTableEnvironment;
-
-    /** The component collection contains a {@code null} element. */
-    public static String Tabletop_addComponents_components_containsNullElement;
-
-    /**
-     * The component collection contains a component already contained in a
-     * container.
-     */
-    public static String Tabletop_addComponents_components_containsOwnedComponent;
-
-    /** The component index is out of range. */
-    public static String Tabletop_getComponentFromIndex_index_outOfRange;
-
     /** The orientation is illegal. */
     public static String Tabletop_orientation_illegal;
-
-    /** The component is not contained in the container. */
-    public static String Tabletop_removeComponent_component_notOwned;
 
     // --- TableEnvironment -------------------------------------------------
 

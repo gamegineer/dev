@@ -24,16 +24,21 @@ package org.gamegineer.table.internal.core;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ContainerEvent;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
+import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.core.IContainerListener;
 
 /**
@@ -48,8 +53,19 @@ abstract class Container
     // Fields
     // ======================================================================
 
+    /**
+     * The collection of components in this container ordered from bottom to
+     * top.
+     */
+    @GuardedBy( "getLock()" )
+    private final List<Component> components_;
+
     /** The collection of container listeners. */
     private final CopyOnWriteArrayList<IContainerListener> containerListeners_;
+
+    /** The container layout. */
+    @GuardedBy( "getLock()" )
+    private IContainerLayout layout_;
 
 
     // ======================================================================
@@ -69,13 +85,94 @@ abstract class Container
     {
         super( tableEnvironment );
 
+        components_ = new ArrayList<Component>();
         containerListeners_ = new CopyOnWriteArrayList<IContainerListener>();
+        layout_ = getDefaultLayout();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /*
+     * @see org.gamegineer.table.core.IContainer#addComponent(org.gamegineer.table.core.IComponent)
+     */
+    @Override
+    public final void addComponent(
+        final IComponent component )
+    {
+        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
+
+        addComponents( Collections.singletonList( component ) );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IContainer#addComponents(java.util.List)
+     */
+    @Override
+    public final void addComponents(
+        final List<IComponent> components )
+    {
+        assertArgumentNotNull( components, "components" ); //$NON-NLS-1$
+
+        final List<Component> addedComponents = new ArrayList<Component>();
+        final int firstComponentIndex;
+        final boolean containerBoundsChanged;
+
+        getLock().lock();
+        try
+        {
+            final Rectangle oldBounds = getBounds();
+            firstComponentIndex = components_.size();
+
+            for( final IComponent component : components )
+            {
+                final Component typedComponent = (Component)component;
+                if( typedComponent == null )
+                {
+                    throw new IllegalArgumentException( NonNlsMessages.Container_addComponents_components_containsNullElement );
+                }
+                assertArgumentLegal( typedComponent.getContainer() == null, "components", NonNlsMessages.Container_addComponents_components_containsOwnedComponent ); //$NON-NLS-1$
+                assertArgumentLegal( typedComponent.getTableEnvironment() == getTableEnvironment(), "components", NonNlsMessages.Container_addComponents_components_containsComponentCreatedByDifferentTableEnvironment ); //$NON-NLS-1$
+
+                typedComponent.setContainer( this );
+                components_.add( typedComponent );
+                addedComponents.add( typedComponent );
+            }
+
+            layout_.layout( this );
+
+            final Rectangle newBounds = getBounds();
+            containerBoundsChanged = !newBounds.equals( oldBounds );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+
+        if( !addedComponents.isEmpty() || containerBoundsChanged )
+        {
+            addEventNotification( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    int componentIndex = firstComponentIndex;
+                    for( final IComponent component : addedComponents )
+                    {
+                        fireComponentAdded( component, componentIndex++ );
+                    }
+
+                    if( containerBoundsChanged )
+                    {
+                        fireComponentBoundsChanged();
+                    }
+                }
+            } );
+        }
+    }
 
     /*
      * @see org.gamegineer.table.core.IContainer#addContainerListener(org.gamegineer.table.core.IContainerListener)
@@ -96,7 +193,7 @@ abstract class Container
      * @param componentIndex
      *        The index of the added component; must not be negative.
      */
-    final void fireComponentAdded(
+    private void fireComponentAdded(
         /* @NonNull */
         final IComponent component,
         final int componentIndex )
@@ -127,7 +224,7 @@ abstract class Container
      * @param componentIndex
      *        The index of the removed component; must not be negative.
      */
-    final void fireComponentRemoved(
+    private void fireComponentRemoved(
         /* @NonNull */
         final IComponent component,
         final int componentIndex )
@@ -153,7 +250,7 @@ abstract class Container
     /**
      * Fires a container layout changed event.
      */
-    final void fireContainerLayoutChanged()
+    private void fireContainerLayoutChanged()
     {
         assert !getLock().isHeldByCurrentThread();
 
@@ -175,8 +272,20 @@ abstract class Container
      * @see org.gamegineer.table.core.IContainer#getComponent(int)
      */
     @Override
-    public abstract Component getComponent(
-        int index );
+    public final Component getComponent(
+        final int index )
+    {
+        getLock().lock();
+        try
+        {
+            assertArgumentLegal( (index >= 0) && (index < components_.size()), "index", NonNlsMessages.Container_getComponentFromIndex_index_outOfRange ); //$NON-NLS-1$
+            return components_.get( index );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+    }
 
     /**
      * Gets the component within this container's bounds (including the
@@ -250,8 +359,25 @@ abstract class Container
             return component;
         }
 
-        assertArgumentLegal( component instanceof Container, "paths", NonNlsMessages.Container_getComponent_path_notExists ); //$NON-NLS-1$
+        assertArgumentLegal( component instanceof Container, "paths", NonNlsMessages.Container_getComponentFromPath_path_notExists ); //$NON-NLS-1$
         return ((Container)component).getComponent( paths.subList( 1, paths.size() ) );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IContainer#getComponentCount()
+     */
+    @Override
+    public final int getComponentCount()
+    {
+        getLock().lock();
+        try
+        {
+            return components_.size();
+        }
+        finally
+        {
+            getLock().unlock();
+        }
     }
 
     /**
@@ -263,9 +389,16 @@ abstract class Container
      * @return The index of the specified component in this container.
      */
     @GuardedBy( "getLock()" )
-    abstract int getComponentIndex(
-        /* @NonNull */
-        Component component );
+    final int getComponentIndex(
+        final Component component )
+    {
+        assert component != null;
+        assert getLock().isHeldByCurrentThread();
+
+        final int index = components_.indexOf( component );
+        assert index != -1;
+        return index;
+    }
 
     /**
      * Gets the index of the component in this container at the specified
@@ -284,9 +417,197 @@ abstract class Container
      *         location.
      */
     @GuardedBy( "getLock()" )
-    abstract int getComponentIndex(
+    final int getComponentIndex(
+        final Point location )
+    {
+        assert location != null;
+        assert getLock().isHeldByCurrentThread();
+
+        return layout_.getComponentIndex( this, location );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IContainer#getComponents()
+     */
+    @Override
+    public final List<IComponent> getComponents()
+    {
+        getLock().lock();
+        try
+        {
+            return new ArrayList<IComponent>( components_ );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+    }
+
+    /**
+     * Gets the default container layout.
+     * 
+     * @return The default container layout; never {@code null}.
+     */
+    /* @NonNull */
+    abstract IContainerLayout getDefaultLayout();
+
+    /*
+     * @see org.gamegineer.table.core.IContainer#getLayout()
+     */
+    @Override
+    public final IContainerLayout getLayout()
+    {
+        getLock().lock();
+        try
+        {
+            return layout_;
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IContainer#removeComponent(org.gamegineer.table.core.IComponent)
+     */
+    @Override
+    public final void removeComponent(
+        final IComponent component )
+    {
+        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
+
+        final int componentIndex;
+
+        getLock().lock();
+        try
+        {
+            assertArgumentLegal( component.getContainer() == this, "component", NonNlsMessages.Container_removeComponent_component_notOwned ); //$NON-NLS-1$
+
+            componentIndex = components_.indexOf( component );
+            assert componentIndex != -1;
+            final Component typedComponent = components_.remove( componentIndex );
+            assert typedComponent != null;
+            typedComponent.setContainer( null );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+
+        addEventNotification( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                fireComponentRemoved( component, componentIndex );
+            }
+        } );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IContainer#removeComponents(java.awt.Point)
+     */
+    @Override
+    public final List<IComponent> removeComponents(
+        final Point location )
+    {
+        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
+
+        final ComponentRangeStrategy componentRangeStrategy = new ComponentRangeStrategy()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            int getLowerIndex()
+            {
+                final int componentIndex = getComponentIndex( location );
+                return (componentIndex != -1) ? componentIndex : components_.size();
+            }
+        };
+        return removeComponents( componentRangeStrategy );
+    }
+
+    /**
+     * Removes all components from this container in the specified range.
+     * 
+     * @param componentRangeStrategy
+     *        The strategy used to determine the range of components to remove;
+     *        must not be {@code null}. The strategy will be invoked while the
+     *        table lock is held.
+     * 
+     * @return The collection of components removed from this container; never
+     *         {@code null}. The components are returned in order from the
+     *         component nearest the bottom of the container to the component
+     *         nearest the top of the container.
+     */
+    /* @NonNull */
+    private List<IComponent> removeComponents(
         /* @NonNull */
-        Point location );
+        final ComponentRangeStrategy componentRangeStrategy )
+    {
+        assert componentRangeStrategy != null;
+
+        final List<Component> removedComponents = new ArrayList<Component>();
+        final int upperComponentIndex = componentRangeStrategy.getUpperIndex() - 1;
+        final boolean containerBoundsChanged;
+
+        getLock().lock();
+        try
+        {
+            final Rectangle oldBounds = getBounds();
+
+            removedComponents.addAll( components_.subList( componentRangeStrategy.getLowerIndex(), componentRangeStrategy.getUpperIndex() ) );
+            components_.removeAll( removedComponents );
+            for( final Component component : removedComponents )
+            {
+                component.setContainer( null );
+            }
+
+            final Rectangle newBounds = getBounds();
+            containerBoundsChanged = !newBounds.equals( oldBounds );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+
+        if( !removedComponents.isEmpty() || containerBoundsChanged )
+        {
+            addEventNotification( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    // ensure events are fired in order from highest index to lowest index
+                    final List<IComponent> reversedRemovedComponents = new ArrayList<IComponent>( removedComponents );
+                    Collections.reverse( reversedRemovedComponents );
+                    int componentIndex = upperComponentIndex;
+                    for( final IComponent component : reversedRemovedComponents )
+                    {
+                        fireComponentRemoved( component, componentIndex-- );
+                    }
+
+                    if( containerBoundsChanged )
+                    {
+                        fireComponentBoundsChanged();
+                    }
+                }
+            } );
+        }
+
+        return new ArrayList<IComponent>( removedComponents );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IContainer#removeComponents()
+     */
+    @Override
+    public final List<IComponent> removeComponents()
+    {
+        return removeComponents( new ComponentRangeStrategy() );
+    }
 
     /*
      * @see org.gamegineer.table.core.IContainer#removeContainerListener(org.gamegineer.table.core.IContainerListener)
@@ -297,5 +618,135 @@ abstract class Container
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( containerListeners_.remove( listener ), "listener", NonNlsMessages.Container_removeContainerListener_listener_notRegistered ); //$NON-NLS-1$
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IContainer#removeTopComponent()
+     */
+    @Override
+    public final IComponent removeTopComponent()
+    {
+        final ComponentRangeStrategy componentRangeStrategy = new ComponentRangeStrategy()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            int getLowerIndex()
+            {
+                return components_.isEmpty() ? 0 : components_.size() - 1;
+            }
+        };
+        final List<IComponent> components = removeComponents( componentRangeStrategy );
+        assert components.size() <= 1;
+        return components.isEmpty() ? null : components.get( 0 );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IContainer#setLayout(org.gamegineer.table.core.IContainerLayout)
+     */
+    @Override
+    public final void setLayout(
+        final IContainerLayout layout )
+    {
+        assertArgumentNotNull( layout, "layout" ); //$NON-NLS-1$
+
+        final boolean containerBoundsChanged;
+
+        getLock().lock();
+        try
+        {
+            layout_ = layout;
+
+            if( components_.isEmpty() )
+            {
+                containerBoundsChanged = false;
+            }
+            else
+            {
+                final Rectangle oldBounds = getBounds();
+
+                layout_.layout( this );
+
+                final Rectangle newBounds = getBounds();
+                containerBoundsChanged = !newBounds.equals( oldBounds );
+            }
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+
+        addEventNotification( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                fireContainerLayoutChanged();
+
+                if( containerBoundsChanged )
+                {
+                    fireComponentBoundsChanged();
+                }
+            }
+        } );
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * A strategy to calculate a contiguous range of components in a container.
+     */
+    @Immutable
+    private class ComponentRangeStrategy
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code ComponentRangeStrategy}
+         * class.
+         */
+        ComponentRangeStrategy()
+        {
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /**
+         * Gets the lower index of the component range, inclusive.
+         * 
+         * <p>
+         * The default implementation returns 0.
+         * </p>
+         * 
+         * @return The lower index of the component range, inclusive.
+         */
+        int getLowerIndex()
+        {
+            return 0;
+        }
+
+        /**
+         * Gets the upper index of the component range, exclusive.
+         * 
+         * <p>
+         * The default implementation returns the size of the component
+         * collection.
+         * </p>
+         * 
+         * @return The upper index of the component range, exclusive.
+         */
+        @SuppressWarnings( "synthetic-access" )
+        int getUpperIndex()
+        {
+            return components_.size();
+        }
     }
 }

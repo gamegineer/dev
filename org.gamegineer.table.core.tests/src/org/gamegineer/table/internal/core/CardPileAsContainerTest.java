@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
+import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.gamegineer.table.core.AbstractContainerTestCase;
 import org.gamegineer.table.core.CardPiles;
@@ -98,7 +99,7 @@ public final class CardPileAsContainerTest
     protected void fireComponentAdded(
         final CardPile container )
     {
-        container.fireComponentAdded( EasyMock.createMock( IComponent.class ), 0 );
+        fireEventWithComponentAndInteger( container, "fireComponentAdded" ); //$NON-NLS-1$
     }
 
     /*
@@ -128,7 +129,7 @@ public final class CardPileAsContainerTest
     protected void fireComponentRemoved(
         final CardPile container )
     {
-        container.fireComponentRemoved( EasyMock.createMock( IComponent.class ), 0 );
+        fireEventWithComponentAndInteger( container, "fireComponentRemoved" ); //$NON-NLS-1$
     }
 
     /*
@@ -148,6 +149,67 @@ public final class CardPileAsContainerTest
     protected void fireContainerLayoutChanged(
         final CardPile container )
     {
-        container.fireContainerLayoutChanged();
+        fireEvent( container, "fireContainerLayoutChanged" ); //$NON-NLS-1$
+    }
+
+    /**
+     * Fires the event associated with the specified card pile method.
+     * 
+     * @param cardPile
+     *        The card pile; must not be {@code null}.
+     * @param methodName
+     *        The name of the method associated with the event; must not be
+     *        {@code null}.
+     */
+    private static void fireEvent(
+        /* @NonNull */
+        final CardPile cardPile,
+        /* @NonNull */
+        final String methodName )
+    {
+        assert cardPile != null;
+        assert methodName != null;
+
+        try
+        {
+            final Method method = Container.class.getDeclaredMethod( methodName );
+            method.setAccessible( true );
+            method.invoke( cardPile );
+        }
+        catch( final Exception e )
+        {
+            throw new AssertionError( e );
+        }
+    }
+
+    /**
+     * Fires the event associated with the specified card pile method that
+     * accepts an {@link IComponent} and an integer.
+     * 
+     * @param cardPile
+     *        The card pile; must not be {@code null}.
+     * @param methodName
+     *        The name of the method associated with the event; must not be
+     *        {@code null}.
+     */
+    private static void fireEventWithComponentAndInteger(
+        /* @NonNull */
+        final CardPile cardPile,
+        /* @NonNull */
+        final String methodName )
+    {
+        assert cardPile != null;
+        assert methodName != null;
+
+        try
+        {
+            final Method method = Container.class.getDeclaredMethod( methodName, IComponent.class, Integer.TYPE );
+            method.setAccessible( true );
+            method.invoke( cardPile, EasyMock.createMock( IComponent.class ), Integer.valueOf( 0 ) );
+        }
+        catch( final Exception e )
+        {
+            throw new AssertionError( e );
+        }
     }
 }
