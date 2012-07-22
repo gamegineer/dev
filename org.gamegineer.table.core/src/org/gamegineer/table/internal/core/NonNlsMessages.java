@@ -49,9 +49,6 @@ final class NonNlsMessages
     /** The orientation is illegal. */
     public static String Card_orientation_illegal;
 
-    /** The face design size is not equal to the back design size. */
-    public static String Card_setSurfaceDesigns_faceDesign_sizeNotEqual;
-
     // --- CardPile ---------------------------------------------------------
 
     /**
