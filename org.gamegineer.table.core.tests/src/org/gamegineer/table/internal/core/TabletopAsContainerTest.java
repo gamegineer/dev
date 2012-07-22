@@ -109,7 +109,7 @@ public final class TabletopAsContainerTest
     protected void fireComponentBoundsChanged(
         final Tabletop component )
     {
-        fireEvent( component, "fireComponentBoundsChanged" ); //$NON-NLS-1$
+        component.fireComponentBoundsChanged();
     }
 
     /*
@@ -119,7 +119,7 @@ public final class TabletopAsContainerTest
     protected void fireComponentOrientationChanged(
         final Tabletop component )
     {
-        fireEvent( component, "fireComponentOrientationChanged" ); //$NON-NLS-1$
+        component.fireComponentOrientationChanged();
     }
 
     /*
@@ -139,7 +139,7 @@ public final class TabletopAsContainerTest
     protected void fireComponentSurfaceDesignChanged(
         final Tabletop component )
     {
-        fireEvent( component, "fireComponentSurfaceDesignChanged" ); //$NON-NLS-1$
+        component.fireComponentSurfaceDesignChanged();
     }
 
     /*

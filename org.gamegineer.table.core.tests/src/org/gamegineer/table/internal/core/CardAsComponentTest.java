@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.core;
 
-import java.lang.reflect.Method;
 import org.gamegineer.table.core.AbstractComponentTestCase;
 
 /**
@@ -74,7 +73,7 @@ public final class CardAsComponentTest
     protected void fireComponentBoundsChanged(
         final Card component )
     {
-        fireEvent( component, "fireComponentBoundsChanged" ); //$NON-NLS-1$
+        component.fireComponentBoundsChanged();
     }
 
     /*
@@ -84,7 +83,7 @@ public final class CardAsComponentTest
     protected void fireComponentOrientationChanged(
         final Card component )
     {
-        fireEvent( component, "fireComponentOrientationChanged" ); //$NON-NLS-1$
+        component.fireComponentOrientationChanged();
     }
 
     /*
@@ -94,36 +93,6 @@ public final class CardAsComponentTest
     protected void fireComponentSurfaceDesignChanged(
         final Card component )
     {
-        fireEvent( component, "fireComponentSurfaceDesignChanged" ); //$NON-NLS-1$
-    }
-
-    /**
-     * Fires the event associated with the specified card method.
-     * 
-     * @param card
-     *        The card; must not be {@code null}.
-     * @param methodName
-     *        The name of the method associated with the event; must not be
-     *        {@code null}.
-     */
-    private static void fireEvent(
-        /* @NonNull */
-        final Card card,
-        /* @NonNull */
-        final String methodName )
-    {
-        assert card != null;
-        assert methodName != null;
-
-        try
-        {
-            final Method method = Card.class.getDeclaredMethod( methodName );
-            method.setAccessible( true );
-            method.invoke( card );
-        }
-        catch( final Exception e )
-        {
-            throw new AssertionError( e );
-        }
+        component.fireComponentSurfaceDesignChanged();
     }
 }

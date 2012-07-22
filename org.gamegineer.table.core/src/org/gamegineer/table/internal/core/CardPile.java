@@ -41,7 +41,6 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.CardPileLayouts;
 import org.gamegineer.table.core.CardPileOrientation;
-import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
@@ -50,7 +49,6 @@ import org.gamegineer.table.core.ContainerEvent;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.IComponent;
-import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.core.IContainerListener;
 
@@ -100,9 +98,6 @@ final class CardPile
     @GuardedBy( "getLock()" )
     private final List<Card> cards_;
 
-    /** The collection of component listeners. */
-    private final CopyOnWriteArrayList<IComponentListener> componentListeners_;
-
     /** The collection of container listeners. */
     private final CopyOnWriteArrayList<IContainerListener> containerListeners_;
 
@@ -134,7 +129,6 @@ final class CardPile
 
         baseDesign_ = DEFAULT_BASE_DESIGN;
         cards_ = new ArrayList<Card>();
-        componentListeners_ = new CopyOnWriteArrayList<IComponentListener>();
         containerListeners_ = new CopyOnWriteArrayList<IContainerListener>();
         layout_ = CardPileLayouts.STACKED;
         origin_ = new Point( 0, 0 );
@@ -155,17 +149,6 @@ final class CardPile
         assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
 
         addComponents( Collections.singletonList( component ) );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponent#addComponentListener(org.gamegineer.table.core.IComponentListener)
-     */
-    @Override
-    public void addComponentListener(
-        final IComponentListener listener )
-    {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( componentListeners_.addIfAbsent( listener ), "listener", NonNlsMessages.CardPile_addComponentListener_listener_registered ); //$NON-NLS-1$
     }
 
     /*
@@ -308,48 +291,6 @@ final class CardPile
     }
 
     /**
-     * Fires a component bounds changed event.
-     */
-    private void fireComponentBoundsChanged()
-    {
-        assert !getLock().isHeldByCurrentThread();
-
-        final ComponentEvent event = new ComponentEvent( this );
-        for( final IComponentListener listener : componentListeners_ )
-        {
-            try
-            {
-                listener.componentBoundsChanged( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentBoundsChanged_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
-     * Fires a component orientation changed event.
-     */
-    private void fireComponentOrientationChanged()
-    {
-        assert !getLock().isHeldByCurrentThread();
-
-        final ComponentEvent event = new ComponentEvent( this );
-        for( final IComponentListener listener : componentListeners_ )
-        {
-            try
-            {
-                listener.componentOrientationChanged( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentOrientationChanged_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
      * Fires a component removed event.
      * 
      * @param component
@@ -376,27 +317,6 @@ final class CardPile
             catch( final RuntimeException e )
             {
                 Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentRemoved_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
-     * Fires a component surface design changed event.
-     */
-    private void fireComponentSurfaceDesignChanged()
-    {
-        assert !getLock().isHeldByCurrentThread();
-
-        final ComponentEvent event = new ComponentEvent( this );
-        for( final IComponentListener listener : componentListeners_ )
-        {
-            try
-            {
-                listener.componentSurfaceDesignChanged( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentSurfaceDesignChanged_unexpectedException, e );
             }
         }
     }
@@ -745,17 +665,6 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponent#removeComponentListener(org.gamegineer.table.core.IComponentListener)
-     */
-    @Override
-    public void removeComponentListener(
-        final IComponentListener listener )
-    {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( componentListeners_.remove( listener ), "listener", NonNlsMessages.CardPile_removeComponentListener_listener_notRegistered ); //$NON-NLS-1$
-    }
-
-    /*
      * @see org.gamegineer.table.core.IContainer#removeComponents()
      */
     @Override
@@ -1001,7 +910,6 @@ final class CardPile
         addEventNotification( new Runnable()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void run()
             {
                 fireComponentOrientationChanged();
@@ -1061,7 +969,6 @@ final class CardPile
         addEventNotification( new Runnable()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void run()
             {
                 fireComponentSurfaceDesignChanged();
@@ -1133,7 +1040,6 @@ final class CardPile
         addEventNotification( new Runnable()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void run()
             {
                 fireComponentBoundsChanged();

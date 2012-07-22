@@ -31,18 +31,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.CardOrientation;
-import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ICard;
-import org.gamegineer.table.core.IComponentListener;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ICard}.
@@ -88,9 +84,6 @@ final class Card
     @GuardedBy( "getLock()" )
     private ComponentSurfaceDesign faceDesign_;
 
-    /** The collection of component listeners. */
-    private final CopyOnWriteArrayList<IComponentListener> listeners_;
-
     /** The card location in table coordinates. */
     @GuardedBy( "getLock()" )
     private final Point location_;
@@ -119,7 +112,6 @@ final class Card
 
         backDesign_ = DEFAULT_SURFACE_DESIGN;
         faceDesign_ = DEFAULT_SURFACE_DESIGN;
-        listeners_ = new CopyOnWriteArrayList<IComponentListener>();
         location_ = new Point( 0, 0 );
         orientation_ = CardOrientation.FACE;
     }
@@ -128,17 +120,6 @@ final class Card
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /*
-     * @see org.gamegineer.table.core.IComponent#addComponentListener(org.gamegineer.table.core.IComponentListener)
-     */
-    @Override
-    public void addComponentListener(
-        final IComponentListener listener )
-    {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.Card_addComponentListener_listener_registered ); //$NON-NLS-1$
-    }
 
     /*
      * @see org.gamegineer.common.core.util.memento.IMementoOriginator#createMemento()
@@ -162,69 +143,6 @@ final class Card
         }
 
         return Collections.unmodifiableMap( memento );
-    }
-
-    /**
-     * Fires a component bounds changed event.
-     */
-    private void fireComponentBoundsChanged()
-    {
-        assert !getLock().isHeldByCurrentThread();
-
-        final ComponentEvent event = new ComponentEvent( this );
-        for( final IComponentListener listener : listeners_ )
-        {
-            try
-            {
-                listener.componentBoundsChanged( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Card_componentBoundsChanged_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
-     * Fires a component orientation changed event.
-     */
-    private void fireComponentOrientationChanged()
-    {
-        assert !getLock().isHeldByCurrentThread();
-
-        final ComponentEvent event = new ComponentEvent( this );
-        for( final IComponentListener listener : listeners_ )
-        {
-            try
-            {
-                listener.componentOrientationChanged( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Card_componentOrientationChanged_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
-     * Fires a component surface design changed event.
-     */
-    private void fireComponentSurfaceDesignChanged()
-    {
-        assert !getLock().isHeldByCurrentThread();
-
-        final ComponentEvent event = new ComponentEvent( this );
-        for( final IComponentListener listener : listeners_ )
-        {
-            try
-            {
-                listener.componentSurfaceDesignChanged( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Card_componentSurfaceDesignChanged_unexpectedException, e );
-            }
-        }
     }
 
     /**
@@ -424,17 +342,6 @@ final class Card
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponent#removeComponentListener(org.gamegineer.table.core.IComponentListener)
-     */
-    @Override
-    public void removeComponentListener(
-        final IComponentListener listener )
-    {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.Card_removeComponentListener_listener_notRegistered ); //$NON-NLS-1$
-    }
-
-    /*
      * @see org.gamegineer.table.core.IComponent#setLocation(java.awt.Point)
      */
     @Override
@@ -456,7 +363,6 @@ final class Card
         addEventNotification( new Runnable()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void run()
             {
                 fireComponentBoundsChanged();
@@ -513,7 +419,6 @@ final class Card
         addEventNotification( new Runnable()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void run()
             {
                 fireComponentOrientationChanged();
@@ -567,7 +472,6 @@ final class Card
         addEventNotification( new Runnable()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void run()
             {
                 fireComponentSurfaceDesignChanged();

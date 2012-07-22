@@ -109,7 +109,7 @@ public final class CardPileAsContainerTest
     protected void fireComponentBoundsChanged(
         final CardPile component )
     {
-        fireEvent( component, "fireComponentBoundsChanged" ); //$NON-NLS-1$
+        component.fireComponentBoundsChanged();
     }
 
     /*
@@ -119,7 +119,7 @@ public final class CardPileAsContainerTest
     protected void fireComponentOrientationChanged(
         final CardPile component )
     {
-        fireEvent( component, "fireComponentOrientationChanged" ); //$NON-NLS-1$
+        component.fireComponentOrientationChanged();
     }
 
     /*
@@ -139,7 +139,7 @@ public final class CardPileAsContainerTest
     protected void fireComponentSurfaceDesignChanged(
         final CardPile component )
     {
-        fireEvent( component, "fireComponentSurfaceDesignChanged" ); //$NON-NLS-1$
+        component.fireComponentSurfaceDesignChanged();
     }
 
     /*

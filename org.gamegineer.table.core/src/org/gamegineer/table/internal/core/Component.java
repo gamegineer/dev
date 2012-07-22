@@ -21,12 +21,18 @@
 
 package org.gamegineer.table.internal.core;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
+import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.ITable;
 
 /**
@@ -39,6 +45,9 @@ abstract class Component
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /** The collection of component listeners. */
+    private final CopyOnWriteArrayList<IComponentListener> componentListeners_;
 
     /**
      * The container that contains this component or {@code null} if this
@@ -68,6 +77,7 @@ abstract class Component
     {
         assert tableEnvironment != null;
 
+        componentListeners_ = new CopyOnWriteArrayList<IComponentListener>();
         container_ = null;
         tableEnvironment_ = tableEnvironment;
     }
@@ -76,6 +86,17 @@ abstract class Component
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#addComponentListener(org.gamegineer.table.core.IComponentListener)
+     */
+    @Override
+    public final void addComponentListener(
+        final IComponentListener listener )
+    {
+        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
+        assertArgumentLegal( componentListeners_.addIfAbsent( listener ), "listener", NonNlsMessages.Component_addComponentListener_listener_registered ); //$NON-NLS-1$
+    }
 
     /**
      * Adds an event notification to the table environment associated with the
@@ -89,6 +110,69 @@ abstract class Component
         final Runnable notification )
     {
         tableEnvironment_.addEventNotification( notification );
+    }
+
+    /**
+     * Fires a component bounds changed event.
+     */
+    final void fireComponentBoundsChanged()
+    {
+        assert !getLock().isHeldByCurrentThread();
+
+        final ComponentEvent event = new ComponentEvent( this );
+        for( final IComponentListener listener : componentListeners_ )
+        {
+            try
+            {
+                listener.componentBoundsChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Component_componentBoundsChanged_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a component orientation changed event.
+     */
+    final void fireComponentOrientationChanged()
+    {
+        assert !getLock().isHeldByCurrentThread();
+
+        final ComponentEvent event = new ComponentEvent( this );
+        for( final IComponentListener listener : componentListeners_ )
+        {
+            try
+            {
+                listener.componentOrientationChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Component_componentOrientationChanged_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a component surface design changed event.
+     */
+    final void fireComponentSurfaceDesignChanged()
+    {
+        assert !getLock().isHeldByCurrentThread();
+
+        final ComponentEvent event = new ComponentEvent( this );
+        for( final IComponentListener listener : componentListeners_ )
+        {
+            try
+            {
+                listener.componentSurfaceDesignChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Component_componentSurfaceDesignChanged_unexpectedException, e );
+            }
+        }
     }
 
     /**
@@ -236,6 +320,17 @@ abstract class Component
     public boolean isFocusable()
     {
         return false;
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#removeComponentListener(org.gamegineer.table.core.IComponentListener)
+     */
+    @Override
+    public final void removeComponentListener(
+        final IComponentListener listener )
+    {
+        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
+        assertArgumentLegal( componentListeners_.remove( listener ), "listener", NonNlsMessages.Component_removeComponentListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
     /**

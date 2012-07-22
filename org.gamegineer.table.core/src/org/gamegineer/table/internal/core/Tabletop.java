@@ -39,7 +39,6 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
-import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
@@ -47,7 +46,6 @@ import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ContainerEvent;
 import org.gamegineer.table.core.IComponent;
-import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.core.IContainerListener;
 import org.gamegineer.table.core.TabletopLayouts;
@@ -84,9 +82,6 @@ final class Tabletop
      * design.
      */
     private static final String SURFACE_DESIGN_MEMENTO_ATTRIBUTE_NAME = "surfaceDesign"; //$NON-NLS-1$
-
-    /** The collection of component listeners. */
-    private final CopyOnWriteArrayList<IComponentListener> componentListeners_;
 
     /**
      * The collection of components on this tabletop ordered from bottom to top.
@@ -134,7 +129,6 @@ final class Tabletop
     {
         super( tableEnvironment );
 
-        componentListeners_ = new CopyOnWriteArrayList<IComponentListener>();
         components_ = new ArrayList<Component>();
         containerListeners_ = new CopyOnWriteArrayList<IContainerListener>();
         layout_ = TabletopLayouts.ABSOLUTE;
@@ -158,17 +152,6 @@ final class Tabletop
         assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
 
         addComponents( Collections.singletonList( component ) );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponent#addComponentListener(org.gamegineer.table.core.IComponentListener)
-     */
-    @Override
-    public void addComponentListener(
-        final IComponentListener listener )
-    {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( componentListeners_.addIfAbsent( listener ), "listener", NonNlsMessages.Tabletop_addComponentListener_listener_registered ); //$NON-NLS-1$
     }
 
     /*
@@ -311,48 +294,6 @@ final class Tabletop
     }
 
     /**
-     * Fires a component bounds changed event.
-     */
-    private void fireComponentBoundsChanged()
-    {
-        assert !getLock().isHeldByCurrentThread();
-
-        final ComponentEvent event = new ComponentEvent( this );
-        for( final IComponentListener listener : componentListeners_ )
-        {
-            try
-            {
-                listener.componentBoundsChanged( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Tabletop_componentBoundsChanged_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
-     * Fires a component orientation changed event.
-     */
-    private void fireComponentOrientationChanged()
-    {
-        assert !getLock().isHeldByCurrentThread();
-
-        final ComponentEvent event = new ComponentEvent( this );
-        for( final IComponentListener listener : componentListeners_ )
-        {
-            try
-            {
-                listener.componentOrientationChanged( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Tabletop_componentOrientationChanged_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
      * Fires a component removed event.
      * 
      * @param component
@@ -379,27 +320,6 @@ final class Tabletop
             catch( final RuntimeException e )
             {
                 Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Tabletop_componentRemoved_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
-     * Fires a component surface design changed event.
-     */
-    private void fireComponentSurfaceDesignChanged()
-    {
-        assert !getLock().isHeldByCurrentThread();
-
-        final ComponentEvent event = new ComponentEvent( this );
-        for( final IComponentListener listener : componentListeners_ )
-        {
-            try
-            {
-                listener.componentSurfaceDesignChanged( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Tabletop_componentSurfaceDesignChanged_unexpectedException, e );
             }
         }
     }
@@ -746,17 +666,6 @@ final class Tabletop
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponent#removeComponentListener(org.gamegineer.table.core.IComponentListener)
-     */
-    @Override
-    public void removeComponentListener(
-        final IComponentListener listener )
-    {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( componentListeners_.remove( listener ), "listener", NonNlsMessages.Tabletop_removeComponentListener_listener_notRegistered ); //$NON-NLS-1$
-    }
-
-    /*
      * @see org.gamegineer.table.core.IContainer#removeComponents()
      */
     @Override
@@ -1002,7 +911,6 @@ final class Tabletop
         addEventNotification( new Runnable()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void run()
             {
                 fireComponentOrientationChanged();
@@ -1052,7 +960,6 @@ final class Tabletop
         addEventNotification( new Runnable()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void run()
             {
                 fireComponentSurfaceDesignChanged();
@@ -1141,7 +1048,6 @@ final class Tabletop
         addEventNotification( new Runnable()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void run()
             {
                 fireComponentBoundsChanged();

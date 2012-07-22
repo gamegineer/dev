@@ -46,40 +46,13 @@ final class NonNlsMessages
 
     // --- Card -------------------------------------------------------------
 
-    /** The component listener is already registered. */
-    public static String Card_addComponentListener_listener_registered;
-
-    /**
-     * An unexpected exception was thrown from
-     * IComponentListener.componentBoundsChanged().
-     */
-    public static String Card_componentBoundsChanged_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
-     * IComponentListener.componentOrientationChanged().
-     */
-    public static String Card_componentOrientationChanged_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
-     * IComponentListener.componentSurfaceDesignChanged().
-     */
-    public static String Card_componentSurfaceDesignChanged_unexpectedException;
-
     /** The orientation is illegal. */
     public static String Card_orientation_illegal;
-
-    /** The component listener is not registered. */
-    public static String Card_removeComponentListener_listener_notRegistered;
 
     /** The face design size is not equal to the back design size. */
     public static String Card_setSurfaceDesigns_faceDesign_sizeNotEqual;
 
     // --- CardPile ---------------------------------------------------------
-
-    /** The component listener is already registered. */
-    public static String CardPile_addComponentListener_listener_registered;
 
     /**
      * The component collection contains a component created by a different
@@ -107,27 +80,9 @@ final class NonNlsMessages
 
     /**
      * An unexpected exception was thrown from
-     * IComponentListener.componentBoundsChanged().
-     */
-    public static String CardPile_componentBoundsChanged_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
-     * IComponentListener.componentOrientationChanged().
-     */
-    public static String CardPile_componentOrientationChanged_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
      * IContainerListener.componentRemoved().
      */
     public static String CardPile_componentRemoved_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
-     * IComponentListener.componentSurfaceDesignChanged().
-     */
-    public static String CardPile_componentSurfaceDesignChanged_unexpectedException;
 
     /**
      * An unexpected exception was thrown from
@@ -144,16 +99,37 @@ final class NonNlsMessages
     /** The component is not contained in the container. */
     public static String CardPile_removeComponent_component_notOwned;
 
-    /** The component listener is not registered. */
-    public static String CardPile_removeComponentListener_listener_notRegistered;
-
     /** The container listener is not registered. */
     public static String CardPile_removeContainerListener_listener_notRegistered;
 
     // --- Component --------------------------------------------------------
 
+    /** The component listener is already registered. */
+    public static String Component_addComponentListener_listener_registered;
+
+    /**
+     * An unexpected exception was thrown from
+     * IComponentListener.componentBoundsChanged().
+     */
+    public static String Component_componentBoundsChanged_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
+     * IComponentListener.componentOrientationChanged().
+     */
+    public static String Component_componentOrientationChanged_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
+     * IComponentListener.componentSurfaceDesignChanged().
+     */
+    public static String Component_componentSurfaceDesignChanged_unexpectedException;
+
     /** The memento is for an unknown component type. */
     public static String Component_fromMemento_unknown;
+
+    /** The component listener is not registered. */
+    public static String Component_removeComponentListener_listener_notRegistered;
 
     // --- ComponentSurfaceDesignRegistry -----------------------------------
 
@@ -238,9 +214,6 @@ final class NonNlsMessages
 
     // --- Tabletop ---------------------------------------------------------
 
-    /** The component listener is already registered. */
-    public static String Tabletop_addComponentListener_listener_registered;
-
     /**
      * The component collection contains a component created by a different
      * table environment.
@@ -267,27 +240,9 @@ final class NonNlsMessages
 
     /**
      * An unexpected exception was thrown from
-     * IComponentListener.componentBoundsChanged().
-     */
-    public static String Tabletop_componentBoundsChanged_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
-     * IComponentListener.componentOrientationChanged().
-     */
-    public static String Tabletop_componentOrientationChanged_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
      * IContainerListener.componentRemoved().
      */
     public static String Tabletop_componentRemoved_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
-     * IComponentListener.componentSurfaceDesignChanged().
-     */
-    public static String Tabletop_componentSurfaceDesignChanged_unexpectedException;
 
     /**
      * An unexpected exception was thrown from
@@ -303,9 +258,6 @@ final class NonNlsMessages
 
     /** The component is not contained in the container. */
     public static String Tabletop_removeComponent_component_notOwned;
-
-    /** The component listener is not registered. */
-    public static String Tabletop_removeComponentListener_listener_notRegistered;
 
     /** The container listener is not registered. */
     public static String Tabletop_removeContainerListener_listener_notRegistered;
