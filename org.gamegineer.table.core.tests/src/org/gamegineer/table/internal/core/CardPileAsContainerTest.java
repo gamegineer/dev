@@ -99,7 +99,7 @@ public final class CardPileAsContainerTest
     protected void fireComponentAdded(
         final CardPile container )
     {
-        fireEventWithComponentAndInteger( container, "fireComponentAdded" ); //$NON-NLS-1$
+        fireContainerEventWithComponentAndInteger( container, "fireComponentAdded" ); //$NON-NLS-1$
     }
 
     /*
@@ -112,6 +112,36 @@ public final class CardPileAsContainerTest
         component.fireComponentBoundsChanged();
     }
 
+    /**
+     * Fires the event associated with the specified {@link Component} method.
+     * 
+     * @param cardPile
+     *        The card pile; must not be {@code null}.
+     * @param methodName
+     *        The name of the method associated with the event; must not be
+     *        {@code null}.
+     */
+    private static void fireComponentEvent(
+        /* @NonNull */
+        final CardPile cardPile,
+        /* @NonNull */
+        final String methodName )
+    {
+        assert cardPile != null;
+        assert methodName != null;
+
+        try
+        {
+            final Method method = Component.class.getDeclaredMethod( methodName );
+            method.setAccessible( true );
+            method.invoke( cardPile );
+        }
+        catch( final Exception e )
+        {
+            throw new AssertionError( e );
+        }
+    }
+
     /*
      * @see org.gamegineer.table.core.AbstractComponentTestCase#fireComponentOrientationChanged(org.gamegineer.table.core.IComponent)
      */
@@ -119,7 +149,7 @@ public final class CardPileAsContainerTest
     protected void fireComponentOrientationChanged(
         final CardPile component )
     {
-        component.fireComponentOrientationChanged();
+        fireComponentEvent( component, "fireComponentOrientationChanged" ); //$NON-NLS-1$
     }
 
     /*
@@ -129,7 +159,7 @@ public final class CardPileAsContainerTest
     protected void fireComponentRemoved(
         final CardPile container )
     {
-        fireEventWithComponentAndInteger( container, "fireComponentRemoved" ); //$NON-NLS-1$
+        fireContainerEventWithComponentAndInteger( container, "fireComponentRemoved" ); //$NON-NLS-1$
     }
 
     /*
@@ -139,21 +169,11 @@ public final class CardPileAsContainerTest
     protected void fireComponentSurfaceDesignChanged(
         final CardPile component )
     {
-        component.fireComponentSurfaceDesignChanged();
-    }
-
-    /*
-     * @see org.gamegineer.table.core.AbstractContainerTestCase#fireContainerLayoutChanged(org.gamegineer.table.core.IContainer)
-     */
-    @Override
-    protected void fireContainerLayoutChanged(
-        final CardPile container )
-    {
-        fireEvent( container, "fireContainerLayoutChanged" ); //$NON-NLS-1$
+        fireComponentEvent( component, "fireComponentSurfaceDesignChanged" ); //$NON-NLS-1$
     }
 
     /**
-     * Fires the event associated with the specified card pile method.
+     * Fires the event associated with the specified {@link Container} method.
      * 
      * @param cardPile
      *        The card pile; must not be {@code null}.
@@ -161,7 +181,7 @@ public final class CardPileAsContainerTest
      *        The name of the method associated with the event; must not be
      *        {@code null}.
      */
-    private static void fireEvent(
+    private static void fireContainerEvent(
         /* @NonNull */
         final CardPile cardPile,
         /* @NonNull */
@@ -183,8 +203,8 @@ public final class CardPileAsContainerTest
     }
 
     /**
-     * Fires the event associated with the specified card pile method that
-     * accepts an {@link IComponent} and an integer.
+     * Fires the event associated with the specified {@link Container} method
+     * that accepts an {@link IComponent} and an integer.
      * 
      * @param cardPile
      *        The card pile; must not be {@code null}.
@@ -192,7 +212,7 @@ public final class CardPileAsContainerTest
      *        The name of the method associated with the event; must not be
      *        {@code null}.
      */
-    private static void fireEventWithComponentAndInteger(
+    private static void fireContainerEventWithComponentAndInteger(
         /* @NonNull */
         final CardPile cardPile,
         /* @NonNull */
@@ -211,5 +231,15 @@ public final class CardPileAsContainerTest
         {
             throw new AssertionError( e );
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.AbstractContainerTestCase#fireContainerLayoutChanged(org.gamegineer.table.core.IContainer)
+     */
+    @Override
+    protected void fireContainerLayoutChanged(
+        final CardPile container )
+    {
+        fireContainerEvent( container, "fireContainerLayoutChanged" ); //$NON-NLS-1$
     }
 }

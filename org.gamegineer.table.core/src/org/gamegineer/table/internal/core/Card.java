@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -30,6 +29,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.Map;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
@@ -58,9 +58,6 @@ final class Card
      */
     private static final String BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME = "backDesign"; //$NON-NLS-1$
 
-    /** The default card surface design. */
-    private static final ComponentSurfaceDesign DEFAULT_SURFACE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.Card.DEFAULT_SURFACE_DESIGN" ), 0, 0 ); //$NON-NLS-1$
-
     /**
      * The name of the memento attribute that stores the design on the face of
      * the card.
@@ -76,21 +73,9 @@ final class Card
     /** The collection of supported card orientations. */
     private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( CardOrientation.values( CardOrientation.class ) ) );
 
-    /** The design on the back of the card. */
-    @GuardedBy( "getLock()" )
-    private ComponentSurfaceDesign backDesign_;
-
-    /** The design on the face of the card. */
-    @GuardedBy( "getLock()" )
-    private ComponentSurfaceDesign faceDesign_;
-
     /** The card location in table coordinates. */
     @GuardedBy( "getLock()" )
     private final Point location_;
-
-    /** The card orientation. */
-    @GuardedBy( "getLock()" )
-    private CardOrientation orientation_;
 
 
     // ======================================================================
@@ -110,10 +95,7 @@ final class Card
     {
         super( tableEnvironment );
 
-        backDesign_ = DEFAULT_SURFACE_DESIGN;
-        faceDesign_ = DEFAULT_SURFACE_DESIGN;
         location_ = new Point( 0, 0 );
-        orientation_ = CardOrientation.FACE;
     }
 
 
@@ -132,10 +114,10 @@ final class Card
         getLock().lock();
         try
         {
-            memento.put( BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, backDesign_ );
-            memento.put( FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, faceDesign_ );
+            memento.put( BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, getSurfaceDesign( CardOrientation.BACK ) );
+            memento.put( FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, getSurfaceDesign( CardOrientation.FACE ) );
             memento.put( LOCATION_MEMENTO_ATTRIBUTE_NAME, new Point( location_ ) );
-            memento.put( ORIENTATION_MEMENTO_ATTRIBUTE_NAME, orientation_ );
+            memento.put( ORIENTATION_MEMENTO_ATTRIBUTE_NAME, getOrientation() );
         }
         finally
         {
@@ -207,6 +189,28 @@ final class Card
     }
 
     /*
+     * @see org.gamegineer.table.internal.core.Component#getDefaultOrientation()
+     */
+    @Override
+    ComponentOrientation getDefaultOrientation()
+    {
+        return CardOrientation.FACE;
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.core.Component#getDefaultSurfaceDesigns()
+     */
+    @Override
+    Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns()
+    {
+        final ComponentSurfaceDesign defaultSurfaceDesign = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.Card.DEFAULT_SURFACE_DESIGN" ), 0, 0 ); //$NON-NLS-1$
+        final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>();
+        surfaceDesigns.put( CardOrientation.BACK, defaultSurfaceDesign );
+        surfaceDesigns.put( CardOrientation.FACE, defaultSurfaceDesign );
+        return surfaceDesigns;
+    }
+
+    /*
      * @see org.gamegineer.table.core.IComponent#getLocation()
      */
     @Override
@@ -216,23 +220,6 @@ final class Card
         try
         {
             return new Point( location_ );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponent#getOrientation()
-     */
-    @Override
-    public ComponentOrientation getOrientation()
-    {
-        getLock().lock();
-        try
-        {
-            return orientation_;
         }
         finally
         {
@@ -258,18 +245,7 @@ final class Card
         getLock().lock();
         try
         {
-            if( orientation_ == CardOrientation.BACK )
-            {
-                return backDesign_.getSize();
-            }
-            else if( orientation_ == CardOrientation.FACE )
-            {
-                return faceDesign_.getSize();
-            }
-            else
-            {
-                throw new AssertionError( "unknown card orientation" ); //$NON-NLS-1$
-            }
+            return getSurfaceDesign( getOrientation() ).getSize();
         }
         finally
         {
@@ -284,36 +260,6 @@ final class Card
     public Collection<ComponentOrientation> getSupportedOrientations()
     {
         return SUPPORTED_ORIENTATIONS;
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponent#getSurfaceDesign(org.gamegineer.table.core.ComponentOrientation)
-     */
-    @Override
-    public ComponentSurfaceDesign getSurfaceDesign(
-        final ComponentOrientation orientation )
-    {
-        assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
-        assertArgumentLegal( orientation instanceof CardOrientation, "orientation", NonNlsMessages.Card_orientation_illegal ); //$NON-NLS-1$
-
-        getLock().lock();
-        try
-        {
-            if( orientation == CardOrientation.BACK )
-            {
-                return backDesign_;
-            }
-            else if( orientation == CardOrientation.FACE )
-            {
-                return faceDesign_;
-            }
-
-            throw new AssertionError( "unknown card orientation" ); //$NON-NLS-1$
-        }
-        finally
-        {
-            getLock().unlock();
-        }
     }
 
     /**
@@ -397,36 +343,6 @@ final class Card
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponent#setOrientation(org.gamegineer.table.core.ComponentOrientation)
-     */
-    @Override
-    public void setOrientation(
-        final ComponentOrientation orientation )
-    {
-        assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
-        assertArgumentLegal( orientation instanceof CardOrientation, "orientation", NonNlsMessages.Card_orientation_illegal ); //$NON-NLS-1$
-
-        getLock().lock();
-        try
-        {
-            orientation_ = (CardOrientation)orientation;
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-
-        addEventNotification( new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                fireComponentOrientationChanged();
-            }
-        } );
-    }
-
-    /*
      * @see org.gamegineer.table.core.IComponent#setOrigin(java.awt.Point)
      */
     @Override
@@ -434,49 +350,6 @@ final class Card
         final Point origin )
     {
         setLocation( origin );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponent#setSurfaceDesign(org.gamegineer.table.core.ComponentOrientation, org.gamegineer.table.core.ComponentSurfaceDesign)
-     */
-    @Override
-    public void setSurfaceDesign(
-        final ComponentOrientation orientation,
-        final ComponentSurfaceDesign surfaceDesign )
-    {
-        assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
-        assertArgumentLegal( orientation instanceof CardOrientation, "orientation", NonNlsMessages.Card_orientation_illegal ); //$NON-NLS-1$
-        assertArgumentNotNull( surfaceDesign, "surfaceDesign" ); //$NON-NLS-1$
-
-        getLock().lock();
-        try
-        {
-            if( orientation == CardOrientation.BACK )
-            {
-                backDesign_ = surfaceDesign;
-            }
-            else if( orientation == CardOrientation.FACE )
-            {
-                faceDesign_ = surfaceDesign;
-            }
-            else
-            {
-                throw new AssertionError( "unknown card orientation" ); //$NON-NLS-1$
-            }
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-
-        addEventNotification( new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                fireComponentSurfaceDesignChanged();
-            }
-        } );
     }
 
     /*
@@ -492,13 +365,13 @@ final class Card
         try
         {
             sb.append( "backDesign_=" ); //$NON-NLS-1$
-            sb.append( backDesign_ );
+            sb.append( getSurfaceDesign( CardOrientation.BACK ) );
             sb.append( ", faceDesign_=" ); //$NON-NLS-1$
-            sb.append( faceDesign_ );
+            sb.append( getSurfaceDesign( CardOrientation.FACE ) );
             sb.append( ", location_=" ); //$NON-NLS-1$
             sb.append( location_ );
             sb.append( ", orientation_=" ); //$NON-NLS-1$
-            sb.append( orientation_ );
+            sb.append( getOrientation() );
         }
         finally
         {

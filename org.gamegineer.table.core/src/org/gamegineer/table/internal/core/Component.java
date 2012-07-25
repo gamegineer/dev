@@ -23,6 +23,8 @@ package org.gamegineer.table.internal.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.IdentityHashMap;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
@@ -30,7 +32,9 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ComponentEvent;
+import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentPath;
+import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.ITable;
@@ -56,6 +60,17 @@ abstract class Component
     @GuardedBy( "getLock()" )
     private Container container_;
 
+    /** The component orientation. */
+    @GuardedBy( "getLock()" )
+    private ComponentOrientation orientation_;
+
+    /**
+     * The collection of component surface designs. The key is the component
+     * orientation. The value is the component surface design.
+     */
+    @GuardedBy( "getLock()" )
+    private final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns_;
+
     /** The table environment associated with the component. */
     private final TableEnvironment tableEnvironment_;
 
@@ -79,7 +94,11 @@ abstract class Component
 
         componentListeners_ = new CopyOnWriteArrayList<IComponentListener>();
         container_ = null;
+        orientation_ = getDefaultOrientation();
+        surfaceDesigns_ = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>( getDefaultSurfaceDesigns() );
         tableEnvironment_ = tableEnvironment;
+
+        assert surfaceDesigns_.keySet().equals( getDefaultSurfaceDesigns().keySet() );
     }
 
 
@@ -136,7 +155,7 @@ abstract class Component
     /**
      * Fires a component orientation changed event.
      */
-    final void fireComponentOrientationChanged()
+    private void fireComponentOrientationChanged()
     {
         assert !getLock().isHeldByCurrentThread();
 
@@ -157,7 +176,7 @@ abstract class Component
     /**
      * Fires a component surface design changed event.
      */
-    final void fireComponentSurfaceDesignChanged()
+    private void fireComponentSurfaceDesignChanged()
     {
         assert !getLock().isHeldByCurrentThread();
 
@@ -231,6 +250,25 @@ abstract class Component
     }
 
     /**
+     * Gets the default component orientation.
+     * 
+     * @return The default component orientation; never {@code null}.
+     */
+    /* @NonNull */
+    abstract ComponentOrientation getDefaultOrientation();
+
+    /**
+     * Gets the default collection of component surface designs.
+     * 
+     * @return The default collection of component surface designs; never
+     *         {@code null}. The keys in the returned collection must be
+     *         identical to the keys in the collection returned from
+     *         {@link #getSupportedOrientations}.
+     */
+    /* @NonNull */
+    abstract Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns();
+
+    /**
      * Gets the table environment lock.
      * 
      * @return The table environment lock; never {@code null}.
@@ -239,6 +277,23 @@ abstract class Component
     final ReentrantLock getLock()
     {
         return tableEnvironment_.getLock();
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#getOrientation()
+     */
+    @Override
+    public final ComponentOrientation getOrientation()
+    {
+        getLock().lock();
+        try
+        {
+            return orientation_;
+        }
+        finally
+        {
+            getLock().unlock();
+        }
     }
 
     /*
@@ -262,6 +317,27 @@ abstract class Component
             }
 
             return new ComponentPath( parentPath, container_.getComponentIndex( this ) );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#getSurfaceDesign(org.gamegineer.table.core.ComponentOrientation)
+     */
+    @Override
+    public final ComponentSurfaceDesign getSurfaceDesign(
+        final ComponentOrientation orientation )
+    {
+        assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
+        assertArgumentLegal( isSupportedOrientation( orientation ), "orientation", NonNlsMessages.Component_orientation_illegal ); //$NON-NLS-1$
+
+        getLock().lock();
+        try
+        {
+            return surfaceDesigns_.get( orientation );
         }
         finally
         {
@@ -322,6 +398,24 @@ abstract class Component
         return false;
     }
 
+    /**
+     * Indicates the specified component orientation is supported.
+     * 
+     * @param orientation
+     *        The component orientation; must not be {@code null}.
+     * 
+     * @return {@code true} if the specified component orientation is supported;
+     *         otherwise {@code false}.
+     */
+    private boolean isSupportedOrientation(
+        /* @NonNull */
+        final ComponentOrientation orientation )
+    {
+        assert orientation != null;
+
+        return getSupportedOrientations().contains( orientation );
+    }
+
     /*
      * @see org.gamegineer.table.core.IComponent#removeComponentListener(org.gamegineer.table.core.IComponentListener)
      */
@@ -348,5 +442,69 @@ abstract class Component
         assert getLock().isHeldByCurrentThread();
 
         container_ = container;
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#setOrientation(org.gamegineer.table.core.ComponentOrientation)
+     */
+    @Override
+    public final void setOrientation(
+        final ComponentOrientation orientation )
+    {
+        assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
+        assertArgumentLegal( isSupportedOrientation( orientation ), "orientation", NonNlsMessages.Component_orientation_illegal ); //$NON-NLS-1$
+
+        getLock().lock();
+        try
+        {
+            orientation_ = orientation;
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+
+        addEventNotification( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                fireComponentOrientationChanged();
+            }
+        } );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#setSurfaceDesign(org.gamegineer.table.core.ComponentOrientation, org.gamegineer.table.core.ComponentSurfaceDesign)
+     */
+    @Override
+    public final void setSurfaceDesign(
+        final ComponentOrientation orientation,
+        final ComponentSurfaceDesign surfaceDesign )
+    {
+        assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
+        assertArgumentLegal( isSupportedOrientation( orientation ), "orientation", NonNlsMessages.Component_orientation_illegal ); //$NON-NLS-1$
+        assertArgumentNotNull( surfaceDesign, "surfaceDesign" ); //$NON-NLS-1$
+
+        getLock().lock();
+        try
+        {
+            surfaceDesigns_.put( orientation, surfaceDesign );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+
+        addEventNotification( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                fireComponentSurfaceDesignChanged();
+            }
+        } );
     }
 }

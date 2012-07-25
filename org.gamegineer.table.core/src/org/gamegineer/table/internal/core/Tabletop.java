@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -82,10 +81,6 @@ final class Tabletop
     @GuardedBy( "getLock()" )
     private final Point location_;
 
-    /** The tabletop surface design. */
-    @GuardedBy( "getLock()" )
-    private ComponentSurfaceDesign surfaceDesign_;
-
     /**
      * The table that contains this tabletop or {@code null} if this component
      * is not contained in a table.
@@ -112,7 +107,6 @@ final class Tabletop
         super( tableEnvironment );
 
         location_ = new Point( Short.MIN_VALUE / 2, Short.MIN_VALUE / 2 );
-        surfaceDesign_ = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.Tabletop.DEFAULT_SURFACE_DESIGN" ), Short.MAX_VALUE, Short.MAX_VALUE ); //$NON-NLS-1$
         table_ = null;
     }
 
@@ -134,7 +128,7 @@ final class Tabletop
         {
             memento.put( LAYOUT_MEMENTO_ATTRIBUTE_NAME, getLayout() );
             memento.put( LOCATION_MEMENTO_ATTRIBUTE_NAME, new Point( location_ ) );
-            memento.put( SURFACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, surfaceDesign_ );
+            memento.put( SURFACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, getSurfaceDesign( TabletopOrientation.DEFAULT ) );
 
             final List<Object> componentMementos = new ArrayList<Object>();
             for( final IComponent component : getComponents() )
@@ -208,7 +202,7 @@ final class Tabletop
         getLock().lock();
         try
         {
-            Rectangle bounds = new Rectangle( location_, surfaceDesign_.getSize() );
+            Rectangle bounds = new Rectangle( location_, getSurfaceDesign( getOrientation() ).getSize() );
             for( final IComponent component : getComponents() )
             {
                 bounds = bounds.union( component.getBounds() );
@@ -232,6 +226,26 @@ final class Tabletop
     }
 
     /*
+     * @see org.gamegineer.table.internal.core.Component#getDefaultOrientation()
+     */
+    @Override
+    ComponentOrientation getDefaultOrientation()
+    {
+        return TabletopOrientation.DEFAULT;
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.core.Component#getDefaultSurfaceDesigns()
+     */
+    @Override
+    Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns()
+    {
+        return Collections.<ComponentOrientation, ComponentSurfaceDesign>singletonMap( //
+            TabletopOrientation.DEFAULT, //
+            new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.Tabletop.DEFAULT_SURFACE_DESIGN" ), Short.MAX_VALUE, Short.MAX_VALUE ) ); //$NON-NLS-1$ );
+    }
+
+    /*
      * @see org.gamegineer.table.core.IComponent#getLocation()
      */
     @Override
@@ -246,15 +260,6 @@ final class Tabletop
         {
             getLock().unlock();
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponent#getOrientation()
-     */
-    @Override
-    public ComponentOrientation getOrientation()
-    {
-        return TabletopOrientation.DEFAULT;
     }
 
     /*
@@ -304,32 +309,6 @@ final class Tabletop
     public Collection<ComponentOrientation> getSupportedOrientations()
     {
         return SUPPORTED_ORIENTATIONS;
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponent#getSurfaceDesign(org.gamegineer.table.core.ComponentOrientation)
-     */
-    @Override
-    public ComponentSurfaceDesign getSurfaceDesign(
-        final ComponentOrientation orientation )
-    {
-        assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
-        assertArgumentLegal( orientation instanceof TabletopOrientation, "orientation", NonNlsMessages.Tabletop_orientation_illegal ); //$NON-NLS-1$
-
-        getLock().lock();
-        try
-        {
-            if( orientation == TabletopOrientation.DEFAULT )
-            {
-                return surfaceDesign_;
-            }
-
-            throw new AssertionError( "unknown tabletop orientation" ); //$NON-NLS-1$
-        }
-        finally
-        {
-            getLock().unlock();
-        }
     }
 
     /*
@@ -392,26 +371,6 @@ final class Tabletop
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponent#setOrientation(org.gamegineer.table.core.ComponentOrientation)
-     */
-    @Override
-    public void setOrientation(
-        final ComponentOrientation orientation )
-    {
-        assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
-        assertArgumentLegal( orientation instanceof TabletopOrientation, "orientation", NonNlsMessages.Tabletop_orientation_illegal ); //$NON-NLS-1$
-
-        addEventNotification( new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                fireComponentOrientationChanged();
-            }
-        } );
-    }
-
-    /*
      * @see org.gamegineer.table.core.IComponent#setOrigin(java.awt.Point)
      */
     @Override
@@ -419,45 +378,6 @@ final class Tabletop
         final Point origin )
     {
         setLocation( origin );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponent#setSurfaceDesign(org.gamegineer.table.core.ComponentOrientation, org.gamegineer.table.core.ComponentSurfaceDesign)
-     */
-    @Override
-    public void setSurfaceDesign(
-        final ComponentOrientation orientation,
-        final ComponentSurfaceDesign surfaceDesign )
-    {
-        assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
-        assertArgumentLegal( orientation instanceof TabletopOrientation, "orientation", NonNlsMessages.Tabletop_orientation_illegal ); //$NON-NLS-1$
-        assertArgumentNotNull( surfaceDesign, "surfaceDesign" ); //$NON-NLS-1$
-
-        getLock().lock();
-        try
-        {
-            if( orientation == TabletopOrientation.DEFAULT )
-            {
-                surfaceDesign_ = surfaceDesign;
-            }
-            else
-            {
-                throw new AssertionError( "unknown tabletop orientation" ); //$NON-NLS-1$
-            }
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-
-        addEventNotification( new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                fireComponentSurfaceDesignChanged();
-            }
-        } );
     }
 
     /**
@@ -490,7 +410,7 @@ final class Tabletop
         try
         {
             sb.append( "surfaceDesign_=" ); //$NON-NLS-1$
-            sb.append( surfaceDesign_ );
+            sb.append( getSurfaceDesign( TabletopOrientation.DEFAULT ) );
             sb.append( ", location_=" ); //$NON-NLS-1$
             sb.append( location_ );
             sb.append( ", components_.size()=" ); //$NON-NLS-1$

@@ -44,16 +44,6 @@ final class NonNlsMessages
      */
     public static String AccordianContainerLayout_ctor_offsetY_zero;
 
-    // --- Card -------------------------------------------------------------
-
-    /** The orientation is illegal. */
-    public static String Card_orientation_illegal;
-
-    // --- CardPile ---------------------------------------------------------
-
-    /** The orientation is illegal. */
-    public static String CardPile_orientation_illegal;
-
     // --- Component --------------------------------------------------------
 
     /** The component listener is already registered. */
@@ -79,6 +69,9 @@ final class NonNlsMessages
 
     /** The memento is for an unknown component type. */
     public static String Component_fromMemento_unknown;
+
+    /** The orientation is illegal. */
+    public static String Component_orientation_illegal;
 
     /** The component listener is not registered. */
     public static String Component_removeComponentListener_listener_notRegistered;
@@ -208,11 +201,6 @@ final class NonNlsMessages
 
     /** The component path does not exist in the table. */
     public static String Table_getComponent_path_notExists;
-
-    // --- Tabletop ---------------------------------------------------------
-
-    /** The orientation is illegal. */
-    public static String Tabletop_orientation_illegal;
 
     // --- TableEnvironment -------------------------------------------------
 

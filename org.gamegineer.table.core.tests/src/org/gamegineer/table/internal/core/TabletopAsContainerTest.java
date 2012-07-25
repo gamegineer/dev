@@ -102,7 +102,7 @@ public final class TabletopAsContainerTest
     protected void fireComponentAdded(
         final Tabletop container )
     {
-        fireEventWithComponentAndInteger( container, "fireComponentAdded" ); //$NON-NLS-1$
+        fireContainerEventWithComponentAndInteger( container, "fireComponentAdded" ); //$NON-NLS-1$
     }
 
     /*
@@ -115,6 +115,36 @@ public final class TabletopAsContainerTest
         component.fireComponentBoundsChanged();
     }
 
+    /**
+     * Fires the event associated with the specified {@link Component} method.
+     * 
+     * @param tabletop
+     *        The tabletop; must not be {@code null}.
+     * @param methodName
+     *        The name of the method associated with the event; must not be
+     *        {@code null}.
+     */
+    private static void fireComponentEvent(
+        /* @NonNull */
+        final Tabletop tabletop,
+        /* @NonNull */
+        final String methodName )
+    {
+        assert tabletop != null;
+        assert methodName != null;
+
+        try
+        {
+            final Method method = Component.class.getDeclaredMethod( methodName );
+            method.setAccessible( true );
+            method.invoke( tabletop );
+        }
+        catch( final Exception e )
+        {
+            throw new AssertionError( e );
+        }
+    }
+
     /*
      * @see org.gamegineer.table.core.AbstractComponentTestCase#fireComponentOrientationChanged(org.gamegineer.table.core.IComponent)
      */
@@ -122,7 +152,7 @@ public final class TabletopAsContainerTest
     protected void fireComponentOrientationChanged(
         final Tabletop component )
     {
-        component.fireComponentOrientationChanged();
+        fireComponentEvent( component, "fireComponentOrientationChanged" ); //$NON-NLS-1$
     }
 
     /*
@@ -132,7 +162,7 @@ public final class TabletopAsContainerTest
     protected void fireComponentRemoved(
         final Tabletop container )
     {
-        fireEventWithComponentAndInteger( container, "fireComponentRemoved" ); //$NON-NLS-1$
+        fireContainerEventWithComponentAndInteger( container, "fireComponentRemoved" ); //$NON-NLS-1$
     }
 
     /*
@@ -142,21 +172,11 @@ public final class TabletopAsContainerTest
     protected void fireComponentSurfaceDesignChanged(
         final Tabletop component )
     {
-        component.fireComponentSurfaceDesignChanged();
-    }
-
-    /*
-     * @see org.gamegineer.table.core.AbstractContainerTestCase#fireContainerLayoutChanged(org.gamegineer.table.core.IContainer)
-     */
-    @Override
-    protected void fireContainerLayoutChanged(
-        final Tabletop container )
-    {
-        fireEvent( container, "fireContainerLayoutChanged" ); //$NON-NLS-1$
+        fireComponentEvent( component, "fireComponentSurfaceDesignChanged" ); //$NON-NLS-1$
     }
 
     /**
-     * Fires the event associated with the specified tabletop method.
+     * Fires the event associated with the specified {@link Container} method.
      * 
      * @param tabletop
      *        The tabletop; must not be {@code null}.
@@ -164,7 +184,7 @@ public final class TabletopAsContainerTest
      *        The name of the method associated with the event; must not be
      *        {@code null}.
      */
-    private static void fireEvent(
+    private static void fireContainerEvent(
         /* @NonNull */
         final Tabletop tabletop,
         /* @NonNull */
@@ -186,8 +206,8 @@ public final class TabletopAsContainerTest
     }
 
     /**
-     * Fires the event associated with the specified tabletop method that
-     * accepts an {@link IComponent} and an integer.
+     * Fires the event associated with the specified {@link Container} method
+     * that accepts an {@link IComponent} and an integer.
      * 
      * @param tabletop
      *        The tabletop; must not be {@code null}.
@@ -195,7 +215,7 @@ public final class TabletopAsContainerTest
      *        The name of the method associated with the event; must not be
      *        {@code null}.
      */
-    private static void fireEventWithComponentAndInteger(
+    private static void fireContainerEventWithComponentAndInteger(
         /* @NonNull */
         final Tabletop tabletop,
         /* @NonNull */
@@ -214,6 +234,16 @@ public final class TabletopAsContainerTest
         {
             throw new AssertionError( e );
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.AbstractContainerTestCase#fireContainerLayoutChanged(org.gamegineer.table.core.IContainer)
+     */
+    @Override
+    protected void fireContainerLayoutChanged(
+        final Tabletop container )
+    {
+        fireContainerEvent( container, "fireContainerLayoutChanged" ); //$NON-NLS-1$
     }
 
     /*
