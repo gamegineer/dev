@@ -37,7 +37,6 @@ import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentListener;
-import org.gamegineer.table.core.ITable;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.IComponent}.
@@ -53,16 +52,13 @@ abstract class Component
     /** The collection of component listeners. */
     private final CopyOnWriteArrayList<IComponentListener> componentListeners_;
 
-    /**
-     * The container that contains this component or {@code null} if this
-     * component is not contained in a container.
-     */
-    @GuardedBy( "getLock()" )
-    private Container container_;
-
     /** The component orientation. */
     @GuardedBy( "getLock()" )
     private ComponentOrientation orientation_;
+
+    /** The component parent or {@code null} if this component has no parent. */
+    @GuardedBy( "getLock()" )
+    private IComponentParent parent_;
 
     /**
      * The collection of component surface designs. The key is the component
@@ -93,8 +89,8 @@ abstract class Component
         assert tableEnvironment != null;
 
         componentListeners_ = new CopyOnWriteArrayList<IComponentListener>();
-        container_ = null;
         orientation_ = getDefaultOrientation();
+        parent_ = null;
         surfaceDesigns_ = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>( getDefaultSurfaceDesigns() );
         tableEnvironment_ = tableEnvironment;
 
@@ -241,7 +237,7 @@ abstract class Component
         getLock().lock();
         try
         {
-            return container_;
+            return (parent_ instanceof Container) ? (Container)parent_ : null;
         }
         finally
         {
@@ -300,23 +296,12 @@ abstract class Component
      * @see org.gamegineer.table.core.IComponent#getPath()
      */
     @Override
-    public ComponentPath getPath()
+    public final ComponentPath getPath()
     {
         getLock().lock();
         try
         {
-            if( container_ == null )
-            {
-                return null;
-            }
-
-            final ComponentPath parentPath = container_.getPath();
-            if( parentPath == null )
-            {
-                return null;
-            }
-
-            return new ComponentPath( parentPath, container_.getComponentIndex( this ) );
+            return (parent_ != null) ? parent_.getChildPath( this ) : null;
         }
         finally
         {
@@ -349,12 +334,12 @@ abstract class Component
      * @see org.gamegineer.table.core.IComponent#getTable()
      */
     @Override
-    public final ITable getTable()
+    public final Table getTable()
     {
         getLock().lock();
         try
         {
-            return getTableInternal();
+            return (parent_ != null) ? parent_.getTable() : null;
         }
         finally
         {
@@ -369,21 +354,6 @@ abstract class Component
     public final TableEnvironment getTableEnvironment()
     {
         return tableEnvironment_;
-    }
-
-    /**
-     * Gets the table associated with this component.
-     * 
-     * @return The table associated with this component or {@code null} if this
-     *         component is not associated with a table.
-     */
-    @GuardedBy( "getLock()" )
-    /* @Nullable */
-    Table getTableInternal()
-    {
-        assert getLock().isHeldByCurrentThread();
-
-        return (container_ != null) ? container_.getTableInternal() : null;
     }
 
     /**
@@ -427,23 +397,6 @@ abstract class Component
         assertArgumentLegal( componentListeners_.remove( listener ), "listener", NonNlsMessages.Component_removeComponentListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
-    /**
-     * Sets the container that contains this component.
-     * 
-     * @param container
-     *        The container that contains this component or {@code null} if this
-     *        component is not contained in a container.
-     */
-    @GuardedBy( "getLock()" )
-    final void setContainer(
-        /* @Nullable */
-        final Container container )
-    {
-        assert getLock().isHeldByCurrentThread();
-
-        container_ = container;
-    }
-
     /*
      * @see org.gamegineer.table.core.IComponent#setOrientation(org.gamegineer.table.core.ComponentOrientation)
      */
@@ -473,6 +426,23 @@ abstract class Component
                 fireComponentOrientationChanged();
             }
         } );
+    }
+
+    /**
+     * Sets the component parent.
+     * 
+     * @param parent
+     *        The component parent or {@code null} if this component has no
+     *        parent.
+     */
+    @GuardedBy( "getLock()" )
+    final void setParent(
+        /* @Nullable */
+        final IComponentParent parent )
+    {
+        assert getLock().isHeldByCurrentThread();
+
+        parent_ = parent;
     }
 
     /*

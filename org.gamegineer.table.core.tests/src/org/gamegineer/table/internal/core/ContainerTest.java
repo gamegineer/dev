@@ -22,8 +22,11 @@
 package org.gamegineer.table.internal.core;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import org.gamegineer.table.core.ComponentOrientation;
+import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentSurfaceDesigns;
+import org.gamegineer.table.core.ITable;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -93,48 +96,77 @@ public final class ContainerTest
     }
 
     /**
-     * Ensures the {@code getComponentIndex(Component)} method throws an
-     * exception when passed a component that is absent from the component
-     * collection.
+     * Ensures the {@code getChildPath} method throws an exception when passed a
+     * component that is absent from the component collection and the container
+     * is associated with a table.
      */
     @Test( expected = AssertionError.class )
-    public void testGetComponentIndexFromComponent_Component_Absent()
+    public void testGetChildPath_Component_Absent_AssociatedTable()
     {
-        container_.getTableEnvironment().getLock().lock();
+        final ITable table = tableEnvironment_.createTable();
+        table.getTabletop().addComponent( container_ );
+
+        container_.getLock().lock();
         try
         {
-            container_.getComponentIndex( createUniqueComponent() );
+            container_.getChildPath( createUniqueComponent() );
         }
         finally
         {
-            container_.getTableEnvironment().getLock().unlock();
+            container_.getLock().unlock();
         }
     }
 
     /**
-     * Ensures the {@code getComponentIndex(Component)} method returns the
-     * correct value when passed a component present in the component
-     * collection.
+     * Ensures the {@code getChildPath} method returns the correct value when
+     * passed a component present in the component collection and the container
+     * is associated with a table.
      */
     @Test
-    public void testGetComponentIndexFromComponent_Component_Present()
+    public void testGetChildPath_Component_Present_AssociatedTable()
     {
+        final ITable table = tableEnvironment_.createTable();
+        table.getTabletop().addComponent( container_ );
         final Component component = createUniqueComponent();
         container_.addComponent( createUniqueComponent() );
         container_.addComponent( component );
         container_.addComponent( createUniqueComponent() );
 
-        final int actualValue;
-        container_.getTableEnvironment().getLock().lock();
+        final ComponentPath actualValue;
+        container_.getLock().lock();
         try
         {
-            actualValue = container_.getComponentIndex( component );
+            actualValue = container_.getChildPath( component );
         }
         finally
         {
-            container_.getTableEnvironment().getLock().unlock();
+            container_.getLock().unlock();
         }
 
-        assertEquals( 1, actualValue );
+        assertEquals( new ComponentPath( new ComponentPath( new ComponentPath( null, 0 ), 0 ), 1 ), actualValue );
+    }
+
+    /**
+     * Ensures the {@code getChildPath} method returns {@code null} when the
+     * container is not associated with a table.
+     */
+    @Test
+    public void testGetChildPath_Container_NoAssociatedTable()
+    {
+        final Component component = createUniqueComponent();
+        container_.addComponent( component );
+
+        final ComponentPath actualValue;
+        container_.getLock().lock();
+        try
+        {
+            actualValue = container_.getChildPath( component );
+        }
+        finally
+        {
+            container_.getLock().unlock();
+        }
+
+        assertNull( actualValue );
     }
 }

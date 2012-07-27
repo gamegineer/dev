@@ -580,11 +580,25 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
 
     /**
      * Ensures the {@code getPath} method returns {@code null} when the
-     * component is not associated with a table.
+     * component is not associated with a table and has no parent.
      */
     @Test
-    public void testGetPath_NoAssociatedTable()
+    public void testGetPath_NoAssociatedTable_NoParent()
     {
+        assertNull( component_.getTable() );
+        assertNull( component_.getPath() );
+    }
+
+    /**
+     * Ensures the {@code getPath} method returns {@code null} when the
+     * component is not associated with a table but has a parent.
+     */
+    @Test
+    public void testGetPath_NoAssociatedTable_WithParent()
+    {
+        final IContainer container = tableEnvironment_.createCardPile();
+        container.addComponent( component_ );
+
         assertNull( component_.getTable() );
         assertNull( component_.getPath() );
     }

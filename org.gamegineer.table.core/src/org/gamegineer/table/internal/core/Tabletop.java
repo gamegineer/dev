@@ -37,7 +37,6 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ComponentOrientation;
-import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.IComponent;
@@ -81,13 +80,6 @@ final class Tabletop
     @GuardedBy( "getLock()" )
     private final Point location_;
 
-    /**
-     * The table that contains this tabletop or {@code null} if this component
-     * is not contained in a table.
-     */
-    @GuardedBy( "getLock()" )
-    private Table table_;
-
 
     // ======================================================================
     // Constructors
@@ -107,7 +99,6 @@ final class Tabletop
         super( tableEnvironment );
 
         location_ = new Point( Short.MIN_VALUE / 2, Short.MIN_VALUE / 2 );
-        table_ = null;
     }
 
 
@@ -272,28 +263,6 @@ final class Tabletop
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponent#getPath()
-     */
-    @Override
-    public ComponentPath getPath()
-    {
-        getLock().lock();
-        try
-        {
-            if( table_ == null )
-            {
-                return null;
-            }
-
-            return new ComponentPath( null, 0 );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-    }
-
-    /*
      * @see org.gamegineer.table.core.IComponent#getSize()
      */
     @Override
@@ -309,17 +278,6 @@ final class Tabletop
     public Collection<ComponentOrientation> getSupportedOrientations()
     {
         return SUPPORTED_ORIENTATIONS;
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.core.Component#getTableInternal()
-     */
-    @Override
-    Table getTableInternal()
-    {
-        assert getLock().isHeldByCurrentThread();
-
-        return table_;
     }
 
     /*
@@ -378,23 +336,6 @@ final class Tabletop
         final Point origin )
     {
         setLocation( origin );
-    }
-
-    /**
-     * Sets the table that contains this tabletop.
-     * 
-     * @param table
-     *        The table that contains this tabletop or {@code null} if this
-     *        tabletop is not contained in a table.
-     */
-    @GuardedBy( "getLock()" )
-    void setTable(
-        /* @Nullable */
-        final Table table )
-    {
-        assert getLock().isHeldByCurrentThread();
-
-        table_ = table;
     }
 
     /*

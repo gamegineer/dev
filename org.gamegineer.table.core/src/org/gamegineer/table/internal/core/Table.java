@@ -41,7 +41,7 @@ import org.gamegineer.table.core.ITable;
  */
 @ThreadSafe
 final class Table
-    implements ITable
+    implements IComponentParent, ITable
 {
     // ======================================================================
     // Fields
@@ -49,6 +49,9 @@ final class Table
 
     /** The name of the memento attribute that stores the tabletop memento. */
     private static final String TABLETOP_MEMENTO_ATTRIBUTE_NAME = "tabletop"; //$NON-NLS-1$
+
+    /** The path to the tabletop component. */
+    private static final ComponentPath TABLETOP_PATH = new ComponentPath( null, 0 );
 
     /** The table environment. */
     private final TableEnvironment tableEnvironment_;
@@ -79,7 +82,7 @@ final class Table
         getLock().lock();
         try
         {
-            tabletop_.setTable( this );
+            tabletop_.setParent( this );
         }
         finally
         {
@@ -149,6 +152,19 @@ final class Table
     }
 
     /*
+     * @see org.gamegineer.table.internal.core.IComponentParent#getChildPath(org.gamegineer.table.internal.core.Component)
+     */
+    @Override
+    public ComponentPath getChildPath(
+        final Component component )
+    {
+        assert component != null;
+
+        assert component == tabletop_;
+        return TABLETOP_PATH;
+    }
+
+    /*
      * @see org.gamegineer.table.core.ITable#getComponent(org.gamegineer.table.core.ComponentPath)
      */
     @Override
@@ -205,6 +221,15 @@ final class Table
     private ReentrantLock getLock()
     {
         return tableEnvironment_.getLock();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.core.IComponentParent#getTable()
+     */
+    @Override
+    public Table getTable()
+    {
+        return this;
     }
 
     /*

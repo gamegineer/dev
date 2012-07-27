@@ -47,7 +47,7 @@ import org.gamegineer.table.core.IContainerListener;
 @ThreadSafe
 abstract class Container
     extends Component
-    implements IContainer
+    implements IComponentParent, IContainer
 {
     // ======================================================================
     // Fields
@@ -136,7 +136,7 @@ abstract class Container
                 assertArgumentLegal( typedComponent.getContainer() == null, "components", NonNlsMessages.Container_addComponents_components_containsOwnedComponent ); //$NON-NLS-1$
                 assertArgumentLegal( typedComponent.getTableEnvironment() == getTableEnvironment(), "components", NonNlsMessages.Container_addComponents_components_containsComponentCreatedByDifferentTableEnvironment ); //$NON-NLS-1$
 
-                typedComponent.setContainer( this );
+                typedComponent.setParent( this );
                 components_.add( typedComponent );
                 addedComponents.add( typedComponent );
             }
@@ -269,6 +269,29 @@ abstract class Container
     }
 
     /*
+     * @see org.gamegineer.table.internal.core.IComponentParent#getChildPath(org.gamegineer.table.internal.core.Component)
+     */
+    @GuardedBy( "getLock()" )
+    @Override
+    public final ComponentPath getChildPath(
+        final Component component )
+    {
+        assert component != null;
+        assert getLock().isHeldByCurrentThread();
+
+        final ComponentPath path = getPath();
+        if( path == null )
+        {
+            return null;
+        }
+
+        final int index = components_.indexOf( component );
+        assert index != -1;
+
+        return new ComponentPath( path, index );
+    }
+
+    /*
      * @see org.gamegineer.table.core.IContainer#getComponent(int)
      */
     @Override
@@ -381,26 +404,6 @@ abstract class Container
     }
 
     /**
-     * Gets the index of the specified component in this container.
-     * 
-     * @param component
-     *        The component; must not be {@code null}.
-     * 
-     * @return The index of the specified component in this container.
-     */
-    @GuardedBy( "getLock()" )
-    final int getComponentIndex(
-        final Component component )
-    {
-        assert component != null;
-        assert getLock().isHeldByCurrentThread();
-
-        final int index = components_.indexOf( component );
-        assert index != -1;
-        return index;
-    }
-
-    /**
      * Gets the index of the component in this container at the specified
      * location.
      * 
@@ -417,7 +420,8 @@ abstract class Container
      *         location.
      */
     @GuardedBy( "getLock()" )
-    final int getComponentIndex(
+    private int getComponentIndex(
+        /* @NonNull */
         final Point location )
     {
         assert location != null;
@@ -488,7 +492,7 @@ abstract class Container
             assert componentIndex != -1;
             final Component typedComponent = components_.remove( componentIndex );
             assert typedComponent != null;
-            typedComponent.setContainer( null );
+            typedComponent.setParent( null );
         }
         finally
         {
@@ -561,7 +565,7 @@ abstract class Container
             components_.removeAll( removedComponents );
             for( final Component component : removedComponents )
             {
-                component.setContainer( null );
+                component.setParent( null );
             }
 
             final Rectangle newBounds = getBounds();
