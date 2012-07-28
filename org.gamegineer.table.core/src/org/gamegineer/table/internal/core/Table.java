@@ -272,28 +272,4 @@ final class Table
             getLock().unlock();
         }
     }
-
-    /*
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString()
-    {
-        final StringBuilder sb = new StringBuilder();
-        sb.append( "Table[" ); //$NON-NLS-1$
-
-        getLock().lock();
-        try
-        {
-            sb.append( "tabletop_=" ); //$NON-NLS-1$
-            sb.append( tabletop_ );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-
-        sb.append( "]" ); //$NON-NLS-1$
-        return sb.toString();
-    }
 }

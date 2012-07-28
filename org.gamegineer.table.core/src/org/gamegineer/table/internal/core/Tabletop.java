@@ -22,9 +22,7 @@
 package org.gamegineer.table.internal.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -32,8 +30,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.jcip.annotations.GuardedBy;
-import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ComponentOrientation;
@@ -76,10 +72,6 @@ final class Tabletop
      */
     private static final String SURFACE_DESIGN_MEMENTO_ATTRIBUTE_NAME = "surfaceDesign"; //$NON-NLS-1$
 
-    /** The tabletop location in table coordinates. */
-    @GuardedBy( "getLock()" )
-    private final Point location_;
-
 
     // ======================================================================
     // Constructors
@@ -97,8 +89,6 @@ final class Tabletop
         final TableEnvironment tableEnvironment )
     {
         super( tableEnvironment );
-
-        location_ = new Point( Short.MIN_VALUE / 2, Short.MIN_VALUE / 2 );
     }
 
 
@@ -118,7 +108,7 @@ final class Tabletop
         try
         {
             memento.put( LAYOUT_MEMENTO_ATTRIBUTE_NAME, getLayout() );
-            memento.put( LOCATION_MEMENTO_ATTRIBUTE_NAME, new Point( location_ ) );
+            memento.put( LOCATION_MEMENTO_ATTRIBUTE_NAME, getLocation() );
             memento.put( SURFACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, getSurfaceDesign( TabletopOrientation.DEFAULT ) );
 
             final List<Object> componentMementos = new ArrayList<Object>();
@@ -185,29 +175,6 @@ final class Tabletop
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponent#getBounds()
-     */
-    @Override
-    public Rectangle getBounds()
-    {
-        getLock().lock();
-        try
-        {
-            Rectangle bounds = new Rectangle( location_, getSurfaceDesign( getOrientation() ).getSize() );
-            for( final IComponent component : getComponents() )
-            {
-                bounds = bounds.union( component.getBounds() );
-            }
-
-            return bounds;
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-    }
-
-    /*
      * @see org.gamegineer.table.internal.core.Container#getDefaultLayout()
      */
     @Override
@@ -217,12 +184,30 @@ final class Tabletop
     }
 
     /*
+     * @see org.gamegineer.table.internal.core.Component#getDefaultLocation()
+     */
+    @Override
+    Point getDefaultLocation()
+    {
+        return new Point( Short.MIN_VALUE / 2, Short.MIN_VALUE / 2 );
+    }
+
+    /*
      * @see org.gamegineer.table.internal.core.Component#getDefaultOrientation()
      */
     @Override
     ComponentOrientation getDefaultOrientation()
     {
         return TabletopOrientation.DEFAULT;
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.core.Component#getDefaultOrigin()
+     */
+    @Override
+    Point getDefaultOrigin()
+    {
+        return getDefaultLocation();
     }
 
     /*
@@ -237,67 +222,12 @@ final class Tabletop
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponent#getLocation()
-     */
-    @Override
-    public Point getLocation()
-    {
-        getLock().lock();
-        try
-        {
-            return new Point( location_ );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponent#getOrigin()
-     */
-    @Override
-    public Point getOrigin()
-    {
-        return getLocation();
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponent#getSize()
-     */
-    @Override
-    public Dimension getSize()
-    {
-        return getBounds().getSize();
-    }
-
-    /*
      * @see org.gamegineer.table.core.IComponent#getSupportedOrientations()
      */
     @Override
     public Collection<ComponentOrientation> getSupportedOrientations()
     {
         return SUPPORTED_ORIENTATIONS;
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponent#setLocation(java.awt.Point)
-     */
-    @Override
-    public void setLocation(
-        final Point location )
-    {
-        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
-
-        translateLocation( new TranslationOffsetStrategy()
-        {
-            @Override
-            Dimension getOffset()
-            {
-                final Point oldLocation = getLocation();
-                return new Dimension( location.x - oldLocation.x, location.y - oldLocation.y );
-            }
-        } );
     }
 
     /*
@@ -325,131 +255,6 @@ final class Tabletop
         finally
         {
             getLock().unlock();
-        }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponent#setOrigin(java.awt.Point)
-     */
-    @Override
-    public void setOrigin(
-        final Point origin )
-    {
-        setLocation( origin );
-    }
-
-    /*
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString()
-    {
-        final StringBuilder sb = new StringBuilder();
-        sb.append( "Tabletop[" ); //$NON-NLS-1$
-
-        getLock().lock();
-        try
-        {
-            sb.append( "surfaceDesign_=" ); //$NON-NLS-1$
-            sb.append( getSurfaceDesign( TabletopOrientation.DEFAULT ) );
-            sb.append( ", location_=" ); //$NON-NLS-1$
-            sb.append( location_ );
-            sb.append( ", components_.size()=" ); //$NON-NLS-1$
-            sb.append( getComponentCount() );
-            sb.append( ", layout_=" ); //$NON-NLS-1$
-            sb.append( getLayout() );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-
-        sb.append( "]" ); //$NON-NLS-1$
-        return sb.toString();
-    }
-
-    /**
-     * Translates the tabletop location by the specified amount.
-     * 
-     * @param translationOffsetStrategy
-     *        The strategy used to calculate the amount to translate the
-     *        location; must not be {@code null}. The strategy will be invoked
-     *        while the table environment lock is held.
-     */
-    private void translateLocation(
-        /* @NonNull */
-        final TranslationOffsetStrategy translationOffsetStrategy )
-    {
-        assert translationOffsetStrategy != null;
-
-        getLock().lock();
-        try
-        {
-            final Dimension offset = translationOffsetStrategy.getOffset();
-            location_.translate( offset.width, offset.height );
-            for( final IComponent component : getComponents() )
-            {
-                final Point componentLocation = component.getLocation();
-                componentLocation.translate( offset.width, offset.height );
-                component.setLocation( componentLocation );
-            }
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-
-        addEventNotification( new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                fireComponentBoundsChanged();
-            }
-        } );
-    }
-
-
-    // ======================================================================
-    // Nested Types
-    // ======================================================================
-
-    /**
-     * A strategy to calculate a translation offset.
-     */
-    @Immutable
-    private class TranslationOffsetStrategy
-    {
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code TranslationOffsetStrategy}
-         * class.
-         */
-        TranslationOffsetStrategy()
-        {
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /**
-         * Gets the translation offset.
-         * 
-         * <p>
-         * The default implementation returns a zero offset.
-         * </p>
-         * 
-         * @return The translation offset; never {@code null}.
-         */
-        /* @NonNull */
-        Dimension getOffset()
-        {
-            return new Dimension( 0, 0 );
         }
     }
 }

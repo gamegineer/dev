@@ -22,16 +22,13 @@
 package org.gamegineer.table.internal.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
-import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.CardOrientation;
@@ -73,10 +70,6 @@ final class Card
     /** The collection of supported card orientations. */
     private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( CardOrientation.values( CardOrientation.class ) ) );
 
-    /** The card location in table coordinates. */
-    @GuardedBy( "getLock()" )
-    private final Point location_;
-
 
     // ======================================================================
     // Constructors
@@ -94,8 +87,6 @@ final class Card
         final TableEnvironment tableEnvironment )
     {
         super( tableEnvironment );
-
-        location_ = new Point( 0, 0 );
     }
 
 
@@ -116,7 +107,7 @@ final class Card
         {
             memento.put( BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, getSurfaceDesign( CardOrientation.BACK ) );
             memento.put( FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, getSurfaceDesign( CardOrientation.FACE ) );
-            memento.put( LOCATION_MEMENTO_ATTRIBUTE_NAME, new Point( location_ ) );
+            memento.put( LOCATION_MEMENTO_ATTRIBUTE_NAME, getLocation() );
             memento.put( ORIENTATION_MEMENTO_ATTRIBUTE_NAME, getOrientation() );
         }
         finally
@@ -172,20 +163,12 @@ final class Card
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponent#getBounds()
+     * @see org.gamegineer.table.internal.core.Component#getDefaultLocation()
      */
     @Override
-    public Rectangle getBounds()
+    Point getDefaultLocation()
     {
-        getLock().lock();
-        try
-        {
-            return new Rectangle( location_, getSize() );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
+        return new Point( 0, 0 );
     }
 
     /*
@@ -195,6 +178,15 @@ final class Card
     ComponentOrientation getDefaultOrientation()
     {
         return CardOrientation.FACE;
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.core.Component#getDefaultOrigin()
+     */
+    @Override
+    Point getDefaultOrigin()
+    {
+        return getDefaultLocation();
     }
 
     /*
@@ -208,49 +200,6 @@ final class Card
         surfaceDesigns.put( CardOrientation.BACK, defaultSurfaceDesign );
         surfaceDesigns.put( CardOrientation.FACE, defaultSurfaceDesign );
         return surfaceDesigns;
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponent#getLocation()
-     */
-    @Override
-    public Point getLocation()
-    {
-        getLock().lock();
-        try
-        {
-            return new Point( location_ );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponent#getOrigin()
-     */
-    @Override
-    public Point getOrigin()
-    {
-        return getLocation();
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponent#getSize()
-     */
-    @Override
-    public Dimension getSize()
-    {
-        getLock().lock();
-        try
-        {
-            return getSurfaceDesign( getOrientation() ).getSize();
-        }
-        finally
-        {
-            getLock().unlock();
-        }
     }
 
     /*
@@ -288,35 +237,6 @@ final class Card
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponent#setLocation(java.awt.Point)
-     */
-    @Override
-    public void setLocation(
-        final Point location )
-    {
-        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
-
-        getLock().lock();
-        try
-        {
-            location_.setLocation( location );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-
-        addEventNotification( new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                fireComponentBoundsChanged();
-            }
-        } );
-    }
-
-    /*
      * @see org.gamegineer.common.core.util.memento.IMementoOriginator#setMemento(java.lang.Object)
      */
     @Override
@@ -340,45 +260,5 @@ final class Card
         {
             getLock().unlock();
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponent#setOrigin(java.awt.Point)
-     */
-    @Override
-    public void setOrigin(
-        final Point origin )
-    {
-        setLocation( origin );
-    }
-
-    /*
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString()
-    {
-        final StringBuilder sb = new StringBuilder();
-        sb.append( "Card[" ); //$NON-NLS-1$
-
-        getLock().lock();
-        try
-        {
-            sb.append( "backDesign_=" ); //$NON-NLS-1$
-            sb.append( getSurfaceDesign( CardOrientation.BACK ) );
-            sb.append( ", faceDesign_=" ); //$NON-NLS-1$
-            sb.append( getSurfaceDesign( CardOrientation.FACE ) );
-            sb.append( ", location_=" ); //$NON-NLS-1$
-            sb.append( location_ );
-            sb.append( ", orientation_=" ); //$NON-NLS-1$
-            sb.append( getOrientation() );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-
-        sb.append( "]" ); //$NON-NLS-1$
-        return sb.toString();
     }
 }

@@ -23,6 +23,9 @@ package org.gamegineer.table.internal.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -52,9 +55,17 @@ abstract class Component
     /** The collection of component listeners. */
     private final CopyOnWriteArrayList<IComponentListener> componentListeners_;
 
+    /** The component location in table coordinates. */
+    @GuardedBy( "getLock()" )
+    private final Point location_;
+
     /** The component orientation. */
     @GuardedBy( "getLock()" )
     private ComponentOrientation orientation_;
+
+    /** The component origin in table coordinates. */
+    @GuardedBy( "getLock()" )
+    private final Point origin_;
 
     /** The component parent or {@code null} if this component has no parent. */
     @GuardedBy( "getLock()" )
@@ -89,7 +100,9 @@ abstract class Component
         assert tableEnvironment != null;
 
         componentListeners_ = new CopyOnWriteArrayList<IComponentListener>();
+        location_ = getDefaultLocation();
         orientation_ = getDefaultOrientation();
+        origin_ = getDefaultOrigin();
         parent_ = null;
         surfaceDesigns_ = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>( getDefaultSurfaceDesigns() );
         tableEnvironment_ = tableEnvironment;
@@ -228,6 +241,28 @@ abstract class Component
         throw new MementoException( NonNlsMessages.Component_fromMemento_unknown );
     }
 
+    /**
+     * This implementation defines the component bounds using the component
+     * location and the size of the surface design in the current orientation.
+     * Subclasses may override and are not required to call the superclass
+     * implementation.
+     * 
+     * @see org.gamegineer.table.core.IComponent#getBounds()
+     */
+    @Override
+    public Rectangle getBounds()
+    {
+        getLock().lock();
+        try
+        {
+            return new Rectangle( location_, surfaceDesigns_.get( orientation_ ).getSize() );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+    }
+
     /*
      * @see org.gamegineer.table.core.IComponent#getContainer()
      */
@@ -246,12 +281,28 @@ abstract class Component
     }
 
     /**
+     * Gets the default component location.
+     * 
+     * @return The default component location; never {@code null}.
+     */
+    /* @NonNull */
+    abstract Point getDefaultLocation();
+
+    /**
      * Gets the default component orientation.
      * 
      * @return The default component orientation; never {@code null}.
      */
     /* @NonNull */
     abstract ComponentOrientation getDefaultOrientation();
+
+    /**
+     * Gets the default component origin.
+     * 
+     * @return The default component origin; never {@code null}.
+     */
+    /* @NonNull */
+    abstract Point getDefaultOrigin();
 
     /**
      * Gets the default collection of component surface designs.
@@ -263,6 +314,15 @@ abstract class Component
      */
     /* @NonNull */
     abstract Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns();
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#getLocation()
+     */
+    @Override
+    public final Point getLocation()
+    {
+        return getBounds().getLocation();
+    }
 
     /**
      * Gets the table environment lock.
@@ -293,6 +353,23 @@ abstract class Component
     }
 
     /*
+     * @see org.gamegineer.table.core.IComponent#getOrigin()
+     */
+    @Override
+    public final Point getOrigin()
+    {
+        getLock().lock();
+        try
+        {
+            return new Point( origin_ );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.core.IComponent#getPath()
      */
     @Override
@@ -307,6 +384,15 @@ abstract class Component
         {
             getLock().unlock();
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#getSize()
+     */
+    @Override
+    public final Dimension getSize()
+    {
+        return getBounds().getSize();
     }
 
     /*
@@ -398,6 +484,26 @@ abstract class Component
     }
 
     /*
+     * @see org.gamegineer.table.core.IComponent#setLocation(java.awt.Point)
+     */
+    @Override
+    public final void setLocation(
+        final Point location )
+    {
+        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
+
+        getLock().lock();
+        try
+        {
+            translate( new Dimension( location.x - location_.x, location.y - location_.y ) );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.core.IComponent#setOrientation(org.gamegineer.table.core.ComponentOrientation)
      */
     @Override
@@ -426,6 +532,26 @@ abstract class Component
                 fireComponentOrientationChanged();
             }
         } );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#setOrigin(java.awt.Point)
+     */
+    @Override
+    public final void setOrigin(
+        final Point origin )
+    {
+        assertArgumentNotNull( origin, "origin" ); //$NON-NLS-1$
+
+        getLock().lock();
+        try
+        {
+            translate( new Dimension( origin.x - origin_.x, origin.y - origin_.y ) );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
     }
 
     /**
@@ -474,6 +600,39 @@ abstract class Component
             public void run()
             {
                 fireComponentSurfaceDesignChanged();
+            }
+        } );
+    }
+
+    /**
+     * Translates this component by the specified offset.
+     * 
+     * <p>
+     * This implementation translates the component location and origin and
+     * notifies listeners that the component bounds have changed. Subclasses may
+     * override and must call the superclass implementation.
+     * </p>
+     * 
+     * @param offset
+     *        The translation offset; must not be {@code null}.
+     */
+    @GuardedBy( "getLock()" )
+    void translate(
+        /* @NonNull */
+        final Dimension offset )
+    {
+        assert offset != null;
+        assert getLock().isHeldByCurrentThread();
+
+        location_.translate( offset.width, offset.height );
+        origin_.translate( offset.width, offset.height );
+
+        addEventNotification( new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                fireComponentBoundsChanged();
             }
         } );
     }

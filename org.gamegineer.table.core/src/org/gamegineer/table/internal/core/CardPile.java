@@ -22,9 +22,7 @@
 package org.gamegineer.table.internal.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -32,8 +30,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.jcip.annotations.GuardedBy;
-import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.CardPileLayouts;
@@ -80,10 +76,6 @@ final class CardPile
     /** The collection of supported card pile orientations. */
     private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( CardPileOrientation.values( CardPileOrientation.class ) ) );
 
-    /** The card pile origin in table coordinates. */
-    @GuardedBy( "getLock()" )
-    private final Point origin_;
-
 
     // ======================================================================
     // Constructors
@@ -101,8 +93,6 @@ final class CardPile
         final TableEnvironment tableEnvironment )
     {
         super( tableEnvironment );
-
-        origin_ = new Point( 0, 0 );
     }
 
 
@@ -123,7 +113,7 @@ final class CardPile
         {
             memento.put( BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, getSurfaceDesign( CardPileOrientation.BASE ) );
             memento.put( LAYOUT_MEMENTO_ATTRIBUTE_NAME, getLayout() );
-            memento.put( ORIGIN_MEMENTO_ATTRIBUTE_NAME, new Point( origin_ ) );
+            memento.put( ORIGIN_MEMENTO_ATTRIBUTE_NAME, getOrigin() );
 
             final List<Object> componentMementos = new ArrayList<Object>();
             for( final IComponent component : getComponents() )
@@ -189,37 +179,21 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponent#getBounds()
-     */
-    @Override
-    public Rectangle getBounds()
-    {
-        getLock().lock();
-        try
-        {
-            if( getComponentCount() == 0 )
-            {
-                return new Rectangle( origin_, getSurfaceDesign( getOrientation() ).getSize() );
-            }
-
-            final List<IComponent> components = getComponents();
-            final Rectangle topComponentBounds = components.get( components.size() - 1 ).getBounds();
-            final Rectangle bottomComponentBounds = components.get( 0 ).getBounds();
-            return topComponentBounds.union( bottomComponentBounds );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-    }
-
-    /*
      * @see org.gamegineer.table.internal.core.Container#getDefaultLayout()
      */
     @Override
     IContainerLayout getDefaultLayout()
     {
         return CardPileLayouts.STACKED;
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.core.Component#getDefaultLocation()
+     */
+    @Override
+    Point getDefaultLocation()
+    {
+        return getDefaultOrigin();
     }
 
     /*
@@ -232,6 +206,15 @@ final class CardPile
     }
 
     /*
+     * @see org.gamegineer.table.internal.core.Component#getDefaultOrigin()
+     */
+    @Override
+    Point getDefaultOrigin()
+    {
+        return new Point( 0, 0 );
+    }
+
+    /*
      * @see org.gamegineer.table.internal.core.Component#getDefaultSurfaceDesigns()
      */
     @Override
@@ -240,41 +223,6 @@ final class CardPile
         return Collections.<ComponentOrientation, ComponentSurfaceDesign>singletonMap( //
             CardPileOrientation.BASE, //
             new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.CardPile.DEFAULT_BASE_DESIGN" ), 0, 0 ) ); //$NON-NLS-1$
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponent#getLocation()
-     */
-    @Override
-    public Point getLocation()
-    {
-        return getBounds().getLocation();
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponent#getOrigin()
-     */
-    @Override
-    public Point getOrigin()
-    {
-        getLock().lock();
-        try
-        {
-            return new Point( origin_ );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponent#getSize()
-     */
-    @Override
-    public Dimension getSize()
-    {
-        return getBounds().getSize();
     }
 
     /*
@@ -321,26 +269,6 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponent#setLocation(java.awt.Point)
-     */
-    @Override
-    public void setLocation(
-        final Point location )
-    {
-        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
-
-        translateOrigin( new TranslationOffsetStrategy()
-        {
-            @Override
-            Dimension getOffset()
-            {
-                final Point oldLocation = getLocation();
-                return new Dimension( location.x - oldLocation.x, location.y - oldLocation.y );
-            }
-        } );
-    }
-
-    /*
      * @see org.gamegineer.common.core.util.memento.IMementoOriginator#setMemento(java.lang.Object)
      */
     @Override
@@ -365,141 +293,6 @@ final class CardPile
         finally
         {
             getLock().unlock();
-        }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponent#setOrigin(java.awt.Point)
-     */
-    @Override
-    public void setOrigin(
-        final Point origin )
-    {
-        assertArgumentNotNull( origin, "origin" ); //$NON-NLS-1$
-
-        translateOrigin( new TranslationOffsetStrategy()
-        {
-            @Override
-            Dimension getOffset()
-            {
-                final Point oldOrigin = getOrigin();
-                return new Dimension( origin.x - oldOrigin.x, origin.y - oldOrigin.y );
-            }
-        } );
-    }
-
-    /*
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString()
-    {
-        final StringBuilder sb = new StringBuilder();
-        sb.append( "CardPile[" ); //$NON-NLS-1$
-
-        getLock().lock();
-        try
-        {
-            sb.append( "baseDesign_=" ); //$NON-NLS-1$
-            sb.append( getSurfaceDesign( CardPileOrientation.BASE ) );
-            sb.append( ", origin_=" ); //$NON-NLS-1$
-            sb.append( origin_ );
-            sb.append( ", cards_.size()=" ); //$NON-NLS-1$
-            sb.append( getComponentCount() );
-            sb.append( ", layout_=" ); //$NON-NLS-1$
-            sb.append( getLayout() );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-
-        sb.append( "]" ); //$NON-NLS-1$
-        return sb.toString();
-    }
-
-    /**
-     * Translates the card pile origin by the specified amount.
-     * 
-     * @param translationOffsetStrategy
-     *        The strategy used to calculate the amount to translate the origin;
-     *        must not be {@code null}. The strategy will be invoked while the
-     *        table environment lock is held.
-     */
-    private void translateOrigin(
-        /* @NonNull */
-        final TranslationOffsetStrategy translationOffsetStrategy )
-    {
-        assert translationOffsetStrategy != null;
-
-        getLock().lock();
-        try
-        {
-            final Dimension offset = translationOffsetStrategy.getOffset();
-            origin_.translate( offset.width, offset.height );
-            for( final IComponent component : getComponents() )
-            {
-                final Point componentLocation = component.getLocation();
-                componentLocation.translate( offset.width, offset.height );
-                component.setLocation( componentLocation );
-            }
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-
-        addEventNotification( new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                fireComponentBoundsChanged();
-            }
-        } );
-    }
-
-
-    // ======================================================================
-    // Nested Types
-    // ======================================================================
-
-    /**
-     * A strategy to calculate a translation offset.
-     */
-    @Immutable
-    private class TranslationOffsetStrategy
-    {
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code TranslationOffsetStrategy}
-         * class.
-         */
-        TranslationOffsetStrategy()
-        {
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /**
-         * Gets the translation offset.
-         * 
-         * <p>
-         * The default implementation returns a zero offset.
-         * </p>
-         * 
-         * @return The translation offset; never {@code null}.
-         */
-        /* @NonNull */
-        Dimension getOffset()
-        {
-            return new Dimension( 0, 0 );
         }
     }
 }

@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -265,6 +266,31 @@ abstract class Container
             {
                 Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Container_containerLayoutChanged_unexpectedException, e );
             }
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.core.Component#getBounds()
+     */
+    @Override
+    public final Rectangle getBounds()
+    {
+        getLock().lock();
+        try
+        {
+            Rectangle bounds = super.getBounds();
+
+            // TODO: allow layout to optimize calculating child component bounding region
+            for( final IComponent component : getComponents() )
+            {
+                bounds = bounds.union( component.getBounds() );
+            }
+
+            return bounds;
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -693,6 +719,24 @@ abstract class Container
                 }
             }
         } );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.core.Component#translate(java.awt.Dimension)
+     */
+    @Override
+    final void translate(
+        final Dimension offset )
+    {
+        assert offset != null;
+        assert getLock().isHeldByCurrentThread();
+
+        super.translate( offset );
+
+        for( final Component component : components_ )
+        {
+            component.translate( offset );
+        }
     }
 
 
