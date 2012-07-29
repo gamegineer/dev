@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.ui.view;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Rectangle;
+import org.gamegineer.table.core.Components;
 import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.internal.ui.model.ComponentModelFactory;
 import org.junit.Before;
@@ -69,7 +70,7 @@ public final class ContainerViewTest
     public void setUp()
         throws Exception
     {
-        containerView_ = new ContainerView( ComponentModelFactory.createContainerModel( TableEnvironmentFactory.createTableEnvironment().createCardPile() ) );
+        containerView_ = new ContainerView( ComponentModelFactory.createContainerModel( Components.createUniqueContainer( TableEnvironmentFactory.createTableEnvironment() ) ) );
     }
 
     /**
