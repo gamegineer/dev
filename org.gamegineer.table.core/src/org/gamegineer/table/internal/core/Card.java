@@ -32,15 +32,13 @@ import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
-import org.gamegineer.table.core.ICard;
 
 /**
- * Implementation of {@link org.gamegineer.table.core.ICard}.
+ * A component that represents a card.
  */
 @ThreadSafe
 final class Card
     extends Component
-    implements ICard
 {
     // ======================================================================
     // Fields

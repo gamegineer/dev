@@ -32,16 +32,14 @@ import org.gamegineer.table.core.CardPileOrientation;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
-import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.IContainerLayout;
 
 /**
- * Implementation of {@link org.gamegineer.table.core.ICardPile}.
+ * A component that represents a card pile.
  */
 @ThreadSafe
 final class CardPile
     extends Container
-    implements ICardPile
 {
     // ======================================================================
     // Fields

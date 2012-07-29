@@ -24,15 +24,14 @@ package org.gamegineer.table.internal.core;
 import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.gamegineer.table.core.AbstractContainerTestCase;
-import org.gamegineer.table.core.CardPiles;
-import org.gamegineer.table.core.Cards;
+import org.gamegineer.table.core.Components;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 
 /**
  * A fixture for testing the {@link org.gamegineer.table.internal.core.CardPile}
  * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.ICardPile} interface.
+ * {@link org.gamegineer.table.core.IContainer} interface.
  */
 public final class CardPileAsContainerTest
     extends AbstractContainerTestCase<TableEnvironment, CardPile>
@@ -79,7 +78,7 @@ public final class CardPileAsContainerTest
     protected IComponent createUniqueComponent(
         final TableEnvironment tableEnvironment )
     {
-        return Cards.createUniqueCard( tableEnvironment );
+        return Components.createUniqueComponent( tableEnvironment );
     }
 
     /*
@@ -89,7 +88,7 @@ public final class CardPileAsContainerTest
     protected IContainer createUniqueContainer(
         final TableEnvironment tableEnvironment )
     {
-        return CardPiles.createUniqueCardPile( tableEnvironment );
+        return Components.createUniqueContainer( tableEnvironment );
     }
 
     /*

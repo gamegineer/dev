@@ -25,9 +25,8 @@ import static org.junit.Assert.assertEquals;
 import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.gamegineer.table.core.AbstractContainerTestCase;
-import org.gamegineer.table.core.CardPiles;
-import org.gamegineer.table.core.Cards;
 import org.gamegineer.table.core.ComponentPath;
+import org.gamegineer.table.core.Components;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
@@ -82,7 +81,7 @@ public final class TabletopAsContainerTest
     protected IComponent createUniqueComponent(
         final TableEnvironment tableEnvironment )
     {
-        return Cards.createUniqueCard( tableEnvironment );
+        return Components.createUniqueComponent( tableEnvironment );
     }
 
     /*
@@ -92,7 +91,7 @@ public final class TabletopAsContainerTest
     protected IContainer createUniqueContainer(
         final TableEnvironment tableEnvironment )
     {
-        return CardPiles.createUniqueCardPile( tableEnvironment );
+        return Components.createUniqueContainer( tableEnvironment );
     }
 
     /*

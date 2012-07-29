@@ -34,9 +34,8 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.table.core.CardPiles;
-import org.gamegineer.table.core.Cards;
 import org.gamegineer.table.core.ComponentPath;
+import org.gamegineer.table.core.Components;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.junit.Before;
@@ -104,7 +103,7 @@ public final class TableModelTest
     /* @NonNull */
     private IComponent createUniqueComponent()
     {
-        return Cards.createUniqueCard( model_.getTable().getTableEnvironment() );
+        return Components.createUniqueComponent( model_.getTable().getTableEnvironment() );
     }
 
     /**
@@ -116,7 +115,7 @@ public final class TableModelTest
     /* @NonNull */
     private IContainer createUniqueContainer()
     {
-        return CardPiles.createUniqueCardPile( model_.getTable().getTableEnvironment() );
+        return Components.createUniqueContainer( model_.getTable().getTableEnvironment() );
     }
 
     /**

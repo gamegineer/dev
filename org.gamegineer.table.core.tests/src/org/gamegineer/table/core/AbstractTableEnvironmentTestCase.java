@@ -90,7 +90,7 @@ public abstract class AbstractTableEnvironmentTestCase
     @Test
     public void testCreateCard_ReturnValue_AssociatedWithTableEnvironment()
     {
-        final ICard card = tableEnvironment_.createCard();
+        final IComponent card = tableEnvironment_.createCard();
 
         assertNotNull( card );
         assertEquals( tableEnvironment_, card.getTableEnvironment() );
@@ -112,7 +112,7 @@ public abstract class AbstractTableEnvironmentTestCase
     @Test
     public void testCreateCardPile_ReturnValue_AssociatedWithTableEnvironment()
     {
-        final ICardPile cardPile = tableEnvironment_.createCardPile();
+        final IContainer cardPile = tableEnvironment_.createCardPile();
 
         assertNotNull( cardPile );
         assertEquals( tableEnvironment_, cardPile.getTableEnvironment() );

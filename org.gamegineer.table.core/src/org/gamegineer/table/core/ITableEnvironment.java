@@ -53,7 +53,7 @@ public interface ITableEnvironment
      * @return A new card; never {@code null}.
      */
     /* @NonNull */
-    public ICard createCard();
+    public IComponent createCard();
 
     /**
      * Creates a new card pile.
@@ -61,7 +61,7 @@ public interface ITableEnvironment
      * @return A new card pile; never {@code null}.
      */
     /* @NonNull */
-    public ICardPile createCardPile();
+    public IContainer createCardPile();
 
     /**
      * Creates a new component from the specified memento.

@@ -27,9 +27,8 @@ import java.util.Queue;
 import java.util.concurrent.locks.ReentrantLock;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
-import org.gamegineer.table.core.ICard;
-import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableEnvironment;
 
@@ -138,7 +137,7 @@ public final class TableEnvironment
      * @see org.gamegineer.table.core.ITableEnvironment#createCard()
      */
     @Override
-    public ICard createCard()
+    public IComponent createCard()
     {
         return new Card( this );
     }
@@ -147,7 +146,7 @@ public final class TableEnvironment
      * @see org.gamegineer.table.core.ITableEnvironment#createCardPile()
      */
     @Override
-    public ICardPile createCardPile()
+    public IContainer createCardPile()
     {
         return new CardPile( this );
     }
