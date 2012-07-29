@@ -53,11 +53,6 @@ final class NonNlsMessages
     /** The component index is negative. */
     public static String ContainerContentChangedEvent_ctor_componentIndex_negative;
 
-    // --- TableContentChangedEvent -----------------------------------------
-
-    /** The card pile index is negative. */
-    public static String TableContentChangedEvent_ctor_cardPileIndex_negative;
-
 
     // ======================================================================
     // Constructors
