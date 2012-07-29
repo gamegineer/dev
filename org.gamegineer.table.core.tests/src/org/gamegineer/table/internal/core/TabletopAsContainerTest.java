@@ -21,15 +21,12 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.junit.Assert.assertEquals;
 import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.gamegineer.table.core.AbstractContainerTestCase;
-import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.Components;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
-import org.gamegineer.table.core.ITable;
 
 /**
  * A fixture for testing the {@link org.gamegineer.table.internal.core.Tabletop}
@@ -243,22 +240,5 @@ public final class TabletopAsContainerTest
         final Tabletop container )
     {
         fireContainerEvent( container, "fireContainerLayoutChanged" ); //$NON-NLS-1$
-    }
-
-    /*
-     * @see org.gamegineer.table.core.AbstractComponentTestCase#testGetPath_AssociatedTable()
-     */
-    @Override
-    public void testGetPath_AssociatedTable()
-    {
-        // TODO: Temporary override of superclass test because Tabletop currently
-        // assumes it will always be at the root of the hierarchy.
-
-        final ITable table = getTableEnvironment().createTable();
-        final ComponentPath expectedTabletopPath = new ComponentPath( null, 0 );
-
-        final ComponentPath actualTabletopPath = table.getTabletop().getPath();
-
-        assertEquals( expectedTabletopPath, actualTabletopPath );
     }
 }
