@@ -166,7 +166,7 @@ public final class NetworkTableUtils
             final int removedComponentCount = containerIncrement.getRemovedComponentCount();
             if( removedComponentCount == container.getComponentCount() )
             {
-                container.removeComponents();
+                container.removeAllComponents();
             }
             else
             {

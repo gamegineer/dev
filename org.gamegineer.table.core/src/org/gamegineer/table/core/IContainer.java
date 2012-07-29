@@ -134,6 +134,17 @@ public interface IContainer
     public IContainerLayout getLayout();
 
     /**
+     * Removes all components in this container.
+     * 
+     * @return The collection of components removed from this container; never
+     *         {@code null}. The components are returned in order from the
+     *         component at the bottom of the container to the component at the
+     *         top of the container.
+     */
+    /* @NonNull */
+    public List<IComponent> removeAllComponents();
+
+    /**
      * Removes the specified component from this container.
      * 
      * @param component
@@ -147,17 +158,6 @@ public interface IContainer
     public void removeComponent(
         /* @NonNull */
         IComponent component );
-
-    /**
-     * Removes all components in this container.
-     * 
-     * @return The collection of components removed from this container; never
-     *         {@code null}. The components are returned in order from the
-     *         component at the bottom of the container to the component at the
-     *         top of the container.
-     */
-    /* @NonNull */
-    public List<IComponent> removeComponents();
 
     /**
      * Removes all components in this container from the component at the

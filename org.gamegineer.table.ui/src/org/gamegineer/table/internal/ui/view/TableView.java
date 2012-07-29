@@ -1131,7 +1131,7 @@ final class TableView
      */
     private void removeAllCardPiles()
     {
-        model_.getTable().getTabletop().removeComponents();
+        model_.getTable().getTabletop().removeAllComponents();
     }
 
     /**
@@ -1142,7 +1142,7 @@ final class TableView
         final IContainer container = getFocusedContainer();
         if( container != null )
         {
-            container.removeComponents();
+            container.removeAllComponents();
         }
     }
 
@@ -1723,7 +1723,7 @@ final class TableView
                 final Point mouseLocation = getMouseLocation( event );
                 final IContainer cardPile = getFocusableContainer( mouseLocation );
                 final IContainer targetCardPile = (cardPile != null) ? cardPile : sourceCardPile_;
-                targetCardPile.addComponents( mobileCardPile_.removeComponents() );
+                targetCardPile.addComponents( mobileCardPile_.removeAllComponents() );
                 model_.setFocus( targetCardPile );
 
                 setMouseInputHandler( DefaultMouseInputHandler.class, null );

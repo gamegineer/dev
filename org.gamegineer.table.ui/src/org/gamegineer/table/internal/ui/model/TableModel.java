@@ -468,7 +468,7 @@ public final class TableModel
     {
         synchronized( lock_ )
         {
-            table_.getTabletop().removeComponents();
+            table_.getTabletop().removeAllComponents();
 
             file_ = null;
             focusedComponent_ = null;

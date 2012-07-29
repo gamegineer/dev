@@ -526,11 +526,20 @@ abstract class Container
 
         @SuppressWarnings( "unchecked" )
         final List<Object> componentMementos = MementoUtils.getAttribute( memento, COMPONENTS_MEMENTO_ATTRIBUTE_NAME, List.class );
-        removeComponents();
+        removeAllComponents();
         for( final Object componentMemento : componentMementos )
         {
             addComponent( ComponentFactory.createComponent( getTableEnvironment(), componentMemento ) );
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IContainer#removeAllComponents()
+     */
+    @Override
+    public final List<IComponent> removeAllComponents()
+    {
+        return removeComponents( new ComponentRangeStrategy() );
     }
 
     /*
@@ -663,15 +672,6 @@ abstract class Container
         }
 
         return new ArrayList<IComponent>( removedComponents );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IContainer#removeComponents()
-     */
-    @Override
-    public final List<IComponent> removeComponents()
-    {
-        return removeComponents( new ComponentRangeStrategy() );
     }
 
     /*

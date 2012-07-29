@@ -626,6 +626,111 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
+     * Ensures the {@code removeAllComponents} method does not fire a component
+     * removed event when the container is empty.
+     */
+    @Test
+    public void testRemoveAllComponents_Empty_DoesNotFireComponentRemovedEvent()
+    {
+        final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
+        mocksControl_.replay();
+        getContainer().addContainerListener( listener );
+
+        getContainer().removeAllComponents();
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code removeAllComponents} method returns an empty
+     * collection when the container is empty.
+     */
+    @Test
+    public void testRemoveAllComponents_Empty_DoesNotRemoveComponents()
+    {
+        final List<IComponent> components = getContainer().removeAllComponents();
+
+        assertNotNull( components );
+        assertEquals( 0, components.size() );
+    }
+
+    /**
+     * Ensures the {@code removeAllComponents} method changes the container
+     * bounds when the container is not empty.
+     */
+    @Test( timeout = 1000 )
+    public void testRemoveAllComponents_NotEmpty_ChangesContainerBounds()
+    {
+        getContainer().setSurfaceDesign( getContainer().getOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        EasyMock.expectLastCall().times( 2 );
+        mocksControl_.replay();
+        getContainer().addComponentListener( listener );
+        final Rectangle originalContainerBounds = getContainer().getBounds();
+
+        do
+        {
+            getContainer().addComponent( createUniqueComponent() );
+
+        } while( originalContainerBounds.equals( getContainer().getBounds() ) );
+        getContainer().removeAllComponents();
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code removeAllComponents} method fires a component removed
+     * event when the container is not empty.
+     */
+    @Test
+    public void testRemoveAllComponents_NotEmpty_FiresComponentRemovedEvent()
+    {
+        final List<IComponent> components = Arrays.asList( createUniqueComponent(), createUniqueComponent() );
+        getContainer().addComponents( components );
+        final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
+        final Capture<ContainerContentChangedEvent> eventCapture1 = new Capture<ContainerContentChangedEvent>();
+        listener.componentRemoved( EasyMock.capture( eventCapture1 ) );
+        final Capture<ContainerContentChangedEvent> eventCapture2 = new Capture<ContainerContentChangedEvent>();
+        listener.componentRemoved( EasyMock.capture( eventCapture2 ) );
+        mocksControl_.replay();
+        getContainer().addContainerListener( listener );
+
+        getContainer().removeAllComponents();
+
+        mocksControl_.verify();
+        assertSame( getContainer(), eventCapture1.getValue().getContainer() );
+        assertSame( components.get( 1 ), eventCapture1.getValue().getComponent() );
+        assertEquals( 1, eventCapture1.getValue().getComponentIndex() );
+        assertSame( getContainer(), eventCapture2.getValue().getContainer() );
+        assertSame( components.get( 0 ), eventCapture2.getValue().getComponent() );
+        assertEquals( 0, eventCapture2.getValue().getComponentIndex() );
+    }
+
+    /**
+     * Ensures the {@code removeComponents} method removes all components in the
+     * container when the container is not empty.
+     */
+    @Test
+    public void testRemoveAllComponents_NotEmpty_RemovesAllComponents()
+    {
+        final List<IComponent> expectedComponents = new ArrayList<IComponent>();
+        expectedComponents.add( createUniqueComponent() );
+        expectedComponents.add( createUniqueComponent() );
+        expectedComponents.add( createUniqueComponent() );
+        getContainer().addComponents( expectedComponents );
+
+        final List<IComponent> actualComponents = getContainer().removeAllComponents();
+
+        assertEquals( expectedComponents, actualComponents );
+        assertEquals( 0, getContainer().getComponentCount() );
+        for( final IComponent actualComponent : actualComponents )
+        {
+            assertNull( actualComponent.getContainer() );
+        }
+    }
+
+    /**
      * Ensures the {@code removeComponent} method throws an exception when
      * passed an illegal component that is not owned by the container.
      */
@@ -686,117 +791,11 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeComponents()} method does not fire a component
-     * removed event when the container is empty.
+     * Ensures the {@code removeComponents} method does not fire a component
+     * removed event when a component is absent at the specified location.
      */
     @Test
-    public void testRemoveComponents_Empty_DoesNotFireComponentRemovedEvent()
-    {
-        final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
-        mocksControl_.replay();
-        getContainer().addContainerListener( listener );
-
-        getContainer().removeComponents();
-
-        mocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code removeComponents()} method returns an empty collection
-     * when the container is empty.
-     */
-    @Test
-    public void testRemoveComponents_Empty_DoesNotRemoveComponents()
-    {
-        final List<IComponent> components = getContainer().removeComponents();
-
-        assertNotNull( components );
-        assertEquals( 0, components.size() );
-    }
-
-    /**
-     * Ensures the {@code removeComponents()} method changes the container
-     * bounds when the container is not empty.
-     */
-    @Test( timeout = 1000 )
-    public void testRemoveComponents_NotEmpty_ChangesContainerBounds()
-    {
-        getContainer().setSurfaceDesign( getContainer().getOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
-        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
-        EasyMock.expectLastCall().times( 2 );
-        mocksControl_.replay();
-        getContainer().addComponentListener( listener );
-        final Rectangle originalContainerBounds = getContainer().getBounds();
-
-        do
-        {
-            getContainer().addComponent( createUniqueComponent() );
-
-        } while( originalContainerBounds.equals( getContainer().getBounds() ) );
-        getContainer().removeComponents();
-
-        mocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code removeComponents()} method fires a component removed
-     * event when the container is not empty.
-     */
-    @Test
-    public void testRemoveComponents_NotEmpty_FiresComponentRemovedEvent()
-    {
-        final List<IComponent> components = Arrays.asList( createUniqueComponent(), createUniqueComponent() );
-        getContainer().addComponents( components );
-        final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
-        final Capture<ContainerContentChangedEvent> eventCapture1 = new Capture<ContainerContentChangedEvent>();
-        listener.componentRemoved( EasyMock.capture( eventCapture1 ) );
-        final Capture<ContainerContentChangedEvent> eventCapture2 = new Capture<ContainerContentChangedEvent>();
-        listener.componentRemoved( EasyMock.capture( eventCapture2 ) );
-        mocksControl_.replay();
-        getContainer().addContainerListener( listener );
-
-        getContainer().removeComponents();
-
-        mocksControl_.verify();
-        assertSame( getContainer(), eventCapture1.getValue().getContainer() );
-        assertSame( components.get( 1 ), eventCapture1.getValue().getComponent() );
-        assertEquals( 1, eventCapture1.getValue().getComponentIndex() );
-        assertSame( getContainer(), eventCapture2.getValue().getContainer() );
-        assertSame( components.get( 0 ), eventCapture2.getValue().getComponent() );
-        assertEquals( 0, eventCapture2.getValue().getComponentIndex() );
-    }
-
-    /**
-     * Ensures the {@code removeComponents()} method removes all components in
-     * the container when the container is not empty.
-     */
-    @Test
-    public void testRemoveComponents_NotEmpty_RemovesAllComponents()
-    {
-        final List<IComponent> expectedComponents = new ArrayList<IComponent>();
-        expectedComponents.add( createUniqueComponent() );
-        expectedComponents.add( createUniqueComponent() );
-        expectedComponents.add( createUniqueComponent() );
-        getContainer().addComponents( expectedComponents );
-
-        final List<IComponent> actualComponents = getContainer().removeComponents();
-
-        assertEquals( expectedComponents, actualComponents );
-        assertEquals( 0, getContainer().getComponentCount() );
-        for( final IComponent actualComponent : actualComponents )
-        {
-            assertNull( actualComponent.getContainer() );
-        }
-    }
-
-    /**
-     * Ensures the {@code removeComponents(Point)} method does not fire a
-     * component removed event when a component is absent at the specified
-     * location.
-     */
-    @Test
-    public void testRemoveComponentsFromPoint_Location_ComponentAbsent_DoesNotFireComponentRemovedEvent()
+    public void testRemoveComponents_Location_ComponentAbsent_DoesNotFireComponentRemovedEvent()
     {
         final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
         mocksControl_.replay();
@@ -808,11 +807,11 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeComponents(Point)} method returns an empty
-     * collection when a component is absent at the specified location.
+     * Ensures the {@code removeComponents} method returns an empty collection
+     * when a component is absent at the specified location.
      */
     @Test
-    public void testRemoveComponentsFromPoint_Location_ComponentAbsent_DoesNotRemoveComponents()
+    public void testRemoveComponents_Location_ComponentAbsent_DoesNotRemoveComponents()
     {
         final List<IComponent> components = getContainer().removeComponents( new Point( 0, 0 ) );
 
@@ -821,11 +820,11 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeComponents(Point)} method changes the container
-     * bounds when a component is present at the specified location.
+     * Ensures the {@code removeComponents} method changes the container bounds
+     * when a component is present at the specified location.
      */
     @Test( timeout = 1000 )
-    public void testRemoveComponentsFromPoint_Location_ComponentPresent_ChangesContainerBounds()
+    public void testRemoveComponents_Location_ComponentPresent_ChangesContainerBounds()
     {
         getContainer().setSurfaceDesign( getContainer().getOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
@@ -847,11 +846,11 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeComponents(Point)} method fires a component
-     * removed event when a component is present at the specified location.
+     * Ensures the {@code removeComponents} method fires a component removed
+     * event when a component is present at the specified location.
      */
     @Test
-    public void testRemoveComponentsFromPoint_Location_ComponentPresent_FiresComponentRemovedEvent()
+    public void testRemoveComponents_Location_ComponentPresent_FiresComponentRemovedEvent()
     {
         final List<IComponent> components = Arrays.asList( createUniqueComponent(), createUniqueComponent() );
         getContainer().setLayout( ContainerLayouts.createHorizontalContainerLayout() );
@@ -876,12 +875,12 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeComponents(Point)} method removes the correct
+     * Ensures the {@code removeComponents} method removes the correct
      * components from the container when a component is present at the
      * specified location.
      */
     @Test
-    public void testRemoveComponentsFromPoint_Location_ComponentPresent_RemovesComponents()
+    public void testRemoveComponents_Location_ComponentPresent_RemovesComponents()
     {
         final List<IComponent> components = new ArrayList<IComponent>();
         components.add( createUniqueComponent() );
@@ -902,11 +901,11 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeComponents(Point)} method throws an exception
-     * when passed a {@code null} location.
+     * Ensures the {@code removeComponents} method throws an exception when
+     * passed a {@code null} location.
      */
     @Test( expected = NullPointerException.class )
-    public void testRemoveComponentsFromPoint_Location_Null()
+    public void testRemoveComponents_Location_Null()
     {
         getContainer().removeComponents( null );
     }
