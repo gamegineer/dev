@@ -83,7 +83,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * @return A new component; never {@code null}.
      */
     /* @NonNull */
-    protected final IComponent createUniqueComponent()
+    private IComponent createUniqueComponent()
     {
         return createUniqueComponent( getTableEnvironment() );
     }
@@ -97,14 +97,16 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      *        be {@code null}.
      * 
      * @return A new component; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code tableEnvironment} is {@code null}.
      */
     /* @NonNull */
-    protected abstract IComponent createUniqueComponent(
+    private IComponent createUniqueComponent(
         /* @NonNull */
-        TableEnvironmentType tableEnvironment );
+        final TableEnvironmentType tableEnvironment )
+    {
+        assert tableEnvironment != null;
+
+        return Components.createUniqueComponent( tableEnvironment );
+    }
 
     /**
      * Creates a new container with unique attributes using the fixture table
@@ -113,7 +115,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * @return A new container; never {@code null}.
      */
     /* @NonNull */
-    protected final IContainer createUniqueContainer()
+    private IContainer createUniqueContainer()
     {
         return createUniqueContainer( getTableEnvironment() );
     }
@@ -127,14 +129,16 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      *        be {@code null}.
      * 
      * @return A new container; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code tableEnvironment} is {@code null}.
      */
     /* @NonNull */
-    protected abstract IContainer createUniqueContainer(
+    private IContainer createUniqueContainer(
         /* @NonNull */
-        TableEnvironmentType tableEnvironment );
+        final TableEnvironmentType tableEnvironment )
+    {
+        assert tableEnvironment != null;
+
+        return Components.createUniqueContainer( tableEnvironment );
+    }
 
     /**
      * Fires a component added event for the specified container.

@@ -24,9 +24,7 @@ package org.gamegineer.table.internal.core;
 import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.gamegineer.table.core.AbstractContainerTestCase;
-import org.gamegineer.table.core.Components;
 import org.gamegineer.table.core.IComponent;
-import org.gamegineer.table.core.IContainer;
 
 /**
  * A fixture for testing the {@link org.gamegineer.table.internal.core.CardPile}
@@ -69,26 +67,6 @@ public final class CardPileAsContainerTest
     protected TableEnvironment createTableEnvironment()
     {
         return new TableEnvironment();
-    }
-
-    /*
-     * @see org.gamegineer.table.core.AbstractContainerTestCase#createUniqueComponent(org.gamegineer.table.core.ITableEnvironment)
-     */
-    @Override
-    protected IComponent createUniqueComponent(
-        final TableEnvironment tableEnvironment )
-    {
-        return Components.createUniqueComponent( tableEnvironment );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.AbstractContainerTestCase#createUniqueContainer(org.gamegineer.table.core.ITableEnvironment)
-     */
-    @Override
-    protected IContainer createUniqueContainer(
-        final TableEnvironment tableEnvironment )
-    {
-        return Components.createUniqueContainer( tableEnvironment );
     }
 
     /*
