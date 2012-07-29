@@ -67,14 +67,16 @@ final class NonNlsMessages
      */
     public static String Component_componentSurfaceDesignChanged_unexpectedException;
 
-    /** The memento is for an unknown component type. */
-    public static String Component_fromMemento_unknown;
-
     /** The orientation is illegal. */
     public static String Component_orientation_illegal;
 
     /** The component listener is not registered. */
     public static String Component_removeComponentListener_listener_notRegistered;
+
+    // --- ComponentFactory -------------------------------------------------
+
+    /** The memento is for an unknown component type. */
+    public static String ComponentFactory_createComponent_unknownComponentType;
 
     // --- ComponentSurfaceDesignRegistry -----------------------------------
 

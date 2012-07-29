@@ -162,7 +162,7 @@ public final class TableEnvironment
     {
         assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
 
-        return Component.fromMemento( this, memento );
+        return ComponentFactory.createComponent( this, memento );
     }
 
     /*

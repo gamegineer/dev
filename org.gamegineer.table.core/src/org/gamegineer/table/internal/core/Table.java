@@ -48,7 +48,7 @@ final class Table
     // ======================================================================
 
     /** The name of the memento attribute that stores the tabletop memento. */
-    private static final String TABLETOP_MEMENTO_ATTRIBUTE_NAME = "tabletop"; //$NON-NLS-1$
+    private static final String TABLETOP_MEMENTO_ATTRIBUTE_NAME = "table.tabletop"; //$NON-NLS-1$
 
     /** The path to the tabletop component. */
     private static final ComponentPath TABLETOP_PATH = new ComponentPath( null, 0 );
@@ -133,7 +133,7 @@ final class Table
      *         If {@code memento} is malformed.
      */
     /* @NonNull */
-    static Table fromMemento(
+    private static Table fromMemento(
         /* @NonNull */
         final TableEnvironment tableEnvironment,
         /* @NonNull */

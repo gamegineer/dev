@@ -26,6 +26,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -51,6 +52,21 @@ abstract class Component
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /** The name of the memento attribute that stores the component location. */
+    private static final String LOCATION_MEMENTO_ATTRIBUTE_NAME = "component.location"; //$NON-NLS-1$
+
+    /** The name of the memento attribute that stores the component orientation. */
+    private static final String ORIENTATION_MEMENTO_ATTRIBUTE_NAME = "component.orientation"; //$NON-NLS-1$
+
+    /** The name of the memento attribute that stores the component origin. */
+    private static final String ORIGIN_MEMENTO_ATTRIBUTE_NAME = "component.origin"; //$NON-NLS-1$
+
+    /**
+     * The name of the memento attribute that stores the component surface
+     * designs.
+     */
+    private static final String SURFACE_DESIGNS_MEMENTO_ATTRIBUTE_NAME = "component.surfaceDesigns"; //$NON-NLS-1$
 
     /** The collection of component listeners. */
     private final CopyOnWriteArrayList<IComponentListener> componentListeners_;
@@ -140,6 +156,27 @@ abstract class Component
         tableEnvironment_.addEventNotification( notification );
     }
 
+    /*
+     * @see org.gamegineer.common.core.util.memento.IMementoOriginator#createMemento()
+     */
+    @Override
+    public final Object createMemento()
+    {
+        final Map<String, Object> memento = ComponentFactory.createMemento( this );
+
+        getLock().lock();
+        try
+        {
+            writeMemento( memento );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+
+        return Collections.unmodifiableMap( memento );
+    }
+
     /**
      * Fires a component bounds changed event.
      */
@@ -201,44 +238,6 @@ abstract class Component
                 Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Component_componentSurfaceDesignChanged_unexpectedException, e );
             }
         }
-    }
-
-    /**
-     * Creates a new component from the specified memento.
-     * 
-     * @param tableEnvironment
-     *        The table environment associated with the new component; must not
-     *        be {@code null}.
-     * @param memento
-     *        The memento representing the initial component state; must not be
-     *        {@code null}.
-     * 
-     * @return A new component; never {@code null}.
-     * 
-     * @throws org.gamegineer.common.core.util.memento.MementoException
-     *         If {@code memento} is malformed.
-     */
-    /* @NonNull */
-    static Component fromMemento(
-        /* @NonNull */
-        final TableEnvironment tableEnvironment,
-        /* @NonNull */
-        final Object memento )
-        throws MementoException
-    {
-        assert tableEnvironment != null;
-        assert memento != null;
-
-        if( Card.isMemento( memento ) )
-        {
-            return Card.fromMemento( tableEnvironment, memento );
-        }
-        else if( CardPile.isMemento( memento ) )
-        {
-            return CardPile.fromMemento( tableEnvironment, memento );
-        }
-
-        throw new MementoException( NonNlsMessages.Component_fromMemento_unknown );
     }
 
     /**
@@ -472,6 +471,44 @@ abstract class Component
         return getSupportedOrientations().contains( orientation );
     }
 
+    /**
+     * Reads the state of this object from the specified memento.
+     * 
+     * <p>
+     * This implementation reads the component attributes from the specified
+     * memento. Subclasses may override and must call the superclass
+     * implementation.
+     * </p>
+     * 
+     * @param memento
+     *        The memento; must not be {@code null}.
+     * 
+     * @throws org.gamegineer.common.core.util.memento.MementoException
+     *         If the memento does not represent a valid state for the
+     *         component.
+     */
+    @GuardedBy( "getLock()" )
+    void readMemento(
+        /* @NonNull */
+        final Object memento )
+        throws MementoException
+    {
+        assert memento != null;
+        assert getLock().isHeldByCurrentThread();
+
+        setLocation( MementoUtils.getAttribute( memento, LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class ) );
+        setOrientation( MementoUtils.getAttribute( memento, ORIENTATION_MEMENTO_ATTRIBUTE_NAME, ComponentOrientation.class ) );
+        setOrigin( MementoUtils.getAttribute( memento, ORIGIN_MEMENTO_ATTRIBUTE_NAME, Point.class ) );
+
+        // TODO: consider adding bulk mutator method
+        @SuppressWarnings( "unchecked" )
+        final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = MementoUtils.getAttribute( memento, SURFACE_DESIGNS_MEMENTO_ATTRIBUTE_NAME, Map.class );
+        for( final Map.Entry<ComponentOrientation, ComponentSurfaceDesign> entry : surfaceDesigns.entrySet() )
+        {
+            setSurfaceDesign( entry.getKey(), entry.getValue() );
+        }
+    }
+
     /*
      * @see org.gamegineer.table.core.IComponent#removeComponentListener(org.gamegineer.table.core.IComponentListener)
      */
@@ -496,6 +533,27 @@ abstract class Component
         try
         {
             translate( new Dimension( location.x - location_.x, location.y - location_.y ) );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+    }
+
+    /*
+     * @see org.gamegineer.common.core.util.memento.IMementoOriginator#setMemento(java.lang.Object)
+     */
+    @Override
+    public final void setMemento(
+        final Object memento )
+        throws MementoException
+    {
+        assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
+
+        getLock().lock();
+        try
+        {
+            readMemento( memento );
         }
         finally
         {
@@ -635,5 +693,31 @@ abstract class Component
                 fireComponentBoundsChanged();
             }
         } );
+    }
+
+    /**
+     * Writes the state of this object to the specified memento.
+     * 
+     * <p>
+     * This implementation writes the component attributes to the specified
+     * memento. Subclasses may override and must call the superclass
+     * implementation.
+     * </p>
+     * 
+     * @param memento
+     *        The memento; must not be {@code null}.
+     */
+    @GuardedBy( "getLock()" )
+    void writeMemento(
+        /* @NonNull */
+        final Map<String, Object> memento )
+    {
+        assert memento != null;
+        assert getLock().isHeldByCurrentThread();
+
+        memento.put( LOCATION_MEMENTO_ATTRIBUTE_NAME, new Point( location_ ) );
+        memento.put( ORIENTATION_MEMENTO_ATTRIBUTE_NAME, orientation_ );
+        memento.put( ORIGIN_MEMENTO_ATTRIBUTE_NAME, new Point( origin_ ) );
+        memento.put( SURFACE_DESIGNS_MEMENTO_ATTRIBUTE_NAME, new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>( surfaceDesigns_ ) );
     }
 }

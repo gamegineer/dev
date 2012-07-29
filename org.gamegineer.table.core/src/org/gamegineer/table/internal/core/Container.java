@@ -29,11 +29,13 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ContainerEvent;
@@ -53,6 +55,15 @@ abstract class Container
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /**
+     * The name of the memento attribute that stores the collection of
+     * components in the container.
+     */
+    private static final String COMPONENTS_MEMENTO_ATTRIBUTE_NAME = "container.components"; //$NON-NLS-1$
+
+    /** The name of the memento attribute that stores the container layout. */
+    private static final String LAYOUT_MEMENTO_ATTRIBUTE_NAME = "container.layout"; //$NON-NLS-1$
 
     /**
      * The collection of components in this container ordered from bottom to
@@ -499,6 +510,30 @@ abstract class Container
     }
 
     /*
+     * @see org.gamegineer.table.internal.core.Component#readMemento(java.lang.Object)
+     */
+    @Override
+    final void readMemento(
+        final Object memento )
+        throws MementoException
+    {
+        assert memento != null;
+        assert getLock().isHeldByCurrentThread();
+
+        super.readMemento( memento );
+
+        setLayout( MementoUtils.getAttribute( memento, LAYOUT_MEMENTO_ATTRIBUTE_NAME, IContainerLayout.class ) );
+
+        @SuppressWarnings( "unchecked" )
+        final List<Object> componentMementos = MementoUtils.getAttribute( memento, COMPONENTS_MEMENTO_ATTRIBUTE_NAME, List.class );
+        removeComponents();
+        for( final Object componentMemento : componentMementos )
+        {
+            addComponent( ComponentFactory.createComponent( getTableEnvironment(), componentMemento ) );
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.core.IContainer#removeComponent(org.gamegineer.table.core.IComponent)
      */
     @Override
@@ -737,6 +772,28 @@ abstract class Container
         {
             component.translate( offset );
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.core.Component#writeMemento(java.util.Map)
+     */
+    @Override
+    final void writeMemento(
+        final Map<String, Object> memento )
+    {
+        assert memento != null;
+        assert getLock().isHeldByCurrentThread();
+
+        super.writeMemento( memento );
+
+        final List<Object> componentMementos = new ArrayList<Object>();
+        for( final Component component : components_ )
+        {
+            componentMementos.add( component.createMemento() );
+        }
+        memento.put( COMPONENTS_MEMENTO_ATTRIBUTE_NAME, componentMementos );
+
+        memento.put( LAYOUT_MEMENTO_ATTRIBUTE_NAME, layout_ );
     }
 
 
