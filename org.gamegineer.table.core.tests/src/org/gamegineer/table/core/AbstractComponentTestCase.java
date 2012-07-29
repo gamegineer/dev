@@ -551,7 +551,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
         throws Exception
     {
         final ITable table = tableEnvironment_.createTable();
-        final IContainer container = tableEnvironment_.createCardPile();
+        final IContainer container = Components.createUniqueContainer( tableEnvironment_ );
         table.getTabletop().addComponent( container );
         final IComponent component1 = createComponent( tableEnvironment_ );
         container.addComponent( component1 );
@@ -596,7 +596,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testGetPath_NoAssociatedTable_WithParent()
     {
-        final IContainer container = tableEnvironment_.createCardPile();
+        final IContainer container = Components.createUniqueContainer( tableEnvironment_ );
         container.addComponent( component_ );
 
         assertNull( component_.getTable() );
