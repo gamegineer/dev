@@ -739,8 +739,7 @@ final class TableView
         actionMediator_.bindShouldEnablePredicate( Actions.getHostTableNetworkAction(), isNetworkDisconnectedPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getJoinTableNetworkAction(), isNetworkDisconnectedPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getRemoveAllCardPilesAction(), hasEditableCardPilePredicate );
-        // FIXME: this action should really only be enabled if the editable focused card pile has at least one card
-        actionMediator_.bindShouldEnablePredicate( Actions.getRemoveAllCardsAction(), hasEditableFocusedCardPilePredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getRemoveAllCardsAction(), hasEditableCardPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getRemoveCardAction(), hasEditableCardPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getRemoveCardPileAction(), hasEditableFocusedCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getRequestTableNetworkControlAction(), new IPredicate<Action>()
