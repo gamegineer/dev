@@ -73,6 +73,9 @@ final class NonNlsMessages
     /** The component listener is not registered. */
     public static String Component_removeComponentListener_listener_notRegistered;
 
+    /** The surface designs collection contains a {@code null} surface design. */
+    public static String Component_setSurfaceDesigns_surfaceDesigns_containsNullSurfaceDesign;
+
     // --- ComponentFactory -------------------------------------------------
 
     /** The memento is for an unknown component type. */

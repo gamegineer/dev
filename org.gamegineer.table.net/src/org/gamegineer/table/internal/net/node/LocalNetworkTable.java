@@ -23,17 +23,13 @@ package org.gamegineer.table.internal.net.node;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.locks.Lock;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.ComponentEvent;
-import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentPath;
-import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ContainerEvent;
 import org.gamegineer.table.core.IComponent;
@@ -441,12 +437,7 @@ final class LocalNetworkTable
                 componentPath = component.getPath();
                 if( componentPath != null )
                 {
-                    final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new HashMap<ComponentOrientation, ComponentSurfaceDesign>();
-                    for( final ComponentOrientation orientation : component.getSupportedOrientations() )
-                    {
-                        surfaceDesigns.put( orientation, component.getSurfaceDesign( orientation ) );
-                    }
-                    componentIncrement.setSurfaceDesigns( surfaceDesigns );
+                    componentIncrement.setSurfaceDesigns( component.getSurfaceDesigns() );
                 }
             }
             finally

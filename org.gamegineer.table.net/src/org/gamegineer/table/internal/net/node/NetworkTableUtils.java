@@ -22,13 +22,10 @@
 package org.gamegineer.table.internal.net.node;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.util.Map;
 import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
-import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentPath;
-import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
@@ -130,10 +127,7 @@ public final class NetworkTableUtils
 
         if( componentIncrement.getSurfaceDesigns() != null )
         {
-            for( final Map.Entry<ComponentOrientation, ComponentSurfaceDesign> entry : componentIncrement.getSurfaceDesigns().entrySet() )
-            {
-                component.setSurfaceDesign( entry.getKey(), entry.getValue() );
-            }
+            component.setSurfaceDesigns( componentIncrement.getSurfaceDesigns() );
         }
     }
 

@@ -31,6 +31,11 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.Map;
+import java.util.Set;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase;
@@ -724,6 +729,58 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
+     * Ensures the {@code getSurfaceDesigns} method returns a copy of the
+     * surface designs collection.
+     */
+    @Test
+    public void testGetSurfaceDesigns_ReturnValue_Copy()
+    {
+        final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = component_.getSurfaceDesigns();
+        final Map<ComponentOrientation, ComponentSurfaceDesign> expectedSurfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>( surfaceDesigns );
+
+        surfaceDesigns.put( createIllegalOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+
+        assertEquals( expectedSurfaceDesigns, component_.getSurfaceDesigns() );
+    }
+
+    /**
+     * Ensures the {@code getSurfaceDesigns} method returns a collection whose
+     * keys equal the supported orientations collection.
+     */
+    @Test
+    public void testGetSurfaceDesigns_ReturnValue_Keys_SupportedOrientations()
+    {
+        final Set<ComponentOrientation> expectedValue = new HashSet<ComponentOrientation>( component_.getSupportedOrientations() );
+
+        final Set<ComponentOrientation> actualValue = component_.getSurfaceDesigns().keySet();
+
+        assertEquals( expectedValue, actualValue );
+    }
+
+    /**
+     * Ensures the {@code getSurfaceDesigns} method does not return {@code null}
+     * .
+     */
+    @Test
+    public void testGetSurfaceDesigns_ReturnValue_NonNull()
+    {
+        assertNotNull( component_.getSurfaceDesigns() );
+    }
+
+    /**
+     * Ensures the {@code getSurfaceDesigns} method returns a collection whose
+     * values are not {@code null}.
+     */
+    @Test
+    public void testGetSurfaceDesigns_ReturnValue_Values_NonNull()
+    {
+        for( final ComponentSurfaceDesign surfaceDesign : component_.getSurfaceDesigns().values() )
+        {
+            assertNotNull( surfaceDesign );
+        }
+    }
+
+    /**
      * Ensures the {@code getTableEnvironment} method does not return
      * {@code null}.
      */
@@ -939,5 +996,71 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testSetSurfaceDesign_SurfaceDesign_Null()
     {
         component_.setSurfaceDesign( component_.getOrientation(), null );
+    }
+
+    /**
+     * Ensures the {@code setSurfaceDesigns} method fires a component surface
+     * design changed event for each entry in the surface designs collection.
+     */
+    @Test
+    public void testSetSurfaceDesigns_FiresComponentSurfaceDesignChangedEvent()
+    {
+        final Collection<ComponentOrientation> orientations = component_.getSupportedOrientations();
+        final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>( orientations.size() );
+        for( final ComponentOrientation orientation : orientations )
+        {
+            surfaceDesigns.put( orientation, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+        }
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentSurfaceDesignChanged( EasyMock.notNull( ComponentEvent.class ) );
+        EasyMock.expectLastCall().times( orientations.size() );
+        mocksControl_.replay();
+        component_.addComponentListener( listener );
+
+        component_.setSurfaceDesigns( surfaceDesigns );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code setSurfaceDesigns} method does not throw an exception
+     * when passed an empty surface designs collection.
+     */
+    @Test
+    public void testSetSurfaceDesigns_SurfaceDesigns_Empty()
+    {
+        component_.setSurfaceDesigns( Collections.<ComponentOrientation, ComponentSurfaceDesign>emptyMap() );
+    }
+
+    /**
+     * Ensures the {@code setSurfaceDesigns} method throws an exception when
+     * passed a surface designs collection that contains a {@code null} surface
+     * design.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testSetSurfaceDesigns_SurfaceDesigns_Illegal_ContainsNullSurfaceDesign()
+    {
+        component_.setSurfaceDesigns( Collections.singletonMap( component_.getOrientation(), (ComponentSurfaceDesign)null ) );
+    }
+
+    /**
+     * Ensures the {@code setSurfaceDesigns} method throws an exception when
+     * passed a surface designs collection that contains an unsupported
+     * orientation.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testSetSurfaceDesigns_SurfaceDesigns_Illegal_ContainsUnsupportedOrientation()
+    {
+        component_.setSurfaceDesigns( Collections.singletonMap( createIllegalOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() ) );
+    }
+
+    /**
+     * Ensures the {@code setSurfaceDesigns} method throws an exception when
+     * passed a {@code null} surface designs collection.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testSetSurfaceDesigns_SurfaceDesigns_Null()
+    {
+        component_.setSurfaceDesigns( null );
     }
 }

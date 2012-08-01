@@ -416,6 +416,23 @@ abstract class Component
     }
 
     /*
+     * @see org.gamegineer.table.core.IComponent#getSurfaceDesigns()
+     */
+    @Override
+    public final Map<ComponentOrientation, ComponentSurfaceDesign> getSurfaceDesigns()
+    {
+        getLock().lock();
+        try
+        {
+            return new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>( surfaceDesigns_ );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.core.IComponent#getTable()
      */
     @Override
@@ -499,14 +516,9 @@ abstract class Component
         setLocation( MementoUtils.getAttribute( memento, LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class ) );
         setOrientation( MementoUtils.getAttribute( memento, ORIENTATION_MEMENTO_ATTRIBUTE_NAME, ComponentOrientation.class ) );
         setOrigin( MementoUtils.getAttribute( memento, ORIGIN_MEMENTO_ATTRIBUTE_NAME, Point.class ) );
-
-        // TODO: consider adding bulk mutator method
         @SuppressWarnings( "unchecked" )
         final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = MementoUtils.getAttribute( memento, SURFACE_DESIGNS_MEMENTO_ATTRIBUTE_NAME, Map.class );
-        for( final Map.Entry<ComponentOrientation, ComponentSurfaceDesign> entry : surfaceDesigns.entrySet() )
-        {
-            setSurfaceDesign( entry.getKey(), entry.getValue() );
-        }
+        setSurfaceDesigns( surfaceDesigns );
     }
 
     /*
@@ -660,6 +672,22 @@ abstract class Component
                 fireComponentSurfaceDesignChanged();
             }
         } );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#setSurfaceDesigns(java.util.Map)
+     */
+    @Override
+    public void setSurfaceDesigns(
+        final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns )
+    {
+        assertArgumentNotNull( surfaceDesigns, "surfaceDesigns" ); //$NON-NLS-1$
+
+        for( final Map.Entry<ComponentOrientation, ComponentSurfaceDesign> entry : surfaceDesigns.entrySet() )
+        {
+            assertArgumentLegal( entry.getValue() != null, "surfaceDesigns", NonNlsMessages.Component_setSurfaceDesigns_surfaceDesigns_containsNullSurfaceDesign ); //$NON-NLS-1$
+            setSurfaceDesign( entry.getKey(), entry.getValue() );
+        }
     }
 
     /**

@@ -79,12 +79,9 @@ public final class Assert
             assertEquals( expected.getBounds(), actual.getBounds() );
             assertEquals( expected.getOrientation(), actual.getOrientation() );
             assertEquals( expected.getOrigin(), actual.getOrigin() );
-
+            assertEquals( expected.getPath(), actual.getPath() );
             assertEquals( expected.getSupportedOrientations(), actual.getSupportedOrientations() );
-            for( final ComponentOrientation orientation : expected.getSupportedOrientations() )
-            {
-                assertEquals( expected.getSurfaceDesign( orientation ), actual.getSurfaceDesign( orientation ) );
-            }
+            assertEquals( expected.getSurfaceDesigns(), actual.getSurfaceDesigns() );
 
             if( expected instanceof IContainer )
             {

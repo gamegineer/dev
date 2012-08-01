@@ -25,6 +25,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Collection;
+import java.util.Map;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
 
 /**
@@ -163,6 +164,15 @@ public interface IComponent
         ComponentOrientation orientation );
 
     /**
+     * Gets the collection of surface designs for this component.
+     * 
+     * @return The collection of surface designs for this component; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    public Map<ComponentOrientation, ComponentSurfaceDesign> getSurfaceDesigns();
+
+    /**
      * Gets the table associated with this component.
      * 
      * @return The table associated with this component or {@code null} if this
@@ -271,4 +281,22 @@ public interface IComponent
         ComponentOrientation orientation,
         /* @NonNull */
         ComponentSurfaceDesign surfaceDesign );
+
+    /**
+     * Sets the collection of surface designs for this component.
+     * 
+     * @param surfaceDesigns
+     *        The collection of surface designs; must not be {@code null}. The
+     *        collection may contain a subset of the supported component surface
+     *        designs.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code surfaceDesigns} contains an illegal orientation for
+     *         this component or contains a {@code null} surface design.
+     * @throws java.lang.NullPointerException
+     *         If {@code surfaceDesigns} is {@code null}.
+     */
+    public void setSurfaceDesigns(
+        /* @NonNull */
+        Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns );
 }
