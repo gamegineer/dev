@@ -25,6 +25,7 @@ import java.awt.Point;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.Map;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ComponentOrientation;
@@ -45,7 +46,10 @@ final class Tabletop
     // Fields
     // ======================================================================
 
-    /** The collection of supported component orientations. */
+    /** The default tabletop surface design. */
+    private static final ComponentSurfaceDesign DEFAULT_SURFACE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.Tabletop.DEFAULT_SURFACE_DESIGN" ), Short.MAX_VALUE, Short.MAX_VALUE ); //$NON-NLS-1$
+
+    /** The collection of supported tabletop orientations. */
     private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( TabletopOrientation.values( TabletopOrientation.class ) ) );
 
 
@@ -114,9 +118,9 @@ final class Tabletop
     @Override
     Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns()
     {
-        return Collections.<ComponentOrientation, ComponentSurfaceDesign>singletonMap( //
-            TabletopOrientation.DEFAULT, //
-            new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.Tabletop.DEFAULT_SURFACE_DESIGN" ), Short.MAX_VALUE, Short.MAX_VALUE ) ); //$NON-NLS-1$ );
+        final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>();
+        surfaceDesigns.put( TabletopOrientation.DEFAULT, DEFAULT_SURFACE_DESIGN );
+        return surfaceDesigns;
     }
 
     /*

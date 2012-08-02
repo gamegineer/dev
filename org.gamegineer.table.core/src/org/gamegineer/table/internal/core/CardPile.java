@@ -25,6 +25,7 @@ import java.awt.Point;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.Map;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.CardPileLayouts;
@@ -44,6 +45,9 @@ final class CardPile
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /** The default card pile surface design. */
+    private static final ComponentSurfaceDesign DEFAULT_SURFACE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.CardPile.defaultSurfaceDesign" ), 0, 0 ); //$NON-NLS-1$
 
     /** The collection of supported card pile orientations. */
     private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( CardPileOrientation.values( CardPileOrientation.class ) ) );
@@ -114,9 +118,9 @@ final class CardPile
     @Override
     Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns()
     {
-        return Collections.<ComponentOrientation, ComponentSurfaceDesign>singletonMap( //
-            CardPileOrientation.BASE, //
-            new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.CardPile.DEFAULT_BASE_DESIGN" ), 0, 0 ) ); //$NON-NLS-1$
+        final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>();
+        surfaceDesigns.put( CardPileOrientation.BASE, DEFAULT_SURFACE_DESIGN );
+        return surfaceDesigns;
     }
 
     /*

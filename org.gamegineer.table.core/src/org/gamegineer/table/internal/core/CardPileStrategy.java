@@ -25,7 +25,7 @@ import java.awt.Point;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.Map;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.CardPileLayouts;
@@ -115,7 +115,7 @@ public final class CardPileStrategy
     @Override
     public Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns()
     {
-        final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new HashMap<ComponentOrientation, ComponentSurfaceDesign>();
+        final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>();
         surfaceDesigns.put( CardPileOrientation.BASE, DEFAULT_SURFACE_DESIGN );
         return surfaceDesigns;
     }

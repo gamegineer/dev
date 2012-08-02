@@ -44,6 +44,9 @@ final class Card
     // Fields
     // ======================================================================
 
+    /** The default card surface design. */
+    private static final ComponentSurfaceDesign DEFAULT_SURFACE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.Card.defaultSurfaceDesign" ), 0, 0 ); //$NON-NLS-1$
+
     /** The collection of supported card orientations. */
     private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( CardOrientation.values( CardOrientation.class ) ) );
 
@@ -104,10 +107,9 @@ final class Card
     @Override
     Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns()
     {
-        final ComponentSurfaceDesign defaultSurfaceDesign = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.Card.DEFAULT_SURFACE_DESIGN" ), 0, 0 ); //$NON-NLS-1$
         final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>();
-        surfaceDesigns.put( CardOrientation.BACK, defaultSurfaceDesign );
-        surfaceDesigns.put( CardOrientation.FACE, defaultSurfaceDesign );
+        surfaceDesigns.put( CardOrientation.BACK, DEFAULT_SURFACE_DESIGN );
+        surfaceDesigns.put( CardOrientation.FACE, DEFAULT_SURFACE_DESIGN );
         return surfaceDesigns;
     }
 
