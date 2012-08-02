@@ -26,6 +26,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -41,12 +42,13 @@ import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentListener;
+import org.gamegineer.table.core.IComponentStrategy;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.IComponent}.
  */
 @ThreadSafe
-abstract class Component
+class Component
     implements IComponent
 {
     // ======================================================================
@@ -87,6 +89,9 @@ abstract class Component
     @GuardedBy( "getLock()" )
     private IComponentParent parent_;
 
+    /** The component strategy. */
+    private final IComponentStrategy strategy_;
+
     /**
      * The collection of component surface designs. The key is the component
      * orientation. The value is the component surface design.
@@ -108,22 +113,26 @@ abstract class Component
      * @param tableEnvironment
      *        The table environment associated with the component; must not be
      *        {@code null}.
+     * @param strategy
+     *        The component strategy; must not be {@code null}.
      */
     Component(
         /* @NonNull */
-        final TableEnvironment tableEnvironment )
+        final TableEnvironment tableEnvironment,
+        /* @NonNull */
+        final IComponentStrategy strategy )
     {
         assert tableEnvironment != null;
+        assert strategy != null;
 
         componentListeners_ = new CopyOnWriteArrayList<IComponentListener>();
-        location_ = getDefaultLocation();
-        orientation_ = getDefaultOrientation();
-        origin_ = getDefaultOrigin();
+        location_ = strategy.getDefaultLocation();
+        orientation_ = strategy.getDefaultOrientation();
+        origin_ = strategy.getDefaultOrigin();
         parent_ = null;
-        surfaceDesigns_ = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>( getDefaultSurfaceDesigns() );
+        strategy_ = strategy;
+        surfaceDesigns_ = strategy.getDefaultSurfaceDesigns();
         tableEnvironment_ = tableEnvironment;
-
-        assert surfaceDesigns_.keySet().equals( getDefaultSurfaceDesigns().keySet() );
     }
 
 
@@ -279,41 +288,6 @@ abstract class Component
         }
     }
 
-    /**
-     * Gets the default component location.
-     * 
-     * @return The default component location; never {@code null}.
-     */
-    /* @NonNull */
-    abstract Point getDefaultLocation();
-
-    /**
-     * Gets the default component orientation.
-     * 
-     * @return The default component orientation; never {@code null}.
-     */
-    /* @NonNull */
-    abstract ComponentOrientation getDefaultOrientation();
-
-    /**
-     * Gets the default component origin.
-     * 
-     * @return The default component origin; never {@code null}.
-     */
-    /* @NonNull */
-    abstract Point getDefaultOrigin();
-
-    /**
-     * Gets the default collection of component surface designs.
-     * 
-     * @return The default collection of component surface designs; never
-     *         {@code null}. The keys in the returned collection must be
-     *         identical to the keys in the collection returned from
-     *         {@link #getSupportedOrientations}.
-     */
-    /* @NonNull */
-    abstract Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns();
-
     /*
      * @see org.gamegineer.table.core.IComponent#getLocation()
      */
@@ -394,6 +368,26 @@ abstract class Component
         return getBounds().getSize();
     }
 
+    /**
+     * Gets the component strategy.
+     * 
+     * @return The component strategy; never {@code null}.
+     */
+    /* @NonNull */
+    IComponentStrategy getStrategy()
+    {
+        return strategy_;
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#getSupportedOrientations()
+     */
+    @Override
+    public final Collection<ComponentOrientation> getSupportedOrientations()
+    {
+        return strategy_.getSupportedOrientations();
+    }
+
     /*
      * @see org.gamegineer.table.core.IComponent#getSurfaceDesign(org.gamegineer.table.core.ComponentOrientation)
      */
@@ -458,16 +452,13 @@ abstract class Component
         return tableEnvironment_;
     }
 
-    /**
-     * This implementation always returns {@code false}. Subclasses may override
-     * and are not required to call the superclass implementation.
-     * 
+    /*
      * @see org.gamegineer.table.core.IComponent#isFocusable()
      */
     @Override
-    public boolean isFocusable()
+    public final boolean isFocusable()
     {
-        return false;
+        return strategy_.isFocusable();
     }
 
     /**

@@ -48,22 +48,6 @@ public interface ITableEnvironment
     // ======================================================================
 
     /**
-     * Creates a new card.
-     * 
-     * @return A new card; never {@code null}.
-     */
-    /* @NonNull */
-    public IComponent createCard();
-
-    /**
-     * Creates a new card pile.
-     * 
-     * @return A new card pile; never {@code null}.
-     */
-    /* @NonNull */
-    public IContainer createCardPile();
-
-    /**
      * Creates a new component from the specified memento.
      * 
      * @param memento
@@ -82,6 +66,38 @@ public interface ITableEnvironment
         /* @NonNull */
         Object memento )
         throws MementoException;
+
+    /**
+     * Creates a new component using the specified strategy.
+     * 
+     * @param strategy
+     *        The component strategy; must not be {@code null}.
+     * 
+     * @return A new component; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code strategy} is {@code null}.
+     */
+    /* @NonNull */
+    public IComponent createComponent(
+        /* @NonNull */
+        IComponentStrategy strategy );
+
+    /**
+     * Creates a new container using the specified strategy.
+     * 
+     * @param strategy
+     *        The container strategy; must not be {@code null}.
+     * 
+     * @return A new container; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code strategy} is {@code null}.
+     */
+    /* @NonNull */
+    public IContainer createContainer(
+        /* @NonNull */
+        IContainerStrategy strategy );
 
     /**
      * Creates a new table.

@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
+import org.gamegineer.table.core.ComponentStrategyFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -78,6 +79,6 @@ public final class TableTest
     @Test( expected = AssertionError.class )
     public void testGetChildPath_Component_NotTabletop()
     {
-        table_.getChildPath( new Tabletop( tableEnvironment_ ) ); // FIXME: change to Component once it is no longer abstract
+        table_.getChildPath( new Component( tableEnvironment_, ComponentStrategyFactory.createNullComponentStrategy() ) );
     }
 }

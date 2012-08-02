@@ -1,5 +1,5 @@
 /*
- * CardAsComponentTest.java
+ * ComponentAsComponentTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,30 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 11, 2009 at 9:53:43 PM.
+ * Created on Aug 1, 2012 at 10:08:41 PM.
  */
 
 package org.gamegineer.table.internal.core;
 
 import java.lang.reflect.Method;
 import org.gamegineer.table.core.AbstractComponentTestCase;
+import org.gamegineer.table.core.ComponentStrategyFactory;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.internal.core.Card}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.IComponent} interface.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.core.Component} class to ensure it does
+ * not violate the contract of the {@link org.gamegineer.table.core.IComponent}
+ * interface.
  */
-public final class CardAsComponentTest
-    extends AbstractComponentTestCase<TableEnvironment, Card>
+public final class ComponentAsComponentTest
+    extends AbstractComponentTestCase<TableEnvironment, Component>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardAsComponentTest} class.
+     * Initializes a new instance of the {@code ComponentAsComponentTest} class.
      */
-    public CardAsComponentTest()
+    public ComponentAsComponentTest()
     {
     }
 
@@ -52,10 +54,10 @@ public final class CardAsComponentTest
      * @see org.gamegineer.table.core.AbstractComponentTestCase#createComponent(org.gamegineer.table.core.ITableEnvironment)
      */
     @Override
-    protected Card createComponent(
+    protected Component createComponent(
         final TableEnvironment tableEnvironment )
     {
-        return new Card( tableEnvironment );
+        return new Component( tableEnvironment, ComponentStrategyFactory.createNullComponentStrategy() );
     }
 
     /*
@@ -72,7 +74,7 @@ public final class CardAsComponentTest
      */
     @Override
     protected void fireComponentBoundsChanged(
-        final Card component )
+        final Component component )
     {
         component.fireComponentBoundsChanged();
     }
@@ -80,26 +82,26 @@ public final class CardAsComponentTest
     /**
      * Fires the event associated with the specified {@link Component} method.
      * 
-     * @param card
-     *        The card; must not be {@code null}.
+     * @param component
+     *        The component; must not be {@code null}.
      * @param methodName
      *        The name of the method associated with the event; must not be
      *        {@code null}.
      */
     private static void fireComponentEvent(
         /* @NonNull */
-        final Card card,
+        final Component component,
         /* @NonNull */
         final String methodName )
     {
-        assert card != null;
+        assert component != null;
         assert methodName != null;
 
         try
         {
             final Method method = Component.class.getDeclaredMethod( methodName );
             method.setAccessible( true );
-            method.invoke( card );
+            method.invoke( component );
         }
         catch( final Exception e )
         {
@@ -112,7 +114,7 @@ public final class CardAsComponentTest
      */
     @Override
     protected void fireComponentOrientationChanged(
-        final Card component )
+        final Component component )
     {
         fireComponentEvent( component, "fireComponentOrientationChanged" ); //$NON-NLS-1$
     }
@@ -122,7 +124,7 @@ public final class CardAsComponentTest
      */
     @Override
     protected void fireComponentSurfaceDesignChanged(
-        final Card component )
+        final Component component )
     {
         fireComponentEvent( component, "fireComponentSurfaceDesignChanged" ); //$NON-NLS-1$
     }

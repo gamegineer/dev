@@ -28,7 +28,9 @@ import java.util.concurrent.locks.ReentrantLock;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.IComponentStrategy;
 import org.gamegineer.table.core.IContainer;
+import org.gamegineer.table.core.IContainerStrategy;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableEnvironment;
 
@@ -134,24 +136,6 @@ public final class TableEnvironment
     }
 
     /*
-     * @see org.gamegineer.table.core.ITableEnvironment#createCard()
-     */
-    @Override
-    public IComponent createCard()
-    {
-        return new Card( this );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ITableEnvironment#createCardPile()
-     */
-    @Override
-    public IContainer createCardPile()
-    {
-        return new CardPile( this );
-    }
-
-    /*
      * @see org.gamegineer.table.core.ITableEnvironment#createComponent(java.lang.Object)
      */
     @Override
@@ -162,6 +146,30 @@ public final class TableEnvironment
         assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
 
         return ComponentFactory.createComponent( this, memento );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITableEnvironment#createComponent(org.gamegineer.table.core.IComponentStrategy)
+     */
+    @Override
+    public IComponent createComponent(
+        final IComponentStrategy strategy )
+    {
+        assertArgumentNotNull( strategy, "strategy" ); //$NON-NLS-1$
+
+        return new Component( this, strategy );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITableEnvironment#createContainer(org.gamegineer.table.core.IContainerStrategy)
+     */
+    @Override
+    public IContainer createContainer(
+        final IContainerStrategy strategy )
+    {
+        assertArgumentNotNull( strategy, "strategy" ); //$NON-NLS-1$
+
+        return new Container( this, strategy );
     }
 
     /*

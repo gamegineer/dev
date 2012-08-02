@@ -1,5 +1,5 @@
 /*
- * TabletopAsContainerTest.java
+ * ContainerAsContainerTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jun 28, 2012 at 8:08:19 PM.
+ * Created on Aug 1, 2012 at 10:08:49 PM.
  */
 
 package org.gamegineer.table.internal.core;
@@ -24,24 +24,26 @@ package org.gamegineer.table.internal.core;
 import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.gamegineer.table.core.AbstractContainerTestCase;
+import org.gamegineer.table.core.ComponentStrategyFactory;
 import org.gamegineer.table.core.IComponent;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.internal.core.Tabletop}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.IContainer} interface.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.core.Container} class to ensure it does
+ * not violate the contract of the {@link org.gamegineer.table.core.IContainer}
+ * interface.
  */
-public final class TabletopAsContainerTest
-    extends AbstractContainerTestCase<TableEnvironment, Tabletop>
+public final class ContainerAsContainerTest
+    extends AbstractContainerTestCase<TableEnvironment, Container>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TabletopAsContainerTest} class.
+     * Initializes a new instance of the {@code ContainerAsContainerTest} class.
      */
-    public TabletopAsContainerTest()
+    public ContainerAsContainerTest()
     {
     }
 
@@ -54,10 +56,10 @@ public final class TabletopAsContainerTest
      * @see org.gamegineer.table.core.AbstractComponentTestCase#createComponent(org.gamegineer.table.core.ITableEnvironment)
      */
     @Override
-    protected Tabletop createComponent(
+    protected Container createComponent(
         final TableEnvironment tableEnvironment )
     {
-        return new Tabletop( tableEnvironment );
+        return new Container( tableEnvironment, ComponentStrategyFactory.createNullContainerStrategy() );
     }
 
     /*
@@ -74,7 +76,7 @@ public final class TabletopAsContainerTest
      */
     @Override
     protected void fireComponentAdded(
-        final Tabletop container )
+        final Container container )
     {
         fireContainerEventWithComponentAndInteger( container, "fireComponentAdded" ); //$NON-NLS-1$
     }
@@ -84,7 +86,7 @@ public final class TabletopAsContainerTest
      */
     @Override
     protected void fireComponentBoundsChanged(
-        final Tabletop component )
+        final Container component )
     {
         component.fireComponentBoundsChanged();
     }
@@ -92,26 +94,26 @@ public final class TabletopAsContainerTest
     /**
      * Fires the event associated with the specified {@link Component} method.
      * 
-     * @param tabletop
-     *        The tabletop; must not be {@code null}.
+     * @param container
+     *        The container; must not be {@code null}.
      * @param methodName
      *        The name of the method associated with the event; must not be
      *        {@code null}.
      */
     private static void fireComponentEvent(
         /* @NonNull */
-        final Tabletop tabletop,
+        final Container container,
         /* @NonNull */
         final String methodName )
     {
-        assert tabletop != null;
+        assert container != null;
         assert methodName != null;
 
         try
         {
             final Method method = Component.class.getDeclaredMethod( methodName );
             method.setAccessible( true );
-            method.invoke( tabletop );
+            method.invoke( container );
         }
         catch( final Exception e )
         {
@@ -124,7 +126,7 @@ public final class TabletopAsContainerTest
      */
     @Override
     protected void fireComponentOrientationChanged(
-        final Tabletop component )
+        final Container component )
     {
         fireComponentEvent( component, "fireComponentOrientationChanged" ); //$NON-NLS-1$
     }
@@ -134,7 +136,7 @@ public final class TabletopAsContainerTest
      */
     @Override
     protected void fireComponentRemoved(
-        final Tabletop container )
+        final Container container )
     {
         fireContainerEventWithComponentAndInteger( container, "fireComponentRemoved" ); //$NON-NLS-1$
     }
@@ -144,7 +146,7 @@ public final class TabletopAsContainerTest
      */
     @Override
     protected void fireComponentSurfaceDesignChanged(
-        final Tabletop component )
+        final Container component )
     {
         fireComponentEvent( component, "fireComponentSurfaceDesignChanged" ); //$NON-NLS-1$
     }
@@ -152,26 +154,26 @@ public final class TabletopAsContainerTest
     /**
      * Fires the event associated with the specified {@link Container} method.
      * 
-     * @param tabletop
-     *        The tabletop; must not be {@code null}.
+     * @param container
+     *        The container; must not be {@code null}.
      * @param methodName
      *        The name of the method associated with the event; must not be
      *        {@code null}.
      */
     private static void fireContainerEvent(
         /* @NonNull */
-        final Tabletop tabletop,
+        final Container container,
         /* @NonNull */
         final String methodName )
     {
-        assert tabletop != null;
+        assert container != null;
         assert methodName != null;
 
         try
         {
             final Method method = Container.class.getDeclaredMethod( methodName );
             method.setAccessible( true );
-            method.invoke( tabletop );
+            method.invoke( container );
         }
         catch( final Exception e )
         {
@@ -183,26 +185,26 @@ public final class TabletopAsContainerTest
      * Fires the event associated with the specified {@link Container} method
      * that accepts an {@link IComponent} and an integer.
      * 
-     * @param tabletop
-     *        The tabletop; must not be {@code null}.
+     * @param container
+     *        The container; must not be {@code null}.
      * @param methodName
      *        The name of the method associated with the event; must not be
      *        {@code null}.
      */
     private static void fireContainerEventWithComponentAndInteger(
         /* @NonNull */
-        final Tabletop tabletop,
+        final Container container,
         /* @NonNull */
         final String methodName )
     {
-        assert tabletop != null;
+        assert container != null;
         assert methodName != null;
 
         try
         {
             final Method method = Container.class.getDeclaredMethod( methodName, IComponent.class, Integer.TYPE );
             method.setAccessible( true );
-            method.invoke( tabletop, EasyMock.createMock( IComponent.class ), Integer.valueOf( 0 ) );
+            method.invoke( container, EasyMock.createMock( IComponent.class ), Integer.valueOf( 0 ) );
         }
         catch( final Exception e )
         {
@@ -215,7 +217,7 @@ public final class TabletopAsContainerTest
      */
     @Override
     protected void fireContainerLayoutChanged(
-        final Tabletop container )
+        final Container container )
     {
         fireContainerEvent( container, "fireContainerLayoutChanged" ); //$NON-NLS-1$
     }

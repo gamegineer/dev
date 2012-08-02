@@ -84,61 +84,82 @@ public abstract class AbstractTableEnvironmentTestCase
     }
 
     /**
-     * Ensures the {@code createCard} method returns a card that is associated
-     * with the table environment.
-     */
-    @Test
-    public void testCreateCard_ReturnValue_AssociatedWithTableEnvironment()
-    {
-        final IComponent card = tableEnvironment_.createCard();
-
-        assertNotNull( card );
-        assertEquals( tableEnvironment_, card.getTableEnvironment() );
-    }
-
-    /**
-     * Ensures the {@code createCard} method does not return {@code null}.
-     */
-    @Test
-    public void testCreateCard_ReturnValue_NonNull()
-    {
-        assertNotNull( tableEnvironment_.createCard() );
-    }
-
-    /**
-     * Ensures the {@code createCardPile} method returns a card pile that is
-     * associated with the table environment.
-     */
-    @Test
-    public void testCreateCardPile_ReturnValue_AssociatedWithTableEnvironment()
-    {
-        final IContainer cardPile = tableEnvironment_.createCardPile();
-
-        assertNotNull( cardPile );
-        assertEquals( tableEnvironment_, cardPile.getTableEnvironment() );
-    }
-
-    /**
-     * Ensures the {@code createCardPile} method does not return {@code null}.
-     */
-    @Test
-    public void testCreateCardPile_ReturnValue_NonNull()
-    {
-        assertNotNull( tableEnvironment_.createCardPile() );
-    }
-
-    /**
-     * Ensures the {@code createComponent} method throws an exception when
-     * passed a {@code null} memento.
+     * Ensures the {@code createComponent(Object)} method throws an exception
+     * when passed a {@code null} memento.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateComponent_Memento_Null()
+    public void testCreateComponentFromMemento_Memento_Null()
         throws Exception
     {
-        tableEnvironment_.createComponent( null );
+        tableEnvironment_.createComponent( (Object)null );
+    }
+
+    /**
+     * Ensures the {@code createComponent(IComponentStrategy)} method returns a
+     * component that is associated with the table environment.
+     */
+    @Test
+    public void testCreateComponentFromStrategy_ReturnValue_AssociatedWithTableEnvironment()
+    {
+        final IComponent component = tableEnvironment_.createComponent( ComponentStrategyFactory.createNullComponentStrategy() );
+
+        assertNotNull( component );
+        assertEquals( tableEnvironment_, component.getTableEnvironment() );
+    }
+
+    /**
+     * Ensures the {@code createComponent(IComponentStrategy)} method does not
+     * return {@code null}.
+     */
+    @Test
+    public void testCreateComponentFromStrategy_ReturnValue_NonNull()
+    {
+        assertNotNull( tableEnvironment_.createComponent( ComponentStrategyFactory.createNullComponentStrategy() ) );
+    }
+
+    /**
+     * Ensures the {@code createComponent(IComponentStrategy)} method throws an
+     * exception when passed a {@code null} strategy.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateComponentFromStrategy_Strategy_Null()
+    {
+        tableEnvironment_.createComponent( (IComponentStrategy)null );
+    }
+
+    /**
+     * Ensures the {@code createContainer} method returns a container that is
+     * associated with the table environment.
+     */
+    @Test
+    public void testCreateContainer_ReturnValue_AssociatedWithTableEnvironment()
+    {
+        final IContainer container = tableEnvironment_.createContainer( ComponentStrategyFactory.createNullContainerStrategy() );
+
+        assertNotNull( container );
+        assertEquals( tableEnvironment_, container.getTableEnvironment() );
+    }
+
+    /**
+     * Ensures the {@code createContainer} method does not return {@code null}.
+     */
+    @Test
+    public void testCreateContainer_ReturnValue_NonNull()
+    {
+        assertNotNull( tableEnvironment_.createContainer( ComponentStrategyFactory.createNullContainerStrategy() ) );
+    }
+
+    /**
+     * Ensures the {@code createContainer} method throws an exception when
+     * passed a {@code null} strategy.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateContainer_Strategy_Null()
+    {
+        tableEnvironment_.createContainer( null );
     }
 
     /**

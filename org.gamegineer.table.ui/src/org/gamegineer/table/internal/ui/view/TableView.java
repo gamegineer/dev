@@ -62,6 +62,7 @@ import org.gamegineer.common.ui.wizard.WizardDialog;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.CardPileLayouts;
 import org.gamegineer.table.core.CardPileOrientation;
+import org.gamegineer.table.core.CardStrategyFactory;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.IComponent;
@@ -178,7 +179,7 @@ final class TableView
             assert componentSurfaceDesignRegistry != null;
             final ComponentSurfaceDesign backDesign = componentSurfaceDesignRegistry.getComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.cardSurfaces.back.red" ) ); //$NON-NLS-1$ );
             final ComponentSurfaceDesign faceDesign = componentSurfaceDesignRegistry.getComponentSurfaceDesign( faceDesignId );
-            final IComponent card = model_.getTable().getTableEnvironment().createCard();
+            final IComponent card = createCard();
             card.setSurfaceDesign( CardOrientation.BACK, backDesign );
             card.setSurfaceDesign( CardOrientation.FACE, faceDesign );
             container.addComponent( card );
@@ -193,7 +194,7 @@ final class TableView
         final IComponentSurfaceDesignRegistry componentSurfaceDesignRegistry = Activator.getDefault().getComponentSurfaceDesignRegistry();
         assert componentSurfaceDesignRegistry != null;
         final ComponentSurfaceDesign baseDesign = componentSurfaceDesignRegistry.getComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.cardPileBases.default" ) ); //$NON-NLS-1$
-        final IContainer cardPile = model_.getTable().getTableEnvironment().createCardPile();
+        final IContainer cardPile = createCardPile();
         cardPile.setSurfaceDesign( CardPileOrientation.BASE, baseDesign );
 
         final Point location = getMouseLocation();
@@ -807,6 +808,28 @@ final class TableView
         }
 
         return new Color( 0, 128, 0 );
+    }
+
+    /**
+     * Creates a new card.
+     * 
+     * @return A new card; never {@code null}.
+     */
+    /* @NonNull */
+    private IComponent createCard()
+    {
+        return model_.getTable().getTableEnvironment().createComponent( CardStrategyFactory.createCardStrategy() );
+    }
+
+    /**
+     * Creates a new card pile.
+     * 
+     * @return A new card pile; never {@code null}.
+     */
+    /* @NonNull */
+    private IContainer createCardPile()
+    {
+        return model_.getTable().getTableEnvironment().createContainer( CardStrategyFactory.createCardPileStrategy() );
     }
 
     /**
@@ -1665,7 +1688,7 @@ final class TableView
                 {
                     final Point draggedCardsOrigin = draggedComponents.get( 0 ).getLocation();
                     mobileCardPileOriginOffset_.setSize( draggedCardsOrigin.x - mouseLocation.x, draggedCardsOrigin.y - mouseLocation.y );
-                    mobileCardPile_ = model_.getTable().getTableEnvironment().createCardPile();
+                    mobileCardPile_ = createCardPile();
                     mobileCardPile_.setSurfaceDesign( CardPileOrientation.BASE, sourceCardPile_.getSurfaceDesign( CardPileOrientation.BASE ) );
                     mobileCardPile_.setOrigin( draggedCardsOrigin );
                     mobileCardPile_.setLayout( sourceCardPile_.getLayout() );

@@ -43,12 +43,13 @@ import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.core.IContainerListener;
+import org.gamegineer.table.core.IContainerStrategy;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.IContainer}.
  */
 @ThreadSafe
-abstract class Container
+final class Container
     extends Component
     implements IComponentParent, IContainer
 {
@@ -90,16 +91,20 @@ abstract class Container
      * @param tableEnvironment
      *        The table environment associated with the container; must not be
      *        {@code null}.
+     * @param strategy
+     *        The container strategy; must not be {@code null}.
      */
     Container(
         /* @NonNull */
-        final TableEnvironment tableEnvironment )
+        final TableEnvironment tableEnvironment,
+        /* @NonNull */
+        final IContainerStrategy strategy )
     {
-        super( tableEnvironment );
+        super( tableEnvironment, strategy );
 
         components_ = new ArrayList<Component>();
         containerListeners_ = new CopyOnWriteArrayList<IContainerListener>();
-        layout_ = getDefaultLayout();
+        layout_ = strategy.getDefaultLayout();
     }
 
 
@@ -111,7 +116,7 @@ abstract class Container
      * @see org.gamegineer.table.core.IContainer#addComponent(org.gamegineer.table.core.IComponent)
      */
     @Override
-    public final void addComponent(
+    public void addComponent(
         final IComponent component )
     {
         assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
@@ -123,7 +128,7 @@ abstract class Container
      * @see org.gamegineer.table.core.IContainer#addComponents(java.util.List)
      */
     @Override
-    public final void addComponents(
+    public void addComponents(
         final List<IComponent> components )
     {
         assertArgumentNotNull( components, "components" ); //$NON-NLS-1$
@@ -190,7 +195,7 @@ abstract class Container
      * @see org.gamegineer.table.core.IContainer#addContainerListener(org.gamegineer.table.core.IContainerListener)
      */
     @Override
-    public final void addContainerListener(
+    public void addContainerListener(
         final IContainerListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
@@ -284,7 +289,7 @@ abstract class Container
      * @see org.gamegineer.table.internal.core.Component#getBounds()
      */
     @Override
-    public final Rectangle getBounds()
+    public Rectangle getBounds()
     {
         getLock().lock();
         try
@@ -310,7 +315,7 @@ abstract class Container
      */
     @GuardedBy( "getLock()" )
     @Override
-    public final ComponentPath getChildPath(
+    public ComponentPath getChildPath(
         final Component component )
     {
         assert component != null;
@@ -332,7 +337,7 @@ abstract class Container
      * @see org.gamegineer.table.core.IContainer#getComponent(int)
      */
     @Override
-    public final Component getComponent(
+    public Component getComponent(
         final int index )
     {
         getLock().lock();
@@ -364,7 +369,7 @@ abstract class Container
      */
     @GuardedBy( "getLock()" )
     /* @Nullable */
-    final IComponent getComponent(
+    IComponent getComponent(
         /* @NonNull */
         final Point location )
     {
@@ -404,7 +409,7 @@ abstract class Container
      */
     @GuardedBy( "getLock()" )
     /* @NonNull */
-    final Component getComponent(
+    Component getComponent(
         /* @NonNull */
         final List<ComponentPath> paths )
     {
@@ -427,7 +432,7 @@ abstract class Container
      * @see org.gamegineer.table.core.IContainer#getComponentCount()
      */
     @Override
-    public final int getComponentCount()
+    public int getComponentCount()
     {
         getLock().lock();
         try
@@ -471,7 +476,7 @@ abstract class Container
      * @see org.gamegineer.table.core.IContainer#getComponents()
      */
     @Override
-    public final List<IComponent> getComponents()
+    public List<IComponent> getComponents()
     {
         getLock().lock();
         try
@@ -484,19 +489,11 @@ abstract class Container
         }
     }
 
-    /**
-     * Gets the default container layout.
-     * 
-     * @return The default container layout; never {@code null}.
-     */
-    /* @NonNull */
-    abstract IContainerLayout getDefaultLayout();
-
     /*
      * @see org.gamegineer.table.core.IContainer#getLayout()
      */
     @Override
-    public final IContainerLayout getLayout()
+    public IContainerLayout getLayout()
     {
         getLock().lock();
         try
@@ -510,10 +507,19 @@ abstract class Container
     }
 
     /*
+     * @see org.gamegineer.table.internal.core.Component#getStrategy()
+     */
+    @Override
+    IContainerStrategy getStrategy()
+    {
+        return (IContainerStrategy)super.getStrategy();
+    }
+
+    /*
      * @see org.gamegineer.table.internal.core.Component#readMemento(java.lang.Object)
      */
     @Override
-    final void readMemento(
+    void readMemento(
         final Object memento )
         throws MementoException
     {
@@ -537,7 +543,7 @@ abstract class Container
      * @see org.gamegineer.table.core.IContainer#removeAllComponents()
      */
     @Override
-    public final List<IComponent> removeAllComponents()
+    public List<IComponent> removeAllComponents()
     {
         return removeComponents( new ComponentRangeStrategy() );
     }
@@ -546,7 +552,7 @@ abstract class Container
      * @see org.gamegineer.table.core.IContainer#removeComponent(org.gamegineer.table.core.IComponent)
      */
     @Override
-    public final void removeComponent(
+    public void removeComponent(
         final IComponent component )
     {
         assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
@@ -584,7 +590,7 @@ abstract class Container
      * @see org.gamegineer.table.core.IContainer#removeComponents(java.awt.Point)
      */
     @Override
-    public final List<IComponent> removeComponents(
+    public List<IComponent> removeComponents(
         final Point location )
     {
         assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
@@ -678,7 +684,7 @@ abstract class Container
      * @see org.gamegineer.table.core.IContainer#removeContainerListener(org.gamegineer.table.core.IContainerListener)
      */
     @Override
-    public final void removeContainerListener(
+    public void removeContainerListener(
         final IContainerListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
@@ -689,7 +695,7 @@ abstract class Container
      * @see org.gamegineer.table.core.IContainer#removeTopComponent()
      */
     @Override
-    public final IComponent removeTopComponent()
+    public IComponent removeTopComponent()
     {
         final ComponentRangeStrategy componentRangeStrategy = new ComponentRangeStrategy()
         {
@@ -709,7 +715,7 @@ abstract class Container
      * @see org.gamegineer.table.core.IContainer#setLayout(org.gamegineer.table.core.IContainerLayout)
      */
     @Override
-    public final void setLayout(
+    public void setLayout(
         final IContainerLayout layout )
     {
         assertArgumentNotNull( layout, "layout" ); //$NON-NLS-1$
@@ -760,7 +766,7 @@ abstract class Container
      * @see org.gamegineer.table.internal.core.Component#translate(java.awt.Dimension)
      */
     @Override
-    final void translate(
+    void translate(
         final Dimension offset )
     {
         assert offset != null;
@@ -778,7 +784,7 @@ abstract class Container
      * @see org.gamegineer.table.internal.core.Component#writeMemento(java.util.Map)
      */
     @Override
-    final void writeMemento(
+    void writeMemento(
         final Map<String, Object> memento )
     {
         assert memento != null;

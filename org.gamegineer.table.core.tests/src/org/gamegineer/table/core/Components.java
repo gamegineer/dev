@@ -63,7 +63,7 @@ public final class Components
         /* @NonNull */
         final ITableEnvironment tableEnvironment )
     {
-        final IComponent component = tableEnvironment.createCard();
+        final IComponent component = tableEnvironment.createComponent( ComponentStrategyFactory.createNullComponentStrategy() );
         setUniqueSurfaceDesigns( component );
         return component;
     }
@@ -86,7 +86,7 @@ public final class Components
         /* @NonNull */
         final ITableEnvironment tableEnvironment )
     {
-        final IContainer container = tableEnvironment.createCardPile();
+        final IContainer container = tableEnvironment.createContainer( ComponentStrategyFactory.createNullContainerStrategy() );
         setUniqueSurfaceDesigns( container );
         return container;
     }

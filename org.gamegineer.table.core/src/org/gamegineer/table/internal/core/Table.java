@@ -57,7 +57,7 @@ final class Table
     private final TableEnvironment tableEnvironment_;
 
     /** The tabletop. */
-    private final Tabletop tabletop_;
+    private final Container tabletop_;
 
 
     // ======================================================================
@@ -77,7 +77,7 @@ final class Table
         assert tableEnvironment != null;
 
         tableEnvironment_ = tableEnvironment;
-        tabletop_ = new Tabletop( tableEnvironment );
+        tabletop_ = new Container( tableEnvironment, TabletopStrategy.INSTANCE );
 
         getLock().lock();
         try

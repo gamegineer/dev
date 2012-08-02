@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.Map;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
+import org.gamegineer.table.core.IComponentStrategy;
+import org.gamegineer.table.core.IContainerStrategy;
 
 /**
  * A factory for creating table components.
@@ -38,6 +40,12 @@ final class ComponentFactory
 
     /** The name of the memento attribute that stores the component class name. */
     private static final String CLASS_NAME_MEMENTO_ATTRIBUTE_NAME = "componentFactory.className"; //$NON-NLS-1$
+
+    /**
+     * The name of the memento attribute that stores the component strategy
+     * class name.
+     */
+    private static final String STRATEGY_CLASS_NAME_MEMENTO_ATTRIBUTE_NAME = "componentFactory.strategyClassName"; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -81,29 +89,102 @@ final class ComponentFactory
         assert tableEnvironment != null;
         assert memento != null;
 
-        final Component component;
-
-        final String className = MementoUtils.getAttribute( memento, CLASS_NAME_MEMENTO_ATTRIBUTE_NAME, String.class );
-        if( className.equals( Card.class.getName() ) )
-        {
-            component = new Card( tableEnvironment );
-        }
-        else if( className.equals( CardPile.class.getName() ) )
-        {
-            component = new CardPile( tableEnvironment );
-        }
-        else if( className.equals( Tabletop.class.getName() ) )
-        {
-            component = new Tabletop( tableEnvironment );
-        }
-        else
-        {
-            throw new MementoException( NonNlsMessages.ComponentFactory_createComponent_unknownComponentType );
-        }
-
+        final IComponentStrategy strategy = createComponentStrategy( MementoUtils.getAttribute( memento, STRATEGY_CLASS_NAME_MEMENTO_ATTRIBUTE_NAME, String.class ) );
+        final Component component = createComponent( MementoUtils.getAttribute( memento, CLASS_NAME_MEMENTO_ATTRIBUTE_NAME, String.class ), tableEnvironment, strategy );
         component.setMemento( memento );
-
         return component;
+    }
+
+    /**
+     * Creates a component of the specified class for the specified table
+     * environment using the specified component strategy.
+     * 
+     * @param className
+     *        The component class name; must not be {@code null}.
+     * @param tableEnvironment
+     *        The table environment; must not be {@code null}.
+     * @param strategy
+     *        The component strategy; must not be {@code null}.
+     * 
+     * @return A new component; never {@code null}.
+     * 
+     * @throws org.gamegineer.common.core.util.memento.MementoException
+     *         If the component cannot be created.
+     */
+    /* @NonNull */
+    private static Component createComponent(
+        /* @NonNull */
+        final String className,
+        /* @NonNull */
+        final TableEnvironment tableEnvironment,
+        /* @NonNull */
+        final IComponentStrategy strategy )
+        throws MementoException
+    {
+        assert className != null;
+        assert tableEnvironment != null;
+        assert strategy != null;
+
+        if( className.equals( Component.class.getName() ) )
+        {
+            return new Component( tableEnvironment, strategy );
+        }
+        else if( className.equals( Container.class.getName() ) )
+        {
+            if( strategy instanceof IContainerStrategy )
+            {
+                return new Container( tableEnvironment, (IContainerStrategy)strategy );
+            }
+
+            throw new MementoException( NonNlsMessages.ComponentFactory_createComponent_illegalComponentStrategy );
+        }
+
+        throw new MementoException( NonNlsMessages.ComponentFactory_createComponent_unknownComponentType );
+    }
+
+    /**
+     * Creates a component strategy of the specified class.
+     * 
+     * @param className
+     *        The component strategy class name; must not be {@code null}.
+     * 
+     * @return A new component strategy; never {@code null}.
+     * 
+     * @throws org.gamegineer.common.core.util.memento.MementoException
+     *         If the component strategy cannot be created.
+     */
+    /* @NonNull */
+    private static IComponentStrategy createComponentStrategy(
+        /* @NonNull */
+        final String className )
+        throws MementoException
+    {
+        assert className != null;
+
+        // FIXME: use the service registry to lookup strategy classes by their unique identifier
+
+        if( className.equals( CardStrategy.class.getName() ) )
+        {
+            return CardStrategy.INSTANCE;
+        }
+        else if( className.equals( CardPileStrategy.class.getName() ) )
+        {
+            return CardPileStrategy.INSTANCE;
+        }
+        else if( className.equals( TabletopStrategy.class.getName() ) )
+        {
+            return TabletopStrategy.INSTANCE;
+        }
+        else if( className.equals( NullComponentStrategy.class.getName() ) )
+        {
+            return new NullComponentStrategy();
+        }
+        else if( className.equals( NullContainerStrategy.class.getName() ) )
+        {
+            return new NullContainerStrategy();
+        }
+
+        throw new MementoException( NonNlsMessages.ComponentFactory_createComponentStrategy_unknownComponentStrategyType );
     }
 
     /**
@@ -124,6 +205,7 @@ final class ComponentFactory
 
         final Map<String, Object> memento = new HashMap<String, Object>();
         memento.put( CLASS_NAME_MEMENTO_ATTRIBUTE_NAME, component.getClass().getName() );
+        memento.put( STRATEGY_CLASS_NAME_MEMENTO_ATTRIBUTE_NAME, component.getStrategy().getClass().getName() );
         return memento;
     }
 }

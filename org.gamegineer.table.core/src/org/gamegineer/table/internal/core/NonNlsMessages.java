@@ -78,8 +78,17 @@ final class NonNlsMessages
 
     // --- ComponentFactory -------------------------------------------------
 
-    /** The memento is for an unknown component type. */
+    /**
+     * The memento specifies an illegal component strategy for the specified
+     * component type.
+     */
+    public static String ComponentFactory_createComponent_illegalComponentStrategy;
+
+    /** The memento specifies an unknown component type. */
     public static String ComponentFactory_createComponent_unknownComponentType;
+
+    /** The memento specifies an unknown component strategy type. */
+    public static String ComponentFactory_createComponentStrategy_unknownComponentStrategyType;
 
     // --- ComponentSurfaceDesignRegistry -----------------------------------
 

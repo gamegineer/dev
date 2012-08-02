@@ -25,6 +25,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentPath;
+import org.gamegineer.table.core.ComponentStrategyFactory;
 import org.gamegineer.table.core.ComponentSurfaceDesigns;
 import org.gamegineer.table.core.ITable;
 import org.junit.Before;
@@ -72,7 +73,7 @@ public final class ContainerTest
     /* @NonNull */
     private Component createUniqueComponent()
     {
-        final Component component = new Card( tableEnvironment_ ); // FIXME: change to Component once it is no longer abstract
+        final Component component = new Component( tableEnvironment_, ComponentStrategyFactory.createNullComponentStrategy() );
         for( final ComponentOrientation orientation : component.getSupportedOrientations() )
         {
             component.setSurfaceDesign( orientation, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
@@ -92,7 +93,7 @@ public final class ContainerTest
         throws Exception
     {
         tableEnvironment_ = new TableEnvironment();
-        container_ = new CardPile( tableEnvironment_ ); // FIXME: change to Container once it is no longer abstract
+        container_ = new Container( tableEnvironment_, ComponentStrategyFactory.createNullContainerStrategy() );
     }
 
     /**
