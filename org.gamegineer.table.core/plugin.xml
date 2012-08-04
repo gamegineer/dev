@@ -3,6 +3,10 @@
 <plugin>
 
     <extension-point
+            id="componentStrategies"
+            name="%extensionPoint.componentStrategies.name"
+            schema="schema/componentStrategies.exsd" />
+    <extension-point
             id="componentSurfaceDesigns"
             name="%extensionPoint.componentSurfaceDesigns.name"
             schema="schema/componentSurfaceDesigns.exsd" />

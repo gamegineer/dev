@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.gamegineer.table.core" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="org.gamegineer.table.core" id="componentStrategies" name="Component Strategies"/>
+      </appinfo>
+      <documentation>
+         This extension point is used to register component strategy extensions.  Game tables use this extension point to discover the available component strategies installed on the platform.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="componentStrategy" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the fully-qualified identifier of the target extension point
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  an optional identifier of the extension instance
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  an optional name of the extension instance
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="componentStrategy">
+      <annotation>
+         <documentation>
+            an element that will be used to create a component strategy
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the unique identifier of the component strategy
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="className" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the fully-qualified name of the component strategy class
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.gamegineer.table.core.IComponentStrategy"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         0.13.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         The following is an example of a component strategy extension definition:
+
+&lt;pre&gt;
+    &lt;extension point=&quot;org.gamegineer.table.core.componentStrategies&quot;&gt;
+        &lt;componentStrategy
+                id=&quot;org.gamegineer.table.internal.core.CardStrategy&quot;
+                className=&quot;org.gamegineer.table.internal.core.CardStrategy&quot; /&gt;
+    &lt;/extension&gt;
+&lt;/pre&gt;
+      </documentation>
+   </annotation>
+
+
+   <annotation>
+      <appinfo>
+         <meta.section type="implementation"/>
+      </appinfo>
+      <documentation>
+         The platform does not supply any component strategies.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="copyright"/>
+      </appinfo>
+      <documentation>
+         Copyright 2008-2012 Gamegineer contributors and others.  All rights reserved.
+      </documentation>
+   </annotation>
+
+</schema>

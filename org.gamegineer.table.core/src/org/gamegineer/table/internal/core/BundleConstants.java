@@ -33,11 +33,17 @@ public final class BundleConstants
     // Fields
     // ======================================================================
 
+    /** The simple identifier of the component strategies extension point. */
+    public static final String COMPONENT_STRATEGIES_EXTENSION_POINT_SIMPLE_ID = "componentStrategies"; //$NON-NLS-1$
+
     /** The simple identifier of the component surface designs extension point. */
     public static final String COMPONENT_SURFACE_DESIGNS_EXTENSION_POINT_SIMPLE_ID = "componentSurfaceDesigns"; //$NON-NLS-1$
 
     /** The symbolic name of the bundle. */
     public static final String SYMBOLIC_NAME = "org.gamegineer.table.core"; //$NON-NLS-1$
+
+    /** The unique identifier of the component strategies extension point. */
+    public static final String COMPONENT_STRATEGIES_EXTENSION_POINT_UNIQUE_ID = SYMBOLIC_NAME + "." + COMPONENT_STRATEGIES_EXTENSION_POINT_SIMPLE_ID; //$NON-NLS-1$
 
     /** The unique identifier of the component surface designs extension point. */
     public static final String COMPONENT_SURFACE_DESIGNS_EXTENSION_POINT_UNIQUE_ID = SYMBOLIC_NAME + "." + COMPONENT_SURFACE_DESIGNS_EXTENSION_POINT_SIMPLE_ID; //$NON-NLS-1$

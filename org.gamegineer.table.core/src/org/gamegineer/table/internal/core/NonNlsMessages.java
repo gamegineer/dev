@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.core;
 
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
+import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 
 /**
@@ -89,6 +90,40 @@ final class NonNlsMessages
 
     /** The memento specifies an unknown component strategy type. */
     public static String ComponentFactory_createComponentStrategy_unknownComponentStrategyType;
+
+    // --- ComponentStrategyRegistry ----------------------------------------
+
+    /** A component strategy is already registered for the specified identifier. */
+    public static String ComponentStrategyRegistry_registerComponentStrategy_componentStrategy_registered;
+
+    /** The component strategy is not registered for the specified identifier. */
+    public static String ComponentStrategyRegistry_unregisterComponentStrategy_componentStrategy_unregistered;
+
+    // --- ComponentStrategyRegistryExtensionPointAdapter -------------------
+
+    /** The component strategy registry service is already bound. */
+    public static String ComponentStrategyRegistryExtensionPointAdapter_bindComponentStrategyRegistry_bound;
+
+    /** The extension registry service is already bound. */
+    public static String ComponentStrategyRegistryExtensionPointAdapter_bindExtensionRegistry_bound;
+
+    /**
+     * An error occurred while creating the component strategy of a component
+     * strategy configuration element.
+     */
+    public static String ComponentStrategyRegistryExtensionPointAdapter_createComponentStrategyRegistration_createComponentStrategyError;
+
+    /**
+     * An error occurred while parsing the component strategy configuration
+     * element.
+     */
+    public static String ComponentStrategyRegistryExtensionPointAdapter_registerComponentStrategy_parseError;
+
+    /** The component strategy registry service is not bound. */
+    public static String ComponentStrategyRegistryExtensionPointAdapter_unbindComponentStrategyRegistry_notBound;
+
+    /** The extension registry service is not bound. */
+    public static String ComponentStrategyRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound;
 
     // --- ComponentSurfaceDesignRegistry -----------------------------------
 
@@ -245,6 +280,64 @@ final class NonNlsMessages
     // ======================================================================
     // Methods
     // ======================================================================
+
+    // --- ComponentStrategyRegistry ----------------------------------------
+
+    /**
+     * Gets the formatted message indicating a component strategy is already
+     * registered for the specified identifier.
+     * 
+     * @param componentStrategyId
+     *        The component strategy identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating a component strategy is already
+     *         registered for the specified identifier; never {@code null}.
+     */
+    /* @NonNull */
+    static String ComponentStrategyRegistry_registerComponentStrategy_componentStrategy_registered(
+        /* @NonNull */
+        final ComponentStrategyId componentStrategyId )
+    {
+        return bind( ComponentStrategyRegistry_registerComponentStrategy_componentStrategy_registered, componentStrategyId );
+    }
+
+    /**
+     * Gets the formatted message indicating the component strategy is not
+     * registered for the specified identifier.
+     * 
+     * @param componentStrategyId
+     *        The component strategy identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the component strategy is not
+     *         registered for the specified identifier; never {@code null}.
+     */
+    /* @NonNull */
+    static String ComponentStrategyRegistry_unregisterComponentStrategy_componentStrategy_unregistered(
+        /* @NonNull */
+        final ComponentStrategyId componentStrategyId )
+    {
+        return bind( ComponentStrategyRegistry_unregisterComponentStrategy_componentStrategy_unregistered, componentStrategyId );
+    }
+
+    // --- ComponentStrategyRegistryExtensionPointAdapter -------------------
+
+    /**
+     * Gets the formatted message indicating an error occurred while parsing the
+     * component strategy configuration element.
+     * 
+     * @param componentStrategyId
+     *        The component strategy identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating an error occurred while parsing
+     *         the component strategy configuration element; never {@code null}.
+     */
+    /* @NonNull */
+    static String ComponentStrategyRegistryExtensionPointAdapter_registerComponentStrategy_parseError(
+        /* @NonNull */
+        final String componentStrategyId )
+    {
+        return bind( ComponentStrategyRegistryExtensionPointAdapter_registerComponentStrategy_parseError, componentStrategyId );
+    }
 
     // --- ComponentSurfaceDesignRegistry -----------------------------------
 
