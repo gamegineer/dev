@@ -29,6 +29,7 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.ComponentOrientation;
+import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.IContainerLayout;
@@ -49,6 +50,9 @@ public final class TabletopStrategy
 
     /** The default tabletop surface design. */
     private static final ComponentSurfaceDesign DEFAULT_SURFACE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.TabletopStrategy.defaultSurfaceDesign" ), Short.MAX_VALUE, Short.MAX_VALUE ); //$NON-NLS-1$
+
+    /** The strategy identifier. */
+    private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.table.internal.core.TabletopStrategy" ); //$NON-NLS-1$
 
     /** The singleton instance of this class. */
     public static final TabletopStrategy INSTANCE = new TabletopStrategy();
@@ -118,6 +122,15 @@ public final class TabletopStrategy
         final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>();
         surfaceDesigns.put( TabletopOrientation.DEFAULT, DEFAULT_SURFACE_DESIGN );
         return surfaceDesigns;
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponentStrategy#getId()
+     */
+    @Override
+    public ComponentStrategyId getId()
+    {
+        return ID;
     }
 
     /*

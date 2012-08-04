@@ -31,6 +31,7 @@ import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.CardPileLayouts;
 import org.gamegineer.table.core.CardPileOrientation;
 import org.gamegineer.table.core.ComponentOrientation;
+import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.IContainerLayout;
@@ -49,6 +50,9 @@ public final class CardPileStrategy
 
     /** The default card pile surface design. */
     private static final ComponentSurfaceDesign DEFAULT_SURFACE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.CardPileStrategy.defaultSurfaceDesign" ), 71, 96 ); //$NON-NLS-1$
+
+    /** The strategy identifier. */
+    private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.table.internal.core.CardPileStrategy" ); //$NON-NLS-1$
 
     /** The singleton instance of this class. */
     public static final CardPileStrategy INSTANCE = new CardPileStrategy();
@@ -118,6 +122,15 @@ public final class CardPileStrategy
         final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>();
         surfaceDesigns.put( CardPileOrientation.BASE, DEFAULT_SURFACE_DESIGN );
         return surfaceDesigns;
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponentStrategy#getId()
+     */
+    @Override
+    public ComponentStrategyId getId()
+    {
+        return ID;
     }
 
     /*

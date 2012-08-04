@@ -72,6 +72,14 @@ public interface IComponentStrategy
     public Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns();
 
     /**
+     * Gets the component strategy identifier.
+     * 
+     * @return The component strategy identifier; never {@code null}.
+     */
+    /* @NonNull */
+    public ComponentStrategyId getId();
+
+    /**
      * Gets an immutable view of the collection of supported orientations for
      * the component.
      * 

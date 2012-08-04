@@ -30,6 +30,7 @@ import java.util.Map;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ComponentOrientation;
+import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.IComponentStrategy;
@@ -47,6 +48,9 @@ public final class CardStrategy
 
     /** The default card surface design. */
     private static final ComponentSurfaceDesign DEFAULT_SURFACE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.CardStrategy.defaultSurfaceDesign" ), 71, 96 ); //$NON-NLS-1$
+
+    /** The strategy identifier. */
+    private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.table.internal.core.CardStrategy" ); //$NON-NLS-1$
 
     /** The singleton instance of this class. */
     public static final CardStrategy INSTANCE = new CardStrategy();
@@ -108,6 +112,15 @@ public final class CardStrategy
         surfaceDesigns.put( CardOrientation.BACK, DEFAULT_SURFACE_DESIGN );
         surfaceDesigns.put( CardOrientation.FACE, DEFAULT_SURFACE_DESIGN );
         return surfaceDesigns;
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponentStrategy#getId()
+     */
+    @Override
+    public ComponentStrategyId getId()
+    {
+        return ID;
     }
 
     /*

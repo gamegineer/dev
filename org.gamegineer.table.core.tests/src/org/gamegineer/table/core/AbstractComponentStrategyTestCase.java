@@ -239,6 +239,15 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     }
 
     /**
+     * Ensures the {@code getId} method does not return {@code null}.
+     */
+    @Test
+    public void testGetId_ReturnValue_NonNull()
+    {
+        assertNotNull( componentStrategy_.getId() );
+    }
+
+    /**
      * Ensures the {@code getSupportedOrientations} method returns an immutable
      * collection.
      */

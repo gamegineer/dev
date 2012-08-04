@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.ComponentOrientation;
+import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.IComponentStrategy;
@@ -46,6 +47,9 @@ public class NullComponentStrategy
 
     /** The default component surface design. */
     private static final ComponentSurfaceDesign DEFAULT_SURFACE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.NullComponentStrategy.defaultSurfaceDesign" ), 1, 1 ); //$NON-NLS-1$
+
+    /** The strategy identifier. */
+    private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.table.internal.core.NullComponentStrategy" ); //$NON-NLS-1$
 
     /** The collection of supported component orientations. */
     private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( NullOrientation.values( NullOrientation.class ) ) );
@@ -103,6 +107,15 @@ public class NullComponentStrategy
         final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new HashMap<ComponentOrientation, ComponentSurfaceDesign>();
         surfaceDesigns.put( NullOrientation.DEFAULT, DEFAULT_SURFACE_DESIGN );
         return surfaceDesigns;
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponentStrategy#getId()
+     */
+    @Override
+    public ComponentStrategyId getId()
+    {
+        return ID;
     }
 
     /*
