@@ -88,8 +88,19 @@ final class NonNlsMessages
     /** The memento specifies an unknown component type. */
     public static String ComponentFactory_createComponent_unknownComponentType;
 
-    /** The memento specifies an unknown component strategy type. */
-    public static String ComponentFactory_createComponentStrategy_unknownComponentStrategyType;
+    /** The component strategy registry is not available. */
+    public static String ComponentFactory_createComponentStrategy_componentStrategyRegistryNotAvailable;
+
+    /** The memento specifies an unknown component strategy identifier. */
+    public static String ComponentFactory_createComponentStrategy_unknownComponentStrategyId;
+
+    // --- ComponentStrategyExtensionFactory --------------------------------
+
+    /** The component strategy identifier is unknown. */
+    public static String ComponentStrategyExtensionFactory_create_unknownId;
+
+    /** The initialization data type was not expected. */
+    public static String ComponentStrategyExtensionFactory_setInitializationData_unexpectedData;
 
     // --- ComponentStrategyRegistry ----------------------------------------
 
@@ -280,6 +291,46 @@ final class NonNlsMessages
     // ======================================================================
     // Methods
     // ======================================================================
+
+    // --- ComponentFactory -------------------------------------------------
+
+    /**
+     * Gets the formatted message indicating the memento specifies an unknown
+     * component strategy identifier.
+     * 
+     * @param componentStrategyId
+     *        The component strategy identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the memento specifies an unknown
+     *         component strategy identifier; never {@code null}.
+     */
+    /* @NonNull */
+    static String ComponentFactory_createComponentStrategy_unknownComponentStrategyId(
+        /* @NonNull */
+        final ComponentStrategyId componentStrategyId )
+    {
+        return bind( ComponentFactory_createComponentStrategy_unknownComponentStrategyId, componentStrategyId );
+    }
+
+    // --- ComponentStrategyExtensionFactory --------------------------------
+
+    /**
+     * Gets the formatted message indicating the component strategy identifier
+     * is unknown.
+     * 
+     * @param componentStrategyId
+     *        The component strategy identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the component strategy
+     *         identifier is unknown; never {@code null}.
+     */
+    /* @NonNull */
+    static String ComponentStrategyExtensionFactory_create_unknownId(
+        /* @NonNull */
+        final ComponentStrategyId componentStrategyId )
+    {
+        return bind( ComponentStrategyExtensionFactory_create_unknownId, componentStrategyId );
+    }
 
     // --- ComponentStrategyRegistry ----------------------------------------
 

@@ -40,7 +40,7 @@ public final class NullContainerStrategy
     // ======================================================================
 
     /** The strategy identifier. */
-    private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.table.internal.core.NullContainerStrategy" ); //$NON-NLS-1$
+    private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.nullContainer" ); //$NON-NLS-1$
 
 
     // ======================================================================

@@ -25,7 +25,9 @@ import java.util.HashMap;
 import java.util.Map;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
+import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.IComponentStrategy;
+import org.gamegineer.table.core.IComponentStrategyRegistry;
 import org.gamegineer.table.core.IContainerStrategy;
 
 /**
@@ -43,9 +45,9 @@ final class ComponentFactory
 
     /**
      * The name of the memento attribute that stores the component strategy
-     * class name.
+     * identifier.
      */
-    private static final String STRATEGY_CLASS_NAME_MEMENTO_ATTRIBUTE_NAME = "componentFactory.strategyClassName"; //$NON-NLS-1$
+    private static final String STRATEGY_ID_MEMENTO_ATTRIBUTE_NAME = "componentFactory.strategyId"; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -89,7 +91,7 @@ final class ComponentFactory
         assert tableEnvironment != null;
         assert memento != null;
 
-        final IComponentStrategy strategy = createComponentStrategy( MementoUtils.getAttribute( memento, STRATEGY_CLASS_NAME_MEMENTO_ATTRIBUTE_NAME, String.class ) );
+        final IComponentStrategy strategy = createComponentStrategy( MementoUtils.getAttribute( memento, STRATEGY_ID_MEMENTO_ATTRIBUTE_NAME, ComponentStrategyId.class ) );
         final Component component = createComponent( MementoUtils.getAttribute( memento, CLASS_NAME_MEMENTO_ATTRIBUTE_NAME, String.class ), tableEnvironment, strategy );
         component.setMemento( memento );
         return component;
@@ -145,8 +147,8 @@ final class ComponentFactory
     /**
      * Creates a component strategy of the specified class.
      * 
-     * @param className
-     *        The component strategy class name; must not be {@code null}.
+     * @param id
+     *        The component strategy identifier; must not be {@code null}.
      * 
      * @return A new component strategy; never {@code null}.
      * 
@@ -156,35 +158,24 @@ final class ComponentFactory
     /* @NonNull */
     private static IComponentStrategy createComponentStrategy(
         /* @NonNull */
-        final String className )
+        final ComponentStrategyId id )
         throws MementoException
     {
-        assert className != null;
+        assert id != null;
 
-        // FIXME: use the service registry to lookup strategy classes by their unique identifier
-
-        if( className.equals( CardStrategy.class.getName() ) )
+        final IComponentStrategyRegistry componentStrategyRegistry = Activator.getDefault().getComponentStrategyRegistry();
+        if( componentStrategyRegistry == null )
         {
-            return CardStrategy.INSTANCE;
-        }
-        else if( className.equals( CardPileStrategy.class.getName() ) )
-        {
-            return CardPileStrategy.INSTANCE;
-        }
-        else if( className.equals( TabletopStrategy.class.getName() ) )
-        {
-            return TabletopStrategy.INSTANCE;
-        }
-        else if( className.equals( NullComponentStrategy.class.getName() ) )
-        {
-            return new NullComponentStrategy();
-        }
-        else if( className.equals( NullContainerStrategy.class.getName() ) )
-        {
-            return new NullContainerStrategy();
+            throw new MementoException( NonNlsMessages.ComponentFactory_createComponentStrategy_componentStrategyRegistryNotAvailable );
         }
 
-        throw new MementoException( NonNlsMessages.ComponentFactory_createComponentStrategy_unknownComponentStrategyType );
+        final IComponentStrategy componentStrategy = componentStrategyRegistry.getComponentStrategy( id );
+        if( componentStrategy == null )
+        {
+            throw new MementoException( NonNlsMessages.ComponentFactory_createComponentStrategy_unknownComponentStrategyId( id ) );
+        }
+
+        return componentStrategy;
     }
 
     /**
@@ -205,7 +196,7 @@ final class ComponentFactory
 
         final Map<String, Object> memento = new HashMap<String, Object>();
         memento.put( CLASS_NAME_MEMENTO_ATTRIBUTE_NAME, component.getClass().getName() );
-        memento.put( STRATEGY_CLASS_NAME_MEMENTO_ATTRIBUTE_NAME, component.getStrategy().getClass().getName() );
+        memento.put( STRATEGY_ID_MEMENTO_ATTRIBUTE_NAME, component.getStrategy().getId() );
         return memento;
     }
 }

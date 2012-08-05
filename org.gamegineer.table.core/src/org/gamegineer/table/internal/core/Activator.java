@@ -1,6 +1,6 @@
 /*
  * Activator.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,8 +25,10 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.core.IComponentStrategyRegistry;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * The bundle activator for the org.gamegineer.table.core bundle.
@@ -46,6 +48,10 @@ public final class Activator
     @GuardedBy( "lock_" )
     private BundleContext bundleContext_;
 
+    /** The component strategy registry service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker<IComponentStrategyRegistry, IComponentStrategyRegistry> componentStrategyRegistryTracker_;
+
     /** The instance lock. */
     private final Object lock_;
 
@@ -61,6 +67,7 @@ public final class Activator
     {
         lock_ = new Object();
         bundleContext_ = null;
+        componentStrategyRegistryTracker_ = null;
     }
 
 
@@ -80,6 +87,29 @@ public final class Activator
         {
             assert bundleContext_ != null;
             return bundleContext_;
+        }
+    }
+
+    /**
+     * Gets the component strategy registry service.
+     * 
+     * @return The component strategy registry service or {@code null} if no
+     *         component strategy registry service is available.
+     */
+    /* @Nullable */
+    public IComponentStrategyRegistry getComponentStrategyRegistry()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( componentStrategyRegistryTracker_ == null )
+            {
+                componentStrategyRegistryTracker_ = new ServiceTracker<IComponentStrategyRegistry, IComponentStrategyRegistry>( bundleContext_, IComponentStrategyRegistry.class, null );
+                componentStrategyRegistryTracker_.open();
+            }
+
+            return componentStrategyRegistryTracker_.getService();
         }
     }
 
@@ -131,6 +161,12 @@ public final class Activator
         {
             assert bundleContext_ != null;
             bundleContext_ = null;
+
+            if( componentStrategyRegistryTracker_ != null )
+            {
+                componentStrategyRegistryTracker_.close();
+                componentStrategyRegistryTracker_ = null;
+            }
         }
     }
 }

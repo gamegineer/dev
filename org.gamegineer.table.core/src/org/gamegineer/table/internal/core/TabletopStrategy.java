@@ -52,7 +52,7 @@ public final class TabletopStrategy
     private static final ComponentSurfaceDesign DEFAULT_SURFACE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.TabletopStrategy.defaultSurfaceDesign" ), Short.MAX_VALUE, Short.MAX_VALUE ); //$NON-NLS-1$
 
     /** The strategy identifier. */
-    private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.table.internal.core.TabletopStrategy" ); //$NON-NLS-1$
+    public static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.tabletop" ); //$NON-NLS-1$
 
     /** The singleton instance of this class. */
     public static final TabletopStrategy INSTANCE = new TabletopStrategy();

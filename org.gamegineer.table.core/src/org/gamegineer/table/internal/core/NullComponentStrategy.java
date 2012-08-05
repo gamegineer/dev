@@ -49,7 +49,7 @@ public class NullComponentStrategy
     private static final ComponentSurfaceDesign DEFAULT_SURFACE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.NullComponentStrategy.defaultSurfaceDesign" ), 1, 1 ); //$NON-NLS-1$
 
     /** The strategy identifier. */
-    private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.table.internal.core.NullComponentStrategy" ); //$NON-NLS-1$
+    private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.nullComponent" ); //$NON-NLS-1$
 
     /** The collection of supported component orientations. */
     private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( NullOrientation.values( NullOrientation.class ) ) );

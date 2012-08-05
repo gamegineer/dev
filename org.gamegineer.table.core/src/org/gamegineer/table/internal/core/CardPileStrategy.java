@@ -52,7 +52,7 @@ public final class CardPileStrategy
     private static final ComponentSurfaceDesign DEFAULT_SURFACE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.CardPileStrategy.defaultSurfaceDesign" ), 71, 96 ); //$NON-NLS-1$
 
     /** The strategy identifier. */
-    private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.table.internal.core.CardPileStrategy" ); //$NON-NLS-1$
+    public static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.cardPile" ); //$NON-NLS-1$
 
     /** The singleton instance of this class. */
     public static final CardPileStrategy INSTANCE = new CardPileStrategy();

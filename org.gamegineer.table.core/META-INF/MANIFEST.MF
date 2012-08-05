@@ -15,7 +15,10 @@ Import-Package: net.jcip.annotations;version="1.0.0",
  org.gamegineer.common.core.runtime;version="[0.13.0,0.14.0)",
  org.gamegineer.common.core.util;version="[0.13.0,0.14.0)",
  org.gamegineer.common.core.util.memento;version="[0.13.0,0.14.0)",
- org.osgi.framework;version="1.6.0"
+ org.osgi.framework;version="1.6.0",
+ org.osgi.util.tracker;version="1.5.0"
 Require-Bundle: org.eclipse.equinox.registry;bundle-version="3.5.101"
-Service-Component: OSGI-INF/componentSurfaceDesignRegistry.xml,
+Service-Component: OSGI-INF/componentStrategyRegistry.xml,
+ OSGI-INF/componentStrategyRegistryExtensionPointAdapter.xml,
+ OSGI-INF/componentSurfaceDesignRegistry.xml,
  OSGI-INF/componentSurfaceDesignRegistryExtensionPointAdapter.xml
