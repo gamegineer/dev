@@ -1,5 +1,5 @@
 /*
- * AccordianContainerLayoutProxy.java
+ * AccordianLayoutProxy.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -25,13 +25,13 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import java.io.Serializable;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.internal.core.AccordianContainerLayout;
+import org.gamegineer.table.internal.core.AccordianLayout;
 
 /**
- * A serializable proxy for the {@link AccordianContainerLayout} class.
+ * A serializable proxy for the {@link AccordianLayout} class.
  */
 @NotThreadSafe
-public final class AccordianContainerLayoutProxy
+public final class AccordianLayoutProxy
     implements Serializable
 {
     // ======================================================================
@@ -61,30 +61,28 @@ public final class AccordianContainerLayoutProxy
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AccordianContainerLayoutProxy}
-     * class.
+     * Initializes a new instance of the {@code AccordianLayoutProxy} class.
      */
     @SuppressWarnings( "unused" )
-    private AccordianContainerLayoutProxy()
+    private AccordianLayoutProxy()
     {
         offsetX_ = 0;
         offsetY_ = 0;
     }
 
     /**
-     * Initializes a new instance of the {@code AccordianContainerLayoutProxy}
-     * class from the specified {@code AccordianContainerLayout} instance.
+     * Initializes a new instance of the {@code AccordianLayoutProxy} class from
+     * the specified {@code AccordianLayout} instance.
      * 
      * @param containerLayout
-     *        The {@code AccordianContainerLayout} instance; must not be
-     *        {@code null}.
+     *        The {@code AccordianLayout} instance; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code containerLayout} is {@code null}.
      */
-    public AccordianContainerLayoutProxy(
+    public AccordianLayoutProxy(
         /* @NonNull */
-        final AccordianContainerLayout containerLayout )
+        final AccordianLayout containerLayout )
     {
         assertArgumentNotNull( containerLayout, "containerLayout" ); //$NON-NLS-1$
 
@@ -108,6 +106,6 @@ public final class AccordianContainerLayoutProxy
     /* @NonNull */
     private Object readResolve()
     {
-        return new AccordianContainerLayout( offsetX_, offsetY_ );
+        return new AccordianLayout( offsetX_, offsetY_ );
     }
 }

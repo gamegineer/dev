@@ -23,8 +23,8 @@ package org.gamegineer.table.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.core.AccordianContainerLayout;
-import org.gamegineer.table.internal.core.StackedContainerLayout;
+import org.gamegineer.table.internal.core.AccordianLayout;
+import org.gamegineer.table.internal.core.StackedLayout;
 
 /**
  * A collection of layouts for card piles.
@@ -41,34 +41,34 @@ public final class CardPileLayouts
      * card at the bottom of the card pile, each successive card is offset
      * immediately below it.
      */
-    public static final IContainerLayout ACCORDIAN_DOWN = new AccordianContainerLayout( 0, 18 );
+    public static final IContainerLayout ACCORDIAN_DOWN = new AccordianLayout( 0, 18 );
 
     /**
      * Indicates the card pile is laid out as an accordian. Beginning with the
      * card at the bottom of the card pile, each successive card is offset
      * immediately to the left of it.
      */
-    public static final IContainerLayout ACCORDIAN_LEFT = new AccordianContainerLayout( -16, 0 );
+    public static final IContainerLayout ACCORDIAN_LEFT = new AccordianLayout( -16, 0 );
 
     /**
      * Indicates the card pile is laid out as an accordian. Beginning with the
      * card at the bottom of the card pile, each successive card is offset
      * immediately to the right of it.
      */
-    public static final IContainerLayout ACCORDIAN_RIGHT = new AccordianContainerLayout( 16, 0 );
+    public static final IContainerLayout ACCORDIAN_RIGHT = new AccordianLayout( 16, 0 );
 
     /**
      * Indicates the card pile is laid out as an accordian. Beginning with the
      * card at the bottom of the card pile, each successive card is offset
      * immediately above it.
      */
-    public static final IContainerLayout ACCORDIAN_UP = new AccordianContainerLayout( 0, -18 );
+    public static final IContainerLayout ACCORDIAN_UP = new AccordianLayout( 0, -18 );
 
     /**
      * Indicates the card pile is laid out with one card placed on top of the
      * other with no offset.
      */
-    public static final IContainerLayout STACKED = new StackedContainerLayout( 10, 2, 1 );
+    public static final IContainerLayout STACKED = new StackedLayout( 10, 2, 1 );
 
 
     // ======================================================================

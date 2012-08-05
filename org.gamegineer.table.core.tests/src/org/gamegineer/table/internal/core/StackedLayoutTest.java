@@ -1,5 +1,5 @@
 /*
- * StackedContainerLayoutTest.java
+ * StackedLayoutTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -34,19 +34,18 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.StackedContainerLayout} class.
+ * {@link org.gamegineer.table.internal.core.StackedLayout} class.
  */
-public final class StackedContainerLayoutTest
+public final class StackedLayoutTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code StackedContainerLayoutTest}
-     * class.
+     * Initializes a new instance of the {@code StackedLayoutTest} class.
      */
-    public StackedContainerLayoutTest()
+    public StackedLayoutTest()
     {
     }
 
@@ -62,7 +61,7 @@ public final class StackedContainerLayoutTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_ComponentsPerStackLevel_Zero()
     {
-        new StackedContainerLayout( 0, 1, 1 );
+        new StackedLayout( 0, 1, 1 );
     }
 
     /**
@@ -72,7 +71,7 @@ public final class StackedContainerLayoutTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_StackLevelOffsetX_Zero()
     {
-        new StackedContainerLayout( 1, 0, 1 );
+        new StackedLayout( 1, 0, 1 );
     }
 
     /**
@@ -82,7 +81,7 @@ public final class StackedContainerLayoutTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_StackLevelOffsetY_Zero()
     {
-        new StackedContainerLayout( 1, 1, 0 );
+        new StackedLayout( 1, 1, 0 );
     }
 
     /**
@@ -93,7 +92,7 @@ public final class StackedContainerLayoutTest
     @Test
     public void testGetComponentIndex_Location_ComponentPresent_NotTopComponent()
     {
-        final StackedContainerLayout layout = new StackedContainerLayout( 1, 10, 10 );
+        final StackedLayout layout = new StackedLayout( 1, 10, 10 );
         final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment();
         final IContainer container = Components.createUniqueContainer( tableEnvironment );
         container.setOrigin( new Point( 0, 0 ) );
@@ -118,7 +117,7 @@ public final class StackedContainerLayoutTest
     @Test
     public void testGetComponentIndex_Location_ComponentPresent_TopComponent()
     {
-        final StackedContainerLayout layout = new StackedContainerLayout( 1, 10, 10 );
+        final StackedLayout layout = new StackedLayout( 1, 10, 10 );
         final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment();
         final IContainer container = Components.createUniqueContainer( tableEnvironment );
         container.setOrigin( new Point( 0, 0 ) );
@@ -141,7 +140,7 @@ public final class StackedContainerLayoutTest
     @Test
     public void testGetStackLevelOffset_ReturnValue_Copy()
     {
-        final StackedContainerLayout layout = new StackedContainerLayout( 1, 1, 1 );
+        final StackedLayout layout = new StackedLayout( 1, 1, 1 );
         final Dimension stackLevelOffset = layout.getStackLevelOffset();
         final Dimension expectedValue = new Dimension( stackLevelOffset );
 
@@ -160,7 +159,7 @@ public final class StackedContainerLayoutTest
     {
         final int originX = 20, originY = 30;
         final int stackLevelOffsetX = 2, stackLevelOffsetY = 3;
-        final StackedContainerLayout layout = new StackedContainerLayout( 2, stackLevelOffsetX, stackLevelOffsetY );
+        final StackedLayout layout = new StackedLayout( 2, stackLevelOffsetX, stackLevelOffsetY );
         final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment();
         final IContainer container = Components.createUniqueContainer( tableEnvironment );
         container.setOrigin( new Point( originX, originY ) );

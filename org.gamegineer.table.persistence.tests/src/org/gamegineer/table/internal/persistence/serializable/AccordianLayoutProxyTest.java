@@ -1,5 +1,5 @@
 /*
- * AccordianContainerLayoutPersistenceDelegate.java
+ * AccordianLayoutProxyTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,32 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 12, 2012 at 10:44:41 PM.
+ * Created on May 12, 2012 at 11:20:45 PM.
  */
 
 package org.gamegineer.table.internal.persistence.serializable;
 
-import java.io.IOException;
-import net.jcip.annotations.Immutable;
-import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
-import org.gamegineer.table.internal.core.AccordianContainerLayout;
+import org.junit.Test;
 
 /**
- * A persistence delegate for the {@link AccordianContainerLayout} class.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.persistence.serializable.AccordianLayoutProxy}
+ * class.
  */
-@Immutable
-public final class AccordianContainerLayoutPersistenceDelegate
-    extends AbstractPersistenceDelegate
+public final class AccordianLayoutProxyTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AccordianContainerLayoutPersistenceDelegate} class.
+     * Initializes a new instance of the {@code AccordianLayoutProxyTest} class.
      */
-    public AccordianContainerLayoutPersistenceDelegate()
+    public AccordianLayoutProxyTest()
     {
     }
 
@@ -50,19 +46,13 @@ public final class AccordianContainerLayoutPersistenceDelegate
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate#replaceObject(java.lang.Object)
+    /**
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * container layout.
      */
-    @Override
-    public Object replaceObject(
-        final Object obj )
-        throws IOException
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_ContainerLayout_Null()
     {
-        if( obj instanceof AccordianContainerLayout )
-        {
-            return new AccordianContainerLayoutProxy( (AccordianContainerLayout)obj );
-        }
-
-        return super.replaceObject( obj );
+        new AccordianLayoutProxy( null );
     }
 }

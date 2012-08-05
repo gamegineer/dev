@@ -1,5 +1,5 @@
 /*
- * AccordianContainerLayoutTest.java
+ * AccordianLayoutTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -33,19 +33,18 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.AccordianContainerLayout} class.
+ * {@link org.gamegineer.table.internal.core.AccordianLayout} class.
  */
-public final class AccordianContainerLayoutTest
+public final class AccordianLayoutTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AccordianContainerLayoutTest}
-     * class.
+     * Initializes a new instance of the {@code AccordianLayoutTest} class.
      */
-    public AccordianContainerLayoutTest()
+    public AccordianLayoutTest()
     {
     }
 
@@ -62,7 +61,7 @@ public final class AccordianContainerLayoutTest
     @Test
     public void testConstructor_OffsetX_NonZero_OffsetY_Zero()
     {
-        new AccordianContainerLayout( 1, 0 );
+        new AccordianLayout( 1, 0 );
     }
 
     /**
@@ -72,7 +71,7 @@ public final class AccordianContainerLayoutTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_OffsetX_Zero_OffsetY_Zero()
     {
-        new AccordianContainerLayout( 0, 0 );
+        new AccordianLayout( 0, 0 );
     }
 
     /**
@@ -83,7 +82,7 @@ public final class AccordianContainerLayoutTest
     @Test
     public void testConstructor_OffsetX_Zero_OffsetY_NonZero()
     {
-        new AccordianContainerLayout( 0, 1 );
+        new AccordianLayout( 0, 1 );
     }
 
     /**
@@ -92,7 +91,7 @@ public final class AccordianContainerLayoutTest
     @Test
     public void testGetOffset_ReturnValue_Copy()
     {
-        final AccordianContainerLayout layout = new AccordianContainerLayout( 1, 1 );
+        final AccordianLayout layout = new AccordianLayout( 1, 1 );
         final Dimension offset = layout.getOffset();
         final Dimension expectedValue = new Dimension( offset );
 
@@ -111,7 +110,7 @@ public final class AccordianContainerLayoutTest
     {
         final int originX = 20, originY = 30;
         final int offsetX = 2, offsetY = -3;
-        final AccordianContainerLayout layout = new AccordianContainerLayout( offsetX, offsetY );
+        final AccordianLayout layout = new AccordianLayout( offsetX, offsetY );
         final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment();
         final IContainer container = Components.createUniqueContainer( tableEnvironment );
         container.setOrigin( new Point( originX, originY ) );

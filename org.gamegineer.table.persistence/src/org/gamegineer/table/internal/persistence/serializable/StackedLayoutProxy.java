@@ -1,5 +1,5 @@
 /*
- * AbsoluteContainerLayoutProxy.java
+ * StackedLayoutProxy.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,21 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jul 5, 2012 at 8:47:17 PM.
+ * Created on May 12, 2012 at 11:30:23 PM.
  */
 
 package org.gamegineer.table.internal.persistence.serializable;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.awt.Dimension;
 import java.io.Serializable;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.internal.core.AbsoluteContainerLayout;
+import org.gamegineer.table.internal.core.StackedLayout;
 
 /**
- * A serializable proxy for the {@link AbsoluteContainerLayout} class.
+ * A serializable proxy for the {@link StackedLayout} class.
  */
 @NotThreadSafe
-public final class AbsoluteContainerLayoutProxy
+public final class StackedLayoutProxy
     implements Serializable
 {
     // ======================================================================
@@ -38,7 +39,28 @@ public final class AbsoluteContainerLayoutProxy
     // ======================================================================
 
     /** Serializable class version number. */
-    private static final long serialVersionUID = -4653915858593619643L;
+    private static final long serialVersionUID = 8222381717882639580L;
+
+    /**
+     * The number of components per stack level.
+     * 
+     * @serial
+     */
+    private int componentsPerStackLevel_;
+
+    /**
+     * The offset in the x-direction of each stack level in table coordinates.
+     * 
+     * @serial
+     */
+    private int stackLevelOffsetX_;
+
+    /**
+     * The offset in the y-direction of each stack level in table coordinates.
+     * 
+     * @serial
+     */
+    private int stackLevelOffsetY_;
 
 
     // ======================================================================
@@ -46,30 +68,36 @@ public final class AbsoluteContainerLayoutProxy
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbsoluteContainerLayoutProxy}
-     * class.
+     * Initializes a new instance of the {@code StackedLayoutProxy} class.
      */
     @SuppressWarnings( "unused" )
-    private AbsoluteContainerLayoutProxy()
+    private StackedLayoutProxy()
     {
+        componentsPerStackLevel_ = 0;
+        stackLevelOffsetX_ = 0;
+        stackLevelOffsetY_ = 0;
     }
 
     /**
-     * Initializes a new instance of the {@code AbsoluteContainerLayoutProxy}
-     * class from the specified {@code AbsoluteContainerLayout} instance.
+     * Initializes a new instance of the {@code StackedLayoutProxy} class from
+     * the specified {@code StackedLayout} instance.
      * 
      * @param containerLayout
-     *        The {@code AbsoluteContainerLayout} instance; must not be
-     *        {@code null}.
+     *        The {@code StackedLayout} instance; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code containerLayout} is {@code null}.
      */
-    public AbsoluteContainerLayoutProxy(
+    public StackedLayoutProxy(
         /* @NonNull */
-        final AbsoluteContainerLayout containerLayout )
+        final StackedLayout containerLayout )
     {
         assertArgumentNotNull( containerLayout, "containerLayout" ); //$NON-NLS-1$
+
+        componentsPerStackLevel_ = containerLayout.getComponentsPerStackLevel();
+        final Dimension stackLevelOffset = containerLayout.getStackLevelOffset();
+        stackLevelOffsetX_ = stackLevelOffset.width;
+        stackLevelOffsetY_ = stackLevelOffset.height;
     }
 
 
@@ -85,9 +113,8 @@ public final class AbsoluteContainerLayoutProxy
      *         deserialized; never {@code null}.
      */
     /* @NonNull */
-    @SuppressWarnings( "static-method" )
     private Object readResolve()
     {
-        return new AbsoluteContainerLayout();
+        return new StackedLayout( componentsPerStackLevel_, stackLevelOffsetX_, stackLevelOffsetY_ );
     }
 }

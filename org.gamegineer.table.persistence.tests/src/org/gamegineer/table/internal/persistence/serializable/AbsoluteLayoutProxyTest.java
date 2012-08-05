@@ -1,5 +1,5 @@
 /*
- * TabletopLayouts.java
+ * AbsoluteLayoutProxyTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,39 +16,43 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jul 4, 2012 at 7:49:48 PM.
+ * Created on Aug 5, 2012 at 7:02:50 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.internal.persistence.serializable;
 
-import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.core.AbsoluteLayout;
+import org.junit.Test;
 
 /**
- * A collection of layouts for tabletops.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.persistence.serializable.AbsoluteLayoutProxy}
+ * class.
  */
-@ThreadSafe
-public final class TabletopLayouts
+public final class AbsoluteLayoutProxyTest
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /**
-     * Indicates the tabletop is laid out with all components at their absolute
-     * position in table coordinates.
-     */
-    public static final IContainerLayout ABSOLUTE = new AbsoluteLayout();
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TabletopLayouts} class.
+     * Initializes a new instance of the {@code AbsoluteLayoutProxyTest} class.
      */
-    private TabletopLayouts()
+    public AbsoluteLayoutProxyTest()
     {
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /**
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * container layout.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_ContainerLayout_Null()
+    {
+        new AbsoluteLayoutProxy( null );
     }
 }

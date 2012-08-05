@@ -1,5 +1,5 @@
 /*
- * StackedContainerLayoutAsContainerLayoutTest.java
+ * AbsoluteLayout.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,32 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 5, 2012 at 9:50:22 PM.
+ * Created on Jul 4, 2012 at 7:52:26 PM.
  */
 
 package org.gamegineer.table.internal.core;
 
-import org.gamegineer.table.core.AbstractContainerLayoutTestCase;
+import java.awt.Dimension;
+import java.awt.Point;
+import net.jcip.annotations.Immutable;
+import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerLayout;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.StackedContainerLayout} class to
- * ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.IContainerLayout} interface.
+ * Implementation of {@link IContainerLayout} that lays out the components of a
+ * container at their absolute table coordinates.
  */
-public final class StackedContainerLayoutAsContainerLayoutTest
-    extends AbstractContainerLayoutTestCase
+@Immutable
+public final class AbsoluteLayout
+    extends AbstractContainerLayout
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code StackedContainerLayoutAsContainerLayoutTest} class.
+     * Initializes a new instance of the {@code AbsoluteLayout} class.
      */
-    public StackedContainerLayoutAsContainerLayoutTest()
+    public AbsoluteLayout()
     {
     }
 
@@ -51,11 +52,18 @@ public final class StackedContainerLayoutAsContainerLayoutTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractContainerLayoutTestCase#createContainerLayout()
+     * @see org.gamegineer.table.internal.core.AbstractContainerLayout#getComponentOffsetAt(org.gamegineer.table.core.IContainer, int)
      */
     @Override
-    protected IContainerLayout createContainerLayout()
+    Dimension getComponentOffsetAt(
+        final IContainer container,
+        final int index )
     {
-        return new StackedContainerLayout( 1, 1, 1 );
+        assert container != null;
+        assert index >= 0;
+
+        final Point containerOrigin = container.getOrigin();
+        final Point componentLocation = container.getComponent( index ).getLocation();
+        return new Dimension( componentLocation.x - containerOrigin.x, componentLocation.y - containerOrigin.y );
     }
 }

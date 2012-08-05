@@ -1,5 +1,5 @@
 /*
- * TabletopLayouts.java
+ * AbsoluteLayoutAsContainerLayoutTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,39 +16,46 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jul 4, 2012 at 7:49:48 PM.
+ * Created on Aug 5, 2012 at 6:05:44 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.internal.core;
 
-import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.core.AbsoluteLayout;
+import org.gamegineer.table.core.AbstractContainerLayoutTestCase;
+import org.gamegineer.table.core.IContainerLayout;
 
 /**
- * A collection of layouts for tabletops.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.core.AbsoluteLayout} class to ensure it
+ * does not violate the contract of the
+ * {@link org.gamegineer.table.core.IContainerLayout} interface.
  */
-@ThreadSafe
-public final class TabletopLayouts
+public final class AbsoluteLayoutAsContainerLayoutTest
+    extends AbstractContainerLayoutTestCase
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /**
-     * Indicates the tabletop is laid out with all components at their absolute
-     * position in table coordinates.
-     */
-    public static final IContainerLayout ABSOLUTE = new AbsoluteLayout();
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TabletopLayouts} class.
+     * Initializes a new instance of the
+     * {@code AbsoluteLayoutAsContainerLayoutTest} class.
      */
-    private TabletopLayouts()
+    public AbsoluteLayoutAsContainerLayoutTest()
     {
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /*
+     * @see org.gamegineer.table.core.AbstractContainerLayoutTestCase#createContainerLayout()
+     */
+    @Override
+    protected IContainerLayout createContainerLayout()
+    {
+        return new AbsoluteLayout();
     }
 }

@@ -1,5 +1,5 @@
 /*
- * StackedContainerLayout.java
+ * StackedLayout.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -35,7 +35,7 @@ import org.gamegineer.table.core.IContainerLayout;
  * container with one component placed on top of the other with no offset.
  */
 @Immutable
-public final class StackedContainerLayout
+public final class StackedLayout
     extends AbstractContainerLayout
 {
     // ======================================================================
@@ -54,7 +54,7 @@ public final class StackedContainerLayout
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code StackedContainerLayout} class.
+     * Initializes a new instance of the {@code StackedLayout} class.
      * 
      * @param componentsPerStackLevel
      *        The number of components per stack level.
@@ -69,14 +69,14 @@ public final class StackedContainerLayout
      *         If {@code componentsPerStackLevel}, {@code stackLevelOffsetX}, or
      *         {@code stackLevelOffsetY} is not positive.
      */
-    public StackedContainerLayout(
+    public StackedLayout(
         final int componentsPerStackLevel,
         final int stackLevelOffsetX,
         final int stackLevelOffsetY )
     {
-        assertArgumentLegal( componentsPerStackLevel > 0, "componentsPerStackLevel", NonNlsMessages.StackedContainerLayout_ctor_componentsPerStackLevel_notPositive ); //$NON-NLS-1$
-        assertArgumentLegal( stackLevelOffsetX > 0, "stackLevelOffsetX", NonNlsMessages.StackedContainerLayout_ctor_stackLevelOffsetX_notPositive ); //$NON-NLS-1$
-        assertArgumentLegal( stackLevelOffsetY > 0, "stackLevelOffsetY", NonNlsMessages.StackedContainerLayout_ctor_stackLevelOffsetY_notPositive ); //$NON-NLS-1$
+        assertArgumentLegal( componentsPerStackLevel > 0, "componentsPerStackLevel", NonNlsMessages.StackedLayout_ctor_componentsPerStackLevel_notPositive ); //$NON-NLS-1$
+        assertArgumentLegal( stackLevelOffsetX > 0, "stackLevelOffsetX", NonNlsMessages.StackedLayout_ctor_stackLevelOffsetX_notPositive ); //$NON-NLS-1$
+        assertArgumentLegal( stackLevelOffsetY > 0, "stackLevelOffsetY", NonNlsMessages.StackedLayout_ctor_stackLevelOffsetY_notPositive ); //$NON-NLS-1$
 
         componentsPerStackLevel_ = componentsPerStackLevel;
         stackLevelOffset_ = new Dimension( stackLevelOffsetX, stackLevelOffsetY );

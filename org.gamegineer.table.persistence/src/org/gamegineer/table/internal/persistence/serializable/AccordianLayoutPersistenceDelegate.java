@@ -1,5 +1,5 @@
 /*
- * StackedContainerLayoutProxyTest.java
+ * AccordianLayoutPersistenceDelegate.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,29 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 12, 2012 at 11:38:20 PM.
+ * Created on May 12, 2012 at 10:44:41 PM.
  */
 
 package org.gamegineer.table.internal.persistence.serializable;
 
-import org.junit.Test;
+import java.io.IOException;
+import net.jcip.annotations.Immutable;
+import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
+import org.gamegineer.table.internal.core.AccordianLayout;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.persistence.serializable.StackedContainerLayoutProxy}
- * class.
+ * A persistence delegate for the {@link AccordianLayout} class.
  */
-public final class StackedContainerLayoutProxyTest
+@Immutable
+public final class AccordianLayoutPersistenceDelegate
+    extends AbstractPersistenceDelegate
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code StackedContainerLayoutProxyTest}
-     * class.
+     * Initializes a new instance of the
+     * {@code AccordianLayoutPersistenceDelegate} class.
      */
-    public StackedContainerLayoutProxyTest()
+    public AccordianLayoutPersistenceDelegate()
     {
     }
 
@@ -47,13 +50,19 @@ public final class StackedContainerLayoutProxyTest
     // Methods
     // ======================================================================
 
-    /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * container layout.
+    /*
+     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate#replaceObject(java.lang.Object)
      */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_ContainerLayout_Null()
+    @Override
+    public Object replaceObject(
+        final Object obj )
+        throws IOException
     {
-        new StackedContainerLayoutProxy( null );
+        if( obj instanceof AccordianLayout )
+        {
+            return new AccordianLayoutProxy( (AccordianLayout)obj );
+        }
+
+        return super.replaceObject( obj );
     }
 }

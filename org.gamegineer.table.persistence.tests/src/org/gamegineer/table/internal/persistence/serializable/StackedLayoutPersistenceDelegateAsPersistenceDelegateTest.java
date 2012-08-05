@@ -1,5 +1,5 @@
 /*
- * AccordianContainerLayoutPersistenceDelegateAsPersistenceDelegateTest.java
+ * StackedLayoutPersistenceDelegateAsPersistenceDelegateTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 12, 2012 at 10:58:24 PM.
+ * Created on May 12, 2012 at 10:58:41 PM.
  */
 
 package org.gamegineer.table.internal.persistence.serializable;
@@ -25,16 +25,16 @@ import static org.junit.Assert.assertEquals;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
-import org.gamegineer.table.internal.core.AccordianContainerLayout;
+import org.gamegineer.table.internal.core.StackedLayout;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.persistence.serializable.AccordianContainerLayoutPersistenceDelegate}
+ * {@link org.gamegineer.table.internal.persistence.serializable.StackedLayoutPersistenceDelegate}
  * class to ensure it does not violate the contract of the
  * {@link org.gamegineer.common.persistence.serializable.IPersistenceDelegate}
  * interface.
  */
-public final class AccordianContainerLayoutPersistenceDelegateAsPersistenceDelegateTest
+public final class StackedLayoutPersistenceDelegateAsPersistenceDelegateTest
     extends AbstractPersistenceDelegateTestCase
 {
     // ======================================================================
@@ -43,10 +43,9 @@ public final class AccordianContainerLayoutPersistenceDelegateAsPersistenceDeleg
 
     /**
      * Initializes a new instance of the
-     * {@code AccordianContainerLayoutPersistenceDelegateAsPersistenceDelegateTest}
-     * class.
+     * {@code StackedLayoutPersistenceDelegateAsPersistenceDelegateTest} class.
      */
-    public AccordianContainerLayoutPersistenceDelegateAsPersistenceDelegateTest()
+    public StackedLayoutPersistenceDelegateAsPersistenceDelegateTest()
     {
     }
 
@@ -63,9 +62,10 @@ public final class AccordianContainerLayoutPersistenceDelegateAsPersistenceDeleg
         final Object expected,
         final Object actual )
     {
-        final AccordianContainerLayout expectedContainerLayout = (AccordianContainerLayout)expected;
-        final AccordianContainerLayout actualContainerLayout = (AccordianContainerLayout)actual;
-        assertEquals( expectedContainerLayout.getOffset(), actualContainerLayout.getOffset() );
+        final StackedLayout expectedContainerLayout = (StackedLayout)expected;
+        final StackedLayout actualContainerLayout = (StackedLayout)actual;
+        assertEquals( expectedContainerLayout.getComponentsPerStackLevel(), actualContainerLayout.getComponentsPerStackLevel() );
+        assertEquals( expectedContainerLayout.getStackLevelOffset(), actualContainerLayout.getStackLevelOffset() );
     }
 
     /*
@@ -74,7 +74,7 @@ public final class AccordianContainerLayoutPersistenceDelegateAsPersistenceDeleg
     @Override
     protected IPersistenceDelegate createPersistenceDelegate()
     {
-        return new AccordianContainerLayoutPersistenceDelegate();
+        return new StackedLayoutPersistenceDelegate();
     }
 
     /*
@@ -83,7 +83,7 @@ public final class AccordianContainerLayoutPersistenceDelegateAsPersistenceDeleg
     @Override
     protected Object createSubject()
     {
-        return new AccordianContainerLayout( 1, 1 );
+        return new StackedLayout( 1, 1, 1 );
     }
 
     /*
@@ -93,7 +93,7 @@ public final class AccordianContainerLayoutPersistenceDelegateAsPersistenceDeleg
     protected void registerPersistenceDelegates(
         final IPersistenceDelegateRegistry persistenceDelegateRegistry )
     {
-        persistenceDelegateRegistry.registerPersistenceDelegate( AccordianContainerLayout.class, new AccordianContainerLayoutPersistenceDelegate() );
-        persistenceDelegateRegistry.registerPersistenceDelegate( AccordianContainerLayoutProxy.class, new AccordianContainerLayoutPersistenceDelegate() );
+        persistenceDelegateRegistry.registerPersistenceDelegate( StackedLayout.class, new StackedLayoutPersistenceDelegate() );
+        persistenceDelegateRegistry.registerPersistenceDelegate( StackedLayoutProxy.class, new StackedLayoutPersistenceDelegate() );
     }
 }

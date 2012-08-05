@@ -1,5 +1,5 @@
 /*
- * AccordianContainerLayoutProxyTest.java
+ * StackedLayoutProxyTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 12, 2012 at 11:20:45 PM.
+ * Created on May 12, 2012 at 11:38:20 PM.
  */
 
 package org.gamegineer.table.internal.persistence.serializable;
@@ -25,20 +25,19 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.persistence.serializable.AccordianContainerLayoutProxy}
+ * {@link org.gamegineer.table.internal.persistence.serializable.StackedLayoutProxy}
  * class.
  */
-public final class AccordianContainerLayoutProxyTest
+public final class StackedLayoutProxyTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AccordianContainerLayoutProxyTest} class.
+     * Initializes a new instance of the {@code StackedLayoutProxyTest} class.
      */
-    public AccordianContainerLayoutProxyTest()
+    public StackedLayoutProxyTest()
     {
     }
 
@@ -54,6 +53,6 @@ public final class AccordianContainerLayoutProxyTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_ContainerLayout_Null()
     {
-        new AccordianContainerLayoutProxy( null );
+        new StackedLayoutProxy( null );
     }
 }

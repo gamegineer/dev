@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
     <scr:component
-            name="org.gamegineer.table.persistence.serializable.absoluteContainerLayoutPersistenceDelegate"
+            name="org.gamegineer.table.persistence.serializable.absoluteLayoutPersistenceDelegate"
             xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
         <implementation
-                class="org.gamegineer.table.internal.persistence.serializable.AbsoluteContainerLayoutPersistenceDelegate" />
+                class="org.gamegineer.table.internal.persistence.serializable.AbsoluteLayoutPersistenceDelegate" />
         <service>
             <provide
                     interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegate" />
@@ -12,15 +12,15 @@
         <property
                 name="delegators"
                 type="String">
-            org.gamegineer.table.internal.core.AbsoluteContainerLayout
-            org.gamegineer.table.internal.persistence.serializable.AbsoluteContainerLayoutProxy
+            org.gamegineer.table.internal.core.AbsoluteLayout
+            org.gamegineer.table.internal.persistence.serializable.AbsoluteLayoutProxy
        </property>
     </scr:component>
     <scr:component
-            name="org.gamegineer.table.persistence.serializable.accordianContainerLayoutPersistenceDelegate"
+            name="org.gamegineer.table.persistence.serializable.accordianLayoutPersistenceDelegate"
             xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
         <implementation
-                class="org.gamegineer.table.internal.persistence.serializable.AccordianContainerLayoutPersistenceDelegate" />
+                class="org.gamegineer.table.internal.persistence.serializable.AccordianLayoutPersistenceDelegate" />
         <service>
             <provide
                     interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegate" />
@@ -28,8 +28,8 @@
         <property
                 name="delegators"
                 type="String">
-            org.gamegineer.table.internal.core.AccordianContainerLayout
-            org.gamegineer.table.internal.persistence.serializable.AccordianContainerLayoutProxy
+            org.gamegineer.table.internal.core.AccordianLayout
+            org.gamegineer.table.internal.persistence.serializable.AccordianLayoutProxy
        </property>
     </scr:component>
 	<scr:component
@@ -111,10 +111,10 @@
 		</property>
 	</scr:component>
     <scr:component
-            name="org.gamegineer.table.persistence.serializable.stackedContainerLayoutPersistenceDelegate"
+            name="org.gamegineer.table.persistence.serializable.stackedLayoutPersistenceDelegate"
             xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
         <implementation
-                class="org.gamegineer.table.internal.persistence.serializable.StackedContainerLayoutPersistenceDelegate" />
+                class="org.gamegineer.table.internal.persistence.serializable.StackedLayoutPersistenceDelegate" />
         <service>
             <provide
                     interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegate" />
@@ -122,8 +122,8 @@
         <property
                 name="delegators"
                 type="String">
-            org.gamegineer.table.internal.core.StackedContainerLayout
-            org.gamegineer.table.internal.persistence.serializable.StackedContainerLayoutProxy
+            org.gamegineer.table.internal.core.StackedLayout
+            org.gamegineer.table.internal.persistence.serializable.StackedLayoutProxy
        </property>
     </scr:component>
     <scr:component

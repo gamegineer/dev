@@ -1,5 +1,5 @@
 /*
- * StackedContainerLayoutPersistenceDelegateAsPersistenceDelegateTest.java
+ * AbsoluteLayoutPersistenceDelegateAsPersistenceDelegateTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 12, 2012 at 10:58:41 PM.
+ * Created on Aug 5, 2012 at 7:02:42 PM.
  */
 
 package org.gamegineer.table.internal.persistence.serializable;
@@ -25,16 +25,16 @@ import static org.junit.Assert.assertEquals;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
-import org.gamegineer.table.internal.core.StackedContainerLayout;
+import org.gamegineer.table.internal.core.AbsoluteLayout;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.persistence.serializable.StackedContainerLayoutPersistenceDelegate}
+ * {@link org.gamegineer.table.internal.persistence.serializable.AbsoluteLayoutPersistenceDelegate}
  * class to ensure it does not violate the contract of the
  * {@link org.gamegineer.common.persistence.serializable.IPersistenceDelegate}
  * interface.
  */
-public final class StackedContainerLayoutPersistenceDelegateAsPersistenceDelegateTest
+public final class AbsoluteLayoutPersistenceDelegateAsPersistenceDelegateTest
     extends AbstractPersistenceDelegateTestCase
 {
     // ======================================================================
@@ -43,10 +43,9 @@ public final class StackedContainerLayoutPersistenceDelegateAsPersistenceDelegat
 
     /**
      * Initializes a new instance of the
-     * {@code StackedContainerLayoutPersistenceDelegateAsPersistenceDelegateTest}
-     * class.
+     * {@code AbsoluteLayoutPersistenceDelegateAsPersistenceDelegateTest} class.
      */
-    public StackedContainerLayoutPersistenceDelegateAsPersistenceDelegateTest()
+    public AbsoluteLayoutPersistenceDelegateAsPersistenceDelegateTest()
     {
     }
 
@@ -63,10 +62,9 @@ public final class StackedContainerLayoutPersistenceDelegateAsPersistenceDelegat
         final Object expected,
         final Object actual )
     {
-        final StackedContainerLayout expectedContainerLayout = (StackedContainerLayout)expected;
-        final StackedContainerLayout actualContainerLayout = (StackedContainerLayout)actual;
-        assertEquals( expectedContainerLayout.getComponentsPerStackLevel(), actualContainerLayout.getComponentsPerStackLevel() );
-        assertEquals( expectedContainerLayout.getStackLevelOffset(), actualContainerLayout.getStackLevelOffset() );
+        final AbsoluteLayout expectedContainerLayout = (AbsoluteLayout)expected;
+        final AbsoluteLayout actualContainerLayout = (AbsoluteLayout)actual;
+        assertEquals( expectedContainerLayout.getClass(), actualContainerLayout.getClass() );
     }
 
     /*
@@ -75,7 +73,7 @@ public final class StackedContainerLayoutPersistenceDelegateAsPersistenceDelegat
     @Override
     protected IPersistenceDelegate createPersistenceDelegate()
     {
-        return new StackedContainerLayoutPersistenceDelegate();
+        return new AbsoluteLayoutPersistenceDelegate();
     }
 
     /*
@@ -84,7 +82,7 @@ public final class StackedContainerLayoutPersistenceDelegateAsPersistenceDelegat
     @Override
     protected Object createSubject()
     {
-        return new StackedContainerLayout( 1, 1, 1 );
+        return new AbsoluteLayout();
     }
 
     /*
@@ -94,7 +92,7 @@ public final class StackedContainerLayoutPersistenceDelegateAsPersistenceDelegat
     protected void registerPersistenceDelegates(
         final IPersistenceDelegateRegistry persistenceDelegateRegistry )
     {
-        persistenceDelegateRegistry.registerPersistenceDelegate( StackedContainerLayout.class, new StackedContainerLayoutPersistenceDelegate() );
-        persistenceDelegateRegistry.registerPersistenceDelegate( StackedContainerLayoutProxy.class, new StackedContainerLayoutPersistenceDelegate() );
+        persistenceDelegateRegistry.registerPersistenceDelegate( AbsoluteLayout.class, new AbsoluteLayoutPersistenceDelegate() );
+        persistenceDelegateRegistry.registerPersistenceDelegate( AbsoluteLayoutProxy.class, new AbsoluteLayoutPersistenceDelegate() );
     }
 }

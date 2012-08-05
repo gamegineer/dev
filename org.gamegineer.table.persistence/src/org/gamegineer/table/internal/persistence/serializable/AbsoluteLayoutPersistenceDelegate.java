@@ -1,5 +1,5 @@
 /*
- * StackedContainerLayoutPersistenceDelegate.java
+ * AbsoluteLayoutPersistenceDelegate.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 12, 2012 at 10:44:28 PM.
+ * Created on Jul 5, 2012 at 8:46:59 PM.
  */
 
 package org.gamegineer.table.internal.persistence.serializable;
@@ -24,13 +24,13 @@ package org.gamegineer.table.internal.persistence.serializable;
 import java.io.IOException;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
-import org.gamegineer.table.internal.core.StackedContainerLayout;
+import org.gamegineer.table.internal.core.AbsoluteLayout;
 
 /**
- * A persistence delegate for the {@link StackedContainerLayout} class.
+ * A persistence delegate for the {@link AbsoluteLayout} class.
  */
 @Immutable
-public final class StackedContainerLayoutPersistenceDelegate
+public final class AbsoluteLayoutPersistenceDelegate
     extends AbstractPersistenceDelegate
 {
     // ======================================================================
@@ -39,9 +39,9 @@ public final class StackedContainerLayoutPersistenceDelegate
 
     /**
      * Initializes a new instance of the
-     * {@code StackedContainerLayoutPersistenceDelegate} class.
+     * {@code AbsoluteLayoutPersistenceDelegate} class.
      */
-    public StackedContainerLayoutPersistenceDelegate()
+    public AbsoluteLayoutPersistenceDelegate()
     {
     }
 
@@ -58,9 +58,9 @@ public final class StackedContainerLayoutPersistenceDelegate
         final Object obj )
         throws IOException
     {
-        if( obj instanceof StackedContainerLayout )
+        if( obj instanceof AbsoluteLayout )
         {
-            return new StackedContainerLayoutProxy( (StackedContainerLayout)obj );
+            return new AbsoluteLayoutProxy( (AbsoluteLayout)obj );
         }
 
         return super.replaceObject( obj );

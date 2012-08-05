@@ -1,5 +1,5 @@
 /*
- * AccordianContainerLayout.java
+ * AccordianLayout.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -37,7 +37,7 @@ import org.gamegineer.table.core.IContainerLayout;
  * </p>
  */
 @Immutable
-public final class AccordianContainerLayout
+public final class AccordianLayout
     extends AbstractContainerLayout
 {
     // ======================================================================
@@ -53,7 +53,7 @@ public final class AccordianContainerLayout
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AccordianContainerLayout} class.
+     * Initializes a new instance of the {@code AccordianLayout} class.
      * 
      * @param offsetX
      *        The offset of each component in the x-direction in table
@@ -65,11 +65,11 @@ public final class AccordianContainerLayout
      * @throws java.lang.IllegalArgumentException
      *         If both {@code offsetX} and {@code offsetY} are zero.
      */
-    public AccordianContainerLayout(
+    public AccordianLayout(
         final int offsetX,
         final int offsetY )
     {
-        assertArgumentLegal( (offsetX != 0) || (offsetY != 0), "offsetY", NonNlsMessages.AccordianContainerLayout_ctor_offsetY_zero ); //$NON-NLS-1$
+        assertArgumentLegal( (offsetX != 0) || (offsetY != 0), "offsetY", NonNlsMessages.AccordianLayout_ctor_offsetY_zero ); //$NON-NLS-1$
 
         offset_ = new Dimension( offsetX, offsetY );
     }

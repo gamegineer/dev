@@ -1,5 +1,5 @@
 /*
- * AccordianContainerLayoutAsContainerLayoutTest.java
+ * AccordianLayoutAsContainerLayoutTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -26,11 +26,11 @@ import org.gamegineer.table.core.IContainerLayout;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.AccordianContainerLayout} class to
- * ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.core.AccordianLayout} class to ensure it
+ * does not violate the contract of the
  * {@link org.gamegineer.table.core.IContainerLayout} interface.
  */
-public final class AccordianContainerLayoutAsContainerLayoutTest
+public final class AccordianLayoutAsContainerLayoutTest
     extends AbstractContainerLayoutTestCase
 {
     // ======================================================================
@@ -39,9 +39,9 @@ public final class AccordianContainerLayoutAsContainerLayoutTest
 
     /**
      * Initializes a new instance of the
-     * {@code AccordianContainerLayoutAsContainerLayoutTest} class.
+     * {@code AccordianLayoutAsContainerLayoutTest} class.
      */
-    public AccordianContainerLayoutAsContainerLayoutTest()
+    public AccordianLayoutAsContainerLayoutTest()
     {
     }
 
@@ -56,6 +56,6 @@ public final class AccordianContainerLayoutAsContainerLayoutTest
     @Override
     protected IContainerLayout createContainerLayout()
     {
-        return new AccordianContainerLayout( 1, 1 );
+        return new AccordianLayout( 1, 1 );
     }
 }
