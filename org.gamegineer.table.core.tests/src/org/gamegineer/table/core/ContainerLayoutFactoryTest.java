@@ -1,5 +1,5 @@
 /*
- * CardPileLayoutsTest.java
+ * ContainerLayoutFactoryTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -25,19 +25,20 @@ import org.easymock.EasyMock;
 import org.junit.Test;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.core.CardPileLayouts}
- * class.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.core.ContainerLayoutFactory} class.
  */
-public final class CardPileLayoutsTest
+public final class ContainerLayoutFactoryTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardPileLayoutsTest} class.
+     * Initializes a new instance of the {@code ContainerLayoutFactoryTest}
+     * class.
      */
-    public CardPileLayoutsTest()
+    public ContainerLayoutFactoryTest()
     {
     }
 
@@ -53,7 +54,7 @@ public final class CardPileLayoutsTest
     @Test( expected = IllegalArgumentException.class )
     public void testFromId_Id_Illegal()
     {
-        CardPileLayouts.fromId( "id" ); //$NON-NLS-1$
+        ContainerLayoutFactory.fromId( "id" ); //$NON-NLS-1$
     }
 
     /**
@@ -63,7 +64,7 @@ public final class CardPileLayoutsTest
     @Test( expected = NullPointerException.class )
     public void testFromId_Id_Null()
     {
-        CardPileLayouts.fromId( null );
+        ContainerLayoutFactory.fromId( null );
     }
 
     /**
@@ -73,7 +74,7 @@ public final class CardPileLayoutsTest
     @Test( expected = IllegalArgumentException.class )
     public void testGetId_Layout_Illegal()
     {
-        CardPileLayouts.getId( EasyMock.createMock( IContainerLayout.class ) );
+        ContainerLayoutFactory.getId( EasyMock.createMock( IContainerLayout.class ) );
     }
 
     /**
@@ -83,6 +84,6 @@ public final class CardPileLayoutsTest
     @Test( expected = NullPointerException.class )
     public void testGetId_Layout_Null()
     {
-        CardPileLayouts.getId( null );
+        ContainerLayoutFactory.getId( null );
     }
 }

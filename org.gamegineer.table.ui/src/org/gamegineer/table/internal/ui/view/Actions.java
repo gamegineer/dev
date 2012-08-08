@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.KeyStroke;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.CardPileLayouts;
+import org.gamegineer.table.core.ContainerLayoutFactory;
 import org.gamegineer.table.internal.ui.action.BasicAction;
 
 /**
@@ -1246,7 +1246,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, CardPileLayouts.getId( CardPileLayouts.ACCORDIAN_DOWN ) );
+                putValue( ACTION_COMMAND_KEY, ContainerLayoutFactory.getId( ContainerLayoutFactory.createAccordianDownLayout() ) );
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetAccordianDownCardPileLayoutAction_mnemonic ).getKeyCode() );
                 putValue( NAME, NlsMessages.SetAccordianDownCardPileLayoutAction_text );
             }
@@ -1256,7 +1256,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, CardPileLayouts.getId( CardPileLayouts.ACCORDIAN_LEFT ) );
+                putValue( ACTION_COMMAND_KEY, ContainerLayoutFactory.getId( ContainerLayoutFactory.createAccordianLeftLayout() ) );
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetAccordianLeftCardPileLayoutAction_mnemonic ).getKeyCode() );
                 putValue( NAME, NlsMessages.SetAccordianLeftCardPileLayoutAction_text );
             }
@@ -1266,7 +1266,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, CardPileLayouts.getId( CardPileLayouts.ACCORDIAN_RIGHT ) );
+                putValue( ACTION_COMMAND_KEY, ContainerLayoutFactory.getId( ContainerLayoutFactory.createAccordianRightLayout() ) );
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetAccordianRightCardPileLayoutAction_mnemonic ).getKeyCode() );
                 putValue( NAME, NlsMessages.SetAccordianRightCardPileLayoutAction_text );
             }
@@ -1276,7 +1276,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, CardPileLayouts.getId( CardPileLayouts.ACCORDIAN_UP ) );
+                putValue( ACTION_COMMAND_KEY, ContainerLayoutFactory.getId( ContainerLayoutFactory.createAccordianUpLayout() ) );
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetAccordianUpCardPileLayoutAction_mnemonic ).getKeyCode() );
                 putValue( NAME, NlsMessages.SetAccordianUpCardPileLayoutAction_text );
             }
@@ -1286,7 +1286,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, CardPileLayouts.getId( CardPileLayouts.STACKED ) );
+                putValue( ACTION_COMMAND_KEY, ContainerLayoutFactory.getId( ContainerLayoutFactory.createStackedLayout() ) );
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetStackedCardPileLayoutAction_mnemonic ).getKeyCode() );
                 putValue( NAME, NlsMessages.SetStackedCardPileLayoutAction_text );
             }

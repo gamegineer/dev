@@ -23,9 +23,9 @@ package org.gamegineer.table.internal.core;
 
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.ComponentStrategyId;
+import org.gamegineer.table.core.ContainerLayoutFactory;
 import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.core.IContainerStrategy;
-import org.gamegineer.table.core.TabletopLayouts;
 
 /**
  * A null container strategy.
@@ -65,8 +65,7 @@ public final class NullContainerStrategy
     @Override
     public IContainerLayout getDefaultLayout()
     {
-        // TODO: absolute layout should be a "common" layout not necessarily associated with tabletops
-        return TabletopLayouts.ABSOLUTE;
+        return ContainerLayoutFactory.createAbsoluteLayout();
     }
 
     /*

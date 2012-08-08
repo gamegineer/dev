@@ -60,11 +60,11 @@ import org.gamegineer.common.ui.window.WindowConstants;
 import org.gamegineer.common.ui.wizard.IWizard;
 import org.gamegineer.common.ui.wizard.WizardDialog;
 import org.gamegineer.table.core.CardOrientation;
-import org.gamegineer.table.core.CardPileLayouts;
 import org.gamegineer.table.core.CardPileOrientation;
 import org.gamegineer.table.core.CardStrategyFactory;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
+import org.gamegineer.table.core.ContainerLayoutFactory;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentSurfaceDesignRegistry;
 import org.gamegineer.table.core.IContainer;
@@ -341,7 +341,7 @@ final class TableView
             public void actionPerformed(
                 final ActionEvent event )
             {
-                setCardPileLayout( CardPileLayouts.fromId( event.getActionCommand() ) );
+                setCardPileLayout( ContainerLayoutFactory.fromId( event.getActionCommand() ) );
             }
         };
         actionMediator_.bindActionListener( Actions.getAddAceOfClubsCardAction(), addCardActionListener );
@@ -774,7 +774,7 @@ final class TableView
                     return false;
                 }
 
-                return container.getLayout() == CardPileLayouts.fromId( (String)obj.getValue( Action.ACTION_COMMAND_KEY ) );
+                return container.getLayout() == ContainerLayoutFactory.fromId( (String)obj.getValue( Action.ACTION_COMMAND_KEY ) );
             }
 
         };

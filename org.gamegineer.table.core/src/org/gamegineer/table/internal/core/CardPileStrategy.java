@@ -28,12 +28,12 @@ import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.core.CardPileLayouts;
 import org.gamegineer.table.core.CardPileOrientation;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
+import org.gamegineer.table.core.ContainerLayoutFactory;
 import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.core.IContainerStrategy;
 
@@ -83,7 +83,7 @@ public final class CardPileStrategy
     @Override
     public IContainerLayout getDefaultLayout()
     {
-        return CardPileLayouts.STACKED;
+        return ContainerLayoutFactory.createStackedLayout();
     }
 
     /*
