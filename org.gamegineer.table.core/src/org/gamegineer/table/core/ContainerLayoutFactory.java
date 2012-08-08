@@ -22,6 +22,7 @@
 package org.gamegineer.table.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.lang.reflect.Field;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.core.AbsoluteLayout;
 import org.gamegineer.table.internal.core.AccordianLayout;
@@ -228,29 +229,19 @@ public final class ContainerLayoutFactory
     {
         assertArgumentNotNull( layout, "layout" ); //$NON-NLS-1$
 
-        if( layout == ABSOLUTE )
+        try
         {
-            return "ABSOLUTE"; //$NON-NLS-1$
+            for( final Field field : ContainerLayoutFactory.class.getDeclaredFields() )
+            {
+                if( layout == field.get( null ) )
+                {
+                    return field.getName();
+                }
+            }
         }
-        else if( layout == ACCORDIAN_DOWN )
+        catch( final IllegalAccessException e )
         {
-            return "ACCORDIAN_DOWN"; //$NON-NLS-1$
-        }
-        else if( layout == ACCORDIAN_LEFT )
-        {
-            return "ACCORDIAN_LEFT"; //$NON-NLS-1$
-        }
-        else if( layout == ACCORDIAN_RIGHT )
-        {
-            return "ACCORDIAN_RIGHT"; //$NON-NLS-1$
-        }
-        else if( layout == ACCORDIAN_UP )
-        {
-            return "ACCORDIAN_UP"; //$NON-NLS-1$
-        }
-        else if( layout == STACKED )
-        {
-            return "STACKED"; //$NON-NLS-1$
+            throw new AssertionError( e );
         }
 
         throw new IllegalArgumentException( "layout" ); //$NON-NLS-1$

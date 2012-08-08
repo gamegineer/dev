@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.core;
 
+import static org.junit.Assert.assertEquals;
 import org.easymock.EasyMock;
 import org.junit.Test;
 
@@ -55,6 +56,28 @@ public final class ContainerLayoutFactoryTest
     public void testFromId_Id_Illegal()
     {
         ContainerLayoutFactory.fromId( "id" ); //$NON-NLS-1$
+    }
+
+    /**
+     * Ensures the {@code fromId} method returns the correct container layout
+     * when passed a legal identifier.
+     */
+    @Test
+    public void testFromId_Id_Legal()
+    {
+        final IContainerLayout[] layouts = new IContainerLayout[] {
+            ContainerLayoutFactory.createAbsoluteLayout(), //
+            ContainerLayoutFactory.createAccordianDownLayout(), //
+            ContainerLayoutFactory.createAccordianLeftLayout(), //
+            ContainerLayoutFactory.createAccordianRightLayout(), //
+            ContainerLayoutFactory.createAccordianUpLayout(), //
+            ContainerLayoutFactory.createStackedLayout()
+        };
+
+        for( final IContainerLayout layout : layouts )
+        {
+            assertEquals( layout, ContainerLayoutFactory.fromId( ContainerLayoutFactory.getId( layout ) ) );
+        }
     }
 
     /**
