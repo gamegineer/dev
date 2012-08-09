@@ -23,6 +23,7 @@ package org.gamegineer.table.core;
 
 import java.awt.Point;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 
@@ -33,6 +34,14 @@ import net.jcip.annotations.ThreadSafe;
 @ThreadSafe
 public final class ContainerLayouts
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The next unique container layout identifier. */
+    private static final AtomicLong nextContainerLayoutId_ = new AtomicLong();
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -59,7 +68,7 @@ public final class ContainerLayouts
     /* @NonNull */
     public static IContainerLayout createHorizontalContainerLayout()
     {
-        return new AbstractContainerLayout()
+        return new AbstractContainerLayout( getUniqueContainerLayoutId() )
         {
             @Override
             public void layout(
@@ -76,14 +85,14 @@ public final class ContainerLayouts
     }
 
     /**
-     * Creates a new container layout that is unique.
+     * Creates a new container layout with a unique identifier.
      * 
      * @return A new container layout; never {@code null}.
      */
     /* @NonNull */
     public static IContainerLayout createUniqueContainerLayout()
     {
-        return new AbstractContainerLayout()
+        return new AbstractContainerLayout( getUniqueContainerLayoutId() )
         {
             @Override
             public void layout(
@@ -105,7 +114,7 @@ public final class ContainerLayouts
     /* @NonNull */
     public static IContainerLayout createVerticalContainerLayout()
     {
-        return new AbstractContainerLayout()
+        return new AbstractContainerLayout( getUniqueContainerLayoutId() )
         {
             @Override
             public void layout(
@@ -119,6 +128,18 @@ public final class ContainerLayouts
                 }
             }
         };
+    }
+
+    /**
+     * Gets a unique container layout identifier.
+     * 
+     * @return A unique container layout identifier; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    private static ContainerLayoutId getUniqueContainerLayoutId()
+    {
+        return ContainerLayoutId.fromString( String.format( "container-layout-%1$d", nextContainerLayoutId_.incrementAndGet() ) ); //$NON-NLS-1$
     }
 
 
@@ -135,15 +156,31 @@ public final class ContainerLayouts
         implements IContainerLayout
     {
         // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The container layout identifier. */
+        private final ContainerLayoutId id_;
+
+
+        // ==================================================================
         // Constructors
         // ==================================================================
 
         /**
          * Initializes a new instance of the {@code AbstractContainerLayout}
          * class.
+         * 
+         * @param id
+         *        The container layout identifier; must not be {@code null}.
          */
-        AbstractContainerLayout()
+        AbstractContainerLayout(
+            /* @NonNull */
+            final ContainerLayoutId id )
         {
+            assert id != null;
+
+            id_ = id;
         }
 
 
@@ -155,7 +192,7 @@ public final class ContainerLayouts
          * @see org.gamegineer.table.core.IContainerLayout#getComponentIndex(org.gamegineer.table.core.IContainer, java.awt.Point)
          */
         @Override
-        public int getComponentIndex(
+        public final int getComponentIndex(
             final IContainer container,
             final Point location )
         {
@@ -169,6 +206,15 @@ public final class ContainerLayouts
             }
 
             return -1;
+        }
+
+        /*
+         * @see org.gamegineer.table.core.IContainerLayout#getId()
+         */
+        @Override
+        public final ContainerLayoutId getId()
+        {
+            return id_;
         }
     }
 }

@@ -25,6 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import java.io.Serializable;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.internal.core.AccordianLayout;
 
 /**
@@ -40,6 +41,13 @@ public final class AccordianLayoutProxy
 
     /** Serializable class version number. */
     private static final long serialVersionUID = 935885609483952880L;
+
+    /**
+     * The container layout identifier.
+     * 
+     * @serial
+     */
+    private String id_;
 
     /**
      * The offset of each component in the x-direction in table coordinates.
@@ -66,6 +74,7 @@ public final class AccordianLayoutProxy
     @SuppressWarnings( "unused" )
     private AccordianLayoutProxy()
     {
+        id_ = null;
         offsetX_ = 0;
         offsetY_ = 0;
     }
@@ -86,6 +95,7 @@ public final class AccordianLayoutProxy
     {
         assertArgumentNotNull( containerLayout, "containerLayout" ); //$NON-NLS-1$
 
+        id_ = containerLayout.getId().toString();
         final Dimension offset = containerLayout.getOffset();
         offsetX_ = offset.width;
         offsetY_ = offset.height;
@@ -106,6 +116,6 @@ public final class AccordianLayoutProxy
     /* @NonNull */
     private Object readResolve()
     {
-        return new AccordianLayout( offsetX_, offsetY_ );
+        return new AccordianLayout( ContainerLayoutId.fromString( id_ ), offsetX_, offsetY_ );
     }
 }

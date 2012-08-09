@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.persistence.serializable;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.Serializable;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.internal.core.AbsoluteLayout;
 
 /**
@@ -40,6 +41,13 @@ public final class AbsoluteLayoutProxy
     /** Serializable class version number. */
     private static final long serialVersionUID = -4653915858593619643L;
 
+    /**
+     * The container layout identifier.
+     * 
+     * @serial
+     */
+    private String id_;
+
 
     // ======================================================================
     // Constructors
@@ -51,6 +59,7 @@ public final class AbsoluteLayoutProxy
     @SuppressWarnings( "unused" )
     private AbsoluteLayoutProxy()
     {
+        id_ = null;
     }
 
     /**
@@ -68,6 +77,8 @@ public final class AbsoluteLayoutProxy
         final AbsoluteLayout containerLayout )
     {
         assertArgumentNotNull( containerLayout, "containerLayout" ); //$NON-NLS-1$
+
+        id_ = containerLayout.getId().toString();
     }
 
 
@@ -83,9 +94,8 @@ public final class AbsoluteLayoutProxy
      *         deserialized; never {@code null}.
      */
     /* @NonNull */
-    @SuppressWarnings( "static-method" )
     private Object readResolve()
     {
-        return new AbsoluteLayout();
+        return new AbsoluteLayout( ContainerLayoutId.fromString( id_ ) );
     }
 }

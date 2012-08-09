@@ -26,6 +26,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Dimension;
 import java.awt.Point;
 import org.gamegineer.table.core.Components;
+import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITableEnvironment;
@@ -38,6 +39,14 @@ import org.junit.Test;
  */
 public final class StackedLayoutTest
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The default container layout identifier for use in the fixture. */
+    private static final ContainerLayoutId DEFAULT_ID = ContainerLayoutId.fromString( "id" ); //$NON-NLS-1$
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -61,7 +70,17 @@ public final class StackedLayoutTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_ComponentsPerStackLevel_Zero()
     {
-        new StackedLayout( 0, 1, 1 );
+        new StackedLayout( DEFAULT_ID, 0, 1, 1 );
+    }
+
+    /**
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * identifier.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_Id_Null()
+    {
+        new StackedLayout( null, 1, 1, 1 );
     }
 
     /**
@@ -71,7 +90,7 @@ public final class StackedLayoutTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_StackLevelOffsetX_Zero()
     {
-        new StackedLayout( 1, 0, 1 );
+        new StackedLayout( DEFAULT_ID, 1, 0, 1 );
     }
 
     /**
@@ -81,7 +100,7 @@ public final class StackedLayoutTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_StackLevelOffsetY_Zero()
     {
-        new StackedLayout( 1, 1, 0 );
+        new StackedLayout( DEFAULT_ID, 1, 1, 0 );
     }
 
     /**
@@ -92,7 +111,7 @@ public final class StackedLayoutTest
     @Test
     public void testGetComponentIndex_Location_ComponentPresent_NotTopComponent()
     {
-        final StackedLayout layout = new StackedLayout( 1, 10, 10 );
+        final StackedLayout layout = new StackedLayout( DEFAULT_ID, 1, 10, 10 );
         final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment();
         final IContainer container = Components.createUniqueContainer( tableEnvironment );
         container.setOrigin( new Point( 0, 0 ) );
@@ -117,7 +136,7 @@ public final class StackedLayoutTest
     @Test
     public void testGetComponentIndex_Location_ComponentPresent_TopComponent()
     {
-        final StackedLayout layout = new StackedLayout( 1, 10, 10 );
+        final StackedLayout layout = new StackedLayout( DEFAULT_ID, 1, 10, 10 );
         final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment();
         final IContainer container = Components.createUniqueContainer( tableEnvironment );
         container.setOrigin( new Point( 0, 0 ) );
@@ -140,7 +159,7 @@ public final class StackedLayoutTest
     @Test
     public void testGetStackLevelOffset_ReturnValue_Copy()
     {
-        final StackedLayout layout = new StackedLayout( 1, 1, 1 );
+        final StackedLayout layout = new StackedLayout( DEFAULT_ID, 1, 1, 1 );
         final Dimension stackLevelOffset = layout.getStackLevelOffset();
         final Dimension expectedValue = new Dimension( stackLevelOffset );
 
@@ -159,7 +178,7 @@ public final class StackedLayoutTest
     {
         final int originX = 20, originY = 30;
         final int stackLevelOffsetX = 2, stackLevelOffsetY = 3;
-        final StackedLayout layout = new StackedLayout( 2, stackLevelOffsetX, stackLevelOffsetY );
+        final StackedLayout layout = new StackedLayout( DEFAULT_ID, 2, stackLevelOffsetX, stackLevelOffsetY );
         final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment();
         final IContainer container = Components.createUniqueContainer( tableEnvironment );
         container.setOrigin( new Point( originX, originY ) );

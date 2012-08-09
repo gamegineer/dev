@@ -115,6 +115,15 @@ public abstract class AbstractContainerLayoutTestCase
     }
 
     /**
+     * Ensures the {@code getId} method does not return {@code null}.
+     */
+    @Test
+    public void testGetId_ReturnValue_NonNull()
+    {
+        assertNotNull( layout_.getId() );
+    }
+
+    /**
      * Ensures the {@code layout} method throws an exception when passed a
      * {@code null} container.
      */

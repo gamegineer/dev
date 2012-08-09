@@ -25,6 +25,7 @@ import static org.junit.Assert.assertEquals;
 import java.awt.Dimension;
 import java.awt.Point;
 import org.gamegineer.table.core.Components;
+import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITableEnvironment;
@@ -37,6 +38,14 @@ import org.junit.Test;
  */
 public final class AccordianLayoutTest
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The default container layout identifier for use in the fixture. */
+    private static final ContainerLayoutId DEFAULT_ID = ContainerLayoutId.fromString( "id" ); //$NON-NLS-1$
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -54,6 +63,16 @@ public final class AccordianLayoutTest
     // ======================================================================
 
     /**
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * identifier.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_Id_Null()
+    {
+        new AccordianLayout( null, 1, 1 );
+    }
+
+    /**
      * Ensures the constructor does not throw an exception when passed an offset
      * in the x-direction that is non-zero and an offset in the y-direction that
      * is zero.
@@ -61,7 +80,7 @@ public final class AccordianLayoutTest
     @Test
     public void testConstructor_OffsetX_NonZero_OffsetY_Zero()
     {
-        new AccordianLayout( 1, 0 );
+        new AccordianLayout( DEFAULT_ID, 1, 0 );
     }
 
     /**
@@ -71,7 +90,7 @@ public final class AccordianLayoutTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_OffsetX_Zero_OffsetY_Zero()
     {
-        new AccordianLayout( 0, 0 );
+        new AccordianLayout( DEFAULT_ID, 0, 0 );
     }
 
     /**
@@ -82,7 +101,7 @@ public final class AccordianLayoutTest
     @Test
     public void testConstructor_OffsetX_Zero_OffsetY_NonZero()
     {
-        new AccordianLayout( 0, 1 );
+        new AccordianLayout( DEFAULT_ID, 0, 1 );
     }
 
     /**
@@ -91,7 +110,7 @@ public final class AccordianLayoutTest
     @Test
     public void testGetOffset_ReturnValue_Copy()
     {
-        final AccordianLayout layout = new AccordianLayout( 1, 1 );
+        final AccordianLayout layout = new AccordianLayout( DEFAULT_ID, 1, 1 );
         final Dimension offset = layout.getOffset();
         final Dimension expectedValue = new Dimension( offset );
 
@@ -110,7 +129,7 @@ public final class AccordianLayoutTest
     {
         final int originX = 20, originY = 30;
         final int offsetX = 2, offsetY = -3;
-        final AccordianLayout layout = new AccordianLayout( offsetX, offsetY );
+        final AccordianLayout layout = new AccordianLayout( DEFAULT_ID, offsetX, offsetY );
         final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment();
         final IContainer container = Components.createUniqueContainer( tableEnvironment );
         container.setOrigin( new Point( originX, originY ) );

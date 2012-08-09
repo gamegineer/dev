@@ -1,5 +1,5 @@
 /*
- * StackedLayoutAsContainerLayoutTest.java
+ * AbsoluteLayoutTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,33 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 5, 2012 at 9:50:22 PM.
+ * Created on Aug 8, 2012 at 8:08:42 PM.
  */
 
 package org.gamegineer.table.internal.core;
 
-import org.gamegineer.table.core.AbstractContainerLayoutTestCase;
-import org.gamegineer.table.core.ContainerLayoutId;
-import org.gamegineer.table.core.IContainerLayout;
+import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.StackedLayout} class to ensure it
- * does not violate the contract of the
- * {@link org.gamegineer.table.core.IContainerLayout} interface.
+ * {@link org.gamegineer.table.internal.core.AbsoluteLayout} class.
  */
-public final class StackedLayoutAsContainerLayoutTest
-    extends AbstractContainerLayoutTestCase
+public final class AbsoluteLayoutTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code StackedLayoutAsContainerLayoutTest} class.
+     * Initializes a new instance of the {@code AbsoluteLayoutTest} class.
      */
-    public StackedLayoutAsContainerLayoutTest()
+    public AbsoluteLayoutTest()
     {
     }
 
@@ -51,12 +45,13 @@ public final class StackedLayoutAsContainerLayoutTest
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.core.AbstractContainerLayoutTestCase#createContainerLayout()
+    /**
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * identifier.
      */
-    @Override
-    protected IContainerLayout createContainerLayout()
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_Id_Null()
     {
-        return new StackedLayout( ContainerLayoutId.fromString( "org.gamegineer.containerLayouts.id" ), 1, 1, 1 ); //$NON-NLS-1$
+        new AbsoluteLayout( null );
     }
 }

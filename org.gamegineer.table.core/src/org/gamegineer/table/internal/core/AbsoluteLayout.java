@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.core;
 import java.awt.Dimension;
 import java.awt.Point;
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerLayout;
 
@@ -41,9 +42,18 @@ public final class AbsoluteLayout
 
     /**
      * Initializes a new instance of the {@code AbsoluteLayout} class.
+     * 
+     * @param id
+     *        The container layout identifier; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code id} is {@code null}.
      */
-    public AbsoluteLayout()
+    public AbsoluteLayout(
+        /* @NonNull */
+        final ContainerLayoutId id )
     {
+        super( id );
     }
 
 

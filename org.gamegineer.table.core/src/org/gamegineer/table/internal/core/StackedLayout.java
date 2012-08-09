@@ -26,6 +26,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import java.awt.Point;
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerLayout;
@@ -56,6 +57,8 @@ public final class StackedLayout
     /**
      * Initializes a new instance of the {@code StackedLayout} class.
      * 
+     * @param id
+     *        The container layout identifier; must not be {@code null}.
      * @param componentsPerStackLevel
      *        The number of components per stack level.
      * @param stackLevelOffsetX
@@ -68,12 +71,18 @@ public final class StackedLayout
      * @throws java.lang.IllegalArgumentException
      *         If {@code componentsPerStackLevel}, {@code stackLevelOffsetX}, or
      *         {@code stackLevelOffsetY} is not positive.
+     * @throws java.lang.NullPointerException
+     *         If {@code id} is {@code null}.
      */
     public StackedLayout(
+        /* @NonNull */
+        final ContainerLayoutId id,
         final int componentsPerStackLevel,
         final int stackLevelOffsetX,
         final int stackLevelOffsetY )
     {
+        super( id );
+
         assertArgumentLegal( componentsPerStackLevel > 0, "componentsPerStackLevel", NonNlsMessages.StackedLayout_ctor_componentsPerStackLevel_notPositive ); //$NON-NLS-1$
         assertArgumentLegal( stackLevelOffsetX > 0, "stackLevelOffsetX", NonNlsMessages.StackedLayout_ctor_stackLevelOffsetX_notPositive ); //$NON-NLS-1$
         assertArgumentLegal( stackLevelOffsetY > 0, "stackLevelOffsetY", NonNlsMessages.StackedLayout_ctor_stackLevelOffsetY_notPositive ); //$NON-NLS-1$

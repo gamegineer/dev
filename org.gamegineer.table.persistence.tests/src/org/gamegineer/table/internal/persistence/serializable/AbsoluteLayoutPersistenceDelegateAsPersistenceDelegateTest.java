@@ -25,6 +25,7 @@ import static org.junit.Assert.assertEquals;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
+import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.internal.core.AbsoluteLayout;
 
 /**
@@ -82,7 +83,7 @@ public final class AbsoluteLayoutPersistenceDelegateAsPersistenceDelegateTest
     @Override
     protected Object createSubject()
     {
-        return new AbsoluteLayout();
+        return new AbsoluteLayout( ContainerLayoutId.fromString( "id" ) ); //$NON-NLS-1$
     }
 
     /*

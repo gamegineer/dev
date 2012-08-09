@@ -42,41 +42,41 @@ public final class ContainerLayoutFactory
      * A layout in which the container is laid out with all components at their
      * absolute position in table coordinates.
      */
-    private static final IContainerLayout ABSOLUTE = new AbsoluteLayout();
+    private static final IContainerLayout ABSOLUTE = new AbsoluteLayout( ContainerLayoutId.fromString( "org.gamegineer.containerLayouts.absolute" ) ); //$NON-NLS-1$
 
     /**
      * A layout in which the container is laid out as an accordian. Beginning
      * with the component at the bottom of the container, each successive
      * component is offset immediately below it.
      */
-    private static final IContainerLayout ACCORDIAN_DOWN = new AccordianLayout( 0, 18 );
+    private static final IContainerLayout ACCORDIAN_DOWN = new AccordianLayout( ContainerLayoutId.fromString( "org.gamegineer.containerLayouts.accordianDown" ), 0, 18 ); //$NON-NLS-1$
 
     /**
      * A layout in which the container is laid out as an accordian. Beginning
      * with the component at the bottom of the container, each successive
      * component is offset immediately to the left of it.
      */
-    private static final IContainerLayout ACCORDIAN_LEFT = new AccordianLayout( -16, 0 );
+    private static final IContainerLayout ACCORDIAN_LEFT = new AccordianLayout( ContainerLayoutId.fromString( "org.gamegineer.containerLayouts.accordianLeft" ), -16, 0 ); //$NON-NLS-1$
 
     /**
      * A layout in which the container is laid out as an accordian. Beginning
      * with the component at the bottom of the container, each successive
      * component is offset immediately to the right of it.
      */
-    private static final IContainerLayout ACCORDIAN_RIGHT = new AccordianLayout( 16, 0 );
+    private static final IContainerLayout ACCORDIAN_RIGHT = new AccordianLayout( ContainerLayoutId.fromString( "org.gamegineer.containerLayouts.accordianRight" ), 16, 0 ); //$NON-NLS-1$
 
     /**
      * A layout in which the container is laid out as an accordian. Beginning
      * with the component at the bottom of the container, each successive
      * component is offset immediately above it.
      */
-    private static final IContainerLayout ACCORDIAN_UP = new AccordianLayout( 0, -18 );
+    private static final IContainerLayout ACCORDIAN_UP = new AccordianLayout( ContainerLayoutId.fromString( "org.gamegineer.containerLayouts.accordianUp" ), 0, -18 ); //$NON-NLS-1$
 
     /**
      * A layout in which the container is laid out with one component placed on
      * top of the other with no offset.
      */
-    private static final IContainerLayout STACKED = new StackedLayout( 10, 2, 1 );
+    private static final IContainerLayout STACKED = new StackedLayout( ContainerLayoutId.fromString( "org.gamegineer.containerLayouts.stacked" ), 10, 2, 1 ); //$NON-NLS-1$
 
 
     // ======================================================================

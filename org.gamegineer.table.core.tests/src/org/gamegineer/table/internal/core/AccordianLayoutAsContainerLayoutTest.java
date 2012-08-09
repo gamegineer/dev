@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.core;
 
 import org.gamegineer.table.core.AbstractContainerLayoutTestCase;
+import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.IContainerLayout;
 
 /**
@@ -56,6 +57,6 @@ public final class AccordianLayoutAsContainerLayoutTest
     @Override
     protected IContainerLayout createContainerLayout()
     {
-        return new AccordianLayout( 1, 1 );
+        return new AccordianLayout( ContainerLayoutId.fromString( "id" ), 1, 1 ); //$NON-NLS-1$
     }
 }

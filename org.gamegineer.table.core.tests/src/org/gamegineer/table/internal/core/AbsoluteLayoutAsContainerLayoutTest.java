@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.core;
 
 import org.gamegineer.table.core.AbstractContainerLayoutTestCase;
+import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.IContainerLayout;
 
 /**
@@ -56,6 +57,6 @@ public final class AbsoluteLayoutAsContainerLayoutTest
     @Override
     protected IContainerLayout createContainerLayout()
     {
-        return new AbsoluteLayout();
+        return new AbsoluteLayout( ContainerLayoutId.fromString( "id" ) ); //$NON-NLS-1$
     }
 }

@@ -26,6 +26,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.List;
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerLayout;
@@ -38,14 +39,33 @@ abstract class AbstractContainerLayout
     implements IContainerLayout
 {
     // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The container layout identifier. */
+    private final ContainerLayoutId id_;
+
+
+    // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
      * Initializes a new instance of the {@code AbstractContainerLayout} class.
+     * 
+     * @param id
+     *        The container layout identifier; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code id} is {@code null}.
      */
-    AbstractContainerLayout()
+    AbstractContainerLayout(
+        /* @NonNull */
+        final ContainerLayoutId id )
     {
+        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
+
+        id_ = id;
     }
 
 
@@ -97,6 +117,15 @@ abstract class AbstractContainerLayout
         /* @NonNull */
         IContainer container,
         int index );
+
+    /*
+     * @see org.gamegineer.table.core.IContainerLayout#getId()
+     */
+    @Override
+    public final ContainerLayoutId getId()
+    {
+        return id_;
+    }
 
     /*
      * @see org.gamegineer.table.core.IContainerLayout#layout(org.gamegineer.table.core.IContainer)

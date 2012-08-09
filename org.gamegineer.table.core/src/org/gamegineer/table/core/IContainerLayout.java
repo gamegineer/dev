@@ -61,6 +61,14 @@ public interface IContainerLayout
         Point location );
 
     /**
+     * Gets the container layout identifier.
+     * 
+     * @return The container layout identifier; never {@code null}.
+     */
+    /* @NonNull */
+    public ContainerLayoutId getId();
+
+    /**
      * Lays out the child components of the specified container according to the
      * rules of this layout.
      * 

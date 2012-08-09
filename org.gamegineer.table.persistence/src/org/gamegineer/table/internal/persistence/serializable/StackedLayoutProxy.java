@@ -25,6 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import java.io.Serializable;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.internal.core.StackedLayout;
 
 /**
@@ -47,6 +48,13 @@ public final class StackedLayoutProxy
      * @serial
      */
     private int componentsPerStackLevel_;
+
+    /**
+     * The container layout identifier.
+     * 
+     * @serial
+     */
+    private String id_;
 
     /**
      * The offset in the x-direction of each stack level in table coordinates.
@@ -74,6 +82,7 @@ public final class StackedLayoutProxy
     private StackedLayoutProxy()
     {
         componentsPerStackLevel_ = 0;
+        id_ = null;
         stackLevelOffsetX_ = 0;
         stackLevelOffsetY_ = 0;
     }
@@ -95,6 +104,7 @@ public final class StackedLayoutProxy
         assertArgumentNotNull( containerLayout, "containerLayout" ); //$NON-NLS-1$
 
         componentsPerStackLevel_ = containerLayout.getComponentsPerStackLevel();
+        id_ = containerLayout.getId().toString();
         final Dimension stackLevelOffset = containerLayout.getStackLevelOffset();
         stackLevelOffsetX_ = stackLevelOffset.width;
         stackLevelOffsetY_ = stackLevelOffset.height;
@@ -115,6 +125,6 @@ public final class StackedLayoutProxy
     /* @NonNull */
     private Object readResolve()
     {
-        return new StackedLayout( componentsPerStackLevel_, stackLevelOffsetX_, stackLevelOffsetY_ );
+        return new StackedLayout( ContainerLayoutId.fromString( id_ ), componentsPerStackLevel_, stackLevelOffsetX_, stackLevelOffsetY_ );
     }
 }

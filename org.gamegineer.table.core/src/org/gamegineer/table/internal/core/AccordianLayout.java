@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.core;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import java.awt.Dimension;
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerLayout;
 
@@ -55,6 +56,8 @@ public final class AccordianLayout
     /**
      * Initializes a new instance of the {@code AccordianLayout} class.
      * 
+     * @param id
+     *        The container layout identifier; must not be {@code null}.
      * @param offsetX
      *        The offset of each component in the x-direction in table
      *        coordinates.
@@ -64,11 +67,17 @@ public final class AccordianLayout
      * 
      * @throws java.lang.IllegalArgumentException
      *         If both {@code offsetX} and {@code offsetY} are zero.
+     * @throws java.lang.NullPointerException
+     *         If {@code id} is {@code null}.
      */
     public AccordianLayout(
+        /* @NonNull */
+        final ContainerLayoutId id,
         final int offsetX,
         final int offsetY )
     {
+        super( id );
+
         assertArgumentLegal( (offsetX != 0) || (offsetY != 0), "offsetY", NonNlsMessages.AccordianLayout_ctor_offsetY_zero ); //$NON-NLS-1$
 
         offset_ = new Dimension( offsetX, offsetY );

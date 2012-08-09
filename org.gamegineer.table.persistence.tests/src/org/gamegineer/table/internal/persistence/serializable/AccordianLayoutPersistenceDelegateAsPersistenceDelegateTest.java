@@ -25,6 +25,7 @@ import static org.junit.Assert.assertEquals;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
+import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.internal.core.AccordianLayout;
 
 /**
@@ -83,7 +84,7 @@ public final class AccordianLayoutPersistenceDelegateAsPersistenceDelegateTest
     @Override
     protected Object createSubject()
     {
-        return new AccordianLayout( 1, 1 );
+        return new AccordianLayout( ContainerLayoutId.fromString( "id" ), 1, 1 ); //$NON-NLS-1$
     }
 
     /*
