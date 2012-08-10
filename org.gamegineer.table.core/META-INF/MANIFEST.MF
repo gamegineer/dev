@@ -21,4 +21,6 @@ Require-Bundle: org.eclipse.equinox.registry;bundle-version="3.5.101"
 Service-Component: OSGI-INF/componentStrategyRegistry.xml,
  OSGI-INF/componentStrategyRegistryExtensionPointAdapter.xml,
  OSGI-INF/componentSurfaceDesignRegistry.xml,
- OSGI-INF/componentSurfaceDesignRegistryExtensionPointAdapter.xml
+ OSGI-INF/componentSurfaceDesignRegistryExtensionPointAdapter.xml,
+ OSGI-INF/containerLayoutRegistry.xml,
+ OSGI-INF/containerLayoutRegistryExtensionPointAdapter.xml

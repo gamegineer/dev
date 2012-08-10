@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.core;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Point;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -57,6 +58,49 @@ public final class ContainerLayouts
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Clones the specified container layout.
+     * 
+     * @param containerLayout
+     *        The container layout to clone; must not be {@code null}.
+     * 
+     * @return A new container layout; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code containerLayout} is {@code null}.
+     */
+    /* @NonNull */
+    public static IContainerLayout cloneContainerLayout(
+        /* @NonNull */
+        final IContainerLayout containerLayout )
+    {
+        assertArgumentNotNull( containerLayout, "containerLayout" ); //$NON-NLS-1$
+
+        return new IContainerLayout()
+        {
+            @Override
+            public int getComponentIndex(
+                final IContainer container,
+                final Point location )
+            {
+                return containerLayout.getComponentIndex( container, location );
+            }
+
+            @Override
+            public ContainerLayoutId getId()
+            {
+                return containerLayout.getId();
+            }
+
+            @Override
+            public void layout(
+                final IContainer container )
+            {
+                containerLayout.layout( container );
+            }
+        };
+    }
 
     /**
      * Creates a new container layout that lays out each component in the

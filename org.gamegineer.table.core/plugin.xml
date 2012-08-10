@@ -10,6 +10,10 @@
             id="componentSurfaceDesigns"
             name="%extensionPoint.componentSurfaceDesigns.name"
             schema="schema/componentSurfaceDesigns.exsd" />
+    <extension-point
+            id="containerLayouts"
+            name="%extensionPoint.containerLayouts.name"
+            schema="schema/containerLayouts.exsd" />
 
     <extension
             point="org.gamegineer.table.core.componentStrategies">

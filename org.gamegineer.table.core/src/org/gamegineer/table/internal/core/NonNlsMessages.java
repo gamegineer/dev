@@ -25,6 +25,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
+import org.gamegineer.table.core.ContainerLayoutId;
 
 /**
  * A utility class to manage non-localized messages for the package.
@@ -231,6 +232,40 @@ final class NonNlsMessages
 
     /** The container listener is not registered. */
     public static String Container_removeContainerListener_listener_notRegistered;
+
+    // --- ContainerLayoutRegistry ------------------------------------------
+
+    /** A container layout is already registered for the specified identifier. */
+    public static String ContainerLayoutRegistry_registerContainerLayout_containerLayout_registered;
+
+    /** The container layout is not registered for the specified identifier. */
+    public static String ContainerLayoutRegistry_unregisterContainerLayout_containerLayout_unregistered;
+
+    // --- ContainerLayoutRegistryExtensionPointAdapter ---------------------
+
+    /** The container layout registry service is already bound. */
+    public static String ContainerLayoutRegistryExtensionPointAdapter_bindContainerLayoutRegistry_bound;
+
+    /** The extension registry service is already bound. */
+    public static String ContainerLayoutRegistryExtensionPointAdapter_bindExtensionRegistry_bound;
+
+    /**
+     * An error occurred while creating the container layout of a container
+     * layout configuration element.
+     */
+    public static String ContainerLayoutRegistryExtensionPointAdapter_createContainerLayoutRegistration_createContainerLayoutError;
+
+    /**
+     * An error occurred while parsing the container layout configuration
+     * element.
+     */
+    public static String ContainerLayoutRegistryExtensionPointAdapter_registerContainerLayout_parseError;
+
+    /** The container layout registry service is not bound. */
+    public static String ContainerLayoutRegistryExtensionPointAdapter_unbindContainerLayoutRegistry_notBound;
+
+    /** The extension registry service is not bound. */
+    public static String ContainerLayoutRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound;
 
     // --- MementoUtils -----------------------------------------------------
 
@@ -448,6 +483,64 @@ final class NonNlsMessages
         final String componentSurfaceDesignId )
     {
         return bind( ComponentSurfaceDesignRegistryExtensionPointAdapter_registerComponentSurfaceDesign_parseError, componentSurfaceDesignId );
+    }
+
+    // --- ContainerLayoutRegistry ------------------------------------------
+
+    /**
+     * Gets the formatted message indicating a container layout is already
+     * registered for the specified identifier.
+     * 
+     * @param containerLayoutId
+     *        The container layout identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating a container layout is already
+     *         registered for the specified identifier; never {@code null}.
+     */
+    /* @NonNull */
+    static String ContainerLayoutRegistry_registerContainerLayout_containerLayout_registered(
+        /* @NonNull */
+        final ContainerLayoutId containerLayoutId )
+    {
+        return bind( ContainerLayoutRegistry_registerContainerLayout_containerLayout_registered, containerLayoutId );
+    }
+
+    /**
+     * Gets the formatted message indicating the container layout is not
+     * registered for the specified identifier.
+     * 
+     * @param containerLayoutId
+     *        The container layout identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the container layout is not
+     *         registered for the specified identifier; never {@code null}.
+     */
+    /* @NonNull */
+    static String ContainerLayoutRegistry_unregisterContainerLayout_containerLayout_unregistered(
+        /* @NonNull */
+        final ContainerLayoutId containerLayoutId )
+    {
+        return bind( ContainerLayoutRegistry_unregisterContainerLayout_containerLayout_unregistered, containerLayoutId );
+    }
+
+    // --- ContainerLayoutRegistryExtensionPointAdapter ---------------------
+
+    /**
+     * Gets the formatted message indicating an error occurred while parsing the
+     * container layout configuration element.
+     * 
+     * @param containerLayoutId
+     *        The container layout identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating an error occurred while parsing
+     *         the container layout configuration element; never {@code null}.
+     */
+    /* @NonNull */
+    static String ContainerLayoutRegistryExtensionPointAdapter_registerContainerLayout_parseError(
+        /* @NonNull */
+        final String containerLayoutId )
+    {
+        return bind( ContainerLayoutRegistryExtensionPointAdapter_registerContainerLayout_parseError, containerLayoutId );
     }
 
     // --- MementoUtils -----------------------------------------------------
