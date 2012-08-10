@@ -50,7 +50,7 @@ public final class CardStrategy
     private static final ComponentSurfaceDesign DEFAULT_SURFACE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.CardStrategy.defaultSurfaceDesign" ), 71, 96 ); //$NON-NLS-1$
 
     /** The strategy identifier. */
-    public static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.card" ); //$NON-NLS-1$
+    private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.card" ); //$NON-NLS-1$
 
     /** The singleton instance of this class. */
     public static final CardStrategy INSTANCE = new CardStrategy();

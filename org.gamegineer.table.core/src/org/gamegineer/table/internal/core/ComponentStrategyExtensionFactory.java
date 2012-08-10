@@ -95,9 +95,9 @@ public final class ComponentStrategyExtensionFactory
     private static Map<ComponentStrategyId, IComponentStrategy> createComponentStrategies()
     {
         final Map<ComponentStrategyId, IComponentStrategy> componentStrategies = new HashMap<ComponentStrategyId, IComponentStrategy>();
-        componentStrategies.put( CardStrategy.ID, CardStrategy.INSTANCE );
-        componentStrategies.put( CardPileStrategy.ID, CardPileStrategy.INSTANCE );
-        componentStrategies.put( TabletopStrategy.ID, TabletopStrategy.INSTANCE );
+        componentStrategies.put( CardStrategy.INSTANCE.getId(), CardStrategy.INSTANCE );
+        componentStrategies.put( CardPileStrategy.INSTANCE.getId(), CardPileStrategy.INSTANCE );
+        componentStrategies.put( TabletopStrategy.INSTANCE.getId(), TabletopStrategy.INSTANCE );
         return Collections.unmodifiableMap( componentStrategies );
     }
 
