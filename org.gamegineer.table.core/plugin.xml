@@ -260,5 +260,26 @@
                 id="org.gamegineer.cardSurfaces.special.joker"
                 width="71" />
     </extension>
+    <extension
+            point="org.gamegineer.table.core.containerLayouts">
+        <containerLayout
+                className="org.gamegineer.table.internal.core.ContainerLayoutExtensionFactory:org.gamegineer.containerLayouts.absolute"
+                id="org.gamegineer.containerLayouts.absolute" />
+        <containerLayout
+                className="org.gamegineer.table.internal.core.ContainerLayoutExtensionFactory:org.gamegineer.containerLayouts.accordianDown"
+                id="org.gamegineer.containerLayouts.accordianDown" />
+        <containerLayout
+                className="org.gamegineer.table.internal.core.ContainerLayoutExtensionFactory:org.gamegineer.containerLayouts.accordianLeft"
+                id="org.gamegineer.containerLayouts.accordianLeft" />
+        <containerLayout
+                className="org.gamegineer.table.internal.core.ContainerLayoutExtensionFactory:org.gamegineer.containerLayouts.accordianRight"
+                id="org.gamegineer.containerLayouts.accordianRight" />
+        <containerLayout
+                className="org.gamegineer.table.internal.core.ContainerLayoutExtensionFactory:org.gamegineer.containerLayouts.accordianUp"
+                id="org.gamegineer.containerLayouts.accordianUp" />
+        <containerLayout
+                className="org.gamegineer.table.internal.core.ContainerLayoutExtensionFactory:org.gamegineer.containerLayouts.stacked"
+                id="org.gamegineer.containerLayouts.stacked" />
+    </extension>
 
 </plugin>

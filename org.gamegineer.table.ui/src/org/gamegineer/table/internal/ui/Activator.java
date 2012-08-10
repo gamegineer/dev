@@ -30,6 +30,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.app.IBranding;
 import org.gamegineer.common.ui.help.IHelpSystem;
 import org.gamegineer.table.core.IComponentSurfaceDesignRegistry;
+import org.gamegineer.table.core.IContainerLayoutRegistry;
 import org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -72,6 +73,10 @@ public final class Activator
     @GuardedBy( "lock_" )
     private ServiceTracker<IComponentSurfaceDesignUIRegistry, IComponentSurfaceDesignUIRegistry> componentSurfaceDesignUIRegistryTracker_;
 
+    /** The container layout registry service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker<IContainerLayoutRegistry, IContainerLayoutRegistry> containerLayoutRegistryTracker_;
+
     /** The executor service tracker. */
     @GuardedBy( "lock_" )
     private ServiceTracker<ExecutorService, ExecutorService> executorServiceTracker_;
@@ -103,6 +108,7 @@ public final class Activator
         bundleImages_ = null;
         componentSurfaceDesignRegistryTracker_ = null;
         componentSurfaceDesignUIRegistryTracker_ = null;
+        containerLayoutRegistryTracker_ = null;
         executorServiceTracker_ = null;
         helpSystemTracker_ = null;
         preferencesServiceTracker_ = null;
@@ -216,6 +222,29 @@ public final class Activator
             }
 
             return componentSurfaceDesignUIRegistryTracker_.getService();
+        }
+    }
+
+    /**
+     * Gets the container layout registry service.
+     * 
+     * @return The container layout registry service or {@code null} if no
+     *         container layout registry service is available.
+     */
+    /* @Nullable */
+    public IContainerLayoutRegistry getContainerLayoutRegistry()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( containerLayoutRegistryTracker_ == null )
+            {
+                containerLayoutRegistryTracker_ = new ServiceTracker<IContainerLayoutRegistry, IContainerLayoutRegistry>( bundleContext_, IContainerLayoutRegistry.class, null );
+                containerLayoutRegistryTracker_.open();
+            }
+
+            return containerLayoutRegistryTracker_.getService();
         }
     }
 
@@ -433,6 +462,11 @@ public final class Activator
             {
                 componentSurfaceDesignUIRegistryTracker_.close();
                 componentSurfaceDesignUIRegistryTracker_ = null;
+            }
+            if( containerLayoutRegistryTracker_ != null )
+            {
+                containerLayoutRegistryTracker_.close();
+                containerLayoutRegistryTracker_ = null;
             }
             if( executorServiceTracker_ != null )
             {

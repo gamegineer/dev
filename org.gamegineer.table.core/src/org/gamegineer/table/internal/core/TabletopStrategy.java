@@ -32,7 +32,6 @@ import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
-import org.gamegineer.table.core.ContainerLayoutFactory;
 import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.core.IContainerStrategy;
 import org.gamegineer.table.core.TabletopOrientation;
@@ -83,7 +82,7 @@ public final class TabletopStrategy
     @Override
     public IContainerLayout getDefaultLayout()
     {
-        return ContainerLayoutFactory.createAbsoluteLayout();
+        return ContainerLayoutExtensionFactory.ABSOLUTE_LAYOUT;
     }
 
     /*

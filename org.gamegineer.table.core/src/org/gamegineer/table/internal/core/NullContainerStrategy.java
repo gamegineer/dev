@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.core;
 
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.ComponentStrategyId;
-import org.gamegineer.table.core.ContainerLayoutFactory;
 import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.core.IContainerStrategy;
 
@@ -65,7 +64,7 @@ public final class NullContainerStrategy
     @Override
     public IContainerLayout getDefaultLayout()
     {
-        return ContainerLayoutFactory.createAbsoluteLayout();
+        return ContainerLayoutExtensionFactory.ABSOLUTE_LAYOUT;
     }
 
     /*

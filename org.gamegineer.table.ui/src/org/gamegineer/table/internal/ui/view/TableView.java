@@ -64,11 +64,12 @@ import org.gamegineer.table.core.CardPileOrientation;
 import org.gamegineer.table.core.CardStrategyFactory;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
-import org.gamegineer.table.core.ContainerLayoutFactory;
+import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentSurfaceDesignRegistry;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerLayout;
+import org.gamegineer.table.core.IContainerLayoutRegistry;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.BundleImages;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
@@ -341,7 +342,7 @@ final class TableView
             public void actionPerformed(
                 final ActionEvent event )
             {
-                setCardPileLayout( ContainerLayoutFactory.fromId( event.getActionCommand() ) );
+                setCardPileLayout( ContainerLayoutId.fromString( event.getActionCommand() ) );
             }
         };
         actionMediator_.bindActionListener( Actions.getAddAceOfClubsCardAction(), addCardActionListener );
@@ -774,7 +775,7 @@ final class TableView
                     return false;
                 }
 
-                return container.getLayout() == ContainerLayoutFactory.fromId( (String)obj.getValue( Action.ACTION_COMMAND_KEY ) );
+                return container.getLayout().getId().equals( ContainerLayoutId.fromString( (String)obj.getValue( Action.ACTION_COMMAND_KEY ) ) );
             }
 
         };
@@ -1245,19 +1246,27 @@ final class TableView
     /**
      * Sets the layout of the focused card pile to the specified value.
      * 
-     * @param layout
-     *        The card pile layout; must not be {@code null}.
+     * @param layoutId
+     *        The identifier of the card pile layout; must not be {@code null}.
      */
     private void setCardPileLayout(
         /* @NonNull */
-        final IContainerLayout layout )
+        final ContainerLayoutId layoutId )
     {
-        assert layout != null;
+        assert layoutId != null;
 
         final IContainer container = getFocusedContainer();
         if( container != null )
         {
-            container.setLayout( layout );
+            final IContainerLayoutRegistry containerLayoutRegistry = Activator.getDefault().getContainerLayoutRegistry();
+            if( containerLayoutRegistry != null )
+            {
+                final IContainerLayout layout = containerLayoutRegistry.getContainerLayout( layoutId );
+                if( layout != null )
+                {
+                    container.setLayout( layout );
+                }
+            }
         }
     }
 

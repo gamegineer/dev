@@ -233,6 +233,14 @@ final class NonNlsMessages
     /** The container listener is not registered. */
     public static String Container_removeContainerListener_listener_notRegistered;
 
+    // --- ContainerLayoutExtensionFactory ----------------------------------
+
+    /** The container layout identifier is unknown. */
+    public static String ContainerLayoutExtensionFactory_create_unknownId;
+
+    /** The initialization data type was not expected. */
+    public static String ContainerLayoutExtensionFactory_setInitializationData_unexpectedData;
+
     // --- ContainerLayoutRegistry ------------------------------------------
 
     /** A container layout is already registered for the specified identifier. */
@@ -483,6 +491,26 @@ final class NonNlsMessages
         final String componentSurfaceDesignId )
     {
         return bind( ComponentSurfaceDesignRegistryExtensionPointAdapter_registerComponentSurfaceDesign_parseError, componentSurfaceDesignId );
+    }
+
+    // --- ContainerLayoutExtensionFactory ----------------------------------
+
+    /**
+     * Gets the formatted message indicating the container layout identifier is
+     * unknown.
+     * 
+     * @param containerLayoutId
+     *        The container layout identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the container layout identifier
+     *         is unknown; never {@code null}.
+     */
+    /* @NonNull */
+    static String ContainerLayoutExtensionFactory_create_unknownId(
+        /* @NonNull */
+        final ContainerLayoutId containerLayoutId )
+    {
+        return bind( ContainerLayoutExtensionFactory_create_unknownId, containerLayoutId );
     }
 
     // --- ContainerLayoutRegistry ------------------------------------------
