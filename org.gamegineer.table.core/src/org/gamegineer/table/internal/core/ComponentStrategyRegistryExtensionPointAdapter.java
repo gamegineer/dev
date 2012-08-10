@@ -274,6 +274,20 @@ public final class ComponentStrategyRegistryExtensionPointAdapter
     }
 
     /**
+     * Registers all component strategies in the extension registry.
+     */
+    @GuardedBy( "lock_" )
+    private void registerComponentStrategies()
+    {
+        assert Thread.holdsLock( lock_ );
+
+        for( final IConfigurationElement configurationElement : extensionRegistry_.getConfigurationElementsFor( BundleConstants.COMPONENT_STRATEGIES_EXTENSION_POINT_UNIQUE_ID ) )
+        {
+            registerComponentStrategy( configurationElement );
+        }
+    }
+
+    /**
      * Registers the component strategy represented by the specified extension
      * configuration element.
      * 
@@ -301,20 +315,6 @@ public final class ComponentStrategyRegistryExtensionPointAdapter
         {
             componentStrategyRegistry_.registerComponentStrategy( componentStrategyRegistration.getComponentStrategy() );
             componentStrategyRegistrations_.add( componentStrategyRegistration );
-        }
-    }
-
-    /**
-     * Registers all component strategies in the extension registry.
-     */
-    @GuardedBy( "lock_" )
-    private void registerComponentStrategies()
-    {
-        assert Thread.holdsLock( lock_ );
-
-        for( final IConfigurationElement configurationElement : extensionRegistry_.getConfigurationElementsFor( BundleConstants.COMPONENT_STRATEGIES_EXTENSION_POINT_UNIQUE_ID ) )
-        {
-            registerComponentStrategy( configurationElement );
         }
     }
 

@@ -37,6 +37,17 @@ public interface IComponentStrategyRegistry
     // ======================================================================
 
     /**
+     * Gets a collection of all component strategies registered with this
+     * service.
+     * 
+     * @return A collection of all component strategies registered with this
+     *         service; never {@code null}. This collection is a snapshot of the
+     *         component strategies registered at the time of the call.
+     */
+    /* @NonNull */
+    public Collection<IComponentStrategy> getComponentStrategies();
+
+    /**
      * Gets the component strategy with the specified identifier.
      * 
      * @param id
@@ -52,17 +63,6 @@ public interface IComponentStrategyRegistry
     public IComponentStrategy getComponentStrategy(
         /* @NonNull */
         ComponentStrategyId id );
-
-    /**
-     * Gets a collection of all component strategies registered with this
-     * service.
-     * 
-     * @return A collection of all component strategies registered with this
-     *         service; never {@code null}. This collection is a snapshot of the
-     *         component strategies registered at the time of the call.
-     */
-    /* @NonNull */
-    public Collection<IComponentStrategy> getComponentStrategies();
 
     /**
      * Registers the specified component strategy.

@@ -88,6 +88,34 @@ public abstract class AbstractComponentStrategyRegistryTestCase
     }
 
     /**
+     * Ensures the {@code getComponentStrategies} method returns a copy of the
+     * registered component strategy collection.
+     */
+    @Test
+    public void testGetComponentStrategies_ReturnValue_Copy()
+    {
+        final Collection<IComponentStrategy> componentStrategies = componentStrategyRegistry_.getComponentStrategies();
+        final int expectedComponentStrategiesSize = componentStrategies.size();
+
+        componentStrategies.add( ComponentStrategies.createUniqueComponentStrategy() );
+
+        assertEquals( expectedComponentStrategiesSize, componentStrategyRegistry_.getComponentStrategies().size() );
+    }
+
+    /**
+     * Ensures the {@code getComponentStrategies} method returns a snapshot of
+     * the registered component strategy collection.
+     */
+    @Test
+    public void testGetComponentStrategies_ReturnValue_Snapshot()
+    {
+        final Collection<IComponentStrategy> componentStrategies = componentStrategyRegistry_.getComponentStrategies();
+        componentStrategyRegistry_.registerComponentStrategy( ComponentStrategies.createUniqueComponentStrategy() );
+
+        assertTrue( componentStrategies.size() != componentStrategyRegistry_.getComponentStrategies().size() );
+    }
+
+    /**
      * Ensures the {@code getComponentStrategy} method returns the correct value
      * when passed an identifier that is absent.
      */
@@ -120,34 +148,6 @@ public abstract class AbstractComponentStrategyRegistryTestCase
         final IComponentStrategy actualComponentStrategy = componentStrategyRegistry_.getComponentStrategy( expectedComponentStrategy.getId() );
 
         assertSame( expectedComponentStrategy, actualComponentStrategy );
-    }
-
-    /**
-     * Ensures the {@code getComponentStrategies} method returns a copy of the
-     * registered component strategy collection.
-     */
-    @Test
-    public void testGetComponentStrategies_ReturnValue_Copy()
-    {
-        final Collection<IComponentStrategy> componentStrategies = componentStrategyRegistry_.getComponentStrategies();
-        final int expectedComponentStrategiesSize = componentStrategies.size();
-
-        componentStrategies.add( ComponentStrategies.createUniqueComponentStrategy() );
-
-        assertEquals( expectedComponentStrategiesSize, componentStrategyRegistry_.getComponentStrategies().size() );
-    }
-
-    /**
-     * Ensures the {@code getComponentStrategies} method returns a snapshot of
-     * the registered component strategy collection.
-     */
-    @Test
-    public void testGetComponentStrategies_ReturnValue_Snapshot()
-    {
-        final Collection<IComponentStrategy> componentStrategies = componentStrategyRegistry_.getComponentStrategies();
-        componentStrategyRegistry_.registerComponentStrategy( ComponentStrategies.createUniqueComponentStrategy() );
-
-        assertTrue( componentStrategies.size() != componentStrategyRegistry_.getComponentStrategies().size() );
     }
 
     /**

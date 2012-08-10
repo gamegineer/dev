@@ -66,6 +66,15 @@ public final class ComponentStrategyRegistry
     // ======================================================================
 
     /*
+     * @see org.gamegineer.table.core.IComponentStrategyRegistry#getComponentStrategies()
+     */
+    @Override
+    public Collection<IComponentStrategy> getComponentStrategies()
+    {
+        return new ArrayList<IComponentStrategy>( componentStrategies_.values() );
+    }
+
+    /*
      * @see org.gamegineer.table.core.IComponentStrategyRegistry#getComponentStrategy(org.gamegineer.table.core.ComponentStrategyId)
      */
     @Override
@@ -75,15 +84,6 @@ public final class ComponentStrategyRegistry
         assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
 
         return componentStrategies_.get( id );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponentStrategyRegistry#getComponentStrategies()
-     */
-    @Override
-    public Collection<IComponentStrategy> getComponentStrategies()
-    {
-        return new ArrayList<IComponentStrategy>( componentStrategies_.values() );
     }
 
     /*
