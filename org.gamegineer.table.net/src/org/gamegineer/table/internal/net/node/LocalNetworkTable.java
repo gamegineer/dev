@@ -682,7 +682,7 @@ final class LocalNetworkTable
                 containerPath = container.getPath();
                 if( containerPath != null )
                 {
-                    containerIncrement.setLayout( container.getLayout() );
+                    containerIncrement.setLayoutId( container.getLayout().getId() );
                 }
             }
             finally

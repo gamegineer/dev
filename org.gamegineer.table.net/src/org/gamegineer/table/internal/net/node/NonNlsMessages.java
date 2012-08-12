@@ -101,6 +101,9 @@ final class NonNlsMessages
     /** Failed to set the component state. */
     public static String NetworkTableUtils_incrementContainerState_setComponentStateFailed;
 
+    /** Failed to set the layout. */
+    public static String NetworkTableUtils_incrementContainerState_setLayoutFailed;
+
     /** Failed to set the table state. */
     public static String NetworkTableUtils_setTableState_failed;
 

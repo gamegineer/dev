@@ -39,11 +39,14 @@ import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ContainerEvent;
+import org.gamegineer.table.core.ContainerLayoutId;
+import org.gamegineer.table.core.ContainerLayoutRegistryFacade;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.core.IContainerListener;
 import org.gamegineer.table.core.IContainerStrategy;
+import org.gamegineer.table.core.NoSuchContainerLayoutException;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.IContainer}.
@@ -63,8 +66,11 @@ final class Container
      */
     private static final String COMPONENTS_MEMENTO_ATTRIBUTE_NAME = "container.components"; //$NON-NLS-1$
 
-    /** The name of the memento attribute that stores the container layout. */
-    private static final String LAYOUT_MEMENTO_ATTRIBUTE_NAME = "container.layout"; //$NON-NLS-1$
+    /**
+     * The name of the memento attribute that stores the container layout
+     * identifier.
+     */
+    private static final String LAYOUT_ID_MEMENTO_ATTRIBUTE_NAME = "container.layoutId"; //$NON-NLS-1$
 
     /**
      * The collection of components in this container ordered from bottom to
@@ -528,7 +534,14 @@ final class Container
 
         super.readMemento( memento );
 
-        setLayout( MementoUtils.getAttribute( memento, LAYOUT_MEMENTO_ATTRIBUTE_NAME, IContainerLayout.class ) );
+        try
+        {
+            setLayout( ContainerLayoutRegistryFacade.getContainerLayout( MementoUtils.getAttribute( memento, LAYOUT_ID_MEMENTO_ATTRIBUTE_NAME, ContainerLayoutId.class ) ) );
+        }
+        catch( final NoSuchContainerLayoutException e )
+        {
+            throw new MementoException( e );
+        }
 
         @SuppressWarnings( "unchecked" )
         final List<Object> componentMementos = MementoUtils.getAttribute( memento, COMPONENTS_MEMENTO_ATTRIBUTE_NAME, List.class );
@@ -799,7 +812,7 @@ final class Container
         }
         memento.put( COMPONENTS_MEMENTO_ATTRIBUTE_NAME, componentMementos );
 
-        memento.put( LAYOUT_MEMENTO_ATTRIBUTE_NAME, layout_ );
+        memento.put( LAYOUT_ID_MEMENTO_ATTRIBUTE_NAME, layout_.getId() );
     }
 
 

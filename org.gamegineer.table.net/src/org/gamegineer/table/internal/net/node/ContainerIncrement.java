@@ -23,7 +23,7 @@ package org.gamegineer.table.internal.net.node;
 
 import java.util.List;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.core.IContainerLayout;
+import org.gamegineer.table.core.ContainerLayoutId;
 
 /**
  * An incremental change to the state of a container.
@@ -50,11 +50,11 @@ public final class ContainerIncrement
     private List<Object> addedComponentMementos_;
 
     /**
-     * The new container layout or {@code null} if unchanged.
+     * The new container layout identifier or {@code null} if unchanged.
      * 
-     * @serial The new container layout.
+     * @serial The new container layout identifier.
      */
-    private IContainerLayout layout_;
+    private ContainerLayoutId layoutId_;
 
     /**
      * The count of components removed from the top of the container or
@@ -75,7 +75,7 @@ public final class ContainerIncrement
     public ContainerIncrement()
     {
         addedComponentMementos_ = null;
-        layout_ = null;
+        layoutId_ = null;
         removedComponentCount_ = null;
     }
 
@@ -100,14 +100,14 @@ public final class ContainerIncrement
     }
 
     /**
-     * Gets the new container layout.
+     * Gets the new container layout identifier.
      * 
-     * @return The new container layout or {@code null} if unchanged.
+     * @return The new container layout identifier or {@code null} if unchanged.
      */
     /* @Nullable */
-    public IContainerLayout getLayout()
+    public ContainerLayoutId getLayoutId()
     {
-        return layout_;
+        return layoutId_;
     }
 
     /**
@@ -141,16 +141,16 @@ public final class ContainerIncrement
     }
 
     /**
-     * Sets the new container layout.
+     * Sets the new container layout identifier.
      * 
-     * @param layout
-     *        The new container layout or {@code null} if unchanged.
+     * @param layoutId
+     *        The new container layout identifier or {@code null} if unchanged.
      */
-    public void setLayout(
+    public void setLayoutId(
         /* @Nullable */
-        final IContainerLayout layout )
+        final ContainerLayoutId layoutId )
     {
-        layout_ = layout;
+        layoutId_ = layoutId;
     }
 
     /**

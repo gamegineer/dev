@@ -48,10 +48,18 @@ final class NonNlsMessages
     /** The component surface design width must not be negative. */
     public static String ComponentSurfaceDesign_ctor_width_negative;
 
-    // --- ContainerContentChangedEvent --------------------------------------
+    // --- ContainerContentChangedEvent -------------------------------------
 
     /** The component index is negative. */
     public static String ContainerContentChangedEvent_ctor_componentIndex_negative;
+
+    // --- ContainerLayoutRegistryFacade ------------------------------------
+
+    /** The container layout registry is not available. */
+    public static String ContainerLayoutRegistryFacade_getContainerLayout_containerLayoutRegistryNotAvailable;
+
+    /** The memento specifies an unknown container layout identifier. */
+    public static String ContainerLayoutRegistryFacade_getContainerLayout_unknownContainerLayoutId;
 
 
     // ======================================================================
@@ -71,5 +79,30 @@ final class NonNlsMessages
      */
     private NonNlsMessages()
     {
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    // --- ContainerLayoutRegistryFacade ------------------------------------
+
+    /**
+     * Gets the formatted message indicating the memento specifies an unknown
+     * container layout identifier.
+     * 
+     * @param containerLayoutId
+     *        The container layout identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the memento specifies an unknown
+     *         container layout identifier; never {@code null}.
+     */
+    /* @NonNull */
+    static String ContainerLayoutRegistryFacade_getContainerLayout_unknownContainerLayoutId(
+        /* @NonNull */
+        final ContainerLayoutId containerLayoutId )
+    {
+        return bind( ContainerLayoutRegistryFacade_getContainerLayout_unknownContainerLayoutId, containerLayoutId );
     }
 }

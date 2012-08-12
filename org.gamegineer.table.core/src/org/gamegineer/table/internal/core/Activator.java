@@ -26,6 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.IComponentStrategyRegistry;
+import org.gamegineer.table.core.IContainerLayoutRegistry;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
@@ -52,6 +53,10 @@ public final class Activator
     @GuardedBy( "lock_" )
     private ServiceTracker<IComponentStrategyRegistry, IComponentStrategyRegistry> componentStrategyRegistryTracker_;
 
+    /** The container layout registry service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker<IContainerLayoutRegistry, IContainerLayoutRegistry> containerLayoutRegistryTracker_;
+
     /** The instance lock. */
     private final Object lock_;
 
@@ -68,6 +73,7 @@ public final class Activator
         lock_ = new Object();
         bundleContext_ = null;
         componentStrategyRegistryTracker_ = null;
+        containerLayoutRegistryTracker_ = null;
     }
 
 
@@ -110,6 +116,29 @@ public final class Activator
             }
 
             return componentStrategyRegistryTracker_.getService();
+        }
+    }
+
+    /**
+     * Gets the container layout registry service.
+     * 
+     * @return The container layout registry service or {@code null} if no
+     *         container layout registry service is available.
+     */
+    /* @Nullable */
+    public IContainerLayoutRegistry getContainerLayoutRegistry()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( containerLayoutRegistryTracker_ == null )
+            {
+                containerLayoutRegistryTracker_ = new ServiceTracker<IContainerLayoutRegistry, IContainerLayoutRegistry>( bundleContext_, IContainerLayoutRegistry.class, null );
+                containerLayoutRegistryTracker_.open();
+            }
+
+            return containerLayoutRegistryTracker_.getService();
         }
     }
 
@@ -166,6 +195,11 @@ public final class Activator
             {
                 componentStrategyRegistryTracker_.close();
                 componentStrategyRegistryTracker_ = null;
+            }
+            if( containerLayoutRegistryTracker_ != null )
+            {
+                containerLayoutRegistryTracker_.close();
+                containerLayoutRegistryTracker_ = null;
             }
         }
     }

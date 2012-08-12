@@ -26,9 +26,11 @@ import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ComponentPath;
+import org.gamegineer.table.core.ContainerLayoutRegistryFacade;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.NoSuchContainerLayoutException;
 import org.gamegineer.table.internal.net.Loggers;
 
 /**
@@ -149,9 +151,16 @@ public final class NetworkTableUtils
         assert container != null;
         assert containerIncrement != null;
 
-        if( containerIncrement.getLayout() != null )
+        if( containerIncrement.getLayoutId() != null )
         {
-            container.setLayout( containerIncrement.getLayout() );
+            try
+            {
+                container.setLayout( ContainerLayoutRegistryFacade.getContainerLayout( containerIncrement.getLayoutId() ) );
+            }
+            catch( final NoSuchContainerLayoutException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.NetworkTableUtils_incrementContainerState_setLayoutFailed, e );
+            }
         }
 
         if( containerIncrement.getRemovedComponentCount() != null )
