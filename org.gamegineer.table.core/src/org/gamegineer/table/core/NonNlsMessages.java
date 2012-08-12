@@ -40,6 +40,14 @@ final class NonNlsMessages
     /** The component path index must not be negative. */
     public static String ComponentPath_ctor_index_negative;
 
+    // --- ComponentStrategyRegistryFacade ----------------------------------
+
+    /** The component strategy registry is not available. */
+    public static String ComponentStrategyRegistryFacade_getComponentStrategy_componentStrategyRegistryNotAvailable;
+
+    /** The component strategy identifier is not registered. */
+    public static String ComponentStrategyRegistryFacade_getComponentStrategy_unknownComponentStrategyId;
+
     // --- ComponentSurfaceDesign -------------------------------------------
 
     /** The component surface design height must not be negative. */
@@ -58,7 +66,7 @@ final class NonNlsMessages
     /** The container layout registry is not available. */
     public static String ContainerLayoutRegistryFacade_getContainerLayout_containerLayoutRegistryNotAvailable;
 
-    /** The memento specifies an unknown container layout identifier. */
+    /** The container layout identifier is not registered. */
     public static String ContainerLayoutRegistryFacade_getContainerLayout_unknownContainerLayoutId;
 
 
@@ -85,6 +93,26 @@ final class NonNlsMessages
     // ======================================================================
     // Methods
     // ======================================================================
+
+    // --- ComponentStrategyRegistryFacade ----------------------------------
+
+    /**
+     * Gets the formatted message indicating the memento specifies an unknown
+     * component strategy identifier.
+     * 
+     * @param componentStrategyId
+     *        The component strategy identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the memento specifies an unknown
+     *         component strategy identifier; never {@code null}.
+     */
+    /* @NonNull */
+    static String ComponentStrategyRegistryFacade_getComponentStrategy_unknownComponentStrategyId(
+        /* @NonNull */
+        final ComponentStrategyId componentStrategyId )
+    {
+        return bind( ComponentStrategyRegistryFacade_getComponentStrategy_unknownComponentStrategyId, componentStrategyId );
+    }
 
     // --- ContainerLayoutRegistryFacade ------------------------------------
 

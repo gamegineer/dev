@@ -26,9 +26,10 @@ import java.util.Map;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ComponentStrategyId;
+import org.gamegineer.table.core.ComponentStrategyRegistryFacade;
 import org.gamegineer.table.core.IComponentStrategy;
-import org.gamegineer.table.core.IComponentStrategyRegistry;
 import org.gamegineer.table.core.IContainerStrategy;
+import org.gamegineer.table.core.NoSuchComponentStrategyException;
 
 /**
  * A factory for creating table components.
@@ -91,7 +92,7 @@ final class ComponentFactory
         assert tableEnvironment != null;
         assert memento != null;
 
-        final IComponentStrategy strategy = createComponentStrategy( MementoUtils.getAttribute( memento, STRATEGY_ID_MEMENTO_ATTRIBUTE_NAME, ComponentStrategyId.class ) );
+        final IComponentStrategy strategy = getComponentStrategy( MementoUtils.getAttribute( memento, STRATEGY_ID_MEMENTO_ATTRIBUTE_NAME, ComponentStrategyId.class ) );
         final Component component = createComponent( MementoUtils.getAttribute( memento, CLASS_NAME_MEMENTO_ATTRIBUTE_NAME, String.class ), tableEnvironment, strategy );
         component.setMemento( memento );
         return component;
@@ -145,40 +146,6 @@ final class ComponentFactory
     }
 
     /**
-     * Creates a component strategy of the specified class.
-     * 
-     * @param id
-     *        The component strategy identifier; must not be {@code null}.
-     * 
-     * @return A new component strategy; never {@code null}.
-     * 
-     * @throws org.gamegineer.common.core.util.memento.MementoException
-     *         If the component strategy cannot be created.
-     */
-    /* @NonNull */
-    private static IComponentStrategy createComponentStrategy(
-        /* @NonNull */
-        final ComponentStrategyId id )
-        throws MementoException
-    {
-        assert id != null;
-
-        final IComponentStrategyRegistry componentStrategyRegistry = Activator.getDefault().getComponentStrategyRegistry();
-        if( componentStrategyRegistry == null )
-        {
-            throw new MementoException( NonNlsMessages.ComponentFactory_createComponentStrategy_componentStrategyRegistryNotAvailable );
-        }
-
-        final IComponentStrategy componentStrategy = componentStrategyRegistry.getComponentStrategy( id );
-        if( componentStrategy == null )
-        {
-            throw new MementoException( NonNlsMessages.ComponentFactory_createComponentStrategy_unknownComponentStrategyId( id ) );
-        }
-
-        return componentStrategy;
-    }
-
-    /**
      * Creates a new empty memento for the specified component.
      * 
      * @param component
@@ -198,5 +165,35 @@ final class ComponentFactory
         memento.put( CLASS_NAME_MEMENTO_ATTRIBUTE_NAME, component.getClass().getName() );
         memento.put( STRATEGY_ID_MEMENTO_ATTRIBUTE_NAME, component.getStrategy().getId() );
         return memento;
+    }
+
+    /**
+     * Gets the component strategy associated with the specified identifier.
+     * 
+     * @param id
+     *        The component strategy identifier; must not be {@code null}.
+     * 
+     * @return The component strategy associated with the specified identifier;
+     *         never {@code null}.
+     * 
+     * @throws org.gamegineer.common.core.util.memento.MementoException
+     *         If the component strategy is unknown.
+     */
+    /* @NonNull */
+    private static IComponentStrategy getComponentStrategy(
+        /* @NonNull */
+        final ComponentStrategyId id )
+        throws MementoException
+    {
+        assert id != null;
+
+        try
+        {
+            return ComponentStrategyRegistryFacade.getComponentStrategy( id );
+        }
+        catch( final NoSuchComponentStrategyException e )
+        {
+            throw new MementoException( e );
+        }
     }
 }
