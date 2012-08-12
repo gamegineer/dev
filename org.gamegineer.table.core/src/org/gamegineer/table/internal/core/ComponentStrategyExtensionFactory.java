@@ -46,7 +46,7 @@ public final class ComponentStrategyExtensionFactory
     // ======================================================================
 
     /** The collection of component strategies supported by this factory. */
-    private static final Map<ComponentStrategyId, IComponentStrategy> COMPONENT_STRATEGIES = createComponentStrategies();
+    private static final Map<ComponentStrategyId, IComponentStrategy> COMPONENT_STRATEGIES;
 
     /** The identifier of the component strategy to create. */
     private ComponentStrategyId componentStrategyId_;
@@ -55,6 +55,18 @@ public final class ComponentStrategyExtensionFactory
     // ======================================================================
     // Constructors
     // ======================================================================
+
+    /**
+     * Initializes the {@code ComponentStrategyExtensionFactory} class.
+     */
+    static
+    {
+        final Map<ComponentStrategyId, IComponentStrategy> componentStrategies = new HashMap<ComponentStrategyId, IComponentStrategy>();
+        componentStrategies.put( CardStrategy.INSTANCE.getId(), CardStrategy.INSTANCE );
+        componentStrategies.put( CardPileStrategy.INSTANCE.getId(), CardPileStrategy.INSTANCE );
+        componentStrategies.put( TabletopStrategy.INSTANCE.getId(), TabletopStrategy.INSTANCE );
+        COMPONENT_STRATEGIES = Collections.unmodifiableMap( componentStrategies );
+    }
 
     /**
      * Initializes a new instance of the
@@ -83,22 +95,6 @@ public final class ComponentStrategyExtensionFactory
         }
 
         return componentStrategy;
-    }
-
-    /**
-     * Creates the collection of component strategies supported by this factory.
-     * 
-     * @return The collection of component strategies supported by this factory;
-     *         never {@code null}.
-     */
-    /* @NonNull */
-    private static Map<ComponentStrategyId, IComponentStrategy> createComponentStrategies()
-    {
-        final Map<ComponentStrategyId, IComponentStrategy> componentStrategies = new HashMap<ComponentStrategyId, IComponentStrategy>();
-        componentStrategies.put( CardStrategy.INSTANCE.getId(), CardStrategy.INSTANCE );
-        componentStrategies.put( CardPileStrategy.INSTANCE.getId(), CardPileStrategy.INSTANCE );
-        componentStrategies.put( TabletopStrategy.INSTANCE.getId(), TabletopStrategy.INSTANCE );
-        return Collections.unmodifiableMap( componentStrategies );
     }
 
     /*
