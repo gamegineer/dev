@@ -45,48 +45,8 @@ public final class ContainerLayoutExtensionFactory
     // Fields
     // ======================================================================
 
-    /**
-     * A layout in which the container is laid out with all components at their
-     * absolute position in table coordinates.
-     */
-    static final IContainerLayout ABSOLUTE_LAYOUT = new AbsoluteLayout( ContainerLayoutId.fromString( "org.gamegineer.containerLayouts.absolute" ) ); //$NON-NLS-1$
-
-    /**
-     * A layout in which the container is laid out as an accordian. Beginning
-     * with the component at the bottom of the container, each successive
-     * component is offset immediately below it.
-     */
-    static final IContainerLayout ACCORDIAN_DOWN_LAYOUT = new AccordianLayout( ContainerLayoutId.fromString( "org.gamegineer.containerLayouts.accordianDown" ), 0, 18 ); //$NON-NLS-1$
-
-    /**
-     * A layout in which the container is laid out as an accordian. Beginning
-     * with the component at the bottom of the container, each successive
-     * component is offset immediately to the left of it.
-     */
-    static final IContainerLayout ACCORDIAN_LEFT_LAYOUT = new AccordianLayout( ContainerLayoutId.fromString( "org.gamegineer.containerLayouts.accordianLeft" ), -16, 0 ); //$NON-NLS-1$
-
-    /**
-     * A layout in which the container is laid out as an accordian. Beginning
-     * with the component at the bottom of the container, each successive
-     * component is offset immediately to the right of it.
-     */
-    static final IContainerLayout ACCORDIAN_RIGHT_LAYOUT = new AccordianLayout( ContainerLayoutId.fromString( "org.gamegineer.containerLayouts.accordianRight" ), 16, 0 ); //$NON-NLS-1$
-
-    /**
-     * A layout in which the container is laid out as an accordian. Beginning
-     * with the component at the bottom of the container, each successive
-     * component is offset immediately above it.
-     */
-    static final IContainerLayout ACCORDIAN_UP_LAYOUT = new AccordianLayout( ContainerLayoutId.fromString( "org.gamegineer.containerLayouts.accordianUp" ), 0, -18 ); //$NON-NLS-1$
-
-    /**
-     * A layout in which the container is laid out with one component placed on
-     * top of the other with no offset.
-     */
-    static final IContainerLayout STACKED_LAYOUT = new StackedLayout( ContainerLayoutId.fromString( "org.gamegineer.containerLayouts.stacked" ), 10, 2, 1 ); //$NON-NLS-1$
-
     /** The collection of container layouts supported by this factory. */
-    private static final Map<ContainerLayoutId, IContainerLayout> CONTAINER_LAYOUTS = createContainerLayouts();
+    private static final Map<ContainerLayoutId, IContainerLayout> CONTAINER_LAYOUTS;
 
     /** The identifier of the container layouts to create. */
     private ContainerLayoutId containerLayoutId_;
@@ -95,6 +55,21 @@ public final class ContainerLayoutExtensionFactory
     // ======================================================================
     // Constructors
     // ======================================================================
+
+    /**
+     * Initializes the {@code ContainerLayoutExtensionFactory} class.
+     */
+    static
+    {
+        final Map<ContainerLayoutId, IContainerLayout> containerLayouts = new HashMap<ContainerLayoutId, IContainerLayout>();
+        containerLayouts.put( ContainerLayouts.ABSOLUTE.getId(), ContainerLayouts.ABSOLUTE );
+        containerLayouts.put( ContainerLayouts.ACCORDIAN_DOWN.getId(), ContainerLayouts.ACCORDIAN_DOWN );
+        containerLayouts.put( ContainerLayouts.ACCORDIAN_LEFT.getId(), ContainerLayouts.ACCORDIAN_LEFT );
+        containerLayouts.put( ContainerLayouts.ACCORDIAN_RIGHT.getId(), ContainerLayouts.ACCORDIAN_RIGHT );
+        containerLayouts.put( ContainerLayouts.ACCORDIAN_UP.getId(), ContainerLayouts.ACCORDIAN_UP );
+        containerLayouts.put( ContainerLayouts.STACKED.getId(), ContainerLayouts.STACKED );
+        CONTAINER_LAYOUTS = Collections.unmodifiableMap( containerLayouts );
+    }
 
     /**
      * Initializes a new instance of the {@code ContainerLayoutExtensionFactory}
@@ -123,25 +98,6 @@ public final class ContainerLayoutExtensionFactory
         }
 
         return containerLayout;
-    }
-
-    /**
-     * Creates the collection of container layouts supported by this factory.
-     * 
-     * @return The collection of container layouts supported by this factory;
-     *         never {@code null}.
-     */
-    /* @NonNull */
-    private static Map<ContainerLayoutId, IContainerLayout> createContainerLayouts()
-    {
-        final Map<ContainerLayoutId, IContainerLayout> containerLayouts = new HashMap<ContainerLayoutId, IContainerLayout>();
-        containerLayouts.put( ABSOLUTE_LAYOUT.getId(), ABSOLUTE_LAYOUT );
-        containerLayouts.put( ACCORDIAN_DOWN_LAYOUT.getId(), ACCORDIAN_DOWN_LAYOUT );
-        containerLayouts.put( ACCORDIAN_LEFT_LAYOUT.getId(), ACCORDIAN_LEFT_LAYOUT );
-        containerLayouts.put( ACCORDIAN_RIGHT_LAYOUT.getId(), ACCORDIAN_RIGHT_LAYOUT );
-        containerLayouts.put( ACCORDIAN_UP_LAYOUT.getId(), ACCORDIAN_UP_LAYOUT );
-        containerLayouts.put( STACKED_LAYOUT.getId(), STACKED_LAYOUT );
-        return Collections.unmodifiableMap( containerLayouts );
     }
 
     /*

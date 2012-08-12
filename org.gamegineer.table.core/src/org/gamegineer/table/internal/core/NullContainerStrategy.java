@@ -64,7 +64,7 @@ public final class NullContainerStrategy
     @Override
     public IContainerLayout getDefaultLayout()
     {
-        return ContainerLayoutExtensionFactory.ABSOLUTE_LAYOUT;
+        return ContainerLayouts.ABSOLUTE;
     }
 
     /*

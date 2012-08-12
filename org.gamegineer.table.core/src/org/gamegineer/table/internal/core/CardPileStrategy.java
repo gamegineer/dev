@@ -82,7 +82,7 @@ public final class CardPileStrategy
     @Override
     public IContainerLayout getDefaultLayout()
     {
-        return ContainerLayoutExtensionFactory.STACKED_LAYOUT;
+        return ContainerLayouts.STACKED;
     }
 
     /*
