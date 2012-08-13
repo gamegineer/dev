@@ -227,13 +227,13 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Sets up the class test fixture.
+     * Sets up the test suite fixture.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @BeforeClass
-    public static void setUpClass()
+    public static void setUpSuite()
         throws Exception
     {
         registeredContainerLayout_ = ContainerLayouts.createHorizontalContainerLayout();
@@ -241,13 +241,13 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Tears down the class test fixture.
+     * Tears down the test suite fixture.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @AfterClass
-    public static void tearDownClass()
+    public static void tearDownSuite()
         throws Exception
     {
         if( registeredContainerLayout_ != null )
