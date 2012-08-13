@@ -55,7 +55,7 @@ public final class ComponentStrategyFactory
     /* @NonNull */
     public static IComponentStrategy createNullComponentStrategy()
     {
-        return new NullComponentStrategy();
+        return NullComponentStrategy.INSTANCE;
     }
 
     /**
@@ -66,6 +66,6 @@ public final class ComponentStrategyFactory
     /* @NonNull */
     public static IContainerStrategy createNullContainerStrategy()
     {
-        return new NullContainerStrategy();
+        return NullContainerStrategy.INSTANCE;
     }
 }

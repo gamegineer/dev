@@ -55,6 +55,6 @@ public final class NullContainerStrategyAsContainerStrategyTest
     @Override
     protected NullContainerStrategy createComponentStrategy()
     {
-        return new NullContainerStrategy();
+        return NullContainerStrategy.INSTANCE;
     }
 }

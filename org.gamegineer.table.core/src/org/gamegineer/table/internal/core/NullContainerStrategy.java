@@ -41,6 +41,10 @@ public final class NullContainerStrategy
     /** The strategy identifier. */
     private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.nullContainer" ); //$NON-NLS-1$
 
+    /** The singleton instance of this class. */
+    @SuppressWarnings( "hiding" )
+    public static final NullContainerStrategy INSTANCE = new NullContainerStrategy();
+
 
     // ======================================================================
     // Constructors
@@ -49,7 +53,7 @@ public final class NullContainerStrategy
     /**
      * Initializes a new instance of the {@code NullContainerStrategy} class.
      */
-    public NullContainerStrategy()
+    private NullContainerStrategy()
     {
     }
 

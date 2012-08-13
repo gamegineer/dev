@@ -51,6 +51,9 @@ public class NullComponentStrategy
     /** The strategy identifier. */
     private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.nullComponent" ); //$NON-NLS-1$
 
+    /** The singleton instance of this class. */
+    public static final NullComponentStrategy INSTANCE = new NullComponentStrategy();
+
     /** The collection of supported component orientations. */
     private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( NullOrientation.values( NullOrientation.class ) ) );
 
@@ -62,7 +65,7 @@ public class NullComponentStrategy
     /**
      * Initializes a new instance of the {@code NullComponentStrategy} class.
      */
-    public NullComponentStrategy()
+    protected NullComponentStrategy()
     {
     }
 

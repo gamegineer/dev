@@ -62,6 +62,8 @@ public final class ComponentStrategyExtensionFactory
     static
     {
         final Map<ComponentStrategyId, IComponentStrategy> componentStrategies = new HashMap<ComponentStrategyId, IComponentStrategy>();
+        componentStrategies.put( NullComponentStrategy.INSTANCE.getId(), NullComponentStrategy.INSTANCE );
+        componentStrategies.put( NullContainerStrategy.INSTANCE.getId(), NullContainerStrategy.INSTANCE );
         componentStrategies.put( CardStrategy.INSTANCE.getId(), CardStrategy.INSTANCE );
         componentStrategies.put( CardPileStrategy.INSTANCE.getId(), CardPileStrategy.INSTANCE );
         componentStrategies.put( TabletopStrategy.INSTANCE.getId(), TabletopStrategy.INSTANCE );

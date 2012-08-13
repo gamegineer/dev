@@ -24,10 +24,10 @@
                 className="org.gamegineer.table.internal.core.ComponentStrategyExtensionFactory:org.gamegineer.componentStrategies.cardPile"
                 id="org.gamegineer.componentStrategies.cardPile" />
         <componentStrategy
-                className="org.gamegineer.table.internal.core.NullComponentStrategy"
+                className="org.gamegineer.table.internal.core.ComponentStrategyExtensionFactory:org.gamegineer.componentStrategies.nullComponent"
                 id="org.gamegineer.componentStrategies.nullComponent" />
         <componentStrategy
-                className="org.gamegineer.table.internal.core.NullContainerStrategy"
+                className="org.gamegineer.table.internal.core.ComponentStrategyExtensionFactory:org.gamegineer.componentStrategies.nullContainer"
                 id="org.gamegineer.componentStrategies.nullContainer" />
         <componentStrategy
                 className="org.gamegineer.table.internal.core.ComponentStrategyExtensionFactory:org.gamegineer.componentStrategies.tabletop"

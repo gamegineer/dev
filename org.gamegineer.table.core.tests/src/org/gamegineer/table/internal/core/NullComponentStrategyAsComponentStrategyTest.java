@@ -55,6 +55,6 @@ public final class NullComponentStrategyAsComponentStrategyTest
     @Override
     protected NullComponentStrategy createComponentStrategy()
     {
-        return new NullComponentStrategy();
+        return NullComponentStrategy.INSTANCE;
     }
 }
