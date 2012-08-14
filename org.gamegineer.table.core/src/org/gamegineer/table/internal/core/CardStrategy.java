@@ -52,9 +52,6 @@ public final class CardStrategy
     /** The strategy identifier. */
     private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.card" ); //$NON-NLS-1$
 
-    /** The singleton instance of this class. */
-    public static final CardStrategy INSTANCE = new CardStrategy();
-
     /** The collection of supported card orientations. */
     private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( CardOrientation.values( CardOrientation.class ) ) );
 
@@ -66,7 +63,7 @@ public final class CardStrategy
     /**
      * Initializes a new instance of the {@code CardStrategy} class.
      */
-    private CardStrategy()
+    public CardStrategy()
     {
     }
 

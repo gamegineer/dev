@@ -22,8 +22,7 @@
 package org.gamegineer.table.core;
 
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.core.NullComponentStrategy;
-import org.gamegineer.table.internal.core.NullContainerStrategy;
+import org.gamegineer.table.internal.core.ComponentStrategies;
 
 /**
  * A factory for creating common component strategies.
@@ -55,7 +54,7 @@ public final class ComponentStrategyFactory
     /* @NonNull */
     public static IComponentStrategy createNullComponentStrategy()
     {
-        return NullComponentStrategy.INSTANCE;
+        return ComponentStrategies.NULL_COMPONENT;
     }
 
     /**
@@ -66,6 +65,6 @@ public final class ComponentStrategyFactory
     /* @NonNull */
     public static IContainerStrategy createNullContainerStrategy()
     {
-        return NullContainerStrategy.INSTANCE;
+        return ComponentStrategies.NULL_CONTAINER;
     }
 }

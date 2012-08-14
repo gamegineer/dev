@@ -53,9 +53,6 @@ public final class TabletopStrategy
     /** The strategy identifier. */
     private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.tabletop" ); //$NON-NLS-1$
 
-    /** The singleton instance of this class. */
-    public static final TabletopStrategy INSTANCE = new TabletopStrategy();
-
     /** The collection of supported tabletop orientations. */
     private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( TabletopOrientation.values( TabletopOrientation.class ) ) );
 
@@ -67,7 +64,7 @@ public final class TabletopStrategy
     /**
      * Initializes a new instance of the {@code TabletopStrategy} class.
      */
-    private TabletopStrategy()
+    public TabletopStrategy()
     {
     }
 

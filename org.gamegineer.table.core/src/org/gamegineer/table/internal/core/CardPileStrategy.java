@@ -53,9 +53,6 @@ public final class CardPileStrategy
     /** The strategy identifier. */
     private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.cardPile" ); //$NON-NLS-1$
 
-    /** The singleton instance of this class. */
-    public static final CardPileStrategy INSTANCE = new CardPileStrategy();
-
     /** The collection of supported card pile orientations. */
     private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( CardPileOrientation.values( CardPileOrientation.class ) ) );
 
@@ -67,7 +64,7 @@ public final class CardPileStrategy
     /**
      * Initializes a new instance of the {@code CardPileStrategy} class.
      */
-    private CardPileStrategy()
+    public CardPileStrategy()
     {
     }
 

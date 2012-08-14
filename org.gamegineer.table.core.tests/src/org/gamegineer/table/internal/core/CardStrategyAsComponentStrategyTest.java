@@ -55,6 +55,6 @@ public final class CardStrategyAsComponentStrategyTest
     @Override
     protected CardStrategy createComponentStrategy()
     {
-        return CardStrategy.INSTANCE;
+        return new CardStrategy();
     }
 }

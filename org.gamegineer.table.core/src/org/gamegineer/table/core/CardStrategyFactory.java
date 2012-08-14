@@ -22,8 +22,7 @@
 package org.gamegineer.table.core;
 
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.core.CardPileStrategy;
-import org.gamegineer.table.internal.core.CardStrategy;
+import org.gamegineer.table.internal.core.ComponentStrategies;
 
 /**
  * A factory for creating component strategies based on a game of playing cards.
@@ -56,7 +55,7 @@ public final class CardStrategyFactory
     /* @NonNull */
     public static IContainerStrategy createCardPileStrategy()
     {
-        return CardPileStrategy.INSTANCE;
+        return ComponentStrategies.CARD_PILE;
     }
 
     /**
@@ -67,6 +66,6 @@ public final class CardStrategyFactory
     /* @NonNull */
     public static IComponentStrategy createCardStrategy()
     {
-        return CardStrategy.INSTANCE;
+        return ComponentStrategies.CARD;
     }
 }

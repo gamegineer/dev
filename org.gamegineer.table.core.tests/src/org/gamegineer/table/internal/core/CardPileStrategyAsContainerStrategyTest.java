@@ -55,6 +55,6 @@ public final class CardPileStrategyAsContainerStrategyTest
     @Override
     protected CardPileStrategy createComponentStrategy()
     {
-        return CardPileStrategy.INSTANCE;
+        return new CardPileStrategy();
     }
 }

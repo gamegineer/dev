@@ -77,7 +77,7 @@ final class Table
         assert tableEnvironment != null;
 
         tableEnvironment_ = tableEnvironment;
-        tabletop_ = new Container( tableEnvironment, TabletopStrategy.INSTANCE );
+        tabletop_ = new Container( tableEnvironment, ComponentStrategies.TABLETOP );
 
         getLock().lock();
         try
