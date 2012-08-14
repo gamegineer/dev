@@ -48,6 +48,12 @@ final class NonNlsMessages
     /** The component strategy identifier is not registered. */
     public static String ComponentStrategyRegistryFacade_getComponentStrategy_unknownComponentStrategyId;
 
+    /**
+     * The component strategy identifier is not associated with a container
+     * strategy.
+     */
+    public static String ComponentStrategyRegistryFacade_getContainerStrategy_notContainerStrategy;
+
     // --- ComponentSurfaceDesign -------------------------------------------
 
     /** The component surface design height must not be negative. */
@@ -97,14 +103,14 @@ final class NonNlsMessages
     // --- ComponentStrategyRegistryFacade ----------------------------------
 
     /**
-     * Gets the formatted message indicating the memento specifies an unknown
-     * component strategy identifier.
+     * Gets the formatted message indicating the component strategy identifier
+     * is not registered.
      * 
      * @param componentStrategyId
      *        The component strategy identifier; must not be {@code null}.
      * 
-     * @return The formatted message indicating the memento specifies an unknown
-     *         component strategy identifier; never {@code null}.
+     * @return The formatted message indicating the component strategy
+     *         identifier is not registered; never {@code null}.
      */
     /* @NonNull */
     static String ComponentStrategyRegistryFacade_getComponentStrategy_unknownComponentStrategyId(
@@ -114,17 +120,36 @@ final class NonNlsMessages
         return bind( ComponentStrategyRegistryFacade_getComponentStrategy_unknownComponentStrategyId, componentStrategyId );
     }
 
+    /**
+     * Gets the formatted message indicating the component strategy identifier
+     * is not associated with a container strategy.
+     * 
+     * @param componentStrategyId
+     *        The component strategy identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the component strategy
+     *         identifier is not associated with a container strategy; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    static String ComponentStrategyRegistryFacade_getContainerStrategy_notContainerStrategy(
+        /* @NonNull */
+        final ComponentStrategyId componentStrategyId )
+    {
+        return bind( ComponentStrategyRegistryFacade_getContainerStrategy_notContainerStrategy, componentStrategyId );
+    }
+
     // --- ContainerLayoutRegistryFacade ------------------------------------
 
     /**
-     * Gets the formatted message indicating the memento specifies an unknown
-     * container layout identifier.
+     * Gets the formatted message indicating the container layout identifier is
+     * not registered.
      * 
      * @param containerLayoutId
      *        The container layout identifier; must not be {@code null}.
      * 
-     * @return The formatted message indicating the memento specifies an unknown
-     *         container layout identifier; never {@code null}.
+     * @return The formatted message indicating the container layout identifier
+     *         is not registered; never {@code null}.
      */
     /* @NonNull */
     static String ContainerLayoutRegistryFacade_getContainerLayout_unknownContainerLayoutId(

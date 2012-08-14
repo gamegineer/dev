@@ -84,4 +84,33 @@ public final class ComponentStrategyRegistryFacade
 
         return componentStrategy;
     }
+
+    /**
+     * Gets the container strategy with the specified identifier.
+     * 
+     * @param id
+     *        The container strategy identifier; must not be {@code null}.
+     * 
+     * @return The container strategy with the specified identifier; never
+     *         {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code id} is {@code null}.
+     * @throws org.gamegineer.table.core.NoSuchComponentStrategyException
+     *         If {@code id} is not registered or is not a container strategy.
+     */
+    /* @NonNull */
+    public static IContainerStrategy getContainerStrategy(
+        /* @NonNull */
+        final ComponentStrategyId id )
+        throws NoSuchComponentStrategyException
+    {
+        final IComponentStrategy componentStrategy = getComponentStrategy( id );
+        if( componentStrategy instanceof IContainerStrategy )
+        {
+            return (IContainerStrategy)componentStrategy;
+        }
+
+        throw new NoSuchComponentStrategyException( NonNlsMessages.ComponentStrategyRegistryFacade_getContainerStrategy_notContainerStrategy( id ) );
+    }
 }
