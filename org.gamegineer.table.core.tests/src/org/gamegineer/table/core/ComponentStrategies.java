@@ -27,6 +27,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.internal.core.NullComponentStrategy;
+import org.gamegineer.table.internal.core.NullContainerStrategy;
 
 /**
  * A factory for creating various types of component strategies suitable for
@@ -233,7 +235,7 @@ public final class ComponentStrategies
     public static IComponentStrategy createUniqueComponentStrategy()
     {
         return createComponentStrategyDecorator( //
-            ComponentStrategyFactory.createNullComponentStrategy(), //
+            new NullComponentStrategy(), //
             getUniqueComponentStrategyId() );
     }
 
@@ -246,7 +248,7 @@ public final class ComponentStrategies
     public static IContainerStrategy createUniqueContainerStrategy()
     {
         return createContainerStrategyDecorator( //
-            ComponentStrategyFactory.createNullContainerStrategy(), //
+            new NullContainerStrategy(), //
             getUniqueComponentStrategyId() );
     }
 

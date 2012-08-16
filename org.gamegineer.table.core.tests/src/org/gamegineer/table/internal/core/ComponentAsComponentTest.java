@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.core;
 
 import java.lang.reflect.Method;
 import org.gamegineer.table.core.AbstractComponentTestCase;
-import org.gamegineer.table.core.ComponentStrategyFactory;
 
 /**
  * A fixture for testing the
@@ -57,7 +56,7 @@ public final class ComponentAsComponentTest
     protected Component createComponent(
         final TableEnvironment tableEnvironment )
     {
-        return new Component( tableEnvironment, ComponentStrategyFactory.createNullComponentStrategy() );
+        return new Component( tableEnvironment, new NullComponentStrategy() );
     }
 
     /*

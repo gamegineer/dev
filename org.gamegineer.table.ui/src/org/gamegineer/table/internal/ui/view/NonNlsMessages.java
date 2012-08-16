@@ -58,6 +58,17 @@ final class NonNlsMessages
     /** An error occurred while saving the table. */
     public static String MainFrame_saveTable_error;
 
+    // --- TableView --------------------------------------------------------
+
+    /** An error occurred while adding a new card to the table. */
+    public static String TableView_addCard_error;
+
+    /** An error occurred while adding a new card pile to the table. */
+    public static String TableView_addCardPile_error;
+
+    /** An error occurred while dragging cards. */
+    public static String TableView_draggingCards_error;
+
     // --- ViewUtils --------------------------------------------------------
 
     /** Interrupted while waiting for the table network to disconnect. */

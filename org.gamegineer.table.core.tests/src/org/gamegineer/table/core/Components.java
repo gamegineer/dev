@@ -22,6 +22,8 @@
 package org.gamegineer.table.core;
 
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.internal.core.NullComponentStrategy;
+import org.gamegineer.table.internal.core.NullContainerStrategy;
 
 /**
  * A factory for creating various types of components suitable for testing.
@@ -63,7 +65,7 @@ public final class Components
         /* @NonNull */
         final ITableEnvironment tableEnvironment )
     {
-        final IComponent component = tableEnvironment.createComponent( ComponentStrategyFactory.createNullComponentStrategy() );
+        final IComponent component = tableEnvironment.createComponent( new NullComponentStrategy() );
         setUniqueSurfaceDesigns( component );
         return component;
     }
@@ -86,7 +88,7 @@ public final class Components
         /* @NonNull */
         final ITableEnvironment tableEnvironment )
     {
-        final IContainer container = tableEnvironment.createContainer( ComponentStrategyFactory.createNullContainerStrategy() );
+        final IContainer container = tableEnvironment.createContainer( new NullContainerStrategy() );
         setUniqueSurfaceDesigns( container );
         return container;
     }

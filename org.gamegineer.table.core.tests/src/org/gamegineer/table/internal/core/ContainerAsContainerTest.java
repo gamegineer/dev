@@ -24,7 +24,6 @@ package org.gamegineer.table.internal.core;
 import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.gamegineer.table.core.AbstractContainerTestCase;
-import org.gamegineer.table.core.ComponentStrategyFactory;
 import org.gamegineer.table.core.IComponent;
 
 /**
@@ -59,7 +58,7 @@ public final class ContainerAsContainerTest
     protected Container createComponent(
         final TableEnvironment tableEnvironment )
     {
-        return new Container( tableEnvironment, ComponentStrategyFactory.createNullContainerStrategy() );
+        return new Container( tableEnvironment, new NullContainerStrategy() );
     }
 
     /*
