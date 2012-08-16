@@ -1,5 +1,5 @@
 /*
- * ComponentStrategies.java
+ * TestComponentStrategies.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -35,7 +35,7 @@ import org.gamegineer.table.internal.core.NullContainerStrategy;
  * testing.
  */
 @ThreadSafe
-public final class ComponentStrategies
+public final class TestComponentStrategies
 {
     // ======================================================================
     // Fields
@@ -50,9 +50,9 @@ public final class ComponentStrategies
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ComponentStrategies} class.
+     * Initializes a new instance of the {@code TestComponentStrategies} class.
      */
-    private ComponentStrategies()
+    private TestComponentStrategies()
     {
     }
 

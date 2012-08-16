@@ -104,7 +104,7 @@ public abstract class AbstractTableEnvironmentTestCase
     @Test
     public void testCreateComponentFromStrategy_ReturnValue_AssociatedWithTableEnvironment()
     {
-        final IComponent component = tableEnvironment_.createComponent( ComponentStrategies.createUniqueComponentStrategy() );
+        final IComponent component = tableEnvironment_.createComponent( TestComponentStrategies.createUniqueComponentStrategy() );
 
         assertNotNull( component );
         assertEquals( tableEnvironment_, component.getTableEnvironment() );
@@ -117,7 +117,7 @@ public abstract class AbstractTableEnvironmentTestCase
     @Test
     public void testCreateComponentFromStrategy_ReturnValue_NonNull()
     {
-        assertNotNull( tableEnvironment_.createComponent( ComponentStrategies.createUniqueComponentStrategy() ) );
+        assertNotNull( tableEnvironment_.createComponent( TestComponentStrategies.createUniqueComponentStrategy() ) );
     }
 
     /**
@@ -137,7 +137,7 @@ public abstract class AbstractTableEnvironmentTestCase
     @Test
     public void testCreateContainer_ReturnValue_AssociatedWithTableEnvironment()
     {
-        final IContainer container = tableEnvironment_.createContainer( ComponentStrategies.createUniqueContainerStrategy() );
+        final IContainer container = tableEnvironment_.createContainer( TestComponentStrategies.createUniqueContainerStrategy() );
 
         assertNotNull( container );
         assertEquals( tableEnvironment_, container.getTableEnvironment() );
@@ -149,7 +149,7 @@ public abstract class AbstractTableEnvironmentTestCase
     @Test
     public void testCreateContainer_ReturnValue_NonNull()
     {
-        assertNotNull( tableEnvironment_.createContainer( ComponentStrategies.createUniqueContainerStrategy() ) );
+        assertNotNull( tableEnvironment_.createContainer( TestComponentStrategies.createUniqueContainerStrategy() ) );
     }
 
     /**

@@ -1,5 +1,5 @@
 /*
- * ContainerLayouts.java
+ * TestContainerLayouts.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -33,7 +33,7 @@ import net.jcip.annotations.ThreadSafe;
  * testing.
  */
 @ThreadSafe
-public final class ContainerLayouts
+public final class TestContainerLayouts
 {
     // ======================================================================
     // Fields
@@ -48,9 +48,9 @@ public final class ContainerLayouts
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ContainerLayouts} class.
+     * Initializes a new instance of the {@code TestContainerLayouts} class.
      */
-    private ContainerLayouts()
+    private TestContainerLayouts()
     {
     }
 

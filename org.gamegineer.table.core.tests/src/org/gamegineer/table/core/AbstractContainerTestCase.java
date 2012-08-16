@@ -114,7 +114,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     {
         assert tableEnvironment != null;
 
-        return Components.createUniqueComponent( tableEnvironment );
+        return TestComponents.createUniqueComponent( tableEnvironment );
     }
 
     /**
@@ -146,7 +146,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     {
         assert tableEnvironment != null;
 
-        return Components.createUniqueContainer( tableEnvironment );
+        return TestComponents.createUniqueContainer( tableEnvironment );
     }
 
     /**
@@ -236,7 +236,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     public static void setUpSuite()
         throws Exception
     {
-        registeredContainerLayout_ = ContainerLayouts.createHorizontalContainerLayout();
+        registeredContainerLayout_ = TestContainerLayouts.createHorizontalContainerLayout();
         Activator.getDefault().getContainerLayoutRegistry().registerContainerLayout( registeredContainerLayout_ );
     }
 
@@ -334,7 +334,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test( timeout = 1000 )
     public void testAddComponent_ChangesContainerBounds()
     {
-        getContainer().setLayout( ContainerLayouts.createHorizontalContainerLayout() );
+        getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
         getContainer().setSurfaceDesign( getContainer().getOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
@@ -464,7 +464,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test( timeout = 1000 )
     public void testAddComponents_ChangesContainerBounds()
     {
-        getContainer().setLayout( ContainerLayouts.createHorizontalContainerLayout() );
+        getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
         getContainer().setSurfaceDesign( getContainer().getOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
@@ -703,7 +703,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test( timeout = 1000 )
     public void testRemoveAllComponents_NotEmpty_ChangesContainerBounds()
     {
-        getContainer().setLayout( ContainerLayouts.createHorizontalContainerLayout() );
+        getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
         getContainer().setSurfaceDesign( getContainer().getOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
@@ -869,7 +869,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test( timeout = 1000 )
     public void testRemoveComponents_Location_ComponentPresent_ChangesContainerBounds()
     {
-        getContainer().setLayout( ContainerLayouts.createHorizontalContainerLayout() );
+        getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
         getContainer().setSurfaceDesign( getContainer().getOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
@@ -897,7 +897,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     public void testRemoveComponents_Location_ComponentPresent_FiresComponentRemovedEvent()
     {
         final List<IComponent> components = Arrays.asList( createUniqueComponent(), createUniqueComponent() );
-        getContainer().setLayout( ContainerLayouts.createHorizontalContainerLayout() );
+        getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
         getContainer().addComponents( components );
         final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
         final Capture<ContainerContentChangedEvent> eventCapture1 = new Capture<ContainerContentChangedEvent>();
@@ -930,7 +930,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         components.add( createUniqueComponent() );
         components.add( createUniqueComponent() );
         components.add( createUniqueComponent() );
-        getContainer().setLayout( ContainerLayouts.createHorizontalContainerLayout() );
+        getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
         getContainer().addComponents( components );
         final List<IComponent> expectedComponents = components.subList( 1, components.size() );
 
@@ -1029,7 +1029,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test( timeout = 1000 )
     public void testRemoveTopComponent_NotEmpty_ChangesContainerBounds()
     {
-        getContainer().setLayout( ContainerLayouts.createHorizontalContainerLayout() );
+        getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
         getContainer().setSurfaceDesign( getContainer().getOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
@@ -1096,7 +1096,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     public void testSetLayout_ChangesContainerBounds()
     {
         getContainer().setSurfaceDesign( getContainer().getOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
-        getContainer().setLayout( ContainerLayouts.createHorizontalContainerLayout() );
+        getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
         getContainer().addComponent( createUniqueComponent() );
         getContainer().addComponent( createUniqueComponent() );
         final IComponentListener componentListener = mocksControl_.createMock( IComponentListener.class );
@@ -1107,7 +1107,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         getContainer().addComponentListener( componentListener );
         getContainer().addContainerListener( containerListener );
 
-        getContainer().setLayout( ContainerLayouts.createVerticalContainerLayout() );
+        getContainer().setLayout( TestContainerLayouts.createVerticalContainerLayout() );
 
         mocksControl_.verify();
     }
@@ -1119,13 +1119,13 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test
     public void testSetLayout_FiresContainerLayoutChangedEvent()
     {
-        getContainer().setLayout( ContainerLayouts.createUniqueContainerLayout() );
+        getContainer().setLayout( TestContainerLayouts.createUniqueContainerLayout() );
         final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
         listener.containerLayoutChanged( EasyMock.notNull( ContainerEvent.class ) );
         mocksControl_.replay();
         getContainer().addContainerListener( listener );
 
-        getContainer().setLayout( ContainerLayouts.createUniqueContainerLayout() );
+        getContainer().setLayout( TestContainerLayouts.createUniqueContainerLayout() );
 
         mocksControl_.verify();
     }

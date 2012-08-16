@@ -23,8 +23,8 @@ package org.gamegineer.table.internal.ui.model;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
-import org.gamegineer.table.core.Components;
 import org.gamegineer.table.core.TableEnvironmentFactory;
+import org.gamegineer.table.core.TestComponents;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -68,7 +68,7 @@ public final class ComponentModelEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new ComponentModelEvent( new ComponentModel( Components.createUniqueComponent( TableEnvironmentFactory.createTableEnvironment() ) ) );
+        event_ = new ComponentModelEvent( new ComponentModel( TestComponents.createUniqueComponent( TableEnvironmentFactory.createTableEnvironment() ) ) );
     }
 
     /**

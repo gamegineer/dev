@@ -21,8 +21,8 @@
 
 package org.gamegineer.table.internal.ui.model;
 
-import org.gamegineer.table.core.Components;
 import org.gamegineer.table.core.TableEnvironmentFactory;
+import org.gamegineer.table.core.TestComponents;
 
 /**
  * A fixture for testing the
@@ -54,6 +54,6 @@ public final class ComponentModelAsComponentModelTest
     @Override
     protected ComponentModel createComponentModel()
     {
-        return new ComponentModel( Components.createUniqueComponent( TableEnvironmentFactory.createTableEnvironment() ) );
+        return new ComponentModel( TestComponents.createUniqueComponent( TableEnvironmentFactory.createTableEnvironment() ) );
     }
 }

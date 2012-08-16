@@ -97,7 +97,7 @@ public abstract class AbstractComponentStrategyRegistryTestCase
         final Collection<IComponentStrategy> componentStrategies = componentStrategyRegistry_.getComponentStrategies();
         final int expectedComponentStrategiesSize = componentStrategies.size();
 
-        componentStrategies.add( ComponentStrategies.createUniqueComponentStrategy() );
+        componentStrategies.add( TestComponentStrategies.createUniqueComponentStrategy() );
 
         assertEquals( expectedComponentStrategiesSize, componentStrategyRegistry_.getComponentStrategies().size() );
     }
@@ -110,7 +110,7 @@ public abstract class AbstractComponentStrategyRegistryTestCase
     public void testGetComponentStrategies_ReturnValue_Snapshot()
     {
         final Collection<IComponentStrategy> componentStrategies = componentStrategyRegistry_.getComponentStrategies();
-        componentStrategyRegistry_.registerComponentStrategy( ComponentStrategies.createUniqueComponentStrategy() );
+        componentStrategyRegistry_.registerComponentStrategy( TestComponentStrategies.createUniqueComponentStrategy() );
 
         assertTrue( componentStrategies.size() != componentStrategyRegistry_.getComponentStrategies().size() );
     }
@@ -142,7 +142,7 @@ public abstract class AbstractComponentStrategyRegistryTestCase
     @Test
     public void testGetComponentStrategy_Id_Present()
     {
-        final IComponentStrategy expectedComponentStrategy = ComponentStrategies.createUniqueComponentStrategy();
+        final IComponentStrategy expectedComponentStrategy = TestComponentStrategies.createUniqueComponentStrategy();
         componentStrategyRegistry_.registerComponentStrategy( expectedComponentStrategy );
 
         final IComponentStrategy actualComponentStrategy = componentStrategyRegistry_.getComponentStrategy( expectedComponentStrategy.getId() );
@@ -167,10 +167,10 @@ public abstract class AbstractComponentStrategyRegistryTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testRegisterComponentStrategy_ComponentStrategy_Registered()
     {
-        final IComponentStrategy componentStrategy = ComponentStrategies.createUniqueComponentStrategy();
+        final IComponentStrategy componentStrategy = TestComponentStrategies.createUniqueComponentStrategy();
         componentStrategyRegistry_.registerComponentStrategy( componentStrategy );
 
-        componentStrategyRegistry_.registerComponentStrategy( ComponentStrategies.cloneComponentStrategy( componentStrategy ) );
+        componentStrategyRegistry_.registerComponentStrategy( TestComponentStrategies.cloneComponentStrategy( componentStrategy ) );
     }
 
     /**
@@ -180,7 +180,7 @@ public abstract class AbstractComponentStrategyRegistryTestCase
     @Test
     public void testRegisterComponentStrategy_ComponentStrategy_Unregistered()
     {
-        final IComponentStrategy componentStrategy = ComponentStrategies.createUniqueComponentStrategy();
+        final IComponentStrategy componentStrategy = TestComponentStrategies.createUniqueComponentStrategy();
 
         componentStrategyRegistry_.registerComponentStrategy( componentStrategy );
 
@@ -205,12 +205,12 @@ public abstract class AbstractComponentStrategyRegistryTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testUnregisterComponentStrategy_ComponentStrategy_Registered_DifferentInstance()
     {
-        final IComponentStrategy componentStrategy = ComponentStrategies.createUniqueComponentStrategy();
+        final IComponentStrategy componentStrategy = TestComponentStrategies.createUniqueComponentStrategy();
         final int originalComponentStrategiesSize = componentStrategyRegistry_.getComponentStrategies().size();
         componentStrategyRegistry_.registerComponentStrategy( componentStrategy );
         assertEquals( originalComponentStrategiesSize + 1, componentStrategyRegistry_.getComponentStrategies().size() );
 
-        componentStrategyRegistry_.unregisterComponentStrategy( ComponentStrategies.cloneComponentStrategy( componentStrategy ) );
+        componentStrategyRegistry_.unregisterComponentStrategy( TestComponentStrategies.cloneComponentStrategy( componentStrategy ) );
     }
 
     /**
@@ -220,7 +220,7 @@ public abstract class AbstractComponentStrategyRegistryTestCase
     @Test
     public void testUnregisterComponentStrategy_ComponentStrategy_Registered_SameInstance()
     {
-        final IComponentStrategy componentStrategy = ComponentStrategies.createUniqueComponentStrategy();
+        final IComponentStrategy componentStrategy = TestComponentStrategies.createUniqueComponentStrategy();
         final int originalComponentStrategiesSize = componentStrategyRegistry_.getComponentStrategies().size();
         componentStrategyRegistry_.registerComponentStrategy( componentStrategy );
         assertEquals( originalComponentStrategiesSize + 1, componentStrategyRegistry_.getComponentStrategies().size() );
@@ -238,7 +238,7 @@ public abstract class AbstractComponentStrategyRegistryTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testUnregisterComponentStrategy_ComponentStrategy_Unregistered()
     {
-        final IComponentStrategy componentStrategy = ComponentStrategies.createUniqueComponentStrategy();
+        final IComponentStrategy componentStrategy = TestComponentStrategies.createUniqueComponentStrategy();
 
         componentStrategyRegistry_.unregisterComponentStrategy( componentStrategy );
     }

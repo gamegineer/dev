@@ -25,12 +25,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import java.awt.Dimension;
 import java.awt.Point;
-import org.gamegineer.table.core.Components;
 import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITableEnvironment;
 import org.gamegineer.table.core.TableEnvironmentFactory;
+import org.gamegineer.table.core.TestComponents;
 import org.junit.Test;
 
 /**
@@ -113,12 +113,12 @@ public final class StackedLayoutTest
     {
         final StackedLayout layout = new StackedLayout( DEFAULT_ID, 1, 10, 10 );
         final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment();
-        final IContainer container = Components.createUniqueContainer( tableEnvironment );
+        final IContainer container = TestComponents.createUniqueContainer( tableEnvironment );
         container.setOrigin( new Point( 0, 0 ) );
         container.setLayout( layout );
-        final IComponent component1 = Components.createUniqueComponent( tableEnvironment );
+        final IComponent component1 = TestComponents.createUniqueComponent( tableEnvironment );
         container.addComponent( component1 );
-        final IComponent component2 = Components.createUniqueComponent( tableEnvironment );
+        final IComponent component2 = TestComponents.createUniqueComponent( tableEnvironment );
         container.addComponent( component2 );
 
         final Point location = new Point( 0, 0 );
@@ -138,12 +138,12 @@ public final class StackedLayoutTest
     {
         final StackedLayout layout = new StackedLayout( DEFAULT_ID, 1, 10, 10 );
         final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment();
-        final IContainer container = Components.createUniqueContainer( tableEnvironment );
+        final IContainer container = TestComponents.createUniqueContainer( tableEnvironment );
         container.setOrigin( new Point( 0, 0 ) );
         container.setLayout( layout );
-        final IComponent component1 = Components.createUniqueComponent( tableEnvironment );
+        final IComponent component1 = TestComponents.createUniqueComponent( tableEnvironment );
         container.addComponent( component1 );
-        final IComponent component2 = Components.createUniqueComponent( tableEnvironment );
+        final IComponent component2 = TestComponents.createUniqueComponent( tableEnvironment );
         container.addComponent( component2 );
 
         final Point location = new Point( 10, 10 );
@@ -180,17 +180,17 @@ public final class StackedLayoutTest
         final int stackLevelOffsetX = 2, stackLevelOffsetY = 3;
         final StackedLayout layout = new StackedLayout( DEFAULT_ID, 2, stackLevelOffsetX, stackLevelOffsetY );
         final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment();
-        final IContainer container = Components.createUniqueContainer( tableEnvironment );
+        final IContainer container = TestComponents.createUniqueContainer( tableEnvironment );
         container.setOrigin( new Point( originX, originY ) );
-        final IComponent component1 = Components.createUniqueComponent( tableEnvironment );
+        final IComponent component1 = TestComponents.createUniqueComponent( tableEnvironment );
         container.addComponent( component1 );
-        final IComponent component2 = Components.createUniqueComponent( tableEnvironment );
+        final IComponent component2 = TestComponents.createUniqueComponent( tableEnvironment );
         container.addComponent( component2 );
-        final IComponent component3 = Components.createUniqueComponent( tableEnvironment );
+        final IComponent component3 = TestComponents.createUniqueComponent( tableEnvironment );
         container.addComponent( component3 );
-        final IComponent component4 = Components.createUniqueComponent( tableEnvironment );
+        final IComponent component4 = TestComponents.createUniqueComponent( tableEnvironment );
         container.addComponent( component4 );
-        final IComponent component5 = Components.createUniqueComponent( tableEnvironment );
+        final IComponent component5 = TestComponents.createUniqueComponent( tableEnvironment );
         container.addComponent( component5 );
 
         layout.layout( container );

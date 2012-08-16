@@ -24,12 +24,12 @@ package org.gamegineer.table.internal.core;
 import static org.junit.Assert.assertEquals;
 import java.awt.Dimension;
 import java.awt.Point;
-import org.gamegineer.table.core.Components;
 import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITableEnvironment;
 import org.gamegineer.table.core.TableEnvironmentFactory;
+import org.gamegineer.table.core.TestComponents;
 import org.junit.Test;
 
 /**
@@ -131,13 +131,13 @@ public final class AccordianLayoutTest
         final int offsetX = 2, offsetY = -3;
         final AccordianLayout layout = new AccordianLayout( DEFAULT_ID, offsetX, offsetY );
         final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment();
-        final IContainer container = Components.createUniqueContainer( tableEnvironment );
+        final IContainer container = TestComponents.createUniqueContainer( tableEnvironment );
         container.setOrigin( new Point( originX, originY ) );
-        final IComponent component1 = Components.createUniqueComponent( tableEnvironment );
+        final IComponent component1 = TestComponents.createUniqueComponent( tableEnvironment );
         container.addComponent( component1 );
-        final IComponent component2 = Components.createUniqueComponent( tableEnvironment );
+        final IComponent component2 = TestComponents.createUniqueComponent( tableEnvironment );
         container.addComponent( component2 );
-        final IComponent component3 = Components.createUniqueComponent( tableEnvironment );
+        final IComponent component3 = TestComponents.createUniqueComponent( tableEnvironment );
         container.addComponent( component3 );
 
         layout.layout( container );

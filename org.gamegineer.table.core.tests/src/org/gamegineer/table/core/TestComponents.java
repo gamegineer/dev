@@ -1,5 +1,5 @@
 /*
- * Components.java
+ * TestComponents.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -29,16 +29,16 @@ import org.gamegineer.table.internal.core.NullContainerStrategy;
  * A factory for creating various types of components suitable for testing.
  */
 @ThreadSafe
-public final class Components
+public final class TestComponents
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code Components} class.
+     * Initializes a new instance of the {@code TestComponents} class.
      */
-    private Components()
+    private TestComponents()
     {
     }
 

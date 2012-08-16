@@ -114,7 +114,7 @@ public abstract class AbstractContainerLayoutRegistryTestCase
     @Test
     public void testGetContainerLayout_Id_Present()
     {
-        final IContainerLayout expectedContainerLayout = ContainerLayouts.createUniqueContainerLayout();
+        final IContainerLayout expectedContainerLayout = TestContainerLayouts.createUniqueContainerLayout();
         containerLayoutRegistry_.registerContainerLayout( expectedContainerLayout );
 
         final IContainerLayout actualContainerLayout = containerLayoutRegistry_.getContainerLayout( expectedContainerLayout.getId() );
@@ -132,7 +132,7 @@ public abstract class AbstractContainerLayoutRegistryTestCase
         final Collection<IContainerLayout> containerLayouts = containerLayoutRegistry_.getContainerLayouts();
         final int expectedContainerLayoutsSize = containerLayouts.size();
 
-        containerLayouts.add( ContainerLayouts.createUniqueContainerLayout() );
+        containerLayouts.add( TestContainerLayouts.createUniqueContainerLayout() );
 
         assertEquals( expectedContainerLayoutsSize, containerLayoutRegistry_.getContainerLayouts().size() );
     }
@@ -145,7 +145,7 @@ public abstract class AbstractContainerLayoutRegistryTestCase
     public void testGetContainerLayouts_ReturnValue_Snapshot()
     {
         final Collection<IContainerLayout> containerLayouts = containerLayoutRegistry_.getContainerLayouts();
-        containerLayoutRegistry_.registerContainerLayout( ContainerLayouts.createUniqueContainerLayout() );
+        containerLayoutRegistry_.registerContainerLayout( TestContainerLayouts.createUniqueContainerLayout() );
 
         assertTrue( containerLayouts.size() != containerLayoutRegistry_.getContainerLayouts().size() );
     }
@@ -167,10 +167,10 @@ public abstract class AbstractContainerLayoutRegistryTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testRegisterContainerLayout_ContainerLayout_Registered()
     {
-        final IContainerLayout containerLayout = ContainerLayouts.createUniqueContainerLayout();
+        final IContainerLayout containerLayout = TestContainerLayouts.createUniqueContainerLayout();
         containerLayoutRegistry_.registerContainerLayout( containerLayout );
 
-        containerLayoutRegistry_.registerContainerLayout( ContainerLayouts.cloneContainerLayout( containerLayout ) );
+        containerLayoutRegistry_.registerContainerLayout( TestContainerLayouts.cloneContainerLayout( containerLayout ) );
     }
 
     /**
@@ -180,7 +180,7 @@ public abstract class AbstractContainerLayoutRegistryTestCase
     @Test
     public void testRegisterContainerLayout_ContainerLayout_Unregistered()
     {
-        final IContainerLayout containerLayout = ContainerLayouts.createUniqueContainerLayout();
+        final IContainerLayout containerLayout = TestContainerLayouts.createUniqueContainerLayout();
 
         containerLayoutRegistry_.registerContainerLayout( containerLayout );
 
@@ -205,12 +205,12 @@ public abstract class AbstractContainerLayoutRegistryTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testUnregisterContainerLayout_ContainerLayout_Registered_DifferentInstance()
     {
-        final IContainerLayout containerLayout = ContainerLayouts.createUniqueContainerLayout();
+        final IContainerLayout containerLayout = TestContainerLayouts.createUniqueContainerLayout();
         final int originalContainerLayoutsSize = containerLayoutRegistry_.getContainerLayouts().size();
         containerLayoutRegistry_.registerContainerLayout( containerLayout );
         assertEquals( originalContainerLayoutsSize + 1, containerLayoutRegistry_.getContainerLayouts().size() );
 
-        containerLayoutRegistry_.unregisterContainerLayout( ContainerLayouts.cloneContainerLayout( containerLayout ) );
+        containerLayoutRegistry_.unregisterContainerLayout( TestContainerLayouts.cloneContainerLayout( containerLayout ) );
     }
 
     /**
@@ -220,7 +220,7 @@ public abstract class AbstractContainerLayoutRegistryTestCase
     @Test
     public void testUnregisterContainerLayout_ContainerLayout_Registered_SameInstance()
     {
-        final IContainerLayout containerLayout = ContainerLayouts.createUniqueContainerLayout();
+        final IContainerLayout containerLayout = TestContainerLayouts.createUniqueContainerLayout();
         final int originalContainerLayoutsSize = containerLayoutRegistry_.getContainerLayouts().size();
         containerLayoutRegistry_.registerContainerLayout( containerLayout );
         assertEquals( originalContainerLayoutsSize + 1, containerLayoutRegistry_.getContainerLayouts().size() );
@@ -237,7 +237,7 @@ public abstract class AbstractContainerLayoutRegistryTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testUnregisterContainerLayout_ContainerLayout_Unregistered()
     {
-        final IContainerLayout containerLayout = ContainerLayouts.createUniqueContainerLayout();
+        final IContainerLayout containerLayout = TestContainerLayouts.createUniqueContainerLayout();
 
         containerLayoutRegistry_.unregisterContainerLayout( containerLayout );
     }

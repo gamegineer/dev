@@ -26,8 +26,8 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.table.core.Components;
 import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.TestComponents;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -317,7 +317,7 @@ public final class MainModelTest
         model_.addMainModelListener( listener );
 
         final ITable table = model_.getTableModel().getTable();
-        table.getTabletop().addComponent( Components.createUniqueComponent( table.getTableEnvironment() ) );
+        table.getTabletop().addComponent( TestComponents.createUniqueComponent( table.getTableEnvironment() ) );
 
         niceMocksControl_.verify();
     }

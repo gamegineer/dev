@@ -22,8 +22,8 @@
 package org.gamegineer.table.internal.ui.model;
 
 import java.lang.reflect.Method;
-import org.gamegineer.table.core.Components;
 import org.gamegineer.table.core.TableEnvironmentFactory;
+import org.gamegineer.table.core.TestComponents;
 
 /**
  * A fixture for testing the
@@ -55,7 +55,7 @@ public final class ContainerModelAsContainerModelTest
     @Override
     protected ContainerModel createComponentModel()
     {
-        return new ContainerModel( Components.createUniqueContainer( TableEnvironmentFactory.createTableEnvironment() ) );
+        return new ContainerModel( TestComponents.createUniqueContainer( TableEnvironmentFactory.createTableEnvironment() ) );
     }
 
     /*

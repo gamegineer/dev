@@ -35,9 +35,9 @@ import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.core.ComponentPath;
-import org.gamegineer.table.core.Components;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
+import org.gamegineer.table.core.TestComponents;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -103,7 +103,7 @@ public final class TableModelTest
     /* @NonNull */
     private IComponent createUniqueComponent()
     {
-        return Components.createUniqueComponent( model_.getTable().getTableEnvironment() );
+        return TestComponents.createUniqueComponent( model_.getTable().getTableEnvironment() );
     }
 
     /**
@@ -115,7 +115,7 @@ public final class TableModelTest
     /* @NonNull */
     private IContainer createUniqueContainer()
     {
-        return Components.createUniqueContainer( model_.getTable().getTableEnvironment() );
+        return TestComponents.createUniqueContainer( model_.getTable().getTableEnvironment() );
     }
 
     /**
