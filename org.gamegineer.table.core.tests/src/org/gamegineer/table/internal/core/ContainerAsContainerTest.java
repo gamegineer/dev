@@ -58,7 +58,7 @@ public final class ContainerAsContainerTest
     protected Container createComponent(
         final TableEnvironment tableEnvironment )
     {
-        return new Container( tableEnvironment, new NullContainerStrategy() );
+        return new Container( tableEnvironment, ComponentStrategies.NULL_CONTAINER );
     }
 
     /*

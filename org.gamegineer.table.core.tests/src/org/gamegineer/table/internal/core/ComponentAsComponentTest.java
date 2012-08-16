@@ -56,7 +56,7 @@ public final class ComponentAsComponentTest
     protected Component createComponent(
         final TableEnvironment tableEnvironment )
     {
-        return new Component( tableEnvironment, new NullComponentStrategy() );
+        return new Component( tableEnvironment, ComponentStrategies.NULL_COMPONENT );
     }
 
     /*
