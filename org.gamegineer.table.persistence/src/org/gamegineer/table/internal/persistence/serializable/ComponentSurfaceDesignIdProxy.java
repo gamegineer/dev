@@ -1,5 +1,5 @@
 /*
- * ComponentSurfaceDesignProxy.java
+ * ComponentSurfaceDesignIdProxy.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,23 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 26, 2012 at 9:54:25 PM.
+ * Created on Aug 16, 2012 at 8:51:45 PM.
  */
 
 package org.gamegineer.table.internal.persistence.serializable;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.awt.Dimension;
 import java.io.Serializable;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 
 /**
- * A serializable proxy for the {@code ComponentSurfaceDesign} class.
+ * A serializable proxy for the {@code ComponentSurfaceDesignId} class.
  */
 @NotThreadSafe
-public final class ComponentSurfaceDesignProxy
+public final class ComponentSurfaceDesignIdProxy
     implements Serializable
 {
     // ======================================================================
@@ -40,14 +38,7 @@ public final class ComponentSurfaceDesignProxy
     // ======================================================================
 
     /** Serializable class version number. */
-    private static final long serialVersionUID = 3381623697729837412L;
-
-    /**
-     * The component surface design height in table coordinates.
-     * 
-     * @serial
-     */
-    private int height_;
+    private static final long serialVersionUID = 3917184738395528058L;
 
     /**
      * The component surface design identifier.
@@ -56,51 +47,39 @@ public final class ComponentSurfaceDesignProxy
      */
     private String id_;
 
-    /**
-     * The component surface design width in table coordinates.
-     * 
-     * @serial
-     */
-    private int width_;
-
 
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ComponentSurfaceDesignProxy}
+     * Initializes a new instance of the {@code ComponentSurfaceDesignIdProxy}
      * class.
      */
     @SuppressWarnings( "unused" )
-    private ComponentSurfaceDesignProxy()
+    private ComponentSurfaceDesignIdProxy()
     {
-        height_ = 0;
         id_ = null;
-        width_ = 0;
     }
 
     /**
-     * Initializes a new instance of the {@code ComponentSurfaceDesignProxy}
-     * class from the specified {@code ComponentSurfaceDesign} instance.
+     * Initializes a new instance of the {@code ComponentSurfaceDesignIdProxy}
+     * class from the specified {@code ComponentSurfaceDesignId} instance.
      * 
-     * @param componentSurfaceDesign
-     *        The {@code ComponentSurfaceDesign} instance; must not be
+     * @param componentSurfaceDesignId
+     *        The {@code ComponentSurfaceDesignId} instance; must not be
      *        {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code componentSurfaceDesign} is {@code null}.
+     *         If {@code componentSurfaceDesignId} is {@code null}.
      */
-    public ComponentSurfaceDesignProxy(
+    public ComponentSurfaceDesignIdProxy(
         /* @NonNull */
-        final ComponentSurfaceDesign componentSurfaceDesign )
+        final ComponentSurfaceDesignId componentSurfaceDesignId )
     {
-        assertArgumentNotNull( componentSurfaceDesign, "componentSurfaceDesign" ); //$NON-NLS-1$
+        assertArgumentNotNull( componentSurfaceDesignId, "componentSurfaceDesignId" ); //$NON-NLS-1$
 
-        id_ = componentSurfaceDesign.getId().toString();
-        final Dimension size = componentSurfaceDesign.getSize();
-        height_ = size.height;
-        width_ = size.width;
+        id_ = componentSurfaceDesignId.toString();
     }
 
 
@@ -118,6 +97,6 @@ public final class ComponentSurfaceDesignProxy
     /* @NonNull */
     private Object readResolve()
     {
-        return new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( id_ ), width_, height_ );
+        return ComponentSurfaceDesignId.fromString( id_ );
     }
 }

@@ -24,6 +24,7 @@ package org.gamegineer.table.core;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.atomic.AtomicLong;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.internal.core.Activator;
 
 /**
  * A factory for creating various types of component surface designs suitable
@@ -110,7 +111,11 @@ public final class ComponentSurfaceDesigns
         final int width,
         final int height )
     {
-        return new ComponentSurfaceDesign( getUniqueComponentSurfaceDesignId(), width, height );
+        final ComponentSurfaceDesign componentSurfaceDesign = new ComponentSurfaceDesign( getUniqueComponentSurfaceDesignId(), width, height );
+        final IComponentSurfaceDesignRegistry componentSurfaceDesignRegistry = Activator.getDefault().getComponentSurfaceDesignRegistry();
+        assert componentSurfaceDesignRegistry != null;
+        componentSurfaceDesignRegistry.registerComponentSurfaceDesign( componentSurfaceDesign );
+        return componentSurfaceDesign;
     }
 
     /**

@@ -63,10 +63,10 @@
         </property>
     </scr:component>
 	<scr:component
-			name="org.gamegineer.table.persistence.serializable.componentSurfaceDesignPersistenceDelegate"
+			name="org.gamegineer.table.persistence.serializable.componentSurfaceDesignIdPersistenceDelegate"
 			xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
 		<implementation
-				class="org.gamegineer.table.internal.persistence.serializable.ComponentSurfaceDesignPersistenceDelegate" />
+				class="org.gamegineer.table.internal.persistence.serializable.ComponentSurfaceDesignIdPersistenceDelegate" />
 		<service>
 			<provide
 					interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegate" />
@@ -74,8 +74,8 @@
 		<property
 				name="delegators"
 				type="String">
-			org.gamegineer.table.core.ComponentSurfaceDesign
-			org.gamegineer.table.internal.persistence.serializable.ComponentSurfaceDesignProxy
+			org.gamegineer.table.core.ComponentSurfaceDesignId
+			org.gamegineer.table.internal.persistence.serializable.ComponentSurfaceDesignIdProxy
 		</property>
 	</scr:component>
     <scr:component

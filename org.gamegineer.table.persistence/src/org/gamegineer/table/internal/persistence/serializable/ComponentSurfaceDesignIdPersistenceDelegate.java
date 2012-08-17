@@ -1,5 +1,5 @@
 /*
- * ComponentSurfaceDesignPersistenceDelegate.java
+ * ComponentSurfaceDesignIdPersistenceDelegate.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 26, 2012 at 9:54:17 PM.
+ * Created on Aug 16, 2012 at 8:51:33 PM.
  */
 
 package org.gamegineer.table.internal.persistence.serializable;
@@ -24,13 +24,13 @@ package org.gamegineer.table.internal.persistence.serializable;
 import java.io.IOException;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
-import org.gamegineer.table.core.ComponentSurfaceDesign;
+import org.gamegineer.table.core.ComponentSurfaceDesignId;
 
 /**
- * A persistence delegate for the {@code ComponentSurfaceDesign} class.
+ * A persistence delegate for the {@code ComponentSurfaceDesignId} class.
  */
 @Immutable
-public final class ComponentSurfaceDesignPersistenceDelegate
+public final class ComponentSurfaceDesignIdPersistenceDelegate
     extends AbstractPersistenceDelegate
 {
     // ======================================================================
@@ -39,9 +39,9 @@ public final class ComponentSurfaceDesignPersistenceDelegate
 
     /**
      * Initializes a new instance of the
-     * {@code ComponentSurfaceDesignPersistenceDelegate} class.
+     * {@code ComponentSurfaceDesignIdPersistenceDelegate} class.
      */
-    public ComponentSurfaceDesignPersistenceDelegate()
+    public ComponentSurfaceDesignIdPersistenceDelegate()
     {
     }
 
@@ -58,9 +58,9 @@ public final class ComponentSurfaceDesignPersistenceDelegate
         final Object obj )
         throws IOException
     {
-        if( obj instanceof ComponentSurfaceDesign )
+        if( obj instanceof ComponentSurfaceDesignId )
         {
-            return new ComponentSurfaceDesignProxy( (ComponentSurfaceDesign)obj );
+            return new ComponentSurfaceDesignIdProxy( (ComponentSurfaceDesignId)obj );
         }
 
         return super.replaceObject( obj );

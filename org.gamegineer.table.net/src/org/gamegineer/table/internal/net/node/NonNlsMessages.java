@@ -98,6 +98,9 @@ final class NonNlsMessages
 
     // --- NetworkTableUtils ------------------------------------------------
 
+    /** Failed to set the surface designs. */
+    public static String NetworkTableUtils_incrementComponentState_setSurfaceDesignsFailed;
+
     /** Failed to set the component state. */
     public static String NetworkTableUtils_incrementContainerState_setComponentStateFailed;
 

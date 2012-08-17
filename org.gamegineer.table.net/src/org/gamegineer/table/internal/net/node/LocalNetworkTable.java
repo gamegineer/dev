@@ -23,13 +23,18 @@ package org.gamegineer.table.internal.net.node;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.locks.Lock;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.ComponentEvent;
+import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentPath;
+import org.gamegineer.table.core.ComponentSurfaceDesign;
+import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ContainerEvent;
 import org.gamegineer.table.core.IComponent;
@@ -437,7 +442,14 @@ final class LocalNetworkTable
                 componentPath = component.getPath();
                 if( componentPath != null )
                 {
-                    componentIncrement.setSurfaceDesigns( component.getSurfaceDesigns() );
+                    final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = component.getSurfaceDesigns();
+                    final Map<ComponentOrientation, ComponentSurfaceDesignId> surfaceDesignIds = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesignId>( surfaceDesigns.size() );
+                    for( final Map.Entry<ComponentOrientation, ComponentSurfaceDesign> entry : surfaceDesigns.entrySet() )
+                    {
+                        surfaceDesignIds.put( entry.getKey(), entry.getValue().getId() );
+                    }
+
+                    componentIncrement.setSurfaceDesignIds( surfaceDesignIds );
                 }
             }
             finally

@@ -1,5 +1,5 @@
 /*
- * ComponentSurfaceDesignProxyTest.java
+ * ComponentSurfaceDesignIdProxyTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 26, 2012 at 9:58:34 PM.
+ * Created on Aug 16, 2012 at 8:52:30 PM.
  */
 
 package org.gamegineer.table.internal.persistence.serializable;
@@ -25,20 +25,20 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.persistence.serializable.ComponentSurfaceDesignProxy}
+ * {@link org.gamegineer.table.internal.persistence.serializable.ComponentSurfaceDesignIdProxy}
  * class.
  */
-public final class ComponentSurfaceDesignProxyTest
+public final class ComponentSurfaceDesignIdProxyTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ComponentSurfaceDesignProxyTest}
-     * class.
+     * Initializes a new instance of the
+     * {@code ComponentSurfaceDesignIdProxyTest} class.
      */
-    public ComponentSurfaceDesignProxyTest()
+    public ComponentSurfaceDesignIdProxyTest()
     {
     }
 
@@ -49,11 +49,11 @@ public final class ComponentSurfaceDesignProxyTest
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
-     * component surface design.
+     * component surface design identifier.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructor_ComponentSurfaceDesign_Null()
+    public void testConstructor_ComponentSurfaceDesignId_Null()
     {
-        new ComponentSurfaceDesignProxy( null );
+        new ComponentSurfaceDesignIdProxy( null );
     }
 }

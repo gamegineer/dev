@@ -26,7 +26,7 @@ import java.io.Serializable;
 import java.util.Map;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.ComponentOrientation;
-import org.gamegineer.table.core.ComponentSurfaceDesign;
+import org.gamegineer.table.core.ComponentSurfaceDesignId;
 
 /**
  * An incremental change to the state of a component.
@@ -57,13 +57,13 @@ public class ComponentIncrement
     private ComponentOrientation orientation_;
 
     /**
-     * The collection of new component surface designs or {@code null} if
-     * unchanged. The key is the component orientation. The value is the new
-     * component surface design.
+     * The collection of new component surface design identifiers or
+     * {@code null} if unchanged. The key is the component orientation. The
+     * value is the new component surface design identifier.
      * 
-     * @serial The collection of new component surface designs.
+     * @serial The collection of new component surface design identifiers.
      */
-    private Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns_;
+    private Map<ComponentOrientation, ComponentSurfaceDesignId> surfaceDesignIds_;
 
 
     // ======================================================================
@@ -77,7 +77,7 @@ public class ComponentIncrement
     {
         location_ = null;
         orientation_ = null;
-        surfaceDesigns_ = null;
+        surfaceDesignIds_ = null;
     }
 
 
@@ -111,18 +111,18 @@ public class ComponentIncrement
     }
 
     /**
-     * Gets the collection of new component surface designs.
+     * Gets the collection of new component surface design identifiers.
      * 
-     * @return The collection of new component surface designs or {@code null}
-     *         if the component surface designs are unchanged. The key is the
-     *         component orientation. The value is the new component surface
-     *         design. The returned value is not a copy and must not be
-     *         modified.
+     * @return The collection of new component surface design identifiers or
+     *         {@code null} if the component surface design identifiers are
+     *         unchanged. The key is the component orientation. The value is the
+     *         new component surface design identifier. The returned value is
+     *         not a copy and must not be modified.
      */
     /* @Nullable */
-    public final Map<ComponentOrientation, ComponentSurfaceDesign> getSurfaceDesigns()
+    public final Map<ComponentOrientation, ComponentSurfaceDesignId> getSurfaceDesignIds()
     {
-        return surfaceDesigns_;
+        return surfaceDesignIds_;
     }
 
     /**
@@ -155,19 +155,20 @@ public class ComponentIncrement
     }
 
     /**
-     * Sets the collection of new component surface designs.
+     * Sets the collection of new component surface design identifiers.
      * 
-     * @param surfaceDesigns
-     *        The collection of new component surface designs or {@code null} if
-     *        the component surface designs are unchanged. The key is the
-     *        component orientation. The value is the new component surface
-     *        design. No copy is made of the specified value and it must not be
-     *        modified after calling this method.
+     * @param surfaceDesignIds
+     *        The collection of new component surface design identifiers or
+     *        {@code null} if the component surface design identifiers are
+     *        unchanged. The key is the component orientation. The value is the
+     *        new component surface design identifier. No copy is made of the
+     *        specified value and it must not be modified after calling this
+     *        method.
      */
-    public final void setSurfaceDesigns(
+    public final void setSurfaceDesignIds(
         /* @Nullable */
-        final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns )
+        final Map<ComponentOrientation, ComponentSurfaceDesignId> surfaceDesignIds )
     {
-        surfaceDesigns_ = surfaceDesigns;
+        surfaceDesignIds_ = surfaceDesignIds;
     }
 }

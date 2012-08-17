@@ -22,14 +22,21 @@
 package org.gamegineer.table.internal.net.node;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.IdentityHashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
+import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentPath;
+import org.gamegineer.table.core.ComponentSurfaceDesign;
+import org.gamegineer.table.core.ComponentSurfaceDesignId;
+import org.gamegineer.table.core.ComponentSurfaceDesignRegistryFacade;
 import org.gamegineer.table.core.ContainerLayoutRegistryFacade;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.NoSuchComponentSurfaceDesignException;
 import org.gamegineer.table.core.NoSuchContainerLayoutException;
 import org.gamegineer.table.internal.net.Loggers;
 
@@ -127,9 +134,22 @@ public final class NetworkTableUtils
             component.setOrientation( componentIncrement.getOrientation() );
         }
 
-        if( componentIncrement.getSurfaceDesigns() != null )
+        if( componentIncrement.getSurfaceDesignIds() != null )
         {
-            component.setSurfaceDesigns( componentIncrement.getSurfaceDesigns() );
+            try
+            {
+                final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>( componentIncrement.getSurfaceDesignIds().size() );
+                for( final Map.Entry<ComponentOrientation, ComponentSurfaceDesignId> entry : componentIncrement.getSurfaceDesignIds().entrySet() )
+                {
+                    surfaceDesigns.put( entry.getKey(), ComponentSurfaceDesignRegistryFacade.getComponentSurfaceDesign( entry.getValue() ) );
+                }
+
+                component.setSurfaceDesigns( surfaceDesigns );
+            }
+            catch( final NoSuchComponentSurfaceDesignException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.NetworkTableUtils_incrementComponentState_setSurfaceDesignsFailed, e );
+            }
         }
     }
 

@@ -32,7 +32,6 @@ import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
-import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.IComponentStrategy;
 
 /**
@@ -45,9 +44,6 @@ public final class CardStrategy
     // ======================================================================
     // Fields
     // ======================================================================
-
-    /** The default card surface design. */
-    private static final ComponentSurfaceDesign DEFAULT_SURFACE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.CardStrategy.defaultSurfaceDesign" ), 71, 96 ); //$NON-NLS-1$
 
     /** The strategy identifier. */
     private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.card" ); //$NON-NLS-1$
@@ -106,8 +102,8 @@ public final class CardStrategy
     public Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns()
     {
         final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>();
-        surfaceDesigns.put( CardOrientation.BACK, DEFAULT_SURFACE_DESIGN );
-        surfaceDesigns.put( CardOrientation.FACE, DEFAULT_SURFACE_DESIGN );
+        surfaceDesigns.put( CardOrientation.BACK, ComponentSurfaceDesigns.DEFAULT_CARD );
+        surfaceDesigns.put( CardOrientation.FACE, ComponentSurfaceDesigns.DEFAULT_CARD );
         return surfaceDesigns;
     }
 

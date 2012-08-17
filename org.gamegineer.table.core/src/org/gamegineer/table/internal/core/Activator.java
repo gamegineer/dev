@@ -26,6 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.IComponentStrategyRegistry;
+import org.gamegineer.table.core.IComponentSurfaceDesignRegistry;
 import org.gamegineer.table.core.IContainerLayoutRegistry;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -53,6 +54,10 @@ public final class Activator
     @GuardedBy( "lock_" )
     private ServiceTracker<IComponentStrategyRegistry, IComponentStrategyRegistry> componentStrategyRegistryTracker_;
 
+    /** The component surface design registry service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker<IComponentSurfaceDesignRegistry, IComponentSurfaceDesignRegistry> componentSurfaceDesignRegistryTracker_;
+
     /** The container layout registry service tracker. */
     @GuardedBy( "lock_" )
     private ServiceTracker<IContainerLayoutRegistry, IContainerLayoutRegistry> containerLayoutRegistryTracker_;
@@ -73,6 +78,7 @@ public final class Activator
         lock_ = new Object();
         bundleContext_ = null;
         componentStrategyRegistryTracker_ = null;
+        componentSurfaceDesignRegistryTracker_ = null;
         containerLayoutRegistryTracker_ = null;
     }
 
@@ -116,6 +122,29 @@ public final class Activator
             }
 
             return componentStrategyRegistryTracker_.getService();
+        }
+    }
+
+    /**
+     * Gets the component surface design registry service.
+     * 
+     * @return The component surface design registry service or {@code null} if
+     *         no component surface design registry service is available.
+     */
+    /* @Nullable */
+    public IComponentSurfaceDesignRegistry getComponentSurfaceDesignRegistry()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( componentSurfaceDesignRegistryTracker_ == null )
+            {
+                componentSurfaceDesignRegistryTracker_ = new ServiceTracker<IComponentSurfaceDesignRegistry, IComponentSurfaceDesignRegistry>( bundleContext_, IComponentSurfaceDesignRegistry.class, null );
+                componentSurfaceDesignRegistryTracker_.open();
+            }
+
+            return componentSurfaceDesignRegistryTracker_.getService();
         }
     }
 
@@ -195,6 +224,11 @@ public final class Activator
             {
                 componentStrategyRegistryTracker_.close();
                 componentStrategyRegistryTracker_ = null;
+            }
+            if( componentSurfaceDesignRegistryTracker_ != null )
+            {
+                componentSurfaceDesignRegistryTracker_.close();
+                componentSurfaceDesignRegistryTracker_ = null;
             }
             if( containerLayoutRegistryTracker_ != null )
             {

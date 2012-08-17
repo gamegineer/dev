@@ -62,6 +62,14 @@ final class NonNlsMessages
     /** The component surface design width must not be negative. */
     public static String ComponentSurfaceDesign_ctor_width_negative;
 
+    // --- ComponentSurfaceDesignRegistryFacade -----------------------------
+
+    /** The component surface design registry is not available. */
+    public static String ComponentSurfaceDesignRegistryFacade_getComponentSurfaceDesign_componentSurfaceDesignRegistryNotAvailable;
+
+    /** The component surface design identifier is not registered. */
+    public static String ComponentSurfaceDesignRegistryFacade_getComponentSurfaceDesign_unknownComponentSurfaceDesignId;
+
     // --- ContainerContentChangedEvent -------------------------------------
 
     /** The component index is negative. */
@@ -137,6 +145,26 @@ final class NonNlsMessages
         final ComponentStrategyId componentStrategyId )
     {
         return bind( ComponentStrategyRegistryFacade_getContainerStrategy_notContainerStrategy, componentStrategyId );
+    }
+
+    // --- ComponentSurfaceDesignRegistryFacade -----------------------------
+
+    /**
+     * Gets the formatted message indicating the component surface design
+     * identifier is not registered.
+     * 
+     * @param componentSurfaceDesignId
+     *        The component surface design identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the component surface design
+     *         identifier is not registered; never {@code null}.
+     */
+    /* @NonNull */
+    static String ComponentSurfaceDesignRegistryFacade_getComponentSurfaceDesign_unknownComponentSurfaceDesignId(
+        /* @NonNull */
+        final ComponentSurfaceDesignId componentSurfaceDesignId )
+    {
+        return bind( ComponentSurfaceDesignRegistryFacade_getComponentSurfaceDesign_unknownComponentSurfaceDesignId, componentSurfaceDesignId );
     }
 
     // --- ContainerLayoutRegistryFacade ------------------------------------

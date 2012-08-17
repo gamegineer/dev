@@ -40,9 +40,12 @@ import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
+import org.gamegineer.table.core.ComponentSurfaceDesignId;
+import org.gamegineer.table.core.ComponentSurfaceDesignRegistryFacade;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.IComponentStrategy;
+import org.gamegineer.table.core.NoSuchComponentSurfaceDesignException;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.IComponent}.
@@ -66,9 +69,9 @@ class Component
 
     /**
      * The name of the memento attribute that stores the component surface
-     * designs.
+     * design identifiers.
      */
-    private static final String SURFACE_DESIGNS_MEMENTO_ATTRIBUTE_NAME = "component.surfaceDesigns"; //$NON-NLS-1$
+    private static final String SURFACE_DESIGN_IDS_MEMENTO_ATTRIBUTE_NAME = "component.surfaceDesignIds"; //$NON-NLS-1$
 
     /** The collection of component listeners. */
     private final CopyOnWriteArrayList<IComponentListener> componentListeners_;
@@ -426,6 +429,26 @@ class Component
         }
     }
 
+    /**
+     * Gets the collection of surface design identifiers for this component.
+     * 
+     * @return The collection of surface design identifier for this component;
+     *         never {@code null}.
+     */
+    @GuardedBy( "getLock()" )
+    private Map<ComponentOrientation, ComponentSurfaceDesignId> getSurfaceDesignIds()
+    {
+        assert getLock().isHeldByCurrentThread();
+
+        final Map<ComponentOrientation, ComponentSurfaceDesignId> surfaceDesignIds = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesignId>( surfaceDesigns_.size() );
+        for( final Map.Entry<ComponentOrientation, ComponentSurfaceDesign> entry : surfaceDesigns_.entrySet() )
+        {
+            surfaceDesignIds.put( entry.getKey(), entry.getValue().getId() );
+        }
+
+        return surfaceDesignIds;
+    }
+
     /*
      * @see org.gamegineer.table.core.IComponent#getTable()
      */
@@ -496,6 +519,7 @@ class Component
      *         component.
      */
     @GuardedBy( "getLock()" )
+    @SuppressWarnings( "unchecked" )
     void readMemento(
         /* @NonNull */
         final Object memento )
@@ -507,9 +531,7 @@ class Component
         setLocation( MementoUtils.getAttribute( memento, LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class ) );
         setOrientation( MementoUtils.getAttribute( memento, ORIENTATION_MEMENTO_ATTRIBUTE_NAME, ComponentOrientation.class ) );
         setOrigin( MementoUtils.getAttribute( memento, ORIGIN_MEMENTO_ATTRIBUTE_NAME, Point.class ) );
-        @SuppressWarnings( "unchecked" )
-        final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = MementoUtils.getAttribute( memento, SURFACE_DESIGNS_MEMENTO_ATTRIBUTE_NAME, Map.class );
-        setSurfaceDesigns( surfaceDesigns );
+        setSurfaceDesignIds( MementoUtils.getAttribute( memento, SURFACE_DESIGN_IDS_MEMENTO_ATTRIBUTE_NAME, Map.class ) );
     }
 
     /*
@@ -665,6 +687,41 @@ class Component
         } );
     }
 
+    /**
+     * Sets the collection of surface design identifiers for this component.
+     * 
+     * @param surfaceDesignIds
+     *        The collection of surface design identifiers; must not be
+     *        {@code null}. The collection may contain a subset of the supported
+     *        component surface design identifiers.
+     * 
+     * @throws org.gamegineer.common.core.util.memento.MementoException
+     *         If any component surface design identifier is not registered.
+     */
+    @GuardedBy( "getLock()" )
+    private void setSurfaceDesignIds(
+        /* @NonNull */
+        final Map<ComponentOrientation, ComponentSurfaceDesignId> surfaceDesignIds )
+        throws MementoException
+    {
+        assert surfaceDesignIds != null;
+
+        try
+        {
+            final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>( surfaceDesignIds.size() );
+            for( final Map.Entry<ComponentOrientation, ComponentSurfaceDesignId> entry : surfaceDesignIds.entrySet() )
+            {
+                surfaceDesigns.put( entry.getKey(), ComponentSurfaceDesignRegistryFacade.getComponentSurfaceDesign( entry.getValue() ) );
+            }
+
+            setSurfaceDesigns( surfaceDesigns );
+        }
+        catch( final NoSuchComponentSurfaceDesignException e )
+        {
+            throw new MementoException( e );
+        }
+    }
+
     /*
      * @see org.gamegineer.table.core.IComponent#setSurfaceDesigns(java.util.Map)
      */
@@ -737,6 +794,6 @@ class Component
         memento.put( LOCATION_MEMENTO_ATTRIBUTE_NAME, new Point( location_ ) );
         memento.put( ORIENTATION_MEMENTO_ATTRIBUTE_NAME, orientation_ );
         memento.put( ORIGIN_MEMENTO_ATTRIBUTE_NAME, new Point( origin_ ) );
-        memento.put( SURFACE_DESIGNS_MEMENTO_ATTRIBUTE_NAME, new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>( surfaceDesigns_ ) );
+        memento.put( SURFACE_DESIGN_IDS_MEMENTO_ATTRIBUTE_NAME, getSurfaceDesignIds() );
     }
 }

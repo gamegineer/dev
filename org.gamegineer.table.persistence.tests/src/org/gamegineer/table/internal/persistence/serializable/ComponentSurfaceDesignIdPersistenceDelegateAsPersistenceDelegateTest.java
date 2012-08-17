@@ -1,5 +1,5 @@
 /*
- * ComponentSurfaceDesignPersistenceDelegateAsPersistenceDelegateTest.java
+ * ComponentSurfaceDesignIdPersistenceDelegateAsPersistenceDelegateTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,26 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 26, 2012 at 9:58:12 PM.
+ * Created on Aug 16, 2012 at 8:52:18 PM.
  */
 
 package org.gamegineer.table.internal.persistence.serializable;
 
-import static org.junit.Assert.assertEquals;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
-import org.gamegineer.table.core.ComponentSurfaceDesign;
-import org.gamegineer.table.core.ComponentSurfaceDesigns;
+import org.gamegineer.table.core.ComponentSurfaceDesignId;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.persistence.serializable.ComponentSurfaceDesignPersistenceDelegate}
+ * {@link org.gamegineer.table.internal.persistence.serializable.ComponentSurfaceDesignIdPersistenceDelegate}
  * class to ensure it does not violate the contract of the
  * {@link org.gamegineer.common.persistence.serializable.IPersistenceDelegate}
  * interface.
  */
-public final class ComponentSurfaceDesignPersistenceDelegateAsPersistenceDelegateTest
+public final class ComponentSurfaceDesignIdPersistenceDelegateAsPersistenceDelegateTest
     extends AbstractPersistenceDelegateTestCase
 {
     // ======================================================================
@@ -44,10 +42,10 @@ public final class ComponentSurfaceDesignPersistenceDelegateAsPersistenceDelegat
 
     /**
      * Initializes a new instance of the
-     * {@code ComponentSurfaceDesignPersistenceDelegateAsPersistenceDelegateTest}
+     * {@code ComponentSurfaceDesignIdPersistenceDelegateAsPersistenceDelegateTest}
      * class.
      */
-    public ComponentSurfaceDesignPersistenceDelegateAsPersistenceDelegateTest()
+    public ComponentSurfaceDesignIdPersistenceDelegateAsPersistenceDelegateTest()
     {
     }
 
@@ -57,26 +55,12 @@ public final class ComponentSurfaceDesignPersistenceDelegateAsPersistenceDelegat
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#assertSubjectEquals(java.lang.Object, java.lang.Object)
-     */
-    @Override
-    protected void assertSubjectEquals(
-        final Object expected,
-        final Object actual )
-    {
-        final ComponentSurfaceDesign expectedComponentSurfaceDesign = (ComponentSurfaceDesign)expected;
-        final ComponentSurfaceDesign actualComponentSurfaceDesign = (ComponentSurfaceDesign)actual;
-        assertEquals( expectedComponentSurfaceDesign.getId(), actualComponentSurfaceDesign.getId() );
-        assertEquals( expectedComponentSurfaceDesign.getSize(), actualComponentSurfaceDesign.getSize() );
-    }
-
-    /*
      * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#createPersistenceDelegate()
      */
     @Override
     protected IPersistenceDelegate createPersistenceDelegate()
     {
-        return new ComponentSurfaceDesignPersistenceDelegate();
+        return new ComponentSurfaceDesignIdPersistenceDelegate();
     }
 
     /*
@@ -85,7 +69,7 @@ public final class ComponentSurfaceDesignPersistenceDelegateAsPersistenceDelegat
     @Override
     protected Object createSubject()
     {
-        return ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
+        return ComponentSurfaceDesignId.fromString( "id" ); //$NON-NLS-1$
     }
 
     /*
@@ -95,7 +79,7 @@ public final class ComponentSurfaceDesignPersistenceDelegateAsPersistenceDelegat
     protected void registerPersistenceDelegates(
         final IPersistenceDelegateRegistry persistenceDelegateRegistry )
     {
-        persistenceDelegateRegistry.registerPersistenceDelegate( ComponentSurfaceDesign.class, new ComponentSurfaceDesignPersistenceDelegate() );
-        persistenceDelegateRegistry.registerPersistenceDelegate( ComponentSurfaceDesignProxy.class, new ComponentSurfaceDesignPersistenceDelegate() );
+        persistenceDelegateRegistry.registerPersistenceDelegate( ComponentSurfaceDesignId.class, new ComponentSurfaceDesignIdPersistenceDelegate() );
+        persistenceDelegateRegistry.registerPersistenceDelegate( ComponentSurfaceDesignIdProxy.class, new ComponentSurfaceDesignIdPersistenceDelegate() );
     }
 }
