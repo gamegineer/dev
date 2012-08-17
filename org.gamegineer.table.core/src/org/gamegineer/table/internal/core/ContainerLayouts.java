@@ -34,6 +34,7 @@ public final class ContainerLayouts
     // ======================================================================
     // Fields
     // ======================================================================
+
     /**
      * A layout in which the container is laid out with all components at their
      * absolute position in table coordinates.
