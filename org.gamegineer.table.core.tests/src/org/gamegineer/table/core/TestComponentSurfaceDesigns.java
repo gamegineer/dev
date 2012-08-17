@@ -1,5 +1,5 @@
 /*
- * ComponentSurfaceDesigns.java
+ * TestComponentSurfaceDesigns.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -31,7 +31,7 @@ import org.gamegineer.table.internal.core.Activator;
  * for testing.
  */
 @ThreadSafe
-public final class ComponentSurfaceDesigns
+public final class TestComponentSurfaceDesigns
 {
     // ======================================================================
     // Fields
@@ -46,9 +46,10 @@ public final class ComponentSurfaceDesigns
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ComponentSurfaceDesigns} class.
+     * Initializes a new instance of the {@code TestComponentSurfaceDesigns}
+     * class.
      */
-    private ComponentSurfaceDesigns()
+    private TestComponentSurfaceDesigns()
     {
     }
 

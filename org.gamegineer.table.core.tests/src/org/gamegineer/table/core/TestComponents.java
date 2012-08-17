@@ -107,7 +107,7 @@ public final class TestComponents
 
         for( final ComponentOrientation orientation : component.getSupportedOrientations() )
         {
-            component.setSurfaceDesign( orientation, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+            component.setSurfaceDesign( orientation, TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         }
     }
 }

@@ -25,9 +25,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentPath;
-import org.gamegineer.table.core.ComponentSurfaceDesigns;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TestComponentStrategies;
+import org.gamegineer.table.core.TestComponentSurfaceDesigns;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -76,7 +76,7 @@ public final class ContainerTest
         final Component component = new Component( tableEnvironment_, TestComponentStrategies.createUniqueComponentStrategy() );
         for( final ComponentOrientation orientation : component.getSupportedOrientations() )
         {
-            component.setSurfaceDesign( orientation, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+            component.setSurfaceDesign( orientation, TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         }
 
         return component;

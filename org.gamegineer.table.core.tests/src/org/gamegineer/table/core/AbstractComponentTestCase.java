@@ -291,7 +291,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
         component.setOrigin( getAlternatePoint( component.getOrigin() ) );
         for( final ComponentOrientation orientation : component.getSupportedOrientations() )
         {
-            component.setSurfaceDesign( orientation, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+            component.setSurfaceDesign( orientation, TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         }
     }
 
@@ -411,7 +411,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
         for( final ComponentOrientation orientation : component_.getSupportedOrientations() )
         {
             length += 10;
-            component_.setSurfaceDesign( orientation, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign( length, length ) );
+            component_.setSurfaceDesign( orientation, TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign( length, length ) );
             component_.setOrientation( orientation );
             final Rectangle bounds = component_.getBounds();
             assertEquals( length, bounds.height );
@@ -619,7 +619,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
         for( final ComponentOrientation orientation : component_.getSupportedOrientations() )
         {
             length += 10;
-            component_.setSurfaceDesign( orientation, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign( length, length ) );
+            component_.setSurfaceDesign( orientation, TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign( length, length ) );
             component_.setOrientation( orientation );
             final Dimension size = component_.getSize();
             assertEquals( length, size.height );
@@ -738,7 +738,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
         final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = component_.getSurfaceDesigns();
         final Map<ComponentOrientation, ComponentSurfaceDesign> expectedSurfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>( surfaceDesigns );
 
-        surfaceDesigns.put( createIllegalOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+        surfaceDesigns.put( createIllegalOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
 
         assertEquals( expectedSurfaceDesigns, component_.getSurfaceDesigns() );
     }
@@ -963,7 +963,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
         mocksControl_.replay();
         component_.addComponentListener( listener );
 
-        component_.setSurfaceDesign( component_.getOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+        component_.setSurfaceDesign( component_.getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
 
         mocksControl_.verify();
     }
@@ -975,7 +975,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test( expected = IllegalArgumentException.class )
     public void testSetSurfaceDesign_Orientation_Illegal()
     {
-        component_.setSurfaceDesign( createIllegalOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+        component_.setSurfaceDesign( createIllegalOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
     }
 
     /**
@@ -985,7 +985,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test( expected = NullPointerException.class )
     public void testSetSurfaceDesign_Orientation_Null()
     {
-        component_.setSurfaceDesign( null, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+        component_.setSurfaceDesign( null, TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
     }
 
     /**
@@ -1009,7 +1009,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
         final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>( orientations.size() );
         for( final ComponentOrientation orientation : orientations )
         {
-            surfaceDesigns.put( orientation, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+            surfaceDesigns.put( orientation, TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         }
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentSurfaceDesignChanged( EasyMock.notNull( ComponentEvent.class ) );
@@ -1051,7 +1051,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test( expected = IllegalArgumentException.class )
     public void testSetSurfaceDesigns_SurfaceDesigns_Illegal_ContainsUnsupportedOrientation()
     {
-        component_.setSurfaceDesigns( Collections.singletonMap( createIllegalOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() ) );
+        component_.setSurfaceDesigns( Collections.singletonMap( createIllegalOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() ) );
     }
 
     /**

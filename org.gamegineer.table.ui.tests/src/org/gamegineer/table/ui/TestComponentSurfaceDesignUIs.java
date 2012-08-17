@@ -1,5 +1,5 @@
 /*
- * ComponentSurfaceDesignUIs.java
+ * TestComponentSurfaceDesignUIs.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -26,24 +26,24 @@ import javax.swing.Icon;
 import net.jcip.annotations.ThreadSafe;
 import org.easymock.EasyMock;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
-import org.gamegineer.table.core.ComponentSurfaceDesigns;
+import org.gamegineer.table.core.TestComponentSurfaceDesigns;
 
 /**
  * A factory for creating various types of component surface design user
  * interface types suitable for testing.
  */
 @ThreadSafe
-public final class ComponentSurfaceDesignUIs
+public final class TestComponentSurfaceDesignUIs
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ComponentSurfaceDesignUIs}
+     * Initializes a new instance of the {@code TestComponentSurfaceDesignUIs}
      * class.
      */
-    private ComponentSurfaceDesignUIs()
+    private TestComponentSurfaceDesignUIs()
     {
     }
 
@@ -108,6 +108,6 @@ public final class ComponentSurfaceDesignUIs
     /* @NonNull */
     public static ComponentSurfaceDesignUI createUniqueComponentSurfaceDesignUI()
     {
-        return createComponentSurfaceDesignUI( ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+        return createComponentSurfaceDesignUI( TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
     }
 }

@@ -335,7 +335,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     public void testAddComponent_ChangesContainerBounds()
     {
         getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
-        getContainer().setSurfaceDesign( getContainer().getOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+        getContainer().setSurfaceDesign( getContainer().getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
         mocksControl_.replay();
@@ -465,7 +465,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     public void testAddComponents_ChangesContainerBounds()
     {
         getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
-        getContainer().setSurfaceDesign( getContainer().getOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+        getContainer().setSurfaceDesign( getContainer().getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
         mocksControl_.replay();
@@ -704,7 +704,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     public void testRemoveAllComponents_NotEmpty_ChangesContainerBounds()
     {
         getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
-        getContainer().setSurfaceDesign( getContainer().getOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+        getContainer().setSurfaceDesign( getContainer().getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
         EasyMock.expectLastCall().times( 2 );
@@ -870,7 +870,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     public void testRemoveComponents_Location_ComponentPresent_ChangesContainerBounds()
     {
         getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
-        getContainer().setSurfaceDesign( getContainer().getOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+        getContainer().setSurfaceDesign( getContainer().getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
         EasyMock.expectLastCall().times( 2 );
@@ -1030,7 +1030,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     public void testRemoveTopComponent_NotEmpty_ChangesContainerBounds()
     {
         getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
-        getContainer().setSurfaceDesign( getContainer().getOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+        getContainer().setSurfaceDesign( getContainer().getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
         EasyMock.expectLastCall().times( 2 );
@@ -1095,7 +1095,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test
     public void testSetLayout_ChangesContainerBounds()
     {
-        getContainer().setSurfaceDesign( getContainer().getOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+        getContainer().setSurfaceDesign( getContainer().getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
         getContainer().addComponent( createUniqueComponent() );
         getContainer().addComponent( createUniqueComponent() );

@@ -120,7 +120,7 @@ public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
     @Test
     public void testGetComponentSurfaceDesignUI_Id_Present()
     {
-        final ComponentSurfaceDesignUI expectedComponentSurfaceDesignUI = ComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI();
+        final ComponentSurfaceDesignUI expectedComponentSurfaceDesignUI = TestComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI();
         componentSurfaceDesignUIRegistry_.registerComponentSurfaceDesignUI( expectedComponentSurfaceDesignUI );
 
         final ComponentSurfaceDesignUI actualComponentSurfaceDesignUI = componentSurfaceDesignUIRegistry_.getComponentSurfaceDesignUI( expectedComponentSurfaceDesignUI.getId() );
@@ -138,7 +138,7 @@ public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
         final Collection<ComponentSurfaceDesignUI> componentSurfaceDesignUIs = componentSurfaceDesignUIRegistry_.getComponentSurfaceDesignUIs();
         final int expectedComponentSurfaceDesignUIsSize = componentSurfaceDesignUIs.size();
 
-        componentSurfaceDesignUIs.add( ComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI() );
+        componentSurfaceDesignUIs.add( TestComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI() );
 
         assertEquals( expectedComponentSurfaceDesignUIsSize, componentSurfaceDesignUIRegistry_.getComponentSurfaceDesignUIs().size() );
     }
@@ -152,7 +152,7 @@ public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
     public void testGetComponentSurfaceDesignUIs_ReturnValue_Snapshot()
     {
         final Collection<ComponentSurfaceDesignUI> componentSurfaceDesignUIs = componentSurfaceDesignUIRegistry_.getComponentSurfaceDesignUIs();
-        componentSurfaceDesignUIRegistry_.registerComponentSurfaceDesignUI( ComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI() );
+        componentSurfaceDesignUIRegistry_.registerComponentSurfaceDesignUI( TestComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI() );
 
         assertTrue( componentSurfaceDesignUIs.size() != componentSurfaceDesignUIRegistry_.getComponentSurfaceDesignUIs().size() );
     }
@@ -176,10 +176,10 @@ public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testRegisterComponentSurfaceDesignUI_ComponentSurfaceDesignUI_Registered()
     {
-        final ComponentSurfaceDesignUI componentSurfaceDesignUI = ComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI();
+        final ComponentSurfaceDesignUI componentSurfaceDesignUI = TestComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI();
         componentSurfaceDesignUIRegistry_.registerComponentSurfaceDesignUI( componentSurfaceDesignUI );
 
-        componentSurfaceDesignUIRegistry_.registerComponentSurfaceDesignUI( ComponentSurfaceDesignUIs.cloneComponentSurfaceDesignUI( componentSurfaceDesignUI ) );
+        componentSurfaceDesignUIRegistry_.registerComponentSurfaceDesignUI( TestComponentSurfaceDesignUIs.cloneComponentSurfaceDesignUI( componentSurfaceDesignUI ) );
     }
 
     /**
@@ -189,7 +189,7 @@ public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
     @Test
     public void testRegisterComponentSurfaceDesignUI_ComponentSurfaceDesignUI_Unregistered()
     {
-        final ComponentSurfaceDesignUI componentSurfaceDesignUI = ComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI();
+        final ComponentSurfaceDesignUI componentSurfaceDesignUI = TestComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI();
 
         componentSurfaceDesignUIRegistry_.registerComponentSurfaceDesignUI( componentSurfaceDesignUI );
 
@@ -216,12 +216,12 @@ public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testUnregisterComponentSurfaceDesignUI_ComponentSurfaceDesignUI_Registered_DifferentInstance()
     {
-        final ComponentSurfaceDesignUI componentSurfaceDesignUI = ComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI();
+        final ComponentSurfaceDesignUI componentSurfaceDesignUI = TestComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI();
         final int originalComponentSurfaceDesignUIsSize = componentSurfaceDesignUIRegistry_.getComponentSurfaceDesignUIs().size();
         componentSurfaceDesignUIRegistry_.registerComponentSurfaceDesignUI( componentSurfaceDesignUI );
         assertEquals( originalComponentSurfaceDesignUIsSize + 1, componentSurfaceDesignUIRegistry_.getComponentSurfaceDesignUIs().size() );
 
-        componentSurfaceDesignUIRegistry_.unregisterComponentSurfaceDesignUI( ComponentSurfaceDesignUIs.cloneComponentSurfaceDesignUI( componentSurfaceDesignUI ) );
+        componentSurfaceDesignUIRegistry_.unregisterComponentSurfaceDesignUI( TestComponentSurfaceDesignUIs.cloneComponentSurfaceDesignUI( componentSurfaceDesignUI ) );
     }
 
     /**
@@ -231,7 +231,7 @@ public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
     @Test
     public void testUnregisterComponentSurfaceDesignUI_ComponentSurfaceDesignUI_Registered_SameInstance()
     {
-        final ComponentSurfaceDesignUI componentSurfaceDesignUI = ComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI();
+        final ComponentSurfaceDesignUI componentSurfaceDesignUI = TestComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI();
         final int originalComponentSurfaceDesignUIsSize = componentSurfaceDesignUIRegistry_.getComponentSurfaceDesignUIs().size();
         componentSurfaceDesignUIRegistry_.registerComponentSurfaceDesignUI( componentSurfaceDesignUI );
         assertEquals( originalComponentSurfaceDesignUIsSize + 1, componentSurfaceDesignUIRegistry_.getComponentSurfaceDesignUIs().size() );
@@ -249,7 +249,7 @@ public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testUnregisterComponentSurfaceDesignUI_ComponentSurfaceDesignUI_Unregistered()
     {
-        final ComponentSurfaceDesignUI componentSurfaceDesignUI = ComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI();
+        final ComponentSurfaceDesignUI componentSurfaceDesignUI = TestComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI();
 
         componentSurfaceDesignUIRegistry_.unregisterComponentSurfaceDesignUI( componentSurfaceDesignUI );
     }

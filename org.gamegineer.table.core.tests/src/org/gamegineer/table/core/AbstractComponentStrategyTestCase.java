@@ -196,7 +196,7 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
         final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = componentStrategy_.getDefaultSurfaceDesigns();
         final Map<ComponentOrientation, ComponentSurfaceDesign> expectedSurfaceDesigns = new HashMap<ComponentOrientation, ComponentSurfaceDesign>( surfaceDesigns );
 
-        surfaceDesigns.put( createIllegalOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+        surfaceDesigns.put( createIllegalOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
 
         assertEquals( expectedSurfaceDesigns, componentStrategy_.getDefaultSurfaceDesigns() );
     }
