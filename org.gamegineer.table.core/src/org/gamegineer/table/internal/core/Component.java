@@ -726,7 +726,7 @@ class Component
      * @see org.gamegineer.table.core.IComponent#setSurfaceDesigns(java.util.Map)
      */
     @Override
-    public void setSurfaceDesigns(
+    public final void setSurfaceDesigns(
         final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns )
     {
         assertArgumentNotNull( surfaceDesigns, "surfaceDesigns" ); //$NON-NLS-1$
