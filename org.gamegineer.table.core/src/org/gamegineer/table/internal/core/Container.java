@@ -478,6 +478,28 @@ final class Container
         return layout_.getComponentIndex( this, location );
     }
 
+    /**
+     * Gets the collection of mementos representing the components in this
+     * container.
+     * 
+     * @return The collection of mementos representing the components in this
+     *         container; never {@code null}.
+     */
+    @GuardedBy( "getLock()" )
+    /* @NonNull */
+    private List<Object> getComponentMementos()
+    {
+        assert getLock().isHeldByCurrentThread();
+
+        final List<Object> componentMementos = new ArrayList<Object>( components_.size() );
+        for( final Component component : components_ )
+        {
+            componentMementos.add( component.createMemento() );
+        }
+
+        return componentMementos;
+    }
+
     /*
      * @see org.gamegineer.table.core.IContainer#getComponents()
      */
@@ -512,6 +534,20 @@ final class Container
         }
     }
 
+    /**
+     * Gets the identifier of the layout of components in this container.
+     * 
+     * @return The container layout identifier; never {@code null}.
+     */
+    @GuardedBy( "getLock()" )
+    /* @NonNull */
+    private ContainerLayoutId getLayoutId()
+    {
+        assert getLock().isHeldByCurrentThread();
+
+        return layout_.getId();
+    }
+
     /*
      * @see org.gamegineer.table.internal.core.Component#getStrategy()
      */
@@ -525,6 +561,7 @@ final class Container
      * @see org.gamegineer.table.internal.core.Component#readMemento(java.lang.Object)
      */
     @Override
+    @SuppressWarnings( "unchecked" )
     void readMemento(
         final Object memento )
         throws MementoException
@@ -534,22 +571,8 @@ final class Container
 
         super.readMemento( memento );
 
-        try
-        {
-            setLayout( ContainerLayoutRegistryFacade.getContainerLayout( MementoUtils.getAttribute( memento, LAYOUT_ID_MEMENTO_ATTRIBUTE_NAME, ContainerLayoutId.class ) ) );
-        }
-        catch( final NoSuchContainerLayoutException e )
-        {
-            throw new MementoException( e );
-        }
-
-        @SuppressWarnings( "unchecked" )
-        final List<Object> componentMementos = MementoUtils.getAttribute( memento, COMPONENTS_MEMENTO_ATTRIBUTE_NAME, List.class );
-        removeAllComponents();
-        for( final Object componentMemento : componentMementos )
-        {
-            addComponent( ComponentFactory.createComponent( getTableEnvironment(), componentMemento ) );
-        }
+        setLayoutId( MementoUtils.getAttribute( memento, LAYOUT_ID_MEMENTO_ATTRIBUTE_NAME, ContainerLayoutId.class ) );
+        setComponentMementos( MementoUtils.getAttribute( memento, COMPONENTS_MEMENTO_ATTRIBUTE_NAME, List.class ) );
     }
 
     /*
@@ -724,6 +747,34 @@ final class Container
         return components.isEmpty() ? null : components.get( 0 );
     }
 
+    /**
+     * Sets the collection of mementos representing the components in this
+     * container.
+     * 
+     * @param componentMementos
+     *        The collection of mementos representing the components in this
+     *        container; must not be {@code null}.
+     * 
+     * @throws org.gamegineer.common.core.util.memento.MementoException
+     *         If any component memento is malformed.
+     */
+    @GuardedBy( "getLock()" )
+    private void setComponentMementos(
+        /* @NonNull */
+        final List<Object> componentMementos )
+        throws MementoException
+    {
+        assert componentMementos != null;
+        assert getLock().isHeldByCurrentThread();
+
+        removeAllComponents();
+
+        for( final Object componentMemento : componentMementos )
+        {
+            addComponent( ComponentFactory.createComponent( getTableEnvironment(), componentMemento ) );
+        }
+    }
+
     /*
      * @see org.gamegineer.table.core.IContainer#setLayout(org.gamegineer.table.core.IContainerLayout)
      */
@@ -775,6 +826,34 @@ final class Container
         } );
     }
 
+    /**
+     * Sets the identifier of the layout of components in this container.
+     * 
+     * @param layoutId
+     *        The container layout identifier; must not be {@code null}.
+     * 
+     * @throws org.gamegineer.common.core.util.memento.MementoException
+     *         If the container layout identifier is not registered.
+     */
+    @GuardedBy( "getLock()" )
+    private void setLayoutId(
+        /* @NonNull */
+        final ContainerLayoutId layoutId )
+        throws MementoException
+    {
+        assert layoutId != null;
+        assert getLock().isHeldByCurrentThread();
+
+        try
+        {
+            setLayout( ContainerLayoutRegistryFacade.getContainerLayout( layoutId ) );
+        }
+        catch( final NoSuchContainerLayoutException e )
+        {
+            throw new MementoException( e );
+        }
+    }
+
     /*
      * @see org.gamegineer.table.internal.core.Component#translate(java.awt.Dimension)
      */
@@ -805,14 +884,8 @@ final class Container
 
         super.writeMemento( memento );
 
-        final List<Object> componentMementos = new ArrayList<Object>();
-        for( final Component component : components_ )
-        {
-            componentMementos.add( component.createMemento() );
-        }
-        memento.put( COMPONENTS_MEMENTO_ATTRIBUTE_NAME, componentMementos );
-
-        memento.put( LAYOUT_ID_MEMENTO_ATTRIBUTE_NAME, layout_.getId() );
+        memento.put( COMPONENTS_MEMENTO_ATTRIBUTE_NAME, getComponentMementos() );
+        memento.put( LAYOUT_ID_MEMENTO_ATTRIBUTE_NAME, getLayoutId() );
     }
 
 
