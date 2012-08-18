@@ -112,11 +112,7 @@ public final class TestComponentSurfaceDesigns
         final int width,
         final int height )
     {
-        final ComponentSurfaceDesign componentSurfaceDesign = new ComponentSurfaceDesign( getUniqueComponentSurfaceDesignId(), width, height );
-        final IComponentSurfaceDesignRegistry componentSurfaceDesignRegistry = Activator.getDefault().getComponentSurfaceDesignRegistry();
-        assert componentSurfaceDesignRegistry != null;
-        componentSurfaceDesignRegistry.registerComponentSurfaceDesign( componentSurfaceDesign );
-        return componentSurfaceDesign;
+        return registerComponentSurfaceDesign( new ComponentSurfaceDesign( getUniqueComponentSurfaceDesignId(), width, height ) );
     }
 
     /**
@@ -129,5 +125,27 @@ public final class TestComponentSurfaceDesigns
     private static ComponentSurfaceDesignId getUniqueComponentSurfaceDesignId()
     {
         return ComponentSurfaceDesignId.fromString( String.format( "component-surface-design-%1$d", nextComponentSurfaceDesignId_.incrementAndGet() ) ); //$NON-NLS-1$
+    }
+
+    /**
+     * Registers the specified component surface design with the component
+     * surface design registry.
+     * 
+     * @param componentSurfaceDesign
+     *        The component surface design; must not be {@code null}.
+     * 
+     * @return The registered component surface design; never {@code null}.
+     */
+    /* @NonNull */
+    private static ComponentSurfaceDesign registerComponentSurfaceDesign(
+        /* @NonNull */
+        final ComponentSurfaceDesign componentSurfaceDesign )
+    {
+        assert componentSurfaceDesign != null;
+
+        final IComponentSurfaceDesignRegistry componentSurfaceDesignRegistry = Activator.getDefault().getComponentSurfaceDesignRegistry();
+        assert componentSurfaceDesignRegistry != null;
+        componentSurfaceDesignRegistry.registerComponentSurfaceDesign( componentSurfaceDesign );
+        return componentSurfaceDesign;
     }
 }
