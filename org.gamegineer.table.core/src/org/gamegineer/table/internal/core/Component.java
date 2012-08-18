@@ -41,7 +41,7 @@ import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
-import org.gamegineer.table.core.ComponentSurfaceDesignRegistryFacade;
+import org.gamegineer.table.core.ComponentSurfaceDesignRegistry;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.IComponentStrategy;
@@ -711,7 +711,7 @@ class Component
             final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>( surfaceDesignIds.size() );
             for( final Map.Entry<ComponentOrientation, ComponentSurfaceDesignId> entry : surfaceDesignIds.entrySet() )
             {
-                surfaceDesigns.put( entry.getKey(), ComponentSurfaceDesignRegistryFacade.getComponentSurfaceDesign( entry.getValue() ) );
+                surfaceDesigns.put( entry.getKey(), ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( entry.getValue() ) );
             }
 
             setSurfaceDesigns( surfaceDesigns );

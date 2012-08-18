@@ -31,8 +31,8 @@ import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
-import org.gamegineer.table.core.ComponentSurfaceDesignRegistryFacade;
-import org.gamegineer.table.core.ContainerLayoutRegistryFacade;
+import org.gamegineer.table.core.ComponentSurfaceDesignRegistry;
+import org.gamegineer.table.core.ContainerLayoutRegistry;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
@@ -141,7 +141,7 @@ public final class NetworkTableUtils
                 final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>( componentIncrement.getSurfaceDesignIds().size() );
                 for( final Map.Entry<ComponentOrientation, ComponentSurfaceDesignId> entry : componentIncrement.getSurfaceDesignIds().entrySet() )
                 {
-                    surfaceDesigns.put( entry.getKey(), ComponentSurfaceDesignRegistryFacade.getComponentSurfaceDesign( entry.getValue() ) );
+                    surfaceDesigns.put( entry.getKey(), ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( entry.getValue() ) );
                 }
 
                 component.setSurfaceDesigns( surfaceDesigns );
@@ -175,7 +175,7 @@ public final class NetworkTableUtils
         {
             try
             {
-                container.setLayout( ContainerLayoutRegistryFacade.getContainerLayout( containerIncrement.getLayoutId() ) );
+                container.setLayout( ContainerLayoutRegistry.getContainerLayout( containerIncrement.getLayoutId() ) );
             }
             catch( final NoSuchContainerLayoutException e )
             {

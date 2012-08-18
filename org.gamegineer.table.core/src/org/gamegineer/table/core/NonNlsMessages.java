@@ -40,19 +40,19 @@ final class NonNlsMessages
     /** The component path index must not be negative. */
     public static String ComponentPath_ctor_index_negative;
 
-    // --- ComponentStrategyRegistryFacade ----------------------------------
+    // --- ComponentStrategyRegistry ----------------------------------------
 
     /** The component strategy registry is not available. */
-    public static String ComponentStrategyRegistryFacade_getComponentStrategy_componentStrategyRegistryNotAvailable;
+    public static String ComponentStrategyRegistry_getComponentStrategy_componentStrategyRegistryNotAvailable;
 
     /** The component strategy identifier is not registered. */
-    public static String ComponentStrategyRegistryFacade_getComponentStrategy_unknownComponentStrategyId;
+    public static String ComponentStrategyRegistry_getComponentStrategy_unknownComponentStrategyId;
 
     /**
      * The component strategy identifier is not associated with a container
      * strategy.
      */
-    public static String ComponentStrategyRegistryFacade_getContainerStrategy_notContainerStrategy;
+    public static String ComponentStrategyRegistry_getContainerStrategy_notContainerStrategy;
 
     // --- ComponentSurfaceDesign -------------------------------------------
 
@@ -62,26 +62,26 @@ final class NonNlsMessages
     /** The component surface design width must not be negative. */
     public static String ComponentSurfaceDesign_ctor_width_negative;
 
-    // --- ComponentSurfaceDesignRegistryFacade -----------------------------
+    // --- ComponentSurfaceDesignRegistry -----------------------------------
 
     /** The component surface design registry is not available. */
-    public static String ComponentSurfaceDesignRegistryFacade_getComponentSurfaceDesign_componentSurfaceDesignRegistryNotAvailable;
+    public static String ComponentSurfaceDesignRegistry_getComponentSurfaceDesign_componentSurfaceDesignRegistryNotAvailable;
 
     /** The component surface design identifier is not registered. */
-    public static String ComponentSurfaceDesignRegistryFacade_getComponentSurfaceDesign_unknownComponentSurfaceDesignId;
+    public static String ComponentSurfaceDesignRegistry_getComponentSurfaceDesign_unknownComponentSurfaceDesignId;
 
     // --- ContainerContentChangedEvent -------------------------------------
 
     /** The component index is negative. */
     public static String ContainerContentChangedEvent_ctor_componentIndex_negative;
 
-    // --- ContainerLayoutRegistryFacade ------------------------------------
+    // --- ContainerLayoutRegistry ------------------------------------------
 
     /** The container layout registry is not available. */
-    public static String ContainerLayoutRegistryFacade_getContainerLayout_containerLayoutRegistryNotAvailable;
+    public static String ContainerLayoutRegistry_getContainerLayout_containerLayoutRegistryNotAvailable;
 
     /** The container layout identifier is not registered. */
-    public static String ContainerLayoutRegistryFacade_getContainerLayout_unknownContainerLayoutId;
+    public static String ContainerLayoutRegistry_getContainerLayout_unknownContainerLayoutId;
 
 
     // ======================================================================
@@ -108,7 +108,7 @@ final class NonNlsMessages
     // Methods
     // ======================================================================
 
-    // --- ComponentStrategyRegistryFacade ----------------------------------
+    // --- ComponentStrategyRegistry ----------------------------------------
 
     /**
      * Gets the formatted message indicating the component strategy identifier
@@ -121,11 +121,11 @@ final class NonNlsMessages
      *         identifier is not registered; never {@code null}.
      */
     /* @NonNull */
-    static String ComponentStrategyRegistryFacade_getComponentStrategy_unknownComponentStrategyId(
+    static String ComponentStrategyRegistry_getComponentStrategy_unknownComponentStrategyId(
         /* @NonNull */
         final ComponentStrategyId componentStrategyId )
     {
-        return bind( ComponentStrategyRegistryFacade_getComponentStrategy_unknownComponentStrategyId, componentStrategyId );
+        return bind( ComponentStrategyRegistry_getComponentStrategy_unknownComponentStrategyId, componentStrategyId );
     }
 
     /**
@@ -140,14 +140,14 @@ final class NonNlsMessages
      *         {@code null}.
      */
     /* @NonNull */
-    static String ComponentStrategyRegistryFacade_getContainerStrategy_notContainerStrategy(
+    static String ComponentStrategyRegistry_getContainerStrategy_notContainerStrategy(
         /* @NonNull */
         final ComponentStrategyId componentStrategyId )
     {
-        return bind( ComponentStrategyRegistryFacade_getContainerStrategy_notContainerStrategy, componentStrategyId );
+        return bind( ComponentStrategyRegistry_getContainerStrategy_notContainerStrategy, componentStrategyId );
     }
 
-    // --- ComponentSurfaceDesignRegistryFacade -----------------------------
+    // --- ComponentSurfaceDesignRegistry -----------------------------------
 
     /**
      * Gets the formatted message indicating the component surface design
@@ -160,14 +160,14 @@ final class NonNlsMessages
      *         identifier is not registered; never {@code null}.
      */
     /* @NonNull */
-    static String ComponentSurfaceDesignRegistryFacade_getComponentSurfaceDesign_unknownComponentSurfaceDesignId(
+    static String ComponentSurfaceDesignRegistry_getComponentSurfaceDesign_unknownComponentSurfaceDesignId(
         /* @NonNull */
         final ComponentSurfaceDesignId componentSurfaceDesignId )
     {
-        return bind( ComponentSurfaceDesignRegistryFacade_getComponentSurfaceDesign_unknownComponentSurfaceDesignId, componentSurfaceDesignId );
+        return bind( ComponentSurfaceDesignRegistry_getComponentSurfaceDesign_unknownComponentSurfaceDesignId, componentSurfaceDesignId );
     }
 
-    // --- ContainerLayoutRegistryFacade ------------------------------------
+    // --- ContainerLayoutRegistry ------------------------------------------
 
     /**
      * Gets the formatted message indicating the container layout identifier is
@@ -180,10 +180,10 @@ final class NonNlsMessages
      *         is not registered; never {@code null}.
      */
     /* @NonNull */
-    static String ContainerLayoutRegistryFacade_getContainerLayout_unknownContainerLayoutId(
+    static String ContainerLayoutRegistry_getContainerLayout_unknownContainerLayoutId(
         /* @NonNull */
         final ContainerLayoutId containerLayoutId )
     {
-        return bind( ContainerLayoutRegistryFacade_getContainerLayout_unknownContainerLayoutId, containerLayoutId );
+        return bind( ContainerLayoutRegistry_getContainerLayout_unknownContainerLayoutId, containerLayoutId );
     }
 }

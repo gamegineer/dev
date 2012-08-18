@@ -1,5 +1,5 @@
 /*
- * ContainerLayoutRegistryFacade.java
+ * ComponentSurfaceDesignRegistry.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 11, 2012 at 9:09:39 PM.
+ * Created on Aug 16, 2012 at 9:20:04 PM.
  */
 
 package org.gamegineer.table.core;
@@ -26,20 +26,20 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.core.Activator;
 
 /**
- * A facade for accessing the container layout registry.
+ * A facade for accessing the component surface design registry.
  */
 @ThreadSafe
-public final class ContainerLayoutRegistryFacade
+public final class ComponentSurfaceDesignRegistry
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ContainerLayoutRegistryFacade}
+     * Initializes a new instance of the {@code ComponentSurfaceDesignRegistry}
      * class.
      */
-    private ContainerLayoutRegistryFacade()
+    private ComponentSurfaceDesignRegistry()
     {
     }
 
@@ -49,39 +49,39 @@ public final class ContainerLayoutRegistryFacade
     // ======================================================================
 
     /**
-     * Gets the container layout with the specified identifier.
+     * Gets the component surface design with the specified identifier.
      * 
      * @param id
-     *        The container layout identifier; must not be {@code null}.
+     *        The component surface design identifier; must not be {@code null}.
      * 
-     * @return The container layout with the specified identifier; never
+     * @return The component surface design with the specified identifier; never
      *         {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code id} is {@code null}.
-     * @throws org.gamegineer.table.core.NoSuchContainerLayoutException
+     * @throws org.gamegineer.table.core.NoSuchComponentSurfaceDesignException
      *         If {@code id} is not registered.
      */
     /* @NonNull */
-    public static IContainerLayout getContainerLayout(
+    public static ComponentSurfaceDesign getComponentSurfaceDesign(
         /* @NonNull */
-        final ContainerLayoutId id )
-        throws NoSuchContainerLayoutException
+        final ComponentSurfaceDesignId id )
+        throws NoSuchComponentSurfaceDesignException
     {
         assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
 
-        final IContainerLayoutRegistry containerLayoutRegistry = Activator.getDefault().getContainerLayoutRegistry();
-        if( containerLayoutRegistry == null )
+        final IComponentSurfaceDesignRegistry componentSurfaceDesignRegistry = Activator.getDefault().getComponentSurfaceDesignRegistry();
+        if( componentSurfaceDesignRegistry == null )
         {
-            throw new NoSuchContainerLayoutException( NonNlsMessages.ContainerLayoutRegistryFacade_getContainerLayout_containerLayoutRegistryNotAvailable );
+            throw new NoSuchComponentSurfaceDesignException( NonNlsMessages.ComponentSurfaceDesignRegistry_getComponentSurfaceDesign_componentSurfaceDesignRegistryNotAvailable );
         }
 
-        final IContainerLayout containerLayout = containerLayoutRegistry.getContainerLayout( id );
-        if( containerLayout == null )
+        final ComponentSurfaceDesign componentSurfaceDesign = componentSurfaceDesignRegistry.getComponentSurfaceDesign( id );
+        if( componentSurfaceDesign == null )
         {
-            throw new NoSuchContainerLayoutException( NonNlsMessages.ContainerLayoutRegistryFacade_getContainerLayout_unknownContainerLayoutId( id ) );
+            throw new NoSuchComponentSurfaceDesignException( NonNlsMessages.ComponentSurfaceDesignRegistry_getComponentSurfaceDesign_unknownComponentSurfaceDesignId( id ) );
         }
 
-        return containerLayout;
+        return componentSurfaceDesign;
     }
 }

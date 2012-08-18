@@ -40,7 +40,7 @@ import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ContainerEvent;
 import org.gamegineer.table.core.ContainerLayoutId;
-import org.gamegineer.table.core.ContainerLayoutRegistryFacade;
+import org.gamegineer.table.core.ContainerLayoutRegistry;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerLayout;
@@ -846,7 +846,7 @@ final class Container
 
         try
         {
-            setLayout( ContainerLayoutRegistryFacade.getContainerLayout( layoutId ) );
+            setLayout( ContainerLayoutRegistry.getContainerLayout( layoutId ) );
         }
         catch( final NoSuchContainerLayoutException e )
         {

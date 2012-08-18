@@ -1,5 +1,5 @@
 /*
- * ComponentStrategyRegistryFacade.java
+ * ComponentStrategyRegistry.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -29,17 +29,17 @@ import org.gamegineer.table.internal.core.Activator;
  * A facade for accessing the component strategy registry.
  */
 @ThreadSafe
-public final class ComponentStrategyRegistryFacade
+public final class ComponentStrategyRegistry
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ComponentStrategyRegistryFacade}
+     * Initializes a new instance of the {@code ComponentStrategyRegistry}
      * class.
      */
-    private ComponentStrategyRegistryFacade()
+    private ComponentStrategyRegistry()
     {
     }
 
@@ -73,13 +73,13 @@ public final class ComponentStrategyRegistryFacade
         final IComponentStrategyRegistry componentStrategyRegistry = Activator.getDefault().getComponentStrategyRegistry();
         if( componentStrategyRegistry == null )
         {
-            throw new NoSuchComponentStrategyException( NonNlsMessages.ComponentStrategyRegistryFacade_getComponentStrategy_componentStrategyRegistryNotAvailable );
+            throw new NoSuchComponentStrategyException( NonNlsMessages.ComponentStrategyRegistry_getComponentStrategy_componentStrategyRegistryNotAvailable );
         }
 
         final IComponentStrategy componentStrategy = componentStrategyRegistry.getComponentStrategy( id );
         if( componentStrategy == null )
         {
-            throw new NoSuchComponentStrategyException( NonNlsMessages.ComponentStrategyRegistryFacade_getComponentStrategy_unknownComponentStrategyId( id ) );
+            throw new NoSuchComponentStrategyException( NonNlsMessages.ComponentStrategyRegistry_getComponentStrategy_unknownComponentStrategyId( id ) );
         }
 
         return componentStrategy;
@@ -111,6 +111,6 @@ public final class ComponentStrategyRegistryFacade
             return (IContainerStrategy)componentStrategy;
         }
 
-        throw new NoSuchComponentStrategyException( NonNlsMessages.ComponentStrategyRegistryFacade_getContainerStrategy_notContainerStrategy( id ) );
+        throw new NoSuchComponentStrategyException( NonNlsMessages.ComponentStrategyRegistry_getContainerStrategy_notContainerStrategy( id ) );
     }
 }

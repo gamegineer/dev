@@ -26,7 +26,7 @@ import java.util.Map;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ComponentStrategyId;
-import org.gamegineer.table.core.ComponentStrategyRegistryFacade;
+import org.gamegineer.table.core.ComponentStrategyRegistry;
 import org.gamegineer.table.core.IComponentStrategy;
 import org.gamegineer.table.core.IContainerStrategy;
 import org.gamegineer.table.core.NoSuchComponentStrategyException;
@@ -189,7 +189,7 @@ final class ComponentFactory
 
         try
         {
-            return ComponentStrategyRegistryFacade.getComponentStrategy( id );
+            return ComponentStrategyRegistry.getComponentStrategy( id );
         }
         catch( final NoSuchComponentStrategyException e )
         {

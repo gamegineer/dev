@@ -63,7 +63,7 @@ import org.gamegineer.common.ui.wizard.WizardDialog;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.CardPileOrientation;
 import org.gamegineer.table.core.ComponentStrategyId;
-import org.gamegineer.table.core.ComponentStrategyRegistryFacade;
+import org.gamegineer.table.core.ComponentStrategyRegistry;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ContainerLayoutId;
@@ -847,7 +847,7 @@ final class TableView
     {
         try
         {
-            return model_.getTable().getTableEnvironment().createComponent( ComponentStrategyRegistryFacade.getComponentStrategy( ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.card" ) ) ); //$NON-NLS-1$
+            return model_.getTable().getTableEnvironment().createComponent( ComponentStrategyRegistry.getComponentStrategy( ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.card" ) ) ); //$NON-NLS-1$
         }
         catch( final NoSuchComponentStrategyException e )
         {
@@ -869,7 +869,7 @@ final class TableView
     {
         try
         {
-            return model_.getTable().getTableEnvironment().createContainer( ComponentStrategyRegistryFacade.getContainerStrategy( ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.cardPile" ) ) ); //$NON-NLS-1$
+            return model_.getTable().getTableEnvironment().createContainer( ComponentStrategyRegistry.getContainerStrategy( ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.cardPile" ) ) ); //$NON-NLS-1$
         }
         catch( final NoSuchComponentStrategyException e )
         {
