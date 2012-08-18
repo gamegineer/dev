@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.internal.core.Activator;
 
 /**
  * A factory for creating various types of container layouts suitable for
@@ -112,7 +113,7 @@ public final class TestContainerLayouts
     /* @NonNull */
     public static IContainerLayout createHorizontalContainerLayout()
     {
-        return new AbstractContainerLayout( getUniqueContainerLayoutId() )
+        return registerContainerLayout( new AbstractContainerLayout( getUniqueContainerLayoutId() )
         {
             @Override
             public void layout(
@@ -125,7 +126,7 @@ public final class TestContainerLayouts
                     location.translate( component.getSize().width, 0 );
                 }
             }
-        };
+        } );
     }
 
     /**
@@ -136,7 +137,7 @@ public final class TestContainerLayouts
     /* @NonNull */
     public static IContainerLayout createUniqueContainerLayout()
     {
-        return new AbstractContainerLayout( getUniqueContainerLayoutId() )
+        return registerContainerLayout( new AbstractContainerLayout( getUniqueContainerLayoutId() )
         {
             @Override
             public void layout(
@@ -145,7 +146,7 @@ public final class TestContainerLayouts
             {
                 // do nothing
             }
-        };
+        } );
     }
 
     /**
@@ -158,7 +159,7 @@ public final class TestContainerLayouts
     /* @NonNull */
     public static IContainerLayout createVerticalContainerLayout()
     {
-        return new AbstractContainerLayout( getUniqueContainerLayoutId() )
+        return registerContainerLayout( new AbstractContainerLayout( getUniqueContainerLayoutId() )
         {
             @Override
             public void layout(
@@ -171,7 +172,7 @@ public final class TestContainerLayouts
                     location.translate( 0, component.getSize().height );
                 }
             }
-        };
+        } );
     }
 
     /**
@@ -184,6 +185,28 @@ public final class TestContainerLayouts
     private static ContainerLayoutId getUniqueContainerLayoutId()
     {
         return ContainerLayoutId.fromString( String.format( "container-layout-%1$d", nextContainerLayoutId_.incrementAndGet() ) ); //$NON-NLS-1$
+    }
+
+    /**
+     * Registers the specified container layout with the container layout
+     * registry.
+     * 
+     * @param containerLayout
+     *        The container layout; must not be {@code null}.
+     * 
+     * @return The registered container layout; never {@code null}.
+     */
+    /* @NonNull */
+    private static IContainerLayout registerContainerLayout(
+        /* @NonNull */
+        final IContainerLayout containerLayout )
+    {
+        assert containerLayout != null;
+
+        final IContainerLayoutRegistry containerLayoutRegistry = Activator.getDefault().getContainerLayoutRegistry();
+        assert containerLayoutRegistry != null;
+        containerLayoutRegistry.registerContainerLayout( containerLayout );
+        return containerLayout;
     }
 
 

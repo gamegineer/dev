@@ -36,10 +36,7 @@ import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
-import org.gamegineer.table.internal.core.Activator;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -57,12 +54,6 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     // ======================================================================
     // Fields
     // ======================================================================
-
-    /**
-     * A container layout that is guaranteed to be registered with the container
-     * layout registry.
-     */
-    private static IContainerLayout registeredContainerLayout_;
 
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
@@ -209,7 +200,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         super.initializeMementoOriginator( mementoOriginator );
 
         final IContainer container = (IContainer)mementoOriginator;
-        container.setLayout( registeredContainerLayout_ );
+        container.setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
         container.addComponent( createUniqueComponent() );
     }
 
@@ -224,37 +215,6 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         mocksControl_ = EasyMock.createControl();
 
         super.setUp();
-    }
-
-    /**
-     * Sets up the test suite fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @BeforeClass
-    public static void setUpSuite()
-        throws Exception
-    {
-        registeredContainerLayout_ = TestContainerLayouts.createHorizontalContainerLayout();
-        Activator.getDefault().getContainerLayoutRegistry().registerContainerLayout( registeredContainerLayout_ );
-    }
-
-    /**
-     * Tears down the test suite fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @AfterClass
-    public static void tearDownSuite()
-        throws Exception
-    {
-        if( registeredContainerLayout_ != null )
-        {
-            Activator.getDefault().getContainerLayoutRegistry().unregisterContainerLayout( registeredContainerLayout_ );
-            registeredContainerLayout_ = null;
-        }
     }
 
     /**
