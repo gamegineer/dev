@@ -26,18 +26,20 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.logging.Level;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.IComponentListener;
-import org.gamegineer.table.internal.ui.Activator;
+import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.model.ComponentModel;
 import org.gamegineer.table.internal.ui.model.ComponentModelEvent;
 import org.gamegineer.table.internal.ui.model.IComponentModelListener;
 import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
-import org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry;
+import org.gamegineer.table.ui.ComponentSurfaceDesignUIRegistry;
+import org.gamegineer.table.ui.NoSuchComponentSurfaceDesignUIException;
 
 /**
  * A view of a component.
@@ -155,15 +157,13 @@ class ComponentView
     final ComponentSurfaceDesignUI getActiveComponentSurfaceDesignUI()
     {
         final ComponentSurfaceDesign componentSurfaceDesign = componentModel_.getComponent().getSurfaceDesign( componentModel_.getComponent().getOrientation() );
-
-        final IComponentSurfaceDesignUIRegistry componentSurfaceDesignUIRegistry = Activator.getDefault().getComponentSurfaceDesignUIRegistry();
-        if( componentSurfaceDesignUIRegistry != null )
+        try
         {
-            final ComponentSurfaceDesignUI componentSurfaceDesignUI = componentSurfaceDesignUIRegistry.getComponentSurfaceDesignUI( componentSurfaceDesign.getId() );
-            if( componentSurfaceDesignUI != null )
-            {
-                return componentSurfaceDesignUI;
-            }
+            return ComponentSurfaceDesignUIRegistry.getComponentSurfaceDesignUI( componentSurfaceDesign.getId() );
+        }
+        catch( final NoSuchComponentSurfaceDesignUIException e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ComponentView_getActiveComponentSurfaceDesignUI_notAvailable( componentSurfaceDesign.getId() ), e );
         }
 
         return ViewUtils.createDefaultComponentSurfaceDesignUI( componentSurfaceDesign );

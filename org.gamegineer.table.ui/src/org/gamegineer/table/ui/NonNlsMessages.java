@@ -23,6 +23,7 @@ package org.gamegineer.table.ui;
 
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
+import org.gamegineer.table.core.ComponentSurfaceDesignId;
 
 /**
  * A utility class to manage non-localized messages for the package.
@@ -34,6 +35,14 @@ final class NonNlsMessages
     // ======================================================================
     // Fields
     // ======================================================================
+
+    // --- ComponentSurfaceDesignUIRegistry ---------------------------------
+
+    /** The component surface design user interface registry is not available. */
+    public static String ComponentSurfaceDesignUIRegistry_getComponentSurfaceDesignUI_componentSurfaceDesignUIRegistryNotAvailable;
+
+    /** The component surface design identifier is not registered. */
+    public static String ComponentSurfaceDesignUIRegistry_getComponentSurfaceDesignUI_unknownComponentSurfaceDesignId;
 
     // --- TableAdvisor -----------------------------------------------------
 
@@ -58,5 +67,30 @@ final class NonNlsMessages
      */
     private NonNlsMessages()
     {
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    // --- ComponentSurfaceDesignUIRegistry ---------------------------------
+
+    /**
+     * Gets the formatted message indicating the component surface design
+     * identifier is not registered.
+     * 
+     * @param componentSurfaceDesignId
+     *        The component surface design identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the component surface design
+     *         identifier is not registered; never {@code null}.
+     */
+    /* @NonNull */
+    static String ComponentSurfaceDesignUIRegistry_getComponentSurfaceDesignUI_unknownComponentSurfaceDesignId(
+        /* @NonNull */
+        final ComponentSurfaceDesignId componentSurfaceDesignId )
+    {
+        return bind( ComponentSurfaceDesignUIRegistry_getComponentSurfaceDesignUI_unknownComponentSurfaceDesignId, componentSurfaceDesignId );
     }
 }

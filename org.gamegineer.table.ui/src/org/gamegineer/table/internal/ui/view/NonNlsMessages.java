@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.ui.view;
 import java.io.File;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
+import org.gamegineer.table.core.ComponentSurfaceDesignId;
 
 /**
  * A utility class to manage non-localized messages for the package.
@@ -35,6 +36,11 @@ final class NonNlsMessages
     // ======================================================================
     // Fields
     // ======================================================================
+
+    // --- ComponentView ----------------------------------------------------
+
+    /** The component surface design user interface is not available. */
+    public static String ComponentView_getActiveComponentSurfaceDesignUI_notAvailable;
 
     // --- Cursors ----------------------------------------------------------
 
@@ -101,6 +107,26 @@ final class NonNlsMessages
     // ======================================================================
     // Methods
     // ======================================================================
+
+    // --- ComponentView ----------------------------------------------------
+
+    /**
+     * Gets the formatted message indicating the component surface design user
+     * interface is not available.
+     * 
+     * @param componentSurfaceDesignId
+     *        The component surface design identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the component surface design
+     *         user interface is not available; never {@code null}.
+     */
+    /* @NonNull */
+    static String ComponentView_getActiveComponentSurfaceDesignUI_notAvailable(
+        /* @NonNull */
+        final ComponentSurfaceDesignId componentSurfaceDesignId )
+    {
+        return bind( ComponentView_getActiveComponentSurfaceDesignUI_notAvailable, componentSurfaceDesignId );
+    }
 
     // --- MainFrame --------------------------------------------------------
 
