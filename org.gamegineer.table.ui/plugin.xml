@@ -233,6 +233,10 @@
                 icon="icons/cardSurfaces/special-joker.png"
                 id="org.gamegineer.cardSurfaces.special.joker"
                 name="%cardSurface.special.joker.name" />
+        <componentSurfaceDesignUI
+                icon="icons/tabletops/default.png"
+                id="org.gamegineer.tabletopSurfaceDesigns.default"
+                name="%tabletopSurfaceDesigns.default.name" />
     </extension>
 
 </plugin>
