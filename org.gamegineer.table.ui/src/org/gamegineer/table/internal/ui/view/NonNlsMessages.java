@@ -75,6 +75,9 @@ final class NonNlsMessages
     /** An error occurred while dragging cards. */
     public static String TableView_draggingCards_error;
 
+    /** An error occurred while setting the card pile layout. */
+    public static String TableView_setCardPileLayout_error;
+
     // --- ViewUtils --------------------------------------------------------
 
     /** Interrupted while waiting for the table network to disconnect. */

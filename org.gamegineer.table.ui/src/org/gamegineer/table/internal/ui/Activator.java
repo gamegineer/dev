@@ -29,8 +29,6 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.app.IBranding;
 import org.gamegineer.common.ui.help.IHelpSystem;
-import org.gamegineer.table.core.IComponentSurfaceDesignRegistry;
-import org.gamegineer.table.core.IContainerLayoutRegistry;
 import org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -65,17 +63,9 @@ public final class Activator
     @GuardedBy( "lock_" )
     private BundleImages bundleImages_;
 
-    /** The component surface design registry service tracker. */
-    @GuardedBy( "lock_" )
-    private ServiceTracker<IComponentSurfaceDesignRegistry, IComponentSurfaceDesignRegistry> componentSurfaceDesignRegistryTracker_;
-
     /** The component surface design user interface registry service tracker. */
     @GuardedBy( "lock_" )
     private ServiceTracker<IComponentSurfaceDesignUIRegistry, IComponentSurfaceDesignUIRegistry> componentSurfaceDesignUIRegistryTracker_;
-
-    /** The container layout registry service tracker. */
-    @GuardedBy( "lock_" )
-    private ServiceTracker<IContainerLayoutRegistry, IContainerLayoutRegistry> containerLayoutRegistryTracker_;
 
     /** The executor service tracker. */
     @GuardedBy( "lock_" )
@@ -106,9 +96,7 @@ public final class Activator
         brandingTracker_ = null;
         bundleContext_ = null;
         bundleImages_ = null;
-        componentSurfaceDesignRegistryTracker_ = null;
         componentSurfaceDesignUIRegistryTracker_ = null;
-        containerLayoutRegistryTracker_ = null;
         executorServiceTracker_ = null;
         helpSystemTracker_ = null;
         preferencesServiceTracker_ = null;
@@ -179,29 +167,6 @@ public final class Activator
     }
 
     /**
-     * Gets the component surface design registry service.
-     * 
-     * @return The component surface design registry service or {@code null} if
-     *         no component surface design registry service is available.
-     */
-    /* @Nullable */
-    public IComponentSurfaceDesignRegistry getComponentSurfaceDesignRegistry()
-    {
-        synchronized( lock_ )
-        {
-            assert bundleContext_ != null;
-
-            if( componentSurfaceDesignRegistryTracker_ == null )
-            {
-                componentSurfaceDesignRegistryTracker_ = new ServiceTracker<IComponentSurfaceDesignRegistry, IComponentSurfaceDesignRegistry>( bundleContext_, IComponentSurfaceDesignRegistry.class, null );
-                componentSurfaceDesignRegistryTracker_.open();
-            }
-
-            return componentSurfaceDesignRegistryTracker_.getService();
-        }
-    }
-
-    /**
      * Gets the component surface design user interface registry service.
      * 
      * @return The component surface design user interface registry service or
@@ -222,29 +187,6 @@ public final class Activator
             }
 
             return componentSurfaceDesignUIRegistryTracker_.getService();
-        }
-    }
-
-    /**
-     * Gets the container layout registry service.
-     * 
-     * @return The container layout registry service or {@code null} if no
-     *         container layout registry service is available.
-     */
-    /* @Nullable */
-    public IContainerLayoutRegistry getContainerLayoutRegistry()
-    {
-        synchronized( lock_ )
-        {
-            assert bundleContext_ != null;
-
-            if( containerLayoutRegistryTracker_ == null )
-            {
-                containerLayoutRegistryTracker_ = new ServiceTracker<IContainerLayoutRegistry, IContainerLayoutRegistry>( bundleContext_, IContainerLayoutRegistry.class, null );
-                containerLayoutRegistryTracker_.open();
-            }
-
-            return containerLayoutRegistryTracker_.getService();
         }
     }
 
@@ -453,20 +395,10 @@ public final class Activator
                 bundleImages_.dispose();
                 bundleImages_ = null;
             }
-            if( componentSurfaceDesignRegistryTracker_ != null )
-            {
-                componentSurfaceDesignRegistryTracker_.close();
-                componentSurfaceDesignRegistryTracker_ = null;
-            }
             if( componentSurfaceDesignUIRegistryTracker_ != null )
             {
                 componentSurfaceDesignUIRegistryTracker_.close();
                 componentSurfaceDesignUIRegistryTracker_ = null;
-            }
-            if( containerLayoutRegistryTracker_ != null )
-            {
-                containerLayoutRegistryTracker_.close();
-                containerLayoutRegistryTracker_ = null;
             }
             if( executorServiceTracker_ != null )
             {
