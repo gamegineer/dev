@@ -64,8 +64,6 @@ public final class ComponentStrategyExtensionFactory
         final Map<ComponentStrategyId, IComponentStrategy> componentStrategies = new HashMap<ComponentStrategyId, IComponentStrategy>();
         componentStrategies.put( ComponentStrategies.CARD.getId(), ComponentStrategies.CARD );
         componentStrategies.put( ComponentStrategies.CARD_PILE.getId(), ComponentStrategies.CARD_PILE );
-        componentStrategies.put( ComponentStrategies.NULL_COMPONENT.getId(), ComponentStrategies.NULL_COMPONENT );
-        componentStrategies.put( ComponentStrategies.NULL_CONTAINER.getId(), ComponentStrategies.NULL_CONTAINER );
         componentStrategies.put( ComponentStrategies.TABLETOP.getId(), ComponentStrategies.TABLETOP );
         COMPONENT_STRATEGIES = Collections.unmodifiableMap( componentStrategies );
     }

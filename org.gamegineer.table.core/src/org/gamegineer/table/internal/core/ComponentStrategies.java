@@ -41,12 +41,6 @@ public final class ComponentStrategies
     /** The card pile container strategy. */
     public static final IContainerStrategy CARD_PILE = new CardPileStrategy();
 
-    /** The null component strategy. */
-    public static final IComponentStrategy NULL_COMPONENT = new NullComponentStrategy();
-
-    /** The null container strategy. */
-    public static final IContainerStrategy NULL_CONTAINER = new NullContainerStrategy();
-
     /** The tabletop container strategy. */
     public static final IContainerStrategy TABLETOP = new TabletopStrategy();
 

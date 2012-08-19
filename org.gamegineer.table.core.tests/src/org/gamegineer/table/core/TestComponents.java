@@ -22,7 +22,6 @@
 package org.gamegineer.table.core;
 
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.core.ComponentStrategies;
 
 /**
  * A factory for creating various types of components suitable for testing.
@@ -64,7 +63,7 @@ public final class TestComponents
         /* @NonNull */
         final ITableEnvironment tableEnvironment )
     {
-        final IComponent component = tableEnvironment.createComponent( ComponentStrategies.NULL_COMPONENT );
+        final IComponent component = tableEnvironment.createComponent( TestComponentStrategies.createUniqueComponentStrategy() );
         setUniqueSurfaceDesigns( component );
         return component;
     }
@@ -87,7 +86,7 @@ public final class TestComponents
         /* @NonNull */
         final ITableEnvironment tableEnvironment )
     {
-        final IContainer container = tableEnvironment.createContainer( ComponentStrategies.NULL_CONTAINER );
+        final IContainer container = tableEnvironment.createContainer( TestComponentStrategies.createUniqueContainerStrategy() );
         setUniqueSurfaceDesigns( container );
         return container;
     }

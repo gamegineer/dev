@@ -25,6 +25,7 @@ import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.gamegineer.table.core.AbstractContainerTestCase;
 import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.TestComponentStrategies;
 
 /**
  * A fixture for testing the
@@ -58,7 +59,7 @@ public final class ContainerAsContainerTest
     protected Container createComponent(
         final TableEnvironment tableEnvironment )
     {
-        return new Container( tableEnvironment, ComponentStrategies.NULL_CONTAINER );
+        return new Container( tableEnvironment, TestComponentStrategies.createUniqueContainerStrategy() );
     }
 
     /*

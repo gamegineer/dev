@@ -23,11 +23,17 @@ package org.gamegineer.table.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Point;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.core.ComponentStrategies;
+import org.gamegineer.table.internal.core.Activator;
+import org.gamegineer.table.internal.core.ComponentSurfaceDesigns;
+import org.gamegineer.table.internal.core.ContainerLayouts;
 
 /**
  * A factory for creating various types of component strategies suitable for
@@ -39,6 +45,12 @@ public final class TestComponentStrategies
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /** The null component strategy. */
+    private static final IComponentStrategy NULL_COMPONENT_STRATEGY = new NullComponentStrategy();
+
+    /** The null container strategy. */
+    private static final IContainerStrategy NULL_CONTAINER_STRATEGY = new NullContainerStrategy();
 
     /** The next unique component strategy identifier. */
     private static final AtomicLong nextComponentStrategyId_ = new AtomicLong();
@@ -233,7 +245,7 @@ public final class TestComponentStrategies
     /* @NonNull */
     public static IComponentStrategy createUniqueComponentStrategy()
     {
-        return createComponentStrategyDecorator( ComponentStrategies.NULL_COMPONENT, getUniqueComponentStrategyId() );
+        return registerComponentStrategy( createComponentStrategyDecorator( NULL_COMPONENT_STRATEGY, getUniqueComponentStrategyId() ) );
     }
 
     /**
@@ -244,7 +256,7 @@ public final class TestComponentStrategies
     /* @NonNull */
     public static IContainerStrategy createUniqueContainerStrategy()
     {
-        return createContainerStrategyDecorator( ComponentStrategies.NULL_CONTAINER, getUniqueComponentStrategyId() );
+        return registerComponentStrategy( createContainerStrategyDecorator( NULL_CONTAINER_STRATEGY, getUniqueComponentStrategyId() ) );
     }
 
     /**
@@ -257,5 +269,255 @@ public final class TestComponentStrategies
     private static ComponentStrategyId getUniqueComponentStrategyId()
     {
         return ComponentStrategyId.fromString( String.format( "component-strategy-%1$d", nextComponentStrategyId_.incrementAndGet() ) ); //$NON-NLS-1$
+    }
+
+    /**
+     * Registers the specified component strategy with the component strategy
+     * registry.
+     * 
+     * @param <T>
+     *        The type of the component strategy.
+     * 
+     * @param componentStrategy
+     *        The component strategy; must not be {@code null}.
+     * 
+     * @return The registered component strategy; never {@code null}.
+     */
+    /* @NonNull */
+    private static <T extends IComponentStrategy> T registerComponentStrategy(
+        /* @NonNull */
+        final T componentStrategy )
+    {
+        assert componentStrategy != null;
+
+        final IComponentStrategyRegistry componentStrategyRegistry = Activator.getDefault().getComponentStrategyRegistry();
+        assert componentStrategyRegistry != null;
+        componentStrategyRegistry.registerComponentStrategy( componentStrategy );
+        return componentStrategy;
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * A null component strategy.
+     */
+    @Immutable
+    private static class NullComponentStrategy
+        implements IComponentStrategy
+    {
+        // ======================================================================
+        // Fields
+        // ======================================================================
+
+        /** The strategy identifier. */
+        private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.nullComponent" ); //$NON-NLS-1$
+
+        /** The collection of supported component orientations. */
+        private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( NullOrientation.values( NullOrientation.class ) ) );
+
+
+        // ======================================================================
+        // Constructors
+        // ======================================================================
+
+        /**
+         * Initializes a new instance of the {@code NullComponentStrategy}
+         * class.
+         */
+        NullComponentStrategy()
+        {
+        }
+
+
+        // ======================================================================
+        // Methods
+        // ======================================================================
+
+        /*
+         * @see org.gamegineer.table.core.IComponentStrategy#getDefaultLocation()
+         */
+        @Override
+        public final Point getDefaultLocation()
+        {
+            return new Point( 0, 0 );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.IComponentStrategy#getDefaultOrientation()
+         */
+        @Override
+        public final ComponentOrientation getDefaultOrientation()
+        {
+            return NullOrientation.DEFAULT;
+        }
+
+        /*
+         * @see org.gamegineer.table.core.IComponentStrategy#getDefaultOrigin()
+         */
+        @Override
+        public final Point getDefaultOrigin()
+        {
+            return getDefaultLocation();
+        }
+
+        /*
+         * @see org.gamegineer.table.core.IComponentStrategy#getDefaultSurfaceDesigns()
+         */
+        @Override
+        public final Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns()
+        {
+            final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new HashMap<ComponentOrientation, ComponentSurfaceDesign>();
+            surfaceDesigns.put( NullOrientation.DEFAULT, ComponentSurfaceDesigns.NULL );
+            return surfaceDesigns;
+        }
+
+        /*
+         * @see org.gamegineer.table.core.IComponentStrategy#getId()
+         */
+        @Override
+        public ComponentStrategyId getId()
+        {
+            return ID;
+        }
+
+        /*
+         * @see org.gamegineer.table.core.IComponentStrategy#getSupportedOrientations()
+         */
+        @Override
+        public final Collection<ComponentOrientation> getSupportedOrientations()
+        {
+            return SUPPORTED_ORIENTATIONS;
+        }
+
+        /*
+         * @see org.gamegineer.table.core.IComponentStrategy#isFocusable()
+         */
+        @Override
+        public boolean isFocusable()
+        {
+            return false;
+        }
+    }
+
+    /**
+     * A null container strategy.
+     */
+    @Immutable
+    private static final class NullContainerStrategy
+        extends NullComponentStrategy
+        implements IContainerStrategy
+    {
+        // ======================================================================
+        // Fields
+        // ======================================================================
+
+        /** The strategy identifier. */
+        private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.nullContainer" ); //$NON-NLS-1$
+
+
+        // ======================================================================
+        // Constructors
+        // ======================================================================
+
+        /**
+         * Initializes a new instance of the {@code NullContainerStrategy}
+         * class.
+         */
+        NullContainerStrategy()
+        {
+        }
+
+
+        // ======================================================================
+        // Methods
+        // ======================================================================
+
+        /*
+         * @see org.gamegineer.table.core.IContainerStrategy#getDefaultLayout()
+         */
+        @Override
+        public IContainerLayout getDefaultLayout()
+        {
+            return ContainerLayouts.ABSOLUTE;
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.core.NullComponentStrategy#getId()
+         */
+        @Override
+        public ComponentStrategyId getId()
+        {
+            return ID;
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.core.NullComponentStrategy#isFocusable()
+         */
+        @Override
+        public boolean isFocusable()
+        {
+            return true;
+        }
+    }
+
+    /**
+     * A null component orientation.
+     */
+    @Immutable
+    private static final class NullOrientation
+        extends ComponentOrientation
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** Serializable class version number. */
+        private static final long serialVersionUID = 1L;
+
+        /** The default orientation. */
+        static final NullOrientation DEFAULT = new NullOrientation( "default", 0 ); //$NON-NLS-1$
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code NullOrientation} class.
+         * 
+         * @param name
+         *        The name of the enum constant; must not be {@code null}.
+         * @param ordinal
+         *        The ordinal of the enum constant.
+         * 
+         * @throws java.lang.IllegalArgumentException
+         *         If {@code ordinal} is negative.
+         * @throws java.lang.NullPointerException
+         *         If {@code name} is {@code null}.
+         */
+        private NullOrientation(
+            /* @NonNull */
+            final String name,
+            final int ordinal )
+        {
+            super( name, ordinal );
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.core.ComponentOrientation#inverse()
+         */
+        @Override
+        public ComponentOrientation inverse()
+        {
+            return this;
+        }
     }
 }
