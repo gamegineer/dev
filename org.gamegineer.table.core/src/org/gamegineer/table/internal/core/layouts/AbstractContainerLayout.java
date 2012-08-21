@@ -19,7 +19,7 @@
  * Created on May 5, 2012 at 10:08:36 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.internal.core.layouts;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;

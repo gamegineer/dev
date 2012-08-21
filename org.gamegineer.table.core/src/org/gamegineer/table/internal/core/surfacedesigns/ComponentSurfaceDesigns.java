@@ -19,7 +19,7 @@
  * Created on Aug 16, 2012 at 9:38:38 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.internal.core.surfacedesigns;
 
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ComponentSurfaceDesign;

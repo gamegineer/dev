@@ -35,6 +35,7 @@ import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.internal.core.strategies.ComponentStrategies;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ITable}.

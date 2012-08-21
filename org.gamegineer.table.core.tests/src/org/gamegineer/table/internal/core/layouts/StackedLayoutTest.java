@@ -19,7 +19,7 @@
  * Created on May 5, 2012 at 10:15:41 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.internal.core.layouts;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -35,7 +35,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.StackedLayout} class.
+ * {@link org.gamegineer.table.internal.core.layouts.StackedLayout} class.
  */
 public final class StackedLayoutTest
 {

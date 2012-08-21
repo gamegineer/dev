@@ -1,5 +1,5 @@
 /*
- * CardPileStrategyAsContainerStrategyTest.java
+ * AbsoluteLayoutAsContainerLayoutTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,21 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 1, 2012 at 8:19:40 PM.
+ * Created on Aug 5, 2012 at 6:05:44 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.internal.core.layouts;
 
-import org.gamegineer.table.core.AbstractContainerStrategyTestCase;
+import org.gamegineer.table.core.AbstractContainerLayoutTestCase;
+import org.gamegineer.table.core.ContainerLayoutId;
+import org.gamegineer.table.core.IContainerLayout;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.CardPileStrategy} class to ensure
- * it does not violate the contract of the
- * {@link org.gamegineer.table.core.IContainerStrategy} interface.
+ * {@link org.gamegineer.table.internal.core.layouts.AbsoluteLayout} class to
+ * ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.core.IContainerLayout} interface.
  */
-public final class CardPileStrategyAsContainerStrategyTest
-    extends AbstractContainerStrategyTestCase<CardPileStrategy>
+public final class AbsoluteLayoutAsContainerLayoutTest
+    extends AbstractContainerLayoutTestCase
 {
     // ======================================================================
     // Constructors
@@ -38,9 +40,9 @@ public final class CardPileStrategyAsContainerStrategyTest
 
     /**
      * Initializes a new instance of the
-     * {@code CardPileStrategyAsContainerStrategyTest} class.
+     * {@code AbsoluteLayoutAsContainerLayoutTest} class.
      */
-    public CardPileStrategyAsContainerStrategyTest()
+    public AbsoluteLayoutAsContainerLayoutTest()
     {
     }
 
@@ -50,11 +52,11 @@ public final class CardPileStrategyAsContainerStrategyTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractComponentStrategyTestCase#createComponentStrategy()
+     * @see org.gamegineer.table.core.AbstractContainerLayoutTestCase#createContainerLayout()
      */
     @Override
-    protected CardPileStrategy createComponentStrategy()
+    protected IContainerLayout createContainerLayout()
     {
-        return new CardPileStrategy();
+        return new AbsoluteLayout( ContainerLayoutId.fromString( "id" ) ); //$NON-NLS-1$
     }
 }

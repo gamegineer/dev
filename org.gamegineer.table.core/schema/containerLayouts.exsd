@@ -94,7 +94,7 @@
     &lt;extension point=&quot;org.gamegineer.table.core.containerLayouts&quot;&gt;
         &lt;containerLayout
                 id=&quot;org.gamegineer.containerLayouts.absolute&quot;
-                className=&quot;org.gamegineer.table.internal.core.AbsoluteLayout&quot; /&gt;
+                className=&quot;org.gamegineer.table.internal.core.layouts.ContainerLayoutExtensionFactory:org.gamegineer.containerLayouts.absolute&quot; /&gt;
     &lt;/extension&gt;
 &lt;/pre&gt;
       </documentation>

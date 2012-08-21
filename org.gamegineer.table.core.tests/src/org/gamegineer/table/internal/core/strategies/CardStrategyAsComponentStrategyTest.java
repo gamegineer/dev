@@ -19,14 +19,14 @@
  * Created on Aug 1, 2012 at 8:19:30 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.internal.core.strategies;
 
 import org.gamegineer.table.core.AbstractComponentStrategyTestCase;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.CardStrategy} class to ensure it
- * does not violate the contract of the
+ * {@link org.gamegineer.table.internal.core.strategies.CardStrategy} class to
+ * ensure it does not violate the contract of the
  * {@link org.gamegineer.table.core.IComponentStrategy} interface.
  */
 public final class CardStrategyAsComponentStrategyTest

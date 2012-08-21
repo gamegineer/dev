@@ -1,5 +1,5 @@
 /*
- * CardPileStrategy.java
+ * CardStrategy.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 1, 2012 at 8:14:11 PM.
+ * Created on Aug 1, 2012 at 8:14:04 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.internal.core.strategies;
 
 import java.awt.Point;
 import java.util.Arrays;
@@ -28,29 +28,29 @@ import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.core.CardPileOrientation;
+import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
-import org.gamegineer.table.core.IContainerLayout;
-import org.gamegineer.table.core.IContainerStrategy;
+import org.gamegineer.table.core.IComponentStrategy;
+import org.gamegineer.table.internal.core.surfacedesigns.ComponentSurfaceDesigns;
 
 /**
- * A component strategy that represents a card pile.
+ * A component strategy that represents a card.
  */
 @Immutable
-public final class CardPileStrategy
-    implements IContainerStrategy
+public final class CardStrategy
+    implements IComponentStrategy
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** The strategy identifier. */
-    private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.cardPile" ); //$NON-NLS-1$
+    private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.card" ); //$NON-NLS-1$
 
-    /** The collection of supported card pile orientations. */
-    private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( CardPileOrientation.values( CardPileOrientation.class ) ) );
+    /** The collection of supported card orientations. */
+    private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( CardOrientation.values( CardOrientation.class ) ) );
 
 
     // ======================================================================
@@ -58,9 +58,9 @@ public final class CardPileStrategy
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardPileStrategy} class.
+     * Initializes a new instance of the {@code CardStrategy} class.
      */
-    public CardPileStrategy()
+    public CardStrategy()
     {
     }
 
@@ -70,21 +70,12 @@ public final class CardPileStrategy
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.IContainerStrategy#getDefaultLayout()
-     */
-    @Override
-    public IContainerLayout getDefaultLayout()
-    {
-        return ContainerLayouts.STACKED;
-    }
-
-    /*
      * @see org.gamegineer.table.core.IComponentStrategy#getDefaultLocation()
      */
     @Override
     public Point getDefaultLocation()
     {
-        return getDefaultOrigin();
+        return new Point( 0, 0 );
     }
 
     /*
@@ -93,7 +84,7 @@ public final class CardPileStrategy
     @Override
     public ComponentOrientation getDefaultOrientation()
     {
-        return CardPileOrientation.BASE;
+        return CardOrientation.FACE;
     }
 
     /*
@@ -102,7 +93,7 @@ public final class CardPileStrategy
     @Override
     public Point getDefaultOrigin()
     {
-        return new Point( 0, 0 );
+        return getDefaultLocation();
     }
 
     /*
@@ -112,7 +103,8 @@ public final class CardPileStrategy
     public Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns()
     {
         final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>();
-        surfaceDesigns.put( CardPileOrientation.BASE, ComponentSurfaceDesigns.DEFAULT_CARD_PILE );
+        surfaceDesigns.put( CardOrientation.BACK, ComponentSurfaceDesigns.DEFAULT_CARD );
+        surfaceDesigns.put( CardOrientation.FACE, ComponentSurfaceDesigns.DEFAULT_CARD );
         return surfaceDesigns;
     }
 
@@ -140,6 +132,6 @@ public final class CardPileStrategy
     @Override
     public boolean isFocusable()
     {
-        return true;
+        return false;
     }
 }

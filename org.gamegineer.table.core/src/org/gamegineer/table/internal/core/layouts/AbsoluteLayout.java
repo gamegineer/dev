@@ -19,7 +19,7 @@
  * Created on Jul 4, 2012 at 7:52:26 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.internal.core.layouts;
 
 import java.awt.Dimension;
 import java.awt.Point;

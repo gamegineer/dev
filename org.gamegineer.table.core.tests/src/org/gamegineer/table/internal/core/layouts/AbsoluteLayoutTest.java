@@ -1,5 +1,5 @@
 /*
- * ComponentStrategies.java
+ * AbsoluteLayoutTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,43 +16,42 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 13, 2012 at 7:53:44 PM.
+ * Created on Aug 8, 2012 at 8:08:42 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.internal.core.layouts;
 
-import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.IComponentStrategy;
-import org.gamegineer.table.core.IContainerStrategy;
+import org.junit.Test;
 
 /**
- * A collection of common component strategies.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.core.layouts.AbsoluteLayout} class.
  */
-@ThreadSafe
-public final class ComponentStrategies
+public final class AbsoluteLayoutTest
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The card component strategy. */
-    public static final IComponentStrategy CARD = new CardStrategy();
-
-    /** The card pile container strategy. */
-    public static final IContainerStrategy CARD_PILE = new CardPileStrategy();
-
-    /** The tabletop container strategy. */
-    public static final IContainerStrategy TABLETOP = new TabletopStrategy();
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ComponentStrategies} class.
+     * Initializes a new instance of the {@code AbsoluteLayoutTest} class.
      */
-    private ComponentStrategies()
+    public AbsoluteLayoutTest()
     {
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /**
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * identifier.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_Id_Null()
+    {
+        new AbsoluteLayout( null );
     }
 }

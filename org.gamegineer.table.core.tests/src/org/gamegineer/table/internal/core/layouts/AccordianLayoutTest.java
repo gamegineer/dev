@@ -19,7 +19,7 @@
  * Created on May 5, 2012 at 10:00:47 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.internal.core.layouts;
 
 import static org.junit.Assert.assertEquals;
 import java.awt.Dimension;
@@ -34,7 +34,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.AccordianLayout} class.
+ * {@link org.gamegineer.table.internal.core.layouts.AccordianLayout} class.
  */
 public final class AccordianLayoutTest
 {

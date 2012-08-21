@@ -31,6 +31,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.IComponentSurfaceDesignRegistry;
+import org.gamegineer.table.internal.core.surfacedesigns.ComponentSurfaceDesigns;
 
 /**
  * Implementation of

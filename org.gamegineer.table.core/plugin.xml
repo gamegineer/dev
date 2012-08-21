@@ -18,13 +18,13 @@
     <extension
             point="org.gamegineer.table.core.componentStrategies">
         <componentStrategy
-                className="org.gamegineer.table.internal.core.ComponentStrategyExtensionFactory:org.gamegineer.componentStrategies.card"
+                className="org.gamegineer.table.internal.core.strategies.ComponentStrategyExtensionFactory:org.gamegineer.componentStrategies.card"
                 id="org.gamegineer.componentStrategies.card" />
         <componentStrategy
-                className="org.gamegineer.table.internal.core.ComponentStrategyExtensionFactory:org.gamegineer.componentStrategies.cardPile"
+                className="org.gamegineer.table.internal.core.strategies.ComponentStrategyExtensionFactory:org.gamegineer.componentStrategies.cardPile"
                 id="org.gamegineer.componentStrategies.cardPile" />
         <componentStrategy
-                className="org.gamegineer.table.internal.core.ComponentStrategyExtensionFactory:org.gamegineer.componentStrategies.tabletop"
+                className="org.gamegineer.table.internal.core.strategies.ComponentStrategyExtensionFactory:org.gamegineer.componentStrategies.tabletop"
                 id="org.gamegineer.componentStrategies.tabletop" />
     </extension>
     <extension
@@ -257,22 +257,22 @@
     <extension
             point="org.gamegineer.table.core.containerLayouts">
         <containerLayout
-                className="org.gamegineer.table.internal.core.ContainerLayoutExtensionFactory:org.gamegineer.containerLayouts.absolute"
+                className="org.gamegineer.table.internal.core.layouts.ContainerLayoutExtensionFactory:org.gamegineer.containerLayouts.absolute"
                 id="org.gamegineer.containerLayouts.absolute" />
         <containerLayout
-                className="org.gamegineer.table.internal.core.ContainerLayoutExtensionFactory:org.gamegineer.containerLayouts.accordianDown"
+                className="org.gamegineer.table.internal.core.layouts.ContainerLayoutExtensionFactory:org.gamegineer.containerLayouts.accordianDown"
                 id="org.gamegineer.containerLayouts.accordianDown" />
         <containerLayout
-                className="org.gamegineer.table.internal.core.ContainerLayoutExtensionFactory:org.gamegineer.containerLayouts.accordianLeft"
+                className="org.gamegineer.table.internal.core.layouts.ContainerLayoutExtensionFactory:org.gamegineer.containerLayouts.accordianLeft"
                 id="org.gamegineer.containerLayouts.accordianLeft" />
         <containerLayout
-                className="org.gamegineer.table.internal.core.ContainerLayoutExtensionFactory:org.gamegineer.containerLayouts.accordianRight"
+                className="org.gamegineer.table.internal.core.layouts.ContainerLayoutExtensionFactory:org.gamegineer.containerLayouts.accordianRight"
                 id="org.gamegineer.containerLayouts.accordianRight" />
         <containerLayout
-                className="org.gamegineer.table.internal.core.ContainerLayoutExtensionFactory:org.gamegineer.containerLayouts.accordianUp"
+                className="org.gamegineer.table.internal.core.layouts.ContainerLayoutExtensionFactory:org.gamegineer.containerLayouts.accordianUp"
                 id="org.gamegineer.containerLayouts.accordianUp" />
         <containerLayout
-                className="org.gamegineer.table.internal.core.ContainerLayoutExtensionFactory:org.gamegineer.containerLayouts.stacked"
+                className="org.gamegineer.table.internal.core.layouts.ContainerLayoutExtensionFactory:org.gamegineer.containerLayouts.stacked"
                 id="org.gamegineer.containerLayouts.stacked" />
     </extension>
 

@@ -1,5 +1,5 @@
 /*
- * ComponentStrategyExtensionFactory.java
+ * ContainerLayoutExtensionFactory.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 4, 2012 at 9:44:14 PM.
+ * Created on Aug 9, 2012 at 9:39:22 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.internal.core.layouts;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,26 +30,27 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IExecutableExtensionFactory;
 import org.eclipse.core.runtime.Status;
-import org.gamegineer.table.core.ComponentStrategyId;
-import org.gamegineer.table.core.IComponentStrategy;
+import org.gamegineer.table.core.ContainerLayoutId;
+import org.gamegineer.table.core.IContainerLayout;
+import org.gamegineer.table.internal.core.BundleConstants;
 
 /**
- * A factory for creating component strategies located in this bundle from the
+ * A factory for creating container layouts located in this bundle from the
  * extension registry.
  */
 @NotThreadSafe
-public final class ComponentStrategyExtensionFactory
+public final class ContainerLayoutExtensionFactory
     implements IExecutableExtension, IExecutableExtensionFactory
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The collection of component strategies supported by this factory. */
-    private static final Map<ComponentStrategyId, IComponentStrategy> COMPONENT_STRATEGIES;
+    /** The collection of container layouts supported by this factory. */
+    private static final Map<ContainerLayoutId, IContainerLayout> CONTAINER_LAYOUTS;
 
-    /** The identifier of the component strategy to create. */
-    private ComponentStrategyId componentStrategyId_;
+    /** The identifier of the container layouts to create. */
+    private ContainerLayoutId containerLayoutId_;
 
 
     // ======================================================================
@@ -57,22 +58,25 @@ public final class ComponentStrategyExtensionFactory
     // ======================================================================
 
     /**
-     * Initializes the {@code ComponentStrategyExtensionFactory} class.
+     * Initializes the {@code ContainerLayoutExtensionFactory} class.
      */
     static
     {
-        final Map<ComponentStrategyId, IComponentStrategy> componentStrategies = new HashMap<ComponentStrategyId, IComponentStrategy>();
-        componentStrategies.put( ComponentStrategies.CARD.getId(), ComponentStrategies.CARD );
-        componentStrategies.put( ComponentStrategies.CARD_PILE.getId(), ComponentStrategies.CARD_PILE );
-        componentStrategies.put( ComponentStrategies.TABLETOP.getId(), ComponentStrategies.TABLETOP );
-        COMPONENT_STRATEGIES = Collections.unmodifiableMap( componentStrategies );
+        final Map<ContainerLayoutId, IContainerLayout> containerLayouts = new HashMap<ContainerLayoutId, IContainerLayout>();
+        containerLayouts.put( ContainerLayouts.ABSOLUTE.getId(), ContainerLayouts.ABSOLUTE );
+        containerLayouts.put( ContainerLayouts.ACCORDIAN_DOWN.getId(), ContainerLayouts.ACCORDIAN_DOWN );
+        containerLayouts.put( ContainerLayouts.ACCORDIAN_LEFT.getId(), ContainerLayouts.ACCORDIAN_LEFT );
+        containerLayouts.put( ContainerLayouts.ACCORDIAN_RIGHT.getId(), ContainerLayouts.ACCORDIAN_RIGHT );
+        containerLayouts.put( ContainerLayouts.ACCORDIAN_UP.getId(), ContainerLayouts.ACCORDIAN_UP );
+        containerLayouts.put( ContainerLayouts.STACKED.getId(), ContainerLayouts.STACKED );
+        CONTAINER_LAYOUTS = Collections.unmodifiableMap( containerLayouts );
     }
 
     /**
-     * Initializes a new instance of the
-     * {@code ComponentStrategyExtensionFactory} class.
+     * Initializes a new instance of the {@code ContainerLayoutExtensionFactory}
+     * class.
      */
-    public ComponentStrategyExtensionFactory()
+    public ContainerLayoutExtensionFactory()
     {
     }
 
@@ -88,13 +92,13 @@ public final class ComponentStrategyExtensionFactory
     public Object create()
         throws CoreException
     {
-        final IComponentStrategy componentStrategy = COMPONENT_STRATEGIES.get( componentStrategyId_ );
-        if( componentStrategy == null )
+        final IContainerLayout containerLayout = CONTAINER_LAYOUTS.get( containerLayoutId_ );
+        if( containerLayout == null )
         {
-            throw new CoreException( new Status( Status.ERROR, BundleConstants.SYMBOLIC_NAME, NonNlsMessages.ComponentStrategyExtensionFactory_create_unknownId( componentStrategyId_ ) ) );
+            throw new CoreException( new Status( Status.ERROR, BundleConstants.SYMBOLIC_NAME, NonNlsMessages.ContainerLayoutExtensionFactory_create_unknownId( containerLayoutId_ ) ) );
         }
 
-        return componentStrategy;
+        return containerLayout;
     }
 
     /*
@@ -111,9 +115,9 @@ public final class ComponentStrategyExtensionFactory
     {
         if( !(data instanceof String) )
         {
-            throw new CoreException( new Status( Status.ERROR, BundleConstants.SYMBOLIC_NAME, NonNlsMessages.ComponentStrategyExtensionFactory_setInitializationData_unexpectedData ) );
+            throw new CoreException( new Status( Status.ERROR, BundleConstants.SYMBOLIC_NAME, NonNlsMessages.ContainerLayoutExtensionFactory_setInitializationData_unexpectedData ) );
         }
 
-        componentStrategyId_ = ComponentStrategyId.fromString( (String)data );
+        containerLayoutId_ = ContainerLayoutId.fromString( (String)data );
     }
 }

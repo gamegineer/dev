@@ -38,14 +38,6 @@ final class NonNlsMessages
     // Fields
     // ======================================================================
 
-    // --- AccordianLayout --------------------------------------------------
-
-    /**
-     * The offset in the y-direction is zero when the offset in the x-direction
-     * is zero.
-     */
-    public static String AccordianLayout_ctor_offsetY_zero;
-
     // --- Component --------------------------------------------------------
 
     /** The component listener is already registered. */
@@ -88,14 +80,6 @@ final class NonNlsMessages
 
     /** The memento specifies an unknown component type. */
     public static String ComponentFactory_createComponent_unknownComponentType;
-
-    // --- ComponentStrategyExtensionFactory --------------------------------
-
-    /** The component strategy identifier is unknown. */
-    public static String ComponentStrategyExtensionFactory_create_unknownId;
-
-    /** The initialization data type was not expected. */
-    public static String ComponentStrategyExtensionFactory_setInitializationData_unexpectedData;
 
     // --- ComponentStrategyRegistry ----------------------------------------
 
@@ -227,14 +211,6 @@ final class NonNlsMessages
     /** The container listener is not registered. */
     public static String Container_removeContainerListener_listener_notRegistered;
 
-    // --- ContainerLayoutExtensionFactory ----------------------------------
-
-    /** The container layout identifier is unknown. */
-    public static String ContainerLayoutExtensionFactory_create_unknownId;
-
-    /** The initialization data type was not expected. */
-    public static String ContainerLayoutExtensionFactory_setInitializationData_unexpectedData;
-
     // --- ContainerLayoutRegistry ------------------------------------------
 
     /** A container layout is already registered for the specified identifier. */
@@ -283,17 +259,6 @@ final class NonNlsMessages
     /** The memento is of the wrong type. */
     public static String MementoUtils_memento_wrongType;
 
-    // --- StackedLayout ----------------------------------------------------
-
-    /** The components per stack level count is not positive. */
-    public static String StackedLayout_ctor_componentsPerStackLevel_notPositive;
-
-    /** The stack level offset in the x-direction is not positive. */
-    public static String StackedLayout_ctor_stackLevelOffsetX_notPositive;
-
-    /** The stack level offset in the y-direction is not positive. */
-    public static String StackedLayout_ctor_stackLevelOffsetY_notPositive;
-
     // --- Table ------------------------------------------------------------
 
     /** The component path does not exist in the table. */
@@ -328,26 +293,6 @@ final class NonNlsMessages
     // ======================================================================
     // Methods
     // ======================================================================
-
-    // --- ComponentStrategyExtensionFactory --------------------------------
-
-    /**
-     * Gets the formatted message indicating the component strategy identifier
-     * is unknown.
-     * 
-     * @param componentStrategyId
-     *        The component strategy identifier; must not be {@code null}.
-     * 
-     * @return The formatted message indicating the component strategy
-     *         identifier is unknown; never {@code null}.
-     */
-    /* @NonNull */
-    static String ComponentStrategyExtensionFactory_create_unknownId(
-        /* @NonNull */
-        final ComponentStrategyId componentStrategyId )
-    {
-        return bind( ComponentStrategyExtensionFactory_create_unknownId, componentStrategyId );
-    }
 
     // --- ComponentStrategyRegistry ----------------------------------------
 
@@ -465,26 +410,6 @@ final class NonNlsMessages
         final String componentSurfaceDesignId )
     {
         return bind( ComponentSurfaceDesignRegistryExtensionPointAdapter_registerComponentSurfaceDesign_parseError, componentSurfaceDesignId );
-    }
-
-    // --- ContainerLayoutExtensionFactory ----------------------------------
-
-    /**
-     * Gets the formatted message indicating the container layout identifier is
-     * unknown.
-     * 
-     * @param containerLayoutId
-     *        The container layout identifier; must not be {@code null}.
-     * 
-     * @return The formatted message indicating the container layout identifier
-     *         is unknown; never {@code null}.
-     */
-    /* @NonNull */
-    static String ContainerLayoutExtensionFactory_create_unknownId(
-        /* @NonNull */
-        final ContainerLayoutId containerLayoutId )
-    {
-        return bind( ContainerLayoutExtensionFactory_create_unknownId, containerLayoutId );
     }
 
     // --- ContainerLayoutRegistry ------------------------------------------

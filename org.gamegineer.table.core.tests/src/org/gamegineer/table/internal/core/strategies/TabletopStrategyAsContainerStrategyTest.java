@@ -1,5 +1,5 @@
 /*
- * AbsoluteLayoutAsContainerLayoutTest.java
+ * TabletopStrategyAsContainerStrategyTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,23 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 5, 2012 at 6:05:44 PM.
+ * Created on Aug 1, 2012 at 8:19:52 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.internal.core.strategies;
 
-import org.gamegineer.table.core.AbstractContainerLayoutTestCase;
-import org.gamegineer.table.core.ContainerLayoutId;
-import org.gamegineer.table.core.IContainerLayout;
+import org.gamegineer.table.core.AbstractContainerStrategyTestCase;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.AbsoluteLayout} class to ensure it
- * does not violate the contract of the
- * {@link org.gamegineer.table.core.IContainerLayout} interface.
+ * {@link org.gamegineer.table.internal.core.strategies.TabletopStrategy} class
+ * to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.core.IContainerStrategy} interface.
  */
-public final class AbsoluteLayoutAsContainerLayoutTest
-    extends AbstractContainerLayoutTestCase
+public final class TabletopStrategyAsContainerStrategyTest
+    extends AbstractContainerStrategyTestCase<TabletopStrategy>
 {
     // ======================================================================
     // Constructors
@@ -40,9 +38,9 @@ public final class AbsoluteLayoutAsContainerLayoutTest
 
     /**
      * Initializes a new instance of the
-     * {@code AbsoluteLayoutAsContainerLayoutTest} class.
+     * {@code TabletopStrategyAsContainerStrategyTest} class.
      */
-    public AbsoluteLayoutAsContainerLayoutTest()
+    public TabletopStrategyAsContainerStrategyTest()
     {
     }
 
@@ -52,11 +50,11 @@ public final class AbsoluteLayoutAsContainerLayoutTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractContainerLayoutTestCase#createContainerLayout()
+     * @see org.gamegineer.table.core.AbstractComponentStrategyTestCase#createComponentStrategy()
      */
     @Override
-    protected IContainerLayout createContainerLayout()
+    protected TabletopStrategy createComponentStrategy()
     {
-        return new AbsoluteLayout( ContainerLayoutId.fromString( "id" ) ); //$NON-NLS-1$
+        return new TabletopStrategy();
     }
 }

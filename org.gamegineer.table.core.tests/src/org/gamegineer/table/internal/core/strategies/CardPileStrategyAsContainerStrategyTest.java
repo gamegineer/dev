@@ -1,5 +1,5 @@
 /*
- * StackedLayoutAsContainerLayoutTest.java
+ * CardPileStrategyAsContainerStrategyTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,23 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 5, 2012 at 9:50:22 PM.
+ * Created on Aug 1, 2012 at 8:19:40 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.internal.core.strategies;
 
-import org.gamegineer.table.core.AbstractContainerLayoutTestCase;
-import org.gamegineer.table.core.ContainerLayoutId;
-import org.gamegineer.table.core.IContainerLayout;
+import org.gamegineer.table.core.AbstractContainerStrategyTestCase;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.StackedLayout} class to ensure it
- * does not violate the contract of the
- * {@link org.gamegineer.table.core.IContainerLayout} interface.
+ * {@link org.gamegineer.table.internal.core.strategies.CardPileStrategy} class
+ * to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.core.IContainerStrategy} interface.
  */
-public final class StackedLayoutAsContainerLayoutTest
-    extends AbstractContainerLayoutTestCase
+public final class CardPileStrategyAsContainerStrategyTest
+    extends AbstractContainerStrategyTestCase<CardPileStrategy>
 {
     // ======================================================================
     // Constructors
@@ -40,9 +38,9 @@ public final class StackedLayoutAsContainerLayoutTest
 
     /**
      * Initializes a new instance of the
-     * {@code StackedLayoutAsContainerLayoutTest} class.
+     * {@code CardPileStrategyAsContainerStrategyTest} class.
      */
-    public StackedLayoutAsContainerLayoutTest()
+    public CardPileStrategyAsContainerStrategyTest()
     {
     }
 
@@ -52,11 +50,11 @@ public final class StackedLayoutAsContainerLayoutTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractContainerLayoutTestCase#createContainerLayout()
+     * @see org.gamegineer.table.core.AbstractComponentStrategyTestCase#createComponentStrategy()
      */
     @Override
-    protected IContainerLayout createContainerLayout()
+    protected CardPileStrategy createComponentStrategy()
     {
-        return new StackedLayout( ContainerLayoutId.fromString( "org.gamegineer.containerLayouts.id" ), 1, 1, 1 ); //$NON-NLS-1$
+        return new CardPileStrategy();
     }
 }

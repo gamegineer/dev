@@ -19,7 +19,7 @@
  * Created on Aug 11, 2012 at 9:52:18 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.internal.core.layouts;
 
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ContainerLayoutId;

@@ -1,5 +1,5 @@
 /*
- * TabletopStrategyAsContainerStrategyTest.java
+ * StackedLayoutAsContainerLayoutTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,21 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 1, 2012 at 8:19:52 PM.
+ * Created on May 5, 2012 at 9:50:22 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.internal.core.layouts;
 
-import org.gamegineer.table.core.AbstractContainerStrategyTestCase;
+import org.gamegineer.table.core.AbstractContainerLayoutTestCase;
+import org.gamegineer.table.core.ContainerLayoutId;
+import org.gamegineer.table.core.IContainerLayout;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.TabletopStrategy} class to ensure
- * it does not violate the contract of the
- * {@link org.gamegineer.table.core.IContainerStrategy} interface.
+ * {@link org.gamegineer.table.internal.core.layouts.StackedLayout} class to
+ * ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.core.IContainerLayout} interface.
  */
-public final class TabletopStrategyAsContainerStrategyTest
-    extends AbstractContainerStrategyTestCase<TabletopStrategy>
+public final class StackedLayoutAsContainerLayoutTest
+    extends AbstractContainerLayoutTestCase
 {
     // ======================================================================
     // Constructors
@@ -38,9 +40,9 @@ public final class TabletopStrategyAsContainerStrategyTest
 
     /**
      * Initializes a new instance of the
-     * {@code TabletopStrategyAsContainerStrategyTest} class.
+     * {@code StackedLayoutAsContainerLayoutTest} class.
      */
-    public TabletopStrategyAsContainerStrategyTest()
+    public StackedLayoutAsContainerLayoutTest()
     {
     }
 
@@ -50,11 +52,11 @@ public final class TabletopStrategyAsContainerStrategyTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractComponentStrategyTestCase#createComponentStrategy()
+     * @see org.gamegineer.table.core.AbstractContainerLayoutTestCase#createContainerLayout()
      */
     @Override
-    protected TabletopStrategy createComponentStrategy()
+    protected IContainerLayout createContainerLayout()
     {
-        return new TabletopStrategy();
+        return new StackedLayout( ContainerLayoutId.fromString( "org.gamegineer.containerLayouts.id" ), 1, 1, 1 ); //$NON-NLS-1$
     }
 }

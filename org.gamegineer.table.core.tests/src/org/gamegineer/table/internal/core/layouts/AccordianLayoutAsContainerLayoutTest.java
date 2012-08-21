@@ -19,7 +19,7 @@
  * Created on May 5, 2012 at 9:50:33 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.internal.core.layouts;
 
 import org.gamegineer.table.core.AbstractContainerLayoutTestCase;
 import org.gamegineer.table.core.ContainerLayoutId;
@@ -27,8 +27,8 @@ import org.gamegineer.table.core.IContainerLayout;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.AccordianLayout} class to ensure it
- * does not violate the contract of the
+ * {@link org.gamegineer.table.internal.core.layouts.AccordianLayout} class to
+ * ensure it does not violate the contract of the
  * {@link org.gamegineer.table.core.IContainerLayout} interface.
  */
 public final class AccordianLayoutAsContainerLayoutTest

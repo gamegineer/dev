@@ -1,5 +1,5 @@
 /*
- * CardStrategy.java
+ * TabletopStrategy.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 1, 2012 at 8:14:04 PM.
+ * Created on Aug 1, 2012 at 8:14:28 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.internal.core.strategies;
 
 import java.awt.Point;
 import java.util.Arrays;
@@ -28,28 +28,31 @@ import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
-import org.gamegineer.table.core.IComponentStrategy;
+import org.gamegineer.table.core.IContainerLayout;
+import org.gamegineer.table.core.IContainerStrategy;
+import org.gamegineer.table.core.TabletopOrientation;
+import org.gamegineer.table.internal.core.layouts.ContainerLayouts;
+import org.gamegineer.table.internal.core.surfacedesigns.ComponentSurfaceDesigns;
 
 /**
- * A component strategy that represents a card.
+ * A component strategy that represents a tabletop.
  */
 @Immutable
-public final class CardStrategy
-    implements IComponentStrategy
+public final class TabletopStrategy
+    implements IContainerStrategy
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** The strategy identifier. */
-    private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.card" ); //$NON-NLS-1$
+    private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.tabletop" ); //$NON-NLS-1$
 
-    /** The collection of supported card orientations. */
-    private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( CardOrientation.values( CardOrientation.class ) ) );
+    /** The collection of supported tabletop orientations. */
+    private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( TabletopOrientation.values( TabletopOrientation.class ) ) );
 
 
     // ======================================================================
@@ -57,9 +60,9 @@ public final class CardStrategy
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardStrategy} class.
+     * Initializes a new instance of the {@code TabletopStrategy} class.
      */
-    public CardStrategy()
+    public TabletopStrategy()
     {
     }
 
@@ -69,12 +72,21 @@ public final class CardStrategy
     // ======================================================================
 
     /*
+     * @see org.gamegineer.table.core.IContainerStrategy#getDefaultLayout()
+     */
+    @Override
+    public IContainerLayout getDefaultLayout()
+    {
+        return ContainerLayouts.ABSOLUTE;
+    }
+
+    /*
      * @see org.gamegineer.table.core.IComponentStrategy#getDefaultLocation()
      */
     @Override
     public Point getDefaultLocation()
     {
-        return new Point( 0, 0 );
+        return new Point( Short.MIN_VALUE / 2, Short.MIN_VALUE / 2 );
     }
 
     /*
@@ -83,7 +95,7 @@ public final class CardStrategy
     @Override
     public ComponentOrientation getDefaultOrientation()
     {
-        return CardOrientation.FACE;
+        return TabletopOrientation.DEFAULT;
     }
 
     /*
@@ -102,8 +114,7 @@ public final class CardStrategy
     public Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns()
     {
         final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>();
-        surfaceDesigns.put( CardOrientation.BACK, ComponentSurfaceDesigns.DEFAULT_CARD );
-        surfaceDesigns.put( CardOrientation.FACE, ComponentSurfaceDesigns.DEFAULT_CARD );
+        surfaceDesigns.put( TabletopOrientation.DEFAULT, ComponentSurfaceDesigns.DEFAULT_TABLETOP );
         return surfaceDesigns;
     }
 

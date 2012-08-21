@@ -94,7 +94,7 @@
     &lt;extension point=&quot;org.gamegineer.table.core.componentStrategies&quot;&gt;
         &lt;componentStrategy
                 id=&quot;org.gamegineer.componentStrategies.card&quot;
-                className=&quot;org.gamegineer.table.internal.core.ComponentStrategyExtensionFactory:org.gamegineer.componentStrategies.card&quot; /&gt;
+                className=&quot;org.gamegineer.table.internal.core.strategies.ComponentStrategyExtensionFactory:org.gamegineer.componentStrategies.card&quot; /&gt;
     &lt;/extension&gt;
 &lt;/pre&gt;
       </documentation>
