@@ -35,15 +35,6 @@ public final class ComponentSurfaceDesigns
     // Fields
     // ======================================================================
 
-    /** The default card surface design. */
-    public static final ComponentSurfaceDesign DEFAULT_CARD = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.cardSurfaceDesigns.default" ), 96, 71 ); //$NON-NLS-1$
-
-    /** The default card pile surface design. */
-    public static final ComponentSurfaceDesign DEFAULT_CARD_PILE = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.cardPileSurfaceDesigns.default" ), 96, 71 ); //$NON-NLS-1$
-
-    /** The default tabletop surface design. */
-    public static final ComponentSurfaceDesign DEFAULT_TABLETOP = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.tabletopSurfaceDesigns.default" ), Short.MAX_VALUE, Short.MAX_VALUE ); //$NON-NLS-1$
-
     /** The null component surface design. */
     public static final ComponentSurfaceDesign NULL = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.componentSurfaceDesigns.null" ), 0, 0 ); //$NON-NLS-1$
 

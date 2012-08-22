@@ -35,6 +35,14 @@
                 width="71" />
         <componentSurfaceDesign
                 height="96"
+                id="org.gamegineer.cardPileSurfaceDesigns.default"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cardSurfaceDesigns.default"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
                 id="org.gamegineer.cardSurfaces.back.blue"
                 width="71" />
         <componentSurfaceDesign
@@ -252,6 +260,10 @@
         <componentSurfaceDesign
                 height="96"
                 id="org.gamegineer.cardSurfaces.special.joker"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.tabletopSurfaceDesigns.default"
                 width="71" />
     </extension>
     <extension

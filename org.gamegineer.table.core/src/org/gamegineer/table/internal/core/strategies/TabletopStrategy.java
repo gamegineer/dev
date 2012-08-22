@@ -25,31 +25,24 @@ import java.awt.Point;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.IdentityHashMap;
-import java.util.Map;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentStrategyId;
-import org.gamegineer.table.core.ComponentSurfaceDesign;
+import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.IContainerLayout;
-import org.gamegineer.table.core.IContainerStrategy;
 import org.gamegineer.table.core.TabletopOrientation;
 import org.gamegineer.table.internal.core.layouts.ContainerLayouts;
-import org.gamegineer.table.internal.core.surfacedesigns.ComponentSurfaceDesigns;
 
 /**
  * A component strategy that represents a tabletop.
  */
 @Immutable
 public final class TabletopStrategy
-    implements IContainerStrategy
+    extends AbstractContainerStrategy
 {
     // ======================================================================
     // Fields
     // ======================================================================
-
-    /** The strategy identifier. */
-    private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.tabletop" ); //$NON-NLS-1$
 
     /** The collection of supported tabletop orientations. */
     private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( TabletopOrientation.values( TabletopOrientation.class ) ) );
@@ -64,6 +57,7 @@ public final class TabletopStrategy
      */
     public TabletopStrategy()
     {
+        super( ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.tabletop" ) ); //$NON-NLS-1$
     }
 
 
@@ -81,7 +75,7 @@ public final class TabletopStrategy
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponentStrategy#getDefaultLocation()
+     * @see org.gamegineer.table.internal.core.strategies.AbstractComponentStrategy#getDefaultLocation()
      */
     @Override
     public Point getDefaultLocation()
@@ -99,32 +93,12 @@ public final class TabletopStrategy
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponentStrategy#getDefaultOrigin()
+     * @see org.gamegineer.table.internal.core.strategies.AbstractComponentStrategy#getDefaultSurfaceDesignId()
      */
     @Override
-    public Point getDefaultOrigin()
+    ComponentSurfaceDesignId getDefaultSurfaceDesignId()
     {
-        return getDefaultLocation();
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponentStrategy#getDefaultSurfaceDesigns()
-     */
-    @Override
-    public Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns()
-    {
-        final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>();
-        surfaceDesigns.put( TabletopOrientation.DEFAULT, ComponentSurfaceDesigns.DEFAULT_TABLETOP );
-        return surfaceDesigns;
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponentStrategy#getId()
-     */
-    @Override
-    public ComponentStrategyId getId()
-    {
-        return ID;
+        return ComponentSurfaceDesignId.fromString( "org.gamegineer.tabletopSurfaceDesigns.default" ); //$NON-NLS-1$
     }
 
     /*
@@ -137,7 +111,7 @@ public final class TabletopStrategy
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponentStrategy#isFocusable()
+     * @see org.gamegineer.table.internal.core.strategies.AbstractContainerStrategy#isFocusable()
      */
     @Override
     public boolean isFocusable()

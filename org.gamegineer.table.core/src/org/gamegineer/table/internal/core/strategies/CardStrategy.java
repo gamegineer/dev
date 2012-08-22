@@ -21,33 +21,25 @@
 
 package org.gamegineer.table.internal.core.strategies;
 
-import java.awt.Point;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.IdentityHashMap;
-import java.util.Map;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentStrategyId;
-import org.gamegineer.table.core.ComponentSurfaceDesign;
-import org.gamegineer.table.core.IComponentStrategy;
-import org.gamegineer.table.internal.core.surfacedesigns.ComponentSurfaceDesigns;
+import org.gamegineer.table.core.ComponentSurfaceDesignId;
 
 /**
  * A component strategy that represents a card.
  */
 @Immutable
 public final class CardStrategy
-    implements IComponentStrategy
+    extends AbstractComponentStrategy
 {
     // ======================================================================
     // Fields
     // ======================================================================
-
-    /** The strategy identifier. */
-    private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.card" ); //$NON-NLS-1$
 
     /** The collection of supported card orientations. */
     private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( CardOrientation.values( CardOrientation.class ) ) );
@@ -62,21 +54,13 @@ public final class CardStrategy
      */
     public CardStrategy()
     {
+        super( ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.card" ) ); //$NON-NLS-1$
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /*
-     * @see org.gamegineer.table.core.IComponentStrategy#getDefaultLocation()
-     */
-    @Override
-    public Point getDefaultLocation()
-    {
-        return new Point( 0, 0 );
-    }
 
     /*
      * @see org.gamegineer.table.core.IComponentStrategy#getDefaultOrientation()
@@ -88,33 +72,12 @@ public final class CardStrategy
     }
 
     /*
-     * @see org.gamegineer.table.core.IComponentStrategy#getDefaultOrigin()
+     * @see org.gamegineer.table.internal.core.strategies.AbstractComponentStrategy#getDefaultSurfaceDesignId()
      */
     @Override
-    public Point getDefaultOrigin()
+    ComponentSurfaceDesignId getDefaultSurfaceDesignId()
     {
-        return getDefaultLocation();
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponentStrategy#getDefaultSurfaceDesigns()
-     */
-    @Override
-    public Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns()
-    {
-        final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>();
-        surfaceDesigns.put( CardOrientation.BACK, ComponentSurfaceDesigns.DEFAULT_CARD );
-        surfaceDesigns.put( CardOrientation.FACE, ComponentSurfaceDesigns.DEFAULT_CARD );
-        return surfaceDesigns;
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponentStrategy#getId()
-     */
-    @Override
-    public ComponentStrategyId getId()
-    {
-        return ID;
+        return ComponentSurfaceDesignId.fromString( "org.gamegineer.cardSurfaceDesigns.default" ); //$NON-NLS-1$
     }
 
     /*
@@ -124,14 +87,5 @@ public final class CardStrategy
     public Collection<ComponentOrientation> getSupportedOrientations()
     {
         return SUPPORTED_ORIENTATIONS;
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponentStrategy#isFocusable()
-     */
-    @Override
-    public boolean isFocusable()
-    {
-        return false;
     }
 }

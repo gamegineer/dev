@@ -68,9 +68,6 @@ public final class ComponentSurfaceDesignRegistry
         // before bundles at the default start level are running.  If we don't do it here
         // (or via the extension registry), these surface designs won't be available during
         // unit tests.
-        registerComponentSurfaceDesign( ComponentSurfaceDesigns.DEFAULT_CARD );
-        registerComponentSurfaceDesign( ComponentSurfaceDesigns.DEFAULT_CARD_PILE );
-        registerComponentSurfaceDesign( ComponentSurfaceDesigns.DEFAULT_TABLETOP );
         registerComponentSurfaceDesign( ComponentSurfaceDesigns.NULL );
     }
 
