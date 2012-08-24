@@ -64,10 +64,6 @@ public final class ComponentSurfaceDesignRegistry
     {
         componentSurfaceDesigns_ = new ConcurrentHashMap<ComponentSurfaceDesignId, ComponentSurfaceDesign>();
 
-        // FIXME: Hack to ensure programatically registered surface designs are available
-        // before bundles at the default start level are running.  If we don't do it here
-        // (or via the extension registry), these surface designs won't be available during
-        // unit tests.
         registerComponentSurfaceDesign( ComponentSurfaceDesigns.NULL );
     }
 
