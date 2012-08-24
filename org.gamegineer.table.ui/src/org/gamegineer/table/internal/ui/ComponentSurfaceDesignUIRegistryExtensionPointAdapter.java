@@ -259,7 +259,7 @@ public final class ComponentSurfaceDesignUIRegistryExtensionPointAdapter
         }
         final Icon icon = new IconProxy( iconUrl );
 
-        return new ComponentSurfaceDesignUIRegistration( configurationElement.getDeclaringExtension(), id, name, icon );
+        return new ComponentSurfaceDesignUIRegistration( configurationElement.getDeclaringExtension(), new ComponentSurfaceDesignUI( id, name, icon ) );
     }
 
     /**
@@ -510,30 +510,20 @@ public final class ComponentSurfaceDesignUIRegistryExtensionPointAdapter
          * @param extension
          *        The extension that contributed the component surface design
          *        user interface; must not be {@code null}.
-         * @param id
-         *        The component surface design identifier; must not be
-         *        {@code null}.
-         * @param name
-         *        The component surface design name; must not be {@code null}.
-         * @param icon
-         *        The component surface design icon; must not be {@code null}.
-         * 
-         * @throws java.lang.NullPointerException
-         *         If {@code id}, {@code name}, or {@code icon} is {@code null}.
+         * @param componentSurfaceDesignUI
+         *        The component surface design user interface contributed by the
+         *        extension; must not be {@code null}.
          */
         ComponentSurfaceDesignUIRegistration(
             /* @NonNull */
             final IExtension extension,
             /* @NonNull */
-            final ComponentSurfaceDesignId id,
-            /* @NonNull */
-            final String name,
-            /* @NonNull */
-            final Icon icon )
+            final ComponentSurfaceDesignUI componentSurfaceDesignUI )
         {
             assert extension != null;
+            assert componentSurfaceDesignUI != null;
 
-            componentSurfaceDesignUI_ = new ComponentSurfaceDesignUI( id, name, icon );
+            componentSurfaceDesignUI_ = componentSurfaceDesignUI;
             extensionNamespaceId_ = extension.getNamespaceIdentifier();
             extensionSimpleId_ = extension.getSimpleIdentifier();
         }

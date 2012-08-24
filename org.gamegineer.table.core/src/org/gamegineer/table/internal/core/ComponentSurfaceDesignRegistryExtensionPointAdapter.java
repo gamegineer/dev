@@ -241,7 +241,7 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapter
             throw new IllegalArgumentException( NonNlsMessages.ComponentSurfaceDesignRegistryExtensionPointAdapter_createComponentSurfaceDesignRegistration_parseHeightError, e );
         }
 
-        return new ComponentSurfaceDesignRegistration( configurationElement.getDeclaringExtension(), id, width, height );
+        return new ComponentSurfaceDesignRegistration( configurationElement.getDeclaringExtension(), new ComponentSurfaceDesign( id, width, height ) );
     }
 
     /**
@@ -487,32 +487,20 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapter
          * @param extension
          *        The extension that contributed the component surface design;
          *        must not be {@code null}.
-         * @param id
-         *        The component surface design identifier; must not be
-         *        {@code null}.
-         * @param width
-         *        The component surface design width in table coordinates; must
-         *        not be negative.
-         * @param height
-         *        The component surface design height in table coordinates; must
-         *        not be negative.
-         * 
-         * @throws java.lang.IllegalArgumentException
-         *         If {@code width} or {@code height} is negative.
-         * @throws java.lang.NullPointerException
-         *         If {@code id} is {@code null}.
+         * @param componentSurfaceDesign
+         *        The component surface design contributed by the extension;
+         *        must not be {@code null}.
          */
         ComponentSurfaceDesignRegistration(
             /* @NonNull */
             final IExtension extension,
             /* @NonNull */
-            final ComponentSurfaceDesignId id,
-            final int width,
-            final int height )
+            final ComponentSurfaceDesign componentSurfaceDesign )
         {
             assert extension != null;
+            assert componentSurfaceDesign != null;
 
-            componentSurfaceDesign_ = new ComponentSurfaceDesign( id, width, height );
+            componentSurfaceDesign_ = componentSurfaceDesign;
             extensionNamespaceId_ = extension.getNamespaceIdentifier();
             extensionSimpleId_ = extension.getSimpleIdentifier();
         }
