@@ -471,9 +471,6 @@ public final class ContainerLayoutRegistryExtensionPointAdapter
          * @param containerLayout
          *        The container layout contributed by the extension; must not be
          *        {@code null}.
-         * 
-         * @throws java.lang.NullPointerException
-         *         If {@code containerLayout} is {@code null}.
          */
         ContainerLayoutRegistration(
             /* @NonNull */

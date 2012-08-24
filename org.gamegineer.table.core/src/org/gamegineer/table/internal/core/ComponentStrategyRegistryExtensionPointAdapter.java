@@ -472,9 +472,6 @@ public final class ComponentStrategyRegistryExtensionPointAdapter
          * @param componentStrategy
          *        The component strategy contributed by the extension; must not
          *        be {@code null}.
-         * 
-         * @throws java.lang.NullPointerException
-         *         If {@code componentStrategy} is {@code null}.
          */
         ComponentStrategyRegistration(
             /* @NonNull */
