@@ -243,6 +243,7 @@ final class ContainerView
         assert g != null;
         assert isInitialized();
 
+        final Rectangle clipBounds = g.getClipBounds();
         final Rectangle viewBounds = getBounds();
 
         getActiveComponentSurfaceDesignUI().getIcon().paintIcon( c, g, viewBounds.x + HORIZONTAL_PADDING, viewBounds.y + VERTICAL_PADDING );
@@ -252,7 +253,10 @@ final class ContainerView
             final ComponentView componentView = componentViews_.get( component );
             if( componentView != null )
             {
-                componentView.paint( c, g );
+                if( clipBounds.intersects( componentView.getBounds() ) )
+                {
+                    componentView.paint( c, g );
+                }
             }
         }
 
