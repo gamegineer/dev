@@ -1312,8 +1312,9 @@ final class TableView
     {
         assert region != null;
 
-        convertRectangleFromTable( region );
-        repaint( region );
+        final Rectangle viewRegion = new Rectangle( region );
+        convertRectangleFromTable( viewRegion );
+        repaint( viewRegion );
     }
 
     /**
