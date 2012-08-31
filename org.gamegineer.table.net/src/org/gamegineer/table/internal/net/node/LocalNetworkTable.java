@@ -28,8 +28,10 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.locks.Lock;
 import java.util.logging.Level;
+import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.common.core.util.concurrent.locks.LockUtils;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentPath;
@@ -123,11 +125,13 @@ final class LocalNetworkTable
      * @param component
      *        The component; must not be {@code null}.
      */
+    @GuardedBy( "getTableEnvironmentLock()" )
     private void addComponentListeners(
         /* @NonNull */
         final IComponent component )
     {
         assert component != null;
+        assert LockUtils.isHeldByCurrentThread( getTableEnvironmentLock() );
 
         component.addComponentListener( componentListener_ );
 
@@ -206,11 +210,13 @@ final class LocalNetworkTable
      * @param component
      *        The component; must not be {@code null}.
      */
+    @GuardedBy( "getTableEnvironmentLock()" )
     private void removeComponentListeners(
         /* @NonNull */
         final IComponent component )
     {
         assert component != null;
+        assert LockUtils.isHeldByCurrentThread( getTableEnvironmentLock() );
 
         component.removeComponentListener( componentListener_ );
 
@@ -594,19 +600,19 @@ final class LocalNetworkTable
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
             assert nodeLayer_.isNodeLayerThread();
 
-            final IComponent component = event.getComponent();
-            addComponentListeners( component );
-
-            if( ignoreEvents_ )
-            {
-                return;
-            }
-
             final ComponentPath containerPath;
             final ContainerIncrement containerIncrement = new ContainerIncrement();
             getTableEnvironmentLock().lock();
             try
             {
+                final IComponent component = event.getComponent();
+                addComponentListeners( component );
+
+                if( ignoreEvents_ )
+                {
+                    return;
+                }
+
                 final IContainer container = event.getContainer();
                 containerPath = container.getPath();
                 if( containerPath != null )
@@ -638,19 +644,19 @@ final class LocalNetworkTable
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
             assert nodeLayer_.isNodeLayerThread();
 
-            final IComponent component = event.getComponent();
-            removeComponentListeners( component );
-
-            if( ignoreEvents_ )
-            {
-                return;
-            }
-
             final ComponentPath containerPath;
             final ContainerIncrement containerIncrement = new ContainerIncrement();
             getTableEnvironmentLock().lock();
             try
             {
+                final IComponent component = event.getComponent();
+                removeComponentListeners( component );
+
+                if( ignoreEvents_ )
+                {
+                    return;
+                }
+
                 final IContainer container = event.getContainer();
                 containerPath = container.getPath();
                 if( containerPath != null )

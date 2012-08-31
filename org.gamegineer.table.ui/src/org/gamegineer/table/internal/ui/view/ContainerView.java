@@ -28,6 +28,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.Immutable;
@@ -38,6 +39,7 @@ import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainerListener;
 import org.gamegineer.table.internal.ui.model.ContainerModel;
 import org.gamegineer.table.internal.ui.model.IContainerModelListener;
+import org.gamegineer.table.internal.ui.util.TableUtils;
 
 /**
  * A view of a container.
@@ -221,9 +223,9 @@ final class ContainerView
         containerModelListener_ = new ContainerModelListener();
         containerModel_.addContainerModelListener( containerModelListener_ );
         containerListener_ = new ContainerListener();
-        containerModel_.getContainer().addContainerListener( containerListener_ );
 
-        for( final IComponent component : containerModel_.getContainer().getComponents() )
+        final List<IComponent> components = TableUtils.addContainerListenerAndGetComponents( containerModel_.getContainer(), containerListener_ );
+        for( final IComponent component : components )
         {
             createComponentView( component );
         }

@@ -37,6 +37,7 @@ import org.gamegineer.table.core.ContainerEvent;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.internal.ui.Loggers;
+import org.gamegineer.table.internal.ui.util.TableUtils;
 
 /**
  * The container model.
@@ -85,9 +86,8 @@ public final class ContainerModel
         containerModelListener_ = new ContainerModelListener();
         listeners_ = new CopyOnWriteArrayList<IContainerModelListener>();
 
-        container.addContainerListener( new ContainerListener() );
-
-        for( final IComponent component : container.getComponents() )
+        final List<IComponent> components = TableUtils.addContainerListenerAndGetComponents( container, new ContainerListener() );
+        for( final IComponent component : components )
         {
             synchronized( getLock() )
             {
