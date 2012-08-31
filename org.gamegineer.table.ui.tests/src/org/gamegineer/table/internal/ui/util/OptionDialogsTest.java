@@ -48,7 +48,7 @@ public final class OptionDialogsTest
 
     /**
      * Ensures the {@code showConfirmDialog} method throws an exception when
-     * passed a {@code null} messages.
+     * passed a {@code null} message.
      */
     @Test( expected = NullPointerException.class )
     public void testShowConfirmDialog_Message_Null()
@@ -58,7 +58,7 @@ public final class OptionDialogsTest
 
     /**
      * Ensures the {@code showErrorMessageDialog} method throws an exception
-     * when passed a {@code null} messages.
+     * when passed a {@code null} message.
      */
     @Test( expected = NullPointerException.class )
     public void testShowErrorMessageDialog_Message_Null()
