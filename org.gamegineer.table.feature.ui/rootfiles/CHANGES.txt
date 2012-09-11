@@ -1,13 +1,12 @@
 Gamegineer
 Version 0.13.0
-XX XX XXXX
+12 September 2012
 
 Defects closed:
-    None
+    * [#68] Table not redrawn properly during drag operations when table origin does not coincide with view origin
 
 Enhancements closed:
-    None
+    * [#67] Remove All Cards action should be disabled when focused card pile is empty
 
 Tasks closed:
-    * [#65] Upgrade to JDK 6 Update 31
-    * [#66] Upgrade to Eclipse 3.7.2
+    None
