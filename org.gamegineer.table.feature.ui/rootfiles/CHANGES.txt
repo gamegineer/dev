@@ -1,6 +1,6 @@
 Gamegineer
-Version 0.13.0
-12 September 2012
+Version 0.14.0
+XX XX XXXX
 
 Defects closed:
     * [#68] Table not redrawn properly during drag operations when table origin does not coincide with view origin
