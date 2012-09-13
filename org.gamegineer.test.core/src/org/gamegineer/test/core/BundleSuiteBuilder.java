@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.regex.Matcher;
@@ -99,14 +98,14 @@ public final class BundleSuiteBuilder
             return Collections.emptyList();
         }
 
-        final List<String> classpathEntries = new ArrayList<String>();
+        final Collection<String> classpathEntries = new ArrayList<String>();
         for( final String classpathEntry : classpath.split( "\\s*,\\s*" ) ) //$NON-NLS-1$
         {
             classpathEntries.add( classpathEntry );
         }
 
         normalizeClasspathEntries( classpathEntries );
-        return Collections.unmodifiableList( classpathEntries );
+        return Collections.unmodifiableCollection( classpathEntries );
     }
 
     /**
@@ -137,7 +136,7 @@ public final class BundleSuiteBuilder
             return Collections.emptyList();
         }
 
-        final List<String> classpathEntries = new ArrayList<String>();
+        final Collection<String> classpathEntries = new ArrayList<String>();
         final InputStream is = url.openStream();
         try
         {
@@ -180,7 +179,7 @@ public final class BundleSuiteBuilder
         }
 
         normalizeClasspathEntries( classpathEntries );
-        return Collections.unmodifiableList( classpathEntries );
+        return Collections.unmodifiableCollection( classpathEntries );
     }
 
     /**
@@ -270,7 +269,7 @@ public final class BundleSuiteBuilder
         }
 
         final JarInputStream is = new JarInputStream( url.openStream() );
-        final List<String> classNames = new ArrayList<String>();
+        final Collection<String> classNames = new ArrayList<String>();
         final Pattern CLASS_NAME_PATTERN = Pattern.compile( "^(.*Test)\\.class$" ); //$NON-NLS-1$
         try
         {
@@ -289,7 +288,7 @@ public final class BundleSuiteBuilder
             is.close();
         }
 
-        return Collections.unmodifiableList( classNames );
+        return Collections.unmodifiableCollection( classNames );
     }
 
     /**
@@ -315,7 +314,7 @@ public final class BundleSuiteBuilder
         assert path != null;
         assert path.charAt( 0 ) != '/';
 
-        final List<String> classNames = new ArrayList<String>();
+        final Collection<String> classNames = new ArrayList<String>();
         final Pattern CLASS_NAME_PATTERN = Pattern.compile( String.format( "^/%1$s/(.+)\\.class$", path ) ); //$NON-NLS-1$
         final String FILE_PATTERN = "*Test.class"; //$NON-NLS-1$
         for( final Enumeration<?> entries = bundle.findEntries( path, FILE_PATTERN, true ); entries.hasMoreElements(); )
@@ -329,7 +328,7 @@ public final class BundleSuiteBuilder
             classNames.add( matcher.group( 1 ).replace( '/', '.' ) );
         }
 
-        return Collections.unmodifiableList( classNames );
+        return Collections.unmodifiableCollection( classNames );
     }
 
     /**
