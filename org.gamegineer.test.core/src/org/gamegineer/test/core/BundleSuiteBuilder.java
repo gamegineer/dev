@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
@@ -104,6 +105,7 @@ public final class BundleSuiteBuilder
             classpathEntries.add( classpathEntry );
         }
 
+        normalizeClasspathEntries( classpathEntries );
         return Collections.unmodifiableList( classpathEntries );
     }
 
@@ -141,15 +143,34 @@ public final class BundleSuiteBuilder
         {
             final InputSource inputSource = new InputSource( is );
             final XPath xpath = XPathFactory.newInstance().newXPath();
-            final String expression = "/classpath/classpathentry[@kind='output']"; //$NON-NLS-1$
+            final String expression = "/classpath/classpathentry[@kind='output' or @kind='src']"; //$NON-NLS-1$
             final NodeList nodes = (NodeList)xpath.evaluate( expression, inputSource, XPathConstants.NODESET );
             for( int index = 0; index < nodes.getLength(); ++index )
             {
                 final Element element = (Element)nodes.item( index );
-                final String classpathEntry = element.getAttribute( "path" ); //$NON-NLS-1$
-                if( classpathEntry != null )
+
+                final String classpathEntryAttributeName;
+                final String kind = element.getAttribute( "kind" ); //$NON-NLS-1$
+                if( "output".equals( kind ) ) //$NON-NLS-1$
                 {
-                    classpathEntries.add( classpathEntry );
+                    classpathEntryAttributeName = "path"; //$NON-NLS-1$
+                }
+                else if( "src".equals( kind ) ) //$NON-NLS-1$
+                {
+                    classpathEntryAttributeName = "output"; //$NON-NLS-1$
+                }
+                else
+                {
+                    classpathEntryAttributeName = null;
+                }
+
+                if( classpathEntryAttributeName != null )
+                {
+                    final String classpathEntry = element.getAttribute( classpathEntryAttributeName );
+                    if( classpathEntry != null )
+                    {
+                        classpathEntries.add( classpathEntry );
+                    }
                 }
             }
         }
@@ -158,6 +179,7 @@ public final class BundleSuiteBuilder
             is.close();
         }
 
+        normalizeClasspathEntries( classpathEntries );
         return Collections.unmodifiableList( classpathEntries );
     }
 
@@ -308,6 +330,33 @@ public final class BundleSuiteBuilder
         }
 
         return Collections.unmodifiableList( classNames );
+    }
+
+    /**
+     * Normalizes the specified collection of classpath entries such that if any
+     * path overlaps another, only the most specific path will be retained.
+     * 
+     * @param classpathEntries
+     *        The collection of classpath entries; must not be {@code null}.
+     */
+    private static void normalizeClasspathEntries(
+        /* @NonNull */
+        final Collection<String> classpathEntries )
+    {
+        assert classpathEntries != null;
+
+        for( final Iterator<String> iter = classpathEntries.iterator(); iter.hasNext(); )
+        {
+            final String classpathEntry = iter.next();
+            for( final String otherClasspathEntry : classpathEntries )
+            {
+                if( otherClasspathEntry.startsWith( classpathEntry ) && !otherClasspathEntry.equals( classpathEntry ) )
+                {
+                    iter.remove();
+                    break;
+                }
+            }
+        }
     }
 
     /**
