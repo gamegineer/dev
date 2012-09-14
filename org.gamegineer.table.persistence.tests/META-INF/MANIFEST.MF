@@ -1,5 +1,4 @@
 Manifest-Version: 1.0
-Bundle-ClassPath: tests.jar
 Bundle-Localization: fragment-tests
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
