@@ -95,7 +95,7 @@ public final class BundleSuiteBuilder
         final String classpath = bundle.getHeaders().get( Constants.BUNDLE_CLASSPATH );
         if( classpath == null )
         {
-            return Collections.emptyList();
+            return Collections.singletonList( "." ); //$NON-NLS-1$
         }
 
         final Collection<String> classpathEntries = new ArrayList<String>();
@@ -210,22 +210,22 @@ public final class BundleSuiteBuilder
 
         final Collection<String> classNames = new ArrayList<String>();
 
-        // First assume the test is being run from a deployment and use the bundle's manifest to
-        // determine the classpath on which to search for test classes.
-        for( final String classpathEntry : getClasspathEntriesFromManifest( bundle ) )
+        // First assume the test is being run from the IDE and use the bundle's project information
+        // to determine the classpath on which to search for test classes.
+        for( final String classpathEntry : getClasspathEntriesFromProject( bundle ) )
         {
-            classNames.addAll( getTestClassNamesFromJar( bundle, classpathEntry ) );
+            classNames.addAll( getTestClassNamesFromEntry( bundle, classpathEntry ) );
         }
         if( !classNames.isEmpty() )
         {
             return classNames;
         }
 
-        // Otherwise assume the test is being run from the IDE and use the bundle's project information
-        // to determine the classpath on which to search for test classes.
-        for( final String classpathEntry : getClasspathEntriesFromProject( bundle ) )
+        // Otherwise assume the test is being run from a deployment and use the bundle's manifest to
+        // determine the classpath on which to search for test classes.
+        for( final String classpathEntry : getClasspathEntriesFromManifest( bundle ) )
         {
-            classNames.addAll( getTestClassNamesFromPath( bundle, classpathEntry ) );
+            classNames.addAll( getTestClassNamesFromEntry( bundle, classpathEntry ) );
         }
         if( !classNames.isEmpty() )
         {
@@ -233,6 +233,38 @@ public final class BundleSuiteBuilder
         }
 
         return Collections.emptyList();
+    }
+
+    /**
+     * Gets the fully-qualified name of each test class found in the specified
+     * bundle entry.
+     * 
+     * @param bundle
+     *        The bundle in which to search; must not be {@code null}.
+     * @param path
+     *        The path to the bundle entry in which to search; must not be
+     *        {@code null}.
+     * 
+     * @return A read-only collection of test class names found; never
+     *         {@code null}.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    /* @NonNull */
+    private static Collection<String> getTestClassNamesFromEntry(
+        /* @NonNull */
+        final Bundle bundle,
+        /* @NonNull */
+        final String path )
+        throws Exception
+    {
+        assert bundle != null;
+        assert path != null;
+
+        return path.endsWith( ".jar" ) //$NON-NLS-1$
+            ? getTestClassNamesFromJar( bundle, path ) //
+            : getTestClassNamesFromPath( bundle, path );
     }
 
     /**
