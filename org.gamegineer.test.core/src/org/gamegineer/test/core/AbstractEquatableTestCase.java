@@ -144,8 +144,8 @@ public abstract class AbstractEquatableTestCase<T>
     }
 
     /**
-     * Ensures the {@code equals} method correctly indicates two equal but
-     * different instances are equal.
+     * Ensures the {@link Object#equals} method correctly indicates two equal
+     * but different instances are equal.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -162,8 +162,8 @@ public abstract class AbstractEquatableTestCase<T>
     }
 
     /**
-     * Ensures the {@code equals} method correctly indicates an instance is
-     * equal to itself.
+     * Ensures the {@link Object#equals} method correctly indicates an instance
+     * is equal to itself.
      */
     @Test
     public void testEquals_Equal_Same()
@@ -172,7 +172,7 @@ public abstract class AbstractEquatableTestCase<T>
     }
 
     /**
-     * Ensures the {@code equals} method correctly indicates two unequal
+     * Ensures the {@link Object#equals} method correctly indicates two unequal
      * instances are unequal.
      * 
      * @throws java.lang.Exception
@@ -189,8 +189,8 @@ public abstract class AbstractEquatableTestCase<T>
     }
 
     /**
-     * Ensures the {@code equals} method correctly indicates an instance is
-     * unequal to an instance of a different class.
+     * Ensures the {@link Object#equals} method correctly indicates an instance
+     * is unequal to an instance of a different class.
      */
     @Test
     public void testEquals_Unequal_DifferentClass()
@@ -199,7 +199,7 @@ public abstract class AbstractEquatableTestCase<T>
     }
 
     /**
-     * Ensures the {@code equals} method correctly handles a {@code null}
+     * Ensures the {@link Object#equals} method correctly handles a {@code null}
      * instance.
      */
     @Test
@@ -209,8 +209,8 @@ public abstract class AbstractEquatableTestCase<T>
     }
 
     /**
-     * Ensures the {@code hashCode} method returns the same hash code for equal
-     * but different instances.
+     * Ensures the {@link Object#hashCode} method returns the same hash code for
+     * equal but different instances.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -226,8 +226,8 @@ public abstract class AbstractEquatableTestCase<T>
     }
 
     /**
-     * Ensures the {@code hashCode} method returns a different hash code for
-     * unequal instances.
+     * Ensures the {@link Object#hashCode} method returns a different hash code
+     * for unequal instances.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

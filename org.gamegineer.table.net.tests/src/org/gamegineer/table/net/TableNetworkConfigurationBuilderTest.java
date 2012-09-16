@@ -69,8 +69,8 @@ public final class TableNetworkConfigurationBuilderTest
     }
 
     /**
-     * Ensures the {@code setHostName} method throws an exception when passed a
-     * {@code null} host name.
+     * Ensures the {@link TableNetworkConfigurationBuilder#setHostName} method
+     * throws an exception when passed a {@code null} host name.
      */
     @Test( expected = NullPointerException.class )
     public void testSetHostName_HostName_Null()
@@ -79,8 +79,8 @@ public final class TableNetworkConfigurationBuilderTest
     }
 
     /**
-     * Ensures the {@code setLocalPlayerName} method throws an exception when
-     * passed a {@code null} local player name.
+     * Ensures the {@link TableNetworkConfigurationBuilder#setLocalPlayerName}
+     * method throws an exception when passed a {@code null} local player name.
      */
     @Test( expected = NullPointerException.class )
     public void testSetLocalPlayerName_LocalPlayerName_Null()
@@ -89,8 +89,8 @@ public final class TableNetworkConfigurationBuilderTest
     }
 
     /**
-     * Ensures the {@code setLocalTable} method throws an exception when passed
-     * a {@code null} local table.
+     * Ensures the {@link TableNetworkConfigurationBuilder#setLocalTable} method
+     * throws an exception when passed a {@code null} local table.
      */
     @Test( expected = NullPointerException.class )
     public void testSetLocalTable_LocalTable_Null()
@@ -99,8 +99,8 @@ public final class TableNetworkConfigurationBuilderTest
     }
 
     /**
-     * Ensures the {@code setPassword} method throws an exception when passed a
-     * {@code null} password.
+     * Ensures the {@link TableNetworkConfigurationBuilder#setPassword} method
+     * throws an exception when passed a {@code null} password.
      */
     @Test( expected = NullPointerException.class )
     public void testPassword_Password_Null()

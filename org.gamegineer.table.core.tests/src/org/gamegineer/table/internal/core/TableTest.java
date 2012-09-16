@@ -73,8 +73,8 @@ public final class TableTest
     }
 
     /**
-     * Ensures the {@code getChildPath} method throws an exception when passed a
-     * component that is not the tabletop.
+     * Ensures the {@link Table#getChildPath} method throws an exception when
+     * passed a component that is not the tabletop.
      */
     @Test( expected = AssertionError.class )
     public void testGetChildPath_Component_NotTabletop()

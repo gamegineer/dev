@@ -89,8 +89,8 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code bindActionListener} method throws an exception when
-     * passed a {@code null} action.
+     * Ensures the {@link ActionMediator#bindActionListener} method throws an
+     * exception when passed a {@code null} action.
      */
     @Test( expected = NullPointerException.class )
     public void testBindActionListener_Action_Null()
@@ -99,8 +99,8 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code bindActionListener} method throws an exception when a
-     * listener is already bound to the action.
+     * Ensures the {@link ActionMediator#bindActionListener} method throws an
+     * exception when a listener is already bound to the action.
      * 
      */
     @Test( expected = IllegalStateException.class )
@@ -114,8 +114,8 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code bindActionListener} method throws an exception when
-     * passed a {@code null} listener.
+     * Ensures the {@link ActionMediator#bindActionListener} method throws an
+     * exception when passed a {@code null} listener.
      */
     @Test( expected = NullPointerException.class )
     public void testBindActionListener_Listener_Null()
@@ -124,8 +124,8 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code bindActionListener} method binds a listener when no
-     * listener is already bound to the action.
+     * Ensures the {@link ActionMediator#bindActionListener} method binds a
+     * listener when no listener is already bound to the action.
      */
     @Test
     public void testBindActionListener_Listener_Unbound()
@@ -142,8 +142,8 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code bindShouldEnablePredicate} method throws an exception
-     * when passed a {@code null} action.
+     * Ensures the {@link ActionMediator#bindShouldEnablePredicate} method
+     * throws an exception when passed a {@code null} action.
      */
     @Test( expected = NullPointerException.class )
     public void testBindShouldEnablePredicate_Action_Null()
@@ -152,8 +152,8 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code bindShouldEnablePredicate} method throws an exception
-     * when a predicate is already bound to the action.
+     * Ensures the {@link ActionMediator#bindShouldEnablePredicate} method
+     * throws an exception when a predicate is already bound to the action.
      * 
      */
     @Test( expected = IllegalStateException.class )
@@ -167,8 +167,8 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code bindShouldEnablePredicate} method throws an exception
-     * when passed a {@code null} predicate.
+     * Ensures the {@link ActionMediator#bindShouldEnablePredicate} method
+     * throws an exception when passed a {@code null} predicate.
      */
     @Test( expected = NullPointerException.class )
     public void testBindShouldEnablePredicate_Predicate_Null()
@@ -177,8 +177,8 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code bindShouldEnablePredicate} method binds a predicate
-     * when no predicate is already bound to the action.
+     * Ensures the {@link ActionMediator#bindShouldEnablePredicate} method binds
+     * a predicate when no predicate is already bound to the action.
      */
     @SuppressWarnings( "boxing" )
     @Test
@@ -196,8 +196,8 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code bindShouldEnablePredicate} method updates the action
-     * after binding the predicate.
+     * Ensures the {@link ActionMediator#bindShouldEnablePredicate} method
+     * updates the action after binding the predicate.
      */
     @SuppressWarnings( "boxing" )
     @Test
@@ -216,8 +216,8 @@ public final class ActionMediatorTest
     //
 
     /**
-     * Ensures the {@code bindShouldSelectPredicate} method throws an exception
-     * when passed a {@code null} action.
+     * Ensures the {@link ActionMediator#bindShouldSelectPredicate} method
+     * throws an exception when passed a {@code null} action.
      */
     @Test( expected = NullPointerException.class )
     public void testBindShouldSelectPredicate_Action_Null()
@@ -226,8 +226,8 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code bindShouldSelectPredicate} method throws an exception
-     * when a predicate is already bound to the action.
+     * Ensures the {@link ActionMediator#bindShouldSelectPredicate} method
+     * throws an exception when a predicate is already bound to the action.
      * 
      */
     @Test( expected = IllegalStateException.class )
@@ -241,8 +241,8 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code bindShouldSelectPredicate} method throws an exception
-     * when passed a {@code null} predicate.
+     * Ensures the {@link ActionMediator#bindShouldSelectPredicate} method
+     * throws an exception when passed a {@code null} predicate.
      */
     @Test( expected = NullPointerException.class )
     public void testBindShouldSelectPredicate_Predicate_Null()
@@ -251,8 +251,8 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code bindShouldSelectPredicate} method binds a predicate
-     * when no predicate is already bound to the action.
+     * Ensures the {@link ActionMediator#bindShouldSelectPredicate} method binds
+     * a predicate when no predicate is already bound to the action.
      */
     @SuppressWarnings( "boxing" )
     @Test
@@ -270,8 +270,8 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code bindShouldSelectPredicate} method updates the action
-     * after binding the predicate.
+     * Ensures the {@link ActionMediator#bindShouldSelectPredicate} method
+     * updates the action after binding the predicate.
      */
     @SuppressWarnings( "boxing" )
     @Test
@@ -288,8 +288,8 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code unbind} method throws an exception when passed an
-     * action that has no bound attachments.
+     * Ensures the {@link ActionMediator#unbind} method throws an exception when
+     * passed an action that has no bound attachments.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testUpdate_Action_NoBoundAttachments()
@@ -298,8 +298,8 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code unbind} method throws an exception when passed a
-     * {@code null} action.
+     * Ensures the {@link ActionMediator#unbind} method throws an exception when
+     * passed a {@code null} action.
      */
     @Test( expected = NullPointerException.class )
     public void testUnbind_Action_Null()
@@ -308,8 +308,8 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code unbind} method unbinds all action listeners from the
-     * action.
+     * Ensures the {@link ActionMediator#unbind} method unbinds all action
+     * listeners from the action.
      */
     @Test
     public void testUnbind_UnbindsActionListeners()
@@ -326,8 +326,8 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code unbind} method unbinds all should enable predicates
-     * from the action.
+     * Ensures the {@link ActionMediator#unbind} method unbinds all should
+     * enable predicates from the action.
      */
     @SuppressWarnings( "boxing" )
     @Test
@@ -346,8 +346,8 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code unbind} method unbinds all should select predicates
-     * from the action.
+     * Ensures the {@link ActionMediator#unbind} method unbinds all should
+     * select predicates from the action.
      */
     @SuppressWarnings( "boxing" )
     @Test
@@ -366,8 +366,8 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code unbind} method updates the action after unbinding a
-     * bound predicate.
+     * Ensures the {@link ActionMediator#unbind} method updates the action after
+     * unbinding a bound predicate.
      */
     @SuppressWarnings( "boxing" )
     @Test
@@ -388,8 +388,8 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code unbindAll} method unbinds all action listeners from
-     * all actions.
+     * Ensures the {@link ActionMediator#unbindAll} method unbinds all action
+     * listeners from all actions.
      */
     @Test
     public void testUnbindAll_UnbindsActionListeners()
@@ -410,8 +410,8 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code unbindAll} method unbinds all should enable predicates
-     * from all actions.
+     * Ensures the {@link ActionMediator#unbindAll} method unbinds all should
+     * enable predicates from all actions.
      */
     @SuppressWarnings( "boxing" )
     @Test
@@ -435,8 +435,8 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code unbindAll} method unbinds all should select predicates
-     * from all actions.
+     * Ensures the {@link ActionMediator#unbindAll} method unbinds all should
+     * select predicates from all actions.
      */
     @SuppressWarnings( "boxing" )
     @Test
@@ -460,8 +460,8 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code unbindAll} method updates all actions after unbinding
-     * a bound predicate.
+     * Ensures the {@link ActionMediator#unbindAll} method updates all actions
+     * after unbinding a bound predicate.
      */
     @SuppressWarnings( "boxing" )
     @Test

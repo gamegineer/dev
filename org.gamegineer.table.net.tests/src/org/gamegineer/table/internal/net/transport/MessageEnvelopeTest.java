@@ -49,8 +49,8 @@ public final class MessageEnvelopeTest
     // ======================================================================
 
     /**
-     * Ensures the {@code fromByteArray} method returns the correct message
-     * envelope.
+     * Ensures the {@link MessageEnvelope#fromByteArray} method returns the
+     * correct message envelope.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -76,9 +76,9 @@ public final class MessageEnvelopeTest
     }
 
     /**
-     * Ensures the {@code fromByteArray} method throws an exception when passed
-     * an illegal byte array that has a length longer than the total message
-     * envelope length.
+     * Ensures the {@link MessageEnvelope#fromByteArray} method throws an
+     * exception when passed an illegal byte array that has a length longer than
+     * the total message envelope length.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testFromByteArray_Bytes_Illegal_LengthLongerThanTotalLength()
@@ -89,8 +89,9 @@ public final class MessageEnvelopeTest
     }
 
     /**
-     * Ensures the {@code fromByteArray} method throws an exception when passed
-     * an illegal byte array that has a length shorter than the header length.
+     * Ensures the {@link MessageEnvelope#fromByteArray} method throws an
+     * exception when passed an illegal byte array that has a length shorter
+     * than the header length.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testFromByteArray_Bytes_Illegal_LengthShorterThanHeaderLength()
@@ -99,9 +100,9 @@ public final class MessageEnvelopeTest
     }
 
     /**
-     * Ensures the {@code fromByteArray} method throws an exception when passed
-     * an illegal byte array that has a length shorter than the total message
-     * envelope length.
+     * Ensures the {@link MessageEnvelope#fromByteArray} method throws an
+     * exception when passed an illegal byte array that has a length shorter
+     * than the total message envelope length.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testFromByteArray_Bytes_Illegal_LengthShorterThanTotalLength()
@@ -112,8 +113,8 @@ public final class MessageEnvelopeTest
     }
 
     /**
-     * Ensures the {@code fromByteArray} method throws an exception when passed
-     * a {@code null} byte array.
+     * Ensures the {@link MessageEnvelope#fromByteArray} method throws an
+     * exception when passed a {@code null} byte array.
      */
     @Test( expected = NullPointerException.class )
     public void testFromByteArray_Bytes_Null()
@@ -122,8 +123,8 @@ public final class MessageEnvelopeTest
     }
 
     /**
-     * Ensures the {@code fromMessage} method returns the correct message
-     * envelope.
+     * Ensures the {@link MessageEnvelope#fromMessage} method returns the
+     * correct message envelope.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -146,8 +147,8 @@ public final class MessageEnvelopeTest
     }
 
     /**
-     * Ensures the {@code fromMessage} method throws an exception when passed a
-     * {@code null} message.
+     * Ensures the {@link MessageEnvelope#fromMessage} method throws an
+     * exception when passed a {@code null} message.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

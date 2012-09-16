@@ -83,8 +83,8 @@ public abstract class AbstractTableNetworkControllerTestCase
     }
 
     /**
-     * Ensures the {@code getTransportLayerFactory} method does not return
-     * {@code null}.
+     * Ensures the {@link ITableNetworkController#getTransportLayerFactory}
+     * method does not return {@code null}.
      */
     @Test
     public void testGetTransportLayerFactory_ReturnValue_NonNull()

@@ -100,8 +100,8 @@ public abstract class AbstractTransportLayerTestCase
     }
 
     /**
-     * Ensures the {@code beginOpen} method throws an exception when passed a
-     * {@code null} host name.
+     * Ensures the {@link ITransportLayer#beginOpen} method throws an exception
+     * when passed a {@code null} host name.
      */
     @Test( expected = NullPointerException.class )
     public void testBeginOpen_HostName_Null()
@@ -110,8 +110,8 @@ public abstract class AbstractTransportLayerTestCase
     }
 
     /**
-     * Ensures the {@code endClose} method throws an exception when passed a
-     * {@code null} future.
+     * Ensures the {@link ITransportLayer#endClose} method throws an exception
+     * when passed a {@code null} future.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -124,8 +124,8 @@ public abstract class AbstractTransportLayerTestCase
     }
 
     /**
-     * Ensures the {@code endOpen} method throws an exception if the transport
-     * layer has been closed.
+     * Ensures the {@link ITransportLayer#endOpen} method throws an exception if
+     * the transport layer has been closed.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -149,8 +149,8 @@ public abstract class AbstractTransportLayerTestCase
     }
 
     /**
-     * Ensures the {@code endOpen} method throws an exception when passed a
-     * {@code null} future.
+     * Ensures the {@link ITransportLayer#endOpen} method throws an exception
+     * when passed a {@code null} future.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -163,8 +163,8 @@ public abstract class AbstractTransportLayerTestCase
     }
 
     /**
-     * Ensures the {@code endOpen} method throws an exception when attempting to
-     * open the transport layer more than once.
+     * Ensures the {@link ITransportLayer#endOpen} method throws an exception
+     * when attempting to open the transport layer more than once.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

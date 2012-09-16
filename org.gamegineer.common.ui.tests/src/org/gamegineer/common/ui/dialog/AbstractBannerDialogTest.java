@@ -71,8 +71,8 @@ public final class AbstractBannerDialogTest
     }
 
     /**
-     * Ensures the {@code createCotnentArea} method throws an exception when
-     * passed a {@code null} parent.
+     * Ensures the {@link AbstractBannerDialog#createContentArea} method throws
+     * an exception when passed a {@code null} parent.
      */
     @Test( expected = NullPointerException.class )
     public void testContentArea_Parent_Null()

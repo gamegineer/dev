@@ -134,8 +134,8 @@ public abstract class AbstractTableNetworkTestCase
     }
 
     /**
-     * Ensures the {@code addTableNetworkListener} method throws an exception
-     * when passed a {@code null} listener.
+     * Ensures the {@link ITableNetwork#addTableNetworkListener} method throws
+     * an exception when passed a {@code null} listener.
      */
     @Test( expected = NullPointerException.class )
     public void testAddTableNetworkListener_Listener_Null()
@@ -144,9 +144,9 @@ public abstract class AbstractTableNetworkTestCase
     }
 
     /**
-     * Ensures the {@code addTableNetworkListener} method throws an exception
-     * when passed a listener that is present in the table network listener
-     * collection.
+     * Ensures the {@link ITableNetwork#addTableNetworkListener} method throws
+     * an exception when passed a listener that is present in the table network
+     * listener collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddTableNetworkListener_Listener_Present()
@@ -158,8 +158,8 @@ public abstract class AbstractTableNetworkTestCase
     }
 
     /**
-     * Ensures the {@code disconnect} method fires a disconnected event when the
-     * network is connected.
+     * Ensures the {@link ITableNetwork#disconnect} method fires a disconnected
+     * event when the network is connected.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -180,8 +180,8 @@ public abstract class AbstractTableNetworkTestCase
     }
 
     /**
-     * Ensures the {@code disconnect} method does not fire a disconnected event
-     * when the network is disconnected.
+     * Ensures the {@link ITableNetwork#disconnect} method does not fire a
+     * disconnected event when the network is disconnected.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -200,8 +200,8 @@ public abstract class AbstractTableNetworkTestCase
     }
 
     /**
-     * Ensures the {@code getPlayers} method returns a copy of the player
-     * collection.
+     * Ensures the {@link ITableNetwork#getPlayers} method returns a copy of the
+     * player collection.
      */
     @Test
     public void testGetPlayers_ReturnValue_Copy()
@@ -216,7 +216,8 @@ public abstract class AbstractTableNetworkTestCase
     }
 
     /**
-     * Ensures the {@code getPlayers} method does not return {@code null}.
+     * Ensures the {@link ITableNetwork#getPlayers} method does not return
+     * {@code null}.
      */
     @Test
     public void testGetPlayers_ReturnValue_NonNull()
@@ -225,8 +226,8 @@ public abstract class AbstractTableNetworkTestCase
     }
 
     /**
-     * Ensures the {@code giveControl} method throws an exception when passed a
-     * {@code null} player.
+     * Ensures the {@link ITableNetwork#giveControl} method throws an exception
+     * when passed a {@code null} player.
      */
     @Test( expected = NullPointerException.class )
     public void testGiveControl_Player_Null()
@@ -235,8 +236,8 @@ public abstract class AbstractTableNetworkTestCase
     }
 
     /**
-     * Ensures the {@code host} method throws an exception when passed a
-     * {@code null} configuration.
+     * Ensures the {@link ITableNetwork#host} method throws an exception when
+     * passed a {@code null} configuration.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -249,8 +250,8 @@ public abstract class AbstractTableNetworkTestCase
     }
 
     /**
-     * Ensures the {@code host} method throws an exception when the network is
-     * connected.
+     * Ensures the {@link ITableNetwork#host} method throws an exception when
+     * the network is connected.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -265,8 +266,8 @@ public abstract class AbstractTableNetworkTestCase
     }
 
     /**
-     * Ensures the {@code host} method fires a connected event when the network
-     * is disconnected.
+     * Ensures the {@link ITableNetwork#host} method fires a connected event
+     * when the network is disconnected.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -286,8 +287,8 @@ public abstract class AbstractTableNetworkTestCase
     }
 
     /**
-     * Ensures the {@code join} method throws an exception when passed a
-     * {@code null} configuration.
+     * Ensures the {@link ITableNetwork#join} method throws an exception when
+     * passed a {@code null} configuration.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -300,8 +301,8 @@ public abstract class AbstractTableNetworkTestCase
     }
 
     /**
-     * Ensures the {@code join} method throws an exception when the network is
-     * connected.
+     * Ensures the {@link ITableNetwork#join} method throws an exception when
+     * the network is connected.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -316,8 +317,8 @@ public abstract class AbstractTableNetworkTestCase
     }
 
     /**
-     * Ensures the {@code join} method fires a connected event when the network
-     * is disconnected.
+     * Ensures the {@link ITableNetwork#join} method fires a connected event
+     * when the network is disconnected.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -337,9 +338,9 @@ public abstract class AbstractTableNetworkTestCase
     }
 
     /**
-     * Ensures the {@code removeTableNetworkListener} method throws an exception
-     * when passed a listener that is absent from the table network listener
-     * collection.
+     * Ensures the {@link ITableNetwork#removeTableNetworkListener} method
+     * throws an exception when passed a listener that is absent from the table
+     * network listener collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveTableNetworkListener_Listener_Absent()
@@ -348,8 +349,8 @@ public abstract class AbstractTableNetworkTestCase
     }
 
     /**
-     * Ensures the {@code removeTableNetworkListener} method throws an exception
-     * when passed a {@code null} listener.
+     * Ensures the {@link ITableNetwork#removeTableNetworkListener} method
+     * throws an exception when passed a {@code null} listener.
      */
     @Test( expected = NullPointerException.class )
     public void testRemoveTableNetworkListener_Listener_Null()
@@ -358,8 +359,8 @@ public abstract class AbstractTableNetworkTestCase
     }
 
     /**
-     * Ensures the {@code removeTableNetworkListener} removes a listener that is
-     * present in the table network listener collection.
+     * Ensures the {@link ITableNetwork#removeTableNetworkListener} removes a
+     * listener that is present in the table network listener collection.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -382,7 +383,8 @@ public abstract class AbstractTableNetworkTestCase
 
     /**
      * Ensures the table network connected event catches any exception thrown by
-     * the {@code tableNetworkConnected} method of a table network listener.
+     * the {@link ITableNetworkListener#tableNetworkConnected} method of a table
+     * network listener.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -407,8 +409,8 @@ public abstract class AbstractTableNetworkTestCase
 
     /**
      * Ensures the table network disconnected event catches any exception thrown
-     * by the {@code tableNetworkDisconnected} method of a table network
-     * listener.
+     * by the {@link ITableNetworkListener#tableNetworkDisconnected} method of a
+     * table network listener.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -434,8 +436,8 @@ public abstract class AbstractTableNetworkTestCase
 
     /**
      * Ensures the table network players updated event catches any exception
-     * thrown by the {@code tableNetworkPlayersUpdated} method of a table
-     * network listener.
+     * thrown by the {@link ITableNetworkListener#tableNetworkPlayersUpdated}
+     * method of a table network listener.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

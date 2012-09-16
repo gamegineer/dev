@@ -88,8 +88,8 @@ public abstract class AbstractComponentStrategyRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getComponentStrategies} method returns a copy of the
-     * registered component strategy collection.
+     * Ensures the {@link IComponentStrategyRegistry#getComponentStrategies}
+     * method returns a copy of the registered component strategy collection.
      */
     @Test
     public void testGetComponentStrategies_ReturnValue_Copy()
@@ -103,8 +103,9 @@ public abstract class AbstractComponentStrategyRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getComponentStrategies} method returns a snapshot of
-     * the registered component strategy collection.
+     * Ensures the {@link IComponentStrategyRegistry#getComponentStrategies}
+     * method returns a snapshot of the registered component strategy
+     * collection.
      */
     @Test
     public void testGetComponentStrategies_ReturnValue_Snapshot()
@@ -116,8 +117,9 @@ public abstract class AbstractComponentStrategyRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getComponentStrategy} method returns the correct value
-     * when passed an identifier that is absent.
+     * Ensures the {@link IComponentStrategyRegistry#getComponentStrategy}
+     * method returns the correct value when passed an identifier that is
+     * absent.
      */
     @Test
     public void testGetComponentStrategy_Id_Absent()
@@ -126,8 +128,8 @@ public abstract class AbstractComponentStrategyRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getComponentStrategy} method throws an exception when
-     * passed a {@code null} identifier.
+     * Ensures the {@link IComponentStrategyRegistry#getComponentStrategy}
+     * method throws an exception when passed a {@code null} identifier.
      */
     @Test( expected = NullPointerException.class )
     public void testGetComponentStrategy_Id_Null()
@@ -136,8 +138,9 @@ public abstract class AbstractComponentStrategyRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getComponentStrategy} method returns the correct value
-     * when passed an identifier that is present.
+     * Ensures the {@link IComponentStrategyRegistry#getComponentStrategy}
+     * method returns the correct value when passed an identifier that is
+     * present.
      */
     @Test
     public void testGetComponentStrategy_Id_Present()
@@ -151,8 +154,8 @@ public abstract class AbstractComponentStrategyRegistryTestCase
     }
 
     /**
-     * Ensures the {@code registerComponentStrategy} method throws an exception
-     * when passed a {@code null} component strategy.
+     * Ensures the {@link IComponentStrategyRegistry#registerComponentStrategy}
+     * method throws an exception when passed a {@code null} component strategy.
      */
     @Test( expected = NullPointerException.class )
     public void testRegisterComponentStrategy_ComponentStrategy_Null()
@@ -161,8 +164,9 @@ public abstract class AbstractComponentStrategyRegistryTestCase
     }
 
     /**
-     * Ensures the {@code registerComponentStrategy} method throws an exception
-     * when a component strategy with the same identifier is already registered.
+     * Ensures the {@link IComponentStrategyRegistry#registerComponentStrategy}
+     * method throws an exception when a component strategy with the same
+     * identifier is already registered.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testRegisterComponentStrategy_ComponentStrategy_Registered()
@@ -174,8 +178,8 @@ public abstract class AbstractComponentStrategyRegistryTestCase
     }
 
     /**
-     * Ensures the {@code registerComponentStrategy} method registers an
-     * unregistered component strategy.
+     * Ensures the {@link IComponentStrategyRegistry#registerComponentStrategy}
+     * method registers an unregistered component strategy.
      */
     @Test
     public void testRegisterComponentStrategy_ComponentStrategy_Unregistered()
@@ -188,8 +192,9 @@ public abstract class AbstractComponentStrategyRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterComponentStrategy} method throws an
-     * exception when passed a {@code null} component strategy.
+     * Ensures the
+     * {@link IComponentStrategyRegistry#unregisterComponentStrategy} method
+     * throws an exception when passed a {@code null} component strategy.
      */
     @Test( expected = NullPointerException.class )
     public void testUnregisterComponentStrategy_ComponentStrategy_Null()
@@ -198,8 +203,9 @@ public abstract class AbstractComponentStrategyRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterComponentStrategy} method throws an
-     * exception when passed a component strategy whose identifier was
+     * Ensures the
+     * {@link IComponentStrategyRegistry#unregisterComponentStrategy} method
+     * throws an exception when passed a component strategy whose identifier was
      * previously registered but by a different component strategy instance.
      */
     @Test( expected = IllegalArgumentException.class )
@@ -214,8 +220,9 @@ public abstract class AbstractComponentStrategyRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterComponentStrategy} method unregisters a
-     * previously registered component strategy.
+     * Ensures the
+     * {@link IComponentStrategyRegistry#unregisterComponentStrategy} method
+     * unregisters a previously registered component strategy.
      */
     @Test
     public void testUnregisterComponentStrategy_ComponentStrategy_Registered_SameInstance()
@@ -231,9 +238,10 @@ public abstract class AbstractComponentStrategyRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterComponentStrategy} method throws an
-     * exception when passed a component strategy that was not previously
-     * registered.
+     * Ensures the
+     * {@link IComponentStrategyRegistry#unregisterComponentStrategy} method
+     * throws an exception when passed a component strategy that was not
+     * previously registered.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testUnregisterComponentStrategy_ComponentStrategy_Unregistered()

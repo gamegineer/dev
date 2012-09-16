@@ -47,8 +47,9 @@ public final class TableNetworkExceptionTest
     // ======================================================================
 
     /**
-     * Ensures the {@code TableNetworkException(TableNetworkError)} constructor
-     * throws an exception when passed a {@code null} error.
+     * Ensures the
+     * {@link TableNetworkException#TableNetworkException(TableNetworkError)}
+     * constructor throws an exception when passed a {@code null} error.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructorFromError_Error_Null()
@@ -57,7 +58,8 @@ public final class TableNetworkExceptionTest
     }
 
     /**
-     * Ensures the {@code TableNetworkException(TableNetworkError, String)}
+     * Ensures the
+     * {@link TableNetworkException#TableNetworkException(TableNetworkError, String)}
      * constructor throws an exception when passed a {@code null} error.
      */
     @Test( expected = NullPointerException.class )
@@ -67,7 +69,8 @@ public final class TableNetworkExceptionTest
     }
 
     /**
-     * Ensures the {@code TableNetworkException(TableNetworkError, Throwable)}
+     * Ensures the
+     * {@link TableNetworkException#TableNetworkException(TableNetworkError, Throwable)}
      * constructor throws an exception when passed a {@code null} error.
      */
     @Test( expected = NullPointerException.class )
@@ -77,9 +80,9 @@ public final class TableNetworkExceptionTest
     }
 
     /**
-     * Ensures the {@code TableNetworkException(TableNetworkError, String,
-     * Throwable)} constructor throws an exception when passed a {@code null}
-     * error.
+     * Ensures the
+     * {@link TableNetworkException#TableNetworkException(TableNetworkError, String, Throwable)}
+     * constructor throws an exception when passed a {@code null} error.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructorFromErrorAndMessageAndCause_Error_Null()

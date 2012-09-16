@@ -94,8 +94,10 @@ public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getComponentSurfaceDesignUI} method returns the
-     * correct value when passed an identifier that is absent.
+     * Ensures the
+     * {@link IComponentSurfaceDesignUIRegistry#getComponentSurfaceDesignUI}
+     * method returns the correct value when passed an identifier that is
+     * absent.
      */
     @Test
     public void testGetComponentSurfaceDesignUI_Id_Absent()
@@ -104,8 +106,9 @@ public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getComponentSurfaceDesignUI} method throws an
-     * exception when passed a {@code null} identifier.
+     * Ensures the
+     * {@link IComponentSurfaceDesignUIRegistry#getComponentSurfaceDesignUI}
+     * method throws an exception when passed a {@code null} identifier.
      */
     @Test( expected = NullPointerException.class )
     public void testGetComponentSurfaceDesignUI_Id_Null()
@@ -114,8 +117,10 @@ public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getComponentSurfaceDesignUI} method returns the
-     * correct value when passed an identifier that is present.
+     * Ensures the
+     * {@link IComponentSurfaceDesignUIRegistry#getComponentSurfaceDesignUI}
+     * method returns the correct value when passed an identifier that is
+     * present.
      */
     @Test
     public void testGetComponentSurfaceDesignUI_Id_Present()
@@ -129,8 +134,10 @@ public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getComponentSurfaceDesignUIs} method returns a copy of
-     * the registered component surface design user interface collection.
+     * Ensures the
+     * {@link IComponentSurfaceDesignUIRegistry#getComponentSurfaceDesignUIs}
+     * method returns a copy of the registered component surface design user
+     * interface collection.
      */
     @Test
     public void testGetComponentSurfaceDesignUIs_ReturnValue_Copy()
@@ -144,9 +151,10 @@ public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getComponentSurfaceDesignUIs} method returns a
-     * snapshot of the registered component surface design user interface
-     * collection.
+     * Ensures the
+     * {@link IComponentSurfaceDesignUIRegistry#getComponentSurfaceDesignUIs}
+     * method returns a snapshot of the registered component surface design user
+     * interface collection.
      */
     @Test
     public void testGetComponentSurfaceDesignUIs_ReturnValue_Snapshot()
@@ -158,9 +166,10 @@ public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
     }
 
     /**
-     * Ensures the {@code registerComponentSurfaceDesignUI} method throws an
-     * exception when passed a {@code null} component surface design user
-     * interface.
+     * Ensures the
+     * {@link IComponentSurfaceDesignUIRegistry#registerComponentSurfaceDesignUI}
+     * method throws an exception when passed a {@code null} component surface
+     * design user interface.
      */
     @Test( expected = NullPointerException.class )
     public void testRegisterComponentSurfaceDesignUI_ComponentSurfaceDesignUI_Null()
@@ -169,9 +178,10 @@ public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
     }
 
     /**
-     * Ensures the {@code registerComponentSurfaceDesignUI} method throws an
-     * exception when a component surface design user interface with the same
-     * identifier is already registered.
+     * Ensures the
+     * {@link IComponentSurfaceDesignUIRegistry#registerComponentSurfaceDesignUI}
+     * method throws an exception when a component surface design user interface
+     * with the same identifier is already registered.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testRegisterComponentSurfaceDesignUI_ComponentSurfaceDesignUI_Registered()
@@ -183,8 +193,9 @@ public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
     }
 
     /**
-     * Ensures the {@code registerComponentSurfaceDesignUI} method registers an
-     * unregistered component surface design user interface.
+     * Ensures the
+     * {@link IComponentSurfaceDesignUIRegistry#registerComponentSurfaceDesignUI}
+     * method registers an unregistered component surface design user interface.
      */
     @Test
     public void testRegisterComponentSurfaceDesignUI_ComponentSurfaceDesignUI_Unregistered()
@@ -197,9 +208,10 @@ public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterComponentSurfaceDesignUI} method throws an
-     * exception when passed a {@code null} component surface design user
-     * interface.
+     * Ensures the
+     * {@link IComponentSurfaceDesignUIRegistry#unregisterComponentSurfaceDesignUI}
+     * method throws an exception when passed a {@code null} component surface
+     * design user interface.
      */
     @Test( expected = NullPointerException.class )
     public void testUnregisterComponentSurfaceDesignUI_ComponentSurfaceDesignUI_Null()
@@ -208,10 +220,11 @@ public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterComponentSurfaceDesignUI} method throws an
-     * exception when passed a component surface design user interface whose
-     * identifier was previously registered but by a different component surface
-     * design user interface instance.
+     * Ensures the
+     * {@link IComponentSurfaceDesignUIRegistry#unregisterComponentSurfaceDesignUI}
+     * method throws an exception when passed a component surface design user
+     * interface whose identifier was previously registered but by a different
+     * component surface design user interface instance.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testUnregisterComponentSurfaceDesignUI_ComponentSurfaceDesignUI_Registered_DifferentInstance()
@@ -225,8 +238,10 @@ public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterComponentSurfaceDesignUI} method unregisters
-     * a previously registered component surface design user interface.
+     * Ensures the
+     * {@link IComponentSurfaceDesignUIRegistry#unregisterComponentSurfaceDesignUI}
+     * method unregisters a previously registered component surface design user
+     * interface.
      */
     @Test
     public void testUnregisterComponentSurfaceDesignUI_ComponentSurfaceDesignUI_Registered_SameInstance()
@@ -242,9 +257,10 @@ public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterComponentSurfaceDesignUI} method throws an
-     * exception when passed a component surface design user interface that was
-     * not previously registered.
+     * Ensures the
+     * {@link IComponentSurfaceDesignUIRegistry#unregisterComponentSurfaceDesignUI}
+     * method throws an exception when passed a component surface design user
+     * interface that was not previously registered.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testUnregisterComponentSurfaceDesignUI_ComponentSurfaceDesignUI_Unregistered()

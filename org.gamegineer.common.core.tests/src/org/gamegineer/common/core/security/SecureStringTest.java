@@ -84,8 +84,8 @@ public final class SecureStringTest
     }
 
     /**
-     * Ensures the {@code charAt} method throws an exception when the index is
-     * out of bounds.
+     * Ensures the {@link SecureString#charAt} method throws an exception when
+     * the index is out of bounds.
      */
     @Test( expected = IndexOutOfBoundsException.class )
     public void testCharAt_Index_OutOfBounds()
@@ -94,7 +94,7 @@ public final class SecureStringTest
     }
 
     /**
-     * Ensures the {@code clearCharArray} clears the value.
+     * Ensures the {@link SecureString#clearCharArray} clears the value.
      */
     @Test
     public void testClearCharArray_Value_Cleared()
@@ -108,8 +108,8 @@ public final class SecureStringTest
     }
 
     /**
-     * Ensures the {@code clearCharArray} method throws an exception when passed
-     * a {@code null} value.
+     * Ensures the {@link SecureString#clearCharArray} method throws an
+     * exception when passed a {@code null} value.
      */
     @Test( expected = NullPointerException.class )
     public void testClearCharArray_Value_Null()
@@ -118,8 +118,8 @@ public final class SecureStringTest
     }
 
     /**
-     * Ensures the {@code SecureString(SecureString)} constructor throws an
-     * exception when passed a {@code null} secure string.
+     * Ensures the {@link SecureString#SecureString(SecureString)} constructor
+     * throws an exception when passed a {@code null} secure string.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructorFromSecureString_SecureString_Null()
@@ -128,8 +128,8 @@ public final class SecureStringTest
     }
 
     /**
-     * Ensures the {@code SecureString(char[])} constructor throws an exception
-     * when passed a {@code null} value.
+     * Ensures the {@link SecureString#SecureString(char[])} constructor throws
+     * an exception when passed a {@code null} value.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructorFromValue_Value_Null()
@@ -138,8 +138,9 @@ public final class SecureStringTest
     }
 
     /**
-     * Ensures the {@code SecureString(char[], int, int)} constructor throws an
-     * exception when passed a length that is out of bounds.
+     * Ensures the {@link SecureString#SecureString(char[], int, int)}
+     * constructor throws an exception when passed a length that is out of
+     * bounds.
      */
     @Test( expected = IndexOutOfBoundsException.class )
     public void testConstructorFromValueAndOffsetAndLength_Length_OutOfBounds()
@@ -148,8 +149,9 @@ public final class SecureStringTest
     }
 
     /**
-     * Ensures the {@code SecureString(char[], int, int)} constructor throws an
-     * exception when passed an offset that is out of bounds.
+     * Ensures the {@link SecureString#SecureString(char[], int, int)}
+     * constructor throws an exception when passed an offset that is out of
+     * bounds.
      */
     @Test( expected = IndexOutOfBoundsException.class )
     public void testConstructorFromValueAndOffsetAndLength_Offset_OutOfBounds()
@@ -158,8 +160,8 @@ public final class SecureStringTest
     }
 
     /**
-     * Ensures the {@code SecureString(char[], int, int)} constructor throws an
-     * exception when passed a {@code null} value.
+     * Ensures the {@link SecureString#SecureString(char[], int, int)}
+     * constructor throws an exception when passed a {@code null} value.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructorFromValueAndOffsetAndLength_Value_Null()
@@ -168,8 +170,8 @@ public final class SecureStringTest
     }
 
     /**
-     * Ensures the {@code fromCharArray} method throws an exception when passed
-     * a {@code null} value.
+     * Ensures the {@link SecureString#fromCharArray} method throws an exception
+     * when passed a {@code null} value.
      */
     @Test( expected = NullPointerException.class )
     public void testFromCharArray_Value_Null()
@@ -178,8 +180,8 @@ public final class SecureStringTest
     }
 
     /**
-     * Ensures the {@code subSequence} method throws an exception when the end
-     * index is out of bounds.
+     * Ensures the {@link SecureString#subSequence} method throws an exception
+     * when the end index is out of bounds.
      */
     @Test( expected = IndexOutOfBoundsException.class )
     public void testSubSequence_End_OutOfBounds()
@@ -188,8 +190,8 @@ public final class SecureStringTest
     }
 
     /**
-     * Ensures the {@code subSequence} method throws an exception when the start
-     * index is out of bounds.
+     * Ensures the {@link SecureString#subSequence} method throws an exception
+     * when the start index is out of bounds.
      */
     @Test( expected = IndexOutOfBoundsException.class )
     public void testSubSequence_Start_OutOfBounds()

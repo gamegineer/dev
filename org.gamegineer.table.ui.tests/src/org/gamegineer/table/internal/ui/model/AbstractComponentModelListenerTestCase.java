@@ -84,8 +84,8 @@ public abstract class AbstractComponentModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code componentBoundsChanged} method throws an exception
-     * when passed a {@code null} event.
+     * Ensures the {@link IComponentModelListener#componentBoundsChanged} method
+     * throws an exception when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
     public void testComponentBoundsChanged_Event_Null()
@@ -94,8 +94,8 @@ public abstract class AbstractComponentModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code componentChanged} method throws an exception when
-     * passed a {@code null} event.
+     * Ensures the {@link IComponentModelListener#componentChanged} method
+     * throws an exception when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
     public void testComponentChanged_Event_Null()
@@ -104,8 +104,8 @@ public abstract class AbstractComponentModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code componentModelFocusChanged} method throws an exception
-     * when passed a {@code null} event.
+     * Ensures the {@link IComponentModelListener#componentModelFocusChanged}
+     * method throws an exception when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
     public void testComponentModelFocusChanged_Event_Null()
@@ -114,8 +114,8 @@ public abstract class AbstractComponentModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code componentOrientationChanged} method throws an
-     * exception when passed a {@code null} event.
+     * Ensures the {@link IComponentModelListener#componentOrientationChanged}
+     * method throws an exception when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
     public void testComponentOrientationChanged_Event_Null()
@@ -124,8 +124,8 @@ public abstract class AbstractComponentModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code componentSurfaceDesignChanged} method throws an
-     * exception when passed a {@code null} event.
+     * Ensures the {@link IComponentModelListener#componentSurfaceDesignChanged}
+     * method throws an exception when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
     public void testComponentSurfaceDesignChanged_Event_Null()

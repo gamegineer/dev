@@ -84,8 +84,8 @@ public abstract class AbstractTableAdvisorTestCase
     }
 
     /**
-     * Ensures the {@code getApplicationArguments} method returns an immutable
-     * collection.
+     * Ensures the {@link ITableAdvisor#getApplicationArguments} method returns
+     * an immutable collection.
      */
     @Test
     public void testGetApplicationArguments_ReturnValue_Immutable()
@@ -94,8 +94,8 @@ public abstract class AbstractTableAdvisorTestCase
     }
 
     /**
-     * Ensures the {@code getApplicationArguments} method does not return
-     * {@code null}.
+     * Ensures the {@link ITableAdvisor#getApplicationArguments} method does not
+     * return {@code null}.
      */
     @Test
     public void testGetApplicationArguments_ReturnValue_NonNull()

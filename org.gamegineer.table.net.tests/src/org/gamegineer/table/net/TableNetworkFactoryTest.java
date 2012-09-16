@@ -47,8 +47,8 @@ public final class TableNetworkFactoryTest
     // ======================================================================
 
     /**
-     * Ensures the {@code createTableNetwork} method does not return
-     * {@code null}.
+     * Ensures the {@link TableNetworkFactory#createTableNetwork} method does
+     * not return {@code null}.
      */
     @Test
     public void testCreateTableNetwork_ReturnValue_NonNull()

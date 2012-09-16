@@ -46,8 +46,8 @@ public final class SpringUtilsTest
     // ======================================================================
 
     /**
-     * Ensures the {@code buildCompactGrid} method throws an exception when
-     * passed a {@code null} parent component.
+     * Ensures the {@link SpringUtils#buildCompactGrid} method throws an
+     * exception when passed a {@code null} parent component.
      */
     @Test( expected = NullPointerException.class )
     public void testBuildCompactGrid_Parent_Null()
@@ -56,8 +56,8 @@ public final class SpringUtilsTest
     }
 
     /**
-     * Ensures the {@code buildGrid} method throws an exception when passed a
-     * {@code null} parent component.
+     * Ensures the {@link SpringUtils#buildGrid} method throws an exception when
+     * passed a {@code null} parent component.
      */
     @Test( expected = NullPointerException.class )
     public void testBuildGrid_Parent_Null()

@@ -67,8 +67,8 @@ public final class LoggingServiceTest
     }
 
     /**
-     * Ensures the {@code activate} method throws an exception when passed a
-     * {@code null} bundle context.
+     * Ensures the {@link LoggingService#activate} method throws an exception
+     * when passed a {@code null} bundle context.
      */
     @Test( expected = NullPointerException.class )
     public void testActivate_BundleContext_Null()

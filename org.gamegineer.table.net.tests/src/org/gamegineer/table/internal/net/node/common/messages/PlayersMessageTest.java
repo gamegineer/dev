@@ -69,8 +69,8 @@ public final class PlayersMessageTest
     }
 
     /**
-     * Ensures the {@code getPlayers} method throws an exception when passed a
-     * {@code null} local player name.
+     * Ensures the {@link PlayersMessage#getPlayers} method throws an exception
+     * when passed a {@code null} local player name.
      */
     @Test( expected = NullPointerException.class )
     public void testGetPlayers_LocalPlayerName_Null()
@@ -79,8 +79,8 @@ public final class PlayersMessageTest
     }
 
     /**
-     * Ensures the {@code setPlayers} method throws an exception when passed a
-     * {@code null} players collection.
+     * Ensures the {@link PlayersMessage#setPlayers} method throws an exception
+     * when passed a {@code null} players collection.
      */
     @Test( expected = NullPointerException.class )
     public void testSetPlayers_Players_Null()

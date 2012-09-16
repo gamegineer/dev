@@ -47,8 +47,8 @@ public final class ComponentModelFactoryTest
     // ======================================================================
 
     /**
-     * Ensures the {@code createComponentModel} method throws an exception when
-     * passed a {@code null} component.
+     * Ensures the {@link ComponentModelFactory#createComponentModel} method
+     * throws an exception when passed a {@code null} component.
      */
     @Test( expected = NullPointerException.class )
     public void testCreateComponentModel_Component_Null()
@@ -57,8 +57,8 @@ public final class ComponentModelFactoryTest
     }
 
     /**
-     * Ensures the {@code createContainerModel} method throws an exception when
-     * passed a {@code null} container.
+     * Ensures the {@link ComponentModelFactory#createContainerModel} method
+     * throws an exception when passed a {@code null} container.
      */
     @Test( expected = NullPointerException.class )
     public void testCreateContainerModel_Container_Null()

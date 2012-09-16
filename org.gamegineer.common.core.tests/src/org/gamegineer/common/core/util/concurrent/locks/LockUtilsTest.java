@@ -51,8 +51,8 @@ public final class LockUtilsTest
     // ======================================================================
 
     /**
-     * Ensures the {@code isHeldByCurrentThread} method throws an exception when
-     * passed an illegal lock.
+     * Ensures the {@link LockUtils#isHeldByCurrentThread} method throws an
+     * exception when passed an illegal lock.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testIsHeldByCurrentThread_Lock_Illegal()
@@ -61,8 +61,8 @@ public final class LockUtilsTest
     }
 
     /**
-     * Ensures the {@code isHeldByCurrentThread} method throws an exception when
-     * passed a {@code null} lock.
+     * Ensures the {@link LockUtils#isHeldByCurrentThread} method throws an
+     * exception when passed a {@code null} lock.
      */
     @Test( expected = NullPointerException.class )
     public void testIsHeldByCurrentThread_Lock_Null()
@@ -71,8 +71,8 @@ public final class LockUtilsTest
     }
 
     /**
-     * Ensures the {@code isHeldByCurrentThread} method correctly indicates a
-     * {@link ReentrantLock} is held by the current thread.
+     * Ensures the {@link LockUtils#isHeldByCurrentThread} method correctly
+     * indicates a {@link ReentrantLock} is held by the current thread.
      */
     @Test
     public void testIsHeldByCurrentThread_ReentrantLock_Held()
@@ -91,8 +91,8 @@ public final class LockUtilsTest
     }
 
     /**
-     * Ensures the {@code isHeldByCurrentThread} method correctly indicates a
-     * {@link ReentrantLock} is not held by the current thread.
+     * Ensures the {@link LockUtils#isHeldByCurrentThread} method correctly
+     * indicates a {@link ReentrantLock} is not held by the current thread.
      */
     @Test
     public void testIsHeldByCurrentThread_ReentrantLock_NotHeld()

@@ -83,8 +83,8 @@ public abstract class AbstractComponentListenerTestCase
     }
 
     /**
-     * Ensures the {@code componentBoundsChanged} method throws an exception
-     * when passed a {@code null} event.
+     * Ensures the {@link IComponentListener#componentBoundsChanged} method
+     * throws an exception when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
     public void testComponentBoundsChanged_Event_Null()
@@ -93,8 +93,8 @@ public abstract class AbstractComponentListenerTestCase
     }
 
     /**
-     * Ensures the {@code componentOrientationChanged} method throws an
-     * exception when passed a {@code null} event.
+     * Ensures the {@link IComponentListener#componentOrientationChanged} method
+     * throws an exception when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
     public void testComponentOrientationChanged_Event_Null()
@@ -103,8 +103,8 @@ public abstract class AbstractComponentListenerTestCase
     }
 
     /**
-     * Ensures the {@code componentSurfaceDesignChanged} method throws an
-     * exception when passed a {@code null} event.
+     * Ensures the {@link IComponentListener#componentSurfaceDesignChanged}
+     * method throws an exception when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
     public void testComponentSurfaceDesignChanged_Event_Null()

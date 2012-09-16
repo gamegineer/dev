@@ -227,8 +227,8 @@ public abstract class AbstractPersistenceDelegateTestCase
     }
 
     /**
-     * Ensures the {@code annotateClass} method throws an exception when passed
-     * a {@code null} class.
+     * Ensures the {@link IPersistenceDelegate#annotateClass} method throws an
+     * exception when passed a {@code null} class.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -241,8 +241,8 @@ public abstract class AbstractPersistenceDelegateTestCase
     }
 
     /**
-     * Ensures the {@code annotateClass} method throws an exception when passed
-     * a {@code null} object stream.
+     * Ensures the {@link IPersistenceDelegate#annotateClass} method throws an
+     * exception when passed a {@code null} object stream.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -255,8 +255,8 @@ public abstract class AbstractPersistenceDelegateTestCase
     }
 
     /**
-     * Ensures the {@code resolveClass} method throws an exception when passed a
-     * {@code null} object stream class descriptor.
+     * Ensures the {@link IPersistenceDelegate#resolveClass} method throws an
+     * exception when passed a {@code null} object stream class descriptor.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -269,8 +269,8 @@ public abstract class AbstractPersistenceDelegateTestCase
     }
 
     /**
-     * Ensures the {@code resolveClass} method throws an exception when passed a
-     * {@code null} object stream.
+     * Ensures the {@link IPersistenceDelegate#resolveClass} method throws an
+     * exception when passed a {@code null} object stream.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

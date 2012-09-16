@@ -68,8 +68,8 @@ public final class ApplicationTest
     }
 
     /**
-     * Ensures the {@code start} method throws an exception when passed a
-     * {@code null} application context.
+     * Ensures the {@link Application#start} method throws an exception when
+     * passed a {@code null} application context.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

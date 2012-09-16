@@ -83,8 +83,8 @@ public abstract class AbstractDialogPageTestCase
     }
 
     /**
-     * Ensures the {@code create} method throws an exception when passed a
-     * {@code null} parent.
+     * Ensures the {@link AbstractDialogPage#create} method throws an exception
+     * when passed a {@code null} parent.
      */
     @Test( expected = NullPointerException.class )
     public void testCreate_Parent_Null()

@@ -285,8 +285,8 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
     }
 
     /**
-     * Ensures the {@code connecting} method throws an exception when passed a
-     * {@code null} table network configuration.
+     * Ensures the {@link AbstractNode#connecting} method throws an exception
+     * when passed a {@code null} table network configuration.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -299,7 +299,8 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
     }
 
     /**
-     * Ensures the {@code createTableManagerDecoratorForLocalNetworkTable}
+     * Ensures the
+     * {@link AbstractNode#createTableManagerDecoratorForLocalNetworkTable}
      * method throws an exception when passed a {@code null} table manager.
      */
     @Test( expected = NullPointerException.class )
@@ -309,8 +310,9 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
     }
 
     /**
-     * Ensures the disconnect operation invokes the {@code disconnected} method
-     * when the transport layer is open.
+     * Ensures the disconnect operation invokes the
+     * {@link AbstractNode#disconnected} method when the transport layer is
+     * open.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -330,8 +332,9 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
     }
 
     /**
-     * Ensures the disconnect operation invokes the {@code disconnecting} method
-     * when the transport layer is open.
+     * Ensures the disconnect operation invokes the
+     * {@link AbstractNode#disconnecting} method when the transport layer is
+     * open.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -351,8 +354,8 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
     }
 
     /**
-     * Ensures the {@code remoteNodeBound} method throws an exception when
-     * passed a {@code null} remote node.
+     * Ensures the {@link AbstractNode#remoteNodeBound} method throws an
+     * exception when passed a {@code null} remote node.
      */
     @Test( expected = NullPointerException.class )
     public void testRemoteNodeBound_RemoteNode_Null()
@@ -361,8 +364,8 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
     }
 
     /**
-     * Ensures the {@code remoteNodeUnbound} method throws an exception when
-     * passed a {@code null} remote node.
+     * Ensures the {@link AbstractNode#remoteNodeUnbound} method throws an
+     * exception when passed a {@code null} remote node.
      */
     @Test( expected = NullPointerException.class )
     public void testRemoteNodeUnbound_RemoteNode_Null()

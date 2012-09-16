@@ -104,7 +104,7 @@ public abstract class AbstractPlayerTestCase
     }
 
     /**
-     * Ensures the {@code getName} method does not return {@code null}.
+     * Ensures the {@link IPlayer#getName} method does not return {@code null}.
      */
     @Test
     public void testGetName_ReturnValue_NonNull()
@@ -113,7 +113,7 @@ public abstract class AbstractPlayerTestCase
     }
 
     /**
-     * Ensures the {@code getRoles} method returns a copy of the roles
+     * Ensures the {@link IPlayer#getRoles} method returns a copy of the roles
      * collection.
      */
     @Test
@@ -123,7 +123,7 @@ public abstract class AbstractPlayerTestCase
     }
 
     /**
-     * Ensures the {@code getRoles} method does not return {@code null}.
+     * Ensures the {@link IPlayer#getRoles} method does not return {@code null}.
      */
     @Test
     public void testGetRoles_ReturnValue_NonNull()
@@ -132,8 +132,8 @@ public abstract class AbstractPlayerTestCase
     }
 
     /**
-     * Ensures the {@code hasRole} method correctly indicates a player role is
-     * absent.
+     * Ensures the {@link IPlayer#hasRole} method correctly indicates a player
+     * role is absent.
      */
     @Test
     public void testHasRole_Role_Absent()
@@ -144,8 +144,8 @@ public abstract class AbstractPlayerTestCase
     }
 
     /**
-     * Ensures the {@code hasRole} method throws an exception when passed a
-     * {@code null} role.
+     * Ensures the {@link IPlayer#hasRole} method throws an exception when
+     * passed a {@code null} role.
      */
     @Test( expected = NullPointerException.class )
     public void testHasRole_Role_Null()
@@ -154,8 +154,8 @@ public abstract class AbstractPlayerTestCase
     }
 
     /**
-     * Ensures the {@code hasRole} method correctly indicates a player role is
-     * present.
+     * Ensures the {@link IPlayer#hasRole} method correctly indicates a player
+     * role is present.
      */
     @Test
     public void testHasRole_Role_Present()

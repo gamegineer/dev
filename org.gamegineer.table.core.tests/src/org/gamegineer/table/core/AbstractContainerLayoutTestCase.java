@@ -85,8 +85,8 @@ public abstract class AbstractContainerLayoutTestCase
     }
 
     /**
-     * Ensures the {@code getComponentIndex} method returns {@code -1} when the
-     * container is empty.
+     * Ensures the {@link IContainerLayout#getComponentIndex} method returns
+     * {@code -1} when the container is empty.
      */
     @Test
     public void testGetComponentIndex_Container_Empty()
@@ -95,8 +95,8 @@ public abstract class AbstractContainerLayoutTestCase
     }
 
     /**
-     * Ensures the {@code getComponentIndex} method throws an exception when
-     * passed a {@code null} container.
+     * Ensures the {@link IContainerLayout#getComponentIndex} method throws an
+     * exception when passed a {@code null} container.
      */
     @Test( expected = NullPointerException.class )
     public void testGetComponentIndex_Container_Null()
@@ -105,8 +105,8 @@ public abstract class AbstractContainerLayoutTestCase
     }
 
     /**
-     * Ensures the {@code getComponentIndex} method throws an exception when
-     * passed a {@code null} location.
+     * Ensures the {@link IContainerLayout#getComponentIndex} method throws an
+     * exception when passed a {@code null} location.
      */
     @Test( expected = NullPointerException.class )
     public void testGetComponentIndex_Location_Null()
@@ -115,7 +115,8 @@ public abstract class AbstractContainerLayoutTestCase
     }
 
     /**
-     * Ensures the {@code getId} method does not return {@code null}.
+     * Ensures the {@link IContainerLayout#getId} method does not return
+     * {@code null}.
      */
     @Test
     public void testGetId_ReturnValue_NonNull()
@@ -124,8 +125,8 @@ public abstract class AbstractContainerLayoutTestCase
     }
 
     /**
-     * Ensures the {@code layout} method throws an exception when passed a
-     * {@code null} container.
+     * Ensures the {@link IContainerLayout#layout} method throws an exception
+     * when passed a {@code null} container.
      */
     @Test( expected = NullPointerException.class )
     public void testLayout_Container_Null()

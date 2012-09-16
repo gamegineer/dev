@@ -73,8 +73,8 @@ public final class FileHistoryPreferencesTest
     }
 
     /**
-     * Ensures the {@code getFiles} method returns a copy of the files
-     * collection.
+     * Ensures the {@link FileHistoryPreferences#getFiles} method returns a copy
+     * of the files collection.
      */
     @Test
     public void testGetFiles_ReturnValue_Copy()

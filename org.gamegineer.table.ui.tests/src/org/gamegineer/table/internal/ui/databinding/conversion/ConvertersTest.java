@@ -49,8 +49,8 @@ public final class ConvertersTest
     // ======================================================================
 
     /**
-     * Ensures the {@code withExceptionMessage} method throws an exception when
-     * passed a {@code null} converter.
+     * Ensures the {@link Converters#withExceptionMessage} method throws an
+     * exception when passed a {@code null} converter.
      */
     @Test( expected = NullPointerException.class )
     public void testWithExceptionMessage_Converter_Null()
@@ -59,8 +59,8 @@ public final class ConvertersTest
     }
 
     /**
-     * Ensures the {@code withExceptionMessage} method throws an exception when
-     * passed a {@code null} exception message.
+     * Ensures the {@link Converters#withExceptionMessage} method throws an
+     * exception when passed a {@code null} exception message.
      */
     @Test( expected = NullPointerException.class )
     public void testWithExceptionMessage_ExceptionMessage_Null()

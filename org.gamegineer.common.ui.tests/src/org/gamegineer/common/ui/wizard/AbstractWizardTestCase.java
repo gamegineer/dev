@@ -86,8 +86,8 @@ public abstract class AbstractWizardTestCase
     }
 
     /**
-     * Ensures the {@code create} method throws an exception when passed a
-     * {@code null} parent.
+     * Ensures the {@link IWizard#create} method throws an exception when passed
+     * a {@code null} parent.
      */
     @Test( expected = NullPointerException.class )
     public void testCreate_Parent_Null()
@@ -96,8 +96,8 @@ public abstract class AbstractWizardTestCase
     }
 
     /**
-     * Ensures the {@code getNextPage} method throws an exception when passed a
-     * {@code null} page.
+     * Ensures the {@link IWizard#getNextPage} method throws an exception when
+     * passed a {@code null} page.
      */
     @Test( expected = NullPointerException.class )
     public void testGetNextPage_Page_Null()
@@ -106,8 +106,8 @@ public abstract class AbstractWizardTestCase
     }
 
     /**
-     * Ensures the {@code getPage} method throws an exception when passed a
-     * {@code null} name.
+     * Ensures the {@link IWizard#getPage} method throws an exception when
+     * passed a {@code null} name.
      */
     @Test( expected = NullPointerException.class )
     public void testGetPage_Name_Null()
@@ -116,8 +116,8 @@ public abstract class AbstractWizardTestCase
     }
 
     /**
-     * Ensures the {@code getPages} method returns a copy of the wizard page
-     * collection.
+     * Ensures the {@link IWizard#getPages} method returns a copy of the wizard
+     * page collection.
      */
     @Test
     public void testGetPages_ReturnValue_Copy()
@@ -132,8 +132,8 @@ public abstract class AbstractWizardTestCase
     }
 
     /**
-     * Ensures the {@code getPreviousPage} method throws an exception when
-     * passed a {@code null} page.
+     * Ensures the {@link IWizard#getPreviousPage} method throws an exception
+     * when passed a {@code null} page.
      */
     @Test( expected = NullPointerException.class )
     public void testGetPreviousPage_Page_Null()

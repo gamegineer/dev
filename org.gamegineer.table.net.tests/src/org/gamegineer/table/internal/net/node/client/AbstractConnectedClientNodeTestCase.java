@@ -69,8 +69,8 @@ public abstract class AbstractConnectedClientNodeTestCase<T extends IClientNode>
     }
 
     /**
-     * Ensures the {@code setPlayers} method throws an exception when passed a
-     * {@code null} players collection.
+     * Ensures the {@link IClientNode#setPlayers} method throws an exception
+     * when passed a {@code null} players collection.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

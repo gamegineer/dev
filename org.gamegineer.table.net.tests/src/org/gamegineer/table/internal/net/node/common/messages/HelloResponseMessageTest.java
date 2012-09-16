@@ -69,8 +69,8 @@ public final class HelloResponseMessageTest
     }
 
     /**
-     * Ensures the {@code setChosenProtocolVersion} method throws an exception
-     * when passed a negative version.
+     * Ensures the {@link HelloResponseMessage#setChosenProtocolVersion} method
+     * throws an exception when passed a negative version.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testSetChosenProtocolVersion_Version_Illegal_Negative()

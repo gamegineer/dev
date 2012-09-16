@@ -72,8 +72,8 @@ public final class FrameworkLogHandlerFactoryTest
     }
 
     /**
-     * Ensures the {@code bindFrameworkLog} method throws an exception when
-     * passed a {@code null} framework log service.
+     * Ensures the {@link FrameworkLogHandlerFactory#bindFrameworkLog} method
+     * throws an exception when passed a {@code null} framework log service.
      */
     @Test( expected = NullPointerException.class )
     public void testBindFrameworkLog_FrameworkLog_Null()
@@ -82,8 +82,8 @@ public final class FrameworkLogHandlerFactoryTest
     }
 
     /**
-     * Ensures the {@code bindFrameworkLog} method throws an exception when a
-     * framework log service is already bound.
+     * Ensures the {@link FrameworkLogHandlerFactory#bindFrameworkLog} method
+     * throws an exception when a framework log service is already bound.
      */
     @Test( expected = IllegalStateException.class )
     public void testBindFrameworkLog_ServiceAlreadyBound()
@@ -94,8 +94,8 @@ public final class FrameworkLogHandlerFactoryTest
     }
 
     /**
-     * Ensures the {@code unbindFrameworkLog} method throws an exception when
-     * passed a {@code null} framework log service.
+     * Ensures the {@link FrameworkLogHandlerFactory#unbindFrameworkLog} method
+     * throws an exception when passed a {@code null} framework log service.
      */
     @Test( expected = NullPointerException.class )
     public void testUnbindFrameworkLog_FrameworkLog_Null()
@@ -104,8 +104,9 @@ public final class FrameworkLogHandlerFactoryTest
     }
 
     /**
-     * Ensures the {@code unbindFrameworkLog} method throws an exception when a
-     * different framework log service is already bound.
+     * Ensures the {@link FrameworkLogHandlerFactory#unbindFrameworkLog} method
+     * throws an exception when a different framework log service is already
+     * bound.
      */
     @Test( expected = IllegalStateException.class )
     public void testUnbindFrameworkLog_DifferentServiceBound()

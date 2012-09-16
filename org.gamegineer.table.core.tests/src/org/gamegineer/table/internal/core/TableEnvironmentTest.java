@@ -77,8 +77,8 @@ public final class TableEnvironmentTest
     }
 
     /**
-     * Ensures the {@code addEventNotification} method does not fire the event
-     * notification if the lock is held by the current thread.
+     * Ensures the {@link TableEnvironment#addEventNotification} method does not
+     * fire the event notification if the lock is held by the current thread.
      */
     @Test
     public void testAddEventNotification_Locked_DoesNotFireEventNotification()
@@ -93,9 +93,10 @@ public final class TableEnvironmentTest
     }
 
     /**
-     * Ensures the {@code addEventNotification} method does not fire the event
-     * notification if the lock is not held by the current thread but a call to
-     * {@code TableEnvironmentLock#unlock} is active on the call stack.
+     * Ensures the {@link TableEnvironment#addEventNotification} method does not
+     * fire the event notification if the lock is not held by the current thread
+     * but a call to {@code TableEnvironmentLock#unlock} is active on the call
+     * stack.
      */
     @Test
     public void testAddEventNotification_Unlocked_DoesNotFireEventNotification_EventNotificationsInProgress()
@@ -130,8 +131,8 @@ public final class TableEnvironmentTest
     }
 
     /**
-     * Ensures the {@code addEventNotification} method fires the event
-     * notification if the lock is not held by the current thread.
+     * Ensures the {@link TableEnvironment#addEventNotification} method fires
+     * the event notification if the lock is not held by the current thread.
      */
     @Test
     public void testAddEventNotification_Unlocked_FiresEventNotification()

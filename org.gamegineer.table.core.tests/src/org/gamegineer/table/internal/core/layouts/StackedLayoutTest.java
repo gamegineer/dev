@@ -104,9 +104,9 @@ public final class StackedLayoutTest
     }
 
     /**
-     * Ensures the {@code getComponentIndex} method returns {@code -1} when a
-     * component is present at the specified location but the component is not
-     * the top-most component.
+     * Ensures the {@link StackedLayout#getComponentIndex} method returns
+     * {@code -1} when a component is present at the specified location but the
+     * component is not the top-most component.
      */
     @Test
     public void testGetComponentIndex_Location_ComponentPresent_NotTopComponent()
@@ -129,9 +129,9 @@ public final class StackedLayoutTest
     }
 
     /**
-     * Ensures the {@code getComponentIndex} method returns the correct index
-     * when a component is present at the specified location and the component
-     * is the top-most component.
+     * Ensures the {@link StackedLayout#getComponentIndex} method returns the
+     * correct index when a component is present at the specified location and
+     * the component is the top-most component.
      */
     @Test
     public void testGetComponentIndex_Location_ComponentPresent_TopComponent()
@@ -153,8 +153,8 @@ public final class StackedLayoutTest
     }
 
     /**
-     * Ensures the {@code getStackLevelOffset} method returns a copy of the
-     * stack level offset.
+     * Ensures the {@link StackedLayout#getStackLevelOffset} method returns a
+     * copy of the stack level offset.
      */
     @Test
     public void testGetStackLevelOffset_ReturnValue_Copy()
@@ -170,8 +170,8 @@ public final class StackedLayoutTest
     }
 
     /**
-     * Ensures the {@code layout} method correctly lays out the child components
-     * of the container.
+     * Ensures the {@link StackedLayout#layout} method correctly lays out the
+     * child components of the container.
      */
     @Test
     public void testLayout()

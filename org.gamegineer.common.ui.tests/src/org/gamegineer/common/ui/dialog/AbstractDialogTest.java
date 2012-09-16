@@ -72,8 +72,8 @@ public final class AbstractDialogTest
     }
 
     /**
-     * Ensures the {@code buttonPressed} method throws an exception when passed
-     * a {@code null} identifier.
+     * Ensures the {@link AbstractDialog#buttonPressed} method throws an
+     * exception when passed a {@code null} identifier.
      */
     @Test( expected = NullPointerException.class )
     public void testButtonPressed_Id_Null()
@@ -82,8 +82,8 @@ public final class AbstractDialogTest
     }
 
     /**
-     * Ensures the {@code createButton} method throws an exception when passed a
-     * {@code null} identifier.
+     * Ensures the {@link AbstractDialog#createButton} method throws an
+     * exception when passed a {@code null} identifier.
      */
     @Test( expected = NullPointerException.class )
     public void testCreateButton_Id_Null()
@@ -92,8 +92,8 @@ public final class AbstractDialogTest
     }
 
     /**
-     * Ensures the {@code createButton} method throws an exception when passed a
-     * {@code null} parent.
+     * Ensures the {@link AbstractDialog#createButton} method throws an
+     * exception when passed a {@code null} parent.
      */
     @Test( expected = NullPointerException.class )
     public void testCreateButton_Parent_Null()
@@ -102,8 +102,8 @@ public final class AbstractDialogTest
     }
 
     /**
-     * Ensures the {@code createButtonBar} method throws an exception when
-     * passed a {@code null} parent.
+     * Ensures the {@link AbstractDialog#createButtonBar} method throws an
+     * exception when passed a {@code null} parent.
      */
     @Test( expected = NullPointerException.class )
     public void testCreateButtonBar_Parent_Null()
@@ -112,8 +112,8 @@ public final class AbstractDialogTest
     }
 
     /**
-     * Ensures the {@code createButtonsForButtonBar} method throws an exception
-     * when passed a {@code null} parent.
+     * Ensures the {@link AbstractDialog#createButtonsForButtonBar} method
+     * throws an exception when passed a {@code null} parent.
      */
     @Test( expected = NullPointerException.class )
     public void testCreateButtonsForButtonBar_Parent_Null()
@@ -122,8 +122,8 @@ public final class AbstractDialogTest
     }
 
     /**
-     * Ensures the {@code createDialogArea} method throws an exception when
-     * passed a {@code null} parent.
+     * Ensures the {@link AbstractDialog#createDialogArea} method throws an
+     * exception when passed a {@code null} parent.
      */
     @Test( expected = NullPointerException.class )
     public void testCreateDialogArea_Parent_Null()
@@ -132,8 +132,8 @@ public final class AbstractDialogTest
     }
 
     /**
-     * Ensures the {@code getButton} method throws an exception when passed a
-     * {@code null} identifier.
+     * Ensures the {@link AbstractDialog#getButton} method throws an exception
+     * when passed a {@code null} identifier.
      */
     @Test( expected = NullPointerException.class )
     public void testGetButton_Id_Null()
@@ -142,8 +142,8 @@ public final class AbstractDialogTest
     }
 
     /**
-     * Ensures the {@code setButtonLayoutData} method throws an exception when
-     * passed a {@code null} button.
+     * Ensures the {@link AbstractDialog#setButtonLayoutData} method throws an
+     * exception when passed a {@code null} button.
      */
     @Test( expected = NullPointerException.class )
     public void testSetButtonLayoutData_Button_Null()

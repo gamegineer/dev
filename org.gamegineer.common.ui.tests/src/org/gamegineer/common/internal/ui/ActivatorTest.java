@@ -68,8 +68,8 @@ public final class ActivatorTest
     }
 
     /**
-     * Ensures the {@code start} method throws an exception when passed a
-     * {@code null} bundle context.
+     * Ensures the {@link Activator#start} method throws an exception when
+     * passed a {@code null} bundle context.
      */
     @Test( expected = NullPointerException.class )
     public void testStart_BundleContext_Null()
@@ -78,8 +78,8 @@ public final class ActivatorTest
     }
 
     /**
-     * Ensures the {@code stop} method throws an exception when passed a
-     * {@code null} bundle context.
+     * Ensures the {@link Activator#stop} method throws an exception when passed
+     * a {@code null} bundle context.
      */
     @Test( expected = NullPointerException.class )
     public void testStop_BundleContext_Null()

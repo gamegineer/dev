@@ -117,8 +117,8 @@ public final class MainModelTest
     }
 
     /**
-     * Ensures the {@code addMainModelListener} method adds a listener that is
-     * absent from the main model listener collection.
+     * Ensures the {@link MainModel#addMainModelListener} method adds a listener
+     * that is absent from the main model listener collection.
      */
     @Test
     public void testAddMainModelListener_Listener_Absent()
@@ -134,8 +134,8 @@ public final class MainModelTest
     }
 
     /**
-     * Ensures the {@code addMainModelListener} method throws an exception when
-     * passed a {@code null} listener.
+     * Ensures the {@link MainModel#addMainModelListener} method throws an
+     * exception when passed a {@code null} listener.
      */
     @Test( expected = NullPointerException.class )
     public void testAddMainModelListener_Listener_Null()
@@ -144,8 +144,9 @@ public final class MainModelTest
     }
 
     /**
-     * Ensures the {@code addMainModelListener} method throws an exception when
-     * passed a listener that is present in the main model listener collection.
+     * Ensures the {@link MainModel#addMainModelListener} method throws an
+     * exception when passed a listener that is present in the main model
+     * listener collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddMainModelListener_Listener_Present()
@@ -158,7 +159,8 @@ public final class MainModelTest
 
     /**
      * Ensures the main model state changed event catches any exception thrown
-     * by the {@code mainModelStateChanged} method of a main model listener.
+     * by the {@link IMainModelListener#mainModelStateChanged} method of a main
+     * model listener.
      */
     @Test
     public void testMainModelStateChanged_CatchesListenerException()
@@ -178,8 +180,8 @@ public final class MainModelTest
     }
 
     /**
-     * Ensures the {@code openTable()} method fires a main model state changed
-     * event.
+     * Ensures the {@link MainModel#openTable()} method fires a main model state
+     * changed event.
      */
     @Test
     public void testOpenTable_FiresMainModelStateChangedEvent()
@@ -195,8 +197,8 @@ public final class MainModelTest
     }
 
     /**
-     * Ensures the {@code openTable(File)} method throws an exception when
-     * passed a {@code null} file.
+     * Ensures the {@link MainModel#openTable(File)} method throws an exception
+     * when passed a {@code null} file.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -209,8 +211,8 @@ public final class MainModelTest
     }
 
     /**
-     * Ensures the {@code openTable(File)} method fires a main model state
-     * changed event.
+     * Ensures the {@link MainModel#openTable(File)} method fires a main model
+     * state changed event.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -232,9 +234,9 @@ public final class MainModelTest
     }
 
     /**
-     * Ensures the {@code removeMainModelListener} method throws an exception
-     * when passed a listener that is absent from the main model listener
-     * collection.
+     * Ensures the {@link MainModel#removeMainModelListener} method throws an
+     * exception when passed a listener that is absent from the main model
+     * listener collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveMainModelListener_Listener_Absent()
@@ -243,8 +245,8 @@ public final class MainModelTest
     }
 
     /**
-     * Ensures the {@code removeMainModelListener} method throws an exception
-     * when passed a {@code null} listener.
+     * Ensures the {@link MainModel#removeMainModelListener} method throws an
+     * exception when passed a {@code null} listener.
      */
     @Test( expected = NullPointerException.class )
     public void testRemoveMainModelListener_Listener_Null()
@@ -253,8 +255,8 @@ public final class MainModelTest
     }
 
     /**
-     * Ensures the {@code removeMainModelListener} removes a listener that is
-     * present in the main model listener collection.
+     * Ensures the {@link MainModel#removeMainModelListener} removes a listener
+     * that is present in the main model listener collection.
      */
     @Test
     public void testRemoveMainModelListener_Listener_Present()
@@ -272,8 +274,8 @@ public final class MainModelTest
     }
 
     /**
-     * Ensures the {@code saveTable} method throws an exception when passed a
-     * {@code null} file.
+     * Ensures the {@link MainModel#saveTable} method throws an exception when
+     * passed a {@code null} file.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -286,8 +288,8 @@ public final class MainModelTest
     }
 
     /**
-     * Ensures the {@code saveTable} method fires a main model state changed
-     * event.
+     * Ensures the {@link MainModel#saveTable} method fires a main model state
+     * changed event.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

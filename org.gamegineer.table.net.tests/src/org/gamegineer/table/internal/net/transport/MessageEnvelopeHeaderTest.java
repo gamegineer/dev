@@ -50,8 +50,9 @@ public final class MessageEnvelopeHeaderTest
     // ======================================================================
 
     /**
-     * Ensures the {@code fromByteArray} method throws an exception when passed
-     * an illegal byte array that has a length longer than the header length.
+     * Ensures the {@link Header#fromByteArray} method throws an exception when
+     * passed an illegal byte array that has a length longer than the header
+     * length.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testFromByteArray_Bytes_Illegal_LengthLongerThanHeaderLength()
@@ -60,8 +61,9 @@ public final class MessageEnvelopeHeaderTest
     }
 
     /**
-     * Ensures the {@code fromByteArray} method throws an exception when passed
-     * an illegal byte array that has a length shorter than the header length.
+     * Ensures the {@link Header#fromByteArray} method throws an exception when
+     * passed an illegal byte array that has a length shorter than the header
+     * length.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testFromByteArray_Bytes_Illegal_LengthShorterThanHeaderLength()
@@ -70,8 +72,8 @@ public final class MessageEnvelopeHeaderTest
     }
 
     /**
-     * Ensures the {@code fromByteArray} method throws an exception when passed
-     * a {@code null} byte array.
+     * Ensures the {@link Header#fromByteArray} method throws an exception when
+     * passed a {@code null} byte array.
      */
     @Test( expected = NullPointerException.class )
     public void testFromByteArray_Bytes_Null()
@@ -80,8 +82,8 @@ public final class MessageEnvelopeHeaderTest
     }
 
     /**
-     * Ensures the {@code getBodyLength} method correctly decodes the length of
-     * the message envelope body from the header.
+     * Ensures the {@link Header#getBodyLength} method correctly decodes the
+     * length of the message envelope body from the header.
      */
     @Test
     public void testGetBodyLength()
@@ -94,8 +96,8 @@ public final class MessageEnvelopeHeaderTest
     }
 
     /**
-     * Ensures the {@code getCorrelationId} method correctly decodes the message
-     * correlation identifier from the header.
+     * Ensures the {@link Header#getCorrelationId} method correctly decodes the
+     * message correlation identifier from the header.
      */
     @Test
     public void testGetCorrelationId()
@@ -108,8 +110,8 @@ public final class MessageEnvelopeHeaderTest
     }
 
     /**
-     * Ensures the {@code getId} method correctly decodes the message identifier
-     * from the header.
+     * Ensures the {@link Header#getId} method correctly decodes the message
+     * identifier from the header.
      */
     @Test
     public void testGetId()
@@ -122,9 +124,9 @@ public final class MessageEnvelopeHeaderTest
     }
 
     /**
-     * Ensures the {@code toByteArray} method returns a byte array of length
-     * {@link Header#LENGTH} when the byte array passed to the constructor is
-     * longer than length {@link Header#LENGTH}.
+     * Ensures the {@link Header#toByteArray} method returns a byte array of
+     * length {@link Header#LENGTH} when the byte array passed to the
+     * constructor is longer than length {@link Header#LENGTH}.
      */
     @Test
     public void testToByteArray_ReturnValueLengthIsHeaderLength_BytesLengthLongerThanHeaderLength()

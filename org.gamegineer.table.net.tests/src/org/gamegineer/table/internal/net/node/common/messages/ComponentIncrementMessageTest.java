@@ -70,8 +70,8 @@ public final class ComponentIncrementMessageTest
     }
 
     /**
-     * Ensures the {@code setIncrement} method throws an exception when passed a
-     * {@code null} increment.
+     * Ensures the {@link ComponentIncrementMessage#setIncrement} method throws
+     * an exception when passed a {@code null} increment.
      */
     @Test( expected = NullPointerException.class )
     public void testSetIncrement_Increment_Null()
@@ -80,8 +80,8 @@ public final class ComponentIncrementMessageTest
     }
 
     /**
-     * Ensures the {@code setPath} method throws an exception when passed a
-     * {@code null} path.
+     * Ensures the {@link ComponentIncrementMessage#setPath} method throws an
+     * exception when passed a {@code null} path.
      */
     @Test( expected = NullPointerException.class )
     public void testSetPath_Path_Null()

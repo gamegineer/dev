@@ -84,8 +84,8 @@ public final class HelloResponseMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles an error
-     * message.
+     * Ensures the {@link HelloResponseMessageHandler#handleMessage} method
+     * correctly handles an error message.
      */
     @Test
     public void testHandleMessage_ErrorMessage()
@@ -102,9 +102,9 @@ public final class HelloResponseMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles a hello
-     * response message in the case the server sends a supported chosen protocol
-     * version.
+     * Ensures the {@link HelloResponseMessageHandler#handleMessage} method
+     * correctly handles a hello response message in the case the server sends a
+     * supported chosen protocol version.
      */
     @Test
     public void testHandleMessage_HelloResponseMessage_SupportedChosenProtocolVersion()
@@ -120,9 +120,9 @@ public final class HelloResponseMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles a hello
-     * response message in the case the server sends an unsupported chosen
-     * protocol version.
+     * Ensures the {@link HelloResponseMessageHandler#handleMessage} method
+     * correctly handles a hello response message in the case the server sends
+     * an unsupported chosen protocol version.
      */
     @Test
     public void testHandleMessage_HelloResponseMessage_UnsupportedChosenProtocolVersion()
@@ -139,8 +139,8 @@ public final class HelloResponseMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles an unexpected
-     * message.
+     * Ensures the {@link HelloResponseMessageHandler#handleMessage} method
+     * correctly handles an unexpected message.
      */
     @Test
     public void testHandleMessage_UnexpectedMessage()

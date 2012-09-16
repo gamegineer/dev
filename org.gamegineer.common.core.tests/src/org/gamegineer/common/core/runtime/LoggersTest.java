@@ -46,8 +46,8 @@ public final class LoggersTest
     // ======================================================================
 
     /**
-     * Ensures the {@code getLogger} method throws an exception when passed a
-     * {@code null} bundle.
+     * Ensures the {@link Loggers#getLogger} method throws an exception when
+     * passed a {@code null} bundle.
      */
     @Test( expected = NullPointerException.class )
     public void testGetLogger_Bundle_Null()

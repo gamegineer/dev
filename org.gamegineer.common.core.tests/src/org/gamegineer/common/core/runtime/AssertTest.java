@@ -48,7 +48,7 @@ public final class AssertTest
     // ======================================================================
 
     /**
-     * Ensures the {@code assertArgumentLegal(boolean)} method throws an
+     * Ensures the {@link Assert#assertArgumentLegal(boolean)} method throws an
      * exception if the argument is not legal.
      */
     @Test( expected = IllegalArgumentException.class )
@@ -58,8 +58,8 @@ public final class AssertTest
     }
 
     /**
-     * Ensures the {@code assertArgumentLegal(boolean)} method does not throw an
-     * exception if the argument is legal.
+     * Ensures the {@link Assert#assertArgumentLegal(boolean)} method does not
+     * throw an exception if the argument is legal.
      */
     @Test
     public void testAssertArgumentLegal_Expression_True()
@@ -68,7 +68,7 @@ public final class AssertTest
     }
 
     /**
-     * Ensures the {@code assertArgumentLegal(boolean, java.lang.String)} method
+     * Ensures the {@link Assert#assertArgumentLegal(boolean, String)} method
      * throws an exception if the argument is not legal.
      */
     @Test( expected = IllegalArgumentException.class )
@@ -78,7 +78,7 @@ public final class AssertTest
     }
 
     /**
-     * Ensures the {@code assertArgumentLegal(boolean, java.lang.String)} method
+     * Ensures the {@link Assert#assertArgumentLegal(boolean, String)} method
      * does not throw an exception if the argument is legal.
      */
     @Test
@@ -88,7 +88,7 @@ public final class AssertTest
     }
 
     /**
-     * Ensures the {@code assertArgumentLegal(boolean, java.lang.String)} method
+     * Ensures the {@link Assert#assertArgumentLegal(boolean, String)} method
      * does not throw an exception if the parameter name is {@code null}.
      */
     @Test
@@ -98,8 +98,7 @@ public final class AssertTest
     }
 
     /**
-     * Ensures the
-     * {@code assertArgumentLegal(boolean, java.lang.String, java.lang.String)}
+     * Ensures the {@link Assert#assertArgumentLegal(boolean, String, String)}
      * method throws an exception if the argument is not legal.
      */
     @Test( expected = IllegalArgumentException.class )
@@ -109,8 +108,7 @@ public final class AssertTest
     }
 
     /**
-     * Ensures the
-     * {@code assertArgumentLegal(boolean, java.lang.String, java.lang.String)}
+     * Ensures the {@link Assert#assertArgumentLegal(boolean, String, String)}
      * method does not throw an exception if the argument is legal.
      */
     @Test
@@ -120,8 +118,7 @@ public final class AssertTest
     }
 
     /**
-     * Ensures the
-     * {@code assertArgumentLegal(boolean, java.lang.String, java.lang.String)}
+     * Ensures the {@link Assert#assertArgumentLegal(boolean, String, String)}
      * method does not throw an exception if the message is {@code null}.
      */
     @Test
@@ -131,8 +128,7 @@ public final class AssertTest
     }
 
     /**
-     * Ensures the
-     * {@code assertArgumentLegal(boolean, java.lang.String, java.lang.String)}
+     * Ensures the {@link Assert#assertArgumentLegal(boolean, String, String)}
      * method does not throw an exception if the parameter name is {@code null}.
      */
     @Test
@@ -142,8 +138,8 @@ public final class AssertTest
     }
 
     /**
-     * Ensures the {@code assertArgumentNotNull(java.lang.Object)} method does
-     * not throw an exception if the argument is not {@code null}.
+     * Ensures the {@link Assert#assertArgumentNotNull(Object)} method does not
+     * throw an exception if the argument is not {@code null}.
      */
     @Test
     public void testAssertArgumentNotNull_Object_NotNull()
@@ -152,8 +148,8 @@ public final class AssertTest
     }
 
     /**
-     * Ensures the {@code assertArgumentNotNull(java.lang.Object)} method throws
-     * an exception if the argument is {@code null}.
+     * Ensures the {@link Assert#assertArgumentNotNull(Object)} method throws an
+     * exception if the argument is {@code null}.
      */
     @Test( expected = NullPointerException.class )
     public void testAssertArgumentNotNull_Object_Null()
@@ -162,8 +158,7 @@ public final class AssertTest
     }
 
     /**
-     * Ensures the
-     * {@code assertArgumentNotNull(java.lang.Object, java.lang.String)} method
+     * Ensures the {@link Assert#assertArgumentNotNull(Object, String)} method
      * does not throw an exception if the parameter name is {@code null}.
      */
     @Test
@@ -173,8 +168,7 @@ public final class AssertTest
     }
 
     /**
-     * Ensures the
-     * {@code assertArgumentNotNull(java.lang.Object, java.lang.String)} method
+     * Ensures the {@link Assert#assertArgumentNotNull(Object, String)} method
      * does not throw an exception if the argument is not {@code null}.
      */
     @Test
@@ -184,8 +178,7 @@ public final class AssertTest
     }
 
     /**
-     * Ensures the
-     * {@code assertArgumentNotNull(java.lang.Object, java.lang.String)} method
+     * Ensures the {@link Assert#assertArgumentNotNull(Object, String)} method
      * throws an exception if the argument is {@code null}.
      */
     @Test( expected = NullPointerException.class )
@@ -195,8 +188,7 @@ public final class AssertTest
     }
 
     /**
-     * Ensures the
-     * {@code assertArgumentNotNull(java.lang.Object, java.lang.String, java.lang.String)}
+     * Ensures the {@link Assert#assertArgumentNotNull(Object, String, String)}
      * method does not throw an exception if the message is {@code null}.
      */
     @Test
@@ -206,8 +198,7 @@ public final class AssertTest
     }
 
     /**
-     * Ensures the
-     * {@code assertArgumentNotNull(java.lang.Object, java.lang.String, java.lang.String)}
+     * Ensures the {@link Assert#assertArgumentNotNull(Object, String, String)}
      * method does not throw an exception if the parameter name is {@code null}.
      */
     @Test
@@ -217,8 +208,7 @@ public final class AssertTest
     }
 
     /**
-     * Ensures the
-     * {@code assertArgumentNotNull(java.lang.Object, java.lang.String, java.lang.String)}
+     * Ensures the {@link Assert#assertArgumentNotNull(Object, String, String)}
      * method does not throw an exception if the argument is not {@code null}.
      */
     @Test
@@ -228,8 +218,7 @@ public final class AssertTest
     }
 
     /**
-     * Ensures the
-     * {@code assertArgumentNotNull(java.lang.Object, java.lang.String, java.lang.String)}
+     * Ensures the {@link Assert#assertArgumentNotNull(Object, String, String)}
      * method throws an exception if the argument is {@code null}.
      */
     @Test( expected = NullPointerException.class )
@@ -239,8 +228,8 @@ public final class AssertTest
     }
 
     /**
-     * Ensures the {@code assertStateLegal(boolean)} method throws an exception
-     * if the state is not legal.
+     * Ensures the {@link Assert#assertStateLegal(boolean)} method throws an
+     * exception if the state is not legal.
      */
     @Test( expected = IllegalStateException.class )
     public void testAssertStateLegal_Expression_False()
@@ -249,8 +238,8 @@ public final class AssertTest
     }
 
     /**
-     * Ensures the {@code assertStateLegal(boolean)} method does not throw an
-     * exception if the state is legal.
+     * Ensures the {@link Assert#assertStateLegal(boolean)} method does not
+     * throw an exception if the state is legal.
      */
     @Test
     public void testAssertStateLegal_Expression_True()
@@ -259,7 +248,7 @@ public final class AssertTest
     }
 
     /**
-     * Ensures the {@code assertStateLegal(boolean, java.lang.String)} method
+     * Ensures the {@link Assert#assertStateLegal(boolean, String)} method
      * throws an exception if the state is not legal.
      */
     @Test( expected = IllegalStateException.class )
@@ -269,8 +258,8 @@ public final class AssertTest
     }
 
     /**
-     * Ensures the {@code assertStatergumentLegal(boolean, java.lang.String)}
-     * method does not throw an exception if the state is legal.
+     * Ensures the {@link Assert#assertStateLegal(boolean, String)} method does
+     * not throw an exception if the state is legal.
      */
     @Test
     public void testAssertStateLegalWithMessage_Expression_True()
@@ -279,7 +268,7 @@ public final class AssertTest
     }
 
     /**
-     * Ensures the {@code assertStateLegal(boolean, java.lang.String)} method
+     * Ensures the {@link Assert#assertStateLegal(boolean, String)} method
      * correctly propagates the specified message to the exception thrown if the
      * state is not legal.
      */
@@ -299,8 +288,8 @@ public final class AssertTest
     }
 
     /**
-     * Ensures the {@code assertStateLegal(boolean, java.lang.String)} method
-     * does not throw an exception if the message is {@code null}.
+     * Ensures the {@link Assert#assertStateLegal(boolean, String)} method does
+     * not throw an exception if the message is {@code null}.
      */
     @Test
     public void testAssertStateLegalWithMessage_Message_Null()

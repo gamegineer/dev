@@ -80,8 +80,8 @@ public final class GiveControlMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles a give control
-     * message.
+     * Ensures the {@link GiveControlMessageHandler#handleMessage} method
+     * correctly handles a give control message.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

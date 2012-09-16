@@ -46,8 +46,8 @@ public final class JComponentsTest
     // ======================================================================
 
     /**
-     * Ensures the {@code freezeHeight} method throws an exception when passed a
-     * {@code null} component.
+     * Ensures the {@link JComponents#freezeHeight} method throws an exception
+     * when passed a {@code null} component.
      */
     @Test( expected = NullPointerException.class )
     public void testFreezeHeight_Component_Null()

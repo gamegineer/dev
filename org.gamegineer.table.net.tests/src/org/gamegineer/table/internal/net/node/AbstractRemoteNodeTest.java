@@ -163,9 +163,9 @@ public final class AbstractRemoteNodeTest
     }
 
     /**
-     * Ensures the {@code messageReceived} method does nothing in response to a
-     * message envelope that contains an error message with a null correlation
-     * identifier.
+     * Ensures the {@link AbstractRemoteNode#messageReceived} method does
+     * nothing in response to a message envelope that contains an error message
+     * with a null correlation identifier.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -189,9 +189,9 @@ public final class AbstractRemoteNodeTest
     }
 
     /**
-     * Ensures the {@code messageReceived} method does nothing in response to a
-     * message envelope that contains an unhandled error message with a non-null
-     * correlation identifier.
+     * Ensures the {@link AbstractRemoteNode#messageReceived} method does
+     * nothing in response to a message envelope that contains an unhandled
+     * error message with a non-null correlation identifier.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -215,9 +215,9 @@ public final class AbstractRemoteNodeTest
     }
 
     /**
-     * Ensures the {@code messageReceived} method sends an error message in
-     * response to a message envelope that contains an unhandled non-error
-     * message with a non-null correlation identifier.
+     * Ensures the {@link AbstractRemoteNode#messageReceived} method sends an
+     * error message in response to a message envelope that contains an
+     * unhandled non-error message with a non-null correlation identifier.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -244,9 +244,9 @@ public final class AbstractRemoteNodeTest
     }
 
     /**
-     * Ensures the {@code messageReceived} method sends an error message in
-     * response to a message envelope that contains an unhandled message with a
-     * null correlation identifier.
+     * Ensures the {@link AbstractRemoteNode#messageReceived} method sends an
+     * error message in response to a message envelope that contains an
+     * unhandled message with a null correlation identifier.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -273,8 +273,9 @@ public final class AbstractRemoteNodeTest
     }
 
     /**
-     * Ensures the {@code messageReceived} method sends an error message in
-     * response to a message envelope that contains an unknown message.
+     * Ensures the {@link AbstractRemoteNode#messageReceived} method sends an
+     * error message in response to a message envelope that contains an unknown
+     * message.
      */
     @Test
     public void testMessageReceived_MessageEnvelope_UnknownMessage()
@@ -300,8 +301,8 @@ public final class AbstractRemoteNodeTest
     }
 
     /**
-     * Ensures the {@code registerUncorrelatedMessageHandler} method throws an
-     * exception when passed a {@code null} message handler.
+     * Ensures the {@link AbstractRemoteNode#registerUncorrelatedMessageHandler}
+     * method throws an exception when passed a {@code null} message handler.
      */
     @Test( expected = NullPointerException.class )
     public void testRegisterUncorrelatedMessageHandler_MessageHandler_Null()
@@ -310,8 +311,8 @@ public final class AbstractRemoteNodeTest
     }
 
     /**
-     * Ensures the {@code registerUncorrelatedMessageHandler} method throws an
-     * exception when passed a {@code null} message type.
+     * Ensures the {@link AbstractRemoteNode#registerUncorrelatedMessageHandler}
+     * method throws an exception when passed a {@code null} message type.
      */
     @Test( expected = NullPointerException.class )
     public void testRegisterUncorrelatedMessageHandler_Type_Null()
@@ -320,9 +321,9 @@ public final class AbstractRemoteNodeTest
     }
 
     /**
-     * Ensures the {@code registerUncorrelatedMessageHandler} method throws an
-     * exception when passed a message type that is present in the message
-     * handler collection.
+     * Ensures the {@link AbstractRemoteNode#registerUncorrelatedMessageHandler}
+     * method throws an exception when passed a message type that is present in
+     * the message handler collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testRegisterUncorrelatedMessageHandler_Type_Present()

@@ -89,8 +89,9 @@ public abstract class AbstractComponentSurfaceDesignRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getComponentSurfaceDesign} method returns the correct
-     * value when passed an identifier that is absent.
+     * Ensures the
+     * {@link IComponentSurfaceDesignRegistry#getComponentSurfaceDesign} method
+     * returns the correct value when passed an identifier that is absent.
      */
     @Test
     public void testGetComponentSurfaceDesign_Id_Absent()
@@ -99,8 +100,9 @@ public abstract class AbstractComponentSurfaceDesignRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getComponentSurfaceDesign} method throws an exception
-     * when passed a {@code null} identifier.
+     * Ensures the
+     * {@link IComponentSurfaceDesignRegistry#getComponentSurfaceDesign} method
+     * throws an exception when passed a {@code null} identifier.
      */
     @Test( expected = NullPointerException.class )
     public void testGetComponentSurfaceDesign_Id_Null()
@@ -109,8 +111,9 @@ public abstract class AbstractComponentSurfaceDesignRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getComponentSurfaceDesign} method returns the correct
-     * value when passed an identifier that is present.
+     * Ensures the
+     * {@link IComponentSurfaceDesignRegistry#getComponentSurfaceDesign} method
+     * returns the correct value when passed an identifier that is present.
      */
     @Test
     public void testGetComponentSurfaceDesign_Id_Present()
@@ -124,8 +127,9 @@ public abstract class AbstractComponentSurfaceDesignRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getComponentSurfaceDesigns} method returns a copy of
-     * the registered component surface design collection.
+     * Ensures the
+     * {@link IComponentSurfaceDesignRegistry#getComponentSurfaceDesigns} method
+     * returns a copy of the registered component surface design collection.
      */
     @Test
     public void testGetComponentSurfaceDesigns_ReturnValue_Copy()
@@ -139,8 +143,9 @@ public abstract class AbstractComponentSurfaceDesignRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getComponentSurfaceDesigns} method returns a snapshot
-     * of the registered component surface design collection.
+     * Ensures the
+     * {@link IComponentSurfaceDesignRegistry#getComponentSurfaceDesigns} method
+     * returns a snapshot of the registered component surface design collection.
      */
     @Test
     public void testGetComponentSurfaceDesigns_ReturnValue_Snapshot()
@@ -152,8 +157,10 @@ public abstract class AbstractComponentSurfaceDesignRegistryTestCase
     }
 
     /**
-     * Ensures the {@code registerComponentSurfaceDesign} method throws an
-     * exception when passed a {@code null} component surface design.
+     * Ensures the
+     * {@link IComponentSurfaceDesignRegistry#registerComponentSurfaceDesign}
+     * method throws an exception when passed a {@code null} component surface
+     * design.
      */
     @Test( expected = NullPointerException.class )
     public void testRegisterComponentSurfaceDesign_ComponentSurfaceDesign_Null()
@@ -162,9 +169,10 @@ public abstract class AbstractComponentSurfaceDesignRegistryTestCase
     }
 
     /**
-     * Ensures the {@code registerComponentSurfaceDesign} method throws an
-     * exception when a component surface design with the same identifier is
-     * already registered.
+     * Ensures the
+     * {@link IComponentSurfaceDesignRegistry#registerComponentSurfaceDesign}
+     * method throws an exception when a component surface design with the same
+     * identifier is already registered.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testRegisterComponentSurfaceDesign_ComponentSurfaceDesign_Registered()
@@ -176,8 +184,9 @@ public abstract class AbstractComponentSurfaceDesignRegistryTestCase
     }
 
     /**
-     * Ensures the {@code registerComponentSurfaceDesign} method registers an
-     * unregistered component surface design.
+     * Ensures the
+     * {@link IComponentSurfaceDesignRegistry#registerComponentSurfaceDesign}
+     * method registers an unregistered component surface design.
      */
     @Test
     public void testRegisterComponentSurfaceDesign_ComponentSurfaceDesign_Unregistered()
@@ -190,8 +199,10 @@ public abstract class AbstractComponentSurfaceDesignRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterComponentSurfaceDesign} method throws an
-     * exception when passed a {@code null} component surface design.
+     * Ensures the
+     * {@link IComponentSurfaceDesignRegistry#unregisterComponentSurfaceDesign}
+     * method throws an exception when passed a {@code null} component surface
+     * design.
      */
     @Test( expected = NullPointerException.class )
     public void testUnregisterComponentSurfaceDesign_ComponentSurfaceDesign_Null()
@@ -200,10 +211,11 @@ public abstract class AbstractComponentSurfaceDesignRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterComponentSurfaceDesign} method throws an
-     * exception when passed a component surface design whose identifier was
-     * previously registered but by a different component surface design
-     * instance.
+     * Ensures the
+     * {@link IComponentSurfaceDesignRegistry#unregisterComponentSurfaceDesign}
+     * method throws an exception when passed a component surface design whose
+     * identifier was previously registered but by a different component surface
+     * design instance.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testUnregisterComponentSurfaceDesign_ComponentSurfaceDesign_Registered_DifferentInstance()
@@ -217,8 +229,9 @@ public abstract class AbstractComponentSurfaceDesignRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterComponentSurfaceDesign} method unregisters a
-     * previously registered component surface design.
+     * Ensures the
+     * {@link IComponentSurfaceDesignRegistry#unregisterComponentSurfaceDesign}
+     * method unregisters a previously registered component surface design.
      */
     @Test
     public void testUnregisterComponentSurfaceDesign_ComponentSurfaceDesign_Registered_SameInstance()
@@ -234,9 +247,10 @@ public abstract class AbstractComponentSurfaceDesignRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterComponentSurfaceDesign} method throws an
-     * exception when passed a component surface design that was not previously
-     * registered.
+     * Ensures the
+     * {@link IComponentSurfaceDesignRegistry#unregisterComponentSurfaceDesign}
+     * method throws an exception when passed a component surface design that
+     * was not previously registered.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testUnregisterComponentSurfaceDesign_ComponentSurfaceDesign_Unregistered()

@@ -46,8 +46,8 @@ public final class GeometryTest
     // ======================================================================
 
     /**
-     * Ensures the {@code calculateCenterPoint} method throws an exception when
-     * passed a {@code null} rectangle.
+     * Ensures the {@link Geometry#calculateCenterPoint} method throws an
+     * exception when passed a {@code null} rectangle.
      */
     @Test( expected = NullPointerException.class )
     public void testCalculateCenterPoint_Rectangle_Null()

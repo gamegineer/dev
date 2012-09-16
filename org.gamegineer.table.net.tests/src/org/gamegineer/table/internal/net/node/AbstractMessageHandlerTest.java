@@ -96,8 +96,8 @@ public final class AbstractMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method throws an exception when passed
-     * a {@code null} message.
+     * Ensures the {@link AbstractMessageHandler#handleMessage} method throws an
+     * exception when passed a {@code null} message.
      */
     @Test( expected = NullPointerException.class )
     public void testHandleMessage_Message_Null()
@@ -106,8 +106,8 @@ public final class AbstractMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles a supported
-     * message.
+     * Ensures the {@link AbstractMessageHandler#handleMessage} method correctly
+     * handles a supported message.
      */
     @Test
     public void testHandleMessage_Message_Supported()
@@ -122,8 +122,8 @@ public final class AbstractMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles an unsupported
-     * message.
+     * Ensures the {@link AbstractMessageHandler#handleMessage} method correctly
+     * handles an unsupported message.
      */
     @SuppressWarnings( "boxing" )
     @Test
@@ -146,8 +146,8 @@ public final class AbstractMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method throws an exception when passed
-     * a {@code null} remote node controller.
+     * Ensures the {@link AbstractMessageHandler#handleMessage} method throws an
+     * exception when passed a {@code null} remote node controller.
      */
     @Test( expected = NullPointerException.class )
     public void testHandleMessage_RemoteNodeController_Null()
@@ -158,8 +158,8 @@ public final class AbstractMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleUnexpectedMessage} method throws an exception
-     * when passed a {@code null} remote node controller.
+     * Ensures the {@link AbstractMessageHandler#handleUnexpectedMessage} method
+     * throws an exception when passed a {@code null} remote node controller.
      */
     @Test( expected = NullPointerException.class )
     public void testHandleUnexpectedMessage_RemoteNodeController_Null()

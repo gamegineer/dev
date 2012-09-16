@@ -80,8 +80,8 @@ public final class CancelControlRequestMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles a cancel
-     * control request message.
+     * Ensures the {@link CancelControlRequestMessageHandler#handleMessage}
+     * method correctly handles a cancel control request message.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

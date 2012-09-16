@@ -104,8 +104,9 @@ public final class AbstractLoggingComponentFactoryTest
     }
 
     /**
-     * Ensures the {@code createNamedLoggingComponent} method creates the
-     * expected object.
+     * Ensures the
+     * {@link AbstractLoggingComponentFactory#createNamedLoggingComponent}
+     * method creates the expected object.
      */
     @Test
     public void testCreateNamedLoggingComponent_HappyPath()
@@ -127,8 +128,10 @@ public final class AbstractLoggingComponentFactoryTest
     }
 
     /**
-     * Ensures the {@code createNamedLoggingComponent} method throws an
-     * exception when passed a name that does not contain at least one dot.
+     * Ensures the
+     * {@link AbstractLoggingComponentFactory#createNamedLoggingComponent}
+     * method throws an exception when passed a name that does not contain at
+     * least one dot.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testCreateNamedLoggingComponent_Name_Illegal()
@@ -137,8 +140,9 @@ public final class AbstractLoggingComponentFactoryTest
     }
 
     /**
-     * Ensures the {@code newInstance} method throws an exception when passed a
-     * {@code null} component properties collection.
+     * Ensures the {@link AbstractLoggingComponentFactory#newInstance} method
+     * throws an exception when passed a {@code null} component properties
+     * collection.
      */
     @Test( expected = ComponentException.class )
     public void testNewInstance_ComponentProperties_Null()
@@ -147,8 +151,8 @@ public final class AbstractLoggingComponentFactoryTest
     }
 
     /**
-     * Ensures the {@code newInstance} method throws an exception when the
-     * instance name property is absent.
+     * Ensures the {@link AbstractLoggingComponentFactory#newInstance} method
+     * throws an exception when the instance name property is absent.
      */
     @Test( expected = ComponentException.class )
     public void testNewInstance_InstanceName_Absent()
@@ -159,8 +163,8 @@ public final class AbstractLoggingComponentFactoryTest
     }
 
     /**
-     * Ensures the {@code newInstance} method throws an exception when the
-     * instance name property is an illegal type.
+     * Ensures the {@link AbstractLoggingComponentFactory#newInstance} method
+     * throws an exception when the instance name property is an illegal type.
      */
     @Test( expected = ComponentException.class )
     public void testNewInstance_InstanceName_IllegalType()
@@ -171,8 +175,9 @@ public final class AbstractLoggingComponentFactoryTest
     }
 
     /**
-     * Ensures the {@code newInstance} method does not throw an exception when
-     * the logging properties property is absent.
+     * Ensures the {@link AbstractLoggingComponentFactory#newInstance} method
+     * does not throw an exception when the logging properties property is
+     * absent.
      */
     @Test
     public void testNewInstance_LoggingProperties_Absent()
@@ -183,8 +188,9 @@ public final class AbstractLoggingComponentFactoryTest
     }
 
     /**
-     * Ensures the {@code newInstance} method throws an exception when the
-     * logging properties property is an illegal type.
+     * Ensures the {@link AbstractLoggingComponentFactory#newInstance} method
+     * throws an exception when the logging properties property is an illegal
+     * type.
      */
     @Test( expected = ComponentException.class )
     public void testNewInstance_LoggingProperties_IllegalType()
@@ -195,8 +201,8 @@ public final class AbstractLoggingComponentFactoryTest
     }
 
     /**
-     * Ensures the {@code newInstance} method throws an exception when the type
-     * name property is absent.
+     * Ensures the {@link AbstractLoggingComponentFactory#newInstance} method
+     * throws an exception when the type name property is absent.
      */
     @Test( expected = ComponentException.class )
     public void testNewInstance_TypeName_Absent()
@@ -207,8 +213,8 @@ public final class AbstractLoggingComponentFactoryTest
     }
 
     /**
-     * Ensures the {@code newInstance} method throws an exception when the type
-     * name property is an illegal type.
+     * Ensures the {@link AbstractLoggingComponentFactory#newInstance} method
+     * throws an exception when the type name property is an illegal type.
      */
     @Test( expected = ComponentException.class )
     public void testNewInstance_TypeName_IllegalType()

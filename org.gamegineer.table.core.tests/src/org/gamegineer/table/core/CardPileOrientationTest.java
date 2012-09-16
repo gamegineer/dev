@@ -47,8 +47,8 @@ public final class CardPileOrientationTest
     // ======================================================================
 
     /**
-     * Ensures the {@code inverse} method returns the correct value for the
-     * {@link CardPileOrientation#BASE} value.
+     * Ensures the {@link CardPileOrientation#inverse} method returns the
+     * correct value for the {@link CardPileOrientation#BASE} value.
      */
     @Test
     public void testInverse_Base()
@@ -57,7 +57,8 @@ public final class CardPileOrientationTest
     }
 
     /**
-     * Ensures the {@code inverse} method supports all known enumeration values.
+     * Ensures the {@link CardPileOrientation#inverse} method supports all known
+     * enumeration values.
      */
     @Test
     public void testInverse_NoUnsupportedValues()

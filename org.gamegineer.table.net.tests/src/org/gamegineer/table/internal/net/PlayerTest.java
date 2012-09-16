@@ -74,7 +74,7 @@ public final class PlayerTest
     }
 
     /**
-     * Ensures the {@code addRoles} method adds player roles.
+     * Ensures the {@link Player#addRoles} method adds player roles.
      */
     @Test
     public void testAddRoles()
@@ -88,8 +88,8 @@ public final class PlayerTest
     }
 
     /**
-     * Ensures the {@code addRoles} method throws an exception when passed an
-     * illegal role collection that contains a {@code null} element.
+     * Ensures the {@link Player#addRoles} method throws an exception when
+     * passed an illegal role collection that contains a {@code null} element.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddRoles_Roles_Illegal_ContainsNullElement()
@@ -98,8 +98,8 @@ public final class PlayerTest
     }
 
     /**
-     * Ensures the {@code addRoles} method throws an exception when passed a
-     * {@code null} role collection.
+     * Ensures the {@link Player#addRoles} method throws an exception when
+     * passed a {@code null} role collection.
      */
     @Test( expected = NullPointerException.class )
     public void testAddRoles_Roles_Null()
@@ -118,7 +118,7 @@ public final class PlayerTest
     }
 
     /**
-     * Ensures the {@code removeRoles} method removes player roles.
+     * Ensures the {@link Player#removeRoles} method removes player roles.
      */
     @Test
     public void testRemoveRoles()
@@ -134,8 +134,8 @@ public final class PlayerTest
     }
 
     /**
-     * Ensures the {@code removeRoles} method throws an exception when passed an
-     * illegal role collection that contains a {@code null} element.
+     * Ensures the {@link Player#removeRoles} method throws an exception when
+     * passed an illegal role collection that contains a {@code null} element.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveRoles_Roles_Illegal_ContainsNullElement()
@@ -144,8 +144,8 @@ public final class PlayerTest
     }
 
     /**
-     * Ensures the {@code removeRoles} method throws an exception when passed a
-     * {@code null} role collection.
+     * Ensures the {@link Player#removeRoles} method throws an exception when
+     * passed a {@code null} role collection.
      */
     @Test( expected = NullPointerException.class )
     public void testRemoveRoles_Roles_Null()

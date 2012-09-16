@@ -78,9 +78,9 @@ public final class InputQueueTest
     }
 
     /**
-     * Ensures the {@code dequeueMessageEnvelope} method correctly dequeues a
-     * message envelope when the input queue contains exactly one message
-     * envelope.
+     * Ensures the {@link InputQueue#dequeueMessageEnvelope} method correctly
+     * dequeues a message envelope when the input queue contains exactly one
+     * message envelope.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -101,9 +101,9 @@ public final class InputQueueTest
     }
 
     /**
-     * Ensures the {@code dequeueMessageEnvelope} method correctly dequeues a
-     * message envelope when the input queue contains exactly one message
-     * envelope that exceeds the capacity of a pool buffer.
+     * Ensures the {@link InputQueue#dequeueMessageEnvelope} method correctly
+     * dequeues a message envelope when the input queue contains exactly one
+     * message envelope that exceeds the capacity of a pool buffer.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -125,9 +125,9 @@ public final class InputQueueTest
     }
 
     /**
-     * Ensures the {@code dequeueMessageEnvelope} method correctly dequeues a
-     * message envelope when the input queue contains exactly two message
-     * envelopes.
+     * Ensures the {@link InputQueue#dequeueMessageEnvelope} method correctly
+     * dequeues a message envelope when the input queue contains exactly two
+     * message envelopes.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -163,8 +163,9 @@ public final class InputQueueTest
     }
 
     /**
-     * Ensures the {@code dequeueMessageEnvelope} method returns {@code null}
-     * when the input queue contains an incomplete message envelope.
+     * Ensures the {@link InputQueue#dequeueMessageEnvelope} method returns
+     * {@code null} when the input queue contains an incomplete message
+     * envelope.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -182,9 +183,9 @@ public final class InputQueueTest
     }
 
     /**
-     * Ensures the {@code dequeueMessageEnvelope} method correctly dequeues a
-     * message envelope when the input queue contains one message envelope and
-     * one additional byte.
+     * Ensures the {@link InputQueue#dequeueMessageEnvelope} method correctly
+     * dequeues a message envelope when the input queue contains one message
+     * envelope and one additional byte.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -206,8 +207,8 @@ public final class InputQueueTest
     }
 
     /**
-     * Ensures the {@code dequeueMessageEnvelope} method returns {@code null}
-     * when the input queue is empty.
+     * Ensures the {@link InputQueue#dequeueMessageEnvelope} method returns
+     * {@code null} when the input queue is empty.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -222,10 +223,10 @@ public final class InputQueueTest
     }
 
     /**
-     * Ensures the {@code dequeueMessageEnvelope} method correctly dequeues a
-     * message envelope when the input queue contains a partial message envelope
-     * during the first call and a complete message envelope during the second
-     * call.
+     * Ensures the {@link InputQueue#dequeueMessageEnvelope} method correctly
+     * dequeues a message envelope when the input queue contains a partial
+     * message envelope during the first call and a complete message envelope
+     * during the second call.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

@@ -48,8 +48,8 @@ public final class ContainerLayoutIdTest
     // ======================================================================
 
     /**
-     * Ensures the {@code fromString} method throws an exception when passed a
-     * {@code null} underlying identifier.
+     * Ensures the {@link ContainerLayoutId#fromString} method throws an
+     * exception when passed a {@code null} underlying identifier.
      */
     @Test( expected = NullPointerException.class )
     public void testFromString_Id_Null()
@@ -58,7 +58,8 @@ public final class ContainerLayoutIdTest
     }
 
     /**
-     * Ensures the {@code toString} method does not return {@code null}.
+     * Ensures the {@link ContainerLayoutId#toString} method does not return
+     * {@code null}.
      */
     @Test
     public void testToString_ReturnValue_NonNull()
@@ -69,8 +70,9 @@ public final class ContainerLayoutIdTest
     }
 
     /**
-     * Ensures the {@code toString} method returns the same underlying
-     * identifier that was used to construct the container layout identifier.
+     * Ensures the {@link ContainerLayoutId#toString} method returns the same
+     * underlying identifier that was used to construct the container layout
+     * identifier.
      */
     @Test
     public void testToString_ReturnValue_SameId()

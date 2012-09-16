@@ -83,8 +83,8 @@ public abstract class AbstractTableNetworkListenerTestCase
     }
 
     /**
-     * Ensures the {@code tableNetworkConnected} method throws an exception when
-     * passed a {@code null} event.
+     * Ensures the {@link ITableNetworkListener#tableNetworkConnected} method
+     * throws an exception when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
     public void testTableNetworkConnected_Event_Null()
@@ -93,8 +93,8 @@ public abstract class AbstractTableNetworkListenerTestCase
     }
 
     /**
-     * Ensures the {@code tableNetworkDisconnected} method throws an exception
-     * when passed a {@code null} event.
+     * Ensures the {@link ITableNetworkListener#tableNetworkDisconnected} method
+     * throws an exception when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
     public void testTableNetworkDisconnected_Event_Null()
@@ -103,8 +103,8 @@ public abstract class AbstractTableNetworkListenerTestCase
     }
 
     /**
-     * Ensures the {@code tableNetworkPlayersUpdated} method throws an exception
-     * when passed a {@code null} event.
+     * Ensures the {@link ITableNetworkListener#tableNetworkPlayersUpdated}
+     * method throws an exception when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
     public void testTableNetworkPlayersUpdated_Event_Null()

@@ -147,8 +147,9 @@ public final class LoggerConfigurationTest
     }
 
     /**
-     * Ensures the {@code getFilter} method returns the expected value when the
-     * logger is configured and the filter configuration is legal.
+     * Ensures the {@link LoggerConfiguration#getFilter} method returns the
+     * expected value when the logger is configured and the filter configuration
+     * is legal.
      */
     @Test
     public void testGetFilter_Configured()
@@ -168,9 +169,9 @@ public final class LoggerConfigurationTest
     }
 
     /**
-     * Ensures the {@code getFilter} method returns the default value when the
-     * logger is configured but the filter could not be created because no
-     * component factory is available.
+     * Ensures the {@link LoggerConfiguration#getFilter} method returns the
+     * default value when the logger is configured but the filter could not be
+     * created because no component factory is available.
      */
     @Test
     public void testGetFilter_Configured_FilterCreationFailed()
@@ -179,8 +180,9 @@ public final class LoggerConfigurationTest
     }
 
     /**
-     * Ensures the {@code getFilter} method returns the default value when the
-     * logger is configured but the filter property is illegal.
+     * Ensures the {@link LoggerConfiguration#getFilter} method returns the
+     * default value when the logger is configured but the filter property is
+     * illegal.
      */
     @Test
     public void testGetFilter_Configured_IllegalFilter()
@@ -191,8 +193,8 @@ public final class LoggerConfigurationTest
     }
 
     /**
-     * Ensures the {@code getFilter} method returns the default value when the
-     * logger is configured but no filter is specified.
+     * Ensures the {@link LoggerConfiguration#getFilter} method returns the
+     * default value when the logger is configured but no filter is specified.
      */
     @Test
     public void testGetFilter_Configured_NoFilter()
@@ -203,8 +205,8 @@ public final class LoggerConfigurationTest
     }
 
     /**
-     * Ensures the {@code getFilter} method returns the default value when the
-     * logger is not configured.
+     * Ensures the {@link LoggerConfiguration#getFilter} method returns the
+     * default value when the logger is not configured.
      */
     @Test
     public void testGetFilter_NotConfigured()
@@ -215,8 +217,8 @@ public final class LoggerConfigurationTest
     }
 
     /**
-     * Ensures the {@code getHandlers} method returns the expected value when
-     * the logger is configured.
+     * Ensures the {@link LoggerConfiguration#getHandlers} method returns the
+     * expected value when the logger is configured.
      */
     @Test
     public void testGetHandlers_Configured()
@@ -237,9 +239,9 @@ public final class LoggerConfigurationTest
     }
 
     /**
-     * Ensures the {@code getHandlers} method returns an empty collection when
-     * the logger is configured but the handlers could not be created because no
-     * component factory is available.
+     * Ensures the {@link LoggerConfiguration#getHandlers} method returns an
+     * empty collection when the logger is configured but the handlers could not
+     * be created because no component factory is available.
      */
     @Test
     public void testGetHandlers_Configured_HandlerCreationFailed()
@@ -259,8 +261,8 @@ public final class LoggerConfigurationTest
     }
 
     /**
-     * Ensures the {@code getHandlers} method does not include handlers that
-     * have an illegal name when the logger is configured.
+     * Ensures the {@link LoggerConfiguration#getHandlers} method does not
+     * include handlers that have an illegal name when the logger is configured.
      */
     @Test
     public void testGetHandlers_Configured_IllegalHandler()
@@ -282,8 +284,9 @@ public final class LoggerConfigurationTest
     }
 
     /**
-     * Ensures the {@code getHandlers} method returns an empty collection when
-     * the logger is configured but no handlers are specified.
+     * Ensures the {@link LoggerConfiguration#getHandlers} method returns an
+     * empty collection when the logger is configured but no handlers are
+     * specified.
      */
     @Test
     public void testGetHandlers_Configured_NoHandlers()
@@ -297,8 +300,8 @@ public final class LoggerConfigurationTest
     }
 
     /**
-     * Ensures the {@code getHandlers} method returns an empty collection when
-     * the logger is not configured.
+     * Ensures the {@link LoggerConfiguration#getHandlers} method returns an
+     * empty collection when the logger is not configured.
      */
     @Test
     public void testGetHandlers_NotConfigured()
@@ -312,8 +315,8 @@ public final class LoggerConfigurationTest
     }
 
     /**
-     * Ensures the {@code getLevel} method returns the expected value when the
-     * logger is configured.
+     * Ensures the {@link LoggerConfiguration#getLevel} method returns the
+     * expected value when the logger is configured.
      */
     @Test
     public void testGetLevel_Configured()
@@ -322,8 +325,8 @@ public final class LoggerConfigurationTest
     }
 
     /**
-     * Ensures the {@code getLevel} method returns the default value when the
-     * logger is not configured.
+     * Ensures the {@link LoggerConfiguration#getLevel} method returns the
+     * default value when the logger is not configured.
      */
     @Test
     public void testGetLevel_NotConfigured()
@@ -334,8 +337,8 @@ public final class LoggerConfigurationTest
     }
 
     /**
-     * Ensures the {@code getUseParentHandlers} method returns the expected
-     * value when the logger is configured.
+     * Ensures the {@link LoggerConfiguration#getUseParentHandlers} method
+     * returns the expected value when the logger is configured.
      */
     @SuppressWarnings( "boxing" )
     @Test
@@ -345,8 +348,8 @@ public final class LoggerConfigurationTest
     }
 
     /**
-     * Ensures the {@code getUseParentHandlers} method returns the default value
-     * when the logger is not configured.
+     * Ensures the {@link LoggerConfiguration#getUseParentHandlers} method
+     * returns the default value when the logger is not configured.
      */
     @SuppressWarnings( "boxing" )
     @Test

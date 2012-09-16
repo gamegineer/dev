@@ -83,8 +83,8 @@ public final class EndAuthenticationMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles an end
-     * authentication message.
+     * Ensures the {@link EndAuthenticationMessageHandler#handleMessage} method
+     * correctly handles an end authentication message.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -104,8 +104,8 @@ public final class EndAuthenticationMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles an error
-     * message.
+     * Ensures the {@link EndAuthenticationMessageHandler#handleMessage} method
+     * correctly handles an error message.
      */
     @Test
     public void testHandleMessage_ErrorMessage()
@@ -122,8 +122,8 @@ public final class EndAuthenticationMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles an unexpected
-     * message.
+     * Ensures the {@link EndAuthenticationMessageHandler#handleMessage} method
+     * correctly handles an unexpected message.
      */
     @Test
     public void testHandleMessage_UnexpectedMessage()

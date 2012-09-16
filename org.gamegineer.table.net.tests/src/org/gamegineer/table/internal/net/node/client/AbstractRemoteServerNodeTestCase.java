@@ -53,8 +53,8 @@ public abstract class AbstractRemoteServerNodeTestCase<T extends IRemoteServerNo
     // ======================================================================
 
     /**
-     * Ensures the {@code giveControl} method throws an exception when passed a
-     * {@code null} player name.
+     * Ensures the {@link IRemoteServerNode#giveControl} method throws an
+     * exception when passed a {@code null} player name.
      */
     @Test( expected = NullPointerException.class )
     public void testGiveControl_PlayerName_Null()

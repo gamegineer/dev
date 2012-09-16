@@ -136,8 +136,9 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     }
 
     /**
-     * Ensures the {@code configureLoggingComponent} method throws an exception
-     * when passed a {@code null} component.
+     * Ensures the
+     * {@link AbstractLoggingComponentFactory#configureLoggingComponent} method
+     * throws an exception when passed a {@code null} component.
      */
     @Test( expected = NullPointerException.class )
     public void testConfigureLoggingComponent_Component_Null()
@@ -146,8 +147,9 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     }
 
     /**
-     * Ensures the {@code configureLoggingComponent} method throws an exception
-     * when passed a {@code null} instance name.
+     * Ensures the
+     * {@link AbstractLoggingComponentFactory#configureLoggingComponent} method
+     * throws an exception when passed a {@code null} instance name.
      */
     @Test( expected = NullPointerException.class )
     public void testConfigureLoggingComponent_InstanceName_Null()
@@ -156,8 +158,9 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     }
 
     /**
-     * Ensures the {@code createLoggingComponent} method throws an exception
-     * when passed a {@code null} type name.
+     * Ensures the
+     * {@link AbstractLoggingComponentFactory#createLoggingComponent} method
+     * throws an exception when passed a {@code null} type name.
      */
     @Test( expected = NullPointerException.class )
     public void testCreateLoggingComponent_TypeName_Null()

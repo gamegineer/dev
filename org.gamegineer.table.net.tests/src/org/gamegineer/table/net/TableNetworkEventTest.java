@@ -82,8 +82,8 @@ public final class TableNetworkEventTest
     }
 
     /**
-     * Ensures the {@code getSource} method returns the same instance as the
-     * {@code getTableNetwork} method.
+     * Ensures the {@link TableNetworkEvent#getSource} method returns the same
+     * instance as the {@code getTableNetwork} method.
      */
     @Test
     public void testGetSource_ReturnValue_SameTableNetwork()
@@ -92,7 +92,8 @@ public final class TableNetworkEventTest
     }
 
     /**
-     * Ensures the {@code getTableNetwork} method does not return {@code null}.
+     * Ensures the {@link TableNetworkEvent#getTableNetwork} method does not
+     * return {@code null}.
      */
     @Test
     public void testGetTableNetwork_ReturnValue_NonNull()

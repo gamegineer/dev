@@ -177,8 +177,8 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     }
 
     /**
-     * Ensures the {@code bind} method throws an exception when the remote node
-     * is already bound.
+     * Ensures the {@link IRemoteNodeController#bind} method throws an exception
+     * when the remote node is already bound.
      */
     @Test( expected = IllegalStateException.class )
     public void testBind_Bound()
@@ -190,8 +190,8 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     }
 
     /**
-     * Ensures the {@code bind} method throws an exception when the remote node
-     * is closed.
+     * Ensures the {@link IRemoteNodeController#bind} method throws an exception
+     * when the remote node is closed.
      */
     @Test( expected = IllegalStateException.class )
     public void testBind_Closed()
@@ -200,9 +200,9 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     }
 
     /**
-     * Ensures the {@code bind} method throws an exception when passed a player
-     * name that is associated with a table that is already bound to the local
-     * node.
+     * Ensures the {@link IRemoteNodeController#bind} method throws an exception
+     * when passed a player name that is associated with a table that is already
+     * bound to the local node.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -223,8 +223,8 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     }
 
     /**
-     * Ensures the {@code bind} method throws an exception when passed a
-     * {@code null} player name.
+     * Ensures the {@link IRemoteNodeController#bind} method throws an exception
+     * when passed a {@code null} player name.
      */
     @Test( expected = NullPointerException.class )
     public void testBind_PlayerName_Null()
@@ -233,8 +233,8 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     }
 
     /**
-     * Ensures the {@code close} method throws an exception when the remote node
-     * is closed.
+     * Ensures the {@link IRemoteNodeController#close} method throws an
+     * exception when the remote node is closed.
      */
     @Test( expected = IllegalStateException.class )
     public void testClose_Closed()
@@ -243,7 +243,8 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     }
 
     /**
-     * Ensures the {@code getLocalNode} method does not return {@code null}.
+     * Ensures the {@link IRemoteNodeController#getLocalNode} method does not
+     * return {@code null}.
      */
     @Test
     public void testGetLocalNode_ReturnValue_NonNull()
@@ -252,8 +253,8 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     }
 
     /**
-     * Ensures the {@code sendMessage} method throws an exception when the
-     * remote node is closed.
+     * Ensures the {@link IRemoteNodeController#sendMessage} method throws an
+     * exception when the remote node is closed.
      */
     @Test( expected = IllegalStateException.class )
     public void testSendMessage_Closed()
@@ -262,8 +263,8 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     }
 
     /**
-     * Ensures the {@code sendMessage} method throws an exception when passed a
-     * {@code null} message.
+     * Ensures the {@link IRemoteNodeController#sendMessage} method throws an
+     * exception when passed a {@code null} message.
      */
     @Test( expected = NullPointerException.class )
     public void testSendMessage_Message_Null()

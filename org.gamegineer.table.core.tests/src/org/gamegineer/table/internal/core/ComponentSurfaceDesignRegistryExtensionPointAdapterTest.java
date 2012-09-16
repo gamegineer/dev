@@ -87,9 +87,10 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code added(IExtension)} method registers all component
-     * surface designs associated with the specified extensions with the
-     * component surface design registry.
+     * Ensures the
+     * {@link ComponentSurfaceDesignRegistryExtensionPointAdapter#added(IExtension[])}
+     * method registers all component surface designs associated with the
+     * specified extensions with the component surface design registry.
      */
     @Test
     public void testAddedFromExtension()
@@ -127,8 +128,10 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code bindComponentSurfaceDesignRegistry} method throws an
-     * exception when the component surface design registry is already bound.
+     * Ensures the
+     * {@link ComponentSurfaceDesignRegistryExtensionPointAdapter#bindComponentSurfaceDesignRegistry}
+     * method throws an exception when the component surface design registry is
+     * already bound.
      */
     @Test( expected = IllegalStateException.class )
     public void testBindComponentSurfaceDesignRegistry_AlreadyBound()
@@ -139,8 +142,10 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code bindComponentSurfaceDesignRegistry} method throws an
-     * exception when passed a {@code null} component surface design registry.
+     * Ensures the
+     * {@link ComponentSurfaceDesignRegistryExtensionPointAdapter#bindComponentSurfaceDesignRegistry}
+     * method throws an exception when passed a {@code null} component surface
+     * design registry.
      */
     @Test( expected = NullPointerException.class )
     public void testBindComponentSurfaceDesignRegistry_ComponentSurfaceDesignRegistry_Null()
@@ -149,8 +154,9 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code bindExtensionRegistry} method throws an exception when
-     * the extension registry is already bound.
+     * Ensures the
+     * {@link ComponentSurfaceDesignRegistryExtensionPointAdapter#bindExtensionRegistry}
+     * method throws an exception when the extension registry is already bound.
      */
     @Test( expected = IllegalStateException.class )
     public void testBindExtensionRegistry_AlreadyBound()
@@ -161,8 +167,9 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code bindExtensionRegistry} method throws an exception when
-     * passed a {@code null} extension registry.
+     * Ensures the
+     * {@link ComponentSurfaceDesignRegistryExtensionPointAdapter#bindExtensionRegistry}
+     * method throws an exception when passed a {@code null} extension registry.
      */
     @Test( expected = NullPointerException.class )
     public void testBindExtensionRegistry_ExtensionRegistry_Null()
@@ -171,9 +178,10 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code removed(IExtension)} method unregisters all component
-     * surface designs associated with the specified extensions from the
-     * component surface design registry.
+     * Ensures the
+     * {@link ComponentSurfaceDesignRegistryExtensionPointAdapter#removed(IExtension[])}
+     * method unregisters all component surface designs associated with the
+     * specified extensions from the component surface design registry.
      */
     @Test
     public void testRemovedFromExtension()
@@ -215,9 +223,10 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code unbindComponentSurfaceDesignRegistry} method throws an
-     * exception when passed a component surface design registry that is not
-     * bound.
+     * Ensures the
+     * {@link ComponentSurfaceDesignRegistryExtensionPointAdapter#unbindComponentSurfaceDesignRegistry}
+     * method throws an exception when passed a component surface design
+     * registry that is not bound.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testUnbindComponentSurfaceDesignRegistry_ComponentSurfaceDesignRegistry_NotBound()
@@ -228,8 +237,10 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code unbindComponentSurfaceDesignRegistry} method throws an
-     * exception when passed a {@code null} component surface design registry.
+     * Ensures the
+     * {@link ComponentSurfaceDesignRegistryExtensionPointAdapter#unbindComponentSurfaceDesignRegistry}
+     * method throws an exception when passed a {@code null} component surface
+     * design registry.
      */
     @Test( expected = NullPointerException.class )
     public void testUnbindComponentSurfaceDesignRegistry_ComponentSurfaceDesignRegistry_Null()
@@ -238,8 +249,10 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code unbindExtensionRegistry} method throws an exception
-     * when passed an extension registry that is not bound.
+     * Ensures the
+     * {@link ComponentSurfaceDesignRegistryExtensionPointAdapter#unbindExtensionRegistry}
+     * method throws an exception when passed an extension registry that is not
+     * bound.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testUnbindExtensionRegistry_ExtensionRegistry_NotBound()
@@ -250,8 +263,9 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code unbindExtensionRegistry} method throws an exception
-     * when passed a {@code null} extension registry.
+     * Ensures the
+     * {@link ComponentSurfaceDesignRegistryExtensionPointAdapter#unbindExtensionRegistry}
+     * method throws an exception when passed a {@code null} extension registry.
      */
     @Test( expected = NullPointerException.class )
     public void testUnbindExtensionRegistry_ExtensionRegistry_Null()

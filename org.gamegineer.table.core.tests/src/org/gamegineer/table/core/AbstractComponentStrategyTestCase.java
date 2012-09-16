@@ -128,8 +128,8 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     }
 
     /**
-     * Ensures the {@code getDefaultLocation} method returns a copy of the
-     * default location.
+     * Ensures the {@link IComponentStrategy#getDefaultLocation} method returns
+     * a copy of the default location.
      */
     @Test
     public void testGetDefaultLocation_ReturnValue_Copy()
@@ -143,8 +143,8 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     }
 
     /**
-     * Ensures the {@code getDefaultLocation} method does not return
-     * {@code null}.
+     * Ensures the {@link IComponentStrategy#getDefaultLocation} method does not
+     * return {@code null}.
      */
     @Test
     public void testGetDefaultLocation_ReturnValue_NonNull()
@@ -153,8 +153,8 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     }
 
     /**
-     * Ensures the {@code getDefaultOrientation} method does not return
-     * {@code null}.
+     * Ensures the {@link IComponentStrategy#getDefaultOrientation} method does
+     * not return {@code null}.
      */
     @Test
     public void testGetDefaultOrientation_ReturnValue_NonNull()
@@ -163,8 +163,8 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     }
 
     /**
-     * Ensures the {@code getDefaultOrigin} method returns a copy of the default
-     * origin.
+     * Ensures the {@link IComponentStrategy#getDefaultOrigin} method returns a
+     * copy of the default origin.
      */
     @Test
     public void testGetDefaultOrigin_ReturnValue_Copy()
@@ -178,7 +178,8 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     }
 
     /**
-     * Ensures the {@code getDefaultOrigin} method does not return {@code null}.
+     * Ensures the {@link IComponentStrategy#getDefaultOrigin} method does not
+     * return {@code null}.
      */
     @Test
     public void testGetDefaultOrigin_ReturnValue_NonNull()
@@ -187,8 +188,8 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     }
 
     /**
-     * Ensures the {@code getDefaultSurfaceDesigns} method returns a copy of the
-     * default surface designs collection.
+     * Ensures the {@link IComponentStrategy#getDefaultSurfaceDesigns} method
+     * returns a copy of the default surface designs collection.
      */
     @Test
     public void testGetDefaultSurfaceDesigns_ReturnValue_Copy()
@@ -202,8 +203,9 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     }
 
     /**
-     * Ensures the {@code getDefaultSurfaceDesigns} method returns a collection
-     * whose keys equal the supported orientations collection.
+     * Ensures the {@link IComponentStrategy#getDefaultSurfaceDesigns} method
+     * returns a collection whose keys equal the supported orientations
+     * collection.
      */
     @Test
     public void testGetDefaultSurfaceDesigns_ReturnValue_Keys_SupportedOrientations()
@@ -216,8 +218,8 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     }
 
     /**
-     * Ensures the {@code getDefaultSurfaceDesigns} method does not return
-     * {@code null}.
+     * Ensures the {@link IComponentStrategy#getDefaultSurfaceDesigns} method
+     * does not return {@code null}.
      */
     @Test
     public void testGetDefaultSurfaceDesigns_ReturnValue_NonNull()
@@ -226,8 +228,8 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     }
 
     /**
-     * Ensures the {@code getDefaultSurfaceDesigns} method returns a collection
-     * whose values are not {@code null}.
+     * Ensures the {@link IComponentStrategy#getDefaultSurfaceDesigns} method
+     * returns a collection whose values are not {@code null}.
      */
     @Test
     public void testGetDefaultSurfaceDesigns_ReturnValue_Values_NonNull()
@@ -239,7 +241,8 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     }
 
     /**
-     * Ensures the {@code getId} method does not return {@code null}.
+     * Ensures the {@link IComponentStrategy#getId} method does not return
+     * {@code null}.
      */
     @Test
     public void testGetId_ReturnValue_NonNull()
@@ -248,8 +251,8 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     }
 
     /**
-     * Ensures the {@code getSupportedOrientations} method returns an immutable
-     * collection.
+     * Ensures the {@link IComponentStrategy#getSupportedOrientations} method
+     * returns an immutable collection.
      */
     @Test
     public void testGetSupportedOrientations_ReturnValue_Immutable()
@@ -258,8 +261,8 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     }
 
     /**
-     * Ensures the {@code getSupportedOrientations} method does not return an
-     * empty collection.
+     * Ensures the {@link IComponentStrategy#getSupportedOrientations} method
+     * does not return an empty collection.
      */
     @Test
     public void testGetSupportedOrientations_ReturnValue_NonEmpty()
@@ -268,8 +271,8 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     }
 
     /**
-     * Ensures the {@code getSupportedOrientations} method does not return
-     * {@code null}.
+     * Ensures the {@link IComponentStrategy#getSupportedOrientations} method
+     * does not return {@code null}.
      */
     @Test
     public void testGetSupportedOrientations_ReturnValue_NonNull()

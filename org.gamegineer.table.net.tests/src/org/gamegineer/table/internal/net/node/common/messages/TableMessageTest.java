@@ -69,8 +69,8 @@ public final class TableMessageTest
     }
 
     /**
-     * Ensures the {@code setMemento} method throws an exception when passed a
-     * {@code null} memento.
+     * Ensures the {@link TableMessage#setMemento} method throws an exception
+     * when passed a {@code null} memento.
      */
     @Test( expected = NullPointerException.class )
     public void testSetMemento_Memento_Null()

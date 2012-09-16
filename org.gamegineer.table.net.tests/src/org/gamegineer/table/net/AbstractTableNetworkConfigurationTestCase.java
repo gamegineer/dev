@@ -83,7 +83,8 @@ public abstract class AbstractTableNetworkConfigurationTestCase
     }
 
     /**
-     * Ensures the {@code getHostName} method does not return {@code null}.
+     * Ensures the {@link ITableNetworkConfiguration#getHostName} method does
+     * not return {@code null}.
      */
     @Test
     public void testGetHostName_ReturnValue_NonNull()
@@ -92,8 +93,8 @@ public abstract class AbstractTableNetworkConfigurationTestCase
     }
 
     /**
-     * Ensures the {@code getLocalPlayerName} method does not return
-     * {@code null}.
+     * Ensures the {@link ITableNetworkConfiguration#getLocalPlayerName} method
+     * does not return {@code null}.
      */
     @Test
     public void testGetLocalPlayerName_ReturnValue_NonNull()
@@ -102,7 +103,8 @@ public abstract class AbstractTableNetworkConfigurationTestCase
     }
 
     /**
-     * Ensures the {@code getLocalTable} method does not return {@code null}.
+     * Ensures the {@link ITableNetworkConfiguration#getLocalTable} method does
+     * not return {@code null}.
      */
     @Test
     public void testGetLocalTable_ReturnValue_NonNull()
@@ -111,7 +113,8 @@ public abstract class AbstractTableNetworkConfigurationTestCase
     }
 
     /**
-     * Ensures the {@code getPassword} method does not return {@code null}.
+     * Ensures the {@link ITableNetworkConfiguration#getPassword} method does
+     * not return {@code null}.
      */
     @Test
     public void testGetPassword_ReturnValue_NonNull()

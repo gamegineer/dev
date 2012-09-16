@@ -81,8 +81,8 @@ public final class GoodbyeMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles a goodbye
-     * message.
+     * Ensures the {@link GoodbyeMessageHandler#handleMessage} method correctly
+     * handles a goodbye message.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

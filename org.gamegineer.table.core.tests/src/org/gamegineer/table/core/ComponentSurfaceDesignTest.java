@@ -50,7 +50,7 @@ public final class ComponentSurfaceDesignTest
 
     /**
      * Ensures the
-     * {@code ComponentSurfaceDesign(ComponentSurfaceDesignId, Dimension)}
+     * {@link ComponentSurfaceDesign#ComponentSurfaceDesign(ComponentSurfaceDesignId, Dimension)}
      * constructor throws an exception when passed a {@code null} identifier.
      */
     @Test( expected = NullPointerException.class )
@@ -61,7 +61,7 @@ public final class ComponentSurfaceDesignTest
 
     /**
      * Ensures the
-     * {@code ComponentSurfaceDesign(ComponentSurfaceDesignId, Dimension)}
+     * {@link ComponentSurfaceDesign#ComponentSurfaceDesign(ComponentSurfaceDesignId, Dimension)}
      * constructor makes a copy of the size.
      */
     @Test
@@ -79,7 +79,7 @@ public final class ComponentSurfaceDesignTest
 
     /**
      * Ensures the
-     * {@code ComponentSurfaceDesign(ComponentSurfaceDesignId, Dimension)}
+     * {@link ComponentSurfaceDesign#ComponentSurfaceDesign(ComponentSurfaceDesignId, Dimension)}
      * constructor throws an exception when passed a negative height.
      */
     @Test( expected = IllegalArgumentException.class )
@@ -90,7 +90,7 @@ public final class ComponentSurfaceDesignTest
 
     /**
      * Ensures the
-     * {@code ComponentSurfaceDesign(ComponentSurfaceDesignId, Dimension)}
+     * {@link ComponentSurfaceDesign#ComponentSurfaceDesign(ComponentSurfaceDesignId, Dimension)}
      * constructor throws an exception when passed a negative width.
      */
     @Test( expected = IllegalArgumentException.class )
@@ -101,7 +101,7 @@ public final class ComponentSurfaceDesignTest
 
     /**
      * Ensures the
-     * {@code ComponentSurfaceDesign(ComponentSurfaceDesignId, Dimension)}
+     * {@link ComponentSurfaceDesign#ComponentSurfaceDesign(ComponentSurfaceDesignId, Dimension)}
      * constructor throws an exception when passed a {@code null} size.
      */
     @Test( expected = NullPointerException.class )
@@ -112,7 +112,7 @@ public final class ComponentSurfaceDesignTest
 
     /**
      * Ensures the
-     * {@code ComponentSurfaceDesign(ComponentSurfaceDesignId, int, int)}
+     * {@link ComponentSurfaceDesign#ComponentSurfaceDesign(ComponentSurfaceDesignId, int, int)}
      * constructor throws an exception when passed a negative height.
      */
     @Test( expected = IllegalArgumentException.class )
@@ -123,7 +123,7 @@ public final class ComponentSurfaceDesignTest
 
     /**
      * Ensures the
-     * {@code ComponentSurfaceDesign(ComponentSurfaceDesignId, int, int)}
+     * {@link ComponentSurfaceDesign#ComponentSurfaceDesign(ComponentSurfaceDesignId, int, int)}
      * constructor throws an exception when passed a {@code null} identifier.
      */
     @Test( expected = NullPointerException.class )
@@ -134,7 +134,7 @@ public final class ComponentSurfaceDesignTest
 
     /**
      * Ensures the
-     * {@code ComponentSurfaceDesign(ComponentSurfaceDesignId, int, int)}
+     * {@link ComponentSurfaceDesign#ComponentSurfaceDesign(ComponentSurfaceDesignId, int, int)}
      * constructor throws an exception when passed a negative width.
      */
     @Test( expected = IllegalArgumentException.class )
@@ -144,7 +144,8 @@ public final class ComponentSurfaceDesignTest
     }
 
     /**
-     * Ensures the {@code getSize} method returns a copy of the size.
+     * Ensures the {@link ComponentSurfaceDesign#getSize} method returns a copy
+     * of the size.
      */
     @Test
     public void testGetSize_ReturnValue_Copy()

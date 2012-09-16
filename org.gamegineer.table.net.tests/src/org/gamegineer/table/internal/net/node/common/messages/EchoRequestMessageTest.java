@@ -69,8 +69,8 @@ public final class EchoRequestMessageTest
     }
 
     /**
-     * Ensures the {@code setContent} method throws an exception when passed a
-     * {@code null} content.
+     * Ensures the {@link EchoRequestMessage#setContent} method throws an
+     * exception when passed a {@code null} content.
      */
     @Test( expected = NullPointerException.class )
     public void testSetContent_Content_Null()

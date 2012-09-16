@@ -136,7 +136,7 @@ public final class DispatcherTest
     }
 
     /**
-     * Ensures the {@code close} method closes any event handler that is still
+     * Ensures closing the dispatcher closes any event handler that is still
      * registered when the dispatcher is closed.
      * 
      * @throws java.lang.Exception
@@ -183,8 +183,8 @@ public final class DispatcherTest
     }
 
     /**
-     * Ensures the {@code registerEventHandler} method throws an exception if
-     * the event handler channel is closed.
+     * Ensures the {@link Dispatcher#registerEventHandler} method throws an
+     * exception if the event handler channel is closed.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

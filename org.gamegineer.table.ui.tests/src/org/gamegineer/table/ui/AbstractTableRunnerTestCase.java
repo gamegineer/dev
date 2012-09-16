@@ -91,8 +91,8 @@ public abstract class AbstractTableRunnerTestCase
     }
 
     /**
-     * Ensures the {@code call} method throws an exception if the runner is no
-     * longer pristine.
+     * Ensures the {@link ITableRunner#call} method throws an exception if the
+     * runner is no longer pristine.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

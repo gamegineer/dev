@@ -56,8 +56,9 @@ public final class SortedListModelTest
     // ======================================================================
 
     /**
-     * Ensures the {@code SortedListModel(ListModel)} constructor throws an
-     * exception when passed a {@code null} list model.
+     * Ensures the
+     * {@link SortedListModel#SortedListModel(javax.swing.ListModel)}
+     * constructor throws an exception when passed a {@code null} list model.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_ListModel_Null()
@@ -66,8 +67,9 @@ public final class SortedListModelTest
     }
 
     /**
-     * Ensures the {@code SortedListModel(ListModel, Comparator)} constructor
-     * throws an exception when passed a {@code null} list model.
+     * Ensures the
+     * {@link SortedListModel#SortedListModel(javax.swing.ListModel, Comparator)}
+     * constructor throws an exception when passed a {@code null} list model.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructorFromComparator_ListModel_Null()
@@ -76,8 +78,8 @@ public final class SortedListModelTest
     }
 
     /**
-     * Ensures the {@code getElementAt} method returns the correct element for a
-     * sorted list model that uses a custom comparator.
+     * Ensures the {@link SortedListModel#getElementAt} method returns the
+     * correct element for a sorted list model that uses a custom comparator.
      */
     @Test
     public void testGetElementAt_CustomComparator()
@@ -111,8 +113,8 @@ public final class SortedListModelTest
     }
 
     /**
-     * Ensures the {@code getElementAt} method returns the correct element for a
-     * sorted list model that uses the default comparator.
+     * Ensures the {@link SortedListModel#getElementAt} method returns the
+     * correct element for a sorted list model that uses the default comparator.
      */
     @Test
     public void testGetElementAt_DefaultComparator()

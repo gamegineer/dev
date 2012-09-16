@@ -47,8 +47,8 @@ public final class CardOrientationTest
     // ======================================================================
 
     /**
-     * Ensures the {@code inverse} method returns the correct value for the
-     * {@link CardOrientation#BACK} value.
+     * Ensures the {@link CardOrientation#inverse} method returns the correct
+     * value for the {@link CardOrientation#BACK} value.
      */
     @Test
     public void testInverse_Back()
@@ -57,8 +57,8 @@ public final class CardOrientationTest
     }
 
     /**
-     * Ensures the {@code inverse} method returns the correct value for the
-     * {@link CardOrientation#FACE} value.
+     * Ensures the {@link CardOrientation#inverse} method returns the correct
+     * value for the {@link CardOrientation#FACE} value.
      */
     @Test
     public void testInverse_Face()
@@ -67,7 +67,8 @@ public final class CardOrientationTest
     }
 
     /**
-     * Ensures the {@code inverse} method supports all known enumeration values.
+     * Ensures the {@link CardOrientation#inverse} method supports all known
+     * enumeration values.
      */
     @Test
     public void testInverse_NoUnsupportedValues()

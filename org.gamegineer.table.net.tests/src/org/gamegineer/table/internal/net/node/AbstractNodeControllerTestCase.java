@@ -134,8 +134,8 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     }
 
     /**
-     * Ensures the {@code beginConnect} method throws an exception when passed a
-     * {@code null} table network configuration.
+     * Ensures the {@link INodeController#beginConnect} method throws an
+     * exception when passed a {@code null} table network configuration.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -211,8 +211,8 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     }
 
     /**
-     * Ensures the {@code endConnect} method throws an exception when passed a
-     * {@code null} asynchronous completion token.
+     * Ensures the {@link INodeController#endConnect} method throws an exception
+     * when passed a {@code null} asynchronous completion token.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -236,8 +236,8 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     }
 
     /**
-     * Ensures the {@code endDisconnect} method throws an exception when passed
-     * a {@code null} asynchronous completion token.
+     * Ensures the {@link INodeController#endDisconnect} method throws an
+     * exception when passed a {@code null} asynchronous completion token.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -261,8 +261,8 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     }
 
     /**
-     * Ensures the {@code getPlayer} method does not return {@code null} when
-     * the table network is connected.
+     * Ensures the {@link INodeController#getPlayer} method does not return
+     * {@code null} when the table network is connected.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -294,8 +294,8 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     }
 
     /**
-     * Ensures the {@code getPlayer} method returns {@code null} when the table
-     * network is disconnected.
+     * Ensures the {@link INodeController#getPlayer} method returns {@code null}
+     * when the table network is disconnected.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -316,8 +316,8 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     }
 
     /**
-     * Ensures the {@code getPlayers} method returns a copy of the player
-     * collection.
+     * Ensures the {@link INodeController#getPlayers} method returns a copy of
+     * the player collection.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -344,7 +344,8 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     }
 
     /**
-     * Ensures the {@code getPlayers} method does not return {@code null}.
+     * Ensures the {@link INodeController#getPlayers} method does not return
+     * {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -365,8 +366,8 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     }
 
     /**
-     * Ensures the {@code giveControl} method throws an exception when passed a
-     * {@code null} player name.
+     * Ensures the {@link INodeController#giveControl} method throws an
+     * exception when passed a {@code null} player name.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

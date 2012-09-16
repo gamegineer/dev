@@ -70,8 +70,8 @@ public final class BeginAuthenticationRequestMessageTest
     }
 
     /**
-     * Ensures the {@code setChallenge} method throws an exception when passed
-     * an illegal challenge that is empty.
+     * Ensures the {@link BeginAuthenticationRequestMessage#setChallenge} method
+     * throws an exception when passed an illegal challenge that is empty.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testSetChallenge_Challenge_Illegal_Empty()
@@ -80,8 +80,8 @@ public final class BeginAuthenticationRequestMessageTest
     }
 
     /**
-     * Ensures the {@code setChallenge} method throws an exception when passed a
-     * {@code null} challenge.
+     * Ensures the {@link BeginAuthenticationRequestMessage#setChallenge} method
+     * throws an exception when passed a {@code null} challenge.
      */
     @Test( expected = NullPointerException.class )
     public void testSetChallenge_Challenge_Null()
@@ -90,8 +90,8 @@ public final class BeginAuthenticationRequestMessageTest
     }
 
     /**
-     * Ensures the {@code setSalt} method throws an exception when passed an
-     * illegal salt that is empty.
+     * Ensures the {@link BeginAuthenticationRequestMessage#setSalt} method
+     * throws an exception when passed an illegal salt that is empty.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testSetSalt_Salt_Illegal_Empty()
@@ -100,8 +100,8 @@ public final class BeginAuthenticationRequestMessageTest
     }
 
     /**
-     * Ensures the {@code setSalt} method throws an exception when passed a
-     * {@code null} salt.
+     * Ensures the {@link BeginAuthenticationRequestMessage#setSalt} method
+     * throws an exception when passed a {@code null} salt.
      */
     @Test( expected = NullPointerException.class )
     public void testSetSalt_Salt_Null()

@@ -86,9 +86,10 @@ public final class ComponentStrategyRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code added(IExtension)} method registers all component
-     * strategies associated with the specified extensions with the component
-     * strategy registry.
+     * Ensures the
+     * {@link ComponentStrategyRegistryExtensionPointAdapter#added(IExtension[])}
+     * method registers all component strategies associated with the specified
+     * extensions with the component strategy registry.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -125,8 +126,10 @@ public final class ComponentStrategyRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code bindComponentStrategyRegistry} method throws an
-     * exception when the component strategy registry is already bound.
+     * Ensures the
+     * {@link ComponentStrategyRegistryExtensionPointAdapter#bindComponentStrategyRegistry}
+     * method throws an exception when the component strategy registry is
+     * already bound.
      */
     @Test( expected = IllegalStateException.class )
     public void testBindComponentStrategyRegistry_AlreadyBound()
@@ -137,8 +140,10 @@ public final class ComponentStrategyRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code bindComponentStrategyRegistry} method throws an
-     * exception when passed a {@code null} component strategy registry.
+     * Ensures the
+     * {@link ComponentStrategyRegistryExtensionPointAdapter#bindComponentStrategyRegistry}
+     * method throws an exception when passed a {@code null} component strategy
+     * registry.
      */
     @Test( expected = NullPointerException.class )
     public void testBindComponentStrategyRegistry_ComponentStrategyRegistry_Null()
@@ -147,8 +152,9 @@ public final class ComponentStrategyRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code bindExtensionRegistry} method throws an exception when
-     * the extension registry is already bound.
+     * Ensures the
+     * {@link ComponentStrategyRegistryExtensionPointAdapter#bindExtensionRegistry}
+     * method throws an exception when the extension registry is already bound.
      */
     @Test( expected = IllegalStateException.class )
     public void testBindExtensionRegistry_AlreadyBound()
@@ -159,8 +165,9 @@ public final class ComponentStrategyRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code bindExtensionRegistry} method throws an exception when
-     * passed a {@code null} extension registry.
+     * Ensures the
+     * {@link ComponentStrategyRegistryExtensionPointAdapter#bindExtensionRegistry}
+     * method throws an exception when passed a {@code null} extension registry.
      */
     @Test( expected = NullPointerException.class )
     public void testBindExtensionRegistry_ExtensionRegistry_Null()
@@ -169,9 +176,10 @@ public final class ComponentStrategyRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code removed(IExtension)} method unregisters all component
-     * strategies associated with the specified extensions from the component
-     * strategy registry.
+     * Ensures the
+     * {@link ComponentStrategyRegistryExtensionPointAdapter#removed(IExtension[])}
+     * method unregisters all component strategies associated with the specified
+     * extensions from the component strategy registry.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -212,8 +220,10 @@ public final class ComponentStrategyRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code unbindComponentStrategyRegistry} method throws an
-     * exception when passed a component strategy registry that is not bound.
+     * Ensures the
+     * {@link ComponentStrategyRegistryExtensionPointAdapter#unbindComponentStrategyRegistry}
+     * method throws an exception when passed a component strategy registry that
+     * is not bound.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testUnbindComponentStrategyRegistry_ComponentStrategyRegistry_NotBound()
@@ -224,8 +234,10 @@ public final class ComponentStrategyRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code unbindComponentStrategyRegistry} method throws an
-     * exception when passed a {@code null} component strategy registry.
+     * Ensures the
+     * {@link ComponentStrategyRegistryExtensionPointAdapter#unbindComponentStrategyRegistry}
+     * method throws an exception when passed a {@code null} component strategy
+     * registry.
      */
     @Test( expected = NullPointerException.class )
     public void testUnbindComponentStrategyRegistry_ComponentStrategyRegistry_Null()
@@ -234,8 +246,10 @@ public final class ComponentStrategyRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code unbindExtensionRegistry} method throws an exception
-     * when passed an extension registry that is not bound.
+     * Ensures the
+     * {@link ComponentStrategyRegistryExtensionPointAdapter#unbindExtensionRegistry}
+     * method throws an exception when passed an extension registry that is not
+     * bound.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testUnbindExtensionRegistry_ExtensionRegistry_NotBound()
@@ -246,8 +260,9 @@ public final class ComponentStrategyRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code unbindExtensionRegistry} method throws an exception
-     * when passed a {@code null} extension registry.
+     * Ensures the
+     * {@link ComponentStrategyRegistryExtensionPointAdapter#unbindExtensionRegistry}
+     * method throws an exception when passed a {@code null} extension registry.
      */
     @Test( expected = NullPointerException.class )
     public void testUnbindExtensionRegistry_ExtensionRegistry_Null()

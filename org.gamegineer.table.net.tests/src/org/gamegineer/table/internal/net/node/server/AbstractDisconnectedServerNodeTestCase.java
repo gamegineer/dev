@@ -67,8 +67,8 @@ public abstract class AbstractDisconnectedServerNodeTestCase<T extends IServerNo
     }
 
     /**
-     * Ensures the {@code isPlayerConnected} method throws an exception when
-     * passed a non-{@code null} player name.
+     * Ensures the {@link IServerNode#isPlayerConnected} method throws an
+     * exception when passed a non-{@code null} player name.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -89,8 +89,8 @@ public abstract class AbstractDisconnectedServerNodeTestCase<T extends IServerNo
     }
 
     /**
-     * Ensures the {@code isPlayerConnected} method throws an exception when
-     * passed a {@code null} player name.
+     * Ensures the {@link IServerNode#isPlayerConnected} method throws an
+     * exception when passed a {@code null} player name.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

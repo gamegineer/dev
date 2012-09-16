@@ -80,8 +80,8 @@ public final class RequestControlMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles a request
-     * control message.
+     * Ensures the {@link RequestControlMessageHandler#handleMessage} method
+     * correctly handles a request control message.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

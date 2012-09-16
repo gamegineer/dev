@@ -80,7 +80,8 @@ public final class MainModelEventTest
     }
 
     /**
-     * Ensures the {@code getMainModel} method does not return {@code null}.
+     * Ensures the {@link MainModelEvent#getMainModel} method does not return
+     * {@code null}.
      */
     @Test
     public void testGetMainModel_ReturnValue_NonNull()
@@ -89,8 +90,8 @@ public final class MainModelEventTest
     }
 
     /**
-     * Ensures the {@code getSource} method returns the same instance as the
-     * {@code getMainModel} method.
+     * Ensures the {@link MainModelEvent#getSource} method returns the same
+     * instance as the {@link MainModelEvent#getMainModel} method.
      */
     @Test
     public void testGetSource_ReturnValue_SameMainModel()

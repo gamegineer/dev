@@ -46,8 +46,8 @@ public final class ObjectStreamsTest
     // ======================================================================
 
     /**
-     * Ensures the {@code createPlatformObjectInputStream} method throws an
-     * exception when passed a {@code null} input stream.
+     * Ensures the {@link ObjectStreams#createPlatformObjectInputStream} method
+     * throws an exception when passed a {@code null} input stream.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -60,8 +60,8 @@ public final class ObjectStreamsTest
     }
 
     /**
-     * Ensures the {@code createPlatformObjectOutputStream} method throws an
-     * exception when passed a {@code null} output stream.
+     * Ensures the {@link ObjectStreams#createPlatformObjectOutputStream} method
+     * throws an exception when passed a {@code null} output stream.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

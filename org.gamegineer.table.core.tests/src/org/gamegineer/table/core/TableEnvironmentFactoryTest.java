@@ -48,8 +48,8 @@ public final class TableEnvironmentFactoryTest
     // ======================================================================
 
     /**
-     * Ensures the {@code createTableEnvironment} method does not return
-     * {@code null}.
+     * Ensures the {@link TableEnvironmentFactory#createTableEnvironment} method
+     * does not return {@code null}.
      */
     @Test
     public void testCreateTableEnvironment_ReturnValue_NonNull()

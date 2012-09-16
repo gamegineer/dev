@@ -71,8 +71,8 @@ public final class AbstractWizardTest
     }
 
     /**
-     * Ensures the {@code addPage} method throws an exception when passed a
-     * {@code null} page.
+     * Ensures the {@link AbstractWizard#addPage} method throws an exception
+     * when passed a {@code null} page.
      */
     @Test( expected = NullPointerException.class )
     public void testAddPage_Page_Null()

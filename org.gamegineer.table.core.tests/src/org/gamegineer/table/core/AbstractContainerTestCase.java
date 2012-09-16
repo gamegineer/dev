@@ -218,8 +218,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code addComponent} method adds a component to the
-     * container.
+     * Ensures the {@link IContainer#addComponent} method adds a component to
+     * the container.
      */
     @Test
     public void testAddComponent_AddsComponent()
@@ -234,8 +234,9 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code addComponent} method throws an exception when passed
-     * an illegal component that was created by a different table environment.
+     * Ensures the {@link IContainer#addComponent} method throws an exception
+     * when passed an illegal component that was created by a different table
+     * environment.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddComponent_Component_Illegal_CreatedByDifferentTableEnvironment()
@@ -247,8 +248,9 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code addComponent} method throws an exception when passed
-     * an illegal component that is already contained in a container.
+     * Ensures the {@link IContainer#addComponent} method throws an exception
+     * when passed an illegal component that is already contained in a
+     * container.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddComponent_Component_Illegal_Owned()
@@ -261,8 +263,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code addComponent} method throws an exception when passed a
-     * {@code null} component.
+     * Ensures the {@link IContainer#addComponent} method throws an exception
+     * when passed a {@code null} component.
      */
     @Test( expected = NullPointerException.class )
     public void testAddComponent_Component_Null()
@@ -271,8 +273,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code addComponent} method changes the location the
-     * component to reflect the container location.
+     * Ensures the {@link IContainer#addComponent} method changes the location
+     * the component to reflect the container location.
      */
     @Test
     public void testAddComponent_ChangesComponentLocation()
@@ -289,7 +291,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code addComponent} method changes the container bounds.
+     * Ensures the {@link IContainer#addComponent} method changes the container
+     * bounds.
      */
     @Test( timeout = 1000 )
     public void testAddComponent_ChangesContainerBounds()
@@ -312,7 +315,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code addComponent} method fires a component added event.
+     * Ensures the {@link IContainer#addComponent} method fires a component
+     * added event.
      */
     @Test
     public void testAddComponent_FiresComponentAddedEvent()
@@ -333,8 +337,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code addComponents} method adds components to the
-     * container.
+     * Ensures the {@link IContainer#addComponents} method adds components to
+     * the container.
      */
     @Test
     public void testAddComponents_AddsComponents()
@@ -352,9 +356,9 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code addComponents} method throws an exception when passed
-     * an illegal component collection that contains at least one component that
-     * was created by a different table environment.
+     * Ensures the {@link IContainer#addComponents} method throws an exception
+     * when passed an illegal component collection that contains at least one
+     * component that was created by a different table environment.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddComponents_Components_Illegal_ContainsComponentCreatedByDifferentTableEnvironment()
@@ -366,9 +370,9 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code addComponents} method throws an exception when passed
-     * an illegal component collection that contains at least one component
-     * already contained in a container.
+     * Ensures the {@link IContainer#addComponents} method throws an exception
+     * when passed an illegal component collection that contains at least one
+     * component already contained in a container.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddComponents_Components_Illegal_ContainsOwnedComponent()
@@ -381,8 +385,9 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code addComponents} method throws an exception when passed
-     * an illegal component collection that contains a {@code null} element.
+     * Ensures the {@link IContainer#addComponents} method throws an exception
+     * when passed an illegal component collection that contains a {@code null}
+     * element.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddComponents_Components_Illegal_ContainsNullElement()
@@ -391,8 +396,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code addComponents} method throws an exception when passed
-     * a {@code null} component collection.
+     * Ensures the {@link IContainer#addComponents} method throws an exception
+     * when passed a {@code null} component collection.
      */
     @Test( expected = NullPointerException.class )
     public void testAddComponents_Components_Null()
@@ -401,8 +406,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code addComponents} method changes the location of the
-     * components to reflect the container location.
+     * Ensures the {@link IContainer#addComponents} method changes the location
+     * of the components to reflect the container location.
      */
     @Test
     public void testAddComponents_ChangesComponentLocation()
@@ -419,7 +424,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code addComponents} method changes the container bounds.
+     * Ensures the {@link IContainer#addComponents} method changes the container
+     * bounds.
      */
     @Test( timeout = 1000 )
     public void testAddComponents_ChangesContainerBounds()
@@ -442,7 +448,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code addComponents} method fires a component added event.
+     * Ensures the {@link IContainer#addComponents} method fires a component
+     * added event.
      */
     @Test
     public void testAddComponents_FiresComponentAddedEvent()
@@ -459,8 +466,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code addContainerListener} method throws an exception when
-     * passed a {@code null} listener.
+     * Ensures the {@link IContainer#addContainerListener} method throws an
+     * exception when passed a {@code null} listener.
      */
     @Test( expected = NullPointerException.class )
     public void testAddContainerListener_Listener_Null()
@@ -469,8 +476,9 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code addContainerListener} method throws an exception when
-     * passed a listener that is present in the container listener collection.
+     * Ensures the {@link IContainer#addContainerListener} method throws an
+     * exception when passed a listener that is present in the container
+     * listener collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddContainerListener_Listener_Present()
@@ -483,7 +491,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
 
     /**
      * Ensures the component added event catches any exception thrown by the
-     * {@code componentAdded} method of a container listener.
+     * {@link IContainerListener#componentAdded} method of a container listener.
      */
     @Test
     public void testComponentAdded_CatchesListenerException()
@@ -504,7 +512,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
 
     /**
      * Ensures the component removed event catches any exception thrown by the
-     * {@code componentRemoved} method of a container listener.
+     * {@link IContainerListener#componentRemoved} method of a container
+     * listener.
      */
     @Test
     public void testComponentRemoved_CatchesListenerException()
@@ -525,7 +534,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
 
     /**
      * Ensures the container layout changed event catches any exception thrown
-     * by the {@code containerLayoutChanged} method of a container listener.
+     * by the {@link IContainerListener#containerLayoutChanged} method of a
+     * container listener.
      */
     @Test
     public void testContainerLayoutChanged_CatchesListenerException()
@@ -545,8 +555,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getComponent} method throws an exception when passed
-     * an illegal index greater than the maximum legal value.
+     * Ensures the {@link IContainer#getComponent} method throws an exception
+     * when passed an illegal index greater than the maximum legal value.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testGetComponent_Index_Illegal_GreaterThanMaximumLegalValue()
@@ -555,8 +565,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getComponent} method throws an exception when passed
-     * an illegal index less than the minimum legal value.
+     * Ensures the {@link IContainer#getComponent} method throws an exception
+     * when passed an illegal index less than the minimum legal value.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testGetComponent_Index_Illegal_LessThanMinimumLegalValue()
@@ -565,8 +575,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getComponent} method returns the correct component
-     * when passed a legal index.
+     * Ensures the {@link IContainer#getComponent} method returns the correct
+     * component when passed a legal index.
      */
     @Test
     public void testGetComponent_Index_Legal()
@@ -580,7 +590,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getComponentCount} method returns the correct value.
+     * Ensures the {@link IContainer#getComponentCount} method returns the
+     * correct value.
      */
     @Test
     public void testGetComponentCount()
@@ -595,8 +606,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getComponents} method returns a copy of the component
-     * collection.
+     * Ensures the {@link IContainer#getComponents} method returns a copy of the
+     * component collection.
      */
     @Test
     public void testGetComponents_ReturnValue_Copy()
@@ -610,7 +621,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getComponents} method does not return {@code null}.
+     * Ensures the {@link IContainer#getComponents} method does not return
+     * {@code null}.
      */
     @Test
     public void testGetComponents_ReturnValue_NonNull()
@@ -619,7 +631,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getLayout} method does not return {@code null}.
+     * Ensures the {@link IContainer#getLayout} method does not return
+     * {@code null}.
      */
     @Test
     public void testGetLayout_ReturnValue_NonNull()
@@ -628,8 +641,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeAllComponents} method does not fire a component
-     * removed event when the container is empty.
+     * Ensures the {@link IContainer#removeAllComponents} method does not fire a
+     * component removed event when the container is empty.
      */
     @Test
     public void testRemoveAllComponents_Empty_DoesNotFireComponentRemovedEvent()
@@ -644,8 +657,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeAllComponents} method returns an empty
-     * collection when the container is empty.
+     * Ensures the {@link IContainer#removeAllComponents} method returns an
+     * empty collection when the container is empty.
      */
     @Test
     public void testRemoveAllComponents_Empty_DoesNotRemoveComponents()
@@ -657,8 +670,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeAllComponents} method changes the container
-     * bounds when the container is not empty.
+     * Ensures the {@link IContainer#removeAllComponents} method changes the
+     * container bounds when the container is not empty.
      */
     @Test( timeout = 1000 )
     public void testRemoveAllComponents_NotEmpty_ChangesContainerBounds()
@@ -683,8 +696,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeAllComponents} method fires a component removed
-     * event when the container is not empty.
+     * Ensures the {@link IContainer#removeAllComponents} method fires a
+     * component removed event when the container is not empty.
      */
     @Test
     public void testRemoveAllComponents_NotEmpty_FiresComponentRemovedEvent()
@@ -711,8 +724,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeComponents} method removes all components in the
-     * container when the container is not empty.
+     * Ensures the {@link IContainer#removeComponents} method removes all
+     * components in the container when the container is not empty.
      */
     @Test
     public void testRemoveAllComponents_NotEmpty_RemovesAllComponents()
@@ -734,8 +747,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeComponent} method throws an exception when
-     * passed an illegal component that is not owned by the container.
+     * Ensures the {@link IContainer#removeComponent} method throws an exception
+     * when passed an illegal component that is not owned by the container.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveComponent_Component_Illegal_NotOwned()
@@ -744,8 +757,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeComponent} method throws an exception when
-     * passed a {@code null} component.
+     * Ensures the {@link IContainer#removeComponent} method throws an exception
+     * when passed a {@code null} component.
      */
     @Test( expected = NullPointerException.class )
     public void testRemoveComponent_Component_Null()
@@ -754,8 +767,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeComponent} method fires a component removed
-     * event.
+     * Ensures the {@link IContainer#removeComponent} method fires a component
+     * removed event.
      */
     @Test
     public void testRemoveComponent_FiresComponentRemovedEvent()
@@ -777,7 +790,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeComponent} method removes a component.
+     * Ensures the {@link IContainer#removeComponent} method removes a
+     * component.
      */
     @Test
     public void testRemoveComponent_RemovesComponent()
@@ -794,8 +808,9 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeComponents} method does not fire a component
-     * removed event when a component is absent at the specified location.
+     * Ensures the {@link IContainer#removeComponents} method does not fire a
+     * component removed event when a component is absent at the specified
+     * location.
      */
     @Test
     public void testRemoveComponents_Location_ComponentAbsent_DoesNotFireComponentRemovedEvent()
@@ -810,8 +825,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeComponents} method returns an empty collection
-     * when a component is absent at the specified location.
+     * Ensures the {@link IContainer#removeComponents} method returns an empty
+     * collection when a component is absent at the specified location.
      */
     @Test
     public void testRemoveComponents_Location_ComponentAbsent_DoesNotRemoveComponents()
@@ -823,8 +838,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeComponents} method changes the container bounds
-     * when a component is present at the specified location.
+     * Ensures the {@link IContainer#removeComponents} method changes the
+     * container bounds when a component is present at the specified location.
      */
     @Test( timeout = 1000 )
     public void testRemoveComponents_Location_ComponentPresent_ChangesContainerBounds()
@@ -850,8 +865,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeComponents} method fires a component removed
-     * event when a component is present at the specified location.
+     * Ensures the {@link IContainer#removeComponents} method fires a component
+     * removed event when a component is present at the specified location.
      */
     @Test
     public void testRemoveComponents_Location_ComponentPresent_FiresComponentRemovedEvent()
@@ -879,8 +894,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeComponents} method removes the correct
-     * components from the container when a component is present at the
+     * Ensures the {@link IContainer#removeComponents} method removes the
+     * correct components from the container when a component is present at the
      * specified location.
      */
     @Test
@@ -905,8 +920,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeComponents} method throws an exception when
-     * passed a {@code null} location.
+     * Ensures the {@link IContainer#removeComponents} method throws an
+     * exception when passed a {@code null} location.
      */
     @Test( expected = NullPointerException.class )
     public void testRemoveComponents_Location_Null()
@@ -915,9 +930,9 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeContainerListener} method throws an exception
-     * when passed a listener that is absent from the container listener
-     * collection.
+     * Ensures the {@link IContainer#removeContainerListener} method throws an
+     * exception when passed a listener that is absent from the container
+     * listener collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveContainerListener_Listener_Absent()
@@ -926,8 +941,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeContainerListener} method throws an exception
-     * when passed a {@code null} listener.
+     * Ensures the {@link IContainer#removeContainerListener} method throws an
+     * exception when passed a {@code null} listener.
      */
     @Test( expected = NullPointerException.class )
     public void testRemoveContainerListener_Listener_Null()
@@ -936,8 +951,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeContainerListener} removes a listener that is
-     * present in the container listener collection.
+     * Ensures the {@link IContainer#removeContainerListener} removes a listener
+     * that is present in the container listener collection.
      */
     @Test
     public void testRemoveContainerListener_Listener_Present()
@@ -955,8 +970,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeTopComponent} method does not fire a component
-     * removed event when the container is empty.
+     * Ensures the {@link IContainer#removeTopComponent} method does not fire a
+     * component removed event when the container is empty.
      */
     @Test
     public void testRemoveTopComponent_Empty_DoesNotFireComponentRemovedEvent()
@@ -971,8 +986,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeTopComponent} method returns {@code null} when
-     * the container is empty.
+     * Ensures the {@link IContainer#removeTopComponent} method returns
+     * {@code null} when the container is empty.
      */
     @Test
     public void testRemoveTopComponent_Empty_DoesNotRemoveComponent()
@@ -983,8 +998,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeTopComponent} method changes the container
-     * bounds when the container is not empty.
+     * Ensures the {@link IContainer#removeTopComponent} method changes the
+     * container bounds when the container is not empty.
      */
     @Test( timeout = 1000 )
     public void testRemoveTopComponent_NotEmpty_ChangesContainerBounds()
@@ -1009,8 +1024,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeTopComponent} method fires a component removed
-     * event when the container is not empty.
+     * Ensures the {@link IContainer#removeTopComponent} method fires a
+     * component removed event when the container is not empty.
      */
     @Test
     public void testRemoveTopComponent_NotEmpty_FiresComponentRemovedEvent()
@@ -1032,8 +1047,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeTopComponent} method removes the component at
-     * the top of the container when the container is not empty.
+     * Ensures the {@link IContainer#removeTopComponent} method removes the
+     * component at the top of the container when the container is not empty.
      */
     @Test
     public void testRemoveTopComponent_NotEmpty_RemovesComponent()
@@ -1049,8 +1064,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code setLayout} method changes the container bounds when
-     * appropriate.
+     * Ensures the {@link IContainer#setLayout} method changes the container
+     * bounds when appropriate.
      */
     @Test
     public void testSetLayout_ChangesContainerBounds()
@@ -1073,8 +1088,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code setLayout} method fires a container layout changed
-     * event.
+     * Ensures the {@link IContainer#setLayout} method fires a container layout
+     * changed event.
      */
     @Test
     public void testSetLayout_FiresContainerLayoutChangedEvent()
@@ -1091,8 +1106,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code setLayout} method throws an exception when passed a
-     * {@code null} layout.
+     * Ensures the {@link IContainer#setLayout} method throws an exception when
+     * passed a {@code null} layout.
      */
     @Test( expected = NullPointerException.class )
     public void testSetLayout_Layout_Null()
@@ -1101,8 +1116,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code setLocation} method changes the location of all child
-     * components to reflect the new container location.
+     * Ensures the {@link IContainer#setLocation} method changes the location of
+     * all child components to reflect the new container location.
      */
     @Test
     public void testSetLocation_ChangesChildComponentLocation()
@@ -1120,8 +1135,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code setOrigin} method changes the location of all child
-     * components to reflect the new container origin.
+     * Ensures the {@link IContainer#setOrigin} method changes the location of
+     * all child components to reflect the new container origin.
      */
     @Test
     public void testSetOrigin_ChangesChildComponentLocation()

@@ -106,8 +106,8 @@ public final class PlayersMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles a players
-     * message.
+     * Ensures the {@link PlayersMessageHandler#handleMessage} method correctly
+     * handles a players message.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

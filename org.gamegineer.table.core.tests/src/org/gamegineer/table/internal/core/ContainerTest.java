@@ -97,9 +97,9 @@ public final class ContainerTest
     }
 
     /**
-     * Ensures the {@code getChildPath} method throws an exception when passed a
-     * component that is absent from the component collection and the container
-     * is associated with a table.
+     * Ensures the {@link Container#getChildPath} method throws an exception
+     * when passed a component that is absent from the component collection and
+     * the container is associated with a table.
      */
     @Test( expected = AssertionError.class )
     public void testGetChildPath_Component_Absent_AssociatedTable()
@@ -119,9 +119,9 @@ public final class ContainerTest
     }
 
     /**
-     * Ensures the {@code getChildPath} method returns the correct value when
-     * passed a component present in the component collection and the container
-     * is associated with a table.
+     * Ensures the {@link Container#getChildPath} method returns the correct
+     * value when passed a component present in the component collection and the
+     * container is associated with a table.
      */
     @Test
     public void testGetChildPath_Component_Present_AssociatedTable()
@@ -148,8 +148,8 @@ public final class ContainerTest
     }
 
     /**
-     * Ensures the {@code getChildPath} method returns {@code null} when the
-     * container is not associated with a table.
+     * Ensures the {@link Container#getChildPath} method returns {@code null}
+     * when the container is not associated with a table.
      */
     @Test
     public void testGetChildPath_Container_NoAssociatedTable()

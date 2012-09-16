@@ -81,7 +81,8 @@ public final class ComponentEventTest
     }
 
     /**
-     * Ensures the {@code getComponent} method does not return {@code null}.
+     * Ensures the {@link ComponentEvent#getComponent} method does not return
+     * {@code null}.
      */
     @Test
     public void testGetComponent_ReturnValue_NonNull()
@@ -90,8 +91,8 @@ public final class ComponentEventTest
     }
 
     /**
-     * Ensures the {@code getSource} method returns the same instance as the
-     * {@code getComponent} method.
+     * Ensures the {@link ComponentEvent#getSource} method returns the same
+     * instance as the {@link ComponentEvent#getComponent} method.
      */
     @Test
     public void testGetSource_ReturnValue_SameComponent()

@@ -83,8 +83,8 @@ public abstract class AbstractNodeFactoryTestCase
     }
 
     /**
-     * Ensures the {@code createClientNode} method throws an exception when
-     * passed a {@code null} table network controller.
+     * Ensures the {@link INodeFactory#createClientNode} method throws an
+     * exception when passed a {@code null} table network controller.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -97,8 +97,8 @@ public abstract class AbstractNodeFactoryTestCase
     }
 
     /**
-     * Ensures the {@code createServerNode} method throws an exception when
-     * passed a {@code null} table network controller.
+     * Ensures the {@link INodeFactory#createServerNode} method throws an
+     * exception when passed a {@code null} table network controller.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

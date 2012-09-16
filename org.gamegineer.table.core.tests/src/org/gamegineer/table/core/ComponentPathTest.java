@@ -59,8 +59,8 @@ public final class ComponentPathTest
     }
 
     /**
-     * Ensures the {@code toList} method returns the correct value when the
-     * component hierarchy is one level deep.
+     * Ensures the {@link ComponentPath#toList} method returns the correct value
+     * when the component hierarchy is one level deep.
      */
     @Test
     public void testToList_OneLevelDeep()
@@ -75,8 +75,8 @@ public final class ComponentPathTest
     }
 
     /**
-     * Ensures the {@code toList} method returns the correct value when the
-     * component hierarchy is three levels deep.
+     * Ensures the {@link ComponentPath#toList} method returns the correct value
+     * when the component hierarchy is three levels deep.
      */
     @Test
     public void testToList_ThreeLevelsDeep()
@@ -95,8 +95,8 @@ public final class ComponentPathTest
     }
 
     /**
-     * Ensures the {@code toList} method returns the correct value when the
-     * component hierarchy is two levels deep.
+     * Ensures the {@link ComponentPath#toList} method returns the correct value
+     * when the component hierarchy is two levels deep.
      */
     @Test
     public void testToList_TwoLevelsDeep()

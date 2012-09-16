@@ -129,7 +129,8 @@ public abstract class AbstractMementoOriginatorTestCase
     }
 
     /**
-     * Ensures the {@code createMemento} method does not return {@code null}.
+     * Ensures the {@link IMementoOriginator#createMemento} method does not
+     * return {@code null}.
      */
     @Test
     public void testCreateMemento_ReturnValue_NonNull()
@@ -138,8 +139,9 @@ public abstract class AbstractMementoOriginatorTestCase
     }
 
     /**
-     * Ensures the {@code createMemento} and {@code setMemento} methods can save
-     * and restore the state of the memento originator.
+     * Ensures the {@link IMementoOriginator#createMemento} and
+     * {@link IMementoOriginator#setMemento} methods can save and restore the
+     * state of the memento originator.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -157,8 +159,8 @@ public abstract class AbstractMementoOriginatorTestCase
     }
 
     /**
-     * Ensures the {@code setMemento} method throws an exception when passed a
-     * {@code null} memento.
+     * Ensures the {@link IMementoOriginator#setMemento} method throws an
+     * exception when passed a {@code null} memento.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

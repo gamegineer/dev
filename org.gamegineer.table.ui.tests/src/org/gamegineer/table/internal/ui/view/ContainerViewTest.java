@@ -74,7 +74,8 @@ public final class ContainerViewTest
     }
 
     /**
-     * Ensures the {@code getBounds} method returns a copy of the bounds.
+     * Ensures the {@link ContainerView#getBounds} method returns a copy of the
+     * bounds.
      */
     @Test
     public void testGetBounds_ReturnValue_Copy()
@@ -88,7 +89,8 @@ public final class ContainerViewTest
     }
 
     /**
-     * Ensures the {@code getBounds} method does not return {@code null}.
+     * Ensures the {@link ContainerView#getBounds} method does not return
+     * {@code null}.
      */
     @Test
     public void testGetBounds_ReturnValue_NonNull()

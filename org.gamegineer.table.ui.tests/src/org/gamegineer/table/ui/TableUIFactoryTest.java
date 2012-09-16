@@ -46,8 +46,8 @@ public final class TableUIFactoryTest
     // ======================================================================
 
     /**
-     * Ensures the {@code createTableRunner} method throws an exception when
-     * passed a {@code null} table advisor.
+     * Ensures the {@link TableUIFactory#createTableRunner} method throws an
+     * exception when passed a {@code null} table advisor.
      */
     @Test( expected = NullPointerException.class )
     public void testCreateTableRunner_Advisor_Null()

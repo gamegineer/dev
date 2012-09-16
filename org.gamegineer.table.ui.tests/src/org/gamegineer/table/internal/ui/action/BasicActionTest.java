@@ -89,8 +89,8 @@ public final class BasicActionTest
     }
 
     /**
-     * Ensures the {@code addActionListener} method adds a listener that is
-     * absent from the action listener collection.
+     * Ensures the {@link BasicAction#addActionListener} method adds a listener
+     * that is absent from the action listener collection.
      */
     @Test
     public void testAddActionListener_Listener_Absent()
@@ -106,8 +106,8 @@ public final class BasicActionTest
     }
 
     /**
-     * Ensures the {@code addActionListener} method throws an exception when
-     * passed a {@code null} listener.
+     * Ensures the {@link BasicAction#addActionListener} method throws an
+     * exception when passed a {@code null} listener.
      */
     @Test( expected = NullPointerException.class )
     public void testAddActionListener_Listener_Null()
@@ -116,8 +116,9 @@ public final class BasicActionTest
     }
 
     /**
-     * Ensures the {@code addActionListener} method throws an exception when
-     * passed a listener that is present in the action listener collection.
+     * Ensures the {@link BasicAction#addActionListener} method throws an
+     * exception when passed a listener that is present in the action listener
+     * collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddActionListener_Listener_Present()
@@ -129,8 +130,8 @@ public final class BasicActionTest
     }
 
     /**
-     * Ensures the {@code addShouldEnablePredicate} method adds a predicate this
-     * is absent from the should enable predicate collection.
+     * Ensures the {@link BasicAction#addShouldEnablePredicate} method adds a
+     * predicate this is absent from the should enable predicate collection.
      */
     @SuppressWarnings( "boxing" )
     @Test
@@ -147,8 +148,8 @@ public final class BasicActionTest
     }
 
     /**
-     * Ensures the {@code addShouldEnablePredicate} method throws an exception
-     * when passed a {@code null} predicate.
+     * Ensures the {@link BasicAction#addShouldEnablePredicate} method throws an
+     * exception when passed a {@code null} predicate.
      */
     @Test( expected = NullPointerException.class )
     public void testAddShouldEnablePredicate_Predicate_Null()
@@ -157,9 +158,9 @@ public final class BasicActionTest
     }
 
     /**
-     * Ensures the {@code addShouldEnablePredicate} method throws an exception
-     * when passed a predicate that is present in the should enable predicate
-     * collection.
+     * Ensures the {@link BasicAction#addShouldEnablePredicate} method throws an
+     * exception when passed a predicate that is present in the should enable
+     * predicate collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddShouldEnablePredicate_Predicate_Present()
@@ -171,8 +172,8 @@ public final class BasicActionTest
     }
 
     /**
-     * Ensures the {@code addShouldSelectPredicate} method adds a predicate this
-     * is absent from the should select predicate collection.
+     * Ensures the {@link BasicAction#addShouldSelectPredicate} method adds a
+     * predicate this is absent from the should select predicate collection.
      */
     @SuppressWarnings( "boxing" )
     @Test
@@ -189,8 +190,8 @@ public final class BasicActionTest
     }
 
     /**
-     * Ensures the {@code addShouldSelectPredicate} method throws an exception
-     * when passed a {@code null} predicate.
+     * Ensures the {@link BasicAction#addShouldSelectPredicate} method throws an
+     * exception when passed a {@code null} predicate.
      */
     @Test( expected = NullPointerException.class )
     public void testAddShouldSelectPredicate_Predicate_Null()
@@ -199,9 +200,9 @@ public final class BasicActionTest
     }
 
     /**
-     * Ensures the {@code addShouldSelectPredicate} method throws an exception
-     * when passed a predicate that is present in the should select predicate
-     * collection.
+     * Ensures the {@link BasicAction#addShouldSelectPredicate} method throws an
+     * exception when passed a predicate that is present in the should select
+     * predicate collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddShouldSelectPredicate_Predicate_Present()
@@ -213,8 +214,9 @@ public final class BasicActionTest
     }
 
     /**
-     * Ensures the {@code removeActionListener} method throws an exception when
-     * passed a listener that is absent from the action listener collection.
+     * Ensures the {@link BasicAction#removeActionListener} method throws an
+     * exception when passed a listener that is absent from the action listener
+     * collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveActionListener_Listener_Absent()
@@ -223,8 +225,8 @@ public final class BasicActionTest
     }
 
     /**
-     * Ensures the {@code removeActionListener} method throws an exception when
-     * passed a {@code null} listener.
+     * Ensures the {@link BasicAction#removeActionListener} method throws an
+     * exception when passed a {@code null} listener.
      */
     @Test( expected = NullPointerException.class )
     public void testRemoveActionListener_Listener_Null()
@@ -233,8 +235,8 @@ public final class BasicActionTest
     }
 
     /**
-     * Ensures the {@code removeActionListener} method removes a listener that
-     * is present in the action listener collection.
+     * Ensures the {@link BasicAction#removeActionListener} method removes a
+     * listener that is present in the action listener collection.
      */
     @Test
     public void testRemoveActionListener_Listener_Present()
@@ -250,9 +252,9 @@ public final class BasicActionTest
     }
 
     /**
-     * Ensures the {@code removeShouldEnablePredicate} method throws an
-     * exception when passed a predicate that is absent from the should enable
-     * predicate collection.
+     * Ensures the {@link BasicAction#removeShouldEnablePredicate} method throws
+     * an exception when passed a predicate that is absent from the should
+     * enable predicate collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveShouldEnablePredicate_Predicate_Absent()
@@ -261,8 +263,8 @@ public final class BasicActionTest
     }
 
     /**
-     * Ensures the {@code removeShouldEnablePredicate} method throws an
-     * exception when passed a {@code null} predicate.
+     * Ensures the {@link BasicAction#removeShouldEnablePredicate} method throws
+     * an exception when passed a {@code null} predicate.
      */
     @Test( expected = NullPointerException.class )
     public void testRemoveShouldEnablePredicate_Predicate_Null()
@@ -271,8 +273,9 @@ public final class BasicActionTest
     }
 
     /**
-     * Ensures the {@code removeShouldEnablePredicate} method removes a
-     * predicate that is present in the should enable predicate collection.
+     * Ensures the {@link BasicAction#removeShouldEnablePredicate} method
+     * removes a predicate that is present in the should enable predicate
+     * collection.
      */
     @Test
     public void testRemoveShouldEnablePredicate_Predicate_Present()
@@ -288,9 +291,9 @@ public final class BasicActionTest
     }
 
     /**
-     * Ensures the {@code removeShouldSelectPredicate} method throws an
-     * exception when passed a predicate that is absent from the should select
-     * predicate collection.
+     * Ensures the {@link BasicAction#removeShouldSelectPredicate} method throws
+     * an exception when passed a predicate that is absent from the should
+     * select predicate collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveShouldSelectPredicate_Predicate_Absent()
@@ -299,8 +302,8 @@ public final class BasicActionTest
     }
 
     /**
-     * Ensures the {@code removeShouldSelectPredicate} method throws an
-     * exception when passed a {@code null} predicate.
+     * Ensures the {@link BasicAction#removeShouldSelectPredicate} method throws
+     * an exception when passed a {@code null} predicate.
      */
     @Test( expected = NullPointerException.class )
     public void testRemoveShouldSelectPredicate_Predicate_Null()
@@ -309,8 +312,9 @@ public final class BasicActionTest
     }
 
     /**
-     * Ensures the {@code removeShouldSelectPredicate} method removes a
-     * predicate that is present in the should select predicate collection.
+     * Ensures the {@link BasicAction#removeShouldSelectPredicate} method
+     * removes a predicate that is present in the should select predicate
+     * collection.
      */
     @Test
     public void testRemoveShouldSelectPredicate_Predicate_Present()

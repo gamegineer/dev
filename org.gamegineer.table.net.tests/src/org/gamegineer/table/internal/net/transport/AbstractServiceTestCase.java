@@ -82,8 +82,8 @@ public abstract class AbstractServiceTestCase
     }
 
     /**
-     * Ensures the {@code messageReceived} method throws an exception when
-     * passed a {@code null} message envelope.
+     * Ensures the {@link IService#messageReceived} method throws an exception
+     * when passed a {@code null} message envelope.
      */
     @Test( expected = NullPointerException.class )
     public void testMessageReceived_MessageEnvelope_Null()
@@ -92,8 +92,8 @@ public abstract class AbstractServiceTestCase
     }
 
     /**
-     * Ensures the {@code started} method throws an exception when passed a
-     * {@code null} context.
+     * Ensures the {@link IService#started} method throws an exception when
+     * passed a {@code null} context.
      */
     @Test( expected = NullPointerException.class )
     public void testStarted_Context_Null()

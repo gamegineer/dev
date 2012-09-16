@@ -84,8 +84,8 @@ public final class ComponentIncrementMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles a component
-     * increment message.
+     * Ensures the {@link ComponentIncrementMessageHandler#handleMessage} method
+     * correctly handles a component increment message.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

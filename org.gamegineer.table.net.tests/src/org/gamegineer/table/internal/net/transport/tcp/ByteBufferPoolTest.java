@@ -74,8 +74,8 @@ public final class ByteBufferPoolTest
     }
 
     /**
-     * Ensures the {@code takeByteBuffer} method clears an existing byte buffer
-     * before returning it.
+     * Ensures the {@link ByteBufferPool#takeByteBuffer} method clears an
+     * existing byte buffer before returning it.
      */
     @Test
     public void testTakeByteBuffer_ClearsExistingByteBuffer()
@@ -91,8 +91,8 @@ public final class ByteBufferPoolTest
     }
 
     /**
-     * Ensures the {@code takeByteBuffer} method returns an existing byte buffer
-     * when one exists in the pool.
+     * Ensures the {@link ByteBufferPool#takeByteBuffer} method returns an
+     * existing byte buffer when one exists in the pool.
      */
     @Test
     public void testTakeByteBuffer_ReturnsExistingByteBuffer()

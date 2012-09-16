@@ -84,8 +84,8 @@ public abstract class AbstractTableEnvironmentTestCase
     }
 
     /**
-     * Ensures the {@code createComponent(Object)} method throws an exception
-     * when passed a {@code null} memento.
+     * Ensures the {@link ITableEnvironment#createComponent(Object)} method
+     * throws an exception when passed a {@code null} memento.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -98,8 +98,8 @@ public abstract class AbstractTableEnvironmentTestCase
     }
 
     /**
-     * Ensures the {@code createComponent(IComponentStrategy)} method returns a
-     * component that is associated with the table environment.
+     * Ensures the {@link ITableEnvironment#createComponent(IComponentStrategy)}
+     * method returns a component that is associated with the table environment.
      */
     @Test
     public void testCreateComponentFromStrategy_ReturnValue_AssociatedWithTableEnvironment()
@@ -111,8 +111,8 @@ public abstract class AbstractTableEnvironmentTestCase
     }
 
     /**
-     * Ensures the {@code createComponent(IComponentStrategy)} method does not
-     * return {@code null}.
+     * Ensures the {@link ITableEnvironment#createComponent(IComponentStrategy)}
+     * method does not return {@code null}.
      */
     @Test
     public void testCreateComponentFromStrategy_ReturnValue_NonNull()
@@ -121,8 +121,8 @@ public abstract class AbstractTableEnvironmentTestCase
     }
 
     /**
-     * Ensures the {@code createComponent(IComponentStrategy)} method throws an
-     * exception when passed a {@code null} strategy.
+     * Ensures the {@link ITableEnvironment#createComponent(IComponentStrategy)}
+     * method throws an exception when passed a {@code null} strategy.
      */
     @Test( expected = NullPointerException.class )
     public void testCreateComponentFromStrategy_Strategy_Null()
@@ -131,8 +131,8 @@ public abstract class AbstractTableEnvironmentTestCase
     }
 
     /**
-     * Ensures the {@code createContainer} method returns a container that is
-     * associated with the table environment.
+     * Ensures the {@link ITableEnvironment#createContainer} method returns a
+     * container that is associated with the table environment.
      */
     @Test
     public void testCreateContainer_ReturnValue_AssociatedWithTableEnvironment()
@@ -144,7 +144,8 @@ public abstract class AbstractTableEnvironmentTestCase
     }
 
     /**
-     * Ensures the {@code createContainer} method does not return {@code null}.
+     * Ensures the {@link ITableEnvironment#createContainer} method does not
+     * return {@code null}.
      */
     @Test
     public void testCreateContainer_ReturnValue_NonNull()
@@ -153,8 +154,8 @@ public abstract class AbstractTableEnvironmentTestCase
     }
 
     /**
-     * Ensures the {@code createContainer} method throws an exception when
-     * passed a {@code null} strategy.
+     * Ensures the {@link ITableEnvironment#createContainer} method throws an
+     * exception when passed a {@code null} strategy.
      */
     @Test( expected = NullPointerException.class )
     public void testCreateContainer_Strategy_Null()
@@ -163,8 +164,8 @@ public abstract class AbstractTableEnvironmentTestCase
     }
 
     /**
-     * Ensures the {@code createTable} method returns a table that is associated
-     * with the table environment.
+     * Ensures the {@link ITableEnvironment#createTable} method returns a table
+     * that is associated with the table environment.
      */
     @Test
     public void testCreateTable_ReturnValue_AssociatedWithTableEnvironment()
@@ -176,7 +177,8 @@ public abstract class AbstractTableEnvironmentTestCase
     }
 
     /**
-     * Ensures the {@code getLock} method does not return {@code null}.
+     * Ensures the {@link ITableEnvironment#getLock} method does not return
+     * {@code null}.
      */
     @Test
     public void testGetLock_ReturnValue_NonNull()

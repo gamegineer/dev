@@ -93,8 +93,8 @@ public abstract class AbstractAbstractHandlerFactoryTestCase<F extends AbstractH
     }
 
     /**
-     * Ensures the {@code configureLoggingComponent} method leaves the handler
-     * encoding unchanged when the value is illegal.
+     * Ensures the {@link AbstractHandlerFactory#configureLoggingComponent}
+     * method leaves the handler encoding unchanged when the value is illegal.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -114,8 +114,8 @@ public abstract class AbstractAbstractHandlerFactoryTestCase<F extends AbstractH
     }
 
     /**
-     * Ensures the {@code configureLoggingComponent} method correctly configures
-     * the handler encoding when the value is legal.
+     * Ensures the {@link AbstractHandlerFactory#configureLoggingComponent}
+     * method correctly configures the handler encoding when the value is legal.
      */
     @Test
     public void testConfigureLoggingComponent_Encoding_Legal()
@@ -131,8 +131,8 @@ public abstract class AbstractAbstractHandlerFactoryTestCase<F extends AbstractH
     }
 
     /**
-     * Ensures the {@code configureLoggingComponent} method leaves the handler
-     * filter unchanged when the value is illegal.
+     * Ensures the {@link AbstractHandlerFactory#configureLoggingComponent}
+     * method leaves the handler filter unchanged when the value is illegal.
      */
     @Test
     public void testConfigureLoggingComponent_Filter_Illegal()
@@ -149,8 +149,8 @@ public abstract class AbstractAbstractHandlerFactoryTestCase<F extends AbstractH
     }
 
     /**
-     * Ensures the {@code configureLoggingComponent} method correctly configures
-     * the handler filter when the value is legal.
+     * Ensures the {@link AbstractHandlerFactory#configureLoggingComponent}
+     * method correctly configures the handler filter when the value is legal.
      */
     @Test
     public void testConfigureLoggingComponent_Filter_Legal()
@@ -174,8 +174,8 @@ public abstract class AbstractAbstractHandlerFactoryTestCase<F extends AbstractH
     }
 
     /**
-     * Ensures the {@code configureLoggingComponent} method leaves the handler
-     * formatter unchanged when the value is illegal.
+     * Ensures the {@link AbstractHandlerFactory#configureLoggingComponent}
+     * method leaves the handler formatter unchanged when the value is illegal.
      */
     @Test
     public void testConfigureLoggingComponent_Formatter_Illegal()
@@ -192,8 +192,9 @@ public abstract class AbstractAbstractHandlerFactoryTestCase<F extends AbstractH
     }
 
     /**
-     * Ensures the {@code configureLoggingComponent} method correctly configures
-     * the handler formatter when the value is legal.
+     * Ensures the {@link AbstractHandlerFactory#configureLoggingComponent}
+     * method correctly configures the handler formatter when the value is
+     * legal.
      */
     @Test
     public void testConfigureLoggingComponent_Formatter_Legal()
@@ -209,8 +210,8 @@ public abstract class AbstractAbstractHandlerFactoryTestCase<F extends AbstractH
     }
 
     /**
-     * Ensures the {@code configureLoggingComponent} method leaves the handler
-     * level unchanged when the value is illegal.
+     * Ensures the {@link AbstractHandlerFactory#configureLoggingComponent}
+     * method leaves the handler level unchanged when the value is illegal.
      */
     @Test
     public void testConfigureLoggingComponent_Level_Illegal()
@@ -227,8 +228,8 @@ public abstract class AbstractAbstractHandlerFactoryTestCase<F extends AbstractH
     }
 
     /**
-     * Ensures the {@code configureLoggingComponent} method correctly configures
-     * the handler level when the value is legal.
+     * Ensures the {@link AbstractHandlerFactory#configureLoggingComponent}
+     * method correctly configures the handler level when the value is legal.
      */
     @Test
     public void testConfigureLoggingComponent_Level_Legal()

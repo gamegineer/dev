@@ -75,8 +75,8 @@ public final class RunnableTaskTest
     }
 
     /**
-     * Ensures the {@code setDescription} method throws an exception when passed
-     * a {@code null} description.
+     * Ensures the {@link RunnableTask#setDescription} method throws an
+     * exception when passed a {@code null} description.
      */
     @Test( expected = NullPointerException.class )
     public void testSetDescription_Description_Null()

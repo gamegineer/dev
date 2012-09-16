@@ -69,8 +69,8 @@ public final class GiveControlMessageTest
     }
 
     /**
-     * Ensures the {@code setPlayerName} method throws an exception when passed
-     * a {@code null} player name.
+     * Ensures the {@link GiveControlMessage#setPlayerName} method throws an
+     * exception when passed a {@code null} player name.
      */
     @Test( expected = NullPointerException.class )
     public void testSetPlayerName_PlayerName_Null()

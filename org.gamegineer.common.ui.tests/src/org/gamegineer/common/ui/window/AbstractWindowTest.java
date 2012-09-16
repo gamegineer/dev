@@ -77,8 +77,8 @@ public final class AbstractWindowTest
     }
 
     /**
-     * Ensures the {@code configureShell} method throws an exception when passed
-     * a {@code null} shell.
+     * Ensures the {@link AbstractWindow#configureShell} method throws an
+     * exception when passed a {@code null} shell.
      */
     @Test( expected = NullPointerException.class )
     public void testConfigureShell_Shell_Null()
@@ -87,8 +87,8 @@ public final class AbstractWindowTest
     }
 
     /**
-     * Ensures the {@code createContent} method throws an exception when passed
-     * a {@code null} parent.
+     * Ensures the {@link AbstractWindow#createContent} method throws an
+     * exception when passed a {@code null} parent.
      */
     @Test( expected = NullPointerException.class )
     public void testCreateContent_Parent_Null()
@@ -97,8 +97,8 @@ public final class AbstractWindowTest
     }
 
     /**
-     * Ensures the {@code getInitialLocation} method throws an exception when
-     * passed a {@code null} initial size.
+     * Ensures the {@link AbstractWindow#getInitialLocation} method throws an
+     * exception when passed a {@code null} initial size.
      */
     @Test( expected = NullPointerException.class )
     public void testGetInitialLocation_InitialSize_Null()

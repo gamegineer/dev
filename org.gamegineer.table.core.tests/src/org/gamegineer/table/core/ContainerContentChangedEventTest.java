@@ -101,7 +101,8 @@ public final class ContainerContentChangedEventTest
     }
 
     /**
-     * Ensures the {@code getComponent} method does not return {@code null}.
+     * Ensures the {@link ContainerContentChangedEvent#getComponent} method does
+     * not return {@code null}.
      */
     @Test
     public void testGetComponent_ReturnValue_NonNull()

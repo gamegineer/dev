@@ -50,9 +50,9 @@ public final class ObjectUtilsTest
     // ======================================================================
 
     /**
-     * Ensures the {@code equals} method returns {@code true} when the first
-     * object is not {@code null} and the second object is not {@code null} and
-     * the objects are equal.
+     * Ensures the {@link ObjectUtils#equals(Object, Object)} method returns
+     * {@code true} when the first object is not {@code null} and the second
+     * object is not {@code null} and the objects are equal.
      */
     @Test
     public void testEquals_Obj1_NonNull_Obj2_NonNull_Equal()
@@ -63,9 +63,9 @@ public final class ObjectUtilsTest
     }
 
     /**
-     * Ensures the {@code equals} method returns {@code false} when the first
-     * object is not {@code null} and the second object is not {@code null} and
-     * the objects are not equal.
+     * Ensures the {@link ObjectUtils#equals(Object, Object)} method returns
+     * {@code false} when the first object is not {@code null} and the second
+     * object is not {@code null} and the objects are not equal.
      */
     @Test
     public void testEquals_Obj1_NonNull_Obj2_NonNull_Unequal()
@@ -74,8 +74,9 @@ public final class ObjectUtilsTest
     }
 
     /**
-     * Ensures the {@code equals} method returns {@code false} when the first
-     * object is not {@code null} and the second object is {@code null}.
+     * Ensures the {@link ObjectUtils#equals(Object, Object)} method returns
+     * {@code false} when the first object is not {@code null} and the second
+     * object is {@code null}.
      */
     @Test
     public void testEquals_Obj1_NonNull_Obj2_Null()
@@ -84,8 +85,9 @@ public final class ObjectUtilsTest
     }
 
     /**
-     * Ensures the {@code equals} method returns {@code false} when the first
-     * object is {@code null} and the second object is not {@code null}.
+     * Ensures the {@link ObjectUtils#equals(Object, Object)} method returns
+     * {@code false} when the first object is {@code null} and the second object
+     * is not {@code null}.
      */
     @Test
     public void testEquals_Obj1_Null_Obj2_NonNull()
@@ -94,8 +96,9 @@ public final class ObjectUtilsTest
     }
 
     /**
-     * Ensures the {@code equals} method returns {@code true} when the first
-     * object is {@code null} and the second object is {@code null}.
+     * Ensures the {@link ObjectUtils#equals(Object, Object)} method returns
+     * {@code true} when the first object is {@code null} and the second object
+     * is {@code null}.
      */
     @Test
     public void testEquals_Obj1_Null_Obj2_Null()
@@ -104,8 +107,8 @@ public final class ObjectUtilsTest
     }
 
     /**
-     * Ensures the {@code hashCode} method returns the correct value when the
-     * object is not {@code null}.
+     * Ensures the {@link ObjectUtils#hashCode(Object)} method returns the
+     * correct value when the object is not {@code null}.
      */
     @Test
     public void testHashCode_Obj_NonNull()
@@ -119,8 +122,8 @@ public final class ObjectUtilsTest
     }
 
     /**
-     * Ensures the {@code hashCode} method returns the correct value when the
-     * object is {@code null}.
+     * Ensures the {@link ObjectUtils#hashCode(Object)} method returns the
+     * correct value when the object is {@code null}.
      */
     @Test
     public void testHashCode_Obj_Null()
@@ -129,8 +132,8 @@ public final class ObjectUtilsTest
     }
 
     /**
-     * Ensures the {@code toString} method returns the correct value when the
-     * object is not {@code null}.
+     * Ensures the {@link ObjectUtils#toString(Object)} method returns the
+     * correct value when the object is not {@code null}.
      */
     @Test
     public void testToString_Obj_NonNull()
@@ -144,8 +147,8 @@ public final class ObjectUtilsTest
     }
 
     /**
-     * Ensures the {@code toString} method returns the correct value when the
-     * object is {@code null}.
+     * Ensures the {@link ObjectUtils#toString(Object)} method returns the
+     * correct value when the object is {@code null}.
      */
     @Test
     public void testToString_Obj_Null()

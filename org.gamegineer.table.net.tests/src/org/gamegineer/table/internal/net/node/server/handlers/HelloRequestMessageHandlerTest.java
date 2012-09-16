@@ -88,9 +88,9 @@ public final class HelloRequestMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles a hello
-     * request message in the case when the client specifies a supported
-     * protocol version.
+     * Ensures the {@link HelloRequestMessageHandler#handleMessage} method
+     * correctly handles a hello request message in the case when the client
+     * specifies a supported protocol version.
      */
     @Test
     public void testHandleMessage_HelloRequestMessage_SupportedProtocolVersion()
@@ -119,9 +119,9 @@ public final class HelloRequestMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles a hello
-     * request message in the case when the client specifies an unsupported
-     * protocol version.
+     * Ensures the {@link HelloRequestMessageHandler#handleMessage} method
+     * correctly handles a hello request message in the case when the client
+     * specifies an unsupported protocol version.
      */
     @Test
     public void testHandleMessage_HelloRequestMessage_UnsupportedProtocolVersion()

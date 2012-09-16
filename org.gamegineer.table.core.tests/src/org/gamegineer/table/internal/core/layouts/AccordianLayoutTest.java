@@ -105,7 +105,8 @@ public final class AccordianLayoutTest
     }
 
     /**
-     * Ensures the {@code getOffset} method returns a copy of the offset.
+     * Ensures the {@link AccordianLayout#getOffset} method returns a copy of
+     * the offset.
      */
     @Test
     public void testGetOffset_ReturnValue_Copy()
@@ -121,8 +122,8 @@ public final class AccordianLayoutTest
     }
 
     /**
-     * Ensures the {@code layout} method correctly lays out the child components
-     * of the container.
+     * Ensures the {@link AccordianLayout#layout} method correctly lays out the
+     * child components of the container.
      */
     @Test
     public void testLayout()

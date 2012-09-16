@@ -47,8 +47,8 @@ public final class TaskUtilsTest
     // ======================================================================
 
     /**
-     * Ensures the {@code launderThrowable} method throws an exception when
-     * passed a checked exception.
+     * Ensures the {@link TaskUtils#launderThrowable} method throws an exception
+     * when passed a checked exception.
      */
     @Test( expected = IllegalStateException.class )
     public void testLaunderThrowable_Throwable_Checked()
@@ -57,8 +57,8 @@ public final class TaskUtilsTest
     }
 
     /**
-     * Ensures the {@code launderThrowable} method throws an exception when
-     * passed an error.
+     * Ensures the {@link TaskUtils#launderThrowable} method throws an exception
+     * when passed an error.
      */
     @Test( expected = Error.class )
     public void testLaunderThrowable_Throwable_Error()
@@ -67,8 +67,8 @@ public final class TaskUtilsTest
     }
 
     /**
-     * Ensures the {@code launderThrowable} method throws an exception when
-     * passed a {@code null} cause.
+     * Ensures the {@link TaskUtils#launderThrowable} method throws an exception
+     * when passed a {@code null} cause.
      */
     @Test( expected = IllegalStateException.class )
     public void testLaunderThrowable_Throwable_Null()
@@ -77,8 +77,8 @@ public final class TaskUtilsTest
     }
 
     /**
-     * Ensures the {@code launderThrowable} method returns the correct value
-     * when passed an unchecked exception.
+     * Ensures the {@link TaskUtils#launderThrowable} method returns the correct
+     * value when passed an unchecked exception.
      */
     @Test
     public void testLaunderThrowable_Throwable_Unchecked()

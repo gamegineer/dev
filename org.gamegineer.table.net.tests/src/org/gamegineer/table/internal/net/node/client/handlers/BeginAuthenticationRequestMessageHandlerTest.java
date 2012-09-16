@@ -87,8 +87,9 @@ public final class BeginAuthenticationRequestMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles a begin
-     * authentication request message.
+     * Ensures the
+     * {@link BeginAuthenticationRequestMessageHandler#handleMessage} method
+     * correctly handles a begin authentication request message.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

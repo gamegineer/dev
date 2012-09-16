@@ -147,8 +147,8 @@ public final class AuthenticatorTest
     }
 
     /**
-     * Ensures the {@code createResponse} method throws an exception when passed
-     * a {@code null} challenge.
+     * Ensures the {@link Authenticator#createResponse} method throws an
+     * exception when passed a {@code null} challenge.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -161,8 +161,8 @@ public final class AuthenticatorTest
     }
 
     /**
-     * Ensures the {@code createResponse} method throws an exception when passed
-     * a {@code null} password.
+     * Ensures the {@link Authenticator#createResponse} method throws an
+     * exception when passed a {@code null} password.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -175,8 +175,8 @@ public final class AuthenticatorTest
     }
 
     /**
-     * Ensures the {@code createResponse} method throws an exception when passed
-     * a {@code null} salt.
+     * Ensures the {@link Authenticator#createResponse} method throws an
+     * exception when passed a {@code null} salt.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

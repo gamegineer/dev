@@ -71,8 +71,8 @@ public final class AbstractDialogPageTest
     }
 
     /**
-     * Ensures the {@code createContent} method throws an exception when passed
-     * a {@code null} parent.
+     * Ensures the {@link AbstractDialogPage#createContent} method throws an
+     * exception when passed a {@code null} parent.
      */
     @Test( expected = NullPointerException.class )
     public void testCreateContent_Parent_Null()
@@ -81,8 +81,8 @@ public final class AbstractDialogPageTest
     }
 
     /**
-     * Ensures the {@code setButtonLayoutData} method throws an exception when
-     * passed a {@code null} button.
+     * Ensures the {@link AbstractDialogPage#setButtonLayoutData} method throws
+     * an exception when passed a {@code null} button.
      */
     @Test( expected = NullPointerException.class )
     public void testSetButtonLayoutData_Button_Null()

@@ -107,7 +107,8 @@ public final class TableNetworkConfigurationTest
     }
 
     /**
-     * Ensures the {@code getPassword} method returns a copy of the password.
+     * Ensures the {@link TableNetworkConfiguration#getPassword} method returns
+     * a copy of the password.
      */
     @Test
     public void testGetPassword_ReturnValue_Copy()

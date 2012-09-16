@@ -151,8 +151,8 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     }
 
     /**
-     * Ensures the {@code addComponentModelListener} method adds a listener that
-     * is absent from the component model listener collection.
+     * Ensures the {@link ComponentModel#addComponentModelListener} method adds
+     * a listener that is absent from the component model listener collection.
      */
     @Test
     public void testAddComponentModelListener_Listener_Absent()
@@ -169,8 +169,8 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     }
 
     /**
-     * Ensures the {@code addComponentModelListener} method throws an exception
-     * when passed a {@code null} listener.
+     * Ensures the {@link ComponentModel#addComponentModelListener} method
+     * throws an exception when passed a {@code null} listener.
      */
     @Test( expected = NullPointerException.class )
     public void testAddComponentModelListener_Listener_Null()
@@ -179,9 +179,9 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     }
 
     /**
-     * Ensures the {@code addComponentModelListener} method throws an exception
-     * when passed a listener that is present in the component model listener
-     * collection.
+     * Ensures the {@link ComponentModel#addComponentModelListener} method
+     * throws an exception when passed a listener that is present in the
+     * component model listener collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddComponentModelListener_Listener_Present()
@@ -250,8 +250,8 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
 
     /**
      * Ensures the component bounds changed event catches any exception thrown
-     * by the {@code componentBoundsChanged} method of a component model
-     * listener.
+     * by the {@link IComponentModelListener#componentBoundsChanged} method of a
+     * component model listener.
      */
     @Test
     public void testComponentBoundsChanged_CatchesListenerException()
@@ -272,7 +272,8 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
 
     /**
      * Ensures the component changed event catches any exception thrown by the
-     * {@code componentChanged} method of a component model listener.
+     * {@link IComponentModelListener#componentChanged} method of a component
+     * model listener.
      */
     @Test
     public void testComponentChanged_CatchesListenerException()
@@ -293,8 +294,8 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
 
     /**
      * Ensures the component model focus changed event catches any exception
-     * thrown by the {@code componentModelFocusChanged} method of a component
-     * model listener.
+     * thrown by the {@link IComponentModelListener#componentModelFocusChanged}
+     * method of a component model listener.
      */
     @Test
     public void testComponentModelFocusChanged_CatchesListenerException()
@@ -315,8 +316,8 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
 
     /**
      * Ensures the component orientation changed event catches any exception
-     * thrown by the {@code componentOrientationChanged} method of a component
-     * model listener.
+     * thrown by the {@link IComponentModelListener#componentOrientationChanged}
+     * method of a component model listener.
      */
     @Test
     public void testComponentOrientationChanged_CatchesListenerException()
@@ -337,8 +338,9 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
 
     /**
      * Ensures the component surface design changed event catches any exception
-     * thrown by the {@code componentSurfaceDesignChanged} method of a component
-     * model listener.
+     * thrown by the
+     * {@link IComponentModelListener#componentSurfaceDesignChanged} method of a
+     * component model listener.
      */
     @Test
     public void testComponentSurfaceDesignChanged_CatchesListenerException()
@@ -358,7 +360,8 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     }
 
     /**
-     * Ensures the {@code getComponent} method does not return {@code null}.
+     * Ensures the {@link ComponentModel#getComponent} method does not return
+     * {@code null}.
      */
     @Test
     public void testGetComponent_ReturnValue_NonNull()
@@ -367,9 +370,9 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     }
 
     /**
-     * Ensures the {@code removeComponentModelListener} method throws an
-     * exception when passed a listener that is absent from the component model
-     * listener collection.
+     * Ensures the {@link ComponentModel#removeComponentModelListener} method
+     * throws an exception when passed a listener that is absent from the
+     * component model listener collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveComponentModelListener_Listener_Absent()
@@ -378,8 +381,8 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     }
 
     /**
-     * Ensures the {@code removeComponentModelListener} method throws an
-     * exception when passed a {@code null} listener.
+     * Ensures the {@link ComponentModel#removeComponentModelListener} method
+     * throws an exception when passed a {@code null} listener.
      */
     @Test( expected = NullPointerException.class )
     public void testRemoveComponentModelListener_Listener_Null()
@@ -388,8 +391,8 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     }
 
     /**
-     * Ensures the {@code removeComponentModelListener} removes a listener that
-     * is present in the component model listener collection.
+     * Ensures the {@link ComponentModel#removeComponentModelListener} removes a
+     * listener that is present in the component model listener collection.
      */
     @Test
     public void testRemoveComponentModelListener_Listener_Present()
@@ -407,8 +410,8 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     }
 
     /**
-     * Ensures the {@code setFocused} method fires a component model focus
-     * changed event after the component model gained the focus.
+     * Ensures the {@link ComponentModel#setFocused} method fires a component
+     * model focus changed event after the component model gained the focus.
      */
     @Test
     public void testSetFocused_GainedFocus_FiresComponentModelFocusChangedEvent()
@@ -424,8 +427,8 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     }
 
     /**
-     * Ensures the {@code setFocused} method fires a component model focus
-     * changed event after the component model lost the focus.
+     * Ensures the {@link ComponentModel#setFocused} method fires a component
+     * model focus changed event after the component model lost the focus.
      */
     @Test
     public void testSetFocused_LostFocus_FiresComponentModelFocusChangedEvent()

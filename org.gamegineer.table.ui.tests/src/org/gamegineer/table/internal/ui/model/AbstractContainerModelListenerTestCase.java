@@ -84,8 +84,8 @@ public abstract class AbstractContainerModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code componentModelAdded} method throws an exception when
-     * passed a {@code null} event.
+     * Ensures the {@link IContainerModelListener#componentModelAdded} method
+     * throws an exception when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
     public void testComponentModelAdded_Event_Null()
@@ -94,8 +94,8 @@ public abstract class AbstractContainerModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code componentModelRemoved} method throws an exception when
-     * passed a {@code null} event.
+     * Ensures the {@link IContainerModelListener#componentModelRemoved} method
+     * throws an exception when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
     public void testComponentModelRemoved_Event_Null()
@@ -104,8 +104,8 @@ public abstract class AbstractContainerModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code containerLayoutChanged} method throws an exception
-     * when passed a {@code null} event.
+     * Ensures the {@link IContainerModelListener#containerLayoutChanged} method
+     * throws an exception when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
     public void testContainerLayoutChanged_Event_Null()

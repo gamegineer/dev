@@ -71,8 +71,8 @@ public final class FramePreferencesTest
     }
 
     /**
-     * Ensures the {@code getLocation} method returns a copy of the frame
-     * location.
+     * Ensures the {@link FramePreferences#getLocation} method returns a copy of
+     * the frame location.
      */
     @Test
     public void testGetLocation_ReturnValue_Copy()
@@ -88,7 +88,8 @@ public final class FramePreferencesTest
     }
 
     /**
-     * Ensures the {@code getSize} method returns a copy of the frame size.
+     * Ensures the {@link FramePreferences#getSize} method returns a copy of the
+     * frame size.
      */
     @Test
     public void testGetSize_ReturnValue_Copy()
@@ -104,8 +105,8 @@ public final class FramePreferencesTest
     }
 
     /**
-     * Ensures the {@code setLocation} method makes a copy of the frame
-     * location.
+     * Ensures the {@link FramePreferences#setLocation} method makes a copy of
+     * the frame location.
      */
     @Test
     public void testSetLocation_Location_Copy()
@@ -121,7 +122,8 @@ public final class FramePreferencesTest
     }
 
     /**
-     * Ensures the {@code setSize} method makes a copy of the frame size.
+     * Ensures the {@link FramePreferences#setSize} method makes a copy of the
+     * frame size.
      */
     @Test
     public void testSetSize_Size_Copy()

@@ -91,8 +91,8 @@ public final class MementoUtilsTest
     }
 
     /**
-     * Ensures the {@code getAttribute} method throws an exception when the
-     * attribute is absent.
+     * Ensures the {@link MementoUtils#getAttribute} method throws an exception
+     * when the attribute is absent.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -105,8 +105,8 @@ public final class MementoUtilsTest
     }
 
     /**
-     * Ensures the {@code getAttribute} method returns the attribute value when
-     * the attribute is present.
+     * Ensures the {@link MementoUtils#getAttribute} method returns the
+     * attribute value when the attribute is present.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -121,8 +121,8 @@ public final class MementoUtilsTest
     }
 
     /**
-     * Ensures the {@code getAttribute} method throws an exception when the
-     * attribute is present but is {@code null}.
+     * Ensures the {@link MementoUtils#getAttribute} method throws an exception
+     * when the attribute is present but is {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -135,8 +135,8 @@ public final class MementoUtilsTest
     }
 
     /**
-     * Ensures the {@code getAttribute} method throws an exception when the
-     * attribute is present but is of the wrong type.
+     * Ensures the {@link MementoUtils#getAttribute} method throws an exception
+     * when the attribute is present but is of the wrong type.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -149,8 +149,8 @@ public final class MementoUtilsTest
     }
 
     /**
-     * Ensures the {@code hasAttribute} method returns {@code false} when the
-     * attribute is absent.
+     * Ensures the {@link MementoUtils#hasAttribute} method returns
+     * {@code false} when the attribute is absent.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -163,8 +163,8 @@ public final class MementoUtilsTest
     }
 
     /**
-     * Ensures the {@code hasAttribute} method returns {@code true} when the
-     * attribute is present.
+     * Ensures the {@link MementoUtils#hasAttribute} method returns {@code true}
+     * when the attribute is present.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

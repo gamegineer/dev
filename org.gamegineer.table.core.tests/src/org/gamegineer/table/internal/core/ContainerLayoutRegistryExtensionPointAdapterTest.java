@@ -86,9 +86,10 @@ public final class ContainerLayoutRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code added(IExtension)} method registers all container
-     * layouts associated with the specified extensions with the container
-     * layout registry.
+     * Ensures the
+     * {@link ContainerLayoutRegistryExtensionPointAdapter#added(IExtension[])}
+     * method registers all container layouts associated with the specified
+     * extensions with the container layout registry.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -125,8 +126,10 @@ public final class ContainerLayoutRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code bindContainerLayoutRegistry} method throws an
-     * exception when the container layout registry is already bound.
+     * Ensures the
+     * {@link ContainerLayoutRegistryExtensionPointAdapter#bindContainerLayoutRegistry}
+     * method throws an exception when the container layout registry is already
+     * bound.
      */
     @Test( expected = IllegalStateException.class )
     public void testBindContainerLayoutRegistry_AlreadyBound()
@@ -137,8 +140,10 @@ public final class ContainerLayoutRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code bindContainerLayoutRegistry} method throws an
-     * exception when passed a {@code null} container layout registry.
+     * Ensures the
+     * {@link ContainerLayoutRegistryExtensionPointAdapter#bindContainerLayoutRegistry}
+     * method throws an exception when passed a {@code null} container layout
+     * registry.
      */
     @Test( expected = NullPointerException.class )
     public void testBindContainerLayoutRegistry_ContainerLayoutRegistry_Null()
@@ -147,8 +152,9 @@ public final class ContainerLayoutRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code bindExtensionRegistry} method throws an exception when
-     * the extension registry is already bound.
+     * Ensures the
+     * {@link ContainerLayoutRegistryExtensionPointAdapter#bindExtensionRegistry}
+     * method throws an exception when the extension registry is already bound.
      */
     @Test( expected = IllegalStateException.class )
     public void testBindExtensionRegistry_AlreadyBound()
@@ -159,8 +165,9 @@ public final class ContainerLayoutRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code bindExtensionRegistry} method throws an exception when
-     * passed a {@code null} extension registry.
+     * Ensures the
+     * {@link ContainerLayoutRegistryExtensionPointAdapter#bindExtensionRegistry}
+     * method throws an exception when passed a {@code null} extension registry.
      */
     @Test( expected = NullPointerException.class )
     public void testBindExtensionRegistry_ExtensionRegistry_Null()
@@ -169,9 +176,10 @@ public final class ContainerLayoutRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code removed(IExtension)} method unregisters all container
-     * layouts associated with the specified extensions from the container
-     * layout registry.
+     * Ensures the
+     * {@link ContainerLayoutRegistryExtensionPointAdapter#removed(IExtension[])}
+     * method unregisters all container layouts associated with the specified
+     * extensions from the container layout registry.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -212,8 +220,10 @@ public final class ContainerLayoutRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code unbindContainerLayoutRegistry} method throws an
-     * exception when passed a container layout registry that is not bound.
+     * Ensures the
+     * {@link ContainerLayoutRegistryExtensionPointAdapter#unbindContainerLayoutRegistry}
+     * method throws an exception when passed a container layout registry that
+     * is not bound.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testUnbindContainerLayoutRegistry_ContainerLayoutRegistry_NotBound()
@@ -224,8 +234,10 @@ public final class ContainerLayoutRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code unbindContainerLayoutRegistry} method throws an
-     * exception when passed a {@code null} container layout registry.
+     * Ensures the
+     * {@link ContainerLayoutRegistryExtensionPointAdapter#unbindContainerLayoutRegistry}
+     * method throws an exception when passed a {@code null} container layout
+     * registry.
      */
     @Test( expected = NullPointerException.class )
     public void testUnbindContainerLayoutRegistry_ContainerLayoutRegistry_Null()
@@ -234,8 +246,10 @@ public final class ContainerLayoutRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code unbindExtensionRegistry} method throws an exception
-     * when passed an extension registry that is not bound.
+     * Ensures the
+     * {@link ContainerLayoutRegistryExtensionPointAdapter#unbindExtensionRegistry}
+     * method throws an exception when passed an extension registry that is not
+     * bound.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testUnbindExtensionRegistry_ExtensionRegistry_NotBound()
@@ -246,8 +260,9 @@ public final class ContainerLayoutRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the {@code unbindExtensionRegistry} method throws an exception
-     * when passed a {@code null} extension registry.
+     * Ensures the
+     * {@link ContainerLayoutRegistryExtensionPointAdapter#unbindExtensionRegistry}
+     * method throws an exception when passed a {@code null} extension registry.
      */
     @Test( expected = NullPointerException.class )
     public void testUnbindExtensionRegistry_ExtensionRegistry_Null()

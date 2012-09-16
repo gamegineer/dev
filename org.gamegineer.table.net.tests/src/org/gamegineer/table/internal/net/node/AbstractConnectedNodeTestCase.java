@@ -188,8 +188,8 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
     }
 
     /**
-     * Ensures the {@code bindRemoteNode} method adds the remote node when the
-     * remote node is absent from the bound remote nodes collection.
+     * Ensures the {@link INode#bindRemoteNode} method adds the remote node when
+     * the remote node is absent from the bound remote nodes collection.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -216,8 +216,8 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
     }
 
     /**
-     * Ensures the {@code bindRemoteNode} method throws an exception when passed
-     * a {@code null} remote node.
+     * Ensures the {@link INode#bindRemoteNode} method throws an exception when
+     * passed a {@code null} remote node.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -238,8 +238,8 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
     }
 
     /**
-     * Ensures the {@code bindRemoteNode} method throws an exception when the
-     * remote node is present in the bound remote nodes collection.
+     * Ensures the {@link INode#bindRemoteNode} method throws an exception when
+     * the remote node is present in the bound remote nodes collection.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -264,7 +264,8 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
     }
 
     /**
-     * Ensures the {@code getPassword} method returns a copy of the password.
+     * Ensures the {@link INode#getPassword} method returns a copy of the
+     * password.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -291,7 +292,8 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
     }
 
     /**
-     * Ensures the {@code getPassword} method does not return {@code null}.
+     * Ensures the {@link INode#getPassword} method does not return {@code null}
+     * .
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -312,7 +314,8 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
     }
 
     /**
-     * Ensures the {@code getPlayerName} method does not return {@code null}.
+     * Ensures the {@link INode#getPlayerName} method does not return
+     * {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -333,8 +336,8 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
     }
 
     /**
-     * Ensures the {@code unbindRemoteNode} method throws an exception when the
-     * remote node is absent from the bound remote nodes collection.
+     * Ensures the {@link INode#unbindRemoteNode} method throws an exception
+     * when the remote node is absent from the bound remote nodes collection.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -358,8 +361,8 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
     }
 
     /**
-     * Ensures the {@code unbindRemoteNode} method throws an exception when
-     * passed a {@code null} remote node.
+     * Ensures the {@link INode#unbindRemoteNode} method throws an exception
+     * when passed a {@code null} remote node.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -380,8 +383,8 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
     }
 
     /**
-     * Ensures the {@code unbindRemoteNode} method removes the remote node when
-     * the remote node is present in the bound remote nodes collection.
+     * Ensures the {@link INode#unbindRemoteNode} method removes the remote node
+     * when the remote node is present in the bound remote nodes collection.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

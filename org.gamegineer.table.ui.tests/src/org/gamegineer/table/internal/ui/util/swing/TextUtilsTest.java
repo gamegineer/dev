@@ -67,8 +67,8 @@ public final class TextUtilsTest
     }
 
     /**
-     * Ensures the {@code shortenPath} method correctly shortens an absolute
-     * path that has two path components.
+     * Ensures the {@link TextUtils#shortenPath} method correctly shortens an
+     * absolute path that has two path components.
      */
     @Test
     public void testShortenPath_Components_2()
@@ -80,8 +80,8 @@ public final class TextUtilsTest
     }
 
     /**
-     * Ensures the {@code shortenPath} method correctly shortens an absolute
-     * path that has three path components.
+     * Ensures the {@link TextUtils#shortenPath} method correctly shortens an
+     * absolute path that has three path components.
      */
     @Test
     public void testShortenPath_Components_3()
@@ -95,8 +95,8 @@ public final class TextUtilsTest
     }
 
     /**
-     * Ensures the {@code shortenPath} method correctly shortens an absolute
-     * path that has four path components.
+     * Ensures the {@link TextUtils#shortenPath} method correctly shortens an
+     * absolute path that has four path components.
      */
     @Test
     public void testShortenPath_Components_4()
@@ -111,8 +111,8 @@ public final class TextUtilsTest
     }
 
     /**
-     * Ensures the {@code shortenPath} method correctly shortens an absolute
-     * path that has five path components.
+     * Ensures the {@link TextUtils#shortenPath} method correctly shortens an
+     * absolute path that has five path components.
      */
     @Test
     public void testShortenPath_Components_5()
@@ -128,8 +128,8 @@ public final class TextUtilsTest
     }
 
     /**
-     * Ensures the {@code shortenPath} method correctly shortens an absolute
-     * path that has six path components.
+     * Ensures the {@link TextUtils#shortenPath} method correctly shortens an
+     * absolute path that has six path components.
      */
     @Test
     public void testShortenPath_Components_6()
@@ -146,8 +146,8 @@ public final class TextUtilsTest
     }
 
     /**
-     * Ensures the {@code shortenPath} method correctly shortens an absolute
-     * path that has seven path components.
+     * Ensures the {@link TextUtils#shortenPath} method correctly shortens an
+     * absolute path that has seven path components.
      */
     @Test
     public void testShortenPath_Components_7()
@@ -165,8 +165,8 @@ public final class TextUtilsTest
     }
 
     /**
-     * Ensures the {@code shortenPath} method throws an exception when passed a
-     * negative maximum length.
+     * Ensures the {@link TextUtils#shortenPath} method throws an exception when
+     * passed a negative maximum length.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testShortenPath_MaxLength_Negative()
@@ -175,8 +175,8 @@ public final class TextUtilsTest
     }
 
     /**
-     * Ensures the {@code shortenPath} method throws an exception when passed a
-     * {@code null} path.
+     * Ensures the {@link TextUtils#shortenPath} method throws an exception when
+     * passed a {@code null} path.
      */
     @Test( expected = NullPointerException.class )
     public void testShortenPath_Path_Null()

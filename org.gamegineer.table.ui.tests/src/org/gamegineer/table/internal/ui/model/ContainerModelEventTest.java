@@ -82,8 +82,8 @@ public final class ContainerModelEventTest
     }
 
     /**
-     * Ensures the {@code getContainerModel} method does not return {@code null}
-     * .
+     * Ensures the {@link ContainerModelEvent#getContainerModel} method does not
+     * return {@code null} .
      */
     @Test
     public void testGetContainerModel_ReturnValue_NonNull()
@@ -92,8 +92,8 @@ public final class ContainerModelEventTest
     }
 
     /**
-     * Ensures the {@code getSource} method returns the same instance as the
-     * {@code getContainerModel} method.
+     * Ensures the {@link ContainerModelEvent#getSource} method returns the same
+     * instance as the {@link ContainerModelEvent#getContainerModel} method.
      */
     @Test
     public void testGetSource_ReturnValue_SameContainerModel()

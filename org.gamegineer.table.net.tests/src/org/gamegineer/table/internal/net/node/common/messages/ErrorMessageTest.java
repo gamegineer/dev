@@ -69,8 +69,8 @@ public final class ErrorMessageTest
     }
 
     /**
-     * Ensures the {@code setError} method throws an exception when passed a
-     * {@code null} error.
+     * Ensures the {@link ErrorMessage#setError} method throws an exception when
+     * passed a {@code null} error.
      */
     @Test( expected = NullPointerException.class )
     public void testSetError_Error_Null()

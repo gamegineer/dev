@@ -88,8 +88,8 @@ public abstract class AbstractContainerLayoutRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getContainerLayout} method returns the correct value
-     * when passed an identifier that is absent.
+     * Ensures the {@link IContainerLayoutRegistry#getContainerLayout} method
+     * returns the correct value when passed an identifier that is absent.
      */
     @Test
     public void testGetContainerLayout_Id_Absent()
@@ -98,8 +98,8 @@ public abstract class AbstractContainerLayoutRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getContainerLayout} method throws an exception when
-     * passed a {@code null} identifier.
+     * Ensures the {@link IContainerLayoutRegistry#getContainerLayout} method
+     * throws an exception when passed a {@code null} identifier.
      */
     @Test( expected = NullPointerException.class )
     public void testGetContainerLayout_Id_Null()
@@ -108,8 +108,8 @@ public abstract class AbstractContainerLayoutRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getContainerLayout} method returns the correct value
-     * when passed an identifier that is present.
+     * Ensures the {@link IContainerLayoutRegistry#getContainerLayout} method
+     * returns the correct value when passed an identifier that is present.
      */
     @Test
     public void testGetContainerLayout_Id_Present()
@@ -123,8 +123,8 @@ public abstract class AbstractContainerLayoutRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getContainerLayouts} method returns a copy of the
-     * registered container layout collection.
+     * Ensures the {@link IContainerLayoutRegistry#getContainerLayouts} method
+     * returns a copy of the registered container layout collection.
      */
     @Test
     public void testGetContainerLayouts_ReturnValue_Copy()
@@ -138,8 +138,8 @@ public abstract class AbstractContainerLayoutRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getContainerLayouts} method returns a snapshot of the
-     * registered container layout collection.
+     * Ensures the {@link IContainerLayoutRegistry#getContainerLayouts} method
+     * returns a snapshot of the registered container layout collection.
      */
     @Test
     public void testGetContainerLayouts_ReturnValue_Snapshot()
@@ -151,8 +151,8 @@ public abstract class AbstractContainerLayoutRegistryTestCase
     }
 
     /**
-     * Ensures the {@code registerContainerLayout} method throws an exception
-     * when passed a {@code null} container layout.
+     * Ensures the {@link IContainerLayoutRegistry#registerContainerLayout}
+     * method throws an exception when passed a {@code null} container layout.
      */
     @Test( expected = NullPointerException.class )
     public void testRegisterContainerLayout_ContainerLayout_Null()
@@ -161,8 +161,9 @@ public abstract class AbstractContainerLayoutRegistryTestCase
     }
 
     /**
-     * Ensures the {@code registerContainerLayout} method throws an exception
-     * when a container layout with the same identifier is already registered.
+     * Ensures the {@link IContainerLayoutRegistry#registerContainerLayout}
+     * method throws an exception when a container layout with the same
+     * identifier is already registered.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testRegisterContainerLayout_ContainerLayout_Registered()
@@ -174,8 +175,8 @@ public abstract class AbstractContainerLayoutRegistryTestCase
     }
 
     /**
-     * Ensures the {@code registerContainerLayout} method registers an
-     * unregistered container layout.
+     * Ensures the {@link IContainerLayoutRegistry#registerContainerLayout}
+     * method registers an unregistered container layout.
      */
     @Test
     public void testRegisterContainerLayout_ContainerLayout_Unregistered()
@@ -188,8 +189,8 @@ public abstract class AbstractContainerLayoutRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterContainerLayout} method throws an exception
-     * when passed a {@code null} container layout.
+     * Ensures the {@link IContainerLayoutRegistry#unregisterContainerLayout}
+     * method throws an exception when passed a {@code null} container layout.
      */
     @Test( expected = NullPointerException.class )
     public void testUnregisterContainerLayout_ContainerLayout_Null()
@@ -198,9 +199,10 @@ public abstract class AbstractContainerLayoutRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterContainerLayout} method throws an exception
-     * when passed a container layout whose identifier was previously registered
-     * but by a different container layout instance.
+     * Ensures the {@link IContainerLayoutRegistry#unregisterContainerLayout}
+     * method throws an exception when passed a container layout whose
+     * identifier was previously registered but by a different container layout
+     * instance.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testUnregisterContainerLayout_ContainerLayout_Registered_DifferentInstance()
@@ -214,8 +216,8 @@ public abstract class AbstractContainerLayoutRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterContainerLayout} method unregisters a
-     * previously registered container layout.
+     * Ensures the {@link IContainerLayoutRegistry#unregisterContainerLayout}
+     * method unregisters a previously registered container layout.
      */
     @Test
     public void testUnregisterContainerLayout_ContainerLayout_Registered_SameInstance()
@@ -231,8 +233,9 @@ public abstract class AbstractContainerLayoutRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterContainerLayout} method throws an exception
-     * when passed a container layout that was not previously registered.
+     * Ensures the {@link IContainerLayoutRegistry#unregisterContainerLayout}
+     * method throws an exception when passed a container layout that was not
+     * previously registered.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testUnregisterContainerLayout_ContainerLayout_Unregistered()

@@ -109,8 +109,8 @@ public final class ExtensibleEnumTest
     }
 
     /**
-     * Ensures the {@code valueOf} method throws an exception when passed an
-     * illegal name.
+     * Ensures the {@link ExtensibleEnum#valueOf} method throws an exception
+     * when passed an illegal name.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testValueOf_Name_Illegal()
@@ -119,8 +119,8 @@ public final class ExtensibleEnumTest
     }
 
     /**
-     * Ensures the {@code valueOf} method returns the correct value when passed
-     * a legal name.
+     * Ensures the {@link ExtensibleEnum#valueOf} method returns the correct
+     * value when passed a legal name.
      */
     @Test
     public void testValueOf_Name_Legal()
@@ -131,8 +131,8 @@ public final class ExtensibleEnumTest
     }
 
     /**
-     * Ensures the {@code valueOf} method throws an exception when passed a
-     * {@code null} name.
+     * Ensures the {@link ExtensibleEnum#valueOf} method throws an exception
+     * when passed a {@code null} name.
      */
     @Test( expected = NullPointerException.class )
     public void testValueOf_Name_Null()
@@ -141,8 +141,8 @@ public final class ExtensibleEnumTest
     }
 
     /**
-     * Ensures the {@code valueOf} method throws an exception when passed a
-     * {@code null} type.
+     * Ensures the {@link ExtensibleEnum#valueOf} method throws an exception
+     * when passed a {@code null} type.
      */
     @Test( expected = NullPointerException.class )
     public void testValueOf_Type_Null()
@@ -151,7 +151,8 @@ public final class ExtensibleEnumTest
     }
 
     /**
-     * Ensures the {@code values} method returns the correct values.
+     * Ensures the {@link ExtensibleEnum#values} method returns the correct
+     * values.
      */
     @Test
     public void testValues()
@@ -168,8 +169,8 @@ public final class ExtensibleEnumTest
     }
 
     /**
-     * Ensures the {@code values} method throws an exception when passed a
-     * {@code null} type.
+     * Ensures the {@link ExtensibleEnum#values} method throws an exception when
+     * passed a {@code null} type.
      */
     @Test( expected = NullPointerException.class )
     public void testValues_Type_Null()

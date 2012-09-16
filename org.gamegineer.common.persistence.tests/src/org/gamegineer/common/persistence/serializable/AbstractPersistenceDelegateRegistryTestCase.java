@@ -90,8 +90,9 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getPersistenceDelegate(Class<?>)} method returns the
-     * correct value when passed a type that is absent.
+     * Ensures the
+     * {@link IPersistenceDelegateRegistry#getPersistenceDelegate(Class)} method
+     * returns the correct value when passed a type that is absent.
      */
     @Test
     public void testGetPersistenceDelegateForType_Type_Absent()
@@ -100,8 +101,9 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getPersistenceDelegate(Class<?>)} method throws an
-     * exception when passed a {@code null} type.
+     * Ensures the
+     * {@link IPersistenceDelegateRegistry#getPersistenceDelegate(Class)} method
+     * throws an exception when passed a {@code null} type.
      */
     @Test( expected = NullPointerException.class )
     public void testGetPersistenceDelegateForType_Type_Null()
@@ -110,8 +112,9 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getPersistenceDelegate(Class<?>)} method returns the
-     * correct value when passed a type that is present.
+     * Ensures the
+     * {@link IPersistenceDelegateRegistry#getPersistenceDelegate(Class)} method
+     * returns the correct value when passed a type that is present.
      */
     @Test
     public void testGetPersistenceDelegateForType_Type_Present()
@@ -126,8 +129,9 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getPersistenceDelegate(String)} method returns the
-     * correct value when passed a type name that is absent.
+     * Ensures the
+     * {@link IPersistenceDelegateRegistry#getPersistenceDelegate(String)}
+     * method returns the correct value when passed a type name that is absent.
      */
     @Test
     public void testGetPersistenceDelegateForTypeName_TypeName_Absent()
@@ -136,8 +140,9 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getPersistenceDelegate(String)} method throws an
-     * exception when passed a {@code null} type name.
+     * Ensures the
+     * {@link IPersistenceDelegateRegistry#getPersistenceDelegate(String)}
+     * method throws an exception when passed a {@code null} type name.
      */
     @Test( expected = NullPointerException.class )
     public void testGetPersistenceDelegateForTypeName_TypeName_Null()
@@ -146,8 +151,9 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getPersistenceDelegate(String)} method returns the
-     * correct value when passed a type name that is present.
+     * Ensures the
+     * {@link IPersistenceDelegateRegistry#getPersistenceDelegate(String)}
+     * method returns the correct value when passed a type name that is present.
      */
     @Test
     public void testGetPersistenceDelegateForTypeName_TypeName_Present()
@@ -162,8 +168,8 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getTypeNames} method returns a copy of the registered
-     * type name collection.
+     * Ensures the {@link IPersistenceDelegateRegistry#getTypeNames} method
+     * returns a copy of the registered type name collection.
      */
     @Test
     public void testGetTypeNames_ReturnValue_Copy()
@@ -177,8 +183,8 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getTypeNames} method returns a snapshot of the
-     * registered type name collection.
+     * Ensures the {@link IPersistenceDelegateRegistry#getTypeNames} method
+     * returns a snapshot of the registered type name collection.
      */
     @Test
     public void testGetTypeNames_ReturnValue_Snapshot()
@@ -190,8 +196,9 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     }
 
     /**
-     * Ensures the {@code registerPersistenceDelegate} method throws an
-     * exception when passed a {@code null} persistence delegate.
+     * Ensures the
+     * {@link IPersistenceDelegateRegistry#registerPersistenceDelegate} method
+     * throws an exception when passed a {@code null} persistence delegate.
      */
     @Test( expected = NullPointerException.class )
     public void testRegisterPersistenceDelegate_PersistenceDelegate_Null()
@@ -200,8 +207,9 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     }
 
     /**
-     * Ensures the {@code registerPersistenceDelegate} method throws an
-     * exception when passed a {@code null} type.
+     * Ensures the
+     * {@link IPersistenceDelegateRegistry#registerPersistenceDelegate} method
+     * throws an exception when passed a {@code null} type.
      */
     @Test( expected = NullPointerException.class )
     public void testRegisterPersistenceDelegate_Type_Null()
@@ -210,9 +218,10 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     }
 
     /**
-     * Ensures the {@code registerPersistenceDelegate} method throws an
-     * exception when a persistence delegate is already registered for the
-     * specified type.
+     * Ensures the
+     * {@link IPersistenceDelegateRegistry#registerPersistenceDelegate} method
+     * throws an exception when a persistence delegate is already registered for
+     * the specified type.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testRegisterPersistenceDelegate_Type_Registered()
@@ -224,8 +233,9 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     }
 
     /**
-     * Ensures the {@code registerPersistenceDelegate} method registers a
-     * persistence delegate whose type is unregistered.
+     * Ensures the
+     * {@link IPersistenceDelegateRegistry#registerPersistenceDelegate} method
+     * registers a persistence delegate whose type is unregistered.
      */
     @Test
     public void testRegisterPersistenceDelegate_Type_Unregistered()
@@ -239,8 +249,9 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterPersistenceDelegate} method throws an
-     * exception when passed a {@code null} persistence delegate.
+     * Ensures the
+     * {@link IPersistenceDelegateRegistry#unregisterPersistenceDelegate} method
+     * throws an exception when passed a {@code null} persistence delegate.
      */
     @Test( expected = NullPointerException.class )
     public void testUnregisterPersistenceDelegate_PersistenceDelegate_Null()
@@ -249,8 +260,9 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterPersistenceDelegate} method throws an
-     * exception when passed a {@code null} type.
+     * Ensures the
+     * {@link IPersistenceDelegateRegistry#unregisterPersistenceDelegate} method
+     * throws an exception when passed a {@code null} type.
      */
     @Test( expected = NullPointerException.class )
     public void testUnregisterPersistenceDelegate_Type_Null()
@@ -259,9 +271,10 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterPersistenceDelegate} method throws an
-     * exception when passed a type that was previously registered but with a
-     * different persistence delegate instance.
+     * Ensures the
+     * {@link IPersistenceDelegateRegistry#unregisterPersistenceDelegate} method
+     * throws an exception when passed a type that was previously registered but
+     * with a different persistence delegate instance.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testUnregisterPersistenceDelegate_Type_Registered_DifferentInstance()
@@ -273,8 +286,9 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterPersistenceDelegate} method unregisters a
-     * persistence delegate for a previously registered type.
+     * Ensures the
+     * {@link IPersistenceDelegateRegistry#unregisterPersistenceDelegate} method
+     * unregisters a persistence delegate for a previously registered type.
      */
     @Test
     public void testUnregisterPersistenceDelegate_Type_Registered_SameInstance()
@@ -292,8 +306,10 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterPersistenceDelegate} method throws an
-     * exception when passed a type that was not previously registered.
+     * Ensures the
+     * {@link IPersistenceDelegateRegistry#unregisterPersistenceDelegate} method
+     * throws an exception when passed a type that was not previously
+     * registered.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testUnregisterPersistenceDelegate_Type_Unregistered()

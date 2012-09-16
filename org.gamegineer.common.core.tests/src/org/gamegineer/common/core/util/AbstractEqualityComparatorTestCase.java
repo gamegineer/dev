@@ -156,8 +156,8 @@ public abstract class AbstractEqualityComparatorTestCase<T>
     }
 
     /**
-     * Ensures the {@code equals} method correctly indicates two equal but
-     * different instances are equal.
+     * Ensures the {@link IEqualityComparator#equals(Object, Object)} method
+     * correctly indicates two equal but different instances are equal.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -174,8 +174,8 @@ public abstract class AbstractEqualityComparatorTestCase<T>
     }
 
     /**
-     * Ensures the {@code equals} method correctly indicates two {@code null}
-     * instances are equal.
+     * Ensures the {@link IEqualityComparator#equals(Object, Object)} method
+     * correctly indicates two {@code null} instances are equal.
      */
     @Test
     public void testEquals_Equal_Null()
@@ -184,8 +184,8 @@ public abstract class AbstractEqualityComparatorTestCase<T>
     }
 
     /**
-     * Ensures the {@code equals} method correctly indicates an instance is
-     * equal to itself.
+     * Ensures the {@link IEqualityComparator#equals(Object, Object)} method
+     * correctly indicates an instance is equal to itself.
      */
     @Test
     public void testEquals_Equal_Same()
@@ -194,8 +194,8 @@ public abstract class AbstractEqualityComparatorTestCase<T>
     }
 
     /**
-     * Ensures the {@code equals} method correctly indicates two unequal
-     * instances are unequal.
+     * Ensures the {@link IEqualityComparator#equals(Object, Object)} method
+     * correctly indicates two unequal instances are unequal.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -211,8 +211,9 @@ public abstract class AbstractEqualityComparatorTestCase<T>
     }
 
     /**
-     * Ensures the {@code equals} method throws an exception when passed a first
-     * instance that has a different class than that expected by the comparator.
+     * Ensures the {@link IEqualityComparator#equals(Object, Object)} method
+     * throws an exception when passed a first instance that has a different
+     * class than that expected by the comparator.
      */
     @Test( expected = ClassCastException.class )
     public void testEquals_Unequal_DifferentClass_Obj1()
@@ -228,9 +229,9 @@ public abstract class AbstractEqualityComparatorTestCase<T>
     }
 
     /**
-     * Ensures the {@code equals} method throws an exception when passed a
-     * second instance that has a different class than that expected by the
-     * comparator.
+     * Ensures the {@link IEqualityComparator#equals(Object, Object)} method
+     * throws an exception when passed a second instance that has a different
+     * class than that expected by the comparator.
      */
     @Test( expected = ClassCastException.class )
     public void testEquals_Unequal_DifferentClass_Obj2()
@@ -246,8 +247,9 @@ public abstract class AbstractEqualityComparatorTestCase<T>
     }
 
     /**
-     * Ensures the {@code equals} method correctly handles a {@code null} first
-     * instance when the second instance is not {@code null}.
+     * Ensures the {@link IEqualityComparator#equals(Object, Object)} method
+     * correctly handles a {@code null} first instance when the second instance
+     * is not {@code null}.
      */
     @Test
     public void testEquals_Unequal_Null_Obj1()
@@ -256,8 +258,9 @@ public abstract class AbstractEqualityComparatorTestCase<T>
     }
 
     /**
-     * Ensures the {@code equals} method correctly handles a {@code null} second
-     * instance when the first instance is not {@code null}.
+     * Ensures the {@link IEqualityComparator#equals(Object, Object)} method
+     * correctly handles a {@code null} second instance when the first instance
+     * is not {@code null}.
      */
     @Test
     public void testEquals_Unequal_Null_Obj2()
@@ -266,8 +269,8 @@ public abstract class AbstractEqualityComparatorTestCase<T>
     }
 
     /**
-     * Ensures the {@code hashCode} method returns the same hash code for equal
-     * but different instances.
+     * Ensures the {@link IEqualityComparator#hashCode(Object)} method returns
+     * the same hash code for equal but different instances.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -283,8 +286,8 @@ public abstract class AbstractEqualityComparatorTestCase<T>
     }
 
     /**
-     * Ensures the {@code hashCode} method returns zero for a {@code null}
-     * instance.
+     * Ensures the {@link IEqualityComparator#hashCode(Object)} method returns
+     * zero for a {@code null} instance.
      */
     @Test
     public void testHashCode_Equal_Null()
@@ -293,8 +296,8 @@ public abstract class AbstractEqualityComparatorTestCase<T>
     }
 
     /**
-     * Ensures the {@code hashCode} method returns a different hash code for
-     * unequal instances.
+     * Ensures the {@link IEqualityComparator#hashCode(Object)} method returns a
+     * different hash code for unequal instances.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -310,8 +313,9 @@ public abstract class AbstractEqualityComparatorTestCase<T>
     }
 
     /**
-     * Ensures the {@code hashCode} method throws an exception when passed an
-     * instance that has a different class than that expected by the comparator.
+     * Ensures the {@link IEqualityComparator#hashCode(Object)} method throws an
+     * exception when passed an instance that has a different class than that
+     * expected by the comparator.
      */
     @Test( expected = ClassCastException.class )
     public void testHashCode_Unequal_DifferentClass()

@@ -83,8 +83,8 @@ public abstract class AbstractPredicateTestCase
     }
 
     /**
-     * Ensures the {@code evaluate} method does not throw an exception when
-     * passed a {@code null} object.
+     * Ensures the {@link IPredicate#evaluate} method does not throw an
+     * exception when passed a {@code null} object.
      */
     @Test
     public void testEvaluate_Object_Null()

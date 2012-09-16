@@ -313,8 +313,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code addComponentListener} method throws an exception when
-     * passed a {@code null} listener.
+     * Ensures the {@link IComponent#addComponentListener} method throws an
+     * exception when passed a {@code null} listener.
      */
     @Test( expected = NullPointerException.class )
     public void testAddComponentListener_Listener_Null()
@@ -323,8 +323,9 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code addComponentListener} method throws an exception when
-     * passed a listener that is present in the component listener collection.
+     * Ensures the {@link IComponent#addComponentListener} method throws an
+     * exception when passed a listener that is present in the component
+     * listener collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddComponentListener_Listener_Present()
@@ -337,7 +338,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
 
     /**
      * Ensures the component bounds changed event catches any exception thrown
-     * by the {@code componentBoundsChanged} method of a component listener.
+     * by the {@link IComponentListener#componentBoundsChanged} method of a
+     * component listener.
      */
     @Test
     public void testComponentBoundsChanged_CatchesListenerException()
@@ -358,8 +360,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
 
     /**
      * Ensures the component orientation changed event catches any exception
-     * thrown by the {@code componentOrientationChanged} method of a component
-     * listener.
+     * thrown by the {@link IComponentListener#componentOrientationChanged}
+     * method of a component listener.
      */
     @Test
     public void testComponentOrientationChanged_CatchesListenerException()
@@ -380,8 +382,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
 
     /**
      * Ensures the component surface designs changed event catches any exception
-     * thrown by the {@code componentSurfaceDesignChanged} method of a component
-     * listener.
+     * thrown by the {@link IComponentListener#componentSurfaceDesignChanged}
+     * method of a component listener.
      */
     @Test
     public void testComponentSurfaceDesignChanged_CatchesListenerException()
@@ -401,8 +403,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getBounds} method returns the bounds of the surface
-     * associated with the current orientation.
+     * Ensures the {@link IComponent#getBounds} method returns the bounds of the
+     * surface associated with the current orientation.
      */
     @Test
     public void testGetBounds_MatchesCurrentOrientationSurface()
@@ -420,7 +422,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getBounds} method returns a copy of the bounds.
+     * Ensures the {@link IComponent#getBounds} method returns a copy of the
+     * bounds.
      */
     @Test
     public void testGetBounds_ReturnValue_Copy()
@@ -434,7 +437,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getBounds} method does not return {@code null}.
+     * Ensures the {@link IComponent#getBounds} method does not return
+     * {@code null}.
      */
     @Test
     public void testGetBounds_ReturnValue_NonNull()
@@ -443,8 +447,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getBounds} method returns the correct value after a
-     * translation.
+     * Ensures the {@link IComponent#getBounds} method returns the correct value
+     * after a translation.
      */
     @Test
     public void testGetBounds_Translate()
@@ -460,7 +464,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getLocation} method returns a copy of the location.
+     * Ensures the {@link IComponent#getLocation} method returns a copy of the
+     * location.
      */
     @Test
     public void testGetLocation_ReturnValue_Copy()
@@ -474,7 +479,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getLocation} method does not return {@code null}.
+     * Ensures the {@link IComponent#getLocation} method does not return
+     * {@code null}.
      */
     @Test
     public void testGetLocation_ReturnValue_NonNull()
@@ -483,8 +489,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getLocation} method returns the correct value after a
-     * translation.
+     * Ensures the {@link IComponent#getLocation} method returns the correct
+     * value after a translation.
      */
     @Test
     public void testGetLocation_Translate()
@@ -498,7 +504,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getOrientation} method does not return {@code null}.
+     * Ensures the {@link IComponent#getOrientation} method does not return
+     * {@code null}.
      */
     @Test
     public void testGetOrientation_ReturnValue_NonNull()
@@ -507,7 +514,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getOrigin} method returns a copy of the origin.
+     * Ensures the {@link IComponent#getOrigin} method returns a copy of the
+     * origin.
      */
     @Test
     public void testGetOrigin_ReturnValue_Copy()
@@ -521,7 +529,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getOrigin} method does not return {@code null}.
+     * Ensures the {@link IComponent#getOrigin} method does not return
+     * {@code null}.
      */
     @Test
     public void testGetOrigin_ReturnValue_NonNull()
@@ -530,8 +539,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getOrigin} method returns the correct value after a
-     * translation.
+     * Ensures the {@link IComponent#getOrigin} method returns the correct value
+     * after a translation.
      */
     @Test
     public void testGetOrigin_Translate()
@@ -545,8 +554,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getPath} method returns the correct value when the
-     * component is associated with a table.
+     * Ensures the {@link IComponent#getPath} method returns the correct value
+     * when the component is associated with a table.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -584,8 +593,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getPath} method returns {@code null} when the
-     * component is not associated with a table and has no parent.
+     * Ensures the {@link IComponent#getPath} method returns {@code null} when
+     * the component is not associated with a table and has no parent.
      */
     @Test
     public void testGetPath_NoAssociatedTable_NoParent()
@@ -595,8 +604,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getPath} method returns {@code null} when the
-     * component is not associated with a table but has a parent.
+     * Ensures the {@link IComponent#getPath} method returns {@code null} when
+     * the component is not associated with a table but has a parent.
      */
     @Test
     public void testGetPath_NoAssociatedTable_WithParent()
@@ -609,8 +618,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getSize} method returns the size of the surface
-     * associated with the current orientation.
+     * Ensures the {@link IComponent#getSize} method returns the size of the
+     * surface associated with the current orientation.
      */
     @Test
     public void testGetSize_MatchesCurrentOrientationSurface()
@@ -628,7 +637,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getSize} method returns a copy of the size.
+     * Ensures the {@link IComponent#getSize} method returns a copy of the size.
      */
     @Test
     public void testGetSize_ReturnValue_Copy()
@@ -642,7 +651,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getSize} method does not return {@code null}.
+     * Ensures the {@link IComponent#getSize} method does not return
+     * {@code null}.
      */
     @Test
     public void testGetSize_ReturnValue_NonNull()
@@ -651,8 +661,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getSize} method returns the correct value after a
-     * translation.
+     * Ensures the {@link IComponent#getSize} method returns the correct value
+     * after a translation.
      */
     @Test
     public void testGetSize_Translate()
@@ -667,8 +677,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getSupportedOrientations} method returns an immutable
-     * collection.
+     * Ensures the {@link IComponent#getSupportedOrientations} method returns an
+     * immutable collection.
      */
     @Test
     public void testGetSupportedOrientations_ReturnValue_Immutable()
@@ -677,8 +687,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getSupportedOrientations} method does not return an
-     * empty collection.
+     * Ensures the {@link IComponent#getSupportedOrientations} method does not
+     * return an empty collection.
      */
     @Test
     public void testGetSupportedOrientations_ReturnValue_NonEmpty()
@@ -687,8 +697,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getSupportedOrientations} method does not return
-     * {@code null}.
+     * Ensures the {@link IComponent#getSupportedOrientations} method does not
+     * return {@code null}.
      */
     @Test
     public void testGetSupportedOrientations_ReturnValue_NonNull()
@@ -697,8 +707,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getSurfaceDesign} method throws an exception when
-     * passed an illegal orientation.
+     * Ensures the {@link IComponent#getSurfaceDesign} method throws an
+     * exception when passed an illegal orientation.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testGetSurfaceDesign_Orientation_Illegal()
@@ -707,8 +717,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getSurfaceDesign} method throws an exception when
-     * passed a {@code null} orientation.
+     * Ensures the {@link IComponent#getSurfaceDesign} method throws an
+     * exception when passed a {@code null} orientation.
      */
     @Test( expected = NullPointerException.class )
     public void testGetSurfaceDesign_Orientation_Null()
@@ -717,7 +727,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getSurfaceDesign} method does not return {@code null}.
+     * Ensures the {@link IComponent#getSurfaceDesign} method does not return
+     * {@code null}.
      */
     @Test
     public void testGetSurfaceDesign_ReturnValue_NonNull()
@@ -729,8 +740,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getSurfaceDesigns} method returns a copy of the
-     * surface designs collection.
+     * Ensures the {@link IComponent#getSurfaceDesigns} method returns a copy of
+     * the surface designs collection.
      */
     @Test
     public void testGetSurfaceDesigns_ReturnValue_Copy()
@@ -744,8 +755,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getSurfaceDesigns} method returns a collection whose
-     * keys equal the supported orientations collection.
+     * Ensures the {@link IComponent#getSurfaceDesigns} method returns a
+     * collection whose keys equal the supported orientations collection.
      */
     @Test
     public void testGetSurfaceDesigns_ReturnValue_Keys_SupportedOrientations()
@@ -758,8 +769,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getSurfaceDesigns} method does not return {@code null}
-     * .
+     * Ensures the {@link IComponent#getSurfaceDesigns} method does not return
+     * {@code null} .
      */
     @Test
     public void testGetSurfaceDesigns_ReturnValue_NonNull()
@@ -768,8 +779,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getSurfaceDesigns} method returns a collection whose
-     * values are not {@code null}.
+     * Ensures the {@link IComponent#getSurfaceDesigns} method returns a
+     * collection whose values are not {@code null}.
      */
     @Test
     public void testGetSurfaceDesigns_ReturnValue_Values_NonNull()
@@ -781,7 +792,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code getTableEnvironment} method does not return
+     * Ensures the {@link IComponent#getTableEnvironment} method does not return
      * {@code null}.
      */
     @Test
@@ -791,9 +802,9 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeComponentListener} method throws an exception
-     * when passed a listener that is absent from the component listener
-     * collection.
+     * Ensures the {@link IComponent#removeComponentListener} method throws an
+     * exception when passed a listener that is absent from the component
+     * listener collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveComponentListener_Listener_Absent()
@@ -802,8 +813,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeComponentListener} method throws an exception
-     * when passed a {@code null} listener.
+     * Ensures the {@link IComponent#removeComponentListener} method throws an
+     * exception when passed a {@code null} listener.
      */
     @Test( expected = NullPointerException.class )
     public void testRemoveComponentListener_Listener_Null()
@@ -812,8 +823,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code removeComponentListener} removes a listener that is
-     * present in the component listener collection.
+     * Ensures the {@link IComponent#removeComponentListener} removes a listener
+     * that is present in the component listener collection.
      */
     @Test
     public void testRemoveComponentListener_Listener_Present()
@@ -831,8 +842,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code setLocation} method fires a component bounds changed
-     * event.
+     * Ensures the {@link IComponent#setLocation} method fires a component
+     * bounds changed event.
      */
     @Test
     public void testSetLocation_FiresComponentBoundsChangedEvent()
@@ -848,7 +859,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code setLocation} method makes a copy of the location.
+     * Ensures the {@link IComponent#setLocation} method makes a copy of the
+     * location.
      */
     @Test
     public void testSetLocation_Location_Copy()
@@ -863,8 +875,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code setLocation} method throws an exception when passed a
-     * {@code null} location.
+     * Ensures the {@link IComponent#setLocation} method throws an exception
+     * when passed a {@code null} location.
      */
     @Test( expected = NullPointerException.class )
     public void testSetLocation_Location_Null()
@@ -873,8 +885,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code setOrientation} method fires a component orientation
-     * changed event.
+     * Ensures the {@link IComponent#setOrientation} method fires a component
+     * orientation changed event.
      */
     @Test
     public void testSetOrientation_FiresComponentOrientationChangedEvent()
@@ -890,8 +902,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code setOrientation} method throws an exception when passed
-     * an illegal orientation.
+     * Ensures the {@link IComponent#setOrientation} method throws an exception
+     * when passed an illegal orientation.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testSetOrientation_Orientation_Illegal()
@@ -900,8 +912,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code setOrientation} method throws an exception when passed
-     * a {@code null} orientation.
+     * Ensures the {@link IComponent#setOrientation} method throws an exception
+     * when passed a {@code null} orientation.
      */
     @Test( expected = NullPointerException.class )
     public void testSetOrientation_Orientation_Null()
@@ -910,8 +922,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code setOrigin} method fires a component bounds changed
-     * event.
+     * Ensures the {@link IComponent#setOrigin} method fires a component bounds
+     * changed event.
      */
     @Test
     public void testSetOrigin_FiresComponentBoundsChangedEvent()
@@ -927,7 +939,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code setOrigin} method makes a copy of the origin.
+     * Ensures the {@link IComponent#setOrigin} method makes a copy of the
+     * origin.
      */
     @Test
     public void testSetOrigin_Origin_Copy()
@@ -942,8 +955,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code setOrigin} method throws an exception when passed a
-     * {@code null} origin.
+     * Ensures the {@link IComponent#setOrigin} method throws an exception when
+     * passed a {@code null} origin.
      */
     @Test( expected = NullPointerException.class )
     public void testSetOrigin_Origin_Null()
@@ -952,8 +965,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code setSurfaceDesign} method fires a component surface
-     * design changed event.
+     * Ensures the {@link IComponent#setSurfaceDesign} method fires a component
+     * surface design changed event.
      */
     @Test
     public void testSetSurfaceDesign_FiresComponentSurfaceDesignChangedEvent()
@@ -969,8 +982,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code setSurfaceDesign} method throws an exception when
-     * passed an illegal orientation.
+     * Ensures the {@link IComponent#setSurfaceDesign} method throws an
+     * exception when passed an illegal orientation.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testSetSurfaceDesign_Orientation_Illegal()
@@ -979,8 +992,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code setSurfaceDesign} method throws an exception when
-     * passed a {@code null} orientation.
+     * Ensures the {@link IComponent#setSurfaceDesign} method throws an
+     * exception when passed a {@code null} orientation.
      */
     @Test( expected = NullPointerException.class )
     public void testSetSurfaceDesign_Orientation_Null()
@@ -989,8 +1002,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code setSurfaceDesign} method throws an exception when
-     * passed a {@code null} surface design.
+     * Ensures the {@link IComponent#setSurfaceDesign} method throws an
+     * exception when passed a {@code null} surface design.
      */
     @Test( expected = NullPointerException.class )
     public void testSetSurfaceDesign_SurfaceDesign_Null()
@@ -999,8 +1012,9 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code setSurfaceDesigns} method fires a component surface
-     * design changed event for each entry in the surface designs collection.
+     * Ensures the {@link IComponent#setSurfaceDesigns} method fires a component
+     * surface design changed event for each entry in the surface designs
+     * collection.
      */
     @Test
     public void testSetSurfaceDesigns_FiresComponentSurfaceDesignChangedEvent()
@@ -1023,8 +1037,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code setSurfaceDesigns} method does not throw an exception
-     * when passed an empty surface designs collection.
+     * Ensures the {@link IComponent#setSurfaceDesigns} method does not throw an
+     * exception when passed an empty surface designs collection.
      */
     @Test
     public void testSetSurfaceDesigns_SurfaceDesigns_Empty()
@@ -1033,9 +1047,9 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code setSurfaceDesigns} method throws an exception when
-     * passed a surface designs collection that contains a {@code null} surface
-     * design.
+     * Ensures the {@link IComponent#setSurfaceDesigns} method throws an
+     * exception when passed a surface designs collection that contains a
+     * {@code null} surface design.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testSetSurfaceDesigns_SurfaceDesigns_Illegal_ContainsNullSurfaceDesign()
@@ -1044,9 +1058,9 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code setSurfaceDesigns} method throws an exception when
-     * passed a surface designs collection that contains an unsupported
-     * orientation.
+     * Ensures the {@link IComponent#setSurfaceDesigns} method throws an
+     * exception when passed a surface designs collection that contains an
+     * unsupported orientation.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testSetSurfaceDesigns_SurfaceDesigns_Illegal_ContainsUnsupportedOrientation()
@@ -1055,8 +1069,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@code setSurfaceDesigns} method throws an exception when
-     * passed a {@code null} surface designs collection.
+     * Ensures the {@link IComponent#setSurfaceDesigns} method throws an
+     * exception when passed a {@code null} surface designs collection.
      */
     @Test( expected = NullPointerException.class )
     public void testSetSurfaceDesigns_SurfaceDesigns_Null()

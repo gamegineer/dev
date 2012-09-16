@@ -114,8 +114,8 @@ public final class ByteBufferUtilsTest
     }
 
     /**
-     * Ensures the {@code duplicate} method returns a collection of duplicate
-     * buffers.
+     * Ensures the {@link ByteBufferUtils#duplicate} method returns a collection
+     * of duplicate buffers.
      */
     @Test
     public void testDuplicate()
@@ -133,9 +133,9 @@ public final class ByteBufferUtilsTest
     }
 
     /**
-     * Ensures the {@code fill} method correctly fills the destination buffer
-     * when the source buffer has more elements remaining than the destination
-     * buffer.
+     * Ensures the {@link ByteBufferUtils#fill} method correctly fills the
+     * destination buffer when the source buffer has more elements remaining
+     * than the destination buffer.
      */
     @Test
     public void testFill_SourceBuffer_RemainingGreaterThanDestinationBuffer()
@@ -158,9 +158,9 @@ public final class ByteBufferUtilsTest
     }
 
     /**
-     * Ensures the {@code fill} method correctly fills the destination buffer
-     * when the source buffer has fewer elements remaining than the destination
-     * buffer.
+     * Ensures the {@link ByteBufferUtils#fill} method correctly fills the
+     * destination buffer when the source buffer has fewer elements remaining
+     * than the destination buffer.
      */
     @Test
     public void testFill_SourceBuffer_RemainingLessThanDestinationBuffer()
@@ -183,9 +183,9 @@ public final class ByteBufferUtilsTest
     }
 
     /**
-     * Ensures the {@code get} method returns the correct value when passed a
-     * length that is equal to the remaining length of the byte buffer
-     * collection.
+     * Ensures the {@link ByteBufferUtils#get} method returns the correct value
+     * when passed a length that is equal to the remaining length of the byte
+     * buffer collection.
      */
     @Test
     public void testGet_Length_EqualToRemainingLength_SpansOneBuffer()
@@ -205,8 +205,9 @@ public final class ByteBufferUtilsTest
     }
 
     /**
-     * Ensures the {@code get} method returns {@code null} when passed a length
-     * that is greater than the remaining length of the byte buffer collection.
+     * Ensures the {@link ByteBufferUtils#get} method returns {@code null} when
+     * passed a length that is greater than the remaining length of the byte
+     * buffer collection.
      */
     @Test
     public void testGet_Length_GreaterThanRemainingLength()
@@ -215,9 +216,9 @@ public final class ByteBufferUtilsTest
     }
 
     /**
-     * Ensures the {@code get} method returns the correct value when passed a
-     * length that is less than the remaining length of the byte buffer
-     * collection and the required bytes span one buffer.
+     * Ensures the {@link ByteBufferUtils#get} method returns the correct value
+     * when passed a length that is less than the remaining length of the byte
+     * buffer collection and the required bytes span one buffer.
      */
     @Test
     public void testGet_Length_LessThanRemainingLength_SpansOneBuffer()
@@ -236,9 +237,9 @@ public final class ByteBufferUtilsTest
     }
 
     /**
-     * Ensures the {@code get} method returns the correct value when passed a
-     * length that is less than the remaining length of the byte buffer
-     * collection and the required bytes span two buffers.
+     * Ensures the {@link ByteBufferUtils#get} method returns the correct value
+     * when passed a length that is less than the remaining length of the byte
+     * buffer collection and the required bytes span two buffers.
      */
     @Test
     public void testGet_Length_LessThanRemainingLength_SpansTwoBuffers()
@@ -257,8 +258,8 @@ public final class ByteBufferUtilsTest
     }
 
     /**
-     * Ensures the {@code get} method returns the correct value when passed a
-     * length of zero.
+     * Ensures the {@link ByteBufferUtils#get} method returns the correct value
+     * when passed a length of zero.
      */
     @Test
     public void testGet_Length_Zero()
@@ -275,9 +276,9 @@ public final class ByteBufferUtilsTest
     }
 
     /**
-     * Ensures the {@code hasRemaining} method returns {@code false} when passed
-     * a length that is greater than the remaining length of the byte buffer
-     * collection.
+     * Ensures the {@link ByteBufferUtils#hasRemaining} method returns
+     * {@code false} when passed a length that is greater than the remaining
+     * length of the byte buffer collection.
      */
     @Test
     public void testHasRemaining_Length_GreaterThanRemainingLength()
@@ -286,9 +287,9 @@ public final class ByteBufferUtilsTest
     }
 
     /**
-     * Ensures the {@code hasRemaining} method returns {@code true} when passed
-     * a length that is less than the remaining length of the byte buffer
-     * collection.
+     * Ensures the {@link ByteBufferUtils#hasRemaining} method returns
+     * {@code true} when passed a length that is less than the remaining length
+     * of the byte buffer collection.
      */
     @Test
     public void testHasRemaining_Length_LessThanRemainingLength()
@@ -297,8 +298,9 @@ public final class ByteBufferUtilsTest
     }
 
     /**
-     * Ensures the {@code hasRemaining} method returns {@code true} when passed
-     * an empty byte buffer collection and a length of zero.
+     * Ensures the {@link ByteBufferUtils#hasRemaining} method returns
+     * {@code true} when passed an empty byte buffer collection and a length of
+     * zero.
      */
     @Test
     public void testHasRemaining_Buffers_Empty_Length_Zero()

@@ -154,8 +154,8 @@ public abstract class AbstractContainerModelTestCase
     }
 
     /**
-     * Ensures the {@code addContainerModelListener} method adds a listener that
-     * is absent from the container model listener collection.
+     * Ensures the {@link ContainerModel#addContainerModelListener} method adds
+     * a listener that is absent from the container model listener collection.
      */
     @Test
     public void testAddContainerModelListener_Listener_Absent()
@@ -172,8 +172,8 @@ public abstract class AbstractContainerModelTestCase
     }
 
     /**
-     * Ensures the {@code addContainerModelListener} method throws an exception
-     * when passed a {@code null} listener.
+     * Ensures the {@link ContainerModel#addContainerModelListener} method
+     * throws an exception when passed a {@code null} listener.
      */
     @Test( expected = NullPointerException.class )
     public void testAddContainerModelListener_Listener_Null()
@@ -182,9 +182,9 @@ public abstract class AbstractContainerModelTestCase
     }
 
     /**
-     * Ensures the {@code addContainerModelListener} method throws an exception
-     * when passed a listener that is present in the container model listener
-     * collection.
+     * Ensures the {@link ContainerModel#addContainerModelListener} method
+     * throws an exception when passed a listener that is present in the
+     * container model listener collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddContainerModelListener_Listener_Present()
@@ -216,7 +216,8 @@ public abstract class AbstractContainerModelTestCase
 
     /**
      * Ensures the component model added event catches any exception thrown by
-     * the {@code componentModelAdded} method of a container model listener.
+     * the {@link IContainerModelListener#componentModelAdded} method of a
+     * container model listener.
      */
     @Test
     public void testComponentModelAdded_CatchesListenerException()
@@ -237,7 +238,8 @@ public abstract class AbstractContainerModelTestCase
 
     /**
      * Ensures the component model removed event catches any exception thrown by
-     * the {@code componentModelRemoved} method of a container model listener.
+     * the {@link IContainerModelListener#componentModelRemoved} method of a
+     * container model listener.
      */
     @Test
     public void testComponentModelRemoved_CatchesListenerException()
@@ -319,8 +321,8 @@ public abstract class AbstractContainerModelTestCase
 
     /**
      * Ensures the container layout changed event catches any exception thrown
-     * by the {@code containerLayoutChanged} method of a container model
-     * listener.
+     * by the {@link IContainerModelListener#containerLayoutChanged} method of a
+     * container model listener.
      */
     @Test
     public void testContainerLayoutChanged_CatchesListenerException()
@@ -340,7 +342,8 @@ public abstract class AbstractContainerModelTestCase
     }
 
     /**
-     * Ensures the {@code getContainer} method does not return {@code null}.
+     * Ensures the {@link ContainerModel#getContainer} method does not return
+     * {@code null}.
      */
     @Test
     public void testGetContainer_ReturnValue_NonNull()
@@ -349,9 +352,9 @@ public abstract class AbstractContainerModelTestCase
     }
 
     /**
-     * Ensures the {@code removeContainerModelListener} method throws an
-     * exception when passed a listener that is absent from the container model
-     * listener collection.
+     * Ensures the {@link ContainerModel#removeContainerModelListener} method
+     * throws an exception when passed a listener that is absent from the
+     * container model listener collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveContainerModelListener_Listener_Absent()
@@ -360,8 +363,8 @@ public abstract class AbstractContainerModelTestCase
     }
 
     /**
-     * Ensures the {@code removeContainerModelListener} method throws an
-     * exception when passed a {@code null} listener.
+     * Ensures the {@link ContainerModel#removeContainerModelListener} method
+     * throws an exception when passed a {@code null} listener.
      */
     @Test( expected = NullPointerException.class )
     public void testRemoveContainerModelListener_Listener_Null()
@@ -370,8 +373,8 @@ public abstract class AbstractContainerModelTestCase
     }
 
     /**
-     * Ensures the {@code removeContainerModelListener} removes a listener that
-     * is present in the container model listener collection.
+     * Ensures the {@link ContainerModel#removeContainerModelListener} removes a
+     * listener that is present in the container model listener collection.
      */
     @Test
     public void testRemoveContainerModelListener_Listener_Present()

@@ -53,8 +53,8 @@ public abstract class AbstractRemoteClientNodeTestCase<T extends IRemoteClientNo
     // ======================================================================
 
     /**
-     * Ensures the {@code setPlayers} method throws an exception when passed a
-     * {@code null} players collection.
+     * Ensures the {@link IRemoteClientNode#setPlayers} method throws an
+     * exception when passed a {@code null} players collection.
      */
     @Test( expected = NullPointerException.class )
     public void testSetPlayers_Players_Null()

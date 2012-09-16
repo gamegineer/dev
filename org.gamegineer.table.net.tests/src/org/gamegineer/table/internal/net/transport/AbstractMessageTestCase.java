@@ -82,8 +82,8 @@ public abstract class AbstractMessageTestCase
     }
 
     /**
-     * Ensures the {@code setCorrelationId} method throws an exception when
-     * passed a correlation identifier greater than the maximum correlation
+     * Ensures the {@link IMessage#setCorrelationId} method throws an exception
+     * when passed a correlation identifier greater than the maximum correlation
      * identifier.
      */
     @Test( expected = IllegalArgumentException.class )
@@ -93,8 +93,8 @@ public abstract class AbstractMessageTestCase
     }
 
     /**
-     * Ensures the {@code setCorrelationId} method throws an exception when
-     * passed a correlation identifier less than the minimum correlation
+     * Ensures the {@link IMessage#setCorrelationId} method throws an exception
+     * when passed a correlation identifier less than the minimum correlation
      * identifier.
      */
     @Test( expected = IllegalArgumentException.class )
@@ -104,8 +104,8 @@ public abstract class AbstractMessageTestCase
     }
 
     /**
-     * Ensures the {@code setId} method throws an exception when passed an
-     * identifier greater than the maximum identifier.
+     * Ensures the {@link IMessage#setId} method throws an exception when passed
+     * an identifier greater than the maximum identifier.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testSetId_Id_Illegal_GreaterThanMaxId()
@@ -114,8 +114,8 @@ public abstract class AbstractMessageTestCase
     }
 
     /**
-     * Ensures the {@code setId} method throws an exception when passed an
-     * identifier less than the minimum identifier.
+     * Ensures the {@link IMessage#setId} method throws an exception when passed
+     * an identifier less than the minimum identifier.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testSetId_Id_Illegal_LessThanMinId()

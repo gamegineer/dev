@@ -70,8 +70,8 @@ public final class BundleImagesTest
     }
 
     /**
-     * Ensures the {@code getIcon} method throws an exception when passed a
-     * {@code null} path.
+     * Ensures the {@link BundleImages#getIcon} method throws an exception when
+     * passed a {@code null} path.
      */
     @Test( expected = NullPointerException.class )
     public void testGetIcon_Path_Null()
@@ -80,8 +80,8 @@ public final class BundleImagesTest
     }
 
     /**
-     * Ensures the {@code getImage} method throws an exception when passed a
-     * {@code null} path.
+     * Ensures the {@link BundleImages#getImage} method throws an exception when
+     * passed a {@code null} path.
      */
     @Test( expected = NullPointerException.class )
     public void testGetImage_Path_Null()

@@ -84,8 +84,8 @@ public abstract class AbstractTransportLayerFactoryTestCase
     }
 
     /**
-     * Ensures the {@code createActiveTransportLayer} method throws an exception
-     * when passed a {@code null} context.
+     * Ensures the {@link ITransportLayerFactory#createActiveTransportLayer}
+     * method throws an exception when passed a {@code null} context.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -98,8 +98,8 @@ public abstract class AbstractTransportLayerFactoryTestCase
     }
 
     /**
-     * Ensures the {@code createPassiveTransportLayer} method throws an
-     * exception when passed a {@code null} context.
+     * Ensures the {@link ITransportLayerFactory#createPassiveTransportLayer}
+     * method throws an exception when passed a {@code null} context.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

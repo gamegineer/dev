@@ -70,9 +70,10 @@ public final class PersistenceDelegateRegistryTest
     }
 
     /**
-     * Ensures the {@code registerPersistenceDelegate(ServiceReference)} method
-     * throws an exception when passed a {@code null} persistence delegate
-     * reference.
+     * Ensures the
+     * {@link PersistenceDelegateRegistry#registerPersistenceDelegate(org.osgi.framework.ServiceReference)}
+     * method throws an exception when passed a {@code null} persistence
+     * delegate reference.
      */
     @Test( expected = NullPointerException.class )
     public void testRegisterPersistenceDelegateFromServiceReference_PersistenceDelegateReference_Null()
@@ -81,7 +82,8 @@ public final class PersistenceDelegateRegistryTest
     }
 
     /**
-     * Ensures the {@code unregisterPersistenceDelegate(ServiceReference)}
+     * Ensures the
+     * {@link PersistenceDelegateRegistry#unregisterPersistenceDelegate(org.osgi.framework.ServiceReference)}
      * method throws an exception when passed a {@code null} persistence
      * delegate reference.
      */

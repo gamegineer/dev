@@ -68,9 +68,8 @@ public final class HelpSystemTest
     }
 
     /**
-     * Ensures the {@code registerHelpSetProvider(ServiceReference)} method
-     * throws an exception when passed a {@code null} help set provider
-     * reference.
+     * Ensures the {@link HelpSystem#registerHelpSetProvider} method throws an
+     * exception when passed a {@code null} help set provider reference.
      */
     @Test( expected = NullPointerException.class )
     public void testRegisterHelpSetProviderFromServiceReference_HelpSetProviderReference_Null()
@@ -79,9 +78,8 @@ public final class HelpSystemTest
     }
 
     /**
-     * Ensures the {@code unregisterHelpSetProvider(ServiceReference)} method
-     * throws an exception when passed a {@code null} help set provider
-     * reference.
+     * Ensures the {@link HelpSystem#unregisterHelpSetProvider} method throws an
+     * exception when passed a {@code null} help set provider reference.
      */
     @Test( expected = NullPointerException.class )
     public void testUnregisterHelpSetProviderFromServiceReference_HelpSetProviderReference_Null()

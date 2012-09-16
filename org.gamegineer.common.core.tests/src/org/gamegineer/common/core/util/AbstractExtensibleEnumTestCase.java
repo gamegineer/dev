@@ -71,8 +71,8 @@ public abstract class AbstractExtensibleEnumTestCase
     }
 
     /**
-     * Ensures the {@code valueOf} method returns the correct value for each
-     * name supported by the enum type.
+     * Ensures the {@link ExtensibleEnum#valueOf} method returns the correct
+     * value for each name supported by the enum type.
      */
     @Test
     public void testValueOf()

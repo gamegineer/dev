@@ -49,8 +49,8 @@ public final class TableUtilsTest
     // ======================================================================
 
     /**
-     * Ensures the {@code addContainerListenerAndGetComponents} method throws an
-     * exception when passed a {@code null} container.
+     * Ensures the {@link TableUtils#addContainerListenerAndGetComponents}
+     * method throws an exception when passed a {@code null} container.
      */
     @Test( expected = NullPointerException.class )
     public void testAddContainerListenerAndGetComponents_Container_Null()
@@ -59,8 +59,8 @@ public final class TableUtilsTest
     }
 
     /**
-     * Ensures the {@code addContainerListenerAndGetComponents} method throws an
-     * exception when passed a {@code null} container listener.
+     * Ensures the {@link TableUtils#addContainerListenerAndGetComponents}
+     * method throws an exception when passed a {@code null} container listener.
      */
     @Test( expected = NullPointerException.class )
     public void testAddContainerListenerAndGetComponents_ContainerListener_Null()

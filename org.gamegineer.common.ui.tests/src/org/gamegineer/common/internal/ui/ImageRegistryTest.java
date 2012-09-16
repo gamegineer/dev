@@ -68,8 +68,8 @@ public final class ImageRegistryTest
     }
 
     /**
-     * Ensures the {@code getImage} method throws an exception when passed a
-     * {@code null} path.
+     * Ensures the {@link ImageRegistry#getImage} method throws an exception
+     * when passed a {@code null} path.
      */
     @Test( expected = NullPointerException.class )
     public void testGetImage_Path_Null()

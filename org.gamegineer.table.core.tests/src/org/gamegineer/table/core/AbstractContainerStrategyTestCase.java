@@ -64,7 +64,8 @@ public abstract class AbstractContainerStrategyTestCase<ContainerStrategyType ex
     }
 
     /**
-     * Ensures the {@code getDefaultLayout} method does not return {@code null}.
+     * Ensures the {@link IContainerStrategy#getDefaultLayout} method does not
+     * return {@code null}.
      */
     @Test
     public void testGetDefaultLayout_ReturnValue_NonNull()

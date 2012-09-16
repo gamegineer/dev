@@ -89,8 +89,9 @@ public final class BeginAuthenticationResponseMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles a begin
-     * authentication response message.
+     * Ensures the
+     * {@link BeginAuthenticationResponseMessageHandler#handleMessage} method
+     * correctly handles a begin authentication response message.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -133,8 +134,10 @@ public final class BeginAuthenticationResponseMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles a begin
-     * authentication response message in the case where authentication fails.
+     * Ensures the
+     * {@link BeginAuthenticationResponseMessageHandler#handleMessage} method
+     * correctly handles a begin authentication response message in the case
+     * where authentication fails.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -177,9 +180,10 @@ public final class BeginAuthenticationResponseMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles a begin
-     * authentication response message in the case where the player name is
-     * already registered.
+     * Ensures the
+     * {@link BeginAuthenticationResponseMessageHandler#handleMessage} method
+     * correctly handles a begin authentication response message in the case
+     * where the player name is already registered.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -223,8 +227,9 @@ public final class BeginAuthenticationResponseMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles an unexpected
-     * message.
+     * Ensures the
+     * {@link BeginAuthenticationResponseMessageHandler#handleMessage} method
+     * correctly handles an unexpected message.
      */
     @Test
     public void testHandleMessage_UnexpectedMessage()

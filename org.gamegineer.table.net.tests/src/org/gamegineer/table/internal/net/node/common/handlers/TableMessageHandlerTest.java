@@ -81,8 +81,8 @@ public final class TableMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles a table
-     * message.
+     * Ensures the {@link TableMessageHandler#handleMessage} method correctly
+     * handles a table message.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

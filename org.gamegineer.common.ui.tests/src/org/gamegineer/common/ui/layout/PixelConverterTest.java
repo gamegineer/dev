@@ -48,8 +48,8 @@ public final class PixelConverterTest
     // ======================================================================
 
     /**
-     * Ensures the {@code PixelConverter(Component)} constructor throws an
-     * exception when passed a {@code null} component.
+     * Ensures the {@link PixelConverter#PixelConverter(Component)} constructor
+     * throws an exception when passed a {@code null} component.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructorFromComponent_Component_Null()
@@ -58,8 +58,8 @@ public final class PixelConverterTest
     }
 
     /**
-     * Ensures the {@code PixelConverter(FontMetrics)} constructor throws an
-     * exception when passed a {@code null} font metrics.
+     * Ensures the {@link PixelConverter#PixelConverter(FontMetrics)}
+     * constructor throws an exception when passed a {@code null} font metrics.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructorFromFontMetrics_FontMetrics_Null()

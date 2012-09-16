@@ -80,8 +80,8 @@ public final class TableModelEventTest
     }
 
     /**
-     * Ensures the {@code getSource} method returns the same instance as the
-     * {@code getTableModel} method.
+     * Ensures the {@link TableModelEvent#getSource} method returns the same
+     * instance as the {@link TableModelEvent#getTableModel} method.
      */
     @Test
     public void testGetSource_ReturnValue_SameTableModel()
@@ -90,7 +90,8 @@ public final class TableModelEventTest
     }
 
     /**
-     * Ensures the {@code getTableModel} method does not return {@code null}.
+     * Ensures the {@link TableModelEvent#getTableModel} method does not return
+     * {@code null}.
      */
     @Test
     public void testGetTableModel_ReturnValue_NonNull()

@@ -50,8 +50,8 @@ public final class SynchronousFutureTest
     // ======================================================================
 
     /**
-     * Ensures the {@code SynchronousFuture(Throwable)} constructor throws an
-     * exception when passed a {@code null} exception.
+     * Ensures the {@link SynchronousFuture#SynchronousFuture(Throwable)}
+     * constructor throws an exception when passed a {@code null} exception.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructorFromException_Exception_Null()
@@ -60,8 +60,8 @@ public final class SynchronousFutureTest
     }
 
     /**
-     * Ensures the {@code get()} method throws an exception when the future is
-     * constructed with an exception.
+     * Ensures the {@link SynchronousFuture#get()} method throws an exception
+     * when the future is constructed with an exception.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -85,8 +85,8 @@ public final class SynchronousFutureTest
     }
 
     /**
-     * Ensures the {@code get()} method returns the expected value when the
-     * future is constructed with a result.
+     * Ensures the {@link SynchronousFuture#get()} method returns the expected
+     * value when the future is constructed with a result.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

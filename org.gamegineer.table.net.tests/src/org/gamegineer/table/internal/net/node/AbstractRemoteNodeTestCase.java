@@ -98,7 +98,8 @@ public abstract class AbstractRemoteNodeTestCase<T extends IRemoteNode>
     }
 
     /**
-     * Ensures the {@code getPlayerName} method does not return {@code null}.
+     * Ensures the {@link IRemoteNode#getPlayerName} method does not return
+     * {@code null}.
      */
     @Test
     public void testGetPlayerName_ReturnValue_NonNull()
@@ -107,7 +108,8 @@ public abstract class AbstractRemoteNodeTestCase<T extends IRemoteNode>
     }
 
     /**
-     * Ensures the {@code getTable} method does not return {@code null}.
+     * Ensures the {@link IRemoteNode#getTable} method does not return
+     * {@code null}.
      */
     @Test
     public void testGetTable_ReturnValue_NonNull()

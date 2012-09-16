@@ -204,8 +204,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code addTableModelListener} method adds a listener that is
-     * absent from the table model listener collection.
+     * Ensures the {@link TableModel#addTableModelListener} method adds a
+     * listener that is absent from the table model listener collection.
      */
     @Test
     public void testAddTableModelListener_Listener_Absent()
@@ -222,8 +222,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code addTableModelListener} method throws an exception when
-     * passed a {@code null} listener.
+     * Ensures the {@link TableModel#addTableModelListener} method throws an
+     * exception when passed a {@code null} listener.
      */
     @Test( expected = NullPointerException.class )
     public void testAddTableModelListener_Listener_Null()
@@ -232,8 +232,9 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code addTableModelListener} method throws an exception when
-     * passed a listener that is present in the table model listener collection.
+     * Ensures the {@link TableModel#addTableModelListener} method throws an
+     * exception when passed a listener that is present in the table model
+     * listener collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddTableModelListener_Listener_Present()
@@ -283,8 +284,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code getComponentModel} method throws an exception when
-     * passed a path that is absent.
+     * Ensures the {@link TableModel#getComponentModel} method throws an
+     * exception when passed a path that is absent.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testGetComponentModel_Path_Absent()
@@ -293,8 +294,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code getComponentModel} method throws an exception when
-     * passed a {@code null} path.
+     * Ensures the {@link TableModel#getComponentModel} method throws an
+     * exception when passed a {@code null} path.
      */
     @Test( expected = NullPointerException.class )
     public void testGetComponentModel_Path_Null()
@@ -303,8 +304,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code getComponentModel} method returns the correct
-     * component model when passed a path that is present.
+     * Ensures the {@link TableModel#getComponentModel} method returns the
+     * correct component model when passed a path that is present.
      */
     @Test
     public void testGetComponentModel_Path_Present()
@@ -324,8 +325,9 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code getFocusableComponent} method returns the expected
-     * component when a focusable component exists at the specified location.
+     * Ensures the {@link TableModel#getFocusableComponent} method returns the
+     * expected component when a focusable component exists at the specified
+     * location.
      */
     @Test
     public void testGetFocusableComponent_Location_FocusableComponent()
@@ -339,8 +341,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code getFocusableComponent} method returns {@code null}
-     * when no component exists at the specified location.
+     * Ensures the {@link TableModel#getFocusableComponent} method returns
+     * {@code null} when no component exists at the specified location.
      */
     @Test
     public void testGetFocusableComponent_Location_NoComponent()
@@ -349,8 +351,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code getFocusableComponent} method throws an exception when
-     * passed a {@code null} location.
+     * Ensures the {@link TableModel#getFocusableComponent} method throws an
+     * exception when passed a {@code null} location.
      */
     @Test( expected = NullPointerException.class )
     public void testGetFocusableComponent_Location_Null()
@@ -359,8 +361,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code getOriginOffset} method returns a copy of the origin
-     * offset.
+     * Ensures the {@link TableModel#getOriginOffset} method returns a copy of
+     * the origin offset.
      */
     @Test
     public void testGetOriginOffset_ReturnValue_Copy()
@@ -375,7 +377,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code getOriginOffset} method does not return {@code null}.
+     * Ensures the {@link TableModel#getOriginOffset} method does not return
+     * {@code null}.
      */
     @Test
     public void testGetOriginOffset_ReturnValue_NonNull()
@@ -384,7 +387,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code getTable} method does not return {@code null}.
+     * Ensures the {@link TableModel#getTable} method does not return
+     * {@code null}.
      */
     @Test
     public void testGetTable_ReturnValue_NonNull()
@@ -393,7 +397,7 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code open()} method fires a table changed event.
+     * Ensures the {@link TableModel#open()} method fires a table changed event.
      */
     @Test
     public void testOpen_FiresTableChangedEvent()
@@ -409,8 +413,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code open()} method fires a table model dirty flag changed
-     * event.
+     * Ensures the {@link TableModel#open()} method fires a table model dirty
+     * flag changed event.
      */
     @Test
     public void testOpen_FiresTableModelDirtyFlagChangedEvent()
@@ -426,7 +430,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code open()} method fires a table model file changed event.
+     * Ensures the {@link TableModel#open()} method fires a table model file
+     * changed event.
      */
     @Test
     public void testOpen_FiresTableModelFileChangedEvent()
@@ -442,8 +447,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code open()} method fires a table model focus changed
-     * event.
+     * Ensures the {@link TableModel#open()} method fires a table model focus
+     * changed event.
      */
     @Test
     public void testOpen_FiresTableModelFocusChangedEvent()
@@ -459,8 +464,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code open()} method fires a table model origin offset
-     * changed event.
+     * Ensures the {@link TableModel#open()} method fires a table model origin
+     * offset changed event.
      */
     @Test
     public void testOpen_FiresTableModelOriginOffsetChangedEvent()
@@ -476,7 +481,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code open(File)} method fires a table changed event.
+     * Ensures the {@link TableModel#open(File)} method fires a table changed
+     * event.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -498,8 +504,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code open(File)} method fires a table model dirty flag
-     * changed event.
+     * Ensures the {@link TableModel#open(File)} method fires a table model
+     * dirty flag changed event.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -521,8 +527,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code open(File)} method fires a table model file changed
-     * event.
+     * Ensures the {@link TableModel#open(File)} method fires a table model file
+     * changed event.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -544,8 +550,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code open(File)} method fires a table model focus changed
-     * event.
+     * Ensures the {@link TableModel#open(File)} method fires a table model
+     * focus changed event.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -567,8 +573,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code open(File)} method fires a table model origin offset
-     * changed event.
+     * Ensures the {@link TableModel#open(File)} method fires a table model
+     * origin offset changed event.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -610,9 +616,9 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code removeTableModelListener} method throws an exception
-     * when passed a listener that is absent from the table model listener
-     * collection.
+     * Ensures the {@link TableModel#removeTableModelListener} method throws an
+     * exception when passed a listener that is absent from the table model
+     * listener collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveTableModelListener_Listener_Absent()
@@ -621,8 +627,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code removeTableModelListener} method throws an exception
-     * when passed a {@code null} listener.
+     * Ensures the {@link TableModel#removeTableModelListener} method throws an
+     * exception when passed a {@code null} listener.
      */
     @Test( expected = NullPointerException.class )
     public void testRemoveTableModelListener_Listener_Null()
@@ -631,8 +637,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code removeTableModelListener} removes a listener that is
-     * present in the table model listener collection.
+     * Ensures the {@link TableModel#removeTableModelListener} removes a
+     * listener that is present in the table model listener collection.
      */
     @Test
     public void testRemoveTableModelListener_Listener_Present()
@@ -650,8 +656,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code save} method fires a table model dirty flag changed
-     * event.
+     * Ensures the {@link TableModel#save} method fires a table model dirty flag
+     * changed event.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -672,7 +678,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code save} method fires a table model file changed event.
+     * Ensures the {@link TableModel#save} method fires a table model file
+     * changed event.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -693,7 +700,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code setFocus} method correctly changes the focus.
+     * Ensures the {@link TableModel#setFocus} method correctly changes the
+     * focus.
      */
     @Test
     public void testSetFocus()
@@ -712,8 +720,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code setFocus} method does not throw an exception when
-     * passed a {@code null} container.
+     * Ensures the {@link TableModel#setFocus} method does not throw an
+     * exception when passed a {@code null} container.
      */
     @Test
     public void testSetFocus_Container_Null()
@@ -722,8 +730,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code setFocus} method fires a table model focus changed
-     * event.
+     * Ensures the {@link TableModel#setFocus} method fires a table model focus
+     * changed event.
      */
     @Test
     public void testSetFocus_FiresTableModelFocusChangedEvent()
@@ -741,8 +749,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code setOriginOffset} method fires a table model origin
-     * offset changed event.
+     * Ensures the {@link TableModel#setOriginOffset} method fires a table model
+     * origin offset changed event.
      */
     @Test
     public void testSetOriginOffset_FiresTableModelOriginOffsetChangedEvent()
@@ -758,8 +766,8 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code setOriginOffset} method throws an exception when
-     * passed a {@code null} origin offset.
+     * Ensures the {@link TableModel#setOriginOffset} method throws an exception
+     * when passed a {@code null} origin offset.
      */
     @Test( expected = NullPointerException.class )
     public void testSetOriginOffset_OriginOffset_Null()
@@ -786,7 +794,8 @@ public final class TableModelTest
 
     /**
      * Ensures the table changed event catches any exception thrown by the
-     * {@code tableChanged} method of a table model listener.
+     * {@link ITableModelListener#tableChanged} method of a table model
+     * listener.
      */
     @Test
     public void testTableChanged_CatchesListenerException()
@@ -807,8 +816,8 @@ public final class TableModelTest
 
     /**
      * Ensures the table model dirty flag changed event catches any exception
-     * thrown by the {@code tableModelDirtyFlagChanged} method of a table model
-     * listener.
+     * thrown by the {@link ITableModelListener#tableModelDirtyFlagChanged}
+     * method of a table model listener.
      */
     @Test
     public void testTableModelDirtyFlagChanged_CatchesListenerException()
@@ -829,7 +838,8 @@ public final class TableModelTest
 
     /**
      * Ensures the table model file changed event catches any exception thrown
-     * by the {@code tableModelFileChanged} method of a table model listener.
+     * by the {@link ITableModelListener#tableModelFileChanged} method of a
+     * table model listener.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -854,7 +864,8 @@ public final class TableModelTest
 
     /**
      * Ensures the table model focus changed event catches any exception thrown
-     * by the {@code tableModelFocusChanged} method of a table model listener.
+     * by the {@link ITableModelListener#tableModelFocusChanged} method of a
+     * table model listener.
      */
     @Test
     public void testTableModelFocusChanged_CatchesListenerException()
@@ -875,8 +886,8 @@ public final class TableModelTest
 
     /**
      * Ensures the table model origin offset changed event catches any exception
-     * thrown by the {@code tableModelOriginOffsetChanged} method of a table
-     * model listener.
+     * thrown by the {@link ITableModelListener#tableModelOriginOffsetChanged}
+     * method of a table model listener.
      */
     @Test
     public void testTableModelOriginOffsetChanged_CatchesListenerException()

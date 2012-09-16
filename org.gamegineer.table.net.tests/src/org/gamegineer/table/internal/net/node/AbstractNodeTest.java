@@ -206,8 +206,8 @@ public final class AbstractNodeTest
     }
 
     /**
-     * Ensures the {@code getRemoteNode} method throws an exception when passed
-     * a {@code null} player name.
+     * Ensures the {@link AbstractNode#getRemoteNode} method throws an exception
+     * when passed a {@code null} player name.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -228,8 +228,8 @@ public final class AbstractNodeTest
     }
 
     /**
-     * Ensures the {@code getRemoteNodes} method returns a copy of the bound
-     * remote nodes collection.
+     * Ensures the {@link AbstractNode#getRemoteNodes} method returns a copy of
+     * the bound remote nodes collection.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

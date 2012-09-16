@@ -46,8 +46,8 @@ public final class ComponentEnableStateTest
     // ======================================================================
 
     /**
-     * Ensures the {@code disable} method throws an exception when passed a
-     * {@code null} component.
+     * Ensures the {@link ComponentEnableState#disable} method throws an
+     * exception when passed a {@code null} component.
      */
     @Test( expected = NullPointerException.class )
     public void testDisable_Component_Null()

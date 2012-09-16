@@ -86,8 +86,8 @@ public abstract class AbstractLoggingServiceTestCase
     }
 
     /**
-     * Ensures the {@code getLogger(Bundle)} method throws an exception when
-     * passed a {@code null} bundle.
+     * Ensures the {@link ILoggingService#getLogger(Bundle)} method throws an
+     * exception when passed a {@code null} bundle.
      */
     @Test( expected = NullPointerException.class )
     public void testGetLoggerFromBundle_Bundle_Null()
@@ -96,8 +96,8 @@ public abstract class AbstractLoggingServiceTestCase
     }
 
     /**
-     * Ensures the {@code getLogger(Bundle)} method does not return {@code null}
-     * .
+     * Ensures the {@link ILoggingService#getLogger(Bundle)} method does not
+     * return {@code null}.
      */
     @Test
     public void testGetLoggerFromBundle_ReturnValue_NonNull()
@@ -106,8 +106,8 @@ public abstract class AbstractLoggingServiceTestCase
     }
 
     /**
-     * Ensures the {@code getLogger(Bundle, String)} method throws an exception
-     * when passed a {@code null} bundle.
+     * Ensures the {@link ILoggingService#getLogger(Bundle, String)} method
+     * throws an exception when passed a {@code null} bundle.
      */
     @Test( expected = NullPointerException.class )
     public void testGetLoggerFromBundleAndName_Bundle_Null()
@@ -116,8 +116,8 @@ public abstract class AbstractLoggingServiceTestCase
     }
 
     /**
-     * Ensures the {@code getLogger(Bundle, String)} method returns the default
-     * logger when passed an empty name.
+     * Ensures the {@link ILoggingService#getLogger(Bundle, String)} method
+     * returns the default logger when passed an empty name.
      */
     @Test
     public void testGetLoggerFromBundleAndName_Name_Empty()
@@ -128,8 +128,8 @@ public abstract class AbstractLoggingServiceTestCase
     }
 
     /**
-     * Ensures the {@code getLogger(Bundle, String)} method returns the default
-     * logger when passed a {@code null} name.
+     * Ensures the {@link ILoggingService#getLogger(Bundle, String)} method
+     * returns the default logger when passed a {@code null} name.
      */
     @Test
     public void testGetLoggerFromBundleAndName_Name_Null()
@@ -140,8 +140,8 @@ public abstract class AbstractLoggingServiceTestCase
     }
 
     /**
-     * Ensures the {@code getLogger(Bundle, String)} method does not return
-     * {@code null}.
+     * Ensures the {@link ILoggingService#getLogger(Bundle, String)} method does
+     * not return {@code null}.
      */
     @Test
     public void testGetLoggerFromBundleAndName_ReturnValue_NonNull()

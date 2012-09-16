@@ -83,8 +83,8 @@ public abstract class AbstractMainModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code mainModelStateChanged} method throws an exception when
-     * passed a {@code null} event.
+     * Ensures the {@link IMainModelListener#mainModelStateChanged} method
+     * throws an exception when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
     public void testMainModelStateChanged_Event_Null()

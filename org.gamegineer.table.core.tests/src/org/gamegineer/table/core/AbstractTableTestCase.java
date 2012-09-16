@@ -176,8 +176,8 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
-     * Ensures the {@code getComponent(Point)} method returns {@code null} when
-     * a component is absent at the specified location.
+     * Ensures the {@link ITable#getComponent(Point)} method returns
+     * {@code null} when a component is absent at the specified location.
      */
     @Test
     public void testGetComponentFromLocation_Location_ComponentAbsent()
@@ -186,8 +186,9 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
-     * Ensures the {@code getComponent(Point)} method returns the top-most
-     * component when multiple components are present at the specified location.
+     * Ensures the {@link ITable#getComponent(Point)} method returns the
+     * top-most component when multiple components are present at the specified
+     * location.
      */
     @Test
     public void testGetComponentFromLocation_Location_ComponentPresent_MultipleComponents()
@@ -212,8 +213,9 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
-     * Ensures the {@code getComponent(Point)} method returns the appropriate
-     * component when a single component is present at the specified location.
+     * Ensures the {@link ITable#getComponent(Point)} method returns the
+     * appropriate component when a single component is present at the specified
+     * location.
      */
     @Test
     public void testGetComponentFromLocation_Location_ComponentPresent_SingleComponent()
@@ -229,8 +231,8 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
-     * Ensures the {@code getComponent(Point)} method throws an exception when
-     * passed a {@code null} location.
+     * Ensures the {@link ITable#getComponent(Point)} method throws an exception
+     * when passed a {@code null} location.
      */
     @Test( expected = NullPointerException.class )
     public void testGetComponentFromLocation_Location_Null()
@@ -239,7 +241,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
-     * Ensures the {@code getComponent(ComponentPath)} method throws an
+     * Ensures the {@link ITable#getComponent(ComponentPath)} method throws an
      * exception when passed a path that is absent.
      */
     @Test( expected = IllegalArgumentException.class )
@@ -249,7 +251,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
-     * Ensures the {@code getComponent(ComponentPath)} method throws an
+     * Ensures the {@link ITable#getComponent(ComponentPath)} method throws an
      * exception when passed a {@code null} path.
      */
     @Test( expected = NullPointerException.class )
@@ -259,7 +261,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
-     * Ensures the {@code getComponent(ComponentPath)} method returns the
+     * Ensures the {@link ITable#getComponent(ComponentPath)} method returns the
      * correct component when passed a path that is present.
      */
     @Test
@@ -283,7 +285,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
-     * Ensures the {@code getTableEnvironment} method does not return
+     * Ensures the {@link ITable#getTableEnvironment} method does not return
      * {@code null}.
      */
     @Test
@@ -293,7 +295,8 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
-     * Ensures the {@code getTabletop} method does not return {@code null}.
+     * Ensures the {@link ITable#getTabletop} method does not return
+     * {@code null}.
      */
     @Test
     public void testGetTabletop_ReturnValue_NonNull()

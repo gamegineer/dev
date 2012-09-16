@@ -83,8 +83,8 @@ public abstract class AbstractTableModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code tableChanged} method throws an exception when passed a
-     * {@code null} event.
+     * Ensures the {@link ITableModelListener#tableChanged} method throws an
+     * exception when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
     public void testTableChanged_Event_Null()
@@ -93,8 +93,8 @@ public abstract class AbstractTableModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code tableModelDirtyFlagChanged} method throws an exception
-     * when passed a {@code null} event.
+     * Ensures the {@link ITableModelListener#tableModelDirtyFlagChanged} method
+     * throws an exception when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
     public void testTableModelDirtyFlagChanged_Event_Null()
@@ -103,8 +103,8 @@ public abstract class AbstractTableModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code tableModelFileChanged} method throws an exception when
-     * passed a {@code null} event.
+     * Ensures the {@link ITableModelListener#tableModelFileChanged} method
+     * throws an exception when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
     public void testTableModelFileChanged_Event_Null()
@@ -113,8 +113,8 @@ public abstract class AbstractTableModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code tableModelFocusChanged} method throws an exception
-     * when passed a {@code null} event.
+     * Ensures the {@link ITableModelListener#tableModelFocusChanged} method
+     * throws an exception when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
     public void testTableModelFocusChanged_Event_Null()
@@ -123,8 +123,8 @@ public abstract class AbstractTableModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code tableModelOriginOffsetChanged} method throws an
-     * exception when passed a {@code null} event.
+     * Ensures the {@link ITableModelListener#tableModelOriginOffsetChanged}
+     * method throws an exception when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
     public void testTableModelOriginOffsetChanged_Event_Null()

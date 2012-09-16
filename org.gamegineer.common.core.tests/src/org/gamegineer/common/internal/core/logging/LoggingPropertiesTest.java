@@ -86,8 +86,9 @@ public final class LoggingPropertiesTest
     }
 
     /**
-     * Ensures the {@code getAncestorLoggerNames} method does not return
-     * {@code null} when there are no ancestors for the specified logger.
+     * Ensures the {@link LoggingProperties#getAncestorLoggerNames} method does
+     * not return {@code null} when there are no ancestors for the specified
+     * logger.
      */
     @Test
     public void testGetAncestorLoggerNames_ReturnValue_NonNull()
@@ -99,8 +100,9 @@ public final class LoggingPropertiesTest
     }
 
     /**
-     * Ensures the {@code getAncestorLoggerNames} method returns a non-empty
-     * name collection in order from nearest ancestor to furthest ancestor.
+     * Ensures the {@link LoggingProperties#getAncestorLoggerNames} method
+     * returns a non-empty name collection in order from nearest ancestor to
+     * furthest ancestor.
      */
     @Test
     public void testGetAncestorLoggerNames_ReturnValue_Ordered()
@@ -114,8 +116,8 @@ public final class LoggingPropertiesTest
     }
 
     /**
-     * Ensures the {@code getProperty(Map, String, String)} method returns the
-     * expected value for a property that is absent.
+     * Ensures the {@link LoggingProperties#getProperty(Map, String, String)}
+     * method returns the expected value for a property that is absent.
      */
     @Test
     public void testGetPropertyForComponentName_Property_Absent()
@@ -124,8 +126,8 @@ public final class LoggingPropertiesTest
     }
 
     /**
-     * Ensures the {@code getProperty(Map, String, String} method returns the
-     * expected value for a property is present.
+     * Ensures the {@link LoggingProperties#getProperty(Map, String, String)}
+     * method returns the expected value for a property is present.
      */
     @Test
     public void testGetPropertyForComponentName_Property_Present()
@@ -134,7 +136,8 @@ public final class LoggingPropertiesTest
     }
 
     /**
-     * Ensures the {@code getProperty(Map, Class, String, String)} method
+     * Ensures the
+     * {@link LoggingProperties#getProperty(Map, Class, String, String)} method
      * returns the expected value for a property that is absent.
      */
     @Test
@@ -149,7 +152,8 @@ public final class LoggingPropertiesTest
     }
 
     /**
-     * Ensures the {@code getProperty(Map, Class, String, String)} method
+     * Ensures the
+     * {@link LoggingProperties#getProperty(Map, Class, String, String)} method
      * returns the expected value for a property that is present.
      */
     @Test
@@ -165,8 +169,9 @@ public final class LoggingPropertiesTest
     }
 
     /**
-     * Ensures the {@code toMap} method returns the correct map when passed a
-     * properties collection that contains an entry whose name is not a string.
+     * Ensures the {@link LoggingProperties#toMap} method returns the correct
+     * map when passed a properties collection that contains an entry whose name
+     * is not a string.
      */
     @Test
     public void testToMap_Properties_ContainsNonStringName()
@@ -181,8 +186,9 @@ public final class LoggingPropertiesTest
     }
 
     /**
-     * Ensures the {@code toMap} method returns the correct map when passed a
-     * properties collection that contains an entry whose value is not a string.
+     * Ensures the {@link LoggingProperties#toMap} method returns the correct
+     * map when passed a properties collection that contains an entry whose
+     * value is not a string.
      */
     @Test
     public void testToMap_Properties_ContainsNonStringValue()
@@ -197,8 +203,8 @@ public final class LoggingPropertiesTest
     }
 
     /**
-     * Ensures the {@code toMap} method returns an empty map when passed an
-     * empty properties collection.
+     * Ensures the {@link LoggingProperties#toMap} method returns an empty map
+     * when passed an empty properties collection.
      */
     @Test
     public void testToMap_Properties_Empty()
@@ -210,8 +216,8 @@ public final class LoggingPropertiesTest
     }
 
     /**
-     * Ensures the {@code toMap} method returns the correct map when passed a
-     * non-empty properties collection.
+     * Ensures the {@link LoggingProperties#toMap} method returns the correct
+     * map when passed a non-empty properties collection.
      */
     @Test
     public void testToMap_Properties_NonEmpty()

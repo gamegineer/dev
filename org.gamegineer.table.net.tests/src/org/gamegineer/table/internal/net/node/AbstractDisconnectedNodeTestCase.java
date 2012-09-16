@@ -161,8 +161,8 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
     }
 
     /**
-     * Ensures the {@code bindRemoteNode} method throws an exception when passed
-     * a non-{@code null} remote node.
+     * Ensures the {@link INode#bindRemoteNode} method throws an exception when
+     * passed a non-{@code null} remote node.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -183,8 +183,8 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
     }
 
     /**
-     * Ensures the {@code bindRemoteNode} method throws an exception when passed
-     * a {@code null} remote node.
+     * Ensures the {@link INode#bindRemoteNode} method throws an exception when
+     * passed a {@code null} remote node.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -205,7 +205,7 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
     }
 
     /**
-     * Ensures the {@code getPassword} method throws an exception.
+     * Ensures the {@link INode#getPassword} method throws an exception.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -226,7 +226,7 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
     }
 
     /**
-     * Ensures the {@code getPlayerName} method throws an exception.
+     * Ensures the {@link INode#getPlayerName} method throws an exception.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -247,8 +247,8 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
     }
 
     /**
-     * Ensures the {@code unbindRemoteNode} method throws an exception when
-     * passed a non-{@code null} remote node.
+     * Ensures the {@link INode#unbindRemoteNode} method throws an exception
+     * when passed a non-{@code null} remote node.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -269,8 +269,8 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
     }
 
     /**
-     * Ensures the {@code unbindRemoteNode} method throws an exception when
-     * passed a {@code null} remote node.
+     * Ensures the {@link INode#unbindRemoteNode} method throws an exception
+     * when passed a {@code null} remote node.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

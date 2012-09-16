@@ -70,8 +70,8 @@ public final class BeginAuthenticationResponseMessageTest
     }
 
     /**
-     * Ensures the {@code setPlayerName} method throws an exception when passed
-     * a {@code null} player name.
+     * Ensures the {@link BeginAuthenticationResponseMessage#setPlayerName}
+     * method throws an exception when passed a {@code null} player name.
      */
     @Test( expected = NullPointerException.class )
     public void testSetPlayerName_PlayerName_Null()
@@ -80,8 +80,8 @@ public final class BeginAuthenticationResponseMessageTest
     }
 
     /**
-     * Ensures the {@code setResponse} method throws an exception when passed an
-     * illegal response that is empty.
+     * Ensures the {@link BeginAuthenticationResponseMessage#setResponse} method
+     * throws an exception when passed an illegal response that is empty.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testSetResponse_Response_Illegal_Empty()
@@ -90,8 +90,8 @@ public final class BeginAuthenticationResponseMessageTest
     }
 
     /**
-     * Ensures the {@code setResponse} method throws an exception when passed a
-     * {@code null} response.
+     * Ensures the {@link BeginAuthenticationResponseMessage#setResponse} method
+     * throws an exception when passed a {@code null} response.
      */
     @Test( expected = NullPointerException.class )
     public void testSetResponse_Response_Null()
