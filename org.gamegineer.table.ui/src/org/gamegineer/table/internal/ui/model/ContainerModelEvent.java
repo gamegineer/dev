@@ -26,9 +26,11 @@ import net.jcip.annotations.ThreadSafe;
 
 /**
  * An event fired by a container model.
+ * 
+ * @noextend This class is not intended to be subclassed by clients.
  */
 @ThreadSafe
-public final class ContainerModelEvent
+public class ContainerModelEvent
     extends EventObject
 {
     // ======================================================================
@@ -72,7 +74,7 @@ public final class ContainerModelEvent
      * @return The container model that fired the event; never {@code null}.
      */
     /* @NonNull */
-    public ContainerModel getContainerModel()
+    public final ContainerModel getContainerModel()
     {
         return (ContainerModel)getSource();
     }

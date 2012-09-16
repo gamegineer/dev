@@ -33,13 +33,12 @@ import java.util.Map;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.core.ContainerContentChangedEvent;
-import org.gamegineer.table.core.ContainerEvent;
-import org.gamegineer.table.core.IComponent;
-import org.gamegineer.table.core.IContainerListener;
+import org.gamegineer.table.internal.ui.model.ComponentModel;
 import org.gamegineer.table.internal.ui.model.ContainerModel;
+import org.gamegineer.table.internal.ui.model.ContainerModelContentChangedEvent;
+import org.gamegineer.table.internal.ui.model.ContainerModelEvent;
 import org.gamegineer.table.internal.ui.model.IContainerModelListener;
-import org.gamegineer.table.internal.ui.util.TableUtils;
+import org.gamegineer.table.internal.ui.model.TableModelUtils;
 
 /**
  * A view of a container.
@@ -64,11 +63,11 @@ final class ContainerView
      */
     private static final int VERTICAL_PADDING = 2;
 
-    /** The collection of component views. */
-    private final Map<IComponent, ComponentView> componentViews_;
-
-    /** The container listener for this view. */
-    private IContainerListener containerListener_;
+    /**
+     * The collection of component views. The key is the component model. The
+     * value is the component view.
+     */
+    private final Map<ComponentModel, ComponentView> componentViews_;
 
     /** The model associated with this view. */
     private final ContainerModel containerModel_;
@@ -93,8 +92,7 @@ final class ContainerView
     {
         super( containerModel );
 
-        componentViews_ = new IdentityHashMap<IComponent, ComponentView>();
-        containerListener_ = null;
+        componentViews_ = new IdentityHashMap<ComponentModel, ComponentView>();
         containerModel_ = containerModel;
         containerModelListener_ = null;
     }
@@ -105,38 +103,38 @@ final class ContainerView
     // ======================================================================
 
     /**
-     * Invoked when a new component is added to the container.
+     * Invoked when a new component model is added to the container model.
      * 
-     * @param component
-     *        The added component; must not be {@code null}.
+     * @param componentModel
+     *        The added component model; must not be {@code null}.
      */
-    private void componentAdded(
+    private void componentModelAdded(
         /* @NonNull */
-        final IComponent component )
+        final ComponentModel componentModel )
     {
-        assert component != null;
+        assert componentModel != null;
 
         if( isInitialized() )
         {
-            createComponentView( component );
+            createComponentView( componentModel );
         }
     }
 
     /**
-     * Invoked when a component is removed from the container.
+     * Invoked when a component model is removed from the container model.
      * 
-     * @param component
-     *        The removed component; must not be {@code null}.
+     * @param componentModel
+     *        The removed component model; must not be {@code null}.
      */
-    private void componentRemoved(
+    private void componentModelRemoved(
         /* @NonNull */
-        final IComponent component )
+        final ComponentModel componentModel )
     {
-        assert component != null;
+        assert componentModel != null;
 
         if( isInitialized() )
         {
-            deleteComponentView( component );
+            deleteComponentView( componentModel );
         }
     }
 
@@ -152,48 +150,48 @@ final class ContainerView
     }
 
     /**
-     * Creates a component view for the specified component and adds it to the
-     * container view.
+     * Creates a component view for the specified component model and adds it to
+     * the container view.
      * 
      * <p>
      * This method must only be called after the view is initialized.
      * </p>
      * 
-     * @param component
-     *        The component; must not be {@code null}.
+     * @param componentModel
+     *        The component model; must not be {@code null}.
      */
     private void createComponentView(
         /* @NonNull */
-        final IComponent component )
+        final ComponentModel componentModel )
     {
-        assert component != null;
+        assert componentModel != null;
         assert isInitialized();
 
-        final ComponentView view = ComponentViewFactory.createComponentView( containerModel_.getComponentModel( component ) );
-        final ComponentView oldView = componentViews_.put( component, view );
+        final ComponentView view = ComponentViewFactory.createComponentView( componentModel );
+        final ComponentView oldView = componentViews_.put( componentModel, view );
         assert oldView == null;
         view.initialize( getTableView() );
     }
 
     /**
-     * Deletes the component view associated with the specified component and
-     * removes it from the container view.
+     * Deletes the component view associated with the specified component model
+     * and removes it from the container view.
      * 
      * <p>
      * This method must only be called after the view is initialized.
      * </p>
      * 
-     * @param component
-     *        The component; must not be {@code null}.
+     * @param componentModel
+     *        The component model; must not be {@code null}.
      */
     private void deleteComponentView(
         /* @NonNull */
-        final IComponent component )
+        final ComponentModel componentModel )
     {
-        assert component != null;
+        assert componentModel != null;
         assert isInitialized();
 
-        final ComponentView view = componentViews_.remove( component );
+        final ComponentView view = componentViews_.remove( componentModel );
         if( view != null )
         {
             view.uninitialize();
@@ -221,13 +219,11 @@ final class ContainerView
         super.initialize( tableView );
 
         containerModelListener_ = new ContainerModelListener();
-        containerModel_.addContainerModelListener( containerModelListener_ );
-        containerListener_ = new ContainerListener();
 
-        final List<IComponent> components = TableUtils.addContainerListenerAndGetComponents( containerModel_.getContainer(), containerListener_ );
-        for( final IComponent component : components )
+        final List<ComponentModel> componentModels = TableModelUtils.addContainerModelListenerAndGetComponentModels( containerModel_, containerModelListener_ );
+        for( final ComponentModel componentModel : componentModels )
         {
-            createComponentView( component );
+            createComponentView( componentModel );
         }
 
         repaint();
@@ -250,9 +246,9 @@ final class ContainerView
 
         getActiveComponentSurfaceDesignUI().getIcon().paintIcon( c, g, viewBounds.x + HORIZONTAL_PADDING, viewBounds.y + VERTICAL_PADDING );
 
-        for( final IComponent component : containerModel_.getContainer().getComponents() )
+        for( final ComponentModel componentModel : containerModel_.getComponentModels() )
         {
-            final ComponentView componentView = componentViews_.get( component );
+            final ComponentView componentView = componentViews_.get( componentModel );
             if( componentView != null )
             {
                 if( clipBounds.intersects( componentView.getBounds() ) )
@@ -281,13 +277,11 @@ final class ContainerView
 
         repaint();
 
-        for( final IComponent component : new ArrayList<IComponent>( componentViews_.keySet() ) )
+        for( final ComponentModel componentModel : new ArrayList<ComponentModel>( componentViews_.keySet() ) )
         {
-            deleteComponentView( component );
+            deleteComponentView( componentModel );
         }
 
-        containerModel_.getContainer().removeContainerListener( containerListener_ );
-        containerListener_ = null;
         containerModel_.removeContainerModelListener( containerModelListener_ );
         containerModelListener_ = null;
 
@@ -298,90 +292,6 @@ final class ContainerView
     // ======================================================================
     // Nested Types
     // ======================================================================
-
-    /**
-     * A container listener for the container view.
-     */
-    @Immutable
-    private final class ContainerListener
-        extends org.gamegineer.table.core.ContainerListener
-    {
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code ContainerListener} class.
-         */
-        ContainerListener()
-        {
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.core.ContainerListener#componentAdded(org.gamegineer.table.core.ContainerContentChangedEvent)
-         */
-        @Override
-        public void componentAdded(
-            final ContainerContentChangedEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    ContainerView.this.componentAdded( event.getComponent() );
-                }
-            } );
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ContainerListener#containerLayoutChanged(org.gamegineer.table.core.ContainerEvent)
-         */
-        @Override
-        public void containerLayoutChanged(
-            final ContainerEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    ContainerView.this.containerLayoutChanged();
-                }
-            } );
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ContainerListener#componentRemoved(org.gamegineer.table.core.ContainerContentChangedEvent)
-         */
-        @Override
-        public void componentRemoved(
-            final ContainerContentChangedEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    ContainerView.this.componentRemoved( event.getComponent() );
-                }
-            } );
-        }
-    }
 
     /**
      * A container model listener for the container view.
@@ -400,6 +310,71 @@ final class ContainerView
          */
         ContainerModelListener()
         {
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.ui.model.ContainerModelListener#componentModelAdded(org.gamegineer.table.internal.ui.model.ContainerModelContentChangedEvent)
+         */
+        @Override
+        public void componentModelAdded(
+            final ContainerModelContentChangedEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    ContainerView.this.componentModelAdded( event.getComponentModel() );
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.ui.model.ContainerModelListener#componentModelRemoved(org.gamegineer.table.internal.ui.model.ContainerModelContentChangedEvent)
+         */
+        @Override
+        public void componentModelRemoved(
+            final ContainerModelContentChangedEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    ContainerView.this.componentModelRemoved( event.getComponentModel() );
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.ui.model.ContainerModelListener#containerLayoutChanged(org.gamegineer.table.internal.ui.model.ContainerModelEvent)
+         */
+        @Override
+        public void containerLayoutChanged(
+            final ContainerModelEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    ContainerView.this.containerLayoutChanged();
+                }
+            } );
         }
     }
 }

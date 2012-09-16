@@ -43,6 +43,12 @@ final class NonNlsMessages
 
     /**
      * An unexpected exception was thrown from
+     * IComponentModelListener.componentBoundsChanged().
+     */
+    public static String ComponentModel_componentBoundsChanged_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
      * IComponentModelListener.componentChanged().
      */
     public static String ComponentModel_componentChanged_unexpectedException;
@@ -52,6 +58,18 @@ final class NonNlsMessages
      * IComponentModelListener.componentModelFocusChanged().
      */
     public static String ComponentModel_componentModelFocusChanged_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
+     * IComponentModelListener.componentOrientationChanged().
+     */
+    public static String ComponentModel_componentOrientationChanged_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
+     * IComponentModelListener.componentSurfaceDesignChanged().
+     */
+    public static String ComponentModel_componentSurfaceDesignChanged_unexpectedException;
 
     /** The component model listener is not registered. */
     public static String ComponentModel_removeComponentModelListener_listener_notRegistered;
@@ -63,18 +81,32 @@ final class NonNlsMessages
 
     /**
      * An unexpected exception was thrown from
-     * IContainerModelListener.containerChanged().
+     * IContainerModelListener.componentModelAdded().
      */
-    public static String ContainerModel_containerChanged_unexpectedException;
+    public static String ContainerModel_componentModelAdded_unexpectedException;
 
-    /** The component is not present in the container. */
-    public static String ContainerModel_getComponentModel_component_absent;
+    /**
+     * An unexpected exception was thrown from
+     * IContainerModelListener.componentModelRemoved().
+     */
+    public static String ContainerModel_componentModelRemoved_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
+     * IContainerModelListener.containerLayoutChanged().
+     */
+    public static String ContainerModel_containerLayoutChanged_unexpectedException;
 
     /** The component path does not exist in the container. */
     public static String ContainerModel_getComponentModel_path_notExists;
 
     /** The container model listener is not registered. */
     public static String ContainerModel_removeContainerModelListener_listener_notRegistered;
+
+    // --- ContainerModelContentChangedEvent --------------------------------
+
+    /** The component model index is negative. */
+    public static String ContainerModelContentChangedEvent_ctor_componentModelIndex_negative;
 
     // --- MainModel --------------------------------------------------------
 

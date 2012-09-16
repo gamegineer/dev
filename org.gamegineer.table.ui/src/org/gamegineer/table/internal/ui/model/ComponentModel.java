@@ -107,6 +107,25 @@ public class ComponentModel
     }
 
     /**
+     * Fires a component bounds changed event.
+     */
+    final void fireComponentBoundsChanged()
+    {
+        final ComponentModelEvent event = new ComponentModelEvent( this );
+        for( final IComponentModelListener listener : listeners_ )
+        {
+            try
+            {
+                listener.componentBoundsChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ComponentModel_componentBoundsChanged_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
      * Fires a component changed event.
      */
     final void fireComponentChanged()
@@ -140,6 +159,44 @@ public class ComponentModel
             catch( final RuntimeException e )
             {
                 Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ComponentModel_componentModelFocusChanged_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a component orientation changed event.
+     */
+    final void fireComponentOrientationChanged()
+    {
+        final ComponentModelEvent event = new ComponentModelEvent( this );
+        for( final IComponentModelListener listener : listeners_ )
+        {
+            try
+            {
+                listener.componentOrientationChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ComponentModel_componentOrientationChanged_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a component surface design changed event.
+     */
+    final void fireComponentSurfaceDesignChanged()
+    {
+        final ComponentModelEvent event = new ComponentModelEvent( this );
+        for( final IComponentModelListener listener : listeners_ )
+        {
+            try
+            {
+                listener.componentSurfaceDesignChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ComponentModel_componentSurfaceDesignChanged_unexpectedException, e );
             }
         }
     }
@@ -265,6 +322,7 @@ public class ComponentModel
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
+            fireComponentBoundsChanged();
             fireComponentChanged();
         }
 
@@ -277,6 +335,7 @@ public class ComponentModel
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
+            fireComponentOrientationChanged();
             fireComponentChanged();
         }
 
@@ -289,6 +348,7 @@ public class ComponentModel
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
+            fireComponentSurfaceDesignChanged();
             fireComponentChanged();
         }
     }

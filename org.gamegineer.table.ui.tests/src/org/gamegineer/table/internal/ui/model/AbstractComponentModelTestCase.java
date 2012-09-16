@@ -22,8 +22,10 @@
 package org.gamegineer.table.internal.ui.model;
 
 import static org.junit.Assert.assertNotNull;
+import java.awt.Point;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.gamegineer.table.core.TestComponentSurfaceDesigns;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -78,6 +80,14 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
         throws Exception;
 
     /**
+     * Fires a component bounds changed event for the fixture component model.
+     */
+    private void fireComponentBoundsChangedEvent()
+    {
+        componentModel_.fireComponentBoundsChanged();
+    }
+
+    /**
      * Fires a component changed event for the fixture component model.
      */
     private void fireComponentChangedEvent()
@@ -92,6 +102,24 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     private void fireComponentModelFocusChangedEvent()
     {
         componentModel_.fireComponentModelFocusChanged();
+    }
+
+    /**
+     * Fires a component orientation changed event for the fixture component
+     * model.
+     */
+    private void fireComponentOrientationChangedEvent()
+    {
+        componentModel_.fireComponentOrientationChanged();
+    }
+
+    /**
+     * Fires a component surface design changed event for the fixture component
+     * model.
+     */
+    private void fireComponentSurfaceDesignChangedEvent()
+    {
+        componentModel_.fireComponentSurfaceDesignChanged();
     }
 
     /**
@@ -165,18 +193,79 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     }
 
     /**
-     * Ensures a change to the underlying component state fires a component
-     * changed event.
+     * Ensures a change to the underlying component bounds fires a component
+     * bounds changed event and a component changed event.
      */
     @Test
-    public void testComponent_StateChanged_FiresComponentChangedEvent()
+    public void testComponent_BoundsChanged_FiresComponentBoundsChangedEventAndComponentChangedEvent()
     {
         final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
+        listener.componentBoundsChanged( EasyMock.notNull( ComponentModelEvent.class ) );
+        listener.componentChanged( EasyMock.notNull( ComponentModelEvent.class ) );
+        mocksControl_.replay();
+        componentModel_.addComponentModelListener( listener );
+
+        final Point location = componentModel_.getComponent().getLocation();
+        location.translate( 1, 1 );
+        componentModel_.getComponent().setLocation( location );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures a change to the underlying component orientation fires a
+     * component orientation changed event and a component changed event.
+     */
+    @Test
+    public void testComponent_OrientationChanged_FiresComponentOrientationChangedEventAndComponentChangedEvent()
+    {
+        final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
+        listener.componentOrientationChanged( EasyMock.notNull( ComponentModelEvent.class ) );
         listener.componentChanged( EasyMock.notNull( ComponentModelEvent.class ) );
         mocksControl_.replay();
         componentModel_.addComponentModelListener( listener );
 
         componentModel_.getComponent().setOrientation( componentModel_.getComponent().getOrientation().inverse() );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures a change to the underlying component surface design fires a
+     * component surface design changed event and a component changed event.
+     */
+    @Test
+    public void testComponent_SurfaceDesignChanged_FiresComponentSurfaceDesignChangedEventAndComponentChangedEvent()
+    {
+        final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
+        listener.componentSurfaceDesignChanged( EasyMock.notNull( ComponentModelEvent.class ) );
+        listener.componentChanged( EasyMock.notNull( ComponentModelEvent.class ) );
+        mocksControl_.replay();
+        componentModel_.addComponentModelListener( listener );
+
+        componentModel_.getComponent().setSurfaceDesign( componentModel_.getComponent().getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the component bounds changed event catches any exception thrown
+     * by the {@code componentBoundsChanged} method of a component model
+     * listener.
+     */
+    @Test
+    public void testComponentBoundsChanged_CatchesListenerException()
+    {
+        final IComponentModelListener listener1 = mocksControl_.createMock( IComponentModelListener.class );
+        listener1.componentBoundsChanged( EasyMock.notNull( ComponentModelEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final IComponentModelListener listener2 = mocksControl_.createMock( IComponentModelListener.class );
+        listener2.componentBoundsChanged( EasyMock.notNull( ComponentModelEvent.class ) );
+        mocksControl_.replay();
+        componentModel_.addComponentModelListener( listener1 );
+        componentModel_.addComponentModelListener( listener2 );
+
+        fireComponentBoundsChangedEvent();
 
         mocksControl_.verify();
     }
@@ -188,11 +277,14 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     @Test
     public void testComponentChanged_CatchesListenerException()
     {
-        final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
-        listener.componentChanged( EasyMock.notNull( ComponentModelEvent.class ) );
+        final IComponentModelListener listener1 = mocksControl_.createMock( IComponentModelListener.class );
+        listener1.componentChanged( EasyMock.notNull( ComponentModelEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final IComponentModelListener listener2 = mocksControl_.createMock( IComponentModelListener.class );
+        listener2.componentChanged( EasyMock.notNull( ComponentModelEvent.class ) );
         mocksControl_.replay();
-        componentModel_.addComponentModelListener( listener );
+        componentModel_.addComponentModelListener( listener1 );
+        componentModel_.addComponentModelListener( listener2 );
 
         fireComponentChangedEvent();
 
@@ -207,13 +299,60 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     @Test
     public void testComponentModelFocusChanged_CatchesListenerException()
     {
-        final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
-        listener.componentModelFocusChanged( EasyMock.notNull( ComponentModelEvent.class ) );
+        final IComponentModelListener listener1 = mocksControl_.createMock( IComponentModelListener.class );
+        listener1.componentModelFocusChanged( EasyMock.notNull( ComponentModelEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final IComponentModelListener listener2 = mocksControl_.createMock( IComponentModelListener.class );
+        listener2.componentModelFocusChanged( EasyMock.notNull( ComponentModelEvent.class ) );
         mocksControl_.replay();
-        componentModel_.addComponentModelListener( listener );
+        componentModel_.addComponentModelListener( listener1 );
+        componentModel_.addComponentModelListener( listener2 );
 
         fireComponentModelFocusChangedEvent();
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the component orientation changed event catches any exception
+     * thrown by the {@code componentOrientationChanged} method of a component
+     * model listener.
+     */
+    @Test
+    public void testComponentOrientationChanged_CatchesListenerException()
+    {
+        final IComponentModelListener listener1 = mocksControl_.createMock( IComponentModelListener.class );
+        listener1.componentOrientationChanged( EasyMock.notNull( ComponentModelEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final IComponentModelListener listener2 = mocksControl_.createMock( IComponentModelListener.class );
+        listener2.componentOrientationChanged( EasyMock.notNull( ComponentModelEvent.class ) );
+        mocksControl_.replay();
+        componentModel_.addComponentModelListener( listener1 );
+        componentModel_.addComponentModelListener( listener2 );
+
+        fireComponentOrientationChangedEvent();
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the component surface design changed event catches any exception
+     * thrown by the {@code componentSurfaceDesignChanged} method of a component
+     * model listener.
+     */
+    @Test
+    public void testComponentSurfaceDesignChanged_CatchesListenerException()
+    {
+        final IComponentModelListener listener1 = mocksControl_.createMock( IComponentModelListener.class );
+        listener1.componentSurfaceDesignChanged( EasyMock.notNull( ComponentModelEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final IComponentModelListener listener2 = mocksControl_.createMock( IComponentModelListener.class );
+        listener2.componentSurfaceDesignChanged( EasyMock.notNull( ComponentModelEvent.class ) );
+        mocksControl_.replay();
+        componentModel_.addComponentModelListener( listener1 );
+        componentModel_.addComponentModelListener( listener2 );
+
+        fireComponentSurfaceDesignChangedEvent();
 
         mocksControl_.verify();
     }

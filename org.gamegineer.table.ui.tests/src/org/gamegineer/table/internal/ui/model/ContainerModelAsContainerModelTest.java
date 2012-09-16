@@ -22,6 +22,8 @@
 package org.gamegineer.table.internal.ui.model;
 
 import java.lang.reflect.Method;
+import org.easymock.EasyMock;
+import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.core.TestComponents;
 
@@ -59,17 +61,90 @@ public final class ContainerModelAsContainerModelTest
     }
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.AbstractContainerModelTestCase#fireContainerChangedEvent(org.gamegineer.table.internal.ui.model.ContainerModel)
+     * @see org.gamegineer.table.internal.ui.model.AbstractContainerModelTestCase#fireComponentModelAddedEvent(org.gamegineer.table.internal.ui.model.ContainerModel)
      */
     @Override
-    protected void fireContainerChangedEvent(
+    protected void fireComponentModelAddedEvent(
         final ContainerModel containerModel )
     {
+        fireContainerModelEventWithComponentModelAndInteger( containerModel, "fireComponentModelAdded" ); //$NON-NLS-1$
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.AbstractContainerModelTestCase#fireComponentModelRemovedEvent(org.gamegineer.table.internal.ui.model.ContainerModel)
+     */
+    @Override
+    protected void fireComponentModelRemovedEvent(
+        final ContainerModel containerModel )
+    {
+        fireContainerModelEventWithComponentModelAndInteger( containerModel, "fireComponentModelRemoved" ); //$NON-NLS-1$
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.AbstractContainerModelTestCase#fireContainerLayoutChangedEvent(org.gamegineer.table.internal.ui.model.ContainerModel)
+     */
+    @Override
+    protected void fireContainerLayoutChangedEvent(
+        final ContainerModel containerModel )
+    {
+        fireContainerModelEvent( containerModel, "fireContainerLayoutChanged" ); //$NON-NLS-1$
+    }
+
+    /**
+     * Fires the event associated with the specified {@link ContainerModel}
+     * method.
+     * 
+     * @param containerModel
+     *        The container model; must not be {@code null}.
+     * @param methodName
+     *        The name of the method associated with the event; must not be
+     *        {@code null}.
+     */
+    private static void fireContainerModelEvent(
+        /* @NonNull */
+        final ContainerModel containerModel,
+        /* @NonNull */
+        final String methodName )
+    {
+        assert containerModel != null;
+        assert methodName != null;
+
         try
         {
-            final Method method = ContainerModel.class.getDeclaredMethod( "fireContainerChanged" ); //$NON-NLS-1$
+            final Method method = ContainerModel.class.getDeclaredMethod( methodName );
             method.setAccessible( true );
             method.invoke( containerModel );
+        }
+        catch( final Exception e )
+        {
+            throw new AssertionError( e );
+        }
+    }
+
+    /**
+     * Fires the event associated with the specified {@link ContainerModel}
+     * method that accepts a {@link ComponentModel} and an integer.
+     * 
+     * @param containerModel
+     *        The container model; must not be {@code null}.
+     * @param methodName
+     *        The name of the method associated with the event; must not be
+     *        {@code null}.
+     */
+    private static void fireContainerModelEventWithComponentModelAndInteger(
+        /* @NonNull */
+        final ContainerModel containerModel,
+        /* @NonNull */
+        final String methodName )
+    {
+        assert containerModel != null;
+        assert methodName != null;
+
+        try
+        {
+            final Method method = ContainerModel.class.getDeclaredMethod( methodName, ComponentModel.class, Integer.TYPE );
+            method.setAccessible( true );
+            method.invoke( containerModel, new ComponentModel( EasyMock.createMock( IComponent.class ) ), Integer.valueOf( 0 ) );
         }
         catch( final Exception e )
         {

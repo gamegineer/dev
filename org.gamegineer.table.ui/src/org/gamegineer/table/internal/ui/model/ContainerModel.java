@@ -23,9 +23,8 @@ package org.gamegineer.table.internal.ui.model;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.util.IdentityHashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
@@ -53,9 +52,12 @@ public final class ContainerModel
     /** The component model listener for this model. */
     private final IComponentModelListener componentModelListener_;
 
-    /** The collection of component models. */
+    /**
+     * The collection of component models ordered from the component at the
+     * bottom of the container to the component at the top of the container.
+     */
     @GuardedBy( "getLock()" )
-    private final Map<IComponent, ComponentModel> componentModels_;
+    private final List<ComponentModel> componentModels_;
 
     /** The container model listener for this model. */
     private final IContainerModelListener containerModelListener_;
@@ -82,16 +84,17 @@ public final class ContainerModel
         super( container );
 
         componentModelListener_ = new ComponentModelListener();
-        componentModels_ = new IdentityHashMap<IComponent, ComponentModel>();
+        componentModels_ = new ArrayList<ComponentModel>();
         containerModelListener_ = new ContainerModelListener();
         listeners_ = new CopyOnWriteArrayList<IContainerModelListener>();
 
-        final List<IComponent> components = TableUtils.addContainerListenerAndGetComponents( container, new ContainerListener() );
-        for( final IComponent component : components )
+        synchronized( getLock() )
         {
-            synchronized( getLock() )
+            final List<IComponent> components = TableUtils.addContainerListenerAndGetComponents( container, new ContainerListener() );
+            int componentIndex = 0;
+            for( final IComponent component : components )
             {
-                createComponentModel( component );
+                createComponentModel( component, componentIndex++ );
             }
         }
     }
@@ -126,20 +129,24 @@ public final class ContainerModel
      * 
      * @param component
      *        The component; must not be {@code null}.
+     * @param componentIndex
+     *        The component index; must not be negative.
      * 
-     * @return The component model; never {@code null}.
+     * @return The component model that was created; never {@code null}.
      */
     @GuardedBy( "getLock()" )
     /* @NonNull */
     private ComponentModel createComponentModel(
         /* @NonNull */
-        final IComponent component )
+        final IComponent component,
+        final int componentIndex )
     {
         assert component != null;
+        assert componentIndex >= 0;
         assert Thread.holdsLock( getLock() );
 
         final ComponentModel componentModel = ComponentModelFactory.createComponentModel( component );
-        componentModels_.put( component, componentModel );
+        componentModels_.add( componentIndex, componentModel );
 
         componentModel.addComponentModelListener( componentModelListener_ );
         if( componentModel instanceof ContainerModel )
@@ -155,78 +162,111 @@ public final class ContainerModel
      * 
      * @param component
      *        The component; must not be {@code null}.
+     * @param componentIndex
+     *        The component index; must not be negative.
+     * 
+     * @return The component model that was deleted; never {@code null}.
      */
     @GuardedBy( "getLock()" )
-    private void deleteComponentModel(
+    /* @NonNull */
+    private ComponentModel deleteComponentModel(
         /* @NonNull */
-        final IComponent component )
+        final IComponent component,
+        final int componentIndex )
     {
         assert component != null;
+        assert componentIndex >= 0;
         assert Thread.holdsLock( getLock() );
 
-        final ComponentModel componentModel = componentModels_.remove( component );
-        if( componentModel != null )
-        {
-            componentModel.setFocused( false );
+        final ComponentModel componentModel = componentModels_.remove( componentIndex );
+        componentModel.setFocused( false );
 
-            componentModel.removeComponentModelListener( componentModelListener_ );
-            if( componentModel instanceof ContainerModel )
+        componentModel.removeComponentModelListener( componentModelListener_ );
+        if( componentModel instanceof ContainerModel )
+        {
+            ((ContainerModel)componentModel).removeContainerModelListener( containerModelListener_ );
+        }
+
+        return componentModel;
+    }
+
+    /**
+     * Fires a component model added event.
+     * 
+     * @param componentModel
+     *        The added component model; must not be {@code null}.
+     * @param componentModelIndex
+     *        The index of the added component; must not be negative.
+     */
+    private void fireComponentModelAdded(
+        /* @NonNull */
+        final ComponentModel componentModel,
+        final int componentModelIndex )
+    {
+        assert componentModel != null;
+        assert componentModelIndex >= 0;
+
+        final ContainerModelContentChangedEvent event = new ContainerModelContentChangedEvent( this, componentModel, componentModelIndex );
+        for( final IContainerModelListener listener : listeners_ )
+        {
+            try
             {
-                ((ContainerModel)componentModel).removeContainerModelListener( containerModelListener_ );
+                listener.componentModelAdded( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ContainerModel_componentModelAdded_unexpectedException, e );
             }
         }
     }
 
     /**
-     * Fires a container changed event.
+     * Fires a component model removed event.
+     * 
+     * @param componentModel
+     *        The removed component model; must not be {@code null}.
+     * @param componentModelIndex
+     *        The index of the removed component; must not be negative.
      */
-    @SuppressWarnings( "unused" )
-    private void fireContainerChanged()
+    private void fireComponentModelRemoved(
+        /* @NonNull */
+        final ComponentModel componentModel,
+        final int componentModelIndex )
+    {
+        assert componentModel != null;
+        assert componentModelIndex >= 0;
+
+        final ContainerModelContentChangedEvent event = new ContainerModelContentChangedEvent( this, componentModel, componentModelIndex );
+        for( final IContainerModelListener listener : listeners_ )
+        {
+            try
+            {
+                listener.componentModelRemoved( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ContainerModel_componentModelRemoved_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a container layout changed event.
+     */
+    private void fireContainerLayoutChanged()
     {
         final ContainerModelEvent event = new ContainerModelEvent( this );
         for( final IContainerModelListener listener : listeners_ )
         {
             try
             {
-                listener.containerChanged( event );
+                listener.containerLayoutChanged( event );
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ContainerModel_containerChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ContainerModel_containerLayoutChanged_unexpectedException, e );
             }
         }
-    }
-
-    /**
-     * Gets the component model associated with the specified component.
-     * 
-     * @param component
-     *        The component; must not be {@code null}.
-     * 
-     * @return The component model associated with the specified component;
-     *         never {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code component} does not exist in the container associated
-     *         with this model.
-     * @throws java.lang.NullPointerException
-     *         If {@code component} is {@code null}.
-     */
-    /* @NonNull */
-    public ComponentModel getComponentModel(
-        /* @NonNull */
-        final IComponent component )
-    {
-        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
-
-        final ComponentModel componentModel;
-        synchronized( getLock() )
-        {
-            componentModel = componentModels_.get( component );
-        }
-
-        assertArgumentLegal( componentModel != null, "component", NonNlsMessages.ContainerModel_getComponentModel_component_absent ); //$NON-NLS-1$
-        return componentModel;
     }
 
     /**
@@ -251,7 +291,11 @@ public final class ContainerModel
         assert !paths.isEmpty();
 
         final ComponentPath path = paths.get( 0 );
-        final ComponentModel componentModel = getComponentModel( getContainer().getComponent( path.getIndex() ) );
+        final ComponentModel componentModel;
+        synchronized( getLock() )
+        {
+            componentModel = componentModels_.get( path.getIndex() );
+        }
         if( paths.size() == 1 )
         {
             return componentModel;
@@ -259,6 +303,23 @@ public final class ContainerModel
 
         assertArgumentLegal( componentModel instanceof ContainerModel, "paths", NonNlsMessages.ContainerModel_getComponentModel_path_notExists ); //$NON-NLS-1$
         return ((ContainerModel)componentModel).getComponentModel( paths.subList( 1, paths.size() ) );
+    }
+
+    /**
+     * Gets the collection of component models in this container model.
+     * 
+     * @return The collection of component models in this container model; never
+     *         {@code null}. The component models are returned in order from the
+     *         component at the bottom of the container to the component at the
+     *         top of the container.
+     */
+    /* @NonNull */
+    public List<ComponentModel> getComponentModels()
+    {
+        synchronized( getLock() )
+        {
+            return new ArrayList<ComponentModel>( componentModels_ );
+        }
     }
 
     /**
@@ -378,11 +439,13 @@ public final class ContainerModel
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
+            final ComponentModel componentModel;
             synchronized( getLock() )
             {
-                createComponentModel( event.getComponent() );
+                componentModel = createComponentModel( event.getComponent(), event.getComponentIndex() );
             }
 
+            fireComponentModelAdded( componentModel, event.getComponentIndex() );
             fireComponentChanged();
         }
 
@@ -396,11 +459,13 @@ public final class ContainerModel
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
+            final ComponentModel componentModel;
             synchronized( getLock() )
             {
-                deleteComponentModel( event.getComponent() );
+                componentModel = deleteComponentModel( event.getComponent(), event.getComponentIndex() );
             }
 
+            fireComponentModelRemoved( componentModel, event.getComponentIndex() );
             fireComponentChanged();
         }
 
@@ -408,11 +473,13 @@ public final class ContainerModel
          * @see org.gamegineer.table.core.ContainerListener#containerLayoutChanged(org.gamegineer.table.core.ContainerEvent)
          */
         @Override
+        @SuppressWarnings( "synthetic-access" )
         public void containerLayoutChanged(
             final ContainerEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
+            fireContainerLayoutChanged();
             fireComponentChanged();
         }
     }

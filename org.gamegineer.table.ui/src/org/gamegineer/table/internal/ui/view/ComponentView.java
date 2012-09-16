@@ -30,9 +30,7 @@ import java.util.logging.Level;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
-import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.model.ComponentModel;
 import org.gamegineer.table.internal.ui.model.ComponentModelEvent;
@@ -50,9 +48,6 @@ class ComponentView
     // ======================================================================
     // Fields
     // ======================================================================
-
-    /** The component listener for this view. */
-    private IComponentListener componentListener_;
 
     /** The model associated with this view. */
     private final ComponentModel componentModel_;
@@ -83,7 +78,6 @@ class ComponentView
     {
         assert componentModel != null;
 
-        componentListener_ = null;
         componentModel_ = componentModel;
         componentModelListener_ = null;
         dirtyBounds_ = new Rectangle();
@@ -222,8 +216,6 @@ class ComponentView
         dirtyBounds_.setBounds( getBounds() );
         componentModelListener_ = new ComponentModelListener();
         componentModel_.addComponentModelListener( componentModelListener_ );
-        componentListener_ = new ComponentListener();
-        componentModel_.getComponent().addComponentListener( componentListener_ );
 
         repaint();
     }
@@ -304,8 +296,6 @@ class ComponentView
 
         repaint();
 
-        componentModel_.getComponent().removeComponentListener( componentListener_ );
-        componentListener_ = null;
         componentModel_.removeComponentModelListener( componentModelListener_ );
         componentModelListener_ = null;
         tableView_ = null;
@@ -315,90 +305,6 @@ class ComponentView
     // ======================================================================
     // Nested Types
     // ======================================================================
-
-    /**
-     * A component listener for the component view.
-     */
-    @Immutable
-    private final class ComponentListener
-        extends org.gamegineer.table.core.ComponentListener
-    {
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code ComponentListener} class.
-         */
-        ComponentListener()
-        {
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.core.ComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
-         */
-        @Override
-        public void componentBoundsChanged(
-            final ComponentEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    ComponentView.this.componentBoundsChanged();
-                }
-            } );
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ComponentListener#componentOrientationChanged(org.gamegineer.table.core.ComponentEvent)
-         */
-        @Override
-        public void componentOrientationChanged(
-            final ComponentEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    ComponentView.this.componentOrientationChanged();
-                }
-            } );
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ComponentListener#componentSurfaceDesignChanged(org.gamegineer.table.core.ComponentEvent)
-         */
-        @Override
-        public void componentSurfaceDesignChanged(
-            final ComponentEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    ComponentView.this.componentSurfaceDesignChanged();
-                }
-            } );
-        }
-    }
 
     /**
      * A component model listener for the component view.
@@ -425,6 +331,26 @@ class ComponentView
         // ==================================================================
 
         /*
+         * @see org.gamegineer.table.internal.ui.model.ComponentModelListener#componentBoundsChanged(org.gamegineer.table.internal.ui.model.ComponentModelEvent)
+         */
+        @Override
+        public void componentBoundsChanged(
+            final ComponentModelEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    ComponentView.this.componentBoundsChanged();
+                }
+            } );
+        }
+
+        /*
          * @see org.gamegineer.table.internal.ui.model.ComponentModelListener#componentModelFocusChanged(org.gamegineer.table.internal.ui.model.ComponentModelEvent)
          */
         @Override
@@ -440,6 +366,46 @@ class ComponentView
                 public void run()
                 {
                     ComponentView.this.componentModelFocusChanged();
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.ui.model.ComponentModelListener#componentOrientationChanged(org.gamegineer.table.internal.ui.model.ComponentModelEvent)
+         */
+        @Override
+        public void componentOrientationChanged(
+            final ComponentModelEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    ComponentView.this.componentOrientationChanged();
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.ui.model.ComponentModelListener#componentSurfaceDesignChanged(org.gamegineer.table.internal.ui.model.ComponentModelEvent)
+         */
+        @Override
+        public void componentSurfaceDesignChanged(
+            final ComponentModelEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    ComponentView.this.componentSurfaceDesignChanged();
                 }
             } );
         }

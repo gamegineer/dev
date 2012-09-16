@@ -163,11 +163,14 @@ public final class MainModelTest
     @Test
     public void testMainModelStateChanged_CatchesListenerException()
     {
-        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.mainModelStateChanged( EasyMock.notNull( MainModelEvent.class ) );
+        final IMainModelListener listener1 = niceMocksControl_.createMock( IMainModelListener.class );
+        listener1.mainModelStateChanged( EasyMock.notNull( MainModelEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final IMainModelListener listener2 = niceMocksControl_.createMock( IMainModelListener.class );
+        listener2.mainModelStateChanged( EasyMock.notNull( MainModelEvent.class ) );
         niceMocksControl_.replay();
-        model_.addMainModelListener( listener );
+        model_.addMainModelListener( listener1 );
+        model_.addMainModelListener( listener2 );
 
         fireMainModelStateChangedEvent();
 

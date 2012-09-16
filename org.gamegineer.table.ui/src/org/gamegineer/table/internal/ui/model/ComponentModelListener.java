@@ -54,6 +54,18 @@ public class ComponentModelListener
     /**
      * This implementation does nothing.
      * 
+     * @see org.gamegineer.table.internal.ui.model.IComponentModelListener#componentBoundsChanged(org.gamegineer.table.internal.ui.model.ComponentModelEvent)
+     */
+    @Override
+    public void componentBoundsChanged(
+        final ComponentModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+    }
+
+    /**
+     * This implementation does nothing.
+     * 
      * @see org.gamegineer.table.internal.ui.model.IComponentModelListener#componentChanged(org.gamegineer.table.internal.ui.model.ComponentModelEvent)
      */
     @Override
@@ -70,6 +82,30 @@ public class ComponentModelListener
      */
     @Override
     public void componentModelFocusChanged(
+        final ComponentModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+    }
+
+    /**
+     * This implementation does nothing.
+     * 
+     * @see org.gamegineer.table.internal.ui.model.IComponentModelListener#componentOrientationChanged(org.gamegineer.table.internal.ui.model.ComponentModelEvent)
+     */
+    @Override
+    public void componentOrientationChanged(
+        final ComponentModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+    }
+
+    /**
+     * This implementation does nothing.
+     * 
+     * @see org.gamegineer.table.internal.ui.model.IComponentModelListener#componentSurfaceDesignChanged(org.gamegineer.table.internal.ui.model.ComponentModelEvent)
+     */
+    @Override
+    public void componentSurfaceDesignChanged(
         final ComponentModelEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$

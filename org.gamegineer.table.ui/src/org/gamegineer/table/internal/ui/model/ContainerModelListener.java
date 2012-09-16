@@ -54,10 +54,34 @@ public class ContainerModelListener
     /**
      * This implementation does nothing.
      * 
-     * @see org.gamegineer.table.internal.ui.model.IContainerModelListener#containerChanged(org.gamegineer.table.internal.ui.model.ContainerModelEvent)
+     * @see org.gamegineer.table.internal.ui.model.IContainerModelListener#componentModelAdded(org.gamegineer.table.internal.ui.model.ContainerModelContentChangedEvent)
      */
     @Override
-    public void containerChanged(
+    public void componentModelAdded(
+        final ContainerModelContentChangedEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+    }
+
+    /**
+     * This implementation does nothing.
+     * 
+     * @see org.gamegineer.table.internal.ui.model.IContainerModelListener#componentModelRemoved(org.gamegineer.table.internal.ui.model.ContainerModelContentChangedEvent)
+     */
+    @Override
+    public void componentModelRemoved(
+        final ContainerModelContentChangedEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+    }
+
+    /**
+     * This implementation does nothing.
+     * 
+     * @see org.gamegineer.table.internal.ui.model.IContainerModelListener#containerLayoutChanged(org.gamegineer.table.internal.ui.model.ContainerModelEvent)
+     */
+    @Override
+    public void containerLayoutChanged(
         final ContainerModelEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$

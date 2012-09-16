@@ -34,9 +34,38 @@ public interface IContainerModelListener
     // Methods
     // ======================================================================
 
-    // TODO: This is a temporary method.  Will probably remove this entire interface.
     /**
-     * Invoked after the container associated with the model has changed.
+     * Invoked after a component model has been added to the container model.
+     * 
+     * @param event
+     *        The event describing the added component model; must not be
+     *        {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void componentModelAdded(
+        /* @NonNull */
+        ContainerModelContentChangedEvent event );
+
+    /**
+     * Invoked after a component model has been removed from the container
+     * model.
+     * 
+     * @param event
+     *        The event describing the removed component model; must not be
+     *        {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void componentModelRemoved(
+        /* @NonNull */
+        ContainerModelContentChangedEvent event );
+
+    /**
+     * Invoked after the layout of the container associated with the model has
+     * changed.
      * 
      * @param event
      *        The event describing the container model; must not be {@code null}
@@ -45,7 +74,7 @@ public interface IContainerModelListener
      * @throws java.lang.NullPointerException
      *         If {@code event} is {@code null}.
      */
-    public void containerChanged(
+    public void containerLayoutChanged(
         /* @NonNull */
         ContainerModelEvent event );
 }

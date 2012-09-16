@@ -35,7 +35,23 @@ public interface IComponentModelListener
     // ======================================================================
 
     /**
-     * Invoked after the component associated with the model has changed.
+     * Invoked after the bounds of the component associated with the model have
+     * changed.
+     * 
+     * @param event
+     *        The event describing the component model; must not be {@code null}
+     *        .
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void componentBoundsChanged(
+        /* @NonNull */
+        ComponentModelEvent event );
+
+    /**
+     * Invoked after any attribute of the component associated with the model
+     * has changed.
      * 
      * @param event
      *        The event describing the component model; must not be {@code null}
@@ -59,6 +75,36 @@ public interface IComponentModelListener
      *         If {@code event} is {@code null}.
      */
     public void componentModelFocusChanged(
+        /* @NonNull */
+        ComponentModelEvent event );
+
+    /**
+     * Invoked after the orientation of the component associated with the model
+     * has changed.
+     * 
+     * @param event
+     *        The event describing the component model; must not be {@code null}
+     *        .
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void componentOrientationChanged(
+        /* @NonNull */
+        ComponentModelEvent event );
+
+    /**
+     * Invoked after a surface design of the component associated with the model
+     * has changed.
+     * 
+     * @param event
+     *        The event describing the component model; must not be {@code null}
+     *        .
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void componentSurfaceDesignChanged(
         /* @NonNull */
         ComponentModelEvent event );
 }

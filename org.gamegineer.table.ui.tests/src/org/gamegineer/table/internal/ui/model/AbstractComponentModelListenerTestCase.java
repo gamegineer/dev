@@ -84,6 +84,16 @@ public abstract class AbstractComponentModelListenerTestCase
     }
 
     /**
+     * Ensures the {@code componentBoundsChanged} method throws an exception
+     * when passed a {@code null} event.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testComponentBoundsChanged_Event_Null()
+    {
+        listener_.componentBoundsChanged( null );
+    }
+
+    /**
      * Ensures the {@code componentChanged} method throws an exception when
      * passed a {@code null} event.
      */
@@ -101,5 +111,25 @@ public abstract class AbstractComponentModelListenerTestCase
     public void testComponentModelFocusChanged_Event_Null()
     {
         listener_.componentModelFocusChanged( null );
+    }
+
+    /**
+     * Ensures the {@code componentOrientationChanged} method throws an
+     * exception when passed a {@code null} event.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testComponentOrientationChanged_Event_Null()
+    {
+        listener_.componentOrientationChanged( null );
+    }
+
+    /**
+     * Ensures the {@code componentSurfaceDesignChanged} method throws an
+     * exception when passed a {@code null} event.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testComponentSurfaceDesignChanged_Event_Null()
+    {
+        listener_.componentSurfaceDesignChanged( null );
     }
 }
