@@ -158,10 +158,9 @@ public final class ContainerModel
     }
 
     /**
-     * Deletes the component model associated with the specified component.
+     * Deletes the component model associated with the component at the
+     * specified index.
      * 
-     * @param component
-     *        The component; must not be {@code null}.
      * @param componentIndex
      *        The component index; must not be negative.
      * 
@@ -170,11 +169,8 @@ public final class ContainerModel
     @GuardedBy( "getLock()" )
     /* @NonNull */
     private ComponentModel deleteComponentModel(
-        /* @NonNull */
-        final IComponent component,
         final int componentIndex )
     {
-        assert component != null;
         assert componentIndex >= 0;
         assert Thread.holdsLock( getLock() );
 
@@ -462,7 +458,7 @@ public final class ContainerModel
             final ComponentModel componentModel;
             synchronized( getLock() )
             {
-                componentModel = deleteComponentModel( event.getComponent(), event.getComponentIndex() );
+                componentModel = deleteComponentModel( event.getComponentIndex() );
             }
 
             fireComponentModelRemoved( componentModel, event.getComponentIndex() );
