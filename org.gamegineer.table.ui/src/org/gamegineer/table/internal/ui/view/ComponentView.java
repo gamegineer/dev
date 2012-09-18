@@ -179,6 +179,17 @@ class ComponentView
     }
 
     /**
+     * Gets the model associated with this view.
+     * 
+     * @return The model associated with this view; never {@code null}.
+     */
+    /* @NonNull */
+    final ComponentModel getComponentModel()
+    {
+        return componentModel_;
+    }
+
+    /**
      * Gets the table view that owns this view.
      * 
      * <p>

@@ -27,9 +27,7 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.IdentityHashMap;
 import java.util.List;
-import java.util.Map;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
@@ -64,13 +62,10 @@ final class ContainerView
     private static final int VERTICAL_PADDING = 2;
 
     /**
-     * The collection of component views. The key is the component model. The
-     * value is the component view.
+     * The collection of component views ordered from the component at the
+     * bottom of the container to the component at the top of the container.
      */
-    private final Map<ComponentModel, ComponentView> componentViews_;
-
-    /** The model associated with this view. */
-    private final ContainerModel containerModel_;
+    private final List<ComponentView> componentViews_;
 
     /** The container model listener for this view. */
     private IContainerModelListener containerModelListener_;
@@ -92,8 +87,7 @@ final class ContainerView
     {
         super( containerModel );
 
-        componentViews_ = new IdentityHashMap<ComponentModel, ComponentView>();
-        containerModel_ = containerModel;
+        componentViews_ = new ArrayList<ComponentView>();
         containerModelListener_ = null;
     }
 
@@ -107,34 +101,37 @@ final class ContainerView
      * 
      * @param componentModel
      *        The added component model; must not be {@code null}.
+     * @param componentModelIndex
+     *        The index of the added component model; must not be negative.
      */
     private void componentModelAdded(
         /* @NonNull */
-        final ComponentModel componentModel )
+        final ComponentModel componentModel,
+        final int componentModelIndex )
     {
         assert componentModel != null;
+        assert componentModelIndex >= 0;
 
         if( isInitialized() )
         {
-            createComponentView( componentModel );
+            createComponentView( componentModel, componentModelIndex );
         }
     }
 
     /**
      * Invoked when a component model is removed from the container model.
      * 
-     * @param componentModel
-     *        The removed component model; must not be {@code null}.
+     * @param componentModelIndex
+     *        The index of the removed component model; must not be negative.
      */
     private void componentModelRemoved(
-        /* @NonNull */
-        final ComponentModel componentModel )
+        final int componentModelIndex )
     {
-        assert componentModel != null;
+        assert componentModelIndex >= 0;
 
         if( isInitialized() )
         {
-            deleteComponentView( componentModel );
+            deleteComponentView( componentModelIndex );
         }
     }
 
@@ -150,8 +147,7 @@ final class ContainerView
     }
 
     /**
-     * Creates a component view for the specified component model and adds it to
-     * the container view.
+     * Creates a component view for the specified component model.
      * 
      * <p>
      * This method must only be called after the view is initialized.
@@ -159,43 +155,42 @@ final class ContainerView
      * 
      * @param componentModel
      *        The component model; must not be {@code null}.
+     * @param componentModelIndex
+     *        The component model index; must not be negative.
      */
     private void createComponentView(
         /* @NonNull */
-        final ComponentModel componentModel )
+        final ComponentModel componentModel,
+        final int componentModelIndex )
     {
         assert componentModel != null;
+        assert componentModelIndex >= 0;
         assert isInitialized();
 
         final ComponentView view = ComponentViewFactory.createComponentView( componentModel );
-        final ComponentView oldView = componentViews_.put( componentModel, view );
-        assert oldView == null;
+        componentViews_.add( componentModelIndex, view );
         view.initialize( getTableView() );
     }
 
     /**
-     * Deletes the component view associated with the specified component model
-     * and removes it from the container view.
+     * Deletes the component view associated with the component model at the
+     * specified index.
      * 
      * <p>
      * This method must only be called after the view is initialized.
      * </p>
      * 
-     * @param componentModel
-     *        The component model; must not be {@code null}.
+     * @param componentModelIndex
+     *        The component model index; must not be negative.
      */
     private void deleteComponentView(
-        /* @NonNull */
-        final ComponentModel componentModel )
+        final int componentModelIndex )
     {
-        assert componentModel != null;
+        assert componentModelIndex >= 0;
         assert isInitialized();
 
-        final ComponentView view = componentViews_.remove( componentModel );
-        if( view != null )
-        {
-            view.uninitialize();
-        }
+        final ComponentView view = componentViews_.remove( componentModelIndex );
+        view.uninitialize();
     }
 
     /*
@@ -209,6 +204,17 @@ final class ContainerView
         return bounds;
     }
 
+    /**
+     * Gets the model associated with this view.
+     * 
+     * @return The model associated with this view; never {@code null}.
+     */
+    /* @NonNull */
+    ContainerModel getContainerModel()
+    {
+        return (ContainerModel)getComponentModel();
+    }
+
     /*
      * @see org.gamegineer.table.internal.ui.view.ComponentView#initialize(org.gamegineer.table.internal.ui.view.TableView)
      */
@@ -220,10 +226,11 @@ final class ContainerView
 
         containerModelListener_ = new ContainerModelListener();
 
-        final List<ComponentModel> componentModels = TableModelUtils.addContainerModelListenerAndGetComponentModels( containerModel_, containerModelListener_ );
+        final List<ComponentModel> componentModels = TableModelUtils.addContainerModelListenerAndGetComponentModels( getContainerModel(), containerModelListener_ );
+        int componentModelIndex = 0;
         for( final ComponentModel componentModel : componentModels )
         {
-            createComponentView( componentModel );
+            createComponentView( componentModel, componentModelIndex++ );
         }
 
         repaint();
@@ -246,19 +253,15 @@ final class ContainerView
 
         getActiveComponentSurfaceDesignUI().getIcon().paintIcon( c, g, viewBounds.x + HORIZONTAL_PADDING, viewBounds.y + VERTICAL_PADDING );
 
-        for( final ComponentModel componentModel : containerModel_.getComponentModels() )
+        for( final ComponentView componentView : componentViews_ )
         {
-            final ComponentView componentView = componentViews_.get( componentModel );
-            if( componentView != null )
+            if( clipBounds.intersects( componentView.getBounds() ) )
             {
-                if( clipBounds.intersects( componentView.getBounds() ) )
-                {
-                    componentView.paint( c, g );
-                }
+                componentView.paint( c, g );
             }
         }
 
-        if( containerModel_.isFocused() )
+        if( getContainerModel().isFocused() )
         {
             final Color oldColor = g.getColor();
             g.setColor( Color.GREEN );
@@ -277,12 +280,12 @@ final class ContainerView
 
         repaint();
 
-        for( final ComponentModel componentModel : new ArrayList<ComponentModel>( componentViews_.keySet() ) )
+        for( int index = componentViews_.size() - 1; index >= 0; --index )
         {
-            deleteComponentView( componentModel );
+            deleteComponentView( index );
         }
 
-        containerModel_.removeContainerModelListener( containerModelListener_ );
+        getContainerModel().removeContainerModelListener( containerModelListener_ );
         containerModelListener_ = null;
 
         super.uninitialize();
@@ -332,7 +335,7 @@ final class ContainerView
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
-                    ContainerView.this.componentModelAdded( event.getComponentModel() );
+                    ContainerView.this.componentModelAdded( event.getComponentModel(), event.getComponentModelIndex() );
                 }
             } );
         }
@@ -352,7 +355,7 @@ final class ContainerView
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
-                    ContainerView.this.componentModelRemoved( event.getComponentModel() );
+                    ContainerView.this.componentModelRemoved( event.getComponentModelIndex() );
                 }
             } );
         }
