@@ -204,15 +204,13 @@ final class ContainerView
         return bounds;
     }
 
-    /**
-     * Gets the model associated with this view.
-     * 
-     * @return The model associated with this view; never {@code null}.
+    /*
+     * @see org.gamegineer.table.internal.ui.view.ComponentView#getComponentModel()
      */
-    /* @NonNull */
-    ContainerModel getContainerModel()
+    @Override
+    ContainerModel getComponentModel()
     {
-        return (ContainerModel)getComponentModel();
+        return (ContainerModel)super.getComponentModel();
     }
 
     /*
@@ -226,7 +224,7 @@ final class ContainerView
 
         containerModelListener_ = new ContainerModelListener();
 
-        final List<ComponentModel> componentModels = TableModelUtils.addContainerModelListenerAndGetComponentModels( getContainerModel(), containerModelListener_ );
+        final List<ComponentModel> componentModels = TableModelUtils.addContainerModelListenerAndGetComponentModels( getComponentModel(), containerModelListener_ );
         int componentModelIndex = 0;
         for( final ComponentModel componentModel : componentModels )
         {
@@ -261,7 +259,7 @@ final class ContainerView
             }
         }
 
-        if( getContainerModel().isFocused() )
+        if( getComponentModel().isFocused() )
         {
             final Color oldColor = g.getColor();
             g.setColor( Color.GREEN );
@@ -285,7 +283,7 @@ final class ContainerView
             deleteComponentView( index );
         }
 
-        getContainerModel().removeContainerModelListener( containerModelListener_ );
+        getComponentModel().removeContainerModelListener( containerModelListener_ );
         containerModelListener_ = null;
 
         super.uninitialize();

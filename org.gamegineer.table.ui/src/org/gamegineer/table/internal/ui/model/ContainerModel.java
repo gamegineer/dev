@@ -265,6 +265,15 @@ public final class ContainerModel
         }
     }
 
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ComponentModel#getComponent()
+     */
+    @Override
+    public IContainer getComponent()
+    {
+        return (IContainer)super.getComponent();
+    }
+
     /**
      * Gets the component model in this container model at the specified path.
      * 
@@ -316,17 +325,6 @@ public final class ContainerModel
         {
             return new ArrayList<ComponentModel>( componentModels_ );
         }
-    }
-
-    /**
-     * Gets the container associated with this model.
-     * 
-     * @return The container associated with this model; never {@code null}.
-     */
-    /* @NonNull */
-    public IContainer getContainer()
-    {
-        return (IContainer)getComponent();
     }
 
     /**

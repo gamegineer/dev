@@ -204,10 +204,14 @@ public class ComponentModel
     /**
      * Gets the component associated with this model.
      * 
+     * <p>
+     * Subclasses are not required to call the superclass method.
+     * </p>
+     * 
      * @return The component associated with this model; never {@code null}.
      */
     /* @NonNull */
-    public final IComponent getComponent()
+    public IComponent getComponent()
     {
         return component_;
     }
@@ -274,7 +278,7 @@ public class ComponentModel
      *        {@code true} if the associated component has the focus; otherwise
      *        {@code false}.
      */
-    public void setFocused(
+    public final void setFocused(
         final boolean isFocused )
     {
         synchronized( getLock() )

@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.model;
 
-import static org.junit.Assert.assertNotNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.core.IComponent;
@@ -202,8 +201,8 @@ public abstract class AbstractContainerModelTestCase
     @Test
     public void testComponentModel_ComponentChanged_FiresComponentChangedEvent()
     {
-        final IComponent component = TestComponents.createUniqueComponent( getContainerModel().getContainer().getTableEnvironment() );
-        getContainerModel().getContainer().addComponent( component );
+        final IComponent component = TestComponents.createUniqueComponent( getContainerModel().getComponent().getTableEnvironment() );
+        getContainerModel().getComponent().addComponent( component );
         final IComponentModelListener listener = niceMocksControl_.createMock( IComponentModelListener.class );
         listener.componentChanged( EasyMock.notNull( ComponentModelEvent.class ) );
         niceMocksControl_.replay();
@@ -271,7 +270,7 @@ public abstract class AbstractContainerModelTestCase
         getContainerModel().addComponentModelListener( componentModelListener );
         getContainerModel().addContainerModelListener( containerModelListener );
 
-        getContainerModel().getContainer().addComponent( TestComponents.createUniqueComponent( getContainerModel().getContainer().getTableEnvironment() ) );
+        getContainerModel().getComponent().addComponent( TestComponents.createUniqueComponent( getContainerModel().getComponent().getTableEnvironment() ) );
 
         niceMocksControl_.verify();
     }
@@ -284,8 +283,8 @@ public abstract class AbstractContainerModelTestCase
     @Test
     public void testContainer_ComponentRemoved_FiresComponentModelRemovedEventAndComponentChangedEvent()
     {
-        final IComponent component = TestComponents.createUniqueComponent( getContainerModel().getContainer().getTableEnvironment() );
-        getContainerModel().getContainer().addComponent( component );
+        final IComponent component = TestComponents.createUniqueComponent( getContainerModel().getComponent().getTableEnvironment() );
+        getContainerModel().getComponent().addComponent( component );
         final IComponentModelListener componentModelListener = niceMocksControl_.createMock( IComponentModelListener.class );
         componentModelListener.componentChanged( EasyMock.notNull( ComponentModelEvent.class ) );
         final IContainerModelListener containerModelListener = niceMocksControl_.createMock( IContainerModelListener.class );
@@ -294,7 +293,7 @@ public abstract class AbstractContainerModelTestCase
         getContainerModel().addComponentModelListener( componentModelListener );
         getContainerModel().addContainerModelListener( containerModelListener );
 
-        getContainerModel().getContainer().removeComponent( component );
+        getContainerModel().getComponent().removeComponent( component );
 
         niceMocksControl_.verify();
     }
@@ -314,7 +313,7 @@ public abstract class AbstractContainerModelTestCase
         getContainerModel().addComponentModelListener( componentModelListener );
         getContainerModel().addContainerModelListener( containerModelListener );
 
-        getContainerModel().getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
+        getContainerModel().getComponent().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
 
         niceMocksControl_.verify();
     }
@@ -339,16 +338,6 @@ public abstract class AbstractContainerModelTestCase
         fireContainerLayoutChangedEvent();
 
         niceMocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@link ContainerModel#getContainer} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testGetContainer_ReturnValue_NonNull()
-    {
-        assertNotNull( getContainerModel().getContainer() );
     }
 
     /**

@@ -181,10 +181,14 @@ class ComponentView
     /**
      * Gets the model associated with this view.
      * 
+     * <p>
+     * Subclasses are not required to call the superclass method.
+     * </p>
+     * 
      * @return The model associated with this view; never {@code null}.
      */
     /* @NonNull */
-    final ComponentModel getComponentModel()
+    ComponentModel getComponentModel()
     {
         return componentModel_;
     }
