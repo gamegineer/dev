@@ -146,6 +146,8 @@ public final class TableModel
      */
     private void fireTableChanged()
     {
+        assert !Thread.holdsLock( lock_ );
+
         final TableModelEvent event = new TableModelEvent( this );
         for( final ITableModelListener listener : listeners_ )
         {
@@ -165,6 +167,8 @@ public final class TableModel
      */
     private void fireTableModelDirtyFlagChanged()
     {
+        assert !Thread.holdsLock( lock_ );
+
         final TableModelEvent event = new TableModelEvent( this );
         for( final ITableModelListener listener : listeners_ )
         {
@@ -184,6 +188,8 @@ public final class TableModel
      */
     private void fireTableModelFileChanged()
     {
+        assert !Thread.holdsLock( lock_ );
+
         final TableModelEvent event = new TableModelEvent( this );
         for( final ITableModelListener listener : listeners_ )
         {
@@ -203,6 +209,8 @@ public final class TableModel
      */
     private void fireTableModelFocusChanged()
     {
+        assert !Thread.holdsLock( lock_ );
+
         final TableModelEvent event = new TableModelEvent( this );
         for( final ITableModelListener listener : listeners_ )
         {
@@ -222,6 +230,8 @@ public final class TableModel
      */
     private void fireTableModelOriginOffsetChanged()
     {
+        assert !Thread.holdsLock( lock_ );
+
         final TableModelEvent event = new TableModelEvent( this );
         for( final ITableModelListener listener : listeners_ )
         {
@@ -466,10 +476,10 @@ public final class TableModel
      */
     void open()
     {
+        table_.getTabletop().removeAllComponents();
+
         synchronized( lock_ )
         {
-            table_.getTabletop().removeAllComponents();
-
             file_ = null;
             focusedComponent_ = null;
             isDirty_ = false;
@@ -500,10 +510,10 @@ public final class TableModel
     {
         assert file != null;
 
+        setTableMemento( table_, file );
+
         synchronized( lock_ )
         {
-            setTableMemento( table_, file );
-
             file_ = file;
             focusedComponent_ = null;
             isDirty_ = false;

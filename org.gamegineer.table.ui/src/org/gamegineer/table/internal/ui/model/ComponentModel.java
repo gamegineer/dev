@@ -111,6 +111,8 @@ public class ComponentModel
      */
     final void fireComponentBoundsChanged()
     {
+        assert !Thread.holdsLock( lock_ );
+
         final ComponentModelEvent event = new ComponentModelEvent( this );
         for( final IComponentModelListener listener : listeners_ )
         {
@@ -130,6 +132,8 @@ public class ComponentModel
      */
     final void fireComponentChanged()
     {
+        assert !Thread.holdsLock( lock_ );
+
         final ComponentModelEvent event = new ComponentModelEvent( this );
         for( final IComponentModelListener listener : listeners_ )
         {
@@ -149,6 +153,8 @@ public class ComponentModel
      */
     final void fireComponentModelFocusChanged()
     {
+        assert !Thread.holdsLock( lock_ );
+
         final ComponentModelEvent event = new ComponentModelEvent( this );
         for( final IComponentModelListener listener : listeners_ )
         {
@@ -168,6 +174,8 @@ public class ComponentModel
      */
     final void fireComponentOrientationChanged()
     {
+        assert !Thread.holdsLock( lock_ );
+
         final ComponentModelEvent event = new ComponentModelEvent( this );
         for( final IComponentModelListener listener : listeners_ )
         {
@@ -187,6 +195,8 @@ public class ComponentModel
      */
     final void fireComponentSurfaceDesignChanged()
     {
+        assert !Thread.holdsLock( lock_ );
+
         final ComponentModelEvent event = new ComponentModelEvent( this );
         for( final IComponentModelListener listener : listeners_ )
         {

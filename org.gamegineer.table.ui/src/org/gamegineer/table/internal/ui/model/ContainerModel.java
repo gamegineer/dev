@@ -163,27 +163,21 @@ public final class ContainerModel
      * 
      * @param componentIndex
      *        The component index; must not be negative.
-     * 
-     * @return The component model that was deleted; never {@code null}.
      */
     @GuardedBy( "getLock()" )
-    /* @NonNull */
-    private ComponentModel deleteComponentModel(
+    private void deleteComponentModel(
         final int componentIndex )
     {
         assert componentIndex >= 0;
         assert Thread.holdsLock( getLock() );
 
         final ComponentModel componentModel = componentModels_.remove( componentIndex );
-        componentModel.setFocused( false );
 
         componentModel.removeComponentModelListener( componentModelListener_ );
         if( componentModel instanceof ContainerModel )
         {
             ((ContainerModel)componentModel).removeContainerModelListener( containerModelListener_ );
         }
-
-        return componentModel;
     }
 
     /**
@@ -201,6 +195,7 @@ public final class ContainerModel
     {
         assert componentModel != null;
         assert componentModelIndex >= 0;
+        assert !Thread.holdsLock( getLock() );
 
         final ContainerModelContentChangedEvent event = new ContainerModelContentChangedEvent( this, componentModel, componentModelIndex );
         for( final IContainerModelListener listener : listeners_ )
@@ -231,6 +226,7 @@ public final class ContainerModel
     {
         assert componentModel != null;
         assert componentModelIndex >= 0;
+        assert !Thread.holdsLock( getLock() );
 
         final ContainerModelContentChangedEvent event = new ContainerModelContentChangedEvent( this, componentModel, componentModelIndex );
         for( final IContainerModelListener listener : listeners_ )
@@ -251,6 +247,8 @@ public final class ContainerModel
      */
     private void fireContainerLayoutChanged()
     {
+        assert !Thread.holdsLock( getLock() );
+
         final ContainerModelEvent event = new ContainerModelEvent( this );
         for( final IContainerModelListener listener : listeners_ )
         {
@@ -296,11 +294,7 @@ public final class ContainerModel
         assert !paths.isEmpty();
 
         final ComponentPath path = paths.get( 0 );
-        final ComponentModel componentModel;
-        synchronized( getLock() )
-        {
-            componentModel = componentModels_.get( path.getIndex() );
-        }
+        final ComponentModel componentModel = getComponentModel( path.getIndex() );
         if( paths.size() == 1 )
         {
             return componentModel;
@@ -308,6 +302,35 @@ public final class ContainerModel
 
         assertArgumentLegal( componentModel instanceof ContainerModel, "paths", NonNlsMessages.ContainerModel_getComponentModel_path_notExists ); //$NON-NLS-1$
         return ((ContainerModel)componentModel).getComponentModel( paths.subList( 1, paths.size() ) );
+    }
+
+    /**
+     * Gets the component model at the specified index.
+     * 
+     * @param componentModelIndex
+     *        The component model index.
+     * 
+     * @return The component model at the specified index; never {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code componentModelIndex} is not a legal component model
+     *         index.
+     */
+    /* @NonNull */
+    private ComponentModel getComponentModel(
+        final int componentModelIndex )
+    {
+        try
+        {
+            synchronized( getLock() )
+            {
+                return componentModels_.get( componentModelIndex );
+            }
+        }
+        catch( final IndexOutOfBoundsException e )
+        {
+            throw new IllegalArgumentException( e );
+        }
     }
 
     /**
@@ -453,10 +476,12 @@ public final class ContainerModel
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            final ComponentModel componentModel;
+            final ComponentModel componentModel = getComponentModel( event.getComponentIndex() );
+            componentModel.setFocused( false );
+
             synchronized( getLock() )
             {
-                componentModel = deleteComponentModel( event.getComponentIndex() );
+                deleteComponentModel( event.getComponentIndex() );
             }
 
             fireComponentModelRemoved( componentModel, event.getComponentIndex() );
