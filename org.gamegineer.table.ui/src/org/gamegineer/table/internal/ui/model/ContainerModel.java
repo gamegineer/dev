@@ -35,6 +35,7 @@ import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ContainerEvent;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
+import org.gamegineer.table.core.IContainerListener;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.util.TableUtils;
 
@@ -58,6 +59,9 @@ public final class ContainerModel
      */
     @GuardedBy( "getLock()" )
     private final List<ComponentModel> componentModels_;
+
+    /** The container listener for this model. */
+    private final IContainerListener containerListener_;
 
     /** The container model listener for this model. */
     private final IContainerModelListener containerModelListener_;
@@ -85,18 +89,9 @@ public final class ContainerModel
 
         componentModelListener_ = new ComponentModelListener();
         componentModels_ = new ArrayList<ComponentModel>();
+        containerListener_ = new ContainerListener();
         containerModelListener_ = new ContainerModelListener();
         listeners_ = new CopyOnWriteArrayList<IContainerModelListener>();
-
-        synchronized( getLock() )
-        {
-            final List<IComponent> components = TableUtils.addContainerListenerAndGetComponents( container, new ContainerListener() );
-            int componentIndex = 0;
-            for( final IComponent component : components )
-            {
-                createComponentModel( component, componentIndex++ );
-            }
-        }
     }
 
 
@@ -146,6 +141,7 @@ public final class ContainerModel
         assert Thread.holdsLock( getLock() );
 
         final ComponentModel componentModel = ComponentModelFactory.createComponentModel( component );
+        componentModel.initialize( getTableModel() );
         componentModels_.add( componentIndex, componentModel );
 
         componentModel.addComponentModelListener( componentModelListener_ );
@@ -172,6 +168,7 @@ public final class ContainerModel
         assert Thread.holdsLock( getLock() );
 
         final ComponentModel componentModel = componentModels_.remove( componentIndex );
+        componentModel.uninitialize();
 
         componentModel.removeComponentModelListener( componentModelListener_ );
         if( componentModel instanceof ContainerModel )
@@ -350,6 +347,26 @@ public final class ContainerModel
         }
     }
 
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ComponentModel#initialize(org.gamegineer.table.internal.ui.model.TableModel)
+     */
+    @Override
+    void initialize(
+        final TableModel tableModel )
+    {
+        synchronized( getLock() )
+        {
+            super.initialize( tableModel );
+
+            final List<IComponent> components = TableUtils.addContainerListenerAndGetComponents( getComponent(), containerListener_ );
+            int componentIndex = 0;
+            for( final IComponent component : components )
+            {
+                createComponentModel( component, componentIndex++ );
+            }
+        }
+    }
+
     /**
      * Removes the specified container model listener from this container model.
      * 
@@ -367,6 +384,20 @@ public final class ContainerModel
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.ContainerModel_removeContainerModelListener_listener_notRegistered ); //$NON-NLS-1$
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ComponentModel#uninitialize()
+     */
+    @Override
+    void uninitialize()
+    {
+        synchronized( getLock() )
+        {
+            getComponent().removeContainerListener( containerListener_ );
+
+            super.uninitialize();
+        }
     }
 
 
@@ -477,7 +508,12 @@ public final class ContainerModel
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
             final ComponentModel componentModel = getComponentModel( event.getComponentIndex() );
-            componentModel.setFocused( false );
+            if( componentModel.isFocused() )
+            {
+                final TableModel tableModel = getTableModel();
+                assert tableModel != null;
+                tableModel.setFocus( null );
+            }
 
             synchronized( getLock() )
             {

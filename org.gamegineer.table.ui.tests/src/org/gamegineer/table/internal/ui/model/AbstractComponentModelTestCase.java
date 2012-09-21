@@ -148,6 +148,7 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
         mocksControl_ = EasyMock.createControl();
         componentModel_ = createComponentModel();
         assertNotNull( componentModel_ );
+        componentModel_.initialize( new TableModel() );
     }
 
     /**

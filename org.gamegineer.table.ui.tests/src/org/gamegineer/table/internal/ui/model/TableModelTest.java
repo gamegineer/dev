@@ -610,9 +610,11 @@ public final class TableModelTest
         niceMocksControl_.replay();
         model_.addTableModelListener( listener );
 
+        assertEquals( component, model_.getFocusedComponent() );
         model_.getTable().getTabletop().removeComponent( component );
 
         niceMocksControl_.verify();
+        assertNull( model_.getFocusedComponent() );
     }
 
     /**

@@ -113,6 +113,8 @@ public final class TableModel
         tabletopModel_ = new ContainerModel( table_.getTabletop() );
 
         tableNetwork_.addTableNetworkListener( new TableNetworkListener() );
+
+        tabletopModel_.initialize( this );
         tabletopModel_.addComponentModelListener( new ComponentModelListener() );
         tabletopModel_.addContainerModelListener( new ContainerModelListener() );
     }
@@ -652,13 +654,25 @@ public final class TableModel
 
         if( componentFocusChanged )
         {
-            if( oldFocusedComponentModel != null )
+            // FIXME: Hack to ensure focus changed event is fired when we KNOW the component
+            // focus has changed but we could not locate the ComponentModel associated with
+            // focusedComponent_.  This happens when focusedComponent_ is removed from the
+            // table.  By the time this method is called, it's path has already been set to
+            // null and we can't locate it's associated ComponentModel.
+            if( (oldFocusedComponentModel != null) || (newFocusedComponentModel != null) )
             {
-                oldFocusedComponentModel.setFocused( false );
+                if( oldFocusedComponentModel != null )
+                {
+                    oldFocusedComponentModel.setFocused( false );
+                }
+                if( newFocusedComponentModel != null )
+                {
+                    newFocusedComponentModel.setFocused( true );
+                }
             }
-            if( newFocusedComponentModel != null )
+            else
             {
-                newFocusedComponentModel.setFocused( true );
+                fireTableModelFocusChanged();
             }
         }
     }

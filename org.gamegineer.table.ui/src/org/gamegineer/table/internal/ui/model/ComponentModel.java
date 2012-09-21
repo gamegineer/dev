@@ -30,6 +30,7 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.internal.ui.Loggers;
 
 /**
@@ -45,6 +46,9 @@ public class ComponentModel
     /** The component associated with this model. */
     private final IComponent component_;
 
+    /** The component listener for this model. */
+    private final IComponentListener componentListener_;
+
     /** Indicates the associated component has the focus. */
     @GuardedBy( "getLock()" )
     private boolean isFocused_;
@@ -54,6 +58,10 @@ public class ComponentModel
 
     /** The instance lock. */
     private final Object lock_;
+
+    /** The table model that owns this model. */
+    @GuardedBy( "getLock()" )
+    private TableModel tableModel_;
 
 
     // ======================================================================
@@ -74,11 +82,11 @@ public class ComponentModel
         assert component != null;
 
         component_ = component;
+        componentListener_ = new ComponentListener();
         isFocused_ = false;
         listeners_ = new CopyOnWriteArrayList<IComponentModelListener>();
         lock_ = new Object();
-
-        component_.addComponentListener( new ComponentListener() );
+        tableModel_ = null;
     }
 
 
@@ -238,6 +246,48 @@ public class ComponentModel
     }
 
     /**
+     * Gets the table model that owns this model.
+     * 
+     * @return The table model that owns this model or {@code null} if this
+     *         model is not associated with a table model.
+     */
+    /* @Nullable */
+    final TableModel getTableModel()
+    {
+        synchronized( getLock() )
+        {
+            return tableModel_;
+        }
+    }
+
+    /**
+     * Initializes this model.
+     * 
+     * <p>
+     * This method must only be called when the model is uninitialized.
+     * Subclasses may override and must call the superclass implementation while
+     * holding the instance lock.
+     * </p>
+     * 
+     * @param tableModel
+     *        The table model that owns this model; must not be {@code null}.
+     */
+    void initialize(
+        /* @NonNull */
+        final TableModel tableModel )
+    {
+        assert tableModel != null;
+
+        synchronized( getLock() )
+        {
+            assert tableModel_ == null;
+
+            tableModel_ = tableModel;
+            component_.addComponentListener( componentListener_ );
+        }
+    }
+
+    /**
      * Indicates the component associated with this model can receive the focus.
      * 
      * @return {@code true} if the component associated with this model can
@@ -297,6 +347,26 @@ public class ComponentModel
         }
 
         fireComponentModelFocusChanged();
+    }
+
+    /**
+     * Uninitializes this model.
+     * 
+     * <p>
+     * This method must only be called after the model is initialized.
+     * Subclasses may override and must call the superclass implementation while
+     * the instance lock is held.
+     * </p>
+     */
+    void uninitialize()
+    {
+        synchronized( getLock() )
+        {
+            assert tableModel_ != null;
+
+            component_.removeComponentListener( componentListener_ );
+            tableModel_ = null;
+        }
     }
 
 
