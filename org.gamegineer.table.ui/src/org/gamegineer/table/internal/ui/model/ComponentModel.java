@@ -338,7 +338,7 @@ public class ComponentModel
      *        {@code true} if the associated component has the focus; otherwise
      *        {@code false}.
      */
-    public final void setFocused(
+    final void setFocused(
         final boolean isFocused )
     {
         synchronized( getLock() )
