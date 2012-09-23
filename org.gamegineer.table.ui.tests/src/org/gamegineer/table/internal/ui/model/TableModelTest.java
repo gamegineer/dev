@@ -723,10 +723,10 @@ public final class TableModelTest
 
     /**
      * Ensures the {@link TableModel#setFocus} method does not throw an
-     * exception when passed a {@code null} container.
+     * exception when passed a {@code null} component.
      */
     @Test
-    public void testSetFocus_Container_Null()
+    public void testSetFocus_Component_Null()
     {
         model_.setFocus( null );
     }
