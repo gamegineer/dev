@@ -65,9 +65,12 @@ public final class TableModel
     @GuardedBy( "lock_" )
     private File file_;
 
-    /** The focused component or {@code null} if no component has the focus. */
+    /**
+     * The model associated with the focused component or {@code null} if no
+     * component has the focus.
+     */
     @GuardedBy( "lock_" )
-    private IComponent focusedComponent_;
+    private ComponentModel focusedComponentModel_;
 
     /** Indicates the table model is dirty. */
     @GuardedBy( "lock_" )
@@ -103,7 +106,7 @@ public final class TableModel
     public TableModel()
     {
         file_ = null;
-        focusedComponent_ = null;
+        focusedComponentModel_ = null;
         isDirty_ = false;
         listeners_ = new CopyOnWriteArrayList<ITableModelListener>();
         lock_ = new Object();
@@ -386,7 +389,7 @@ public final class TableModel
     {
         synchronized( lock_ )
         {
-            return focusedComponent_;
+            return (focusedComponentModel_ != null) ? focusedComponentModel_.getComponent() : null;
         }
     }
 
@@ -483,7 +486,7 @@ public final class TableModel
         synchronized( lock_ )
         {
             file_ = null;
-            focusedComponent_ = null;
+            focusedComponentModel_ = null;
             isDirty_ = false;
             originOffset_.setSize( new Dimension( 0, 0 ) );
         }
@@ -517,7 +520,7 @@ public final class TableModel
         synchronized( lock_ )
         {
             file_ = file;
-            focusedComponent_ = null;
+            focusedComponentModel_ = null;
             isDirty_ = false;
             originOffset_.setSize( new Dimension( 0, 0 ) );
         }
@@ -631,18 +634,19 @@ public final class TableModel
         /* @Nullable */
         final IComponent component )
     {
+        final ComponentModel componentModel = getComponentModel( component );
         final boolean componentFocusChanged;
         final ComponentModel oldFocusedComponentModel;
         final ComponentModel newFocusedComponentModel;
 
         synchronized( lock_ )
         {
-            if( component != focusedComponent_ )
+            if( componentModel != focusedComponentModel_ )
             {
                 componentFocusChanged = true;
-                oldFocusedComponentModel = getComponentModel( focusedComponent_ );
-                newFocusedComponentModel = getComponentModel( component );
-                focusedComponent_ = component;
+                oldFocusedComponentModel = focusedComponentModel_;
+                newFocusedComponentModel = componentModel;
+                focusedComponentModel_ = componentModel;
             }
             else
             {
@@ -654,25 +658,13 @@ public final class TableModel
 
         if( componentFocusChanged )
         {
-            // FIXME: Hack to ensure focus changed event is fired when we KNOW the component
-            // focus has changed but we could not locate the ComponentModel associated with
-            // focusedComponent_.  This happens when focusedComponent_ is removed from the
-            // table.  By the time this method is called, it's path has already been set to
-            // null and we can't locate it's associated ComponentModel.
-            if( (oldFocusedComponentModel != null) || (newFocusedComponentModel != null) )
+            if( oldFocusedComponentModel != null )
             {
-                if( oldFocusedComponentModel != null )
-                {
-                    oldFocusedComponentModel.setFocused( false );
-                }
-                if( newFocusedComponentModel != null )
-                {
-                    newFocusedComponentModel.setFocused( true );
-                }
+                oldFocusedComponentModel.setFocused( false );
             }
-            else
+            if( newFocusedComponentModel != null )
             {
-                fireTableModelFocusChanged();
+                newFocusedComponentModel.setFocused( true );
             }
         }
     }
