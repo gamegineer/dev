@@ -25,9 +25,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
+import java.awt.Graphics;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -36,6 +34,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
@@ -61,14 +60,14 @@ final class ViewUtils
     // Fields
     // ======================================================================
 
-    /** The maximum number of missing images to cache. */
-    private static final int MAX_MISSING_IMAGES = 32;
+    /** The maximum number of missing icons to cache. */
+    private static final int MAX_MISSING_ICONS = 32;
 
     /**
-     * The missing images cache. The key is the image size. The value is the
-     * missing image.
+     * The missing icons cache. The key is the icon size. The value is the
+     * missing icon.
      */
-    private static final Map<Dimension, Image> missingImages_;
+    private static final Map<Dimension, Icon> missingIcons_;
 
 
     // ======================================================================
@@ -80,16 +79,16 @@ final class ViewUtils
      */
     static
     {
-        missingImages_ = new LinkedHashMap<Dimension, Image>()
+        missingIcons_ = new LinkedHashMap<Dimension, Icon>()
         {
             private static final long serialVersionUID = 1L;
 
             @Override
             protected boolean removeEldestEntry(
                 @SuppressWarnings( "unused" )
-                final Entry<Dimension, Image> eldest )
+                final Entry<Dimension, Icon> eldest )
             {
-                return size() > MAX_MISSING_IMAGES;
+                return size() > MAX_MISSING_ICONS;
             }
         };
     }
@@ -126,54 +125,59 @@ final class ViewUtils
         return new ComponentSurfaceDesignUI( //
             componentSurfaceDesign.getId(), //
             NlsMessages.ViewUtils_defaultComponentSurfaceDesignUI_name, //
-            new ImageIcon( getMissingImage( componentSurfaceDesign.getSize() ) ) //
+            getMissingIcon( componentSurfaceDesign.getSize() ) //
         );
     }
 
     /**
-     * Creates the missing image for the specified size.
+     * Creates the missing icon for the specified size.
      * 
      * @param size
-     *        The image size; must not be {@code null}.
+     *        The icon size; must not be {@code null}.
      * 
-     * @return A new missing image for the specified size; never {@code null}.
+     * @return A new missing icon for the specified size; never {@code null}.
      */
     /* @NonNull */
-    private static Image createMissingImage(
+    private static Icon createMissingIcon(
         /* @NonNull */
         final Dimension size )
     {
         assert size != null;
 
-        // FIXME: temporary hack to avoid out of memory exceptions
-        //
-        // the correct fix is to have the component surface design UI type paint the image
-        // directly on the graphics context instead of returning an image object.  that will
-        // allow different implementations to draw the surface design using code or by using
-        // an image.  will probably require changing the component surface design UI type
-        // back to an interface.
-        final Dimension maxSize = new Dimension( 1024, 1024 );
-        final Dimension actualSize = new Dimension( Math.min( size.width, maxSize.width ), Math.min( size.height, maxSize.height ) );
-        final BufferedImage image = new BufferedImage( actualSize.width, actualSize.height, BufferedImage.TYPE_INT_ARGB_PRE );
-
-        final Graphics2D g = image.createGraphics();
-        try
+        final int height = size.height;
+        final int width = size.width;
+        return new Icon()
         {
-            g.setColor( Color.WHITE );
-            g.fillRect( 0, 0, actualSize.width, actualSize.height );
-            g.setColor( Color.BLACK );
-            g.drawRect( 0, 0, actualSize.width - 1, actualSize.height - 1 );
+            @Override
+            public int getIconHeight()
+            {
+                return height;
+            }
 
-            final ImageIcon icon = Activator.getDefault().getBundleImages().getIcon( BundleImages.OBJECT_MISSING_IMAGE );
-            assert icon != null;
-            g.drawImage( icon.getImage(), (actualSize.width - icon.getIconWidth()) / 2, (actualSize.height - icon.getIconHeight()) / 2, null );
-        }
-        finally
-        {
-            g.dispose();
-        }
+            @Override
+            public int getIconWidth()
+            {
+                return width;
+            }
 
-        return image;
+            @Override
+            public void paintIcon(
+                @SuppressWarnings( "unused" )
+                final Component c,
+                final Graphics g,
+                final int x,
+                final int y )
+            {
+                g.setColor( Color.WHITE );
+                g.fillRect( x, y, width, height );
+                g.setColor( Color.BLACK );
+                g.drawRect( x, y, width - 1, height - 1 );
+
+                final ImageIcon icon = Activator.getDefault().getBundleImages().getIcon( BundleImages.OBJECT_MISSING_IMAGE );
+                assert icon != null;
+                g.drawImage( icon.getImage(), x + (width - icon.getIconWidth()) / 2, y + (height - icon.getIconHeight()) / 2, null );
+            }
+        };
     }
 
     /**
@@ -245,27 +249,27 @@ final class ViewUtils
     }
 
     /**
-     * Gets the missing image for the specified size.
+     * Gets the missing icon for the specified size.
      * 
      * @param size
-     *        The image size; must not be {@code null}.
+     *        The icon size; must not be {@code null}.
      * 
-     * @return The missing image for the specified size; never {@code null}.
+     * @return The missing icon for the specified size; never {@code null}.
      */
     /* @NonNull */
-    private static Image getMissingImage(
+    private static Icon getMissingIcon(
         /* @NonNull */
         final Dimension size )
     {
         assert size != null;
 
-        Image missingImage = missingImages_.get( size );
-        if( missingImage == null )
+        Icon missingIcon = missingIcons_.get( size );
+        if( missingIcon == null )
         {
-            missingImage = createMissingImage( size );
-            missingImages_.put( size, missingImage );
+            missingIcon = createMissingIcon( size );
+            missingIcons_.put( size, missingIcon );
         }
 
-        return missingImage;
+        return missingIcon;
     }
 }
