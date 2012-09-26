@@ -308,9 +308,9 @@ public final class TestComponentStrategies
     private static class NullComponentStrategy
         implements IComponentStrategy
     {
-        // ======================================================================
+        // ==================================================================
         // Fields
-        // ======================================================================
+        // ==================================================================
 
         /** The strategy identifier. */
         private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.nullComponent" ); //$NON-NLS-1$
@@ -319,9 +319,9 @@ public final class TestComponentStrategies
         private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( NullOrientation.values( NullOrientation.class ) ) );
 
 
-        // ======================================================================
+        // ==================================================================
         // Constructors
-        // ======================================================================
+        // ==================================================================
 
         /**
          * Initializes a new instance of the {@code NullComponentStrategy}
@@ -332,9 +332,9 @@ public final class TestComponentStrategies
         }
 
 
-        // ======================================================================
+        // ==================================================================
         // Methods
-        // ======================================================================
+        // ==================================================================
 
         /*
          * @see org.gamegineer.table.core.IComponentStrategy#getDefaultLocation()
@@ -410,17 +410,17 @@ public final class TestComponentStrategies
         extends NullComponentStrategy
         implements IContainerStrategy
     {
-        // ======================================================================
+        // ==================================================================
         // Fields
-        // ======================================================================
+        // ==================================================================
 
         /** The strategy identifier. */
         private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.nullContainer" ); //$NON-NLS-1$
 
 
-        // ======================================================================
+        // ==================================================================
         // Constructors
-        // ======================================================================
+        // ==================================================================
 
         /**
          * Initializes a new instance of the {@code NullContainerStrategy}
@@ -431,9 +431,9 @@ public final class TestComponentStrategies
         }
 
 
-        // ======================================================================
+        // ==================================================================
         // Methods
-        // ======================================================================
+        // ==================================================================
 
         /*
          * @see org.gamegineer.table.core.IContainerStrategy#getDefaultLayout()
