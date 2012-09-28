@@ -213,8 +213,13 @@ public final class ComponentStrategyRegistryExtensionPointAdapter
     {
         assert configurationElement != null;
 
+        final String idString = configurationElement.getAttribute( ATTR_ID );
+        if( idString == null )
+        {
+            throw new IllegalArgumentException( NonNlsMessages.ComponentStrategyRegistryExtensionPointAdapter_createComponentStrategyRegistration_missingId );
+        }
         @SuppressWarnings( "unused" )
-        final ComponentStrategyId id = ComponentStrategyId.fromString( configurationElement.getAttribute( ATTR_ID ) );
+        final ComponentStrategyId id = ComponentStrategyId.fromString( idString );
 
         // TODO: should be using a proxy here so we don't eagerly load the associated plug-in
 

@@ -103,6 +103,9 @@ final class NonNlsMessages
      */
     public static String ComponentStrategyRegistryExtensionPointAdapter_createComponentStrategyRegistration_createComponentStrategyError;
 
+    /** The component strategy identifier is missing. */
+    public static String ComponentStrategyRegistryExtensionPointAdapter_createComponentStrategyRegistration_missingId;
+
     /**
      * An error occurred while parsing the component strategy configuration
      * element.
@@ -136,6 +139,9 @@ final class NonNlsMessages
 
     /** The extension registry service is already bound. */
     public static String ComponentSurfaceDesignRegistryExtensionPointAdapter_bindExtensionRegistry_bound;
+
+    /** The component surface design identifier is missing. */
+    public static String ComponentSurfaceDesignRegistryExtensionPointAdapter_createComponentSurfaceDesignRegistration_missingId;
 
     /**
      * An error occurred while parsing the height attribute of a component
@@ -232,6 +238,9 @@ final class NonNlsMessages
      * layout configuration element.
      */
     public static String ContainerLayoutRegistryExtensionPointAdapter_createContainerLayoutRegistration_createContainerLayoutError;
+
+    /** The container layout identifier is missing. */
+    public static String ContainerLayoutRegistryExtensionPointAdapter_createContainerLayoutRegistration_missingId;
 
     /**
      * An error occurred while parsing the container layout configuration

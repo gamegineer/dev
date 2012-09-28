@@ -213,8 +213,13 @@ public final class ContainerLayoutRegistryExtensionPointAdapter
     {
         assert configurationElement != null;
 
+        final String idString = configurationElement.getAttribute( ATTR_ID );
+        if( idString == null )
+        {
+            throw new IllegalArgumentException( NonNlsMessages.ContainerLayoutRegistryExtensionPointAdapter_createContainerLayoutRegistration_missingId );
+        }
         @SuppressWarnings( "unused" )
-        final ContainerLayoutId id = ContainerLayoutId.fromString( configurationElement.getAttribute( ATTR_ID ) );
+        final ContainerLayoutId id = ContainerLayoutId.fromString( idString );
 
         // TODO: should be using a proxy here so we don't eagerly load the associated plug-in
 

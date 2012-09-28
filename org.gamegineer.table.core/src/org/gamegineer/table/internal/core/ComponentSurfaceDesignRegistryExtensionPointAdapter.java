@@ -219,7 +219,12 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapter
     {
         assert configurationElement != null;
 
-        final ComponentSurfaceDesignId id = ComponentSurfaceDesignId.fromString( configurationElement.getAttribute( ATTR_ID ) );
+        final String idString = configurationElement.getAttribute( ATTR_ID );
+        if( idString == null )
+        {
+            throw new IllegalArgumentException( NonNlsMessages.ComponentSurfaceDesignRegistryExtensionPointAdapter_createComponentSurfaceDesignRegistration_missingId );
+        }
+        final ComponentSurfaceDesignId id = ComponentSurfaceDesignId.fromString( idString );
 
         final int width;
         try
