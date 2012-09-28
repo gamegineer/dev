@@ -49,8 +49,14 @@ public final class TestComponentStrategies
     /** The null component strategy. */
     private static final IComponentStrategy NULL_COMPONENT_STRATEGY = new NullComponentStrategy();
 
+    /** The null component strategy identifier. */
+    public static final ComponentStrategyId NULL_COMPONENT_STRATEGY_ID = NULL_COMPONENT_STRATEGY.getId();
+
     /** The null container strategy. */
     private static final IContainerStrategy NULL_CONTAINER_STRATEGY = new NullContainerStrategy();
+
+    /** The null container strategy identifier. */
+    public static final ComponentStrategyId NULL_CONTAINER_STRATEGY_ID = NULL_CONTAINER_STRATEGY.getId();
 
     /** The next unique component strategy identifier. */
     private static final AtomicLong nextComponentStrategyId_ = new AtomicLong();
