@@ -34,6 +34,12 @@ public final class BundleConstants
     // ======================================================================
 
     /**
+     * The simple identifier of the component strategy user interfaces extension
+     * point.
+     */
+    public static final String COMPONENT_STRATEGY_UIS_EXTENSION_POINT_SIMPLE_ID = "componentStrategyUIs"; //$NON-NLS-1$
+
+    /**
      * The simple identifier of the component surface design user interfaces
      * extension point.
      */
@@ -41,6 +47,12 @@ public final class BundleConstants
 
     /** The symbolic name of the bundle. */
     public static final String SYMBOLIC_NAME = "org.gamegineer.table.ui"; //$NON-NLS-1$
+
+    /**
+     * The unique identifier of the component strategy user interfaces extension
+     * point.
+     */
+    public static final String COMPONENT_STRATEGY_UIS_EXTENSION_POINT_UNIQUE_ID = SYMBOLIC_NAME + "." + COMPONENT_STRATEGY_UIS_EXTENSION_POINT_SIMPLE_ID; //$NON-NLS-1$
 
     /**
      * The unique identifier of the component surface design user interfaces

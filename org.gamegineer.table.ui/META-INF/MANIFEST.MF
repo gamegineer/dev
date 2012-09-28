@@ -43,5 +43,7 @@ Import-Package: net.jcip.annotations;version="1.0.0",
  org.osgi.service.prefs;version="1.1.1",
  org.osgi.util.tracker;version="1.5.0"
 Require-Bundle: org.eclipse.equinox.registry;bundle-version="3.5.101"
-Service-Component: OSGI-INF/componentSurfaceDesignUIRegistry.xml,
+Service-Component: OSGI-INF/componentStrategyUIRegistry.xml,
+ OSGI-INF/componentStrategyUIRegistryExtensionPointAdapter.xml,
+ OSGI-INF/componentSurfaceDesignUIRegistry.xml,
  OSGI-INF/componentSurfaceDesignUIRegistryExtensionPointAdapter.xml

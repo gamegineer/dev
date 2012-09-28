@@ -29,6 +29,7 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.app.IBranding;
 import org.gamegineer.common.ui.help.IHelpSystem;
+import org.gamegineer.table.ui.IComponentStrategyUIRegistry;
 import org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -63,6 +64,10 @@ public final class Activator
     @GuardedBy( "lock_" )
     private BundleImages bundleImages_;
 
+    /** The component strategy user interface registry service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker<IComponentStrategyUIRegistry, IComponentStrategyUIRegistry> componentStrategyUIRegistryTracker_;
+
     /** The component surface design user interface registry service tracker. */
     @GuardedBy( "lock_" )
     private ServiceTracker<IComponentSurfaceDesignUIRegistry, IComponentSurfaceDesignUIRegistry> componentSurfaceDesignUIRegistryTracker_;
@@ -96,6 +101,7 @@ public final class Activator
         brandingTracker_ = null;
         bundleContext_ = null;
         bundleImages_ = null;
+        componentStrategyUIRegistryTracker_ = null;
         componentSurfaceDesignUIRegistryTracker_ = null;
         executorServiceTracker_ = null;
         helpSystemTracker_ = null;
@@ -163,6 +169,30 @@ public final class Activator
             }
 
             return bundleImages_;
+        }
+    }
+
+    /**
+     * Gets the component strategy user interface registry service.
+     * 
+     * @return The component strategy user interface registry service or
+     *         {@code null} if no component strategy user interface registry
+     *         service is available.
+     */
+    /* @Nullable */
+    public IComponentStrategyUIRegistry getComponentStrategyUIRegistry()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( componentStrategyUIRegistryTracker_ == null )
+            {
+                componentStrategyUIRegistryTracker_ = new ServiceTracker<IComponentStrategyUIRegistry, IComponentStrategyUIRegistry>( bundleContext_, IComponentStrategyUIRegistry.class, null );
+                componentStrategyUIRegistryTracker_.open();
+            }
+
+            return componentStrategyUIRegistryTracker_.getService();
         }
     }
 
@@ -394,6 +424,11 @@ public final class Activator
             {
                 bundleImages_.dispose();
                 bundleImages_ = null;
+            }
+            if( componentStrategyUIRegistryTracker_ != null )
+            {
+                componentStrategyUIRegistryTracker_.close();
+                componentStrategyUIRegistryTracker_ = null;
             }
             if( componentSurfaceDesignUIRegistryTracker_ != null )
             {

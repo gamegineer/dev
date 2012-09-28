@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.ui;
 import java.net.URL;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
+import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.osgi.framework.Bundle;
 
@@ -47,6 +48,49 @@ final class NonNlsMessages
 
     /** An error occurred while reading the image. */
     public static String BundleImages_getImage_readError;
+
+    // --- ComponentStrategyUIRegistry -------------------------------------
+
+    /**
+     * A component strategy user interface is already registered for the
+     * specified identifier.
+     */
+    public static String ComponentStrategyUIRegistry_registerComponentStrategyUI_componentStrategyUI_registered;
+
+    /**
+     * The component strategy user interface is not registered for the specified
+     * identifier.
+     */
+    public static String ComponentStrategyUIRegistry_unregisterComponentStrategyUI_componentStrategyUI_unregistered;
+
+    // --- ComponentStrategyUIRegistryExtensionPointAdapter -----------------
+
+    /** The component strategy user interface registry service is already bound. */
+    public static String ComponentStrategyUIRegistryExtensionPointAdapter_bindComponentStrategyUIRegistry_bound;
+
+    /** The extension registry service is already bound. */
+    public static String ComponentStrategyUIRegistryExtensionPointAdapter_bindExtensionRegistry_bound;
+
+    /**
+     * An error occurred while creating the component strategy user interface of
+     * a component strategy user interface configuration element.
+     */
+    public static String ComponentStrategyUIRegistryExtensionPointAdapter_createComponentStrategyUIRegistration_createComponentStrategyUIError;
+
+    /** The component strategy identifier is missing. */
+    public static String ComponentStrategyUIRegistryExtensionPointAdapter_createComponentStrategyUIRegistration_missingId;
+
+    /**
+     * An error occurred while parsing the component strategy user interface
+     * configuration element.
+     */
+    public static String ComponentStrategyUIRegistryExtensionPointAdapter_registerComponentStrategyUI_parseError;
+
+    /** The component strategy user interface registry service is not bound. */
+    public static String ComponentStrategyUIRegistryExtensionPointAdapter_unbindComponentStrategyUIRegistry_notBound;
+
+    /** The extension registry service is not bound. */
+    public static String ComponentStrategyUIRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound;
 
     // --- ComponentSurfaceDesignUIRegistry ---------------------------------
 
@@ -154,6 +198,67 @@ final class NonNlsMessages
         final URL imageUrl )
     {
         return bind( BundleImages_getImage_readError, imageUrl );
+    }
+
+    // --- ComponentStrategyUIRegistry --------------------------------------
+
+    /**
+     * Gets the formatted message indicating a component strategy user interface
+     * is already registered for the specified identifier.
+     * 
+     * @param componentStrategyId
+     *        The component strategy identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating a component strategy user
+     *         interface is already registered for the specified identifier;
+     *         never {@code null}.
+     */
+    /* @NonNull */
+    static String ComponentStrategyUIRegistry_registerComponentStrategyUI_componentStrategyUI_registered(
+        /* @NonNull */
+        final ComponentStrategyId componentStrategyId )
+    {
+        return bind( ComponentStrategyUIRegistry_registerComponentStrategyUI_componentStrategyUI_registered, componentStrategyId );
+    }
+
+    /**
+     * Gets the formatted message indicating the component strategy user
+     * interface is not registered for the specified identifier.
+     * 
+     * @param componentStrategyId
+     *        The component strategy identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the component strategy user
+     *         interface is not registered for the specified identifier; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    static String ComponentStrategyUIRegistry_unregisterComponentStrategyUI_componentStrategyUI_unregistered(
+        /* @NonNull */
+        final ComponentStrategyId componentStrategyId )
+    {
+        return bind( ComponentStrategyUIRegistry_unregisterComponentStrategyUI_componentStrategyUI_unregistered, componentStrategyId );
+    }
+
+    // --- ComponentStrategyUIRegistryExtensionPointAdapter -----------------
+
+    /**
+     * Gets the formatted message indicating an error occurred while parsing the
+     * component strategy user interface configuration element.
+     * 
+     * @param componentStrategyId
+     *        The component strategy identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating an error occurred while parsing
+     *         the component strategy user interface configuration element;
+     *         never {@code null}.
+     */
+    /* @NonNull */
+    static String ComponentStrategyUIRegistryExtensionPointAdapter_registerComponentStrategyUI_parseError(
+        /* @NonNull */
+        final String componentStrategyId )
+    {
+        return bind( ComponentStrategyUIRegistryExtensionPointAdapter_registerComponentStrategyUI_parseError, componentStrategyId );
     }
 
     // --- ComponentSurfaceDesignUIRegistry ---------------------------------
