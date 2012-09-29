@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.ui.strategies;
 
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.core.ComponentStrategyId;
+import org.gamegineer.table.core.ComponentStrategyIds;
 
 /**
  * A component strategy user interface that represents a card pile.
@@ -40,6 +40,6 @@ public final class CardPileStrategyUI
      */
     public CardPileStrategyUI()
     {
-        super( ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.cardPile" ) ); //$NON-NLS-1$
+        super( ComponentStrategyIds.CARD_PILE );
     }
 }

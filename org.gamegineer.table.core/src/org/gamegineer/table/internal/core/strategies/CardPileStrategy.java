@@ -27,7 +27,7 @@ import java.util.Collections;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.CardPileOrientation;
 import org.gamegineer.table.core.ComponentOrientation;
-import org.gamegineer.table.core.ComponentStrategyId;
+import org.gamegineer.table.core.ComponentStrategyIds;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.internal.core.layouts.ContainerLayouts;
@@ -56,7 +56,7 @@ public final class CardPileStrategy
      */
     public CardPileStrategy()
     {
-        super( ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.cardPile" ) ); //$NON-NLS-1$
+        super( ComponentStrategyIds.CARD_PILE );
     }
 
 

@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.ui.strategies;
 
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.core.ComponentStrategyId;
+import org.gamegineer.table.core.ComponentStrategyIds;
 
 /**
  * A component strategy user interface that represents a card.
@@ -40,6 +40,6 @@ public final class CardStrategyUI
      */
     public CardStrategyUI()
     {
-        super( ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.card" ) ); //$NON-NLS-1$
+        super( ComponentStrategyIds.CARD );
     }
 }

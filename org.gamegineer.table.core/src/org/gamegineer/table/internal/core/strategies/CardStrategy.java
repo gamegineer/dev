@@ -27,7 +27,7 @@ import java.util.Collections;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ComponentOrientation;
-import org.gamegineer.table.core.ComponentStrategyId;
+import org.gamegineer.table.core.ComponentStrategyIds;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 
 /**
@@ -54,7 +54,7 @@ public final class CardStrategy
      */
     public CardStrategy()
     {
-        super( ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.card" ) ); //$NON-NLS-1$
+        super( ComponentStrategyIds.CARD );
     }
 
 

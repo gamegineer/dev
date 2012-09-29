@@ -1,5 +1,5 @@
 /*
- * TabletopStrategyUI.java
+ * ComponentStrategyIds.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,44 +16,41 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Sep 28, 2012 at 10:32:25 PM.
+ * Created on Sep 28, 2012 at 10:50:19 PM.
  */
 
-package org.gamegineer.table.internal.ui.strategies;
+package org.gamegineer.table.core;
 
-import net.jcip.annotations.Immutable;
-import org.gamegineer.table.core.ComponentStrategyIds;
+import net.jcip.annotations.ThreadSafe;
 
 /**
- * A component strategy user interface that represents a tabletop.
+ * A collection of common component strategy identifiers.
  */
-@Immutable
-public final class TabletopStrategyUI
-    extends AbstractContainerStrategyUI
+@ThreadSafe
+public final class ComponentStrategyIds
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The card component strategy identifier. */
+    public static final ComponentStrategyId CARD = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.card" ); //$NON-NLS-1$
+
+    /** The card pile component strategy identifier. */
+    public static final ComponentStrategyId CARD_PILE = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.cardPile" ); //$NON-NLS-1$
+
+    /** The tabletop component strategy identifier. */
+    public static final ComponentStrategyId TABLETOP = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.tabletop" ); //$NON-NLS-1$
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TabletopStrategyUI} class.
+     * Initializes a new instance of the {@code ComponentStrategyIds} class.
      */
-    public TabletopStrategyUI()
+    private ComponentStrategyIds()
     {
-        super( ComponentStrategyIds.TABLETOP );
-    }
-
-
-    // ======================================================================
-    // Methods
-    // ======================================================================
-
-    /*
-     * @see org.gamegineer.table.internal.ui.strategies.AbstractContainerStrategyUI#isFocusable()
-     */
-    @Override
-    public boolean isFocusable()
-    {
-        return false;
     }
 }

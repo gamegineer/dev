@@ -27,7 +27,7 @@ import java.util.Collection;
 import java.util.Collections;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.ComponentOrientation;
-import org.gamegineer.table.core.ComponentStrategyId;
+import org.gamegineer.table.core.ComponentStrategyIds;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.core.TabletopOrientation;
@@ -57,7 +57,7 @@ public final class TabletopStrategy
      */
     public TabletopStrategy()
     {
-        super( ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.tabletop" ) ); //$NON-NLS-1$
+        super( ComponentStrategyIds.TABLETOP );
     }
 
 
