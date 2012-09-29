@@ -3,10 +3,26 @@
 <plugin>
 
     <extension-point
+            id="componentStrategyUIs"
+            name="%extensionPoint.componentStrategyUIs.name"
+            schema="schema/componentStrategyUIs.exsd" />
+    <extension-point
             id="componentSurfaceDesignUIs"
             name="%extensionPoint.componentSurfaceDesignUIs.name"
             schema="schema/componentSurfaceDesignUIs.exsd" />
 
+    <extension
+            point="org.gamegineer.table.ui.componentStrategyUIs">
+        <componentStrategyUI
+                className="org.gamegineer.table.internal.ui.strategies.ComponentStrategyUIExtensionFactory:org.gamegineer.componentStrategies.card"
+                id="org.gamegineer.componentStrategies.card" />
+        <componentStrategyUI
+                className="org.gamegineer.table.internal.ui.strategies.ComponentStrategyUIExtensionFactory:org.gamegineer.componentStrategies.cardPile"
+                id="org.gamegineer.componentStrategies.cardPile" />
+        <componentStrategyUI
+                className="org.gamegineer.table.internal.ui.strategies.ComponentStrategyUIExtensionFactory:org.gamegineer.componentStrategies.tabletop"
+                id="org.gamegineer.componentStrategies.tabletop" />
+    </extension>
     <extension
             point="org.gamegineer.table.ui.componentSurfaceDesignUIs">
         <componentSurfaceDesignUI
