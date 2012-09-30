@@ -23,6 +23,7 @@ package org.gamegineer.table.ui;
 
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
+import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 
 /**
@@ -35,6 +36,14 @@ final class NonNlsMessages
     // ======================================================================
     // Fields
     // ======================================================================
+
+    // --- ComponentStrategyUIRegistry --------------------------------------
+
+    /** The component strategy user interface registry is not available. */
+    public static String ComponentStrategyUIRegistry_getComponentStrategyUI_componentStrategyUIRegistryNotAvailable;
+
+    /** The component strategy identifier is not registered. */
+    public static String ComponentStrategyUIRegistry_getComponentStrategyUI_unknownComponentStrategyId;
 
     // --- ComponentSurfaceDesignUIRegistry ---------------------------------
 
@@ -73,6 +82,26 @@ final class NonNlsMessages
     // ======================================================================
     // Methods
     // ======================================================================
+
+    // --- ComponentStrategyUIRegistry --------------------------------------
+
+    /**
+     * Gets the formatted message indicating the component strategy identifier
+     * is not registered.
+     * 
+     * @param componentStrategyId
+     *        The component strategy identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the component strategy
+     *         identifier is not registered; never {@code null}.
+     */
+    /* @NonNull */
+    static String ComponentStrategyUIRegistry_getComponentStrategyUI_unknownComponentStrategyId(
+        /* @NonNull */
+        final ComponentStrategyId componentStrategyId )
+    {
+        return bind( ComponentStrategyUIRegistry_getComponentStrategyUI_unknownComponentStrategyId, componentStrategyId );
+    }
 
     // --- ComponentSurfaceDesignUIRegistry ---------------------------------
 

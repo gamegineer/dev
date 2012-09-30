@@ -134,6 +134,15 @@ public interface IContainer
     public IContainerLayout getLayout();
 
     /**
+     * Gets the container strategy.
+     * 
+     * @return The container strategy; never {@code null}.
+     */
+    /* @NonNull */
+    @Override
+    public IContainerStrategy getStrategy();
+
+    /**
      * Removes all components in this container.
      * 
      * @return The collection of components removed from this container; never

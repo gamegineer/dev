@@ -552,7 +552,7 @@ final class Container
      * @see org.gamegineer.table.internal.core.Component#getStrategy()
      */
     @Override
-    IContainerStrategy getStrategy()
+    public IContainerStrategy getStrategy()
     {
         return (IContainerStrategy)super.getStrategy();
     }

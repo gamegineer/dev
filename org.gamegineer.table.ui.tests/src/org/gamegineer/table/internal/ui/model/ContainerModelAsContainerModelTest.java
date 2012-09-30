@@ -22,8 +22,6 @@
 package org.gamegineer.table.internal.ui.model;
 
 import java.lang.reflect.Method;
-import org.easymock.EasyMock;
-import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.core.TestComponents;
 
@@ -144,7 +142,7 @@ public final class ContainerModelAsContainerModelTest
         {
             final Method method = ContainerModel.class.getDeclaredMethod( methodName, ComponentModel.class, Integer.TYPE );
             method.setAccessible( true );
-            method.invoke( containerModel, new ComponentModel( EasyMock.createMock( IComponent.class ) ), Integer.valueOf( 0 ) );
+            method.invoke( containerModel, new ComponentModel( TestComponents.createUniqueComponent( containerModel.getComponent().getTableEnvironment() ) ), Integer.valueOf( 0 ) );
         }
         catch( final Exception e )
         {

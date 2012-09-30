@@ -89,13 +89,4 @@ public interface IComponentStrategy
      */
     /* @NonNull */
     public Collection<ComponentOrientation> getSupportedOrientations();
-
-    // TODO: see note for IComponent.isFocusable
-    /**
-     * Indicates the component can receive the focus.
-     * 
-     * @return {@code true} if the component can receive the focus; otherwise
-     *         {@code false}.
-     */
-    public boolean isFocusable();
 }

@@ -371,13 +371,11 @@ class Component
         return getBounds().getSize();
     }
 
-    /**
-     * Gets the component strategy.
-     * 
-     * @return The component strategy; never {@code null}.
+    /*
+     * @see org.gamegineer.table.core.IComponent#getStrategy()
      */
-    /* @NonNull */
-    IComponentStrategy getStrategy()
+    @Override
+    public IComponentStrategy getStrategy()
     {
         return strategy_;
     }
@@ -473,15 +471,6 @@ class Component
     public final TableEnvironment getTableEnvironment()
     {
         return tableEnvironment_;
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponent#isFocusable()
-     */
-    @Override
-    public final boolean isFocusable()
-    {
-        return strategy_.isFocusable();
     }
 
     /**

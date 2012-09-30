@@ -677,6 +677,16 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
+     * Ensures the {@link IComponent#getStrategy} method does not return
+     * {@code null}.
+     */
+    @Test
+    public void testGetStrategy_ReturnValue_NonNull()
+    {
+        assertNotNull( component_.getStrategy() );
+    }
+
+    /**
      * Ensures the {@link IComponent#getSupportedOrientations} method returns an
      * immutable collection.
      */

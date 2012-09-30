@@ -160,12 +160,6 @@ public final class TestComponentStrategies
             {
                 return componentStrategy.getSupportedOrientations();
             }
-
-            @Override
-            public boolean isFocusable()
-            {
-                return componentStrategy.isFocusable();
-            }
         };
     }
 
@@ -233,12 +227,6 @@ public final class TestComponentStrategies
             public Collection<ComponentOrientation> getSupportedOrientations()
             {
                 return containerStrategy.getSupportedOrientations();
-            }
-
-            @Override
-            public boolean isFocusable()
-            {
-                return containerStrategy.isFocusable();
             }
         };
     }
@@ -397,15 +385,6 @@ public final class TestComponentStrategies
         {
             return SUPPORTED_ORIENTATIONS;
         }
-
-        /*
-         * @see org.gamegineer.table.core.IComponentStrategy#isFocusable()
-         */
-        @Override
-        public boolean isFocusable()
-        {
-            return false;
-        }
     }
 
     /**
@@ -457,15 +436,6 @@ public final class TestComponentStrategies
         public ComponentStrategyId getId()
         {
             return ID;
-        }
-
-        /*
-         * @see org.gamegineer.table.internal.core.NullComponentStrategy#isFocusable()
-         */
-        @Override
-        public boolean isFocusable()
-        {
-            return true;
         }
     }
 

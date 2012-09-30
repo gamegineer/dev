@@ -71,6 +71,9 @@ final class NonNlsMessages
      */
     public static String ComponentModel_componentSurfaceDesignChanged_unexpectedException;
 
+    /** The component strategy identifier is not registered. */
+    public static String ComponentModel_getComponentStrategyUI_unknownComponentStrategyId;
+
     /** The component model listener is not registered. */
     public static String ComponentModel_removeComponentModelListener_listener_notRegistered;
 

@@ -156,16 +156,4 @@ abstract class AbstractComponentStrategy
     {
         return id_;
     }
-
-    /**
-     * This implementation returns {@code false}. Subclasses may override and
-     * are not required to call the superclass implementation.
-     * 
-     * @see org.gamegineer.table.core.IComponentStrategy#isFocusable()
-     */
-    @Override
-    public boolean isFocusable()
-    {
-        return false;
-    }
 }

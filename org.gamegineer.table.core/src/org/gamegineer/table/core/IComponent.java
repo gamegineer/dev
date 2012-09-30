@@ -132,6 +132,14 @@ public interface IComponent
     public Dimension getSize();
 
     /**
+     * Gets the component strategy.
+     * 
+     * @return The component strategy; never {@code null}.
+     */
+    /* @NonNull */
+    public IComponentStrategy getStrategy();
+
+    /**
      * Gets an immutable view of the collection of supported orientations for
      * this component.
      * 
@@ -189,17 +197,6 @@ public interface IComponent
      */
     /* @NonNull */
     public ITableEnvironment getTableEnvironment();
-
-    // TODO: This is a temporary method.
-    //
-    // It will eventually be moved to the new IComponentUI interface.
-    /**
-     * Indicates the component can receive the focus.
-     * 
-     * @return {@code true} if the component can receive the focus; otherwise
-     *         {@code false}.
-     */
-    public boolean isFocusable();
 
     /**
      * Removes the specified component listener from this component.

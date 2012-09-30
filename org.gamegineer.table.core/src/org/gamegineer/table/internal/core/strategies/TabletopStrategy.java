@@ -109,13 +109,4 @@ public final class TabletopStrategy
     {
         return SUPPORTED_ORIENTATIONS;
     }
-
-    /*
-     * @see org.gamegineer.table.internal.core.strategies.AbstractContainerStrategy#isFocusable()
-     */
-    @Override
-    public boolean isFocusable()
-    {
-        return false;
-    }
 }

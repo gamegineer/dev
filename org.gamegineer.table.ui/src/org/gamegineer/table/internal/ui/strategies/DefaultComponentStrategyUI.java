@@ -1,5 +1,5 @@
 /*
- * AbstractContainerStrategy.java
+ * DefaultComponentStrategyUI.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,35 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 21, 2012 at 8:42:12 PM.
+ * Created on Sep 29, 2012 at 9:56:17 PM.
  */
 
-package org.gamegineer.table.internal.core.strategies;
+package org.gamegineer.table.internal.ui.strategies;
 
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.ComponentStrategyId;
-import org.gamegineer.table.core.IContainerStrategy;
 
 /**
- * Superclass for all container strategies.
+ * A default component strategy user interface.
  */
 @Immutable
-abstract class AbstractContainerStrategy
-    extends AbstractComponentStrategy
-    implements IContainerStrategy
+final class DefaultComponentStrategyUI
+    extends AbstractComponentStrategyUI
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractContainerStrategy}
+     * Initializes a new instance of the {@code AbstractComponentStrategyUI}
      * class.
      * 
      * @param id
      *        The component strategy identifier; must not be {@code null}.
      */
-    AbstractContainerStrategy(
+    DefaultComponentStrategyUI(
         /* @NonNull */
         final ComponentStrategyId id )
     {

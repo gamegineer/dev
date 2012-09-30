@@ -31,7 +31,12 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentListener;
+import org.gamegineer.table.core.IComponentStrategy;
 import org.gamegineer.table.internal.ui.Loggers;
+import org.gamegineer.table.internal.ui.strategies.DefaultComponentStrategyUIFactory;
+import org.gamegineer.table.ui.ComponentStrategyUIRegistry;
+import org.gamegineer.table.ui.IComponentStrategyUI;
+import org.gamegineer.table.ui.NoSuchComponentStrategyUIException;
 
 /**
  * The component model.
@@ -48,6 +53,9 @@ public class ComponentModel
 
     /** The component listener for this model. */
     private final IComponentListener componentListener_;
+
+    /** The component strategy user interface associated with this model. */
+    private final IComponentStrategyUI componentStrategyUI_;
 
     /** Indicates the associated component has the focus. */
     @GuardedBy( "getLock()" )
@@ -83,6 +91,7 @@ public class ComponentModel
 
         component_ = component;
         componentListener_ = new ComponentListener();
+        componentStrategyUI_ = getComponentStrategyUI( component.getStrategy() );
         isFocused_ = false;
         listeners_ = new CopyOnWriteArrayList<IComponentModelListener>();
         lock_ = new Object();
@@ -235,6 +244,36 @@ public class ComponentModel
     }
 
     /**
+     * Gets the component strategy user interface for the specified component
+     * strategy.
+     * 
+     * @param componentStrategy
+     *        The component strategy; must not be {@code null}.
+     * 
+     * @return The component strategy user interface for the specified component
+     *         strategy; never {@code null}. A default component strategy user
+     *         interface is returned if a component strategy user interface is
+     *         not registered for the specified component strategy.
+     */
+    /* @NonNull */
+    private static IComponentStrategyUI getComponentStrategyUI(
+        /* @NonNull */
+        final IComponentStrategy componentStrategy )
+    {
+        assert componentStrategy != null;
+
+        try
+        {
+            return ComponentStrategyUIRegistry.getComponentStrategyUI( componentStrategy.getId() );
+        }
+        catch( final NoSuchComponentStrategyUIException e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ComponentModel_getComponentStrategyUI_unknownComponentStrategyId, e );
+            return DefaultComponentStrategyUIFactory.createDefaultComponentStrategyUI( componentStrategy );
+        }
+    }
+
+    /**
      * Gets the instance lock.
      * 
      * @return The instance lock; never {@code null}.
@@ -295,7 +334,7 @@ public class ComponentModel
      */
     public final boolean isFocusable()
     {
-        return component_.isFocusable();
+        return componentStrategyUI_.isFocusable();
     }
 
     /**
