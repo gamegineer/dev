@@ -49,8 +49,8 @@ final class NonNlsMessages
     /** The container layout identifier is unknown. */
     public static String ContainerLayoutExtensionFactory_create_unknownId;
 
-    /** The initialization data type was not expected. */
-    public static String ContainerLayoutExtensionFactory_setInitializationData_unexpectedData;
+    /** The container layout identifier is missing. */
+    public static String ContainerLayoutExtensionFactory_setInitializationData_missingId;
 
     // --- StackedLayout ----------------------------------------------------
 

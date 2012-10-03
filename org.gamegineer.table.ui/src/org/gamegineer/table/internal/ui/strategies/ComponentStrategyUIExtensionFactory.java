@@ -47,6 +47,12 @@ public final class ComponentStrategyUIExtensionFactory
     // ======================================================================
 
     /**
+     * The configuration element attribute specifying the component strategy
+     * identifier.
+     */
+    private static final String ATTR_ID = "id"; //$NON-NLS-1$
+
+    /**
      * The collection of component strategy user interfaces supported by this
      * factory.
      */
@@ -106,18 +112,19 @@ public final class ComponentStrategyUIExtensionFactory
      */
     @Override
     public void setInitializationData(
-        @SuppressWarnings( "unused" )
         final IConfigurationElement config,
         @SuppressWarnings( "unused" )
         final String propertyName,
+        @SuppressWarnings( "unused" )
         final Object data )
         throws CoreException
     {
-        if( !(data instanceof String) )
+        final String idString = config.getAttribute( ATTR_ID );
+        if( idString == null )
         {
-            throw new CoreException( new Status( Status.ERROR, BundleConstants.SYMBOLIC_NAME, NonNlsMessages.ComponentStrategyUIExtensionFactory_setInitializationData_unexpectedData ) );
+            throw new CoreException( new Status( Status.ERROR, BundleConstants.SYMBOLIC_NAME, NonNlsMessages.ComponentStrategyUIExtensionFactory_setInitializationData_missingId ) );
         }
 
-        componentStrategyId_ = ComponentStrategyId.fromString( (String)data );
+        componentStrategyId_ = ComponentStrategyId.fromString( idString );
     }
 }

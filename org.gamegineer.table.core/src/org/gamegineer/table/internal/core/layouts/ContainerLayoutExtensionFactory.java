@@ -46,6 +46,12 @@ public final class ContainerLayoutExtensionFactory
     // Fields
     // ======================================================================
 
+    /**
+     * The configuration element attribute specifying the container layout
+     * identifier.
+     */
+    private static final String ATTR_ID = "id"; //$NON-NLS-1$
+
     /** The collection of container layouts supported by this factory. */
     private static final Map<ContainerLayoutId, IContainerLayout> CONTAINER_LAYOUTS;
 
@@ -106,18 +112,19 @@ public final class ContainerLayoutExtensionFactory
      */
     @Override
     public void setInitializationData(
-        @SuppressWarnings( "unused" )
         final IConfigurationElement config,
         @SuppressWarnings( "unused" )
         final String propertyName,
+        @SuppressWarnings( "unused" )
         final Object data )
         throws CoreException
     {
-        if( !(data instanceof String) )
+        final String idString = config.getAttribute( ATTR_ID );
+        if( idString == null )
         {
-            throw new CoreException( new Status( Status.ERROR, BundleConstants.SYMBOLIC_NAME, NonNlsMessages.ContainerLayoutExtensionFactory_setInitializationData_unexpectedData ) );
+            throw new CoreException( new Status( Status.ERROR, BundleConstants.SYMBOLIC_NAME, NonNlsMessages.ContainerLayoutExtensionFactory_setInitializationData_missingId ) );
         }
 
-        containerLayoutId_ = ContainerLayoutId.fromString( (String)data );
+        containerLayoutId_ = ContainerLayoutId.fromString( idString );
     }
 }

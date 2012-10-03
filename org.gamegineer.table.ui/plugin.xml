@@ -14,13 +14,13 @@
     <extension
             point="org.gamegineer.table.ui.componentStrategyUIs">
         <componentStrategyUI
-                className="org.gamegineer.table.internal.ui.strategies.ComponentStrategyUIExtensionFactory:org.gamegineer.componentStrategies.card"
+                className="org.gamegineer.table.internal.ui.strategies.ComponentStrategyUIExtensionFactory"
                 id="org.gamegineer.componentStrategies.card" />
         <componentStrategyUI
-                className="org.gamegineer.table.internal.ui.strategies.ComponentStrategyUIExtensionFactory:org.gamegineer.componentStrategies.cardPile"
+                className="org.gamegineer.table.internal.ui.strategies.ComponentStrategyUIExtensionFactory"
                 id="org.gamegineer.componentStrategies.cardPile" />
         <componentStrategyUI
-                className="org.gamegineer.table.internal.ui.strategies.ComponentStrategyUIExtensionFactory:org.gamegineer.componentStrategies.tabletop"
+                className="org.gamegineer.table.internal.ui.strategies.ComponentStrategyUIExtensionFactory"
                 id="org.gamegineer.componentStrategies.tabletop" />
     </extension>
     <extension

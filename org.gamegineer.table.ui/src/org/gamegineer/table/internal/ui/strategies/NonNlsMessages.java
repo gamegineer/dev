@@ -41,8 +41,8 @@ final class NonNlsMessages
     /** The component strategy identifier is unknown. */
     public static String ComponentStrategyUIExtensionFactory_create_unknownId;
 
-    /** The initialization data type was not expected. */
-    public static String ComponentStrategyUIExtensionFactory_setInitializationData_unexpectedData;
+    /** The component strategy identifier is missing. */
+    public static String ComponentStrategyUIExtensionFactory_setInitializationData_missingId;
 
 
     // ======================================================================
