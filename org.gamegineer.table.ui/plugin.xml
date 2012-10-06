@@ -3,6 +3,10 @@
 <plugin>
 
     <extension-point
+            id="componentFactories"
+            name="%extensionPoint.componentFactories.name"
+            schema="schema/componentFactories.exsd" />
+    <extension-point
             id="componentStrategyUIs"
             name="%extensionPoint.componentStrategyUIs.name"
             schema="schema/componentStrategyUIs.exsd" />

@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.gamegineer.table.ui" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="org.gamegineer.table.ui" id="componentFactories" name="Component Factories"/>
+      </appinfo>
+      <documentation>
+         This extension point is used to register component factory extensions.  Game tables use this extension point to create prototypical components.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="category" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the fully-qualified identifier of the target extension point
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  an optional identifier of the extension instance
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  an optional name of the extension instance
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="category">
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the unique identifier of this category
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the category name
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="parentCategory" type="string">
+            <annotation>
+               <documentation>
+                  an optional path to another category that is the parent of this category
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         0.14.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         The following is an example of a component factory extension definition:
+
+&lt;pre&gt;
+    &lt;extension point=&quot;org.gamegineer.table.ui.componentFactories&quot;&gt;
+        &lt;category
+                id=&quot;org.gamegineer.componentFactory.category.card&quot;
+                name=&quot;Card&quot; /&gt;
+        &lt;category
+                id=&quot;org.gamegineer.componentFactory.category.card.hearts&quot;
+                name=&quot;Hearts&quot;
+                parentCategory=&quot;org.gamegineer.componentFactory.category.card&quot; /&gt;
+        &lt;componentFactory
+                id=&quot;org.gamegineer.componentFactory.card.red.hearts.ace&quot;
+                name=&quot;Ace&quot;
+                category=&quot;org.gamegineer.componentFactory.category.card.hearts&quot;
+                className=&quot;org.gamegineer.table.internal.ui.factories.CardFactory&quot;&gt;
+            &lt;parameter name=&quot;faceDesign&quot; value=&quot;org.gamegineer.cardSurfaces.hearts.ace&quot; /&gt;
+            &lt;parameter name=&quot;backDesign&quot; value=&quot;org.gamegineer.cardSurfaces.back.red&quot; /&gt;
+        &lt;/componentFactory&gt;
+    &lt;/extension&gt;
+&lt;/pre&gt;
+      </documentation>
+   </annotation>
+
+
+   <annotation>
+      <appinfo>
+         <meta.section type="implementation"/>
+      </appinfo>
+      <documentation>
+         The platform does not supply any component factories.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="copyright"/>
+      </appinfo>
+      <documentation>
+         Copyright 2008-2012 Gamegineer contributors and others.  All rights reserved.
+      </documentation>
+   </annotation>
+
+</schema>
