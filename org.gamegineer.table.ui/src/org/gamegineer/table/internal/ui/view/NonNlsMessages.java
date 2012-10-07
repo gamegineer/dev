@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.ui.view;
 
 import java.io.File;
+import java.util.Collection;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
@@ -36,6 +37,25 @@ final class NonNlsMessages
     // ======================================================================
     // Fields
     // ======================================================================
+
+    // --- ComponentFactoryCategory -----------------------------------------
+
+    /** The source does not represent a legal mnemonic. */
+    public static String ComponentFactoryCategory_decodeMnemonic_illegalSource;
+
+    /** The category identifier is missing. */
+    public static String ComponentFactoryCategory_fromConfigurationElement_missingId;
+
+    /** The category mnemonic is missing. */
+    public static String ComponentFactoryCategory_fromConfigurationElement_missingMnemonic;
+
+    /** The category name is missing. */
+    public static String ComponentFactoryCategory_fromConfigurationElement_missingName;
+
+    // --- ComponentFactoryMenuBuilder --------------------------------------
+
+    /** The component factory categories are orphans. */
+    public static String ComponentFactoryMenuBuilder_toMenu_orphanedCategories;
 
     // --- ComponentView ----------------------------------------------------
 
@@ -110,6 +130,27 @@ final class NonNlsMessages
     // ======================================================================
     // Methods
     // ======================================================================
+
+    // --- ComponentFactoryMenuBuilder --------------------------------------
+
+    /**
+     * Gets the formatted message indicating the component factory categories
+     * are orphans.
+     * 
+     * @param componentFactoryCategoryIds
+     *        The collection of component factory category identifiers; must not
+     *        be {@code null}.
+     * 
+     * @return The formatted message indicating the component factory categories
+     *         are orphans; never {@code null}.
+     */
+    /* @NonNull */
+    static String ComponentFactoryMenuBuilder_toMenu_orphanedCategories(
+        /* @NonNull */
+        final Collection<String> componentFactoryCategoryIds )
+    {
+        return bind( ComponentFactoryMenuBuilder_toMenu_orphanedCategories, componentFactoryCategoryIds );
+    }
 
     // --- ComponentView ----------------------------------------------------
 

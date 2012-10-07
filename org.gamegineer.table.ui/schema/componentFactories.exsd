@@ -56,6 +56,13 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="mnemonic" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the category mnemonic
+               </documentation>
+            </annotation>
+         </attribute>
          <attribute name="name" type="string" use="required">
             <annotation>
                <documentation>
@@ -103,6 +110,7 @@
                 parentCategory=&quot;org.gamegineer.componentFactory.category.card&quot; /&gt;
         &lt;componentFactory
                 id=&quot;org.gamegineer.componentFactory.card.red.hearts.ace&quot;
+                mnemonic=&quot;A&quot;
                 name=&quot;Ace&quot;
                 category=&quot;org.gamegineer.componentFactory.category.card.hearts&quot;
                 className=&quot;org.gamegineer.table.internal.ui.factories.CardFactory&quot;&gt;
