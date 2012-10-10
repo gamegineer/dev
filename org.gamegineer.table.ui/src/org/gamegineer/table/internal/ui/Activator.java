@@ -27,6 +27,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.gamegineer.common.core.app.IBranding;
 import org.gamegineer.common.ui.help.IHelpSystem;
 import org.gamegineer.table.ui.IComponentStrategyUIRegistry;
@@ -76,6 +77,10 @@ public final class Activator
     @GuardedBy( "lock_" )
     private ServiceTracker<ExecutorService, ExecutorService> executorServiceTracker_;
 
+    /** The extension registry service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker<IExtensionRegistry, IExtensionRegistry> extensionRegistryTracker_;
+
     /** The help system service tracker. */
     @GuardedBy( "lock_" )
     private ServiceTracker<IHelpSystem, IHelpSystem> helpSystemTracker_;
@@ -104,6 +109,7 @@ public final class Activator
         componentStrategyUIRegistryTracker_ = null;
         componentSurfaceDesignUIRegistryTracker_ = null;
         executorServiceTracker_ = null;
+        extensionRegistryTracker_ = null;
         helpSystemTracker_ = null;
         preferencesServiceTracker_ = null;
     }
@@ -261,6 +267,28 @@ public final class Activator
         }
 
         return executorService;
+    }
+
+    /**
+     * Gets the extension registry service.
+     * 
+     * @return The extension registry service; never {@code null}.
+     */
+    /* @Nullable */
+    public IExtensionRegistry getExtensionRegistry()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( extensionRegistryTracker_ == null )
+            {
+                extensionRegistryTracker_ = new ServiceTracker<IExtensionRegistry, IExtensionRegistry>( bundleContext_, IExtensionRegistry.class, null );
+                extensionRegistryTracker_.open();
+            }
+
+            return extensionRegistryTracker_.getService();
+        }
     }
 
     /**
@@ -439,6 +467,11 @@ public final class Activator
             {
                 executorServiceTracker_.close();
                 executorServiceTracker_ = null;
+            }
+            if( extensionRegistryTracker_ != null )
+            {
+                extensionRegistryTracker_.close();
+                extensionRegistryTracker_ = null;
             }
             if( helpSystemTracker_ != null )
             {

@@ -33,6 +33,9 @@ public final class BundleConstants
     // Fields
     // ======================================================================
 
+    /** The simple identifier of the component factory extension point. */
+    public static final String COMPONENT_FACTORIES_EXTENSION_POINT_SIMPLE_ID = "componentFactories"; //$NON-NLS-1$
+
     /**
      * The simple identifier of the component strategy user interfaces extension
      * point.
@@ -47,6 +50,9 @@ public final class BundleConstants
 
     /** The symbolic name of the bundle. */
     public static final String SYMBOLIC_NAME = "org.gamegineer.table.ui"; //$NON-NLS-1$
+
+    /** The unique identifier of the component factories extension point. */
+    public static final String COMPONENT_FACTORIES_EXTENSION_POINT_UNIQUE_ID = SYMBOLIC_NAME + "." + COMPONENT_FACTORIES_EXTENSION_POINT_SIMPLE_ID; //$NON-NLS-1$
 
     /**
      * The unique identifier of the component strategy user interfaces extension

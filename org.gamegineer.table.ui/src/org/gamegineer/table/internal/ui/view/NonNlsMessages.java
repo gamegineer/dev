@@ -38,6 +38,11 @@ final class NonNlsMessages
     // Fields
     // ======================================================================
 
+    // --- ComponentFactoriesExtensionPoint ---------------------------------
+
+    /** The category configuration element is illegal. */
+    public static String ComponentFactoriesExtensionPoint_createComponentFactoryMenu_illegalCategoryConfigurationElement;
+
     // --- ComponentFactoryCategory -----------------------------------------
 
     /** The source does not represent a legal mnemonic. */

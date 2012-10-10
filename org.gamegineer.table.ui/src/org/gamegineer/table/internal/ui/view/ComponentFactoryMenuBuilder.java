@@ -55,7 +55,7 @@ final class ComponentFactoryMenuBuilder
      * @param rootMenuLabel
      *        The root menu label; must not be {@code null}.
      * @param rootMenuMnemonic
-     *        The root menu mnemonic string.
+     *        The root menu mnemonic.
      */
     ComponentFactoryMenuBuilder(
         /* @NonNull */
