@@ -21,8 +21,13 @@
 
 package org.gamegineer.table.internal.ui.view;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import javax.swing.JMenu;
+import javax.swing.KeyStroke;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -41,8 +46,35 @@ final class ComponentFactoriesExtensionPoint
     // Fields
     // ======================================================================
 
-    /** The name of the category element. */
-    private static final String ELEM_CATEGORY = "category"; //$NON-NLS-1$
+    /**
+     * The name of the category configuration element attribute that represents
+     * the category identifier.
+     */
+    private static final String CATEGORY_ATTR_ID = "id"; //$NON-NLS-1$
+
+    /**
+     * The name of the category configuration element attribute that represents
+     * the category mnemonic.
+     */
+    private static final String CATEGORY_ATTR_MNEMONIC = "mnemonic"; //$NON-NLS-1$
+
+    /**
+     * The name of the category configuration element attribute that represents
+     * the category name.
+     */
+    private static final String CATEGORY_ATTR_NAME = "name"; //$NON-NLS-1$
+
+    /**
+     * The name of the category configuration element attribute that represents
+     * the path of the parent category.
+     */
+    private static final String CATEGORY_ATTR_PARENT_CATEGORY = "parentCategory"; //$NON-NLS-1$
+
+    /** The name of the category configuration element. */
+    private static final String CATEGORY_ELEM_NAME = "category"; //$NON-NLS-1$
+
+    /** The category path separator. */
+    private static final String CATEGORY_PATH_SEPARATOR = "/"; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -61,6 +93,43 @@ final class ComponentFactoriesExtensionPoint
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Creates a new instance of the {@code ComponentFactoryCategory} class from
+     * the specified component factory category configuration element.
+     * 
+     * @param configurationElement
+     *        The component factory category configuration element; must not be
+     *        {@code null}.
+     * 
+     * @return A new instance of the {@code ComponentFactoryCategory} class;
+     *         never {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code configurationElement} does not represent a legal
+     *         component factory category.
+     */
+    /* @NonNull */
+    static ComponentFactoryCategory createCategory(
+        /* @NonNull */
+        final IConfigurationElement configurationElement )
+    {
+        assert configurationElement != null;
+
+        final String id = configurationElement.getAttribute( CATEGORY_ATTR_ID );
+        assertArgumentLegal( id != null, "configurationElement", NonNlsMessages.ComponentFactoriesExtensionPoint_createCategory_missingId ); //$NON-NLS-1$
+
+        final String name = configurationElement.getAttribute( CATEGORY_ATTR_NAME );
+        assertArgumentLegal( name != null, "configurationElement", NonNlsMessages.ComponentFactoriesExtensionPoint_createCategory_missingName ); //$NON-NLS-1$
+
+        final String encodedMnemonic = configurationElement.getAttribute( CATEGORY_ATTR_MNEMONIC );
+        assertArgumentLegal( encodedMnemonic != null, "configurationElement", NonNlsMessages.ComponentFactoriesExtensionPoint_createCategory_missingMnemonic ); //$NON-NLS-1$
+        final int mnemonic = decodeCategoryMnemonic( encodedMnemonic );
+
+        final List<String> parentCategoryPath = decodeCategoryParentCategoryPath( configurationElement.getAttribute( CATEGORY_ATTR_PARENT_CATEGORY ) );
+
+        return new ComponentFactoryCategory( id, name, mnemonic, parentCategoryPath );
+    }
 
     /**
      * Creates a new component factory menu from the extension registry.
@@ -87,11 +156,11 @@ final class ComponentFactoriesExtensionPoint
         {
             for( final IConfigurationElement configurationElement : extensionRegistry.getConfigurationElementsFor( BundleConstants.COMPONENT_FACTORIES_EXTENSION_POINT_UNIQUE_ID ) )
             {
-                if( ELEM_CATEGORY.equals( configurationElement.getName() ) )
+                if( CATEGORY_ELEM_NAME.equals( configurationElement.getName() ) )
                 {
                     try
                     {
-                        menuBuilder.addCategory( ComponentFactoryCategory.fromConfigurationElement( configurationElement ) );
+                        menuBuilder.addCategory( createCategory( configurationElement ) );
                     }
                     catch( final IllegalArgumentException e )
                     {
@@ -102,5 +171,52 @@ final class ComponentFactoriesExtensionPoint
         }
 
         return menuBuilder.toMenu();
+    }
+
+    /**
+     * Decodes the specified string as a category mnemonic.
+     * 
+     * @param source
+     *        The string to decode; may be {@code null}.
+     * 
+     * @return The decoded category mnemonic; never {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code source} does not represent a legal category mnemonic.
+     */
+    private static int decodeCategoryMnemonic(
+        /* @NonNull */
+        final String source )
+    {
+        assert source != null;
+
+        final KeyStroke keyStroke = KeyStroke.getKeyStroke( source );
+        if( keyStroke == null )
+        {
+            throw new IllegalArgumentException( NonNlsMessages.ComponentFactoriesExtensionPoint_decodeCategoryMnemonic_illegalSource );
+        }
+
+        return keyStroke.getKeyCode();
+    }
+
+    /**
+     * Decodes the specified string as a category parent category path.
+     * 
+     * @param source
+     *        The string to decode; may be {@code null}.
+     * 
+     * @return The decoded category parent category path; never {@code null}.
+     */
+    /* @NonNull */
+    private static List<String> decodeCategoryParentCategoryPath(
+        /* @Nullable */
+        final String source )
+    {
+        if( source == null )
+        {
+            return Collections.emptyList();
+        }
+
+        return Arrays.asList( source.split( CATEGORY_PATH_SEPARATOR ) );
     }
 }

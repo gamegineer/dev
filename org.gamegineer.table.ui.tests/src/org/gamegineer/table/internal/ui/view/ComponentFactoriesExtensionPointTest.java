@@ -1,5 +1,5 @@
 /*
- * ComponentFactoryCategoryTest.java
+ * ComponentFactoriesExtensionPointTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 4, 2012 at 10:14:05 PM.
+ * Created on Oct 9, 2012 at 8:33:25 PM.
  */
 
 package org.gamegineer.table.internal.ui.view;
@@ -34,9 +34,10 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.view.ComponentFactoryCategory} class.
+ * {@link org.gamegineer.table.internal.ui.view.ComponentFactoriesExtensionPoint}
+ * class.
  */
-public final class ComponentFactoryCategoryTest
+public final class ComponentFactoriesExtensionPointTest
 {
     // ======================================================================
     // Fields
@@ -51,10 +52,10 @@ public final class ComponentFactoryCategoryTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ComponentFactoryCategoryTest}
-     * class.
+     * Initializes a new instance of the
+     * {@code ComponentFactoriesExtensionPointTest} class.
      */
-    public ComponentFactoryCategoryTest()
+    public ComponentFactoriesExtensionPointTest()
     {
     }
 
@@ -79,7 +80,7 @@ public final class ComponentFactoryCategoryTest
      *         {@code null}.
      */
     /* @NonNull */
-    private IConfigurationElement createConfigurationElement(
+    private IConfigurationElement createCategoryConfigurationElement(
         /* @Nullable */
         final String id,
         /* @Nullable */
@@ -107,7 +108,7 @@ public final class ComponentFactoryCategoryTest
      * @return The encoded category path; never {@code null}.
      */
     /* @NonNull */
-    private static String encodePath(
+    private static String encodeCategoryPath(
         /* @NonNull */
         final List<String> path )
     {
@@ -144,64 +145,64 @@ public final class ComponentFactoryCategoryTest
     }
 
     /**
-     * Ensures the {@link ComponentFactoryCategory#fromConfigurationElement}
+     * Ensures the {@link ComponentFactoriesExtensionPoint#createCategory}
      * method throws an exception when passed an illegal configuration element
      * that is missing the identifier attribute.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testFromConfigurationElement_ConfigurationElement_Illegal_MissingIdAttribute()
+    public void testCreateCategory_ConfigurationElement_Illegal_MissingIdAttribute()
     {
-        final IConfigurationElement configurationElement = createConfigurationElement( null, "mnemonic", "name", null ); //$NON-NLS-1$ //$NON-NLS-2$
+        final IConfigurationElement configurationElement = createCategoryConfigurationElement( null, "mnemonic", "name", null ); //$NON-NLS-1$ //$NON-NLS-2$
         mocksControl_.replay();
 
-        ComponentFactoryCategory.fromConfigurationElement( configurationElement );
+        ComponentFactoriesExtensionPoint.createCategory( configurationElement );
     }
 
     /**
-     * Ensures the {@link ComponentFactoryCategory#fromConfigurationElement}
+     * Ensures the {@link ComponentFactoriesExtensionPoint#createCategory}
      * method throws an exception when passed an illegal configuration element
      * that is missing the mnemonic attribute.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testFromConfigurationElement_ConfigurationElement_Illegal_MissingMnemonicAttribute()
+    public void testCreateCategory_ConfigurationElement_Illegal_MissingMnemonicAttribute()
     {
-        final IConfigurationElement configurationElement = createConfigurationElement( "id", null, "name", null ); //$NON-NLS-1$ //$NON-NLS-2$
+        final IConfigurationElement configurationElement = createCategoryConfigurationElement( "id", null, "name", null ); //$NON-NLS-1$ //$NON-NLS-2$
         mocksControl_.replay();
 
-        ComponentFactoryCategory.fromConfigurationElement( configurationElement );
+        ComponentFactoriesExtensionPoint.createCategory( configurationElement );
     }
 
     /**
-     * Ensures the {@link ComponentFactoryCategory#fromConfigurationElement}
+     * Ensures the {@link ComponentFactoriesExtensionPoint#createCategory}
      * method throws an exception when passed an illegal configuration element
      * that is missing the name attribute.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testFromConfigurationElement_ConfigurationElement_Illegal_MissingNameAttribute()
+    public void testCreateCategory_ConfigurationElement_Illegal_MissingNameAttribute()
     {
-        final IConfigurationElement configurationElement = createConfigurationElement( "id", "mnemonic", null, null ); //$NON-NLS-1$ //$NON-NLS-2$
+        final IConfigurationElement configurationElement = createCategoryConfigurationElement( "id", "mnemonic", null, null ); //$NON-NLS-1$ //$NON-NLS-2$
         mocksControl_.replay();
 
-        ComponentFactoryCategory.fromConfigurationElement( configurationElement );
+        ComponentFactoriesExtensionPoint.createCategory( configurationElement );
     }
 
     /**
-     * Ensures the {@link ComponentFactoryCategory#fromConfigurationElement}
+     * Ensures the {@link ComponentFactoriesExtensionPoint#createCategory}
      * method creates a component factory category from a legal configuration
      * element that has no parent category.
      */
     @Test
-    public void testFromConfigurationElement_ConfigurationElement_Legal_NoParentCategory()
+    public void testCreateCategory_ConfigurationElement_Legal_NoParentCategory()
     {
         final String expectedId = "id"; //$NON-NLS-1$
         final String encodedExpectedMnemonic = "1"; //$NON-NLS-1$
         final int expectedMnemonic = KeyStroke.getKeyStroke( encodedExpectedMnemonic ).getKeyCode();
         final String expectedName = "name"; //$NON-NLS-1$
         final List<String> expectedPath = Arrays.asList( expectedId );
-        final IConfigurationElement configurationElement = createConfigurationElement( expectedId, encodedExpectedMnemonic, expectedName, null );
+        final IConfigurationElement configurationElement = createCategoryConfigurationElement( expectedId, encodedExpectedMnemonic, expectedName, null );
         mocksControl_.replay();
 
-        final ComponentFactoryCategory actualValue = ComponentFactoryCategory.fromConfigurationElement( configurationElement );
+        final ComponentFactoryCategory actualValue = ComponentFactoriesExtensionPoint.createCategory( configurationElement );
 
         mocksControl_.verify();
         assertEquals( expectedId, actualValue.getId() );
@@ -211,12 +212,12 @@ public final class ComponentFactoryCategoryTest
     }
 
     /**
-     * Ensures the {@link ComponentFactoryCategory#fromConfigurationElement}
+     * Ensures the {@link ComponentFactoriesExtensionPoint#createCategory}
      * method creates a component factory category from a legal configuration
      * element that has a parent category.
      */
     @Test
-    public void testFromConfigurationElement_ConfigurationElement_Legal_ParentCategory()
+    public void testCreateCategory_ConfigurationElement_Legal_ParentCategory()
     {
         final String expectedId = "id"; //$NON-NLS-1$
         final String encodedExpectedMnemonic = "1"; //$NON-NLS-1$
@@ -225,10 +226,10 @@ public final class ComponentFactoryCategoryTest
         final List<String> parentPath = Arrays.asList( "ancestor1Id", "ancestor2Id", "ancestor3Id" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         final List<String> expectedPath = new ArrayList<String>( parentPath );
         expectedPath.add( expectedId );
-        final IConfigurationElement configurationElement = createConfigurationElement( expectedId, encodedExpectedMnemonic, expectedName, encodePath( parentPath ) );
+        final IConfigurationElement configurationElement = createCategoryConfigurationElement( expectedId, encodedExpectedMnemonic, expectedName, encodeCategoryPath( parentPath ) );
         mocksControl_.replay();
 
-        final ComponentFactoryCategory actualValue = ComponentFactoryCategory.fromConfigurationElement( configurationElement );
+        final ComponentFactoryCategory actualValue = ComponentFactoriesExtensionPoint.createCategory( configurationElement );
 
         mocksControl_.verify();
         assertEquals( expectedId, actualValue.getId() );

@@ -40,22 +40,20 @@ final class NonNlsMessages
 
     // --- ComponentFactoriesExtensionPoint ---------------------------------
 
+    /** The category identifier is missing. */
+    public static String ComponentFactoriesExtensionPoint_createCategory_missingId;
+
+    /** The category mnemonic is missing. */
+    public static String ComponentFactoriesExtensionPoint_createCategory_missingMnemonic;
+
+    /** The category name is missing. */
+    public static String ComponentFactoriesExtensionPoint_createCategory_missingName;
+
     /** The category configuration element is illegal. */
     public static String ComponentFactoriesExtensionPoint_createComponentFactoryMenu_illegalCategoryConfigurationElement;
 
-    // --- ComponentFactoryCategory -----------------------------------------
-
-    /** The source does not represent a legal mnemonic. */
-    public static String ComponentFactoryCategory_decodeMnemonic_illegalSource;
-
-    /** The category identifier is missing. */
-    public static String ComponentFactoryCategory_fromConfigurationElement_missingId;
-
-    /** The category mnemonic is missing. */
-    public static String ComponentFactoryCategory_fromConfigurationElement_missingMnemonic;
-
-    /** The category name is missing. */
-    public static String ComponentFactoryCategory_fromConfigurationElement_missingName;
+    /** The source does not represent a legal category mnemonic. */
+    public static String ComponentFactoriesExtensionPoint_decodeCategoryMnemonic_illegalSource;
 
     // --- ComponentFactoryMenuBuilder --------------------------------------
 

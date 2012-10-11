@@ -21,14 +21,10 @@
 
 package org.gamegineer.table.internal.ui.view;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import javax.swing.KeyStroke;
 import net.jcip.annotations.Immutable;
-import org.eclipse.core.runtime.IConfigurationElement;
 
 /**
  * A component factory category.
@@ -39,33 +35,6 @@ final class ComponentFactoryCategory
     // ======================================================================
     // Fields
     // ======================================================================
-
-    /**
-     * The name of the configuration element attribute that represents the
-     * category identifier.
-     */
-    private static final String ATTR_ID = "id"; //$NON-NLS-1$
-
-    /**
-     * The name of the configuration element attribute that represents the
-     * category mnemonic.
-     */
-    private static final String ATTR_MNEMONIC = "mnemonic"; //$NON-NLS-1$
-
-    /**
-     * The name of the configuration element attribute that represents the
-     * category name.
-     */
-    private static final String ATTR_NAME = "name"; //$NON-NLS-1$
-
-    /**
-     * The name of the configuration element attribute that represents the path
-     * of the parent category.
-     */
-    private static final String ATTR_PARENT_CATEGORY = "parentCategory"; //$NON-NLS-1$
-
-    /** The category path separator. */
-    private static final String PATH_SEPARATOR = "/"; //$NON-NLS-1$
 
     /** The category identifier. */
     private final String id_;
@@ -153,53 +122,6 @@ final class ComponentFactoryCategory
     }
 
     /**
-     * Decodes the specified string as a mnemonic.
-     * 
-     * @param source
-     *        The string to decode; may be {@code null}.
-     * 
-     * @return The decoded mnemonic; never {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code source} does not represent a legal mnemonic.
-     */
-    private static int decodeMnemonic(
-        /* @NonNull */
-        final String source )
-    {
-        assert source != null;
-
-        final KeyStroke keyStroke = KeyStroke.getKeyStroke( source );
-        if( keyStroke == null )
-        {
-            throw new IllegalArgumentException( NonNlsMessages.ComponentFactoryCategory_decodeMnemonic_illegalSource );
-        }
-
-        return keyStroke.getKeyCode();
-    }
-
-    /**
-     * Decodes the specified string as a parent category path.
-     * 
-     * @param source
-     *        The string to decode; may be {@code null}.
-     * 
-     * @return The decoded parent category path; never {@code null}.
-     */
-    /* @NonNull */
-    private static List<String> decodeParentCategoryPath(
-        /* @Nullable */
-        final String source )
-    {
-        if( source == null )
-        {
-            return Collections.emptyList();
-        }
-
-        return Arrays.asList( source.split( PATH_SEPARATOR ) );
-    }
-
-    /**
      * Gets the category identifier.
      * 
      * @return The category identifier; never {@code null}.
@@ -240,42 +162,5 @@ final class ComponentFactoryCategory
     List<String> getPath()
     {
         return path_;
-    }
-
-    /**
-     * Creates a new instance of the {@code ComponentFactoryCategory} class from
-     * the specified component factory category configuration element.
-     * 
-     * @param configurationElement
-     *        The component factory category configuration element; must not be
-     *        {@code null}.
-     * 
-     * @return A new instance of the {@code ComponentFactoryCategory} class;
-     *         never {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code configurationElement} does not represent a legal
-     *         component factory category.
-     */
-    /* @NonNull */
-    static ComponentFactoryCategory fromConfigurationElement(
-        /* @NonNull */
-        final IConfigurationElement configurationElement )
-    {
-        assert configurationElement != null;
-
-        final String id = configurationElement.getAttribute( ATTR_ID );
-        assertArgumentLegal( id != null, "configurationElement", NonNlsMessages.ComponentFactoryCategory_fromConfigurationElement_missingId ); //$NON-NLS-1$
-
-        final String name = configurationElement.getAttribute( ATTR_NAME );
-        assertArgumentLegal( name != null, "configurationElement", NonNlsMessages.ComponentFactoryCategory_fromConfigurationElement_missingName ); //$NON-NLS-1$
-
-        final String encodedMnemonic = configurationElement.getAttribute( ATTR_MNEMONIC );
-        assertArgumentLegal( encodedMnemonic != null, "configurationElement", NonNlsMessages.ComponentFactoryCategory_fromConfigurationElement_missingMnemonic ); //$NON-NLS-1$
-        final int mnemonic = decodeMnemonic( encodedMnemonic );
-
-        final List<String> parentCategoryPath = decodeParentCategoryPath( configurationElement.getAttribute( ATTR_PARENT_CATEGORY ) );
-
-        return new ComponentFactoryCategory( id, name, mnemonic, parentCategoryPath );
     }
 }
