@@ -349,15 +349,19 @@ public final class BundleSuiteBuilder
         final Collection<String> classNames = new ArrayList<String>();
         final Pattern CLASS_NAME_PATTERN = Pattern.compile( String.format( "^/%1$s/(.+)\\.class$", path ) ); //$NON-NLS-1$
         final String FILE_PATTERN = "*Test.class"; //$NON-NLS-1$
-        for( final Enumeration<?> entries = bundle.findEntries( path, FILE_PATTERN, true ); entries.hasMoreElements(); )
+        final Enumeration<?> entries = bundle.findEntries( path, FILE_PATTERN, true );
+        if( entries != null )
         {
-            final URL url = (URL)entries.nextElement();
-            final Matcher matcher = CLASS_NAME_PATTERN.matcher( url.getPath() );
-            if( !matcher.matches() )
+            while( entries.hasMoreElements() )
             {
-                throw new RuntimeException( "unexpected bundle entry URL format" ); //$NON-NLS-1$
+                final URL url = (URL)entries.nextElement();
+                final Matcher matcher = CLASS_NAME_PATTERN.matcher( url.getPath() );
+                if( !matcher.matches() )
+                {
+                    throw new RuntimeException( "unexpected bundle entry URL format" ); //$NON-NLS-1$
+                }
+                classNames.add( matcher.group( 1 ).replace( '/', '.' ) );
             }
-            classNames.add( matcher.group( 1 ).replace( '/', '.' ) );
         }
 
         return Collections.unmodifiableCollection( classNames );
