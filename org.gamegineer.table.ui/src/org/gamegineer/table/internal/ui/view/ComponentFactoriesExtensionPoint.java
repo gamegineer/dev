@@ -109,7 +109,7 @@ final class ComponentFactoriesExtensionPoint
      *         component factory category.
      */
     /* @NonNull */
-    static ComponentFactoryCategory createCategory(
+    private static ComponentFactoryCategory createCategory(
         /* @NonNull */
         final IConfigurationElement configurationElement )
     {

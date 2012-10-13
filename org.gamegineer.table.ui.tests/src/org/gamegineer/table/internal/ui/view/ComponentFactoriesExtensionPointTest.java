@@ -155,7 +155,7 @@ public final class ComponentFactoriesExtensionPointTest
         final IConfigurationElement configurationElement = createCategoryConfigurationElement( null, "mnemonic", "name", null ); //$NON-NLS-1$ //$NON-NLS-2$
         mocksControl_.replay();
 
-        ComponentFactoriesExtensionPoint.createCategory( configurationElement );
+        ComponentFactoriesExtensionPointFacade.createCategory( configurationElement );
     }
 
     /**
@@ -169,7 +169,7 @@ public final class ComponentFactoriesExtensionPointTest
         final IConfigurationElement configurationElement = createCategoryConfigurationElement( "id", null, "name", null ); //$NON-NLS-1$ //$NON-NLS-2$
         mocksControl_.replay();
 
-        ComponentFactoriesExtensionPoint.createCategory( configurationElement );
+        ComponentFactoriesExtensionPointFacade.createCategory( configurationElement );
     }
 
     /**
@@ -183,7 +183,7 @@ public final class ComponentFactoriesExtensionPointTest
         final IConfigurationElement configurationElement = createCategoryConfigurationElement( "id", "mnemonic", null, null ); //$NON-NLS-1$ //$NON-NLS-2$
         mocksControl_.replay();
 
-        ComponentFactoriesExtensionPoint.createCategory( configurationElement );
+        ComponentFactoriesExtensionPointFacade.createCategory( configurationElement );
     }
 
     /**
@@ -202,7 +202,7 @@ public final class ComponentFactoriesExtensionPointTest
         final IConfigurationElement configurationElement = createCategoryConfigurationElement( expectedId, encodedExpectedMnemonic, expectedName, null );
         mocksControl_.replay();
 
-        final ComponentFactoryCategory actualValue = ComponentFactoriesExtensionPoint.createCategory( configurationElement );
+        final ComponentFactoryCategory actualValue = ComponentFactoriesExtensionPointFacade.createCategory( configurationElement );
 
         mocksControl_.verify();
         assertEquals( expectedId, actualValue.getId() );
@@ -229,7 +229,7 @@ public final class ComponentFactoriesExtensionPointTest
         final IConfigurationElement configurationElement = createCategoryConfigurationElement( expectedId, encodedExpectedMnemonic, expectedName, encodeCategoryPath( parentPath ) );
         mocksControl_.replay();
 
-        final ComponentFactoryCategory actualValue = ComponentFactoriesExtensionPoint.createCategory( configurationElement );
+        final ComponentFactoryCategory actualValue = ComponentFactoriesExtensionPointFacade.createCategory( configurationElement );
 
         mocksControl_.verify();
         assertEquals( expectedId, actualValue.getId() );
