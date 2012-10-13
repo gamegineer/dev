@@ -18,7 +18,10 @@
       </annotation>
       <complexType>
          <sequence>
-            <element ref="category" minOccurs="1" maxOccurs="unbounded"/>
+            <choice minOccurs="1" maxOccurs="unbounded">
+               <element ref="category"/>
+               <element ref="componentFactory"/>
+            </choice>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -48,6 +51,11 @@
    </element>
 
    <element name="category">
+      <annotation>
+         <documentation>
+            a component factory category
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="id" type="string" use="required">
             <annotation>
@@ -61,6 +69,9 @@
                <documentation>
                   the category mnemonic
                </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
             </annotation>
          </attribute>
          <attribute name="name" type="string" use="required">
@@ -78,6 +89,53 @@
                <documentation>
                   an optional path to another category that is the parent of this category
                </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="componentFactory">
+      <annotation>
+         <documentation>
+            a component factory
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="category" type="string">
+            <annotation>
+               <documentation>
+                  the optional component factory category
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="className" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the fully-qualified name of the component factory class
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.gamegineer.table.ui.IComponentFactory"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="mnemonic" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the component factory mnemonic
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the component factory name
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>
@@ -109,11 +167,10 @@
                 name=&quot;Hearts&quot;
                 parentCategory=&quot;org.gamegineer.componentFactory.category.card&quot; /&gt;
         &lt;componentFactory
-                id=&quot;org.gamegineer.componentFactory.card.red.hearts.ace&quot;
-                mnemonic=&quot;A&quot;
-                name=&quot;Ace&quot;
                 category=&quot;org.gamegineer.componentFactory.category.card.hearts&quot;
-                className=&quot;org.gamegineer.table.internal.ui.factories.CardFactory&quot;&gt;
+                className=&quot;org.gamegineer.table.internal.ui.factories.CardFactory&quot;
+                mnemonic=&quot;A&quot;
+                name=&quot;Ace&quot;&gt;
             &lt;parameter name=&quot;faceDesign&quot; value=&quot;org.gamegineer.cardSurfaces.hearts.ace&quot; /&gt;
             &lt;parameter name=&quot;backDesign&quot; value=&quot;org.gamegineer.cardSurfaces.back.red&quot; /&gt;
         &lt;/componentFactory&gt;

@@ -76,6 +76,27 @@ final class ComponentFactoriesExtensionPoint
     /** The category path separator. */
     private static final String CATEGORY_PATH_SEPARATOR = "/"; //$NON-NLS-1$
 
+    /**
+     * The name of the component factory configuration element attribute that
+     * represents the component factory category.
+     */
+    private static final String COMPONENT_FACTORY_ATTR_CATEGORY = "category"; //$NON-NLS-1$
+
+    /**
+     * The name of the component factory configuration element attribute that
+     * represents the component factory mnemonic.
+     */
+    private static final String COMPONENT_FACTORY_ATTR_MNEMONIC = "mnemonic"; //$NON-NLS-1$
+
+    /**
+     * The name of the component factory configuration element attribute that
+     * represents the component factory name.
+     */
+    private static final String COMPONENT_FACTORY_ATTR_NAME = "name"; //$NON-NLS-1$
+
+    /** The name of the component factory configuration element. */
+    private static final String COMPONENT_FACTORY_ELEM_NAME = "componentFactory"; //$NON-NLS-1$
+
 
     // ======================================================================
     // Constructors
@@ -123,12 +144,45 @@ final class ComponentFactoriesExtensionPoint
 
         final String encodedMnemonic = configurationElement.getAttribute( CATEGORY_ATTR_MNEMONIC );
         assertArgumentLegal( encodedMnemonic != null, "configurationElement", NonNlsMessages.ComponentFactoriesExtensionPoint_createCategory_missingMnemonic ); //$NON-NLS-1$
-        final int mnemonic = decodeCategoryMnemonic( encodedMnemonic );
+        final int mnemonic = decodeMnemonic( encodedMnemonic );
 
         final String encodedParentCategoryPath = configurationElement.getAttribute( CATEGORY_ATTR_PARENT_CATEGORY );
-        final List<String> parentCategoryPath = decodeCategoryParentCategoryPath( encodedParentCategoryPath );
+        final List<String> parentCategoryPath = decodeCategoryPath( encodedParentCategoryPath );
 
         return new ComponentFactoryCategory( id, name, mnemonic, parentCategoryPath );
+    }
+
+    /**
+     * Creates a new component factory from the specified component factory
+     * configuration element.
+     * 
+     * @param configurationElement
+     *        The component factory configuration element; must not be
+     *        {@code null}.
+     * 
+     * @return A new component factory; never {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code configurationElement} does not represent a legal
+     *         component factory.
+     */
+    /* @NonNull */
+    private static ComponentFactory createComponentFactory(
+        /* @NonNull */
+        final IConfigurationElement configurationElement )
+    {
+        assert configurationElement != null;
+
+        final String categoryId = configurationElement.getAttribute( COMPONENT_FACTORY_ATTR_CATEGORY );
+
+        final String name = configurationElement.getAttribute( COMPONENT_FACTORY_ATTR_NAME );
+        assertArgumentLegal( name != null, "configurationElement", NonNlsMessages.ComponentFactoriesExtensionPoint_createComponentFactory_missingName ); //$NON-NLS-1$
+
+        final String encodedMnemonic = configurationElement.getAttribute( COMPONENT_FACTORY_ATTR_MNEMONIC );
+        assertArgumentLegal( encodedMnemonic != null, "configurationElement", NonNlsMessages.ComponentFactoriesExtensionPoint_createComponentFactory_missingMnemonic ); //$NON-NLS-1$
+        final int mnemonic = decodeMnemonic( encodedMnemonic );
+
+        return new ComponentFactory( name, mnemonic, categoryId );
     }
 
     /**
@@ -167,6 +221,17 @@ final class ComponentFactoriesExtensionPoint
                         Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.ComponentFactoriesExtensionPoint_createMenu_illegalCategoryConfigurationElement, e );
                     }
                 }
+                else if( COMPONENT_FACTORY_ELEM_NAME.equals( configurationElement.getName() ) )
+                {
+                    try
+                    {
+                        menuBuilder.addComponentFactory( createComponentFactory( configurationElement ) );
+                    }
+                    catch( final IllegalArgumentException e )
+                    {
+                        Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.ComponentFactoriesExtensionPoint_createMenu_illegalComponentFactoryConfigurationElement, e );
+                    }
+                }
             }
         }
 
@@ -174,41 +239,15 @@ final class ComponentFactoriesExtensionPoint
     }
 
     /**
-     * Decodes the specified string as a category mnemonic.
+     * Decodes the specified string as a category path.
      * 
      * @param source
      *        The string to decode; may be {@code null}.
      * 
-     * @return The decoded category mnemonic; never {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code source} does not represent a legal category mnemonic.
-     */
-    private static int decodeCategoryMnemonic(
-        /* @NonNull */
-        final String source )
-    {
-        assert source != null;
-
-        final KeyStroke keyStroke = KeyStroke.getKeyStroke( source );
-        if( keyStroke == null )
-        {
-            throw new IllegalArgumentException( NonNlsMessages.ComponentFactoriesExtensionPoint_decodeCategoryMnemonic_illegalSource );
-        }
-
-        return keyStroke.getKeyCode();
-    }
-
-    /**
-     * Decodes the specified string as a category parent category path.
-     * 
-     * @param source
-     *        The string to decode; may be {@code null}.
-     * 
-     * @return The decoded category parent category path; never {@code null}.
+     * @return The decoded category path; never {@code null}.
      */
     /* @NonNull */
-    private static List<String> decodeCategoryParentCategoryPath(
+    private static List<String> decodeCategoryPath(
         /* @Nullable */
         final String source )
     {
@@ -218,5 +257,31 @@ final class ComponentFactoriesExtensionPoint
         }
 
         return Arrays.asList( source.split( CATEGORY_PATH_SEPARATOR ) );
+    }
+
+    /**
+     * Decodes the specified string as a mnemonic.
+     * 
+     * @param source
+     *        The string to decode; may be {@code null}.
+     * 
+     * @return The decoded mnemonic; never {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code source} does not represent a legal mnemonic.
+     */
+    private static int decodeMnemonic(
+        /* @NonNull */
+        final String source )
+    {
+        assert source != null;
+
+        final KeyStroke keyStroke = KeyStroke.getKeyStroke( source );
+        if( keyStroke == null )
+        {
+            throw new IllegalArgumentException( NonNlsMessages.ComponentFactoriesExtensionPoint_decodeMnemonic_illegalSource );
+        }
+
+        return keyStroke.getKeyCode();
     }
 }

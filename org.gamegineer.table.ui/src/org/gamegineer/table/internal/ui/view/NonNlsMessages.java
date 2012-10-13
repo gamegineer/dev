@@ -49,11 +49,20 @@ final class NonNlsMessages
     /** The category name is missing. */
     public static String ComponentFactoriesExtensionPoint_createCategory_missingName;
 
+    /** The component factory mnemonic is missing. */
+    public static String ComponentFactoriesExtensionPoint_createComponentFactory_missingMnemonic;
+
+    /** The component factory name is missing. */
+    public static String ComponentFactoriesExtensionPoint_createComponentFactory_missingName;
+
     /** The category configuration element is illegal. */
     public static String ComponentFactoriesExtensionPoint_createMenu_illegalCategoryConfigurationElement;
 
-    /** The source does not represent a legal category mnemonic. */
-    public static String ComponentFactoriesExtensionPoint_decodeCategoryMnemonic_illegalSource;
+    /** The component factory configuration element is illegal. */
+    public static String ComponentFactoriesExtensionPoint_createMenu_illegalComponentFactoryConfigurationElement;
+
+    /** The source does not represent a legal mnemonic. */
+    public static String ComponentFactoriesExtensionPoint_decodeMnemonic_illegalSource;
 
     // --- ComponentFactoryMenuBuilder --------------------------------------
 

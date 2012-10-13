@@ -100,6 +100,36 @@ public final class ComponentFactoriesExtensionPointTest
     }
 
     /**
+     * Creates a new component factory configuration element.
+     * 
+     * @param category
+     *        The component factory category; may be {@code null}.
+     * @param mnemonic
+     *        The component factory mnemonic; may be {@code null}.
+     * @param name
+     *        The component factory name; may be {@code null}.
+     * 
+     * @return A new component factory configuration element; never {@code null}
+     *         .
+     */
+    /* @NonNull */
+    private IConfigurationElement createComponentFactoryConfigurationElement(
+        /* @Nullable */
+        final String category,
+        /* @Nullable */
+        final String mnemonic,
+        /* @Nullable */
+        final String name )
+    {
+        final IConfigurationElement configurationElement = mocksControl_.createMock( IConfigurationElement.class );
+        EasyMock.expect( configurationElement.getName() ).andReturn( "componentFactory" ).anyTimes(); //$NON-NLS-1$
+        EasyMock.expect( configurationElement.getAttribute( "category" ) ).andReturn( category ).anyTimes(); //$NON-NLS-1$
+        EasyMock.expect( configurationElement.getAttribute( "mnemonic" ) ).andReturn( mnemonic ).anyTimes(); //$NON-NLS-1$
+        EasyMock.expect( configurationElement.getAttribute( "name" ) ).andReturn( name ).anyTimes(); //$NON-NLS-1$
+        return configurationElement;
+    }
+
+    /**
      * Encodes the specified category path as a string.
      * 
      * @param path
@@ -152,7 +182,7 @@ public final class ComponentFactoriesExtensionPointTest
     @Test( expected = IllegalArgumentException.class )
     public void testCreateCategory_ConfigurationElement_Illegal_MissingIdAttribute()
     {
-        final IConfigurationElement configurationElement = createCategoryConfigurationElement( null, "mnemonic", "name", null ); //$NON-NLS-1$ //$NON-NLS-2$
+        final IConfigurationElement configurationElement = createCategoryConfigurationElement( null, "mnemonic", "name", "parentCategory" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         mocksControl_.replay();
 
         ComponentFactoriesExtensionPointFacade.createCategory( configurationElement );
@@ -166,7 +196,7 @@ public final class ComponentFactoriesExtensionPointTest
     @Test( expected = IllegalArgumentException.class )
     public void testCreateCategory_ConfigurationElement_Illegal_MissingMnemonicAttribute()
     {
-        final IConfigurationElement configurationElement = createCategoryConfigurationElement( "id", null, "name", null ); //$NON-NLS-1$ //$NON-NLS-2$
+        final IConfigurationElement configurationElement = createCategoryConfigurationElement( "id", null, "name", "parentCategory" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         mocksControl_.replay();
 
         ComponentFactoriesExtensionPointFacade.createCategory( configurationElement );
@@ -180,7 +210,7 @@ public final class ComponentFactoriesExtensionPointTest
     @Test( expected = IllegalArgumentException.class )
     public void testCreateCategory_ConfigurationElement_Illegal_MissingNameAttribute()
     {
-        final IConfigurationElement configurationElement = createCategoryConfigurationElement( "id", "mnemonic", null, null ); //$NON-NLS-1$ //$NON-NLS-2$
+        final IConfigurationElement configurationElement = createCategoryConfigurationElement( "id", "mnemonic", null, "parentCategory" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         mocksControl_.replay();
 
         ComponentFactoriesExtensionPointFacade.createCategory( configurationElement );
@@ -236,5 +266,82 @@ public final class ComponentFactoriesExtensionPointTest
         assertEquals( expectedMnemonic, actualValue.getMnemonic() );
         assertEquals( expectedName, actualValue.getName() );
         assertEquals( expectedPath, actualValue.getPath() );
+    }
+
+    /**
+     * Ensures the
+     * {@link ComponentFactoriesExtensionPoint#createComponentFactory} method
+     * throws an exception when passed an illegal configuration element that is
+     * missing the mnemonic attribute.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testCreateComponentFactory_ConfigurationElement_Illegal_MissingMnemonicAttribute()
+    {
+        final IConfigurationElement configurationElement = createComponentFactoryConfigurationElement( "category", null, "name" ); //$NON-NLS-1$ //$NON-NLS-2$
+        mocksControl_.replay();
+
+        ComponentFactoriesExtensionPointFacade.createComponentFactory( configurationElement );
+    }
+
+    /**
+     * Ensures the
+     * {@link ComponentFactoriesExtensionPoint#createComponentFactory} method
+     * throws an exception when passed an illegal configuration element that is
+     * missing the name attribute.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testCreateComponentFactory_ConfigurationElement_Illegal_MissingNameAttribute()
+    {
+        final IConfigurationElement configurationElement = createComponentFactoryConfigurationElement( "category", "mnemonic", null ); //$NON-NLS-1$ //$NON-NLS-2$
+        mocksControl_.replay();
+
+        ComponentFactoriesExtensionPointFacade.createComponentFactory( configurationElement );
+    }
+
+    /**
+     * Ensures the {@link ComponentFactoriesExtensionPoint#createCategory}
+     * method creates a component factory category from a legal configuration
+     * element that has a category.
+     */
+    @Test
+    public void testCreateComponentFactory_ConfigurationElement_Legal_Category()
+    {
+        final String expectedCategoryId = "categoryId"; //$NON-NLS-1$
+        final String encodedExpectedMnemonic = "1"; //$NON-NLS-1$
+        final int expectedMnemonic = KeyStroke.getKeyStroke( encodedExpectedMnemonic ).getKeyCode();
+        final String expectedName = "name"; //$NON-NLS-1$
+        final IConfigurationElement configurationElement = createComponentFactoryConfigurationElement( expectedCategoryId, encodedExpectedMnemonic, expectedName );
+        mocksControl_.replay();
+
+        final ComponentFactory actualValue = ComponentFactoriesExtensionPointFacade.createComponentFactory( configurationElement );
+
+        mocksControl_.verify();
+        assertEquals( expectedCategoryId, actualValue.getCategoryId() );
+        assertEquals( expectedMnemonic, actualValue.getMnemonic() );
+        assertEquals( expectedName, actualValue.getName() );
+    }
+
+    /**
+     * Ensures the
+     * {@link ComponentFactoriesExtensionPoint#createComponentFactory} method
+     * creates a component factory from a legal configuration element that has
+     * no category.
+     */
+    @Test
+    public void testCreateComponentFactory_ConfigurationElement_Legal_NoCategory()
+    {
+        final String expectedCategoryId = null;
+        final String encodedExpectedMnemonic = "1"; //$NON-NLS-1$
+        final int expectedMnemonic = KeyStroke.getKeyStroke( encodedExpectedMnemonic ).getKeyCode();
+        final String expectedName = "name"; //$NON-NLS-1$
+        final IConfigurationElement configurationElement = createComponentFactoryConfigurationElement( expectedCategoryId, encodedExpectedMnemonic, expectedName );
+        mocksControl_.replay();
+
+        final ComponentFactory actualValue = ComponentFactoriesExtensionPointFacade.createComponentFactory( configurationElement );
+
+        mocksControl_.verify();
+        assertEquals( expectedCategoryId, actualValue.getCategoryId() );
+        assertEquals( expectedMnemonic, actualValue.getMnemonic() );
+        assertEquals( expectedName, actualValue.getName() );
     }
 }

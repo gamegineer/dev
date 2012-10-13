@@ -57,7 +57,7 @@ final class ComponentFactoriesExtensionPointFacade
      * 
      * <p>
      * This method is a facade for invoking the
-     * {@code ComponentFactoriesExtensionPoint#createCategory} method.
+     * {@link ComponentFactoriesExtensionPoint#createCategory} method.
      * </p>
      * 
      * @param configurationElement
@@ -80,6 +80,46 @@ final class ComponentFactoriesExtensionPointFacade
             final Method method = ComponentFactoriesExtensionPoint.class.getDeclaredMethod( "createCategory", IConfigurationElement.class ); //$NON-NLS-1$
             method.setAccessible( true );
             return (ComponentFactoryCategory)method.invoke( null, configurationElement );
+        }
+        catch( final InvocationTargetException e )
+        {
+            throw TaskUtils.launderThrowable( e.getCause() );
+        }
+        catch( final Exception e )
+        {
+            throw new AssertionError( e );
+        }
+    }
+
+    /**
+     * Creates a new component factory from the specified component factory
+     * configuration element.
+     * 
+     * <p>
+     * This method is a facade for invoking the
+     * {@link ComponentFactoriesExtensionPoint#createComponentFactory} method.
+     * </p>
+     * 
+     * @param configurationElement
+     *        The component factory configuration element; must not be
+     *        {@code null}.
+     * 
+     * @return A new component factory; never {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code configurationElement} does not represent a legal
+     *         component factory.
+     */
+    /* @NonNull */
+    static ComponentFactory createComponentFactory(
+        /* @NonNull */
+        final IConfigurationElement configurationElement )
+    {
+        try
+        {
+            final Method method = ComponentFactoriesExtensionPoint.class.getDeclaredMethod( "createComponentFactory", IConfigurationElement.class ); //$NON-NLS-1$
+            method.setAccessible( true );
+            return (ComponentFactory)method.invoke( null, configurationElement );
         }
         catch( final InvocationTargetException e )
         {
