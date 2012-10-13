@@ -95,15 +95,14 @@ final class ComponentFactoriesExtensionPoint
     // ======================================================================
 
     /**
-     * Creates a new instance of the {@code ComponentFactoryCategory} class from
-     * the specified component factory category configuration element.
+     * Creates a new component factory category from the specified component
+     * factory category configuration element.
      * 
      * @param configurationElement
      *        The component factory category configuration element; must not be
      *        {@code null}.
      * 
-     * @return A new instance of the {@code ComponentFactoryCategory} class;
-     *         never {@code null}.
+     * @return A new component factory category; never {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code configurationElement} does not represent a legal
@@ -126,7 +125,8 @@ final class ComponentFactoriesExtensionPoint
         assertArgumentLegal( encodedMnemonic != null, "configurationElement", NonNlsMessages.ComponentFactoriesExtensionPoint_createCategory_missingMnemonic ); //$NON-NLS-1$
         final int mnemonic = decodeCategoryMnemonic( encodedMnemonic );
 
-        final List<String> parentCategoryPath = decodeCategoryParentCategoryPath( configurationElement.getAttribute( CATEGORY_ATTR_PARENT_CATEGORY ) );
+        final String encodedParentCategoryPath = configurationElement.getAttribute( CATEGORY_ATTR_PARENT_CATEGORY );
+        final List<String> parentCategoryPath = decodeCategoryParentCategoryPath( encodedParentCategoryPath );
 
         return new ComponentFactoryCategory( id, name, mnemonic, parentCategoryPath );
     }
