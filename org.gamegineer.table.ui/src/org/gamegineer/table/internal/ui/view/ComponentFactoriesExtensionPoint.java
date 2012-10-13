@@ -132,7 +132,7 @@ final class ComponentFactoriesExtensionPoint
     }
 
     /**
-     * Creates a new component factory menu from the extension registry.
+     * Creates a new component factory menu using the extension registry.
      * 
      * @param rootMenuLabel
      *        The root menu label; must not be {@code null}.
@@ -142,7 +142,7 @@ final class ComponentFactoriesExtensionPoint
      * @return A new component factory menu; never {@code null}.
      */
     /* @NonNull */
-    static JMenu createComponentFactoryMenu(
+    static JMenu createMenu(
         /* @NonNull */
         final String rootMenuLabel,
         final int rootMenuMnemonic )
@@ -164,7 +164,7 @@ final class ComponentFactoriesExtensionPoint
                     }
                     catch( final IllegalArgumentException e )
                     {
-                        Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.ComponentFactoriesExtensionPoint_createComponentFactoryMenu_illegalCategoryConfigurationElement, e );
+                        Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.ComponentFactoriesExtensionPoint_createMenu_illegalCategoryConfigurationElement, e );
                     }
                 }
             }

@@ -50,7 +50,7 @@ final class NonNlsMessages
     public static String ComponentFactoriesExtensionPoint_createCategory_missingName;
 
     /** The category configuration element is illegal. */
-    public static String ComponentFactoriesExtensionPoint_createComponentFactoryMenu_illegalCategoryConfigurationElement;
+    public static String ComponentFactoriesExtensionPoint_createMenu_illegalCategoryConfigurationElement;
 
     /** The source does not represent a legal category mnemonic. */
     public static String ComponentFactoriesExtensionPoint_decodeCategoryMnemonic_illegalSource;
