@@ -23,10 +23,12 @@ package org.gamegineer.table.internal.ui.view;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.ui.Loggers;
 
@@ -39,6 +41,12 @@ final class ComponentFactoryMenuBuilder
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /**
+     * The collection of menu items for each category. The key is the category
+     * identifier. The value is the collection of menu items.
+     */
+    private final Map<String, Collection<JMenuItem>> menuItemCollections_;
 
     /** The root menu descriptor. */
     private final MenuDescriptor rootMenuDescriptor_;
@@ -64,7 +72,8 @@ final class ComponentFactoryMenuBuilder
     {
         assert rootMenuLabel != null;
 
-        rootMenuDescriptor_ = new MenuDescriptor( "" ); //$NON-NLS-1$
+        menuItemCollections_ = new HashMap<String, Collection<JMenuItem>>();
+        rootMenuDescriptor_ = new MenuDescriptor( null );
         rootMenuDescriptor_.setMenu( rootMenuLabel, rootMenuMnemonic );
     }
 
@@ -88,6 +97,31 @@ final class ComponentFactoryMenuBuilder
 
         final MenuDescriptor menuDescriptor = rootMenuDescriptor_.getDescendantMenuDescriptor( componentFactoryCategory.getPath() );
         menuDescriptor.setMenu( componentFactoryCategory.getName(), componentFactoryCategory.getMnemonic() );
+    }
+
+    /**
+     * Adds the specified component factory to the menu.
+     * 
+     * @param componentFactory
+     *        The component factory to add to the menu; must not be {@code null}
+     *        .
+     */
+    void addComponentFactory(
+        /* @NonNull */
+        final ComponentFactory componentFactory )
+    {
+        assert componentFactory != null;
+
+        Collection<JMenuItem> menuItems = menuItemCollections_.get( componentFactory.getCategoryId() );
+        if( menuItems == null )
+        {
+            menuItems = new ArrayList<JMenuItem>();
+            menuItemCollections_.put( componentFactory.getCategoryId(), menuItems );
+        }
+
+        final JMenuItem menuItem = new JMenuItem( componentFactory.getName() );
+        menuItem.setMnemonic( componentFactory.getMnemonic() );
+        menuItems.add( menuItem );
     }
 
     /**
@@ -141,7 +175,7 @@ final class ComponentFactoryMenuBuilder
      *         specified menu descriptor.
      */
     /* @Nullable */
-    private static JMenu toMenu(
+    private JMenu toMenu(
         /* @NonNull */
         final MenuDescriptor menuDescriptor )
     {
@@ -154,6 +188,15 @@ final class ComponentFactoryMenuBuilder
             collectAllCategoryIds( menuDescriptor, ids );
             Loggers.getDefaultLogger().warning( NonNlsMessages.ComponentFactoryMenuBuilder_toMenu_orphanedCategories( ids ) );
             return null;
+        }
+
+        final Collection<JMenuItem> menuItems = menuItemCollections_.get( menuDescriptor.getId() );
+        if( menuItems != null )
+        {
+            for( final JMenuItem menuItem : menuItems )
+            {
+                menu.add( menuItem );
+            }
         }
 
         for( final MenuDescriptor childMenuDescriptor : menuDescriptor.getChildMenuDescriptors() )
@@ -190,7 +233,10 @@ final class ComponentFactoryMenuBuilder
          */
         private final Map<String, MenuDescriptor> childMenuDescriptors_;
 
-        /** The component factory category identifier associated with the menu. */
+        /**
+         * The component factory category identifier associated with the menu or
+         * {@code null} if the root menu.
+         */
         private final String id_;
 
         /** The menu or {@code null} if the menu has not yet been set. */
@@ -206,14 +252,12 @@ final class ComponentFactoryMenuBuilder
          * 
          * @param id
          *        The component factory category identifier associated with the
-         *        menu; must not be {@code null}.
+         *        menu or {@code null} if the root menu.
          */
         MenuDescriptor(
-            /* @NonNull */
+            /* @Nullable */
             final String id )
         {
-            assert id != null;
-
             childMenuDescriptors_ = new LinkedHashMap<String, MenuDescriptor>();
             id_ = id;
             menu_ = null;
@@ -307,9 +351,9 @@ final class ComponentFactoryMenuBuilder
          * menu.
          * 
          * @return The component factory category identifier associated with the
-         *         menu; never {@code null}.
+         *         menu or {@code null} if the root menu.
          */
-        /* @NonNull */
+        /* @Nullable */
         String getId()
         {
             return id_;

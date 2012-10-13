@@ -29,6 +29,7 @@ import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.Collections;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -98,7 +99,6 @@ public final class ComponentFactoryMenuBuilderTest
             assertEquals( menu1.getText(), menu2.getText() );
             assertEquals( menu1.getMnemonic(), menu2.getMnemonic() );
 
-
             assertEquals( menu1.getMenuComponentCount(), menu2.getMenuComponentCount() );
             for( int index = 0, size = menu1.getMenuComponentCount(); index < size; ++index )
             {
@@ -108,11 +108,47 @@ public final class ComponentFactoryMenuBuilderTest
                 {
                     assertMenuEquals( (JMenu)component1, (JMenu)component2 );
                 }
+                else if( (component1 instanceof JMenuItem) && (component2 instanceof JMenuItem) )
+                {
+                    assertMenuItemEquals( (JMenuItem)component1, (JMenuItem)component2 );
+                }
                 else
                 {
                     fail( String.format( "unequal menu compoenents at index %d", index ) ); //$NON-NLS-1$
                 }
             }
+        }
+    }
+
+    /**
+     * Ensures the specified menu items are equal.
+     * 
+     * @param menuItem1
+     *        The first object to compare; may be {@code null}.
+     * @param menuItem2
+     *        The second object to compare; may be {@code null}.
+     * 
+     * @throws java.lang.AssertionError
+     *         If the two objects are not equal.
+     */
+    private static void assertMenuItemEquals(
+        /* @Nullable */
+        final JMenuItem menuItem1,
+        /* @Nullable */
+        final JMenuItem menuItem2 )
+    {
+        if( menuItem1 == null )
+        {
+            assertNull( menuItem2 );
+        }
+        else if( menuItem2 == null )
+        {
+            assertNull( menuItem1 );
+        }
+        else
+        {
+            assertEquals( menuItem1.getText(), menuItem2.getText() );
+            assertEquals( menuItem1.getMnemonic(), menuItem2.getMnemonic() );
         }
     }
 
@@ -202,6 +238,92 @@ public final class ComponentFactoryMenuBuilderTest
         expectedRootMenu_.add( menu );
 
         componentFactoryMenuBuilder_.addCategory( new ComponentFactoryCategory( id, name, mnemonic, Collections.<String>emptyList() ) );
+
+        assertMenuEquals( expectedRootMenu_, componentFactoryMenuBuilder_.toMenu() );
+    }
+
+    /**
+     * Ensures the {@link ComponentFactoryMenuBuilder#addComponentFactory}
+     * method adds a component factory when the component factory is added after
+     * its associated category.
+     */
+    @Test
+    public void testAddComponentFactory_AfterCategory()
+    {
+        final String categoryId = "categoryId"; //$NON-NLS-1$
+        final int categoryMnemonic = KeyEvent.VK_1;
+        final String categoryName = "categoryName"; //$NON-NLS-1$
+        final JMenu categoryMenu = new JMenu( categoryName );
+        categoryMenu.setMnemonic( categoryMnemonic );
+        expectedRootMenu_.add( categoryMenu );
+        final int componentFactoryMnemonic = KeyEvent.VK_2;
+        final String componentFactoryName = "componentFactoryName"; //$NON-NLS-1$
+        final JMenuItem componentFactoryMenuItem = new JMenu( componentFactoryName );
+        componentFactoryMenuItem.setMnemonic( componentFactoryMnemonic );
+        categoryMenu.add( componentFactoryMenuItem );
+
+        componentFactoryMenuBuilder_.addCategory( new ComponentFactoryCategory( categoryId, categoryName, categoryMnemonic, Collections.<String>emptyList() ) );
+        componentFactoryMenuBuilder_.addComponentFactory( new ComponentFactory( componentFactoryName, componentFactoryMnemonic, categoryId ) );
+
+        assertMenuEquals( expectedRootMenu_, componentFactoryMenuBuilder_.toMenu() );
+    }
+
+    /**
+     * Ensures the {@link ComponentFactoryMenuBuilder#addComponentFactory}
+     * method adds a component factory when the component factory is added
+     * before its associated category.
+     */
+    @Test
+    public void testAddComponentFactory_BeforeCategory()
+    {
+        final String categoryId = "categoryId"; //$NON-NLS-1$
+        final int categoryMnemonic = KeyEvent.VK_1;
+        final String categoryName = "categoryName"; //$NON-NLS-1$
+        final JMenu categoryMenu = new JMenu( categoryName );
+        categoryMenu.setMnemonic( categoryMnemonic );
+        expectedRootMenu_.add( categoryMenu );
+        final int componentFactoryMnemonic = KeyEvent.VK_2;
+        final String componentFactoryName = "componentFactoryName"; //$NON-NLS-1$
+        final JMenuItem componentFactoryMenuItem = new JMenu( componentFactoryName );
+        componentFactoryMenuItem.setMnemonic( componentFactoryMnemonic );
+        categoryMenu.add( componentFactoryMenuItem );
+
+        componentFactoryMenuBuilder_.addComponentFactory( new ComponentFactory( componentFactoryName, componentFactoryMnemonic, categoryId ) );
+        componentFactoryMenuBuilder_.addCategory( new ComponentFactoryCategory( categoryId, categoryName, categoryMnemonic, Collections.<String>emptyList() ) );
+
+        assertMenuEquals( expectedRootMenu_, componentFactoryMenuBuilder_.toMenu() );
+    }
+
+    /**
+     * Ensures the {@link ComponentFactoryMenuBuilder#addComponentFactory}
+     * method does not add a component factory when its associated category is
+     * missing.
+     */
+    @Test
+    public void testAddComponentFactory_MissingCategory()
+    {
+        final int mnemonic = KeyEvent.VK_1;
+        final String name = "name"; //$NON-NLS-1$
+
+        componentFactoryMenuBuilder_.addComponentFactory( new ComponentFactory( name, mnemonic, "unknown" ) ); //$NON-NLS-1$
+
+        assertMenuEquals( expectedRootMenu_, componentFactoryMenuBuilder_.toMenu() );
+    }
+
+    /**
+     * Ensures the {@link ComponentFactoryMenuBuilder#addComponentFactory}
+     * method adds a component factory to the menu root.
+     */
+    @Test
+    public void testAddComponentFactory_Root()
+    {
+        final int mnemonic = KeyEvent.VK_1;
+        final String name = "name"; //$NON-NLS-1$
+        final JMenuItem menuItem = new JMenu( name );
+        menuItem.setMnemonic( mnemonic );
+        expectedRootMenu_.add( menuItem );
+
+        componentFactoryMenuBuilder_.addComponentFactory( new ComponentFactory( name, mnemonic, null ) );
 
         assertMenuEquals( expectedRootMenu_, componentFactoryMenuBuilder_.toMenu() );
     }
