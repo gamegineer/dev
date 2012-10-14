@@ -49,6 +49,9 @@ final class NonNlsMessages
     /** The category name is missing. */
     public static String ComponentFactoriesExtensionPoint_createCategory_missingName;
 
+    /** The component factory identifier is missing. */
+    public static String ComponentFactoriesExtensionPoint_createComponentFactory_missingId;
+
     /** The component factory mnemonic is missing. */
     public static String ComponentFactoriesExtensionPoint_createComponentFactory_missingMnemonic;
 

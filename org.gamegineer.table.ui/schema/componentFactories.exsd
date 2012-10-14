@@ -101,6 +101,9 @@
          </documentation>
       </annotation>
       <complexType>
+         <sequence>
+            <element ref="parameter" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
          <attribute name="category" type="string">
             <annotation>
                <documentation>
@@ -116,6 +119,13 @@
                <appinfo>
                   <meta.attribute kind="java" basedOn=":org.gamegineer.table.ui.IComponentFactory"/>
                </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the unique identifier of this component factory
+               </documentation>
             </annotation>
          </attribute>
          <attribute name="mnemonic" type="string" use="required">
@@ -136,6 +146,30 @@
                <appinfo>
                   <meta.attribute translatable="true"/>
                </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="parameter">
+      <annotation>
+         <documentation>
+            a component factory parameter
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the parameter name
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="value" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the parameter value
+               </documentation>
             </annotation>
          </attribute>
       </complexType>

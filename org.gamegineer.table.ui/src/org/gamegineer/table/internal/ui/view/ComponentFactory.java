@@ -39,6 +39,9 @@ final class ComponentFactory
      */
     private final String categoryId_;
 
+    /** The component factory identifier. */
+    private final String id_;
+
     /** The component factory mnemonic. */
     private final int mnemonic_;
 
@@ -53,6 +56,8 @@ final class ComponentFactory
     /**
      * Initializes a new instance of the {@code ComponentFactory} class.
      * 
+     * @param id
+     *        The component factory identifier; must not be {@code null}.
      * @param name
      *        The component factory name; must not be {@code null}.
      * @param mnemonic
@@ -63,14 +68,18 @@ final class ComponentFactory
      */
     ComponentFactory(
         /* @NonNull */
+        final String id,
+        /* @NonNull */
         final String name,
         final int mnemonic,
         /* @Nullable */
         final String categoryId )
     {
+        assert id != null;
         assert name != null;
 
         categoryId_ = categoryId;
+        id_ = id;
         mnemonic_ = mnemonic;
         name_ = name;
     }
@@ -90,6 +99,17 @@ final class ComponentFactory
     String getCategoryId()
     {
         return categoryId_;
+    }
+
+    /**
+     * Gets the component factory identifier.
+     * 
+     * @return The component factory identifier; never {@code null}.
+     */
+    /* @NonNull */
+    String getId()
+    {
+        return id_;
     }
 
     /**

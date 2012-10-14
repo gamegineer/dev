@@ -256,6 +256,7 @@ public final class ComponentFactoryMenuBuilderTest
         final JMenu categoryMenu = new JMenu( categoryName );
         categoryMenu.setMnemonic( categoryMnemonic );
         expectedRootMenu_.add( categoryMenu );
+        final String componentFactoryId = "componentFactoryId"; //$NON-NLS-1$
         final int componentFactoryMnemonic = KeyEvent.VK_2;
         final String componentFactoryName = "componentFactoryName"; //$NON-NLS-1$
         final JMenuItem componentFactoryMenuItem = new JMenu( componentFactoryName );
@@ -263,7 +264,7 @@ public final class ComponentFactoryMenuBuilderTest
         categoryMenu.add( componentFactoryMenuItem );
 
         componentFactoryMenuBuilder_.addCategory( new ComponentFactoryCategory( categoryId, categoryName, categoryMnemonic, Collections.<String>emptyList() ) );
-        componentFactoryMenuBuilder_.addComponentFactory( new ComponentFactory( componentFactoryName, componentFactoryMnemonic, categoryId ) );
+        componentFactoryMenuBuilder_.addComponentFactory( new ComponentFactory( componentFactoryId, componentFactoryName, componentFactoryMnemonic, categoryId ) );
 
         assertMenuEquals( expectedRootMenu_, componentFactoryMenuBuilder_.toMenu() );
     }
@@ -282,13 +283,14 @@ public final class ComponentFactoryMenuBuilderTest
         final JMenu categoryMenu = new JMenu( categoryName );
         categoryMenu.setMnemonic( categoryMnemonic );
         expectedRootMenu_.add( categoryMenu );
+        final String componentFactoryId = "componentFactoryId"; //$NON-NLS-1$
         final int componentFactoryMnemonic = KeyEvent.VK_2;
         final String componentFactoryName = "componentFactoryName"; //$NON-NLS-1$
         final JMenuItem componentFactoryMenuItem = new JMenu( componentFactoryName );
         componentFactoryMenuItem.setMnemonic( componentFactoryMnemonic );
         categoryMenu.add( componentFactoryMenuItem );
 
-        componentFactoryMenuBuilder_.addComponentFactory( new ComponentFactory( componentFactoryName, componentFactoryMnemonic, categoryId ) );
+        componentFactoryMenuBuilder_.addComponentFactory( new ComponentFactory( componentFactoryId, componentFactoryName, componentFactoryMnemonic, categoryId ) );
         componentFactoryMenuBuilder_.addCategory( new ComponentFactoryCategory( categoryId, categoryName, categoryMnemonic, Collections.<String>emptyList() ) );
 
         assertMenuEquals( expectedRootMenu_, componentFactoryMenuBuilder_.toMenu() );
@@ -302,10 +304,11 @@ public final class ComponentFactoryMenuBuilderTest
     @Test
     public void testAddComponentFactory_MissingCategory()
     {
+        final String id = "id"; //$NON-NLS-1$
         final int mnemonic = KeyEvent.VK_1;
         final String name = "name"; //$NON-NLS-1$
 
-        componentFactoryMenuBuilder_.addComponentFactory( new ComponentFactory( name, mnemonic, "unknown" ) ); //$NON-NLS-1$
+        componentFactoryMenuBuilder_.addComponentFactory( new ComponentFactory( id, name, mnemonic, "unknown" ) ); //$NON-NLS-1$
 
         assertMenuEquals( expectedRootMenu_, componentFactoryMenuBuilder_.toMenu() );
     }
@@ -317,13 +320,14 @@ public final class ComponentFactoryMenuBuilderTest
     @Test
     public void testAddComponentFactory_Root()
     {
+        final String id = "id"; //$NON-NLS-1$
         final int mnemonic = KeyEvent.VK_1;
         final String name = "name"; //$NON-NLS-1$
         final JMenuItem menuItem = new JMenu( name );
         menuItem.setMnemonic( mnemonic );
         expectedRootMenu_.add( menuItem );
 
-        componentFactoryMenuBuilder_.addComponentFactory( new ComponentFactory( name, mnemonic, null ) );
+        componentFactoryMenuBuilder_.addComponentFactory( new ComponentFactory( id, name, mnemonic, null ) );
 
         assertMenuEquals( expectedRootMenu_, componentFactoryMenuBuilder_.toMenu() );
     }
