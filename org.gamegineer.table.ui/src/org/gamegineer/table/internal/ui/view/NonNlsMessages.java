@@ -49,6 +49,9 @@ final class NonNlsMessages
     /** The category name is missing. */
     public static String ComponentFactoriesExtensionPoint_createCategory_missingName;
 
+    /** The component factory class name is missing. */
+    public static String ComponentFactoriesExtensionPoint_createComponentFactory_missingClassName;
+
     /** The component factory identifier is missing. */
     public static String ComponentFactoriesExtensionPoint_createComponentFactory_missingId;
 
@@ -71,6 +74,11 @@ final class NonNlsMessages
 
     /** The component factory categories are orphans. */
     public static String ComponentFactoryMenuBuilder_toMenu_orphanedCategories;
+
+    // --- ComponentFactoryProxy --------------------------------------------
+
+    /** An error occurred while creating the component factory. */
+    public static String ComponentFactoryProxy_getDelegate_createError;
 
     // --- ComponentView ----------------------------------------------------
 
@@ -165,6 +173,26 @@ final class NonNlsMessages
         final Collection<String> componentFactoryCategoryIds )
     {
         return bind( ComponentFactoryMenuBuilder_toMenu_orphanedCategories, componentFactoryCategoryIds );
+    }
+
+    // --- ComponentFactoryProxy --------------------------------------------
+
+    /**
+     * Gets the formatted message indicating an error occurred while creating
+     * the component factory.
+     * 
+     * @param className
+     *        The component factory class name; must not be {@code null}.
+     * 
+     * @return The formatted message indicating an error occurred while creating
+     *         the component factory; never {@code null}.
+     */
+    /* @NonNull */
+    static String ComponentFactoryProxy_getDelegate_createError(
+        /* @NonNull */
+        final String className )
+    {
+        return bind( ComponentFactoryProxy_getDelegate_createError, className );
     }
 
     // --- ComponentView ----------------------------------------------------

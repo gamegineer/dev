@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.ui.view;
 
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.ui.IComponentFactory;
 
 /**
  * A component factory.
@@ -38,6 +39,9 @@ final class ComponentFactory
      * component factory has no category.
      */
     private final String categoryId_;
+
+    /** The underlying component factory. */
+    private final IComponentFactory componentFactory_;
 
     /** The component factory identifier. */
     private final String id_;
@@ -65,6 +69,8 @@ final class ComponentFactory
      * @param categoryId
      *        The component factory category identifier or {@code null} if the
      *        component factory has no category.
+     * @param componentFactory
+     *        The underlying component factory; must not be {@code null}.
      */
     ComponentFactory(
         /* @NonNull */
@@ -73,12 +79,16 @@ final class ComponentFactory
         final String name,
         final int mnemonic,
         /* @Nullable */
-        final String categoryId )
+        final String categoryId,
+        /* @NonNull */
+        final IComponentFactory componentFactory )
     {
         assert id != null;
         assert name != null;
+        assert componentFactory != null;
 
         categoryId_ = categoryId;
+        componentFactory_ = componentFactory;
         id_ = id;
         mnemonic_ = mnemonic;
         name_ = name;
@@ -99,6 +109,17 @@ final class ComponentFactory
     String getCategoryId()
     {
         return categoryId_;
+    }
+
+    /**
+     * Gets the underlying component factory.
+     * 
+     * @return The underlying component factory; never {@code null}.
+     */
+    /* @NonNull */
+    IComponentFactory getComponentFactory()
+    {
+        return componentFactory_;
     }
 
     /**

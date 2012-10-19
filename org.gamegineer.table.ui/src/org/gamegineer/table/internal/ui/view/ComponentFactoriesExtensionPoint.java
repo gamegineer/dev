@@ -34,6 +34,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.BundleConstants;
 import org.gamegineer.table.internal.ui.Loggers;
+import org.gamegineer.table.ui.IComponentFactory;
 
 /**
  * A facade for working with the
@@ -81,6 +82,12 @@ final class ComponentFactoriesExtensionPoint
      * represents the component factory category.
      */
     private static final String COMPONENT_FACTORY_ATTR_CATEGORY = "category"; //$NON-NLS-1$
+
+    /**
+     * The name of the component factory configuration element attribute that
+     * represents the component factory class name.
+     */
+    private static final String COMPONENT_FACTORY_ATTR_CLASS_NAME = "className"; //$NON-NLS-1$
 
     /**
      * The name of the component factory configuration element attribute that
@@ -181,6 +188,10 @@ final class ComponentFactoriesExtensionPoint
 
         final String categoryId = configurationElement.getAttribute( COMPONENT_FACTORY_ATTR_CATEGORY );
 
+        final String className = configurationElement.getAttribute( COMPONENT_FACTORY_ATTR_CLASS_NAME );
+        assertArgumentLegal( className != null, "configurationElement", NonNlsMessages.ComponentFactoriesExtensionPoint_createComponentFactory_missingClassName ); //$NON-NLS-1$
+        final IComponentFactory componentFactory = new ComponentFactoryProxy( configurationElement, COMPONENT_FACTORY_ATTR_CLASS_NAME );
+
         final String id = configurationElement.getAttribute( COMPONENT_FACTORY_ATTR_ID );
         assertArgumentLegal( id != null, "configurationElement", NonNlsMessages.ComponentFactoriesExtensionPoint_createComponentFactory_missingId ); //$NON-NLS-1$
 
@@ -191,7 +202,7 @@ final class ComponentFactoriesExtensionPoint
         assertArgumentLegal( encodedMnemonic != null, "configurationElement", NonNlsMessages.ComponentFactoriesExtensionPoint_createComponentFactory_missingMnemonic ); //$NON-NLS-1$
         final int mnemonic = decodeMnemonic( encodedMnemonic );
 
-        return new ComponentFactory( id, name, mnemonic, categoryId );
+        return new ComponentFactory( id, name, mnemonic, categoryId, componentFactory );
     }
 
     /**

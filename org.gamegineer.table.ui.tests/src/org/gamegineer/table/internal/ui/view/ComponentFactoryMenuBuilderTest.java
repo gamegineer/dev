@@ -30,6 +30,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import org.easymock.EasyMock;
+import org.gamegineer.table.ui.IComponentFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -256,6 +258,7 @@ public final class ComponentFactoryMenuBuilderTest
         final JMenu categoryMenu = new JMenu( categoryName );
         categoryMenu.setMnemonic( categoryMnemonic );
         expectedRootMenu_.add( categoryMenu );
+        final IComponentFactory componentFactory = EasyMock.createMock( IComponentFactory.class );
         final String componentFactoryId = "componentFactoryId"; //$NON-NLS-1$
         final int componentFactoryMnemonic = KeyEvent.VK_2;
         final String componentFactoryName = "componentFactoryName"; //$NON-NLS-1$
@@ -264,7 +267,7 @@ public final class ComponentFactoryMenuBuilderTest
         categoryMenu.add( componentFactoryMenuItem );
 
         componentFactoryMenuBuilder_.addCategory( new ComponentFactoryCategory( categoryId, categoryName, categoryMnemonic, Collections.<String>emptyList() ) );
-        componentFactoryMenuBuilder_.addComponentFactory( new ComponentFactory( componentFactoryId, componentFactoryName, componentFactoryMnemonic, categoryId ) );
+        componentFactoryMenuBuilder_.addComponentFactory( new ComponentFactory( componentFactoryId, componentFactoryName, componentFactoryMnemonic, categoryId, componentFactory ) );
 
         assertMenuEquals( expectedRootMenu_, componentFactoryMenuBuilder_.toMenu() );
     }
@@ -283,6 +286,7 @@ public final class ComponentFactoryMenuBuilderTest
         final JMenu categoryMenu = new JMenu( categoryName );
         categoryMenu.setMnemonic( categoryMnemonic );
         expectedRootMenu_.add( categoryMenu );
+        final IComponentFactory componentFactory = EasyMock.createMock( IComponentFactory.class );
         final String componentFactoryId = "componentFactoryId"; //$NON-NLS-1$
         final int componentFactoryMnemonic = KeyEvent.VK_2;
         final String componentFactoryName = "componentFactoryName"; //$NON-NLS-1$
@@ -290,7 +294,7 @@ public final class ComponentFactoryMenuBuilderTest
         componentFactoryMenuItem.setMnemonic( componentFactoryMnemonic );
         categoryMenu.add( componentFactoryMenuItem );
 
-        componentFactoryMenuBuilder_.addComponentFactory( new ComponentFactory( componentFactoryId, componentFactoryName, componentFactoryMnemonic, categoryId ) );
+        componentFactoryMenuBuilder_.addComponentFactory( new ComponentFactory( componentFactoryId, componentFactoryName, componentFactoryMnemonic, categoryId, componentFactory ) );
         componentFactoryMenuBuilder_.addCategory( new ComponentFactoryCategory( categoryId, categoryName, categoryMnemonic, Collections.<String>emptyList() ) );
 
         assertMenuEquals( expectedRootMenu_, componentFactoryMenuBuilder_.toMenu() );
@@ -304,11 +308,12 @@ public final class ComponentFactoryMenuBuilderTest
     @Test
     public void testAddComponentFactory_MissingCategory()
     {
+        final IComponentFactory componentFactory = EasyMock.createMock( IComponentFactory.class );
         final String id = "id"; //$NON-NLS-1$
         final int mnemonic = KeyEvent.VK_1;
         final String name = "name"; //$NON-NLS-1$
 
-        componentFactoryMenuBuilder_.addComponentFactory( new ComponentFactory( id, name, mnemonic, "unknown" ) ); //$NON-NLS-1$
+        componentFactoryMenuBuilder_.addComponentFactory( new ComponentFactory( id, name, mnemonic, "unknown", componentFactory ) ); //$NON-NLS-1$
 
         assertMenuEquals( expectedRootMenu_, componentFactoryMenuBuilder_.toMenu() );
     }
@@ -320,6 +325,7 @@ public final class ComponentFactoryMenuBuilderTest
     @Test
     public void testAddComponentFactory_Root()
     {
+        final IComponentFactory componentFactory = EasyMock.createMock( IComponentFactory.class );
         final String id = "id"; //$NON-NLS-1$
         final int mnemonic = KeyEvent.VK_1;
         final String name = "name"; //$NON-NLS-1$
@@ -327,7 +333,7 @@ public final class ComponentFactoryMenuBuilderTest
         menuItem.setMnemonic( mnemonic );
         expectedRootMenu_.add( menuItem );
 
-        componentFactoryMenuBuilder_.addComponentFactory( new ComponentFactory( id, name, mnemonic, null ) );
+        componentFactoryMenuBuilder_.addComponentFactory( new ComponentFactory( id, name, mnemonic, null, componentFactory ) );
 
         assertMenuEquals( expectedRootMenu_, componentFactoryMenuBuilder_.toMenu() );
     }
