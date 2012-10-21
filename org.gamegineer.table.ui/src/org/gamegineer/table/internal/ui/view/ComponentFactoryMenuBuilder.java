@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import net.jcip.annotations.NotThreadSafe;
@@ -41,6 +42,9 @@ final class ComponentFactoryMenuBuilder
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /** The action used for all menu items. */
+    private final Action menuItemAction_;
 
     /**
      * The collection of menu items for each category. The key is the category
@@ -64,14 +68,20 @@ final class ComponentFactoryMenuBuilder
      *        The root menu label; must not be {@code null}.
      * @param rootMenuMnemonic
      *        The root menu mnemonic.
+     * @param menuItemAction
+     *        The action used for all menu items; must not be {@code null}.
      */
     ComponentFactoryMenuBuilder(
         /* @NonNull */
         final String rootMenuLabel,
-        final int rootMenuMnemonic )
+        final int rootMenuMnemonic,
+        /* @NonNull */
+        final Action menuItemAction )
     {
         assert rootMenuLabel != null;
+        assert menuItemAction != null;
 
+        menuItemAction_ = menuItemAction;
         menuItemCollections_ = new HashMap<String, Collection<JMenuItem>>();
         rootMenuDescriptor_ = new MenuDescriptor( null );
         rootMenuDescriptor_.setMenu( rootMenuLabel, rootMenuMnemonic );
@@ -119,8 +129,11 @@ final class ComponentFactoryMenuBuilder
             menuItemCollections_.put( componentFactory.getCategoryId(), menuItems );
         }
 
-        final JMenuItem menuItem = new JMenuItem( componentFactory.getName() );
+        final JMenuItem menuItem = new JMenuItem( menuItemAction_ );
+        menuItem.setText( componentFactory.getName() );
         menuItem.setMnemonic( componentFactory.getMnemonic() );
+        // TODO: extract constant for the property name
+        menuItem.putClientProperty( "org.gamegineer.table.ui.prototype.componentFactory", componentFactory.getComponentFactory() ); //$NON-NLS-1$
         menuItems.add( menuItem );
     }
 

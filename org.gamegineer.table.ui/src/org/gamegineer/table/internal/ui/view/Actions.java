@@ -65,6 +65,9 @@ final class Actions
     /** The identifier of the action used to add a card pile to the table. */
     private static final String ADD_CARD_PILE_ACTION_ID = "addCardPileAction"; //$NON-NLS-1$
 
+    /** The identifier of the action used to add a component to the table. */
+    private static final String ADD_COMPONENT_ACTION_ID = "addComponentAction"; //$NON-NLS-1$
+
     /**
      * The identifier of the action used to add an Eight of Clubs card to a card
      * pile.
@@ -546,6 +549,14 @@ final class Actions
                 putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( NlsMessages.AddCardPileAction_accelerator ) );
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddCardPileAction_mnemonic ).getKeyCode() );
                 putValue( NAME, NlsMessages.AddCardPileAction_text );
+            }
+        } );
+        actions.put( ADD_COMPONENT_ACTION_ID, new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( ACTION_COMMAND_KEY, "" ); //$NON-NLS-1$
             }
         } );
         actions.put( ADD_EIGHT_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
@@ -1347,6 +1358,17 @@ final class Actions
     static BasicAction getAddCardPileAction()
     {
         return actions_.get( ADD_CARD_PILE_ACTION_ID );
+    }
+
+    /**
+     * Gets the add component action.
+     * 
+     * @return The add component action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getAddComponentAction()
+    {
+        return actions_.get( ADD_COMPONENT_ACTION_ID );
     }
 
     /**

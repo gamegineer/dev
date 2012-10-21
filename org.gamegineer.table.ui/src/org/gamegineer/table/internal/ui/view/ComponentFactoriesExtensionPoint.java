@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
+import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.KeyStroke;
 import net.jcip.annotations.ThreadSafe;
@@ -212,6 +213,8 @@ final class ComponentFactoriesExtensionPoint
      *        The root menu label; must not be {@code null}.
      * @param rootMenuMnemonic
      *        The root menu mnemonic.
+     * @param menuItemAction
+     *        The action used for all menu items; must not be {@code null}.
      * 
      * @return A new component factory menu; never {@code null}.
      */
@@ -219,11 +222,14 @@ final class ComponentFactoriesExtensionPoint
     static JMenu createMenu(
         /* @NonNull */
         final String rootMenuLabel,
-        final int rootMenuMnemonic )
+        final int rootMenuMnemonic,
+        /* @NonNull */
+        final Action menuItemAction )
     {
         assert rootMenuLabel != null;
+        assert menuItemAction != null;
 
-        final ComponentFactoryMenuBuilder menuBuilder = new ComponentFactoryMenuBuilder( rootMenuLabel, rootMenuMnemonic );
+        final ComponentFactoryMenuBuilder menuBuilder = new ComponentFactoryMenuBuilder( rootMenuLabel, rootMenuMnemonic, menuItemAction );
 
         final IExtensionRegistry extensionRegistry = Activator.getDefault().getExtensionRegistry();
         if( extensionRegistry != null )

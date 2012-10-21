@@ -168,7 +168,7 @@ public final class ComponentFactoryMenuBuilderTest
         final int expectedRootMnemonic = KeyEvent.VK_0;
         expectedRootMenu_ = new JMenu( expectedRootName );
         expectedRootMenu_.setMnemonic( expectedRootMnemonic );
-        componentFactoryMenuBuilder_ = new ComponentFactoryMenuBuilder( expectedRootName, expectedRootMnemonic );
+        componentFactoryMenuBuilder_ = new ComponentFactoryMenuBuilder( expectedRootName, expectedRootMnemonic, Actions.getAddComponentAction() );
     }
 
     /**
