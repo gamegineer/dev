@@ -234,7 +234,7 @@ final class ComponentFactoriesExtensionPoint
         final IExtensionRegistry extensionRegistry = Activator.getDefault().getExtensionRegistry();
         if( extensionRegistry != null )
         {
-            for( final IConfigurationElement configurationElement : extensionRegistry.getConfigurationElementsFor( BundleConstants.COMPONENT_FACTORIES_EXTENSION_POINT_UNIQUE_ID ) )
+            for( final IConfigurationElement configurationElement : extensionRegistry.getConfigurationElementsFor( BundleConstants.COMPONENT_PROTOTYPES_EXTENSION_POINT_UNIQUE_ID ) )
             {
                 if( CATEGORY_ELEM_NAME.equals( configurationElement.getName() ) )
                 {

@@ -3,10 +3,10 @@
 <schema targetNamespace="org.gamegineer.table.ui" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.gamegineer.table.ui" id="componentFactories" name="Component Factories"/>
+         <meta.schema plugin="org.gamegineer.table.ui" id="componentPrototypes" name="Component Prototypes"/>
       </appinfo>
       <documentation>
-         This extension point is used to register component factory extensions.  Game tables use this extension point to create prototypical components.
+         This extension point is used to register component prototype extensions.  Game tables use this extension point to create prototypical components.
       </documentation>
    </annotation>
 
@@ -20,7 +20,7 @@
          <sequence>
             <choice minOccurs="1" maxOccurs="unbounded">
                <element ref="category"/>
-               <element ref="componentFactory"/>
+               <element ref="componentPrototype"/>
             </choice>
          </sequence>
          <attribute name="point" type="string" use="required">
@@ -53,7 +53,7 @@
    <element name="category">
       <annotation>
          <documentation>
-            a component factory category
+            a component prototype category
          </documentation>
       </annotation>
       <complexType>
@@ -94,10 +94,10 @@
       </complexType>
    </element>
 
-   <element name="componentFactory">
+   <element name="componentPrototype">
       <annotation>
          <documentation>
-            a component factory
+            a component prototype
          </documentation>
       </annotation>
       <complexType>
@@ -107,14 +107,14 @@
          <attribute name="category" type="string">
             <annotation>
                <documentation>
-                  the optional component factory category
+                  the optional component prototype category
                </documentation>
             </annotation>
          </attribute>
          <attribute name="className" type="string" use="required">
             <annotation>
                <documentation>
-                  the fully-qualified name of the component factory class
+                  the fully-qualified name of the component factory class responsible for creating the prototype
                </documentation>
                <appinfo>
                   <meta.attribute kind="java" basedOn=":org.gamegineer.table.core.IComponentFactory"/>
@@ -124,14 +124,14 @@
          <attribute name="id" type="string" use="required">
             <annotation>
                <documentation>
-                  the unique identifier of this component factory
+                  the unique identifier of this component prototype
                </documentation>
             </annotation>
          </attribute>
          <attribute name="mnemonic" type="string" use="required">
             <annotation>
                <documentation>
-                  the component factory mnemonic
+                  the component prototype mnemonic
                </documentation>
                <appinfo>
                   <meta.attribute translatable="true"/>
@@ -141,7 +141,7 @@
          <attribute name="name" type="string" use="required">
             <annotation>
                <documentation>
-                  the component factory name
+                  the component prototype name
                </documentation>
                <appinfo>
                   <meta.attribute translatable="true"/>
@@ -189,25 +189,25 @@
          <meta.section type="examples"/>
       </appinfo>
       <documentation>
-         The following is an example of a component factory extension definition:
+         The following is an example of a component prototype extension definition:
 
 &lt;pre&gt;
-    &lt;extension point=&quot;org.gamegineer.table.ui.componentFactories&quot;&gt;
+    &lt;extension point=&quot;org.gamegineer.table.ui.componentPrototypes&quot;&gt;
         &lt;category
-                id=&quot;org.gamegineer.componentFactory.category.card&quot;
+                id=&quot;org.gamegineer.prototypes.category.card&quot;
                 name=&quot;Card&quot; /&gt;
         &lt;category
-                id=&quot;org.gamegineer.componentFactory.category.card.hearts&quot;
+                id=&quot;org.gamegineer.prototypes.category.card.hearts&quot;
                 name=&quot;Hearts&quot;
-                parentCategory=&quot;org.gamegineer.componentFactory.category.card&quot; /&gt;
-        &lt;componentFactory
-                category=&quot;org.gamegineer.componentFactory.category.card.hearts&quot;
-                className=&quot;org.gamegineer.table.internal.ui.factories.CardFactory&quot;
+                parentCategory=&quot;org.gamegineer.prototypes.category.card&quot; /&gt;
+        &lt;componentPrototype
+                category=&quot;org.gamegineer.prototypes.category.card.hearts&quot;
+                className=&quot;org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory&quot;
                 mnemonic=&quot;A&quot;
                 name=&quot;Ace&quot;&gt;
             &lt;parameter name=&quot;faceDesign&quot; value=&quot;org.gamegineer.cardSurfaces.hearts.ace&quot; /&gt;
             &lt;parameter name=&quot;backDesign&quot; value=&quot;org.gamegineer.cardSurfaces.back.red&quot; /&gt;
-        &lt;/componentFactory&gt;
+        &lt;/componentPrototype&gt;
     &lt;/extension&gt;
 &lt;/pre&gt;
       </documentation>
@@ -219,7 +219,7 @@
          <meta.section type="implementation"/>
       </appinfo>
       <documentation>
-         The platform does not supply any component factories.
+         The platform does not supply any component prototypes.
       </documentation>
    </annotation>
 
