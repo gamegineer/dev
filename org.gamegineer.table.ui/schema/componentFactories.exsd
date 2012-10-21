@@ -117,7 +117,7 @@
                   the fully-qualified name of the component factory class
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.gamegineer.table.ui.IComponentFactory"/>
+                  <meta.attribute kind="java" basedOn=":org.gamegineer.table.core.IComponentFactory"/>
                </appinfo>
             </annotation>
          </attribute>

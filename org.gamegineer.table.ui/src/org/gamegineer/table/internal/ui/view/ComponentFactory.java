@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.ui.view;
 
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.ui.IComponentFactory;
+import org.gamegineer.table.core.IComponentFactory;
 
 /**
  * A component factory.

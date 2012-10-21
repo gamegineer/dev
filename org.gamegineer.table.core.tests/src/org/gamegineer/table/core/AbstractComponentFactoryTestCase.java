@@ -19,7 +19,7 @@
  * Created on Oct 18, 2012 at 9:51:20 PM.
  */
 
-package org.gamegineer.table.ui;
+package org.gamegineer.table.core;
 
 import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
@@ -27,7 +27,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.ui.IComponentFactory} interface.
+ * {@link org.gamegineer.table.core.IComponentFactory} interface.
  */
 public abstract class AbstractComponentFactoryTestCase
 {

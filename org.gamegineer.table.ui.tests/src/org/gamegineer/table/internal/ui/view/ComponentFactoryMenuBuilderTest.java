@@ -31,7 +31,7 @@ import java.util.Collections;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import org.easymock.EasyMock;
-import org.gamegineer.table.ui.IComponentFactory;
+import org.gamegineer.table.core.IComponentFactory;
 import org.junit.Before;
 import org.junit.Test;
 

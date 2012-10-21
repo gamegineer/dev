@@ -19,7 +19,7 @@
  * Created on Oct 18, 2012 at 9:41:48 PM.
  */
 
-package org.gamegineer.table.ui;
+package org.gamegineer.table.core;
 
 import net.jcip.annotations.ThreadSafe;
 

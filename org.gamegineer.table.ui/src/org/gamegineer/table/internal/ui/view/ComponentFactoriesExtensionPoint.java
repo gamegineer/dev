@@ -31,10 +31,10 @@ import javax.swing.KeyStroke;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.gamegineer.table.core.IComponentFactory;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.BundleConstants;
 import org.gamegineer.table.internal.ui.Loggers;
-import org.gamegineer.table.ui.IComponentFactory;
 
 /**
  * A facade for working with the

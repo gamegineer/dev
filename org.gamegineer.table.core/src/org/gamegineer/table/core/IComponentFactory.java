@@ -19,10 +19,7 @@
  * Created on Oct 1, 2012 at 7:38:38 PM.
  */
 
-package org.gamegineer.table.ui;
-
-import org.gamegineer.table.core.IComponent;
-import org.gamegineer.table.core.ITableEnvironment;
+package org.gamegineer.table.core;
 
 /**
  * A factory for creating table components.
@@ -45,7 +42,7 @@ public interface IComponentFactory
      * 
      * @throws java.lang.NullPointerException
      *         If {@code tableEnvironment} is {@code null}.
-     * @throws org.gamegineer.table.ui.ComponentFactoryException
+     * @throws org.gamegineer.table.core.ComponentFactoryException
      *         If the component cannot be created.
      */
     /* @NonNull */

@@ -25,10 +25,10 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.gamegineer.table.core.ComponentFactoryException;
 import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.IComponentFactory;
 import org.gamegineer.table.core.ITableEnvironment;
-import org.gamegineer.table.ui.ComponentFactoryException;
-import org.gamegineer.table.ui.IComponentFactory;
 
 /**
  * A proxy for lazily creating a component factory from an extension point.
@@ -109,7 +109,7 @@ final class ComponentFactoryProxy
      * @return The component factory to which all operations are delegated;
      *         never {@code null}.
      * 
-     * @throws org.gamegineer.table.ui.ComponentFactoryException
+     * @throws org.gamegineer.table.core.ComponentFactoryException
      *         If the component factory delegate is not available.
      */
     /* @NonNull */

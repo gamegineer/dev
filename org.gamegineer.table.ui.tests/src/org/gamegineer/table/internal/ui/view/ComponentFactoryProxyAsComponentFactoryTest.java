@@ -23,14 +23,14 @@ package org.gamegineer.table.internal.ui.view;
 
 import org.easymock.EasyMock;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.gamegineer.table.ui.AbstractComponentFactoryTestCase;
-import org.gamegineer.table.ui.IComponentFactory;
+import org.gamegineer.table.core.AbstractComponentFactoryTestCase;
+import org.gamegineer.table.core.IComponentFactory;
 
 /**
  * A fixture for testing the
  * {@link org.gamegineer.table.internal.ui.view.ComponentFactoryProxy} class to
  * ensure it does not violate the contract of the
- * {@link org.gamegineer.table.ui.IComponentFactory} interface.
+ * {@link org.gamegineer.table.core.IComponentFactory} interface.
  */
 public final class ComponentFactoryProxyAsComponentFactoryTest
     extends AbstractComponentFactoryTestCase
