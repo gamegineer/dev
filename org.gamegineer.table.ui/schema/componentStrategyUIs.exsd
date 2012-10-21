@@ -90,13 +90,11 @@
       <documentation>
          The following is an example of a component strategy user interface extension definition:
 
-&lt;pre&gt;
-    &lt;extension point=&quot;org.gamegineer.table.ui.componentStrategyUIs&quot;&gt;
-        &lt;componentStrategyUI
-                id=&quot;org.gamegineer.componentStrategies.card&quot;
-                className=&quot;org.gamegineer.table.internal.ui.strategies.ComponentStrategyUIExtensionFactory:org.gamegineer.componentStrategies.card&quot; /&gt;
-    &lt;/extension&gt;
-&lt;/pre&gt;
+&lt;extension point=&quot;org.gamegineer.table.ui.componentStrategyUIs&quot;&gt;
+    &lt;componentStrategyUI
+            id=&quot;org.gamegineer.componentStrategies.card&quot;
+            className=&quot;org.gamegineer.table.internal.ui.strategies.ComponentStrategyUIExtensionFactory&quot; /&gt;
+&lt;/extension&gt;
       </documentation>
    </annotation>
 

@@ -191,25 +191,23 @@
       <documentation>
          The following is an example of a component prototype extension definition:
 
-&lt;pre&gt;
-    &lt;extension point=&quot;org.gamegineer.table.ui.componentPrototypes&quot;&gt;
-        &lt;category
-                id=&quot;org.gamegineer.prototypes.category.card&quot;
-                name=&quot;Card&quot; /&gt;
-        &lt;category
-                id=&quot;org.gamegineer.prototypes.category.card.hearts&quot;
-                name=&quot;Hearts&quot;
-                parentCategory=&quot;org.gamegineer.prototypes.category.card&quot; /&gt;
-        &lt;componentPrototype
-                category=&quot;org.gamegineer.prototypes.category.card.hearts&quot;
-                className=&quot;org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory&quot;
-                mnemonic=&quot;A&quot;
-                name=&quot;Ace&quot;&gt;
-            &lt;parameter name=&quot;faceDesign&quot; value=&quot;org.gamegineer.cardSurfaces.hearts.ace&quot; /&gt;
-            &lt;parameter name=&quot;backDesign&quot; value=&quot;org.gamegineer.cardSurfaces.back.red&quot; /&gt;
-        &lt;/componentPrototype&gt;
-    &lt;/extension&gt;
-&lt;/pre&gt;
+&lt;extension point=&quot;org.gamegineer.table.ui.componentPrototypes&quot;&gt;
+    &lt;category
+            id=&quot;org.gamegineer.prototypes.category.card&quot;
+            name=&quot;Card&quot; /&gt;
+    &lt;category
+            id=&quot;org.gamegineer.prototypes.category.card.hearts&quot;
+            name=&quot;Hearts&quot;
+            parentCategory=&quot;org.gamegineer.prototypes.category.card&quot; /&gt;
+    &lt;componentPrototype
+            category=&quot;org.gamegineer.prototypes.category.card.hearts&quot;
+            className=&quot;org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory&quot;
+            mnemonic=&quot;A&quot;
+            name=&quot;Ace&quot;&gt;
+        &lt;parameter name=&quot;faceDesign&quot; value=&quot;org.gamegineer.cardSurfaces.hearts.ace&quot; /&gt;
+        &lt;parameter name=&quot;backDesign&quot; value=&quot;org.gamegineer.cardSurfaces.back.red&quot; /&gt;
+    &lt;/componentPrototype&gt;
+&lt;/extension&gt;
       </documentation>
    </annotation>
 

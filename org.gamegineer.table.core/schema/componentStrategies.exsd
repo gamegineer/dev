@@ -90,13 +90,11 @@
       <documentation>
          The following is an example of a component strategy extension definition:
 
-&lt;pre&gt;
-    &lt;extension point=&quot;org.gamegineer.table.core.componentStrategies&quot;&gt;
-        &lt;componentStrategy
-                id=&quot;org.gamegineer.componentStrategies.card&quot;
-                className=&quot;org.gamegineer.table.internal.core.strategies.ComponentStrategyExtensionFactory:org.gamegineer.componentStrategies.card&quot; /&gt;
-    &lt;/extension&gt;
-&lt;/pre&gt;
+&lt;extension point=&quot;org.gamegineer.table.core.componentStrategies&quot;&gt;
+    &lt;componentStrategy
+            id=&quot;org.gamegineer.componentStrategies.card&quot;
+            className=&quot;org.gamegineer.table.internal.core.strategies.ComponentStrategyExtensionFactory&quot; /&gt;
+&lt;/extension&gt;
       </documentation>
    </annotation>
 

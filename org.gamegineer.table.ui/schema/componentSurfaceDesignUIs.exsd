@@ -94,14 +94,12 @@
       <documentation>
          The following is an example of a component surface design user interface extension definition:
 
-&lt;pre&gt;
-    &lt;extension point=&quot;org.gamegineer.table.ui.componentSurfaceDesignUIs&quot;&gt;
-        &lt;componentSurfaceDesignUI
-                id=&quot;org.gamegineer.cardSurfaces.spades.ace&quot;
-                name=&quot;Ace of Spades&quot;
-                icon=&quot;icons/cardSurfaces/spades-ace.png&quot; /&gt;
-    &lt;/extension&gt;
-&lt;/pre&gt;
+&lt;extension point=&quot;org.gamegineer.table.ui.componentSurfaceDesignUIs&quot;&gt;
+    &lt;componentSurfaceDesignUI
+            id=&quot;org.gamegineer.cardSurfaces.spades.ace&quot;
+            name=&quot;Ace of Spades&quot;
+            icon=&quot;icons/cardSurfaces/spades-ace.png&quot; /&gt;
+&lt;/extension&gt;
       </documentation>
    </annotation>
 

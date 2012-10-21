@@ -90,13 +90,11 @@
       <documentation>
          The following is an example of a container layout extension definition:
 
-&lt;pre&gt;
-    &lt;extension point=&quot;org.gamegineer.table.core.containerLayouts&quot;&gt;
-        &lt;containerLayout
-                id=&quot;org.gamegineer.containerLayouts.absolute&quot;
-                className=&quot;org.gamegineer.table.internal.core.layouts.ContainerLayoutExtensionFactory:org.gamegineer.containerLayouts.absolute&quot; /&gt;
-    &lt;/extension&gt;
-&lt;/pre&gt;
+&lt;extension point=&quot;org.gamegineer.table.core.containerLayouts&quot;&gt;
+    &lt;containerLayout
+            id=&quot;org.gamegineer.containerLayouts.absolute&quot;
+            className=&quot;org.gamegineer.table.internal.core.layouts.ContainerLayoutExtensionFactory&quot; /&gt;
+&lt;/extension&gt;
       </documentation>
    </annotation>
 

@@ -94,14 +94,12 @@
       <documentation>
          The following is an example of a component surface design extension definition:
 
-&lt;pre&gt;
-    &lt;extension point=&quot;org.gamegineer.table.core.componentSurfaceDesigns&quot;&gt;
-        &lt;componentSurfaceDesign
-                id=&quot;org.gamegineer.cardSurfaces.spades.ace&quot;
-                height=&quot;96&quot;
-                width=&quot;71&quot; /&gt;
-    &lt;/extension&gt;
-&lt;/pre&gt;
+&lt;extension point=&quot;org.gamegineer.table.core.componentSurfaceDesigns&quot;&gt;
+    &lt;componentSurfaceDesign
+            id=&quot;org.gamegineer.cardSurfaces.spades.ace&quot;
+            height=&quot;96&quot;
+            width=&quot;71&quot; /&gt;
+&lt;/extension&gt;
       </documentation>
    </annotation>
 
