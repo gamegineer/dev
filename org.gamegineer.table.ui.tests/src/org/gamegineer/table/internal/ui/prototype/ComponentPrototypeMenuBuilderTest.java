@@ -19,7 +19,7 @@
  * Created on Oct 5, 2012 at 9:19:14 PM.
  */
 
-package org.gamegineer.table.internal.ui.view;
+package org.gamegineer.table.internal.ui.prototype;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -32,12 +32,13 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import org.easymock.EasyMock;
 import org.gamegineer.table.core.IComponentFactory;
+import org.gamegineer.table.internal.ui.action.BasicAction;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.view.ComponentPrototypeMenuBuilder}
+ * {@link org.gamegineer.table.internal.ui.prototype.ComponentPrototypeMenuBuilder}
  * class.
  */
 public final class ComponentPrototypeMenuBuilderTest
@@ -168,7 +169,7 @@ public final class ComponentPrototypeMenuBuilderTest
         final int expectedRootMnemonic = KeyEvent.VK_0;
         expectedRootMenu_ = new JMenu( expectedRootName );
         expectedRootMenu_.setMnemonic( expectedRootMnemonic );
-        componentPrototypeMenuBuilder_ = new ComponentPrototypeMenuBuilder( expectedRootName, expectedRootMnemonic, Actions.getAddComponentAction() );
+        componentPrototypeMenuBuilder_ = new ComponentPrototypeMenuBuilder( expectedRootName, expectedRootMnemonic, new BasicAction() );
     }
 
     /**

@@ -19,12 +19,14 @@
  * Created on Oct 9, 2012 at 8:33:25 PM.
  */
 
-package org.gamegineer.table.internal.ui.view;
+package org.gamegineer.table.internal.ui.prototype;
 
 import static org.junit.Assert.assertEquals;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.swing.Action;
 import javax.swing.KeyStroke;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
@@ -34,7 +36,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.view.ComponentPrototypesExtensionPoint}
+ * {@link org.gamegineer.table.internal.ui.prototype.ComponentPrototypesExtensionPoint}
  * class.
  */
 public final class ComponentPrototypesExtensionPointTest
@@ -431,5 +433,25 @@ public final class ComponentPrototypesExtensionPointTest
         assertEquals( expectedMnemonic, actualValue.getMnemonic() );
         assertEquals( expectedName, actualValue.getName() );
         assertEquals( expectedPath, actualValue.getPath() );
+    }
+
+    /**
+     * Ensures the {@link ComponentPrototypesExtensionPoint#createMenu} method
+     * throws an exception when passed a {@code null} root menu label.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateMenu_RootMenuLabel_Null()
+    {
+        ComponentPrototypesExtensionPoint.createMenu( null, KeyEvent.VK_1, EasyMock.createMock( Action.class ) );
+    }
+
+    /**
+     * Ensures the {@link ComponentPrototypesExtensionPoint#createMenu} method
+     * throws an exception when passed a {@code null} menu item action.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateMenu_MenuItemAction_Null()
+    {
+        ComponentPrototypesExtensionPoint.createMenu( "rootMenuLabel", KeyEvent.VK_1, null ); //$NON-NLS-1$
     }
 }

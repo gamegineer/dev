@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.ui.view;
 
 import java.io.File;
-import java.util.Collection;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
@@ -37,48 +36,6 @@ final class NonNlsMessages
     // ======================================================================
     // Fields
     // ======================================================================
-
-    // --- ComponentFactoryProxy --------------------------------------------
-
-    /** An error occurred while creating the component factory. */
-    public static String ComponentFactoryProxy_getDelegate_createError;
-
-    // --- ComponentPrototypesExtensionPoint --------------------------------
-
-    /** The component prototype class name is missing. */
-    public static String ComponentPrototypesExtensionPoint_createComponentPrototype_missingClassName;
-
-    /** The component prototype identifier is missing. */
-    public static String ComponentPrototypesExtensionPoint_createComponentPrototype_missingId;
-
-    /** The component prototype mnemonic is missing. */
-    public static String ComponentPrototypesExtensionPoint_createComponentPrototype_missingMnemonic;
-
-    /** The component prototype name is missing. */
-    public static String ComponentPrototypesExtensionPoint_createComponentPrototype_missingName;
-
-    /** The component prototype category identifier is missing. */
-    public static String ComponentPrototypesExtensionPoint_createComponentPrototypeCategory_missingId;
-
-    /** The component prototype category mnemonic is missing. */
-    public static String ComponentPrototypesExtensionPoint_createComponentPrototypeCategory_missingMnemonic;
-
-    /** The component prototype category name is missing. */
-    public static String ComponentPrototypesExtensionPoint_createComponentPrototypeCategory_missingName;
-
-    /** The component prototype category configuration element is illegal. */
-    public static String ComponentPrototypesExtensionPoint_createMenu_illegalComponentPrototypeCategoryConfigurationElement;
-
-    /** The component prototype configuration element is illegal. */
-    public static String ComponentPrototypesExtensionPoint_createMenu_illegalComponentPrototypeConfigurationElement;
-
-    /** The source does not represent a legal mnemonic. */
-    public static String ComponentPrototypesExtensionPoint_decodeMnemonic_illegalSource;
-
-    // --- ComponentPrototypeMenuBuilder ------------------------------------
-
-    /** The component prototype categories are orphans. */
-    public static String ComponentPrototypeMenuBuilder_toMenu_orphanedCategories;
 
     // --- ComponentView ----------------------------------------------------
 
@@ -153,47 +110,6 @@ final class NonNlsMessages
     // ======================================================================
     // Methods
     // ======================================================================
-
-    // --- ComponentFactoryProxy --------------------------------------------
-
-    /**
-     * Gets the formatted message indicating an error occurred while creating
-     * the component factory.
-     * 
-     * @param className
-     *        The component factory class name; must not be {@code null}.
-     * 
-     * @return The formatted message indicating an error occurred while creating
-     *         the component factory; never {@code null}.
-     */
-    /* @NonNull */
-    static String ComponentFactoryProxy_getDelegate_createError(
-        /* @NonNull */
-        final String className )
-    {
-        return bind( ComponentFactoryProxy_getDelegate_createError, className );
-    }
-
-    // --- ComponentPrototypeMenuBuilder ------------------------------------
-
-    /**
-     * Gets the formatted message indicating the component prototype categories
-     * are orphans.
-     * 
-     * @param componentPrototypeCategoryIds
-     *        The collection of component prototype category identifiers; must
-     *        not be {@code null}.
-     * 
-     * @return The formatted message indicating the component prototype
-     *         categories are orphans; never {@code null}.
-     */
-    /* @NonNull */
-    static String ComponentPrototypeMenuBuilder_toMenu_orphanedCategories(
-        /* @NonNull */
-        final Collection<String> componentPrototypeCategoryIds )
-    {
-        return bind( ComponentPrototypeMenuBuilder_toMenu_orphanedCategories, componentPrototypeCategoryIds );
-    }
 
     // --- ComponentView ----------------------------------------------------
 

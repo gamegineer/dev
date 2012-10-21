@@ -19,7 +19,7 @@
  * Created on Oct 18, 2012 at 10:52:21 PM.
  */
 
-package org.gamegineer.table.internal.ui.view;
+package org.gamegineer.table.internal.ui.prototype;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;

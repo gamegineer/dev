@@ -19,9 +19,10 @@
  * Created on Oct 9, 2012 at 7:45:04 PM.
  */
 
-package org.gamegineer.table.internal.ui.view;
+package org.gamegineer.table.internal.ui.prototype;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -42,7 +43,7 @@ import org.gamegineer.table.internal.ui.Loggers;
  * {@code org.gamegineer.table.ui.componentFactories} extension point.
  */
 @ThreadSafe
-final class ComponentPrototypesExtensionPoint
+public final class ComponentPrototypesExtensionPoint
 {
     // ======================================================================
     // Fields
@@ -217,17 +218,21 @@ final class ComponentPrototypesExtensionPoint
      *        The action used for all menu items; must not be {@code null}.
      * 
      * @return A new component prototype menu; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code rootMenuLabel} or {@code menuItemAction} is
+     *         {@code null}.
      */
     /* @NonNull */
-    static JMenu createMenu(
+    public static JMenu createMenu(
         /* @NonNull */
         final String rootMenuLabel,
         final int rootMenuMnemonic,
         /* @NonNull */
         final Action menuItemAction )
     {
-        assert rootMenuLabel != null;
-        assert menuItemAction != null;
+        assertArgumentNotNull( rootMenuLabel, "rootMenuLabel" ); //$NON-NLS-1$
+        assertArgumentNotNull( menuItemAction, "menuItemAction" ); //$NON-NLS-1$
 
         final ComponentPrototypeMenuBuilder menuBuilder = new ComponentPrototypeMenuBuilder( rootMenuLabel, rootMenuMnemonic, menuItemAction );
 

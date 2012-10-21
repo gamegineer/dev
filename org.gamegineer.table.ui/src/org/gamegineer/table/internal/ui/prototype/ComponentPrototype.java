@@ -19,7 +19,7 @@
  * Created on Oct 12, 2012 at 9:35:33 PM.
  */
 
-package org.gamegineer.table.internal.ui.view;
+package org.gamegineer.table.internal.ui.prototype;
 
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.IComponentFactory;

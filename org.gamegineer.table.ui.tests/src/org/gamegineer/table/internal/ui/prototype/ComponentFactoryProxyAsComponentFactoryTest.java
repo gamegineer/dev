@@ -19,7 +19,7 @@
  * Created on Oct 18, 2012 at 11:24:08 PM.
  */
 
-package org.gamegineer.table.internal.ui.view;
+package org.gamegineer.table.internal.ui.prototype;
 
 import org.easymock.EasyMock;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -28,8 +28,8 @@ import org.gamegineer.table.core.IComponentFactory;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.view.ComponentFactoryProxy} class to
- * ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.ui.prototype.ComponentFactoryProxy}
+ * class to ensure it does not violate the contract of the
  * {@link org.gamegineer.table.core.IComponentFactory} interface.
  */
 public final class ComponentFactoryProxyAsComponentFactoryTest

@@ -19,7 +19,7 @@
  * Created on Oct 12, 2012 at 8:36:55 PM.
  */
 
-package org.gamegineer.table.internal.ui.view;
+package org.gamegineer.table.internal.ui.prototype;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

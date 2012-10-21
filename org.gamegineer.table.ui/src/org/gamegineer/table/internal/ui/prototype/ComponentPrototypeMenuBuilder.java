@@ -19,7 +19,7 @@
  * Created on Oct 4, 2012 at 9:53:30 PM.
  */
 
-package org.gamegineer.table.internal.ui.view;
+package org.gamegineer.table.internal.ui.prototype;
 
 import java.util.ArrayList;
 import java.util.Collection;
