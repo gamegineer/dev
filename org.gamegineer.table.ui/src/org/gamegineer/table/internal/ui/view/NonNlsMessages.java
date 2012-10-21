@@ -38,47 +38,47 @@ final class NonNlsMessages
     // Fields
     // ======================================================================
 
-    // --- ComponentFactoriesExtensionPoint ---------------------------------
-
-    /** The category identifier is missing. */
-    public static String ComponentFactoriesExtensionPoint_createCategory_missingId;
-
-    /** The category mnemonic is missing. */
-    public static String ComponentFactoriesExtensionPoint_createCategory_missingMnemonic;
-
-    /** The category name is missing. */
-    public static String ComponentFactoriesExtensionPoint_createCategory_missingName;
-
-    /** The component factory class name is missing. */
-    public static String ComponentFactoriesExtensionPoint_createComponentFactory_missingClassName;
-
-    /** The component factory identifier is missing. */
-    public static String ComponentFactoriesExtensionPoint_createComponentFactory_missingId;
-
-    /** The component factory mnemonic is missing. */
-    public static String ComponentFactoriesExtensionPoint_createComponentFactory_missingMnemonic;
-
-    /** The component factory name is missing. */
-    public static String ComponentFactoriesExtensionPoint_createComponentFactory_missingName;
-
-    /** The category configuration element is illegal. */
-    public static String ComponentFactoriesExtensionPoint_createMenu_illegalCategoryConfigurationElement;
-
-    /** The component factory configuration element is illegal. */
-    public static String ComponentFactoriesExtensionPoint_createMenu_illegalComponentFactoryConfigurationElement;
-
-    /** The source does not represent a legal mnemonic. */
-    public static String ComponentFactoriesExtensionPoint_decodeMnemonic_illegalSource;
-
-    // --- ComponentFactoryMenuBuilder --------------------------------------
-
-    /** The component factory categories are orphans. */
-    public static String ComponentFactoryMenuBuilder_toMenu_orphanedCategories;
-
     // --- ComponentFactoryProxy --------------------------------------------
 
     /** An error occurred while creating the component factory. */
     public static String ComponentFactoryProxy_getDelegate_createError;
+
+    // --- ComponentPrototypesExtensionPoint --------------------------------
+
+    /** The component prototype class name is missing. */
+    public static String ComponentPrototypesExtensionPoint_createComponentPrototype_missingClassName;
+
+    /** The component prototype identifier is missing. */
+    public static String ComponentPrototypesExtensionPoint_createComponentPrototype_missingId;
+
+    /** The component prototype mnemonic is missing. */
+    public static String ComponentPrototypesExtensionPoint_createComponentPrototype_missingMnemonic;
+
+    /** The component prototype name is missing. */
+    public static String ComponentPrototypesExtensionPoint_createComponentPrototype_missingName;
+
+    /** The component prototype category identifier is missing. */
+    public static String ComponentPrototypesExtensionPoint_createComponentPrototypeCategory_missingId;
+
+    /** The component prototype category mnemonic is missing. */
+    public static String ComponentPrototypesExtensionPoint_createComponentPrototypeCategory_missingMnemonic;
+
+    /** The component prototype category name is missing. */
+    public static String ComponentPrototypesExtensionPoint_createComponentPrototypeCategory_missingName;
+
+    /** The component prototype category configuration element is illegal. */
+    public static String ComponentPrototypesExtensionPoint_createMenu_illegalComponentPrototypeCategoryConfigurationElement;
+
+    /** The component prototype configuration element is illegal. */
+    public static String ComponentPrototypesExtensionPoint_createMenu_illegalComponentPrototypeConfigurationElement;
+
+    /** The source does not represent a legal mnemonic. */
+    public static String ComponentPrototypesExtensionPoint_decodeMnemonic_illegalSource;
+
+    // --- ComponentPrototypeMenuBuilder ------------------------------------
+
+    /** The component prototype categories are orphans. */
+    public static String ComponentPrototypeMenuBuilder_toMenu_orphanedCategories;
 
     // --- ComponentView ----------------------------------------------------
 
@@ -154,27 +154,6 @@ final class NonNlsMessages
     // Methods
     // ======================================================================
 
-    // --- ComponentFactoryMenuBuilder --------------------------------------
-
-    /**
-     * Gets the formatted message indicating the component factory categories
-     * are orphans.
-     * 
-     * @param componentFactoryCategoryIds
-     *        The collection of component factory category identifiers; must not
-     *        be {@code null}.
-     * 
-     * @return The formatted message indicating the component factory categories
-     *         are orphans; never {@code null}.
-     */
-    /* @NonNull */
-    static String ComponentFactoryMenuBuilder_toMenu_orphanedCategories(
-        /* @NonNull */
-        final Collection<String> componentFactoryCategoryIds )
-    {
-        return bind( ComponentFactoryMenuBuilder_toMenu_orphanedCategories, componentFactoryCategoryIds );
-    }
-
     // --- ComponentFactoryProxy --------------------------------------------
 
     /**
@@ -193,6 +172,27 @@ final class NonNlsMessages
         final String className )
     {
         return bind( ComponentFactoryProxy_getDelegate_createError, className );
+    }
+
+    // --- ComponentPrototypeMenuBuilder ------------------------------------
+
+    /**
+     * Gets the formatted message indicating the component prototype categories
+     * are orphans.
+     * 
+     * @param componentPrototypeCategoryIds
+     *        The collection of component prototype category identifiers; must
+     *        not be {@code null}.
+     * 
+     * @return The formatted message indicating the component prototype
+     *         categories are orphans; never {@code null}.
+     */
+    /* @NonNull */
+    static String ComponentPrototypeMenuBuilder_toMenu_orphanedCategories(
+        /* @NonNull */
+        final Collection<String> componentPrototypeCategoryIds )
+    {
+        return bind( ComponentPrototypeMenuBuilder_toMenu_orphanedCategories, componentPrototypeCategoryIds );
     }
 
     // --- ComponentView ----------------------------------------------------

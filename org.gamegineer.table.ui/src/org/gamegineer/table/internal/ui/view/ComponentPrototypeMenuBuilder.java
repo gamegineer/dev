@@ -1,5 +1,5 @@
 /*
- * ComponentFactoryMenuBuilder.java
+ * ComponentPrototypeMenuBuilder.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -34,10 +34,10 @@ import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.ui.Loggers;
 
 /**
- * A component factory menu builder.
+ * A component prototype menu builder.
  */
 @NotThreadSafe
-final class ComponentFactoryMenuBuilder
+final class ComponentPrototypeMenuBuilder
 {
     // ======================================================================
     // Fields
@@ -61,7 +61,7 @@ final class ComponentFactoryMenuBuilder
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ComponentFactoryMenuBuilder}
+     * Initializes a new instance of the {@code ComponentPrototypeMenuBuilder}
      * class.
      * 
      * @param rootMenuLabel
@@ -71,7 +71,7 @@ final class ComponentFactoryMenuBuilder
      * @param menuItemAction
      *        The action used for all menu items; must not be {@code null}.
      */
-    ComponentFactoryMenuBuilder(
+    ComponentPrototypeMenuBuilder(
         /* @NonNull */
         final String rootMenuLabel,
         final int rootMenuMnemonic,
@@ -93,62 +93,62 @@ final class ComponentFactoryMenuBuilder
     // ======================================================================
 
     /**
-     * Adds the specified component factory category to the menu.
+     * Adds the specified component prototype to the menu.
      * 
-     * @param componentFactoryCategory
-     *        The component factory category to add to the menu; must not be
+     * @param componentPrototype
+     *        The component prototype to add to the menu; must not be
      *        {@code null}.
      */
-    void addCategory(
+    void addComponentPrototype(
         /* @NonNull */
-        final ComponentFactoryCategory componentFactoryCategory )
+        final ComponentPrototype componentPrototype )
     {
-        assert componentFactoryCategory != null;
+        assert componentPrototype != null;
 
-        final MenuDescriptor menuDescriptor = rootMenuDescriptor_.getDescendantMenuDescriptor( componentFactoryCategory.getPath() );
-        menuDescriptor.setMenu( componentFactoryCategory.getName(), componentFactoryCategory.getMnemonic() );
-    }
-
-    /**
-     * Adds the specified component factory to the menu.
-     * 
-     * @param componentFactory
-     *        The component factory to add to the menu; must not be {@code null}
-     *        .
-     */
-    void addComponentFactory(
-        /* @NonNull */
-        final ComponentFactory componentFactory )
-    {
-        assert componentFactory != null;
-
-        Collection<JMenuItem> menuItems = menuItemCollections_.get( componentFactory.getCategoryId() );
+        Collection<JMenuItem> menuItems = menuItemCollections_.get( componentPrototype.getCategoryId() );
         if( menuItems == null )
         {
             menuItems = new ArrayList<JMenuItem>();
-            menuItemCollections_.put( componentFactory.getCategoryId(), menuItems );
+            menuItemCollections_.put( componentPrototype.getCategoryId(), menuItems );
         }
 
         final JMenuItem menuItem = new JMenuItem( menuItemAction_ );
-        menuItem.setText( componentFactory.getName() );
-        menuItem.setMnemonic( componentFactory.getMnemonic() );
+        menuItem.setText( componentPrototype.getName() );
+        menuItem.setMnemonic( componentPrototype.getMnemonic() );
         // TODO: extract constant for the property name
-        menuItem.putClientProperty( "org.gamegineer.table.ui.prototype.componentFactory", componentFactory.getComponentFactory() ); //$NON-NLS-1$
+        menuItem.putClientProperty( "org.gamegineer.table.ui.prototype.componentFactory", componentPrototype.getComponentFactory() ); //$NON-NLS-1$
         menuItems.add( menuItem );
     }
 
     /**
-     * Collects all component factory category identifiers associated with the
+     * Adds the specified component prototype category to the menu.
+     * 
+     * @param componentPrototypeCategory
+     *        The component prototype category to add to the menu; must not be
+     *        {@code null}.
+     */
+    void addComponentPrototypeCategory(
+        /* @NonNull */
+        final ComponentPrototypeCategory componentPrototypeCategory )
+    {
+        assert componentPrototypeCategory != null;
+
+        final MenuDescriptor menuDescriptor = rootMenuDescriptor_.getDescendantMenuDescriptor( componentPrototypeCategory.getPath() );
+        menuDescriptor.setMenu( componentPrototypeCategory.getName(), componentPrototypeCategory.getMnemonic() );
+    }
+
+    /**
+     * Collects all component prototype category identifiers associated with the
      * specified menu descriptor and its descendants.
      * 
      * @param menuDescriptor
      *        The menu descriptor; must not be {@code null}.
      * @param ids
-     *        The collection that will receive the component factory category
+     *        The collection that will receive the component prototype category
      *        identifiers; must not be {@code null}.
      */
     /* @NonNull */
-    private static void collectAllCategoryIds(
+    private static void collectAllComponentPrototypeCategoryIds(
         /* @NonNull */
         final MenuDescriptor menuDescriptor,
         /* @NonNull */
@@ -161,7 +161,7 @@ final class ComponentFactoryMenuBuilder
 
         for( final MenuDescriptor childMenuDescriptor : menuDescriptor.getChildMenuDescriptors() )
         {
-            collectAllCategoryIds( childMenuDescriptor, ids );
+            collectAllComponentPrototypeCategoryIds( childMenuDescriptor, ids );
         }
     }
 
@@ -198,8 +198,8 @@ final class ComponentFactoryMenuBuilder
         if( menu == null )
         {
             final Collection<String> ids = new ArrayList<String>();
-            collectAllCategoryIds( menuDescriptor, ids );
-            Loggers.getDefaultLogger().warning( NonNlsMessages.ComponentFactoryMenuBuilder_toMenu_orphanedCategories( ids ) );
+            collectAllComponentPrototypeCategoryIds( menuDescriptor, ids );
+            Loggers.getDefaultLogger().warning( NonNlsMessages.ComponentPrototypeMenuBuilder_toMenu_orphanedCategories( ids ) );
             return null;
         }
 
@@ -241,14 +241,14 @@ final class ComponentFactoryMenuBuilder
 
         /**
          * The collection of child menu descriptors. The key is the component
-         * factory category identifier with the child menu. The value is the
+         * prototype category identifier with the child menu. The value is the
          * menu descriptor.
          */
         private final Map<String, MenuDescriptor> childMenuDescriptors_;
 
         /**
-         * The component factory category identifier associated with the menu or
-         * {@code null} if the root menu.
+         * The component prototype category identifier associated with the menu
+         * or {@code null} if the root menu.
          */
         private final String id_;
 
@@ -264,8 +264,8 @@ final class ComponentFactoryMenuBuilder
          * Initializes a new instance of the {@code MenuDescriptor} class.
          * 
          * @param id
-         *        The component factory category identifier associated with the
-         *        menu or {@code null} if the root menu.
+         *        The component prototype category identifier associated with
+         *        the menu or {@code null} if the root menu.
          */
         MenuDescriptor(
             /* @Nullable */
@@ -283,18 +283,18 @@ final class ComponentFactoryMenuBuilder
 
         /**
          * Gets the child menu descriptor associated with the specified
-         * component factory category identifier.
+         * component prototype category identifier.
          * 
          * <p>
          * The child menu descriptor will be created if it does not exist.
          * </p>
          * 
          * @param id
-         *        The component factory category identifier associated with the
-         *        child menu; must not be {@code null}.
+         *        The component prototype category identifier associated with
+         *        the child menu; must not be {@code null}.
          * 
          * @return The child menu descriptor associated with the specified
-         *         component factory category identifier; never {@code null}.
+         *         component prototype category identifier; never {@code null}.
          */
         /* @NonNull */
         private MenuDescriptor getChildMenuDescriptor(
@@ -328,18 +328,18 @@ final class ComponentFactoryMenuBuilder
 
         /**
          * Gets the descendant menu descriptor associated with the specified
-         * component factory category identifier path.
+         * component prototype category identifier path.
          * 
          * <p>
          * The descendant menu descriptor will be created if it does not exist.
          * </p>
          * 
          * @param idPath
-         *        The component factory category identifier path; must not be
+         *        The component prototype category identifier path; must not be
          *        {@code null} and must not be empty.
          * 
          * @return The descendant menu descriptor associated with the specified
-         *         component factory category identifier path; never
+         *         component prototype category identifier path; never
          *         {@code null}.
          */
         /* @NonNull */
@@ -360,11 +360,11 @@ final class ComponentFactoryMenuBuilder
         }
 
         /**
-         * Gets the component factory category identifier associated with the
+         * Gets the component prototype category identifier associated with the
          * menu.
          * 
-         * @return The component factory category identifier associated with the
-         *         menu or {@code null} if the root menu.
+         * @return The component prototype category identifier associated with
+         *         the menu or {@code null} if the root menu.
          */
         /* @Nullable */
         String getId()

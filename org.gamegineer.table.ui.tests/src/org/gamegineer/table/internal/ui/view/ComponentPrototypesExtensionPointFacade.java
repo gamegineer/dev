@@ -1,5 +1,5 @@
 /*
- * ComponentFactoriesExtensionPointFacade.java
+ * ComponentPrototypesExtensionPointFacade.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -29,10 +29,11 @@ import org.gamegineer.common.core.util.concurrent.TaskUtils;
 
 /**
  * A facade for accessing private members of the
- * {@link ComponentFactoriesExtensionPoint} class that are required for testing.
+ * {@link ComponentPrototypesExtensionPoint} class that are required for
+ * testing.
  */
 @ThreadSafe
-final class ComponentFactoriesExtensionPointFacade
+final class ComponentPrototypesExtensionPointFacade
 {
     // ======================================================================
     // Constructors
@@ -40,9 +41,9 @@ final class ComponentFactoriesExtensionPointFacade
 
     /**
      * Initializes a new instance of the
-     * {@code ComponentFactoriesExtensionPointFacade} class.
+     * {@code ComponentPrototypesExtensionPointFacade} class.
      */
-    private ComponentFactoriesExtensionPointFacade()
+    private ComponentPrototypesExtensionPointFacade()
     {
     }
 
@@ -52,34 +53,35 @@ final class ComponentFactoriesExtensionPointFacade
     // ======================================================================
 
     /**
-     * Creates a new component factory category from the specified component
-     * factory category configuration element.
+     * Creates a new component prototype from the specified component prototype
+     * configuration element.
      * 
      * <p>
      * This method is a facade for invoking the
-     * {@link ComponentFactoriesExtensionPoint#createCategory} method.
+     * {@link ComponentPrototypesExtensionPoint#createComponentPrototype}
+     * method.
      * </p>
      * 
      * @param configurationElement
-     *        The component factory category configuration element; must not be
+     *        The component prototype configuration element; must not be
      *        {@code null}.
      * 
-     * @return A new component factory category; never {@code null}.
+     * @return A new component prototype; never {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code configurationElement} does not represent a legal
-     *         component factory category.
+     *         component prototype.
      */
     /* @NonNull */
-    static ComponentFactoryCategory createCategory(
+    static ComponentPrototype createComponentPrototype(
         /* @NonNull */
         final IConfigurationElement configurationElement )
     {
         try
         {
-            final Method method = ComponentFactoriesExtensionPoint.class.getDeclaredMethod( "createCategory", IConfigurationElement.class ); //$NON-NLS-1$
+            final Method method = ComponentPrototypesExtensionPoint.class.getDeclaredMethod( "createComponentPrototype", IConfigurationElement.class ); //$NON-NLS-1$
             method.setAccessible( true );
-            return (ComponentFactoryCategory)method.invoke( null, configurationElement );
+            return (ComponentPrototype)method.invoke( null, configurationElement );
         }
         catch( final InvocationTargetException e )
         {
@@ -92,34 +94,35 @@ final class ComponentFactoriesExtensionPointFacade
     }
 
     /**
-     * Creates a new component factory from the specified component factory
-     * configuration element.
+     * Creates a new component prototype category from the specified component
+     * prototype category configuration element.
      * 
      * <p>
      * This method is a facade for invoking the
-     * {@link ComponentFactoriesExtensionPoint#createComponentFactory} method.
+     * {@link ComponentPrototypesExtensionPoint#createComponentPrototypeCategory}
+     * method.
      * </p>
      * 
      * @param configurationElement
-     *        The component factory configuration element; must not be
-     *        {@code null}.
+     *        The component prototype category configuration element; must not
+     *        be {@code null}.
      * 
-     * @return A new component factory; never {@code null}.
+     * @return A new component prototype category; never {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code configurationElement} does not represent a legal
-     *         component factory.
+     *         component prototype category.
      */
     /* @NonNull */
-    static ComponentFactory createComponentFactory(
+    static ComponentPrototypeCategory createComponentPrototypeCategory(
         /* @NonNull */
         final IConfigurationElement configurationElement )
     {
         try
         {
-            final Method method = ComponentFactoriesExtensionPoint.class.getDeclaredMethod( "createComponentFactory", IConfigurationElement.class ); //$NON-NLS-1$
+            final Method method = ComponentPrototypesExtensionPoint.class.getDeclaredMethod( "createComponentPrototypeCategory", IConfigurationElement.class ); //$NON-NLS-1$
             method.setAccessible( true );
-            return (ComponentFactory)method.invoke( null, configurationElement );
+            return (ComponentPrototypeCategory)method.invoke( null, configurationElement );
         }
         catch( final InvocationTargetException e )
         {

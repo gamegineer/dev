@@ -1,5 +1,5 @@
 /*
- * ComponentFactoryCategory.java
+ * ComponentPrototypeCategory.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -27,27 +27,28 @@ import java.util.List;
 import net.jcip.annotations.Immutable;
 
 /**
- * A component factory category.
+ * A component prototype category.
  */
 @Immutable
-final class ComponentFactoryCategory
+final class ComponentPrototypeCategory
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The category identifier. */
+    /** The component prototype category identifier. */
     private final String id_;
 
-    /** The category mnemonic. */
+    /** The component prototype category mnemonic. */
     private final int mnemonic_;
 
-    /** The category name. */
+    /** The component prototype category name. */
     private final String name_;
 
     /**
-     * The category path. The first element is the identifier of the furthest
-     * ancestor. The last element is the identifier of this category.
+     * The component prototype category path. The first element is the
+     * identifier of the furthest ancestor. The last element is the identifier
+     * of this category.
      */
     private final List<String> path_;
 
@@ -57,20 +58,23 @@ final class ComponentFactoryCategory
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ComponentFactoryCategory} class.
+     * Initializes a new instance of the {@code ComponentPrototypeCategory}
+     * class.
      * 
      * @param id
-     *        The category identifier; must not be {@code null}.
+     *        The component prototype category identifier; must not be
+     *        {@code null}.
      * @param name
-     *        The category name; must not be {@code null}.
+     *        The component prototype category name; must not be {@code null}.
      * @param mnemonic
-     *        The category mnemonic.
+     *        The component prototype category mnemonic.
      * @param parentPath
-     *        The path of the parent category; must not be {@code null}.The
-     *        first element is the identifier of the furthest ancestor. The last
-     *        element is the identifier of the nearest ancestor.
+     *        The path of the parent component prototype category; must not be
+     *        {@code null}. The first element is the identifier of the furthest
+     *        ancestor. The last element is the identifier of the nearest
+     *        ancestor.
      */
-    ComponentFactoryCategory(
+    ComponentPrototypeCategory(
         /* @NonNull */
         final String id,
         /* @NonNull */
@@ -95,15 +99,18 @@ final class ComponentFactoryCategory
     // ======================================================================
 
     /**
-     * Creates an immutable view of the specified category path.
+     * Creates an immutable view of the specified component prototype category
+     * path.
      * 
      * @param parentPath
-     *        The path of the parent category; must not be {@code null}.
+     *        The path of the parent component prototype category; must not be
+     *        {@code null}.
      * @param id
-     *        The category identifier; must not be {@code null}.
+     *        The component prototype category identifier; must not be
+     *        {@code null}.
      * 
-     * @return An immutable view of the specified category path; never
-     *         {@code null}.
+     * @return An immutable view of the specified component prototype category
+     *         path; never {@code null}.
      */
     /* @NonNull */
     private static List<String> createPath(
@@ -122,9 +129,9 @@ final class ComponentFactoryCategory
     }
 
     /**
-     * Gets the category identifier.
+     * Gets the component prototype category identifier.
      * 
-     * @return The category identifier; never {@code null}.
+     * @return The component prototype category identifier; never {@code null}.
      */
     /* @NonNull */
     String getId()
@@ -133,9 +140,9 @@ final class ComponentFactoryCategory
     }
 
     /**
-     * Gets the category mnemonic.
+     * Gets the component prototype category mnemonic.
      * 
-     * @return The category mnemonic.
+     * @return The component prototype category mnemonic.
      */
     int getMnemonic()
     {
@@ -143,9 +150,9 @@ final class ComponentFactoryCategory
     }
 
     /**
-     * Gets the category name.
+     * Gets the component prototype category name.
      * 
-     * @return The category name; never {@code null}.
+     * @return The component prototype category name; never {@code null}.
      */
     /* @NonNull */
     String getName()
@@ -154,9 +161,10 @@ final class ComponentFactoryCategory
     }
 
     /**
-     * Gets an immutable view of the category path.
+     * Gets an immutable view of the component prototype category path.
      * 
-     * @return An immutable view of the category path; never {@code null}.
+     * @return An immutable view of the component prototype category path; never
+     *         {@code null}.
      */
     /* @NonNull */
     List<String> getPath()

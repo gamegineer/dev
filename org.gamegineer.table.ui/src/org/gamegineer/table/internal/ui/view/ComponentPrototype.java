@@ -1,5 +1,5 @@
 /*
- * ComponentFactory.java
+ * ComponentPrototype.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -25,31 +25,31 @@ import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.IComponentFactory;
 
 /**
- * A component factory.
+ * A component prototype.
  */
 @Immutable
-final class ComponentFactory
+final class ComponentPrototype
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /**
-     * The component factory category identifier or {@code null} if the
-     * component factory has no category.
+     * The component prototype category identifier or {@code null} if the
+     * component prototype has no category.
      */
     private final String categoryId_;
 
-    /** The underlying component factory. */
+    /** The component factory used to create the prototype. */
     private final IComponentFactory componentFactory_;
 
-    /** The component factory identifier. */
+    /** The component prototype identifier. */
     private final String id_;
 
-    /** The component factory mnemonic. */
+    /** The component prototype mnemonic. */
     private final int mnemonic_;
 
-    /** The component factory name. */
+    /** The component prototype name. */
     private final String name_;
 
 
@@ -58,21 +58,22 @@ final class ComponentFactory
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ComponentFactory} class.
+     * Initializes a new instance of the {@code ComponentPrototype} class.
      * 
      * @param id
-     *        The component factory identifier; must not be {@code null}.
+     *        The component prototype identifier; must not be {@code null}.
      * @param name
-     *        The component factory name; must not be {@code null}.
+     *        The component prototype name; must not be {@code null}.
      * @param mnemonic
-     *        The component factory mnemonic.
+     *        The component prototype mnemonic.
      * @param categoryId
-     *        The component factory category identifier or {@code null} if the
-     *        component factory has no category.
+     *        The component prototype category identifier or {@code null} if the
+     *        component prototype has no category.
      * @param componentFactory
-     *        The underlying component factory; must not be {@code null}.
+     *        The component factory used to create the prototype; must not be
+     *        {@code null}.
      */
-    ComponentFactory(
+    ComponentPrototype(
         /* @NonNull */
         final String id,
         /* @NonNull */
@@ -100,10 +101,10 @@ final class ComponentFactory
     // ======================================================================
 
     /**
-     * Gets the component factory category identifier.
+     * Gets the component prototype category identifier.
      * 
-     * @return The component factory category identifier or {@code null} if the
-     *         component factory has no category.
+     * @return The component prototype category identifier or {@code null} if
+     *         the component prototype has no category.
      */
     /* @Nullable */
     String getCategoryId()
@@ -112,9 +113,10 @@ final class ComponentFactory
     }
 
     /**
-     * Gets the underlying component factory.
+     * Gets the component factory used to create the prototype.
      * 
-     * @return The underlying component factory; never {@code null}.
+     * @return The component factory used to create the prototype; never
+     *         {@code null}.
      */
     /* @NonNull */
     IComponentFactory getComponentFactory()
@@ -123,9 +125,9 @@ final class ComponentFactory
     }
 
     /**
-     * Gets the component factory identifier.
+     * Gets the component prototype identifier.
      * 
-     * @return The component factory identifier; never {@code null}.
+     * @return The component prototype identifier; never {@code null}.
      */
     /* @NonNull */
     String getId()
@@ -134,9 +136,9 @@ final class ComponentFactory
     }
 
     /**
-     * Gets the component factory mnemonic.
+     * Gets the component prototype mnemonic.
      * 
-     * @return The component factory mnemonic.
+     * @return The component prototype mnemonic.
      */
     int getMnemonic()
     {
@@ -144,9 +146,9 @@ final class ComponentFactory
     }
 
     /**
-     * Gets the component factory name.
+     * Gets the component prototype name.
      * 
-     * @return The component factory name; never {@code null}.
+     * @return The component prototype name; never {@code null}.
      */
     /* @NonNull */
     String getName()
