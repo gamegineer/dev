@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.ui.prototype;
 
 import java.util.Collection;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.osgi.util.NLS;
 
 /**
@@ -43,8 +44,8 @@ final class NonNlsMessages
 
     // --- ComponentPrototypesExtensionPoint --------------------------------
 
-    /** The component prototype class name is missing. */
-    public static String ComponentPrototypesExtensionPoint_createComponentPrototype_missingClassName;
+    /** The component prototype factory is missing. */
+    public static String ComponentPrototypesExtensionPoint_createComponentPrototype_missingFactory;
 
     /** The component prototype identifier is missing. */
     public static String ComponentPrototypesExtensionPoint_createComponentPrototype_missingId;
@@ -109,8 +110,9 @@ final class NonNlsMessages
      * Gets the formatted message indicating an error occurred while creating
      * the component factory.
      * 
-     * @param className
-     *        The component factory class name; must not be {@code null}.
+     * @param configurationElement
+     *        The component factory configuration element; must not be
+     *        {@code null}.
      * 
      * @return The formatted message indicating an error occurred while creating
      *         the component factory; never {@code null}.
@@ -118,9 +120,9 @@ final class NonNlsMessages
     /* @NonNull */
     static String ComponentFactoryProxy_getDelegate_createError(
         /* @NonNull */
-        final String className )
+        final IConfigurationElement configurationElement )
     {
-        return bind( ComponentFactoryProxy_getDelegate_createError, className );
+        return bind( ComponentFactoryProxy_getDelegate_createError, configurationElement.getNamespaceIdentifier(), configurationElement.getName() );
     }
 
     // --- ComponentPrototypeMenuBuilder ------------------------------------

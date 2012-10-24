@@ -102,23 +102,13 @@
       </annotation>
       <complexType>
          <sequence>
-            <element ref="parameter" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="factory"/>
          </sequence>
          <attribute name="category" type="string">
             <annotation>
                <documentation>
                   the optional component prototype category
                </documentation>
-            </annotation>
-         </attribute>
-         <attribute name="className" type="string" use="required">
-            <annotation>
-               <documentation>
-                  the fully-qualified name of the component factory class responsible for creating the prototype
-               </documentation>
-               <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.gamegineer.table.core.IComponentFactory"/>
-               </appinfo>
             </annotation>
          </attribute>
          <attribute name="id" type="string" use="required">
@@ -175,6 +165,29 @@
       </complexType>
    </element>
 
+   <element name="factory">
+      <annotation>
+         <documentation>
+            a component factory
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="parameter" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the fully-qualified name of the component factory class responsible for creating the prototype
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.gamegineer.table.core.IComponentFactory"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
    <annotation>
       <appinfo>
          <meta.section type="since"/>
@@ -201,11 +214,12 @@
             parentCategory=&quot;org.gamegineer.prototypes.category.card&quot; /&gt;
     &lt;componentPrototype
             category=&quot;org.gamegineer.prototypes.category.card.hearts&quot;
-            className=&quot;org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory&quot;
             mnemonic=&quot;A&quot;
             name=&quot;Ace&quot;&gt;
-        &lt;parameter name=&quot;faceDesign&quot; value=&quot;org.gamegineer.cardSurfaces.hearts.ace&quot; /&gt;
-        &lt;parameter name=&quot;backDesign&quot; value=&quot;org.gamegineer.cardSurfaces.back.red&quot; /&gt;
+        &lt;factory class=&quot;org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory&quot;&gt;
+            &lt;parameter name=&quot;faceDesign&quot; value=&quot;org.gamegineer.cardSurfaces.hearts.ace&quot; /&gt;
+            &lt;parameter name=&quot;backDesign&quot; value=&quot;org.gamegineer.cardSurfaces.back.red&quot; /&gt;
+        &lt;/factory&gt;
     &lt;/componentPrototype&gt;
 &lt;/extension&gt;
       </documentation>

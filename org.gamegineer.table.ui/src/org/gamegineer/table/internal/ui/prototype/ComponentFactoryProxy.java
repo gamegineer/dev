@@ -41,12 +41,6 @@ final class ComponentFactoryProxy
     // Fields
     // ======================================================================
 
-    /**
-     * The name of the configuration element attribute that specifies the
-     * component factory class name.
-     */
-    private final String classNameAttributeName_;
-
     /** The component factory configuration element. */
     private final IConfigurationElement configurationElement_;
 
@@ -55,6 +49,12 @@ final class ComponentFactoryProxy
      * {@code null} if the component factory delegate has not yet been created.
      */
     private IComponentFactory delegate_;
+
+    /**
+     * The name of the configuration element property (attribute or child
+     * element) that specifies the component factory executable extension.
+     */
+    private final String propertyName_;
 
 
     // ======================================================================
@@ -67,22 +67,23 @@ final class ComponentFactoryProxy
      * @param configurationElement
      *        The component factory configuration element; must not be
      *        {@code null}.
-     * @param classNameAttributeName
-     *        The name of the configuration element attribute that specifies the
-     *        component factory class name; must not be {@code null}.
+     * @param propertyName
+     *        The name of the configuration element property (attribute or child
+     *        element) that specifies the component factory executable
+     *        extension; must not be {@code null}.
      */
     ComponentFactoryProxy(
         /* @NonNull */
         final IConfigurationElement configurationElement,
         /* @NonNull */
-        final String classNameAttributeName )
+        final String propertyName )
     {
         assert configurationElement != null;
-        assert classNameAttributeName != null;
+        assert propertyName != null;
 
-        classNameAttributeName_ = classNameAttributeName;
         configurationElement_ = configurationElement;
         delegate_ = null;
+        propertyName_ = propertyName;
     }
 
 
@@ -120,11 +121,11 @@ final class ComponentFactoryProxy
         {
             try
             {
-                delegate_ = (IComponentFactory)configurationElement_.createExecutableExtension( classNameAttributeName_ );
+                delegate_ = (IComponentFactory)configurationElement_.createExecutableExtension( propertyName_ );
             }
             catch( final CoreException e )
             {
-                throw new ComponentFactoryException( NonNlsMessages.ComponentFactoryProxy_getDelegate_createError( configurationElement_.getAttribute( classNameAttributeName_ ) ), e );
+                throw new ComponentFactoryException( NonNlsMessages.ComponentFactoryProxy_getDelegate_createError( configurationElement_ ), e );
             }
         }
 
