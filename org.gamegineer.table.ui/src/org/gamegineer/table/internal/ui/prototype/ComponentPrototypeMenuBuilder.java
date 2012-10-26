@@ -115,8 +115,7 @@ final class ComponentPrototypeMenuBuilder
         final JMenuItem menuItem = new JMenuItem( menuItemAction_ );
         menuItem.setText( componentPrototype.getName() );
         menuItem.setMnemonic( componentPrototype.getMnemonic() );
-        // TODO: extract constant for the property name
-        menuItem.putClientProperty( "org.gamegineer.table.ui.prototype.componentFactory", componentPrototype.getComponentFactory() ); //$NON-NLS-1$
+        ComponentPrototypeUtils.setComponentFactory( menuItem, componentPrototype.getComponentFactory() );
         menuItems.add( menuItem );
     }
 
