@@ -16,6 +16,519 @@
             schema="schema/componentSurfaceDesignUIs.exsd" />
 
     <extension
+            point="org.gamegineer.table.ui.componentPrototypes">
+        <category
+                id="org.gamegineer.componentPrototypes.category.card"
+                mnemonic="%componentPrototype.category.card.mnemonic"
+                name="%componentPrototype.category.card.name" />
+        <category
+                id="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.category.card.clubs.mnemonic"
+                name="%componentPrototype.category.card.clubs.name"
+                parentCategory="org.gamegineer.componentPrototypes.category.card" />
+        <category
+                id="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.category.card.diamonds.mnemonic"
+                name="%componentPrototype.category.card.diamonds.name"
+                parentCategory="org.gamegineer.componentPrototypes.category.card" />
+        <category
+                id="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.category.card.hearts.mnemonic"
+                name="%componentPrototype.category.card.hearts.name"
+                parentCategory="org.gamegineer.componentPrototypes.category.card" />
+        <category
+                id="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.category.card.spades.mnemonic"
+                name="%componentPrototype.category.card.spades.name"
+                parentCategory="org.gamegineer.componentPrototypes.category.card" />
+        <category
+                id="org.gamegineer.componentPrototypes.category.card.special"
+                mnemonic="%componentPrototype.category.card.special.mnemonic"
+                name="%componentPrototype.category.card.special.name"
+                parentCategory="org.gamegineer.componentPrototypes.category.card" />
+        <category
+                id="org.gamegineer.componentPrototypes.category.deck"
+                mnemonic="%componentPrototype.category.deck.mnemonic"
+                name="%componentPrototype.category.deck.name" />
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.ace.mnemonic"
+                name="%componentPrototype.card.clubs.ace.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.ace" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.two.mnemonic"
+                name="%componentPrototype.card.clubs.two.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.two" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.three.mnemonic"
+                name="%componentPrototype.card.clubs.three.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.three" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.four.mnemonic"
+                name="%componentPrototype.card.clubs.four.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.four" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.five.mnemonic"
+                name="%componentPrototype.card.clubs.five.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.five" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.six.mnemonic"
+                name="%componentPrototype.card.clubs.six.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.six" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.seven.mnemonic"
+                name="%componentPrototype.card.clubs.seven.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.seven" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.eight.mnemonic"
+                name="%componentPrototype.card.clubs.eight.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.eight" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.nine.mnemonic"
+                name="%componentPrototype.card.clubs.nine.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.nine" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.ten.mnemonic"
+                name="%componentPrototype.card.clubs.ten.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.ten" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.jack.mnemonic"
+                name="%componentPrototype.card.clubs.jack.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.jack" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.queen.mnemonic"
+                name="%componentPrototype.card.clubs.queen.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.queen" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.king.mnemonic"
+                name="%componentPrototype.card.clubs.king.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.king" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.ace.mnemonic"
+                name="%componentPrototype.card.diamonds.ace.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.ace" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.two.mnemonic"
+                name="%componentPrototype.card.diamonds.two.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.two" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.three.mnemonic"
+                name="%componentPrototype.card.diamonds.three.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.three" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.four.mnemonic"
+                name="%componentPrototype.card.diamonds.four.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.four" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.five.mnemonic"
+                name="%componentPrototype.card.diamonds.five.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.five" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.six.mnemonic"
+                name="%componentPrototype.card.diamonds.six.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.six" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.seven.mnemonic"
+                name="%componentPrototype.card.diamonds.seven.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.seven" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.eight.mnemonic"
+                name="%componentPrototype.card.diamonds.eight.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.eight" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.nine.mnemonic"
+                name="%componentPrototype.card.diamonds.nine.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.nine" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.ten.mnemonic"
+                name="%componentPrototype.card.diamonds.ten.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.ten" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.jack.mnemonic"
+                name="%componentPrototype.card.diamonds.jack.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.jack" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.queen.mnemonic"
+                name="%componentPrototype.card.diamonds.queen.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.queen" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.king.mnemonic"
+                name="%componentPrototype.card.diamonds.king.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.king" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.ace.mnemonic"
+                name="%componentPrototype.card.hearts.ace.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.ace" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.two.mnemonic"
+                name="%componentPrototype.card.hearts.two.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.two" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.three.mnemonic"
+                name="%componentPrototype.card.hearts.three.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.three" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.four.mnemonic"
+                name="%componentPrototype.card.hearts.four.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.four" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.five.mnemonic"
+                name="%componentPrototype.card.hearts.five.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.five" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.six.mnemonic"
+                name="%componentPrototype.card.hearts.six.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.six" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.seven.mnemonic"
+                name="%componentPrototype.card.hearts.seven.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.seven" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.eight.mnemonic"
+                name="%componentPrototype.card.hearts.eight.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.eight" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.nine.mnemonic"
+                name="%componentPrototype.card.hearts.nine.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.nine" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.ten.mnemonic"
+                name="%componentPrototype.card.hearts.ten.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.ten" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.jack.mnemonic"
+                name="%componentPrototype.card.hearts.jack.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.jack" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.queen.mnemonic"
+                name="%componentPrototype.card.hearts.queen.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.queen" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.king.mnemonic"
+                name="%componentPrototype.card.hearts.king.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.king" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.ace.mnemonic"
+                name="%componentPrototype.card.spades.ace.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.ace" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.two.mnemonic"
+                name="%componentPrototype.card.spades.two.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.two" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.three.mnemonic"
+                name="%componentPrototype.card.spades.three.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.three" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.four.mnemonic"
+                name="%componentPrototype.card.spades.four.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.four" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.five.mnemonic"
+                name="%componentPrototype.card.spades.five.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.five" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.six.mnemonic"
+                name="%componentPrototype.card.spades.six.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.six" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.seven.mnemonic"
+                name="%componentPrototype.card.spades.seven.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.seven" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.eight.mnemonic"
+                name="%componentPrototype.card.spades.eight.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.eight" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.nine.mnemonic"
+                name="%componentPrototype.card.spades.nine.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.nine" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.ten.mnemonic"
+                name="%componentPrototype.card.spades.ten.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.ten" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.jack.mnemonic"
+                name="%componentPrototype.card.spades.jack.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.jack" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.queen.mnemonic"
+                name="%componentPrototype.card.spades.queen.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.queen" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.king.mnemonic"
+                name="%componentPrototype.card.spades.king.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.king" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.special"
+                mnemonic="%componentPrototype.card.special.joker.mnemonic"
+                name="%componentPrototype.card.special.joker.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.special.joker" />
+            </factory>
+        </componentPrototype>
+    </extension>
+    <extension
             point="org.gamegineer.table.ui.componentStrategyUIs">
         <componentStrategyUI
                 className="org.gamegineer.table.internal.ui.strategies.ComponentStrategyUIExtensionFactory"
