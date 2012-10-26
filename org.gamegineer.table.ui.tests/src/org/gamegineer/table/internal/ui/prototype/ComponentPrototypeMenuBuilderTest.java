@@ -187,7 +187,6 @@ public final class ComponentPrototypeMenuBuilderTest
         categoryMenu.setMnemonic( categoryMnemonic );
         expectedRootMenu_.add( categoryMenu );
         final IComponentFactory componentFactory = EasyMock.createMock( IComponentFactory.class );
-        final String componentPrototypeId = "componentPrototypeId"; //$NON-NLS-1$
         final int componentPrototypeMnemonic = KeyEvent.VK_2;
         final String componentPrototypeName = "componentPrototypeName"; //$NON-NLS-1$
         final JMenuItem componentPrototypeMenuItem = new JMenu( componentPrototypeName );
@@ -195,7 +194,7 @@ public final class ComponentPrototypeMenuBuilderTest
         categoryMenu.add( componentPrototypeMenuItem );
 
         componentPrototypeMenuBuilder_.addComponentPrototypeCategory( new ComponentPrototypeCategory( categoryId, categoryName, categoryMnemonic, Collections.<String>emptyList() ) );
-        componentPrototypeMenuBuilder_.addComponentPrototype( new ComponentPrototype( componentPrototypeId, componentPrototypeName, componentPrototypeMnemonic, categoryId, componentFactory ) );
+        componentPrototypeMenuBuilder_.addComponentPrototype( new ComponentPrototype( componentPrototypeName, componentPrototypeMnemonic, categoryId, componentFactory ) );
 
         assertMenuEquals( expectedRootMenu_, componentPrototypeMenuBuilder_.toMenu() );
     }
@@ -215,14 +214,13 @@ public final class ComponentPrototypeMenuBuilderTest
         categoryMenu.setMnemonic( categoryMnemonic );
         expectedRootMenu_.add( categoryMenu );
         final IComponentFactory componentFactory = EasyMock.createMock( IComponentFactory.class );
-        final String componentPrototypeId = "componentPrototypeId"; //$NON-NLS-1$
         final int componentPrototypeMnemonic = KeyEvent.VK_2;
         final String componentPrototypeName = "componentPrototypeName"; //$NON-NLS-1$
         final JMenuItem componentPrototypeMenuItem = new JMenu( componentPrototypeName );
         componentPrototypeMenuItem.setMnemonic( componentPrototypeMnemonic );
         categoryMenu.add( componentPrototypeMenuItem );
 
-        componentPrototypeMenuBuilder_.addComponentPrototype( new ComponentPrototype( componentPrototypeId, componentPrototypeName, componentPrototypeMnemonic, categoryId, componentFactory ) );
+        componentPrototypeMenuBuilder_.addComponentPrototype( new ComponentPrototype( componentPrototypeName, componentPrototypeMnemonic, categoryId, componentFactory ) );
         componentPrototypeMenuBuilder_.addComponentPrototypeCategory( new ComponentPrototypeCategory( categoryId, categoryName, categoryMnemonic, Collections.<String>emptyList() ) );
 
         assertMenuEquals( expectedRootMenu_, componentPrototypeMenuBuilder_.toMenu() );
@@ -237,11 +235,10 @@ public final class ComponentPrototypeMenuBuilderTest
     public void testAddComponentPrototype_MissingCategory()
     {
         final IComponentFactory componentFactory = EasyMock.createMock( IComponentFactory.class );
-        final String id = "id"; //$NON-NLS-1$
         final int mnemonic = KeyEvent.VK_1;
         final String name = "name"; //$NON-NLS-1$
 
-        componentPrototypeMenuBuilder_.addComponentPrototype( new ComponentPrototype( id, name, mnemonic, "unknown", componentFactory ) ); //$NON-NLS-1$
+        componentPrototypeMenuBuilder_.addComponentPrototype( new ComponentPrototype( name, mnemonic, "unknown", componentFactory ) ); //$NON-NLS-1$
 
         assertMenuEquals( expectedRootMenu_, componentPrototypeMenuBuilder_.toMenu() );
     }
@@ -254,14 +251,13 @@ public final class ComponentPrototypeMenuBuilderTest
     public void testAddComponentPrototype_Root()
     {
         final IComponentFactory componentFactory = EasyMock.createMock( IComponentFactory.class );
-        final String id = "id"; //$NON-NLS-1$
         final int mnemonic = KeyEvent.VK_1;
         final String name = "name"; //$NON-NLS-1$
         final JMenuItem menuItem = new JMenu( name );
         menuItem.setMnemonic( mnemonic );
         expectedRootMenu_.add( menuItem );
 
-        componentPrototypeMenuBuilder_.addComponentPrototype( new ComponentPrototype( id, name, mnemonic, null, componentFactory ) );
+        componentPrototypeMenuBuilder_.addComponentPrototype( new ComponentPrototype( name, mnemonic, null, componentFactory ) );
 
         assertMenuEquals( expectedRootMenu_, componentPrototypeMenuBuilder_.toMenu() );
     }

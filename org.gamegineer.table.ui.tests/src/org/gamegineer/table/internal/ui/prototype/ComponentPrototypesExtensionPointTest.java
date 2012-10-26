@@ -48,9 +48,6 @@ public final class ComponentPrototypesExtensionPointTest
     /** The default component prototype category attribute value. */
     private static final String DEFAULT_COMPONENT_PROTOTYPE_ATTR_CATEGORY = "category"; //$NON-NLS-1$
 
-    /** The default component prototype identifier attribute value. */
-    private static final String DEFAULT_COMPONENT_PROTOTYPE_ATTR_ID = "id"; //$NON-NLS-1$
-
     /** The default component prototype mnemonic attribute value. */
     private static final String DEFAULT_COMPONENT_PROTOTYPE_ATTR_MNEMONIC = "M"; //$NON-NLS-1$
 
@@ -86,8 +83,6 @@ public final class ComponentPrototypesExtensionPointTest
      * 
      * @param category
      *        The component prototype category; may be {@code null}.
-     * @param id
-     *        The component prototype identifier; may be {@code null}.
      * @param mnemonic
      *        The component prototype mnemonic; may be {@code null}.
      * @param name
@@ -103,8 +98,6 @@ public final class ComponentPrototypesExtensionPointTest
         /* @Nullable */
         final String category,
         /* @Nullable */
-        final String id,
-        /* @Nullable */
         final String mnemonic,
         /* @Nullable */
         final String name,
@@ -114,7 +107,6 @@ public final class ComponentPrototypesExtensionPointTest
         final IConfigurationElement configurationElement = mocksControl_.createMock( IConfigurationElement.class );
         EasyMock.expect( configurationElement.getName() ).andReturn( "componentPrototype" ).anyTimes(); //$NON-NLS-1$
         EasyMock.expect( configurationElement.getAttribute( "category" ) ).andReturn( category ).anyTimes(); //$NON-NLS-1$
-        EasyMock.expect( configurationElement.getAttribute( "id" ) ).andReturn( id ).anyTimes(); //$NON-NLS-1$
         EasyMock.expect( configurationElement.getAttribute( "mnemonic" ) ).andReturn( mnemonic ).anyTimes(); //$NON-NLS-1$
         EasyMock.expect( configurationElement.getAttribute( "name" ) ).andReturn( name ).anyTimes(); //$NON-NLS-1$
 
@@ -226,30 +218,9 @@ public final class ComponentPrototypesExtensionPointTest
     {
         final IConfigurationElement configurationElement = createComponentPrototypeConfigurationElement( //
             DEFAULT_COMPONENT_PROTOTYPE_ATTR_CATEGORY, //
-            DEFAULT_COMPONENT_PROTOTYPE_ATTR_ID, //
             DEFAULT_COMPONENT_PROTOTYPE_ATTR_MNEMONIC, //
             DEFAULT_COMPONENT_PROTOTYPE_ATTR_NAME, //
             null );
-        mocksControl_.replay();
-
-        ComponentPrototypesExtensionPointFacade.createComponentPrototype( configurationElement );
-    }
-
-    /**
-     * Ensures the
-     * {@link ComponentPrototypesExtensionPoint#createComponentPrototype} method
-     * throws an exception when passed an illegal configuration element that is
-     * missing the identifier attribute.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testCreateComponentPrototype_ConfigurationElement_Illegal_MissingIdAttribute()
-    {
-        final IConfigurationElement configurationElement = createComponentPrototypeConfigurationElement( //
-            DEFAULT_COMPONENT_PROTOTYPE_ATTR_CATEGORY, //
-            null, //
-            DEFAULT_COMPONENT_PROTOTYPE_ATTR_MNEMONIC, //
-            DEFAULT_COMPONENT_PROTOTYPE_ATTR_NAME, //
-            DEFAULT_COMPONENT_PROTOTYPE_FACTORY_ATTR_CLASS );
         mocksControl_.replay();
 
         ComponentPrototypesExtensionPointFacade.createComponentPrototype( configurationElement );
@@ -266,7 +237,6 @@ public final class ComponentPrototypesExtensionPointTest
     {
         final IConfigurationElement configurationElement = createComponentPrototypeConfigurationElement( //
             DEFAULT_COMPONENT_PROTOTYPE_ATTR_CATEGORY, //
-            DEFAULT_COMPONENT_PROTOTYPE_ATTR_ID, //
             null, //
             DEFAULT_COMPONENT_PROTOTYPE_ATTR_NAME, //
             DEFAULT_COMPONENT_PROTOTYPE_FACTORY_ATTR_CLASS );
@@ -286,7 +256,6 @@ public final class ComponentPrototypesExtensionPointTest
     {
         final IConfigurationElement configurationElement = createComponentPrototypeConfigurationElement( //
             DEFAULT_COMPONENT_PROTOTYPE_ATTR_CATEGORY, //
-            DEFAULT_COMPONENT_PROTOTYPE_ATTR_ID, //
             DEFAULT_COMPONENT_PROTOTYPE_ATTR_MNEMONIC, //
             null, //
             DEFAULT_COMPONENT_PROTOTYPE_FACTORY_ATTR_CLASS );
@@ -305,19 +274,17 @@ public final class ComponentPrototypesExtensionPointTest
     public void testCreateComponentPrototype_ConfigurationElement_Legal_Category()
     {
         final String expectedCategoryId = "categoryId"; //$NON-NLS-1$
-        final String expectedId = "id"; //$NON-NLS-1$
         final String encodedExpectedMnemonic = "1"; //$NON-NLS-1$
         final int expectedMnemonic = KeyStroke.getKeyStroke( encodedExpectedMnemonic ).getKeyCode();
         final String expectedName = "name"; //$NON-NLS-1$
         final String expectedFactoryClass = "class"; //$NON-NLS-1$
-        final IConfigurationElement configurationElement = createComponentPrototypeConfigurationElement( expectedCategoryId, expectedId, encodedExpectedMnemonic, expectedName, expectedFactoryClass );
+        final IConfigurationElement configurationElement = createComponentPrototypeConfigurationElement( expectedCategoryId, encodedExpectedMnemonic, expectedName, expectedFactoryClass );
         mocksControl_.replay();
 
         final ComponentPrototype actualValue = ComponentPrototypesExtensionPointFacade.createComponentPrototype( configurationElement );
 
         mocksControl_.verify();
         assertEquals( expectedCategoryId, actualValue.getCategoryId() );
-        assertEquals( expectedId, actualValue.getId() );
         assertEquals( expectedMnemonic, actualValue.getMnemonic() );
         assertEquals( expectedName, actualValue.getName() );
     }
@@ -332,19 +299,17 @@ public final class ComponentPrototypesExtensionPointTest
     public void testCreateComponentPrototype_ConfigurationElement_Legal_NoCategory()
     {
         final String expectedCategoryId = null;
-        final String expectedId = "id"; //$NON-NLS-1$
         final String encodedExpectedMnemonic = "1"; //$NON-NLS-1$
         final int expectedMnemonic = KeyStroke.getKeyStroke( encodedExpectedMnemonic ).getKeyCode();
         final String expectedName = "name"; //$NON-NLS-1$
         final String expectedFactoryClass = "class"; //$NON-NLS-1$
-        final IConfigurationElement configurationElement = createComponentPrototypeConfigurationElement( expectedCategoryId, expectedId, encodedExpectedMnemonic, expectedName, expectedFactoryClass );
+        final IConfigurationElement configurationElement = createComponentPrototypeConfigurationElement( expectedCategoryId, encodedExpectedMnemonic, expectedName, expectedFactoryClass );
         mocksControl_.replay();
 
         final ComponentPrototype actualValue = ComponentPrototypesExtensionPointFacade.createComponentPrototype( configurationElement );
 
         mocksControl_.verify();
         assertEquals( expectedCategoryId, actualValue.getCategoryId() );
-        assertEquals( expectedId, actualValue.getId() );
         assertEquals( expectedMnemonic, actualValue.getMnemonic() );
         assertEquals( expectedName, actualValue.getName() );
     }

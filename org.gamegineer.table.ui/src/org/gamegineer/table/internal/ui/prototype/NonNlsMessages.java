@@ -47,9 +47,6 @@ final class NonNlsMessages
     /** The component prototype factory is missing. */
     public static String ComponentPrototypesExtensionPoint_createComponentPrototype_missingFactory;
 
-    /** The component prototype identifier is missing. */
-    public static String ComponentPrototypesExtensionPoint_createComponentPrototype_missingId;
-
     /** The component prototype mnemonic is missing. */
     public static String ComponentPrototypesExtensionPoint_createComponentPrototype_missingMnemonic;
 

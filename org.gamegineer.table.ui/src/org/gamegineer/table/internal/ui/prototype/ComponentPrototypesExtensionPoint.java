@@ -60,12 +60,6 @@ public final class ComponentPrototypesExtensionPoint
 
     /**
      * The name of the component prototype configuration element attribute that
-     * represents the component prototype identifier.
-     */
-    private static final String COMPONENT_PROTOTYPE_ATTR_ID = "id"; //$NON-NLS-1$
-
-    /**
-     * The name of the component prototype configuration element attribute that
      * represents the component prototype mnemonic.
      */
     private static final String COMPONENT_PROTOTYPE_ATTR_MNEMONIC = "mnemonic"; //$NON-NLS-1$
@@ -150,9 +144,6 @@ public final class ComponentPrototypesExtensionPoint
 
         final String categoryId = configurationElement.getAttribute( COMPONENT_PROTOTYPE_ATTR_CATEGORY );
 
-        final String id = configurationElement.getAttribute( COMPONENT_PROTOTYPE_ATTR_ID );
-        assertArgumentLegal( id != null, "configurationElement", NonNlsMessages.ComponentPrototypesExtensionPoint_createComponentPrototype_missingId ); //$NON-NLS-1$
-
         final String name = configurationElement.getAttribute( COMPONENT_PROTOTYPE_ATTR_NAME );
         assertArgumentLegal( name != null, "configurationElement", NonNlsMessages.ComponentPrototypesExtensionPoint_createComponentPrototype_missingName ); //$NON-NLS-1$
 
@@ -164,7 +155,7 @@ public final class ComponentPrototypesExtensionPoint
         assertArgumentLegal( factoryConfigurationElements.length == 1, "configurationElement", NonNlsMessages.ComponentPrototypesExtensionPoint_createComponentPrototype_missingFactory ); //$NON-NLS-1$
         final IComponentFactory componentFactory = new ComponentFactoryProxy( configurationElement, COMPONENT_PROTOTYPE_FACTORY_ELEM_NAME );
 
-        return new ComponentPrototype( id, name, mnemonic, categoryId, componentFactory );
+        return new ComponentPrototype( name, mnemonic, categoryId, componentFactory );
     }
 
     /**

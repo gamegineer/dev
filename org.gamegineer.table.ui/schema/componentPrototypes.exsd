@@ -111,13 +111,6 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="id" type="string" use="required">
-            <annotation>
-               <documentation>
-                  the unique identifier of this component prototype
-               </documentation>
-            </annotation>
-         </attribute>
          <attribute name="mnemonic" type="string" use="required">
             <annotation>
                <documentation>

@@ -43,9 +43,6 @@ final class ComponentPrototype
     /** The component factory used to create the prototype. */
     private final IComponentFactory componentFactory_;
 
-    /** The component prototype identifier. */
-    private final String id_;
-
     /** The component prototype mnemonic. */
     private final int mnemonic_;
 
@@ -60,8 +57,6 @@ final class ComponentPrototype
     /**
      * Initializes a new instance of the {@code ComponentPrototype} class.
      * 
-     * @param id
-     *        The component prototype identifier; must not be {@code null}.
      * @param name
      *        The component prototype name; must not be {@code null}.
      * @param mnemonic
@@ -75,8 +70,6 @@ final class ComponentPrototype
      */
     ComponentPrototype(
         /* @NonNull */
-        final String id,
-        /* @NonNull */
         final String name,
         final int mnemonic,
         /* @Nullable */
@@ -84,13 +77,11 @@ final class ComponentPrototype
         /* @NonNull */
         final IComponentFactory componentFactory )
     {
-        assert id != null;
         assert name != null;
         assert componentFactory != null;
 
         categoryId_ = categoryId;
         componentFactory_ = componentFactory;
-        id_ = id;
         mnemonic_ = mnemonic;
         name_ = name;
     }
@@ -122,17 +113,6 @@ final class ComponentPrototype
     IComponentFactory getComponentFactory()
     {
         return componentFactory_;
-    }
-
-    /**
-     * Gets the component prototype identifier.
-     * 
-     * @return The component prototype identifier; never {@code null}.
-     */
-    /* @NonNull */
-    String getId()
-    {
-        return id_;
     }
 
     /**
