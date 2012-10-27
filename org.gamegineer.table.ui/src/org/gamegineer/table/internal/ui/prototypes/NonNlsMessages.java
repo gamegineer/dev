@@ -35,6 +35,17 @@ final class NonNlsMessages
     // Fields
     // ======================================================================
 
+    // --- CardPilePrototypeFactory -----------------------------------------
+
+    /** Failed to create the component prototype. */
+    public static String CardPilePrototypeFactory_createComponentPrototype_error;
+
+    /** The specified parameter was not specified. */
+    public static String CardPilePrototypeFactory_setInitializationData_parameterNotSpecified;
+
+    /** The parameters collection was not specified. */
+    public static String CardPilePrototypeFactory_setInitializationData_parametersNotSpecified;
+
     // --- CardPrototypeFactory ---------------------------------------------
 
     /** Failed to create the component prototype. */
@@ -81,6 +92,26 @@ final class NonNlsMessages
     // ======================================================================
     // Methods
     // ======================================================================
+
+    // --- CardPilePrototypeFactory -----------------------------------------
+
+    /**
+     * Gets the formatted message indicating the specified parameter was not
+     * specified.
+     * 
+     * @param parameterName
+     *        The parameter name; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the specified parameter was not
+     *         specified; never {@code null}.
+     */
+    /* @NonNull */
+    static String CardPilePrototypeFactory_setInitializationData_parameterNotSpecified(
+        /* @NonNull */
+        final String parameterName )
+    {
+        return bind( CardPilePrototypeFactory_setInitializationData_parameterNotSpecified, parameterName );
+    }
 
     // --- CardPrototypeFactory ---------------------------------------------
 

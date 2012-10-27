@@ -528,6 +528,13 @@
             </factory>
         </componentPrototype>
         <componentPrototype
+                mnemonic="%componentPrototype.cardPile.default.mnemonic"
+                name="%componentPrototype.cardPile.default.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.CardPilePrototypeFactory">
+                <parameter name="baseDesign" value="org.gamegineer.cardPileBases.default" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.deck"
                 mnemonic="%componentPrototype.deck.standard52.mnemonic"
                 name="%componentPrototype.deck.standard52.name">
