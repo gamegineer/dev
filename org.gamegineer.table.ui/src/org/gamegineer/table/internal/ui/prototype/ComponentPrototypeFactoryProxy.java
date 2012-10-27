@@ -1,5 +1,5 @@
 /*
- * ComponentFactoryProxy.java
+ * ComponentPrototypeFactoryProxy.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -22,37 +22,41 @@
 package org.gamegineer.table.internal.ui.prototype;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.List;
 import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.gamegineer.table.core.ComponentFactoryException;
 import org.gamegineer.table.core.IComponent;
-import org.gamegineer.table.core.IComponentFactory;
 import org.gamegineer.table.core.ITableEnvironment;
+import org.gamegineer.table.ui.prototype.ComponentPrototypeFactoryException;
+import org.gamegineer.table.ui.prototype.IComponentPrototypeFactory;
 
 /**
- * A proxy for lazily creating a component factory from an extension point.
+ * A proxy for lazily creating a component prototype factory from an extension
+ * point.
  */
 @NotThreadSafe
-final class ComponentFactoryProxy
-    implements IComponentFactory
+final class ComponentPrototypeFactoryProxy
+    implements IComponentPrototypeFactory
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The component factory configuration element. */
+    /** The component prototype factory configuration element. */
     private final IConfigurationElement configurationElement_;
 
     /**
-     * The component factory to which all operations are delegated or
-     * {@code null} if the component factory delegate has not yet been created.
+     * The component prototype factory to which all operations are delegated or
+     * {@code null} if the component prototype factory delegate has not yet been
+     * created.
      */
-    private IComponentFactory delegate_;
+    private IComponentPrototypeFactory delegate_;
 
     /**
      * The name of the configuration element property (attribute or child
-     * element) that specifies the component factory executable extension.
+     * element) that specifies the component prototype factory executable
+     * extension.
      */
     private final String propertyName_;
 
@@ -62,17 +66,18 @@ final class ComponentFactoryProxy
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ComponentFactoryProxy} class.
+     * Initializes a new instance of the {@code ComponentPrototypeFactoryProxy}
+     * class.
      * 
      * @param configurationElement
-     *        The component factory configuration element; must not be
+     *        The component prototype factory configuration element; must not be
      *        {@code null}.
      * @param propertyName
      *        The name of the configuration element property (attribute or child
-     *        element) that specifies the component factory executable
+     *        element) that specifies the component prototype factory executable
      *        extension; must not be {@code null}.
      */
-    ComponentFactoryProxy(
+    ComponentPrototypeFactoryProxy(
         /* @NonNull */
         final IConfigurationElement configurationElement,
         /* @NonNull */
@@ -92,40 +97,41 @@ final class ComponentFactoryProxy
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.ui.IComponentFactory#createComponent(org.gamegineer.table.core.ITableEnvironment)
+     * @see org.gamegineer.table.ui.prototype.IComponentPrototypeFactory#createComponentPrototype(org.gamegineer.table.core.ITableEnvironment)
      */
     @Override
-    public IComponent createComponent(
+    public List<IComponent> createComponentPrototype(
         final ITableEnvironment tableEnvironment )
-        throws ComponentFactoryException
+        throws ComponentPrototypeFactoryException
     {
         assertArgumentNotNull( tableEnvironment, "tableEnvironment" ); //$NON-NLS-1$
 
-        return getDelegate().createComponent( tableEnvironment );
+        return getDelegate().createComponentPrototype( tableEnvironment );
     }
 
     /**
-     * Gets the component factory to which all operations are delegated.
+     * Gets the component prototype factory to which all operations are
+     * delegated.
      * 
-     * @return The component factory to which all operations are delegated;
-     *         never {@code null}.
+     * @return The component prototype factory to which all operations are
+     *         delegated; never {@code null}.
      * 
-     * @throws org.gamegineer.table.core.ComponentFactoryException
-     *         If the component factory delegate is not available.
+     * @throws org.gamegineer.table.ui.prototype.ComponentPrototypeFactoryException
+     *         If the component prototype factory delegate is not available.
      */
     /* @NonNull */
-    private IComponentFactory getDelegate()
-        throws ComponentFactoryException
+    private IComponentPrototypeFactory getDelegate()
+        throws ComponentPrototypeFactoryException
     {
         if( delegate_ == null )
         {
             try
             {
-                delegate_ = (IComponentFactory)configurationElement_.createExecutableExtension( propertyName_ );
+                delegate_ = (IComponentPrototypeFactory)configurationElement_.createExecutableExtension( propertyName_ );
             }
             catch( final CoreException e )
             {
-                throw new ComponentFactoryException( NonNlsMessages.ComponentFactoryProxy_getDelegate_createError( configurationElement_ ), e );
+                throw new ComponentPrototypeFactoryException( NonNlsMessages.ComponentPrototypeFactoryProxy_getDelegate_createError( configurationElement_ ), e );
             }
         }
 

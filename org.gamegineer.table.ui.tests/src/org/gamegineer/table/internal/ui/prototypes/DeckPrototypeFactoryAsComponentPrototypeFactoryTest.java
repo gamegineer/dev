@@ -1,5 +1,5 @@
 /*
- * CardPrototypeFactoryAsComponentFactoryTest.java
+ * DeckPrototypeFactoryAsComponentPrototypeFactoryTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,22 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 24, 2012 at 8:11:26 PM.
+ * Created on Oct 25, 2012 at 9:43:03 PM.
  */
 
 package org.gamegineer.table.internal.ui.prototypes;
 
-import org.gamegineer.table.core.AbstractComponentFactoryTestCase;
-import org.gamegineer.table.core.IComponentFactory;
+import org.gamegineer.table.ui.prototype.AbstractComponentPrototypeFactoryTestCase;
+import org.gamegineer.table.ui.prototype.IComponentPrototypeFactory;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory}
+ * {@link org.gamegineer.table.internal.ui.prototypes.DeckPrototypeFactory}
  * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.IComponentFactory} interface.
+ * {@link org.gamegineer.table.ui.prototype.IComponentPrototypeFactory}
+ * interface.
  */
-public final class CardPrototypeFactoryAsComponentFactoryTest
-    extends AbstractComponentFactoryTestCase
+public final class DeckPrototypeFactoryAsComponentPrototypeFactoryTest
+    extends AbstractComponentPrototypeFactoryTestCase
 {
     // ======================================================================
     // Constructors
@@ -39,9 +40,9 @@ public final class CardPrototypeFactoryAsComponentFactoryTest
 
     /**
      * Initializes a new instance of the
-     * {@code CardPrototypeFactoryAsComponentFactoryTest} class.
+     * {@code DeckPrototypeFactoryAsComponentPrototypeFactoryTest} class.
      */
-    public CardPrototypeFactoryAsComponentFactoryTest()
+    public DeckPrototypeFactoryAsComponentPrototypeFactoryTest()
     {
     }
 
@@ -51,11 +52,11 @@ public final class CardPrototypeFactoryAsComponentFactoryTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractComponentFactoryTestCase#createComponentFactory()
+     * @see org.gamegineer.table.ui.prototype.AbstractComponentPrototypeFactoryTestCase#createComponentPrototypeFactory()
      */
     @Override
-    protected IComponentFactory createComponentFactory()
+    protected IComponentPrototypeFactory createComponentPrototypeFactory()
     {
-        return new CardPrototypeFactory();
+        return new DeckPrototypeFactory();
     }
 }

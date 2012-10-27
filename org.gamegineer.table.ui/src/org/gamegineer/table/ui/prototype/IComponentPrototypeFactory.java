@@ -1,5 +1,5 @@
 /*
- * IComponentFactory.java
+ * IComponentPrototypeFactory.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,38 +16,47 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 1, 2012 at 7:38:38 PM.
+ * Created on Oct 25, 2012 at 10:29:54 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.ui.prototype;
+
+import java.util.List;
+import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.ITableEnvironment;
 
 /**
- * A factory for creating table components.
+ * A factory for creating a table component prototypes.
+ * 
+ * <p>
+ * A component prototype is a collection of one or more pre-configured
+ * components that represents a commonly-used paradigm on a table.
+ * </p>
  * 
  * @noextend This interface is not intended to be extended by clients.
  */
-public interface IComponentFactory
+public interface IComponentPrototypeFactory
 {
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Creates a new component for the specified table environment.
+     * Creates a new component prototype for the specified table environment.
      * 
      * @param tableEnvironment
      *        The table environment; must not be {@code null}.
      * 
-     * @return A new component; never {@code null}.
+     * @return A new component prototype; never {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code tableEnvironment} is {@code null}.
-     * @throws org.gamegineer.table.core.ComponentFactoryException
-     *         If the component cannot be created.
+     * @throws org.gamegineer.table.ui.prototype.ComponentPrototypeFactoryException
+     *         If the component prototype cannot be created.
      */
     /* @NonNull */
-    public IComponent createComponent(
+    public List<IComponent> createComponentPrototype(
         /* @NonNull */
         ITableEnvironment tableEnvironment )
-        throws ComponentFactoryException;
+        throws ComponentPrototypeFactoryException;
 }

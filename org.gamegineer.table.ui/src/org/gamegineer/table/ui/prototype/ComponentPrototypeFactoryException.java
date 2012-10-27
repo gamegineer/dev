@@ -1,5 +1,5 @@
 /*
- * ComponentFactoryException.java
+ * ComponentPrototypeFactoryException.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,19 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 18, 2012 at 9:41:48 PM.
+ * Created on Oct 25, 2012 at 10:29:44 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.ui.prototype;
 
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * A checked exception that indicates a component factory could not create a
- * component.
+ * A checked exception that indicates a component prototype factory could not
+ * create a prototypical component.
  */
 @ThreadSafe
-public final class ComponentFactoryException
+public final class ComponentPrototypeFactoryException
     extends Exception
 {
     // ======================================================================
@@ -36,7 +36,7 @@ public final class ComponentFactoryException
     // ======================================================================
 
     /** Serializable class version number. */
-    private static final long serialVersionUID = -3181116798618187504L;
+    private static final long serialVersionUID = -2273003290908122091L;
 
 
     // ======================================================================
@@ -44,21 +44,23 @@ public final class ComponentFactoryException
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ComponentFactoryException} class
-     * with no detail message and no cause.
+     * Initializes a new instance of the
+     * {@code ComponentPrototypeFactoryException} class with no detail message
+     * and no cause.
      */
-    public ComponentFactoryException()
+    public ComponentPrototypeFactoryException()
     {
     }
 
     /**
-     * Initializes a new instance of the {@code ComponentFactoryException} class
-     * with the specified detail message and no cause.
+     * Initializes a new instance of the
+     * {@code ComponentPrototypeFactoryException} class with the specified
+     * detail message and no cause.
      * 
      * @param message
      *        The detail message; may be {@code null}.
      */
-    public ComponentFactoryException(
+    public ComponentPrototypeFactoryException(
         /* @Nullable */
         final String message )
     {
@@ -66,13 +68,14 @@ public final class ComponentFactoryException
     }
 
     /**
-     * Initializes a new instance of the {@code ComponentFactoryException} class
-     * with no detail message and specified cause.
+     * Initializes a new instance of the
+     * {@code ComponentPrototypeFactoryException} class with no detail message
+     * and specified cause.
      * 
      * @param cause
      *        The cause; may be {@code null}.
      */
-    public ComponentFactoryException(
+    public ComponentPrototypeFactoryException(
         /* @Nullable */
         final Throwable cause )
     {
@@ -80,15 +83,16 @@ public final class ComponentFactoryException
     }
 
     /**
-     * Initializes a new instance of the {@code ComponentFactoryException} class
-     * with the specified detail message and cause.
+     * Initializes a new instance of the
+     * {@code ComponentPrototypeFactoryException} class with the specified
+     * detail message and cause.
      * 
      * @param message
      *        The detail message; may be {@code null}.
      * @param cause
      *        The cause; may be {@code null}.
      */
-    public ComponentFactoryException(
+    public ComponentPrototypeFactoryException(
         /* @Nullable */
         final String message,
         /* @Nullable */

@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.ui.prototype;
 
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.core.IComponentFactory;
+import org.gamegineer.table.ui.prototype.IComponentPrototypeFactory;
 
 /**
  * A component prototype.
@@ -40,8 +40,8 @@ final class ComponentPrototype
      */
     private final String categoryId_;
 
-    /** The component factory used to create the prototype. */
-    private final IComponentFactory componentFactory_;
+    /** The component prototype factory. */
+    private final IComponentPrototypeFactory componentPrototypeFactory_;
 
     /** The component prototype mnemonic. */
     private final int mnemonic_;
@@ -64,9 +64,8 @@ final class ComponentPrototype
      * @param categoryId
      *        The component prototype category identifier or {@code null} if the
      *        component prototype has no category.
-     * @param componentFactory
-     *        The component factory used to create the prototype; must not be
-     *        {@code null}.
+     * @param componentPrototypeFactory
+     *        The component prototype factory; must not be {@code null}.
      */
     ComponentPrototype(
         /* @NonNull */
@@ -75,13 +74,13 @@ final class ComponentPrototype
         /* @Nullable */
         final String categoryId,
         /* @NonNull */
-        final IComponentFactory componentFactory )
+        final IComponentPrototypeFactory componentPrototypeFactory )
     {
         assert name != null;
-        assert componentFactory != null;
+        assert componentPrototypeFactory != null;
 
         categoryId_ = categoryId;
-        componentFactory_ = componentFactory;
+        componentPrototypeFactory_ = componentPrototypeFactory;
         mnemonic_ = mnemonic;
         name_ = name;
     }
@@ -104,15 +103,14 @@ final class ComponentPrototype
     }
 
     /**
-     * Gets the component factory used to create the prototype.
+     * Gets the component prototype factory.
      * 
-     * @return The component factory used to create the prototype; never
-     *         {@code null}.
+     * @return The component prototype factory; never {@code null}.
      */
     /* @NonNull */
-    IComponentFactory getComponentFactory()
+    IComponentPrototypeFactory getFactory()
     {
-        return componentFactory_;
+        return componentPrototypeFactory_;
     }
 
     /**

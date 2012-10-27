@@ -33,10 +33,10 @@ import javax.swing.KeyStroke;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.gamegineer.table.core.IComponentFactory;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.BundleConstants;
 import org.gamegineer.table.internal.ui.Loggers;
+import org.gamegineer.table.ui.prototype.IComponentPrototypeFactory;
 
 /**
  * A facade for working with the
@@ -153,9 +153,9 @@ public final class ComponentPrototypesExtensionPoint
 
         final IConfigurationElement[] factoryConfigurationElements = configurationElement.getChildren( COMPONENT_PROTOTYPE_FACTORY_ELEM_NAME );
         assertArgumentLegal( factoryConfigurationElements.length == 1, "configurationElement", NonNlsMessages.ComponentPrototypesExtensionPoint_createComponentPrototype_missingFactory ); //$NON-NLS-1$
-        final IComponentFactory componentFactory = new ComponentFactoryProxy( configurationElement, COMPONENT_PROTOTYPE_FACTORY_ELEM_NAME );
+        final IComponentPrototypeFactory componentPrototypeFactory = new ComponentPrototypeFactoryProxy( configurationElement, COMPONENT_PROTOTYPE_FACTORY_ELEM_NAME );
 
-        return new ComponentPrototype( name, mnemonic, categoryId, componentFactory );
+        return new ComponentPrototype( name, mnemonic, categoryId, componentPrototypeFactory );
     }
 
     /**

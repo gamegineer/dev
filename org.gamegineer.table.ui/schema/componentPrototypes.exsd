@@ -171,10 +171,10 @@
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
-                  the fully-qualified name of the component factory class responsible for creating the prototype
+                  the fully-qualified name of the component prototype factory class responsible for creating the prototype
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.gamegineer.table.core.IComponentFactory"/>
+                  <meta.attribute kind="java" basedOn=":org.gamegineer.table.ui.prototype.IComponentPrototypeFactory"/>
                </appinfo>
             </annotation>
          </attribute>

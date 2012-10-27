@@ -1,5 +1,5 @@
 /*
- * ComponentPrototypeUtilsTest.java
+ * CardPrototypeFactoryAsComponentPrototypeFactoryTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,29 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 24, 2012 at 8:36:05 PM.
+ * Created on Oct 24, 2012 at 8:11:26 PM.
  */
 
-package org.gamegineer.table.internal.ui.prototype;
+package org.gamegineer.table.internal.ui.prototypes;
 
-import org.junit.Test;
+import org.gamegineer.table.ui.prototype.AbstractComponentPrototypeFactoryTestCase;
+import org.gamegineer.table.ui.prototype.IComponentPrototypeFactory;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.prototype.ComponentPrototypeUtils}
- * class.
+ * {@link org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory}
+ * class to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.ui.prototype.IComponentPrototypeFactory}
+ * interface.
  */
-public final class ComponentPrototypeUtilsTest
+public final class CardPrototypeFactoryAsComponentPrototypeFactoryTest
+    extends AbstractComponentPrototypeFactoryTestCase
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ComponentPrototypeUtilsTest}
-     * class.
+     * Initializes a new instance of the
+     * {@code CardPrototypeFactoryAsComponentPrototypeFactoryTest} class.
      */
-    public ComponentPrototypeUtilsTest()
+    public CardPrototypeFactoryAsComponentPrototypeFactoryTest()
     {
     }
 
@@ -47,13 +51,12 @@ public final class ComponentPrototypeUtilsTest
     // Methods
     // ======================================================================
 
-    /**
-     * Ensures the {@link ComponentPrototypeUtils#getComponentPrototypeFactory}
-     * method throws an exception when passed a {@code null} event.
+    /*
+     * @see org.gamegineer.table.ui.prototype.AbstractComponentPrototypeFactoryTestCase#createComponentPrototypeFactory()
      */
-    @Test( expected = NullPointerException.class )
-    public void testGetComponentPrototypeFactory_Event_Null()
+    @Override
+    protected IComponentPrototypeFactory createComponentPrototypeFactory()
     {
-        ComponentPrototypeUtils.getComponentPrototypeFactory( null );
+        return new CardPrototypeFactory();
     }
 }

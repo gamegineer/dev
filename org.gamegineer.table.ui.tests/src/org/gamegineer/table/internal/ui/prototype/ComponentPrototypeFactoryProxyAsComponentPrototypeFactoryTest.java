@@ -1,5 +1,5 @@
 /*
- * ComponentFactoryProxyAsComponentFactoryTest.java
+ * ComponentPrototypeFactoryProxyAsComponentPrototypeFactoryTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -23,17 +23,18 @@ package org.gamegineer.table.internal.ui.prototype;
 
 import org.easymock.EasyMock;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.gamegineer.table.core.AbstractComponentFactoryTestCase;
-import org.gamegineer.table.core.IComponentFactory;
+import org.gamegineer.table.ui.prototype.AbstractComponentPrototypeFactoryTestCase;
+import org.gamegineer.table.ui.prototype.IComponentPrototypeFactory;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.prototype.ComponentFactoryProxy}
+ * {@link org.gamegineer.table.internal.ui.prototype.ComponentPrototypeFactoryProxy}
  * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.IComponentFactory} interface.
+ * {@link org.gamegineer.table.ui.prototype.IComponentPrototypeFactory}
+ * interface.
  */
-public final class ComponentFactoryProxyAsComponentFactoryTest
-    extends AbstractComponentFactoryTestCase
+public final class ComponentPrototypeFactoryProxyAsComponentPrototypeFactoryTest
+    extends AbstractComponentPrototypeFactoryTestCase
 {
     // ======================================================================
     // Constructors
@@ -41,9 +42,10 @@ public final class ComponentFactoryProxyAsComponentFactoryTest
 
     /**
      * Initializes a new instance of the
-     * {@code ComponentFactoryProxyAsComponentFactoryTest} class.
+     * {@code ComponentPrototypeFactoryProxyAsComponentPrototypeFactoryTest}
+     * class.
      */
-    public ComponentFactoryProxyAsComponentFactoryTest()
+    public ComponentPrototypeFactoryProxyAsComponentPrototypeFactoryTest()
     {
     }
 
@@ -53,11 +55,11 @@ public final class ComponentFactoryProxyAsComponentFactoryTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.ui.AbstractComponentFactoryTestCase#createComponentFactory()
+     * @see org.gamegineer.table.ui.prototype.AbstractComponentPrototypeFactoryTestCase#createComponentPrototypeFactory()
      */
     @Override
-    protected IComponentFactory createComponentFactory()
+    protected IComponentPrototypeFactory createComponentPrototypeFactory()
     {
-        return new ComponentFactoryProxy( EasyMock.createMock( IConfigurationElement.class ), "className" ); //$NON-NLS-1$
+        return new ComponentPrototypeFactoryProxy( EasyMock.createMock( IConfigurationElement.class ), "className" ); //$NON-NLS-1$
     }
 }

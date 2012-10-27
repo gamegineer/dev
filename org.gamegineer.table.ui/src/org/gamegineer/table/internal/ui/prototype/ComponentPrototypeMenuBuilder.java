@@ -115,7 +115,7 @@ final class ComponentPrototypeMenuBuilder
         final JMenuItem menuItem = new JMenuItem( menuItemAction_ );
         menuItem.setText( componentPrototype.getName() );
         menuItem.setMnemonic( componentPrototype.getMnemonic() );
-        ComponentPrototypeUtils.setComponentFactory( menuItem, componentPrototype.getComponentFactory() );
+        ComponentPrototypeUtils.setComponentPrototypeFactory( menuItem, componentPrototype.getFactory() );
         menuItems.add( menuItem );
     }
 

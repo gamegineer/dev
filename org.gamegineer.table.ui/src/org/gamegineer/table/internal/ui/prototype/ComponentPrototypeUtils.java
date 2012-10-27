@@ -25,7 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.event.ActionEvent;
 import javax.swing.JComponent;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.IComponentFactory;
+import org.gamegineer.table.ui.prototype.IComponentPrototypeFactory;
 
 /**
  * A collection of useful methods for working with component prototypes.
@@ -38,10 +38,10 @@ public final class ComponentPrototypeUtils
     // ======================================================================
 
     /**
-     * The name of the Swing client property used to store the prototype
-     * component factory.
+     * The name of the Swing client property used to store the component
+     * prototype factory.
      */
-    private static final String CLIENT_PROPERTY_COMPONENT_FACTORY = "org.gamegineer.table.ui.prototype.componentFactory"; //$NON-NLS-1$
+    private static final String CLIENT_PROPERTY_COMPONENT_PROTOTYPE_FACTORY = "org.gamegineer.table.ui.prototype.componentPrototypeFactory"; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -61,13 +61,13 @@ public final class ComponentPrototypeUtils
     // ======================================================================
 
     /**
-     * Gets the prototype component factory for the Swing component associated
+     * Gets the component prototype factory for the Swing component associated
      * with the specified event.
      * 
      * @param event
      *        The event; must not be {@code null}.
      * 
-     * @return The prototype component factory for the Swing component
+     * @return The component prototype factory for the Swing component
      *         associated with the specified event or {@code null} if not
      *         specified.
      * 
@@ -75,7 +75,7 @@ public final class ComponentPrototypeUtils
      *         If {@code event} is {@code null}.
      */
     /* @Nullable */
-    public static IComponentFactory getComponentFactory(
+    public static IComponentPrototypeFactory getComponentPrototypeFactory(
         /* @NonNull */
         final ActionEvent event )
     {
@@ -84,10 +84,10 @@ public final class ComponentPrototypeUtils
         final Object source = event.getSource();
         if( source instanceof JComponent )
         {
-            final Object propertyValue = ((JComponent)source).getClientProperty( CLIENT_PROPERTY_COMPONENT_FACTORY );
-            if( propertyValue instanceof IComponentFactory )
+            final Object propertyValue = ((JComponent)source).getClientProperty( CLIENT_PROPERTY_COMPONENT_PROTOTYPE_FACTORY );
+            if( propertyValue instanceof IComponentPrototypeFactory )
             {
-                return (IComponentFactory)propertyValue;
+                return (IComponentPrototypeFactory)propertyValue;
             }
         }
 
@@ -95,22 +95,22 @@ public final class ComponentPrototypeUtils
     }
 
     /**
-     * Sets the prototype component factory for the specified Swing component.
+     * Sets the component prototype factory for the specified Swing component.
      * 
      * @param uiComponent
      *        The Swing component; must not be {@code null}.
-     * @param componentFactory
-     *        The prototype component factory; must not be {@code null}.
+     * @param componentPrototypeFactory
+     *        The component prototype factory; must not be {@code null}.
      */
-    static void setComponentFactory(
+    static void setComponentPrototypeFactory(
         /* @NonNull */
         final JComponent uiComponent,
         /* @NonNull */
-        final IComponentFactory componentFactory )
+        final IComponentPrototypeFactory componentPrototypeFactory )
     {
         assert uiComponent != null;
-        assert componentFactory != null;
+        assert componentPrototypeFactory != null;
 
-        uiComponent.putClientProperty( CLIENT_PROPERTY_COMPONENT_FACTORY, componentFactory );
+        uiComponent.putClientProperty( CLIENT_PROPERTY_COMPONENT_PROTOTYPE_FACTORY, componentPrototypeFactory );
     }
 }

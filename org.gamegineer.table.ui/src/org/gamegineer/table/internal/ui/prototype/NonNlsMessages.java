@@ -37,10 +37,15 @@ final class NonNlsMessages
     // Fields
     // ======================================================================
 
-    // --- ComponentFactoryProxy --------------------------------------------
+    // --- ComponentPrototypeFactoryProxy -----------------------------------
 
-    /** An error occurred while creating the component factory. */
-    public static String ComponentFactoryProxy_getDelegate_createError;
+    /** An error occurred while creating the component prototype factory. */
+    public static String ComponentPrototypeFactoryProxy_getDelegate_createError;
+
+    // --- ComponentPrototypeMenuBuilder ------------------------------------
+
+    /** The component prototype categories are orphans. */
+    public static String ComponentPrototypeMenuBuilder_toMenu_orphanedCategories;
 
     // --- ComponentPrototypesExtensionPoint --------------------------------
 
@@ -71,11 +76,6 @@ final class NonNlsMessages
     /** The source does not represent a legal mnemonic. */
     public static String ComponentPrototypesExtensionPoint_decodeMnemonic_illegalSource;
 
-    // --- ComponentPrototypeMenuBuilder ------------------------------------
-
-    /** The component prototype categories are orphans. */
-    public static String ComponentPrototypeMenuBuilder_toMenu_orphanedCategories;
-
 
     // ======================================================================
     // Constructors
@@ -101,25 +101,25 @@ final class NonNlsMessages
     // Methods
     // ======================================================================
 
-    // --- ComponentFactoryProxy --------------------------------------------
+    // --- ComponentPrototypeFactoryProxy -----------------------------------
 
     /**
      * Gets the formatted message indicating an error occurred while creating
-     * the component factory.
+     * the component prototype factory.
      * 
      * @param configurationElement
-     *        The component factory configuration element; must not be
+     *        The component prototype factory configuration element; must not be
      *        {@code null}.
      * 
      * @return The formatted message indicating an error occurred while creating
-     *         the component factory; never {@code null}.
+     *         the component prototype factory; never {@code null}.
      */
     /* @NonNull */
-    static String ComponentFactoryProxy_getDelegate_createError(
+    static String ComponentPrototypeFactoryProxy_getDelegate_createError(
         /* @NonNull */
         final IConfigurationElement configurationElement )
     {
-        return bind( ComponentFactoryProxy_getDelegate_createError, configurationElement.getNamespaceIdentifier(), configurationElement.getName() );
+        return bind( ComponentPrototypeFactoryProxy_getDelegate_createError, configurationElement.getNamespaceIdentifier(), configurationElement.getName() );
     }
 
     // --- ComponentPrototypeMenuBuilder ------------------------------------

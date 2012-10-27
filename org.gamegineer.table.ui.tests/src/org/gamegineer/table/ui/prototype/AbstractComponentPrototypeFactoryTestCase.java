@@ -1,5 +1,5 @@
 /*
- * AbstractComponentFactoryTestCase.java
+ * AbstractComponentPrototypeFactoryTestCase.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 18, 2012 at 9:51:20 PM.
+ * Created on Oct 26, 2012 at 9:04:09 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.ui.prototype;
 
 import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
@@ -27,16 +27,17 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.core.IComponentFactory} interface.
+ * {@link org.gamegineer.table.ui.prototype.IComponentPrototypeFactory}
+ * interface.
  */
-public abstract class AbstractComponentFactoryTestCase
+public abstract class AbstractComponentPrototypeFactoryTestCase
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The component factory under test in the fixture. */
-    private IComponentFactory componentFactory_;
+    /** The component prototype factory under test in the fixture. */
+    private IComponentPrototypeFactory componentPrototypeFactory_;
 
 
     // ======================================================================
@@ -45,9 +46,9 @@ public abstract class AbstractComponentFactoryTestCase
 
     /**
      * Initializes a new instance of the
-     * {@code AbstractComponentFactoryTestCase} class.
+     * {@code AbstractComponentPrototypeFactoryTestCase} class.
      */
-    protected AbstractComponentFactoryTestCase()
+    protected AbstractComponentPrototypeFactoryTestCase()
     {
     }
 
@@ -57,15 +58,15 @@ public abstract class AbstractComponentFactoryTestCase
     // ======================================================================
 
     /**
-     * Creates the component factory to be tested.
+     * Creates the component prototype factory to be tested.
      * 
-     * @return The component factory to be tested; never {@code null}.
+     * @return The component prototype factory to be tested; never {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract IComponentFactory createComponentFactory()
+    protected abstract IComponentPrototypeFactory createComponentPrototypeFactory()
         throws Exception;
 
     /**
@@ -78,21 +79,21 @@ public abstract class AbstractComponentFactoryTestCase
     public void setUp()
         throws Exception
     {
-        componentFactory_ = createComponentFactory();
-        assertNotNull( componentFactory_ );
+        componentPrototypeFactory_ = createComponentPrototypeFactory();
+        assertNotNull( componentPrototypeFactory_ );
     }
 
     /**
-     * Ensures the {@link IComponentFactory#createComponent} method throws an
-     * exception when passed a {@code null} table environment.
+     * Ensures the {@link IComponentPrototypeFactory#createComponentPrototype}
+     * method throws an exception when passed a {@code null} table environment.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateComponent_TableEnvironment_Null()
+    public void testCreateComponentPrototype_TableEnvironment_Null()
         throws Exception
     {
-        componentFactory_.createComponent( null );
+        componentPrototypeFactory_.createComponentPrototype( null );
     }
 }

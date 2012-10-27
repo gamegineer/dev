@@ -37,14 +37,25 @@ final class NonNlsMessages
 
     // --- CardPrototypeFactory ---------------------------------------------
 
-    /** Failed to create the component. */
-    public static String CardPrototypeFactory_createComponent_error;
+    /** Failed to create the component prototype. */
+    public static String CardPrototypeFactory_createComponentPrototype_error;
 
     /** The specified parameter was not specified. */
     public static String CardPrototypeFactory_setInitializationData_parameterNotSpecified;
 
     /** The parameters collection was not specified. */
     public static String CardPrototypeFactory_setInitializationData_parametersNotSpecified;
+
+    // --- DeckPrototypeFactory ---------------------------------------------
+
+    /** Failed to create the component prototype. */
+    public static String DeckPrototypeFactory_createComponentPrototype_error;
+
+    /** The specified parameter was not specified. */
+    public static String DeckPrototypeFactory_setInitializationData_parameterNotSpecified;
+
+    /** The parameters collection was not specified. */
+    public static String DeckPrototypeFactory_setInitializationData_parametersNotSpecified;
 
 
     // ======================================================================
@@ -89,5 +100,25 @@ final class NonNlsMessages
         final String parameterName )
     {
         return bind( CardPrototypeFactory_setInitializationData_parameterNotSpecified, parameterName );
+    }
+
+    // --- DeckPrototypeFactory ---------------------------------------------
+
+    /**
+     * Gets the formatted message indicating the specified parameter was not
+     * specified.
+     * 
+     * @param parameterName
+     *        The parameter name; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the specified parameter was not
+     *         specified; never {@code null}.
+     */
+    /* @NonNull */
+    static String DeckPrototypeFactory_setInitializationData_parameterNotSpecified(
+        /* @NonNull */
+        final String parameterName )
+    {
+        return bind( DeckPrototypeFactory_setInitializationData_parameterNotSpecified, parameterName );
     }
 }

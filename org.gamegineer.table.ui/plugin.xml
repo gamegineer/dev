@@ -527,6 +527,24 @@
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.special.joker" />
             </factory>
         </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.deck"
+                mnemonic="%componentPrototype.deck.standard52.mnemonic"
+                name="%componentPrototype.deck.standard52.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.DeckPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="includeJokers" value="false" />
+            </factory>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.deck"
+                mnemonic="%componentPrototype.deck.standard54.mnemonic"
+                name="%componentPrototype.deck.standard54.name">
+            <factory class="org.gamegineer.table.internal.ui.prototypes.DeckPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
+                <parameter name="includeJokers" value="true" />
+            </factory>
+        </componentPrototype>
     </extension>
     <extension
             point="org.gamegineer.table.ui.componentStrategyUIs">
