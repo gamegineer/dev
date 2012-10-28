@@ -202,21 +202,27 @@ final class ComponentPrototypeMenuBuilder
             return null;
         }
 
-        final Collection<JMenuItem> menuItems = menuItemCollections_.get( menuDescriptor.getId() );
-        if( menuItems != null )
-        {
-            for( final JMenuItem menuItem : menuItems )
-            {
-                menu.add( menuItem );
-            }
-        }
-
-        for( final MenuDescriptor childMenuDescriptor : menuDescriptor.getChildMenuDescriptors() )
+        final Collection<MenuDescriptor> childMenuDescriptors = menuDescriptor.getChildMenuDescriptors();
+        for( final MenuDescriptor childMenuDescriptor : childMenuDescriptors )
         {
             final JMenu childMenu = toMenu( childMenuDescriptor );
             if( childMenu != null )
             {
                 menu.add( childMenu );
+            }
+        }
+
+        final Collection<JMenuItem> menuItems = menuItemCollections_.get( menuDescriptor.getId() );
+        if( (menuItems != null) && !menuItems.isEmpty() )
+        {
+            if( !childMenuDescriptors.isEmpty() )
+            {
+                menu.addSeparator();
+            }
+
+            for( final JMenuItem menuItem : menuItems )
+            {
+                menu.add( menuItem );
             }
         }
 
