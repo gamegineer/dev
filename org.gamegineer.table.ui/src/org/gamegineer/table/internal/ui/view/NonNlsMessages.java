@@ -66,12 +66,6 @@ final class NonNlsMessages
 
     // --- TableView --------------------------------------------------------
 
-    /** An error occurred while adding a new card to the table. */
-    public static String TableView_addCard_error;
-
-    /** An error occurred while adding a new card pile to the table. */
-    public static String TableView_addCardPile_error;
-
     /** An error occurred while adding a new component to the table. */
     public static String TableView_addComponent_error;
 

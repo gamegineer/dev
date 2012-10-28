@@ -62,50 +62,6 @@ final class CardPilePopupMenu
     // ======================================================================
 
     /**
-     * Creates the add card menu.
-     * 
-     * @return The add card menu; never {@code null}.
-     */
-    /* @NonNull */
-    private static JMenu createAddCardMenu()
-    {
-        final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_addCard_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addCard_mnemonic ).getKeyCode() );
-        menu.add( createAddClubsCardMenu() );
-        menu.add( createAddDiamondsCardMenu() );
-        menu.add( createAddHeartsCardMenu() );
-        menu.add( createAddSpadesCardMenu() );
-        menu.add( createAddSpecialCardMenu() );
-        return menu;
-    }
-
-    /**
-     * Creates the add Clubs card menu.
-     * 
-     * @return The add Clubs card menu; never {@code null}.
-     */
-    /* @NonNull */
-    private static JMenu createAddClubsCardMenu()
-    {
-        final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_addClubsCard_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addClubsCard_mnemonic ).getKeyCode() );
-        menu.add( Actions.getAddAceOfClubsCardAction() );
-        menu.add( Actions.getAddTwoOfClubsCardAction() );
-        menu.add( Actions.getAddThreeOfClubsCardAction() );
-        menu.add( Actions.getAddFourOfClubsCardAction() );
-        menu.add( Actions.getAddFiveOfClubsCardAction() );
-        menu.add( Actions.getAddSixOfClubsCardAction() );
-        menu.add( Actions.getAddSevenOfClubsCardAction() );
-        menu.add( Actions.getAddEightOfClubsCardAction() );
-        menu.add( Actions.getAddNineOfClubsCardAction() );
-        menu.add( Actions.getAddTenOfClubsCardAction() );
-        menu.add( Actions.getAddJackOfClubsCardAction() );
-        menu.add( Actions.getAddQueenOfClubsCardAction() );
-        menu.add( Actions.getAddKingOfClubsCardAction() );
-        return menu;
-    }
-
-    /**
      * Creates the Add Component menu.
      * 
      * @return The Add Component menu; never {@code null}.
@@ -117,113 +73,6 @@ final class CardPilePopupMenu
             NlsMessages.CardPilePopupMenu_addComponent_text, //
             KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addComponent_mnemonic ).getKeyCode(), //
             Actions.getAddComponentAction() );
-    }
-
-    /**
-     * Creates the add deck menu.
-     * 
-     * @return The add deck menu; never {@code null}.
-     */
-    /* @NonNull */
-    private static JMenu createAddDeckMenu()
-    {
-        final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_addDeck_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addDeck_mnemonic ).getKeyCode() );
-        menu.add( Actions.getAddStandard52CardDeckAction() );
-        menu.add( Actions.getAddStandard54CardDeckAction() );
-        return menu;
-    }
-
-    /**
-     * Creates the add Diamonds card menu.
-     * 
-     * @return The add Diamonds card menu; never {@code null}.
-     */
-    /* @NonNull */
-    private static JMenu createAddDiamondsCardMenu()
-    {
-        final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_addDiamondsCard_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addDiamondsCard_mnemonic ).getKeyCode() );
-        menu.add( Actions.getAddAceOfDiamondsCardAction() );
-        menu.add( Actions.getAddTwoOfDiamondsCardAction() );
-        menu.add( Actions.getAddThreeOfDiamondsCardAction() );
-        menu.add( Actions.getAddFourOfDiamondsCardAction() );
-        menu.add( Actions.getAddFiveOfDiamondsCardAction() );
-        menu.add( Actions.getAddSixOfDiamondsCardAction() );
-        menu.add( Actions.getAddSevenOfDiamondsCardAction() );
-        menu.add( Actions.getAddEightOfDiamondsCardAction() );
-        menu.add( Actions.getAddNineOfDiamondsCardAction() );
-        menu.add( Actions.getAddTenOfDiamondsCardAction() );
-        menu.add( Actions.getAddJackOfDiamondsCardAction() );
-        menu.add( Actions.getAddQueenOfDiamondsCardAction() );
-        menu.add( Actions.getAddKingOfDiamondsCardAction() );
-        return menu;
-    }
-
-    /**
-     * Creates the add Hearts card menu.
-     * 
-     * @return The add Hearts card menu; never {@code null}.
-     */
-    /* @NonNull */
-    private static JMenu createAddHeartsCardMenu()
-    {
-        final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_addHeartsCard_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addHeartsCard_mnemonic ).getKeyCode() );
-        menu.add( Actions.getAddAceOfHeartsCardAction() );
-        menu.add( Actions.getAddTwoOfHeartsCardAction() );
-        menu.add( Actions.getAddThreeOfHeartsCardAction() );
-        menu.add( Actions.getAddFourOfHeartsCardAction() );
-        menu.add( Actions.getAddFiveOfHeartsCardAction() );
-        menu.add( Actions.getAddSixOfHeartsCardAction() );
-        menu.add( Actions.getAddSevenOfHeartsCardAction() );
-        menu.add( Actions.getAddEightOfHeartsCardAction() );
-        menu.add( Actions.getAddNineOfHeartsCardAction() );
-        menu.add( Actions.getAddTenOfHeartsCardAction() );
-        menu.add( Actions.getAddJackOfHeartsCardAction() );
-        menu.add( Actions.getAddQueenOfHeartsCardAction() );
-        menu.add( Actions.getAddKingOfHeartsCardAction() );
-        return menu;
-    }
-
-    /**
-     * Creates the add Spades card menu.
-     * 
-     * @return The add Spades card menu; never {@code null}.
-     */
-    /* @NonNull */
-    private static JMenu createAddSpadesCardMenu()
-    {
-        final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_addSpadesCard_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addSpadesCard_mnemonic ).getKeyCode() );
-        menu.add( Actions.getAddAceOfSpadesCardAction() );
-        menu.add( Actions.getAddTwoOfSpadesCardAction() );
-        menu.add( Actions.getAddThreeOfSpadesCardAction() );
-        menu.add( Actions.getAddFourOfSpadesCardAction() );
-        menu.add( Actions.getAddFiveOfSpadesCardAction() );
-        menu.add( Actions.getAddSixOfSpadesCardAction() );
-        menu.add( Actions.getAddSevenOfSpadesCardAction() );
-        menu.add( Actions.getAddEightOfSpadesCardAction() );
-        menu.add( Actions.getAddNineOfSpadesCardAction() );
-        menu.add( Actions.getAddTenOfSpadesCardAction() );
-        menu.add( Actions.getAddJackOfSpadesCardAction() );
-        menu.add( Actions.getAddQueenOfSpadesCardAction() );
-        menu.add( Actions.getAddKingOfSpadesCardAction() );
-        return menu;
-    }
-
-    /**
-     * Creates the add Special card menu.
-     * 
-     * @return The add Special card menu; never {@code null}.
-     */
-    /* @NonNull */
-    private static JMenu createAddSpecialCardMenu()
-    {
-        final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_addSpecialCard_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addSpecialCard_mnemonic ).getKeyCode() );
-        menu.add( Actions.getAddJokerCardAction() );
-        return menu;
     }
 
     /**
@@ -252,8 +101,6 @@ final class CardPilePopupMenu
     {
         add( createAddComponentMenu() );
         addSeparator();
-        add( createAddCardMenu() );
-        add( createAddDeckMenu() );
         add( Actions.getRemoveCardAction() );
         add( Actions.getRemoveAllCardsAction() );
         add( Actions.getFlipCardAction() );

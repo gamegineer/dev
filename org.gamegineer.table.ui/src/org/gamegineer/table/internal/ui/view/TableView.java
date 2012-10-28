@@ -60,19 +60,15 @@ import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.common.ui.window.WindowConstants;
 import org.gamegineer.common.ui.wizard.IWizard;
 import org.gamegineer.common.ui.wizard.WizardDialog;
-import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.CardPileOrientation;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.ComponentStrategyRegistry;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
-import org.gamegineer.table.core.ComponentSurfaceDesignId;
-import org.gamegineer.table.core.ComponentSurfaceDesignRegistry;
 import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.ContainerLayoutRegistry;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.NoSuchComponentStrategyException;
-import org.gamegineer.table.core.NoSuchComponentSurfaceDesignException;
 import org.gamegineer.table.core.NoSuchContainerLayoutException;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.BundleImages;
@@ -170,73 +166,6 @@ final class TableView
     // ======================================================================
 
     /**
-     * Adds a new card to the focused card pile.
-     * 
-     * @param faceDesignId
-     *        The identifier of the design on the card face; must not be
-     *        {@code null}.
-     */
-    private void addCard(
-        /* @NonNull */
-        final ComponentSurfaceDesignId faceDesignId )
-    {
-        assert faceDesignId != null;
-
-        final IContainer container = getFocusedContainer();
-        if( container != null )
-        {
-            try
-            {
-                container.addComponent( createCard( faceDesignId, ComponentSurfaceDesignId.fromString( "org.gamegineer.cardSurfaces.back.red" ) ) ); //$NON-NLS-1$
-            }
-            catch( final ModelException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableView_addCard_error, e );
-            }
-        }
-    }
-
-    /**
-     * Adds a new card pile to the table.
-     */
-    private void addCardPile()
-    {
-        try
-        {
-            final IContainer cardPile = createCardPile( ComponentSurfaceDesignId.fromString( "org.gamegineer.cardPileBases.default" ) ); //$NON-NLS-1$
-
-            final Point location = getMouseLocation();
-            convertPointFromTable( location );
-            final Dimension tableSize = getSize();
-            final Dimension cardPileSize = cardPile.getSize();
-            if( location.x < 0 )
-            {
-                location.x = 0;
-            }
-            else if( location.x + cardPileSize.width > tableSize.width )
-            {
-                location.x = tableSize.width - cardPileSize.width;
-            }
-            if( location.y < 0 )
-            {
-                location.y = 0;
-            }
-            else if( location.y + cardPileSize.height > tableSize.height )
-            {
-                location.y = tableSize.height - cardPileSize.height;
-            }
-            convertPointToTable( location );
-            cardPile.setLocation( location );
-
-            model_.getTable().getTabletop().addComponent( cardPile );
-        }
-        catch( final ModelException e )
-        {
-            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableView_addCardPile_error, e );
-        }
-    }
-
-    /**
      * Adds a new component to the table.
      * 
      * @param componentPrototypeFactory
@@ -314,98 +243,10 @@ final class TableView
     }
 
     /**
-     * Adds a standard 52-card deck to the focused card pile.
-     */
-    private void addStandard52CardDeck()
-    {
-        final String[] faceDesignIds = new String[] {
-            "org.gamegineer.cardSurfaces.clubs.ace", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.clubs.two", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.clubs.three", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.clubs.four", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.clubs.five", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.clubs.six", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.clubs.seven", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.clubs.eight", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.clubs.nine", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.clubs.ten", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.clubs.jack", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.clubs.queen", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.clubs.king", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.ace", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.two", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.three", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.four", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.five", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.six", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.seven", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.eight", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.nine", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.ten", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.jack", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.queen", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.king", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.ace", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.two", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.three", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.four", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.five", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.six", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.seven", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.eight", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.nine", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.ten", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.jack", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.queen", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.king", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.ace", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.two", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.three", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.four", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.five", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.six", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.seven", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.eight", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.nine", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.ten", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.jack", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.queen", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.king", //$NON-NLS-1$
-        };
-
-        for( final String faceDesignId : faceDesignIds )
-        {
-            addCard( ComponentSurfaceDesignId.fromString( faceDesignId ) );
-        }
-    }
-
-    /**
-     * Adds a standard 54-card deck to the focused card pile.
-     */
-    private void addStandard54CardDeck()
-    {
-        addStandard52CardDeck();
-
-        final ComponentSurfaceDesignId jokerFaceDesignId = ComponentSurfaceDesignId.fromString( "org.gamegineer.cardSurfaces.special.joker" ); //$NON-NLS-1$
-        addCard( jokerFaceDesignId );
-        addCard( jokerFaceDesignId );
-    }
-
-    /**
      * Binds the action attachments for this component.
      */
     private void bindActions()
     {
-        final ActionListener addCardActionListener = new ActionListener()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void actionPerformed(
-                final ActionEvent event )
-            {
-                addCard( ComponentSurfaceDesignId.fromString( event.getActionCommand() ) );
-            }
-        };
         final ActionListener setCardPileLayoutActionListener = new ActionListener()
         {
             @Override
@@ -416,21 +257,6 @@ final class TableView
                 setCardPileLayout( ContainerLayoutId.fromString( event.getActionCommand() ) );
             }
         };
-        actionMediator_.bindActionListener( Actions.getAddAceOfClubsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddAceOfDiamondsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddAceOfHeartsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddAceOfSpadesCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddCardPileAction(), new ActionListener()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void actionPerformed(
-                @SuppressWarnings( "unused" )
-                final ActionEvent event )
-            {
-                addCardPile();
-            }
-        } );
         actionMediator_.bindActionListener( Actions.getAddComponentAction(), new ActionListener()
         {
             @Override
@@ -445,77 +271,6 @@ final class TableView
                 }
             }
         } );
-        actionMediator_.bindActionListener( Actions.getAddEightOfClubsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddEightOfDiamondsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddEightOfHeartsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddEightOfSpadesCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddFiveOfClubsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddFiveOfDiamondsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddFiveOfHeartsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddFiveOfSpadesCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddFourOfClubsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddFourOfDiamondsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddFourOfHeartsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddFourOfSpadesCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddJackOfClubsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddJackOfDiamondsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddJackOfHeartsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddJackOfSpadesCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddJokerCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddKingOfClubsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddKingOfDiamondsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddKingOfHeartsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddKingOfSpadesCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddNineOfClubsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddNineOfDiamondsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddNineOfHeartsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddNineOfSpadesCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddQueenOfClubsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddQueenOfDiamondsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddQueenOfHeartsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddQueenOfSpadesCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddSevenOfClubsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddSevenOfDiamondsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddSevenOfHeartsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddSevenOfSpadesCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddSixOfClubsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddSixOfDiamondsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddSixOfHeartsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddSixOfSpadesCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddStandard52CardDeckAction(), new ActionListener()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void actionPerformed(
-                @SuppressWarnings( "unused" )
-                final ActionEvent event )
-            {
-                addStandard52CardDeck();
-            }
-        } );
-        actionMediator_.bindActionListener( Actions.getAddStandard54CardDeckAction(), new ActionListener()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void actionPerformed(
-                @SuppressWarnings( "unused" )
-                final ActionEvent event )
-            {
-                addStandard54CardDeck();
-            }
-        } );
-        actionMediator_.bindActionListener( Actions.getAddTenOfClubsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddTenOfDiamondsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddTenOfHeartsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddTenOfSpadesCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddThreeOfClubsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddThreeOfDiamondsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddThreeOfHeartsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddThreeOfSpadesCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddTwoOfClubsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddTwoOfDiamondsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddTwoOfHeartsCardAction(), addCardActionListener );
-        actionMediator_.bindActionListener( Actions.getAddTwoOfSpadesCardAction(), addCardActionListener );
         actionMediator_.bindActionListener( Actions.getCancelTableNetworkControlRequestAction(), new ActionListener()
         {
             @Override
@@ -741,63 +496,7 @@ final class TableView
                 return !model_.getTableNetwork().isConnected();
             }
         };
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddAceOfClubsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddAceOfDiamondsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddAceOfHeartsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddAceOfSpadesCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddCardPileAction(), isTableEditablePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getAddComponentAction(), isTableEditablePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddEightOfClubsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddEightOfDiamondsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddEightOfHeartsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddEightOfSpadesCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddFiveOfClubsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddFiveOfDiamondsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddFiveOfHeartsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddFiveOfSpadesCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddFourOfClubsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddFourOfDiamondsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddFourOfHeartsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddFourOfSpadesCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddJackOfClubsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddJackOfDiamondsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddJackOfHeartsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddJackOfSpadesCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddJokerCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddKingOfClubsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddKingOfDiamondsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddKingOfHeartsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddKingOfSpadesCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddNineOfClubsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddNineOfDiamondsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddNineOfHeartsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddNineOfSpadesCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddQueenOfClubsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddQueenOfDiamondsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddQueenOfHeartsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddQueenOfSpadesCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddSevenOfClubsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddSevenOfDiamondsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddSevenOfHeartsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddSevenOfSpadesCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddSixOfClubsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddSixOfDiamondsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddSixOfHeartsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddSixOfSpadesCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddStandard52CardDeckAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddStandard54CardDeckAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddTenOfClubsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddTenOfDiamondsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddTenOfHeartsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddTenOfSpadesCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddThreeOfClubsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddThreeOfDiamondsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddThreeOfHeartsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddThreeOfSpadesCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddTwoOfClubsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddTwoOfDiamondsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddTwoOfHeartsCardAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getAddTwoOfSpadesCardAction(), hasEditableFocusedCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getCancelTableNetworkControlRequestAction(), new IPredicate<Action>()
         {
             @Override
@@ -895,77 +594,6 @@ final class TableView
         }
 
         return new Color( 0, 128, 0 );
-    }
-
-    /**
-     * Creates a new card with the specified surface design identifiers.
-     * 
-     * @param faceDesignId
-     *        The card face surface design identifier; must not be {@code null}.
-     * @param backDesignId
-     *        The card back surface design identifier; must not be {@code null}.
-     * 
-     * @return A new card; never {@code null}.
-     * 
-     * @throws org.gamegineer.table.internal.ui.model.ModelException
-     *         If an error occurs creating the card.
-     */
-    /* @NonNull */
-    private IComponent createCard(
-        /* @NonNull */
-        final ComponentSurfaceDesignId faceDesignId,
-        /* @NonNull */
-        final ComponentSurfaceDesignId backDesignId )
-        throws ModelException
-    {
-        assert faceDesignId != null;
-        assert backDesignId != null;
-
-        try
-        {
-            final IComponent card = model_.getTable().getTableEnvironment().createComponent( ComponentStrategyRegistry.getComponentStrategy( ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.card" ) ) ); //$NON-NLS-1$
-            card.setSurfaceDesign( CardOrientation.BACK, ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( backDesignId ) );
-            card.setSurfaceDesign( CardOrientation.FACE, ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( faceDesignId ) );
-            return card;
-        }
-        catch( final NoSuchComponentStrategyException e )
-        {
-            throw new ModelException( e );
-        }
-        catch( final NoSuchComponentSurfaceDesignException e )
-        {
-            throw new ModelException( e );
-        }
-    }
-
-    /**
-     * Creates a new card pile with the specified surface design identifier.
-     * 
-     * @param baseDesignId
-     *        The card pile base surface design identifier; must not be
-     *        {@code null}.
-     * 
-     * @return A new card pile; never {@code null}.
-     * 
-     * @throws org.gamegineer.table.internal.ui.model.ModelException
-     *         If an error occurs creating the card pile.
-     */
-    /* @NonNull */
-    private IContainer createCardPile(
-        /* @NonNull */
-        final ComponentSurfaceDesignId baseDesignId )
-        throws ModelException
-    {
-        assert baseDesignId != null;
-
-        try
-        {
-            return createCardPile( ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( baseDesignId ) );
-        }
-        catch( final NoSuchComponentSurfaceDesignException e )
-        {
-            throw new ModelException( e );
-        }
     }
 
     /**

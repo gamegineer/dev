@@ -80,7 +80,6 @@ final class TablePopupMenu
     {
         add( createAddComponentMenu() );
         addSeparator();
-        add( Actions.getAddCardPileAction() );
         add( Actions.getRemoveAllCardPilesAction() );
 
         addPopupMenuListener( MenuUtils.getDefaultPopupMenuListener() );
