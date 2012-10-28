@@ -28,6 +28,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.ui.model.MainModel;
+import org.gamegineer.table.internal.ui.prototype.ComponentPrototypesExtensionPoint;
 import org.gamegineer.table.internal.ui.util.swing.JMenuItemGroup;
 
 /**
@@ -114,6 +115,20 @@ final class MenuBarView
         menu.add( Actions.getAddQueenOfClubsCardAction() );
         menu.add( Actions.getAddKingOfClubsCardAction() );
         return menu;
+    }
+
+    /**
+     * Creates the Add Component menu.
+     * 
+     * @return The Add Component menu; never {@code null}.
+     */
+    /* @NonNull */
+    private static JMenu createAddComponentMenu()
+    {
+        return ComponentPrototypesExtensionPoint.createMenu( //
+            NlsMessages.MenuBarView_addComponent_text, //
+            KeyStroke.getKeyStroke( NlsMessages.MenuBarView_addComponent_mnemonic ).getKeyCode(), //
+            Actions.getAddComponentAction() );
     }
 
     /**
@@ -326,6 +341,8 @@ final class MenuBarView
     {
         final JMenu menu = createTopLevelMenu( NlsMessages.MenuBarView_table_text );
         menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.MenuBarView_table_mnemonic ).getKeyCode() );
+        menu.add( createAddComponentMenu() );
+        menu.addSeparator();
         menu.add( Actions.getAddCardPileAction() );
         menu.add( Actions.getRemoveCardPileAction() );
         menu.add( Actions.getRemoveAllCardPilesAction() );

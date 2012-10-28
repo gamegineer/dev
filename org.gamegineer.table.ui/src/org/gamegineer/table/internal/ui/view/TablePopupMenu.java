@@ -1,6 +1,6 @@
 /*
  * TablePopupMenu.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,11 @@
 
 package org.gamegineer.table.internal.ui.view;
 
+import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
+import javax.swing.KeyStroke;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.internal.ui.prototype.ComponentPrototypesExtensionPoint;
 
 /**
  * The popup menu associated with a table.
@@ -57,10 +60,26 @@ final class TablePopupMenu
     // ======================================================================
 
     /**
+     * Creates the Add Component menu.
+     * 
+     * @return The Add Component menu; never {@code null}.
+     */
+    /* @NonNull */
+    private static JMenu createAddComponentMenu()
+    {
+        return ComponentPrototypesExtensionPoint.createMenu( //
+            NlsMessages.TablePopupMenu_addComponent_text, //
+            KeyStroke.getKeyStroke( NlsMessages.TablePopupMenu_addComponent_mnemonic ).getKeyCode(), //
+            Actions.getAddComponentAction() );
+    }
+
+    /**
      * Initializes this component.
      */
     private void initializeComponent()
     {
+        add( createAddComponentMenu() );
+        addSeparator();
         add( Actions.getAddCardPileAction() );
         add( Actions.getRemoveAllCardPilesAction() );
 

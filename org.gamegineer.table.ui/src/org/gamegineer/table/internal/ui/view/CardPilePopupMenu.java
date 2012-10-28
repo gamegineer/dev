@@ -27,6 +27,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.internal.ui.prototype.ComponentPrototypesExtensionPoint;
 
 /**
  * The popup menu associated with a card pile.
@@ -102,6 +103,20 @@ final class CardPilePopupMenu
         menu.add( Actions.getAddQueenOfClubsCardAction() );
         menu.add( Actions.getAddKingOfClubsCardAction() );
         return menu;
+    }
+
+    /**
+     * Creates the Add Component menu.
+     * 
+     * @return The Add Component menu; never {@code null}.
+     */
+    /* @NonNull */
+    private static JMenu createAddComponentMenu()
+    {
+        return ComponentPrototypesExtensionPoint.createMenu( //
+            NlsMessages.CardPilePopupMenu_addComponent_text, //
+            KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addComponent_mnemonic ).getKeyCode(), //
+            Actions.getAddComponentAction() );
     }
 
     /**
@@ -235,6 +250,8 @@ final class CardPilePopupMenu
      */
     private void initializeComponent()
     {
+        add( createAddComponentMenu() );
+        addSeparator();
         add( createAddCardMenu() );
         add( createAddDeckMenu() );
         add( Actions.getRemoveCardAction() );

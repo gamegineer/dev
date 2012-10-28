@@ -522,6 +522,12 @@ final class NlsMessages
     /** The Add Clubs Card menu text. */
     public static String CardPilePopupMenu_addClubsCard_text;
 
+    /** The Add Component menu mnemonic. */
+    public static String CardPilePopupMenu_addComponent_mnemonic;
+
+    /** The Add Component menu text. */
+    public static String CardPilePopupMenu_addComponent_text;
+
     /** The Add Deck menu mnemonic. */
     public static String CardPilePopupMenu_addDeck_mnemonic;
 
@@ -668,6 +674,12 @@ final class NlsMessages
 
     /** The Add Clubs Card menu text. */
     public static String MenuBarView_addClubsCard_text;
+
+    /** The Add Component menu mnemonic. */
+    public static String MenuBarView_addComponent_mnemonic;
+
+    /** The Add Component menu text. */
+    public static String MenuBarView_addComponent_text;
 
     /** The Add Deck menu mnemonic. */
     public static String MenuBarView_addDeck_mnemonic;
@@ -897,6 +909,14 @@ final class NlsMessages
 
     /** The text for the local role in the players list. */
     public static String TableNetworkPlayerView_playersList_role_local;
+
+    // --- TablePopupMenu ---------------------------------------------------
+
+    /** The Add Component menu mnemonic. */
+    public static String TablePopupMenu_addComponent_mnemonic;
+
+    /** The Add Component menu text. */
+    public static String TablePopupMenu_addComponent_text;
 
     // --- ViewUtils --------------------------------------------------------
 

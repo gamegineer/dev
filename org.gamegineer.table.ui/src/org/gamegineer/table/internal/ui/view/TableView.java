@@ -83,10 +83,13 @@ import org.gamegineer.table.internal.ui.model.ITableModelListener;
 import org.gamegineer.table.internal.ui.model.ModelException;
 import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.internal.ui.model.TableModelEvent;
+import org.gamegineer.table.internal.ui.prototype.ComponentPrototypeUtils;
 import org.gamegineer.table.internal.ui.wizards.hosttablenetwork.HostTableNetworkWizard;
 import org.gamegineer.table.internal.ui.wizards.jointablenetwork.JoinTableNetworkWizard;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.PlayerRole;
+import org.gamegineer.table.ui.prototype.ComponentPrototypeFactoryException;
+import org.gamegineer.table.ui.prototype.IComponentPrototypeFactory;
 
 // TODO: Remove all references to "card" and "card pile".
 
@@ -233,6 +236,65 @@ final class TableView
         }
     }
 
+    /**
+     * Adds a new component to the table.
+     * 
+     * @param componentPrototypeFactory
+     *        The component prototype factory used to create the new component;
+     *        must not be {@code null}.
+     */
+    private void addComponent(
+        /* @NonNull */
+        final IComponentPrototypeFactory componentPrototypeFactory )
+    {
+        assert componentPrototypeFactory != null;
+
+        try
+        {
+            final List<IComponent> components = componentPrototypeFactory.createComponentPrototype( model_.getTable().getTableEnvironment() );
+
+            final IContainer focusedContainer = getFocusedContainer();
+            if( focusedContainer != null )
+            {
+                focusedContainer.addComponents( components );
+            }
+            else
+            {
+                final Point location = getMouseLocation();
+                convertPointFromTable( location );
+                final Dimension tableSize = getSize();
+                for( final IComponent component : components )
+                {
+                    final Dimension cardPileSize = component.getSize();
+                    if( location.x < 0 )
+                    {
+                        location.x = 0;
+                    }
+                    else if( location.x + cardPileSize.width > tableSize.width )
+                    {
+                        location.x = tableSize.width - cardPileSize.width;
+                    }
+                    if( location.y < 0 )
+                    {
+                        location.y = 0;
+                    }
+                    else if( location.y + cardPileSize.height > tableSize.height )
+                    {
+                        location.y = tableSize.height - cardPileSize.height;
+                    }
+                    convertPointToTable( location );
+                    component.setLocation( location );
+                }
+
+                model_.getTable().getTabletop().addComponents( components );
+            }
+        }
+        catch( final ComponentPrototypeFactoryException e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableView_addComponent_error, e );
+        }
+    }
+
     /*
      * @see javax.swing.JComponent#addNotify()
      */
@@ -367,6 +429,20 @@ final class TableView
                 final ActionEvent event )
             {
                 addCardPile();
+            }
+        } );
+        actionMediator_.bindActionListener( Actions.getAddComponentAction(), new ActionListener()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                final ActionEvent event )
+            {
+                final IComponentPrototypeFactory componentPrototypeFactory = ComponentPrototypeUtils.getComponentPrototypeFactory( event );
+                if( componentPrototypeFactory != null )
+                {
+                    addComponent( componentPrototypeFactory );
+                }
             }
         } );
         actionMediator_.bindActionListener( Actions.getAddEightOfClubsCardAction(), addCardActionListener );
@@ -670,6 +746,7 @@ final class TableView
         actionMediator_.bindShouldEnablePredicate( Actions.getAddAceOfHeartsCardAction(), hasEditableFocusedCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getAddAceOfSpadesCardAction(), hasEditableFocusedCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getAddCardPileAction(), isTableEditablePredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getAddComponentAction(), isTableEditablePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getAddEightOfClubsCardAction(), hasEditableFocusedCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getAddEightOfDiamondsCardAction(), hasEditableFocusedCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getAddEightOfHeartsCardAction(), hasEditableFocusedCardPilePredicate );
