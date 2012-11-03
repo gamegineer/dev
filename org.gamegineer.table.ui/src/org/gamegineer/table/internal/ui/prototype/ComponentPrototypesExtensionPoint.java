@@ -241,32 +241,16 @@ public final class ComponentPrototypesExtensionPoint
             {
                 if( COMPONENT_PROTOTYPE_ELEM_NAME.equals( configurationElement.getName() ) )
                 {
-                    try
+                    if( isConfigurationElementEnabled( configurationElement, evaluationContextProvider ) )
                     {
-                        final IConfigurationElement[] enablementConfigurationElements = configurationElement.getChildren( ExpressionTagNames.ENABLEMENT );
-                        if( enablementConfigurationElements.length > 0 )
+                        try
                         {
-                            final ExpressionConverter expressionConverter = ExpressionConverter.getDefault();
-                            final Expression expression = expressionConverter.perform( enablementConfigurationElements[ 0 ] );
-                            if( expression != null )
-                            {
-                                if( expression.evaluate( evaluationContextProvider.getEvaluationContext() ) == EvaluationResult.TRUE )
-                                {
-                                    try
-                                    {
-                                        menuBuilder.addComponentPrototype( createComponentPrototype( configurationElement ) );
-                                    }
-                                    catch( final IllegalArgumentException e )
-                                    {
-                                        Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.ComponentPrototypesExtensionPoint_createMenu_illegalComponentPrototypeConfigurationElement, e );
-                                    }
-                                }
-                            }
+                            menuBuilder.addComponentPrototype( createComponentPrototype( configurationElement ) );
                         }
-                    }
-                    catch( final CoreException e )
-                    {
-                        Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.ComponentPrototypesExtensionPoint_createMenu_illegalComponentPrototypeConfigurationElement, e );
+                        catch( final IllegalArgumentException e )
+                        {
+                            Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.ComponentPrototypesExtensionPoint_createMenu_illegalComponentPrototypeConfigurationElement, e );
+                        }
                     }
                 }
                 else if( COMPONENT_PROTOTYPE_CATEGORY_ELEM_NAME.equals( configurationElement.getName() ) )
@@ -331,5 +315,50 @@ public final class ComponentPrototypesExtensionPoint
         }
 
         return keyStroke.getKeyCode();
+    }
+
+    /**
+     * Indicates the specified configuration element is enabled.
+     * 
+     * @param configurationElement
+     *        The configuration element; must not be {@code null}.
+     * @param evaluationContextProvider
+     *        The evaluation context provider; must not be {@code null}.
+     * 
+     * @return {@code true} if the specified configuration element is enabled;
+     *         otherwise {@code false}.
+     */
+    private static boolean isConfigurationElementEnabled(
+        /* @NonNull */
+        final IConfigurationElement configurationElement,
+        /* @NonNull */
+        final IEvaluationContextProvider evaluationContextProvider )
+    {
+        assert configurationElement != null;
+        assert evaluationContextProvider != null;
+
+        try
+        {
+            final IConfigurationElement[] enablementConfigurationElements = configurationElement.getChildren( ExpressionTagNames.ENABLEMENT );
+            if( enablementConfigurationElements.length == 0 )
+            {
+                return true;
+            }
+
+            final ExpressionConverter expressionConverter = ExpressionConverter.getDefault();
+            final Expression expression = expressionConverter.perform( enablementConfigurationElements[ 0 ] );
+            if( expression == null )
+            {
+                Loggers.getDefaultLogger().warning( NonNlsMessages.ComponentPrototypesExtensionPoint_isConfigurationElementEnabled_unconvertable );
+                return false;
+            }
+
+            return expression.evaluate( evaluationContextProvider.getEvaluationContext() ) == EvaluationResult.TRUE;
+        }
+        catch( final CoreException e )
+        {
+            Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.ComponentPrototypesExtensionPoint_isConfigurationElementEnabled_error, e );
+            return false;
+        }
     }
 }

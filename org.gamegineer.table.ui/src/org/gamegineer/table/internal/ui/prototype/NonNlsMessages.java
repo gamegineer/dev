@@ -76,6 +76,15 @@ final class NonNlsMessages
     /** The source does not represent a legal mnemonic. */
     public static String ComponentPrototypesExtensionPoint_decodeMnemonic_illegalSource;
 
+    /**
+     * An error occurred while evaluating the configuration element enablement
+     * expression.
+     */
+    public static String ComponentPrototypesExtensionPoint_isConfigurationElementEnabled_error;
+
+    /** The configuration element enablement expression could not be converted. */
+    public static String ComponentPrototypesExtensionPoint_isConfigurationElementEnabled_unconvertable;
+
 
     // ======================================================================
     // Constructors
