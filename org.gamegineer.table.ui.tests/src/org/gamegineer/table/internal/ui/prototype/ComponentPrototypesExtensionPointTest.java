@@ -415,12 +415,17 @@ public final class ComponentPrototypesExtensionPointTest
 
     /**
      * Ensures the {@link ComponentPrototypesExtensionPoint#createMenu} method
-     * throws an exception when passed a {@code null} root menu label.
+     * throws an exception when passed a {@code null} evaluation context
+     * provider.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateMenu_RootMenuLabel_Null()
+    public void testCreateMenu_EvaluationContextProvider_Null()
     {
-        ComponentPrototypesExtensionPoint.createMenu( null, KeyEvent.VK_1, EasyMock.createMock( Action.class ) );
+        ComponentPrototypesExtensionPoint.createMenu( //
+            "rootMenuLabel", //$NON-NLS-1$
+            KeyEvent.VK_1, //
+            EasyMock.createMock( Action.class ), //
+            null );
     }
 
     /**
@@ -430,6 +435,24 @@ public final class ComponentPrototypesExtensionPointTest
     @Test( expected = NullPointerException.class )
     public void testCreateMenu_MenuItemAction_Null()
     {
-        ComponentPrototypesExtensionPoint.createMenu( "rootMenuLabel", KeyEvent.VK_1, null ); //$NON-NLS-1$
+        ComponentPrototypesExtensionPoint.createMenu( //
+            "rootMenuLabel", //$NON-NLS-1$
+            KeyEvent.VK_1, //
+            null, //
+            EasyMock.createMock( IEvaluationContextProvider.class ) );
+    }
+
+    /**
+     * Ensures the {@link ComponentPrototypesExtensionPoint#createMenu} method
+     * throws an exception when passed a {@code null} root menu label.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateMenu_RootMenuLabel_Null()
+    {
+        ComponentPrototypesExtensionPoint.createMenu( //
+            null, //
+            KeyEvent.VK_1, //
+            EasyMock.createMock( Action.class ), //
+            EasyMock.createMock( IEvaluationContextProvider.class ) );
     }
 }

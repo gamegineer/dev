@@ -37,6 +37,7 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.core.expressions.EvaluationContext;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.common.persistence.serializable.ObjectStreams;
 import org.gamegineer.table.core.ComponentPath;
@@ -44,6 +45,7 @@ import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.internal.ui.Loggers;
+import org.gamegineer.table.internal.ui.prototype.IEvaluationContextProvider;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.ITableNetwork;
 import org.gamegineer.table.net.PlayerRole;
@@ -56,6 +58,7 @@ import org.gamegineer.table.net.TableNetworkFactory;
  */
 @ThreadSafe
 public final class TableModel
+    implements IComponentModelParent, IEvaluationContextProvider
 {
     // ======================================================================
     // Fields
@@ -323,6 +326,20 @@ public final class TableModel
         return componentModel;
     }
 
+    /*
+     * @see org.gamegineer.table.internal.ui.prototype.IEvaluationContextProvider#getEvaluationContext()
+     */
+    @Override
+    public EvaluationContext getEvaluationContext()
+    {
+        final EvaluationContext evaluationContext = new EvaluationContext( null, EvaluationContext.UNDEFINED_VARIABLE );
+
+        final IComponent focusedComponent = getFocusedComponent();
+        evaluationContext.addVariable( EvaluationContextVariables.FOCUSED_COMPONENT, (focusedComponent != null) ? focusedComponent : EvaluationContext.UNDEFINED_VARIABLE );
+
+        return evaluationContext;
+    }
+
     /**
      * Gets the file to which this model was last saved.
      * 
@@ -387,9 +404,22 @@ public final class TableModel
     /* @Nullable */
     public IComponent getFocusedComponent()
     {
+        final ComponentModel focusedComponentModel = getFocusedComponentModel();
+        return (focusedComponentModel != null) ? focusedComponentModel.getComponent() : null;
+    }
+
+    /**
+     * Gets the model associated with the focused component.
+     * 
+     * @return The model associated with the focused component or {@code null}
+     *         if no component has the focus.
+     */
+    /* @Nullable */
+    public ComponentModel getFocusedComponentModel()
+    {
         synchronized( lock_ )
         {
-            return (focusedComponentModel_ != null) ? focusedComponentModel_.getComponent() : null;
+            return focusedComponentModel_;
         }
     }
 
@@ -418,6 +448,15 @@ public final class TableModel
     public ITable getTable()
     {
         return table_;
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.IComponentModelParent#getTableModel()
+     */
+    @Override
+    public TableModel getTableModel()
+    {
+        return this;
     }
 
     /**

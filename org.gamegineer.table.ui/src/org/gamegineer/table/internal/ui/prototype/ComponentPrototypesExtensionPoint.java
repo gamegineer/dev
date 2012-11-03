@@ -31,6 +31,11 @@ import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.KeyStroke;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.core.expressions.EvaluationResult;
+import org.eclipse.core.expressions.Expression;
+import org.eclipse.core.expressions.ExpressionConverter;
+import org.eclipse.core.expressions.ExpressionTagNames;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.gamegineer.table.internal.ui.Activator;
@@ -204,12 +209,14 @@ public final class ComponentPrototypesExtensionPoint
      *        The root menu mnemonic.
      * @param menuItemAction
      *        The action used for all menu items; must not be {@code null}.
+     * @param evaluationContextProvider
+     *        The evaluation context provider; must not be {@code null}.
      * 
      * @return A new component prototype menu; never {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code rootMenuLabel} or {@code menuItemAction} is
-     *         {@code null}.
+     *         If {@code rootMenuLabel}, {@code menuItemAction}, or
+     *         {@code evaluationContextProvider} is {@code null}.
      */
     /* @NonNull */
     public static JMenu createMenu(
@@ -217,10 +224,13 @@ public final class ComponentPrototypesExtensionPoint
         final String rootMenuLabel,
         final int rootMenuMnemonic,
         /* @NonNull */
-        final Action menuItemAction )
+        final Action menuItemAction,
+        /* @NonNull */
+        final IEvaluationContextProvider evaluationContextProvider )
     {
         assertArgumentNotNull( rootMenuLabel, "rootMenuLabel" ); //$NON-NLS-1$
         assertArgumentNotNull( menuItemAction, "menuItemAction" ); //$NON-NLS-1$
+        assertArgumentNotNull( evaluationContextProvider, "evaluationContextProvider" ); //$NON-NLS-1$
 
         final ComponentPrototypeMenuBuilder menuBuilder = new ComponentPrototypeMenuBuilder( rootMenuLabel, rootMenuMnemonic, menuItemAction );
 
@@ -233,9 +243,28 @@ public final class ComponentPrototypesExtensionPoint
                 {
                     try
                     {
-                        menuBuilder.addComponentPrototype( createComponentPrototype( configurationElement ) );
+                        final IConfigurationElement[] enablementConfigurationElements = configurationElement.getChildren( ExpressionTagNames.ENABLEMENT );
+                        if( enablementConfigurationElements.length > 0 )
+                        {
+                            final ExpressionConverter expressionConverter = ExpressionConverter.getDefault();
+                            final Expression expression = expressionConverter.perform( enablementConfigurationElements[ 0 ] );
+                            if( expression != null )
+                            {
+                                if( expression.evaluate( evaluationContextProvider.getEvaluationContext() ) == EvaluationResult.TRUE )
+                                {
+                                    try
+                                    {
+                                        menuBuilder.addComponentPrototype( createComponentPrototype( configurationElement ) );
+                                    }
+                                    catch( final IllegalArgumentException e )
+                                    {
+                                        Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.ComponentPrototypesExtensionPoint_createMenu_illegalComponentPrototypeConfigurationElement, e );
+                                    }
+                                }
+                            }
+                        }
                     }
-                    catch( final IllegalArgumentException e )
+                    catch( final CoreException e )
                     {
                         Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.ComponentPrototypesExtensionPoint_createMenu_illegalComponentPrototypeConfigurationElement, e );
                     }

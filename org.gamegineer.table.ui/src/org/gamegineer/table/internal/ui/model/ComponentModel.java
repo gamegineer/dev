@@ -28,11 +28,13 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.core.expressions.EvaluationContext;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.IComponentStrategy;
 import org.gamegineer.table.internal.ui.Loggers;
+import org.gamegineer.table.internal.ui.prototype.IEvaluationContextProvider;
 import org.gamegineer.table.internal.ui.strategies.DefaultComponentStrategyUIFactory;
 import org.gamegineer.table.ui.ComponentStrategyUIRegistry;
 import org.gamegineer.table.ui.IComponentStrategyUI;
@@ -43,6 +45,7 @@ import org.gamegineer.table.ui.NoSuchComponentStrategyUIException;
  */
 @ThreadSafe
 public class ComponentModel
+    implements IEvaluationContextProvider
 {
     // ======================================================================
     // Fields
@@ -67,9 +70,9 @@ public class ComponentModel
     /** The instance lock. */
     private final Object lock_;
 
-    /** The table model that owns this model. */
+    /** The model parent or {@code null} if this model has no parent. */
     @GuardedBy( "getLock()" )
-    private TableModel tableModel_;
+    private IComponentModelParent parent_;
 
 
     // ======================================================================
@@ -95,7 +98,7 @@ public class ComponentModel
         isFocused_ = false;
         listeners_ = new CopyOnWriteArrayList<IComponentModelListener>();
         lock_ = new Object();
-        tableModel_ = null;
+        parent_ = null;
     }
 
 
@@ -274,6 +277,19 @@ public class ComponentModel
     }
 
     /**
+     * Subclasses may override and must call the superclass implementation.
+     * 
+     * @see org.gamegineer.table.internal.ui.prototype.IEvaluationContextProvider#getEvaluationContext()
+     */
+    @Override
+    public EvaluationContext getEvaluationContext()
+    {
+        final IComponentModelParent parent = getParent();
+        final EvaluationContext parentEvaluationContext = (parent != null) ? parent.getEvaluationContext() : null;
+        return new EvaluationContext( parentEvaluationContext, EvaluationContext.UNDEFINED_VARIABLE );
+    }
+
+    /**
      * Gets the instance lock.
      * 
      * @return The instance lock; never {@code null}.
@@ -285,17 +301,16 @@ public class ComponentModel
     }
 
     /**
-     * Gets the table model that owns this model.
+     * Gets the model parent.
      * 
-     * @return The table model that owns this model or {@code null} if this
-     *         model is not associated with a table model.
+     * @return The model parent or {@code null} if this model has no parent.
      */
     /* @Nullable */
-    final TableModel getTableModel()
+    final IComponentModelParent getParent()
     {
         synchronized( getLock() )
         {
-            return tableModel_;
+            return parent_;
         }
     }
 
@@ -308,20 +323,20 @@ public class ComponentModel
      * holding the instance lock.
      * </p>
      * 
-     * @param tableModel
-     *        The table model that owns this model; must not be {@code null}.
+     * @param parent
+     *        The model parent; must not be {@code null}.
      */
     void initialize(
         /* @NonNull */
-        final TableModel tableModel )
+        final IComponentModelParent parent )
     {
-        assert tableModel != null;
+        assert parent != null;
 
         synchronized( getLock() )
         {
-            assert tableModel_ == null;
+            assert parent_ == null;
 
-            tableModel_ = tableModel;
+            parent_ = parent;
             component_.addComponentListener( componentListener_ );
         }
     }
@@ -401,10 +416,10 @@ public class ComponentModel
     {
         synchronized( getLock() )
         {
-            assert tableModel_ != null;
+            assert parent_ != null;
 
             component_.removeComponentListener( componentListener_ );
-            tableModel_ = null;
+            parent_ = null;
         }
     }
 

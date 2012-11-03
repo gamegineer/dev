@@ -25,6 +25,7 @@ import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.internal.ui.prototype.ComponentPrototypesExtensionPoint;
 
 /**
@@ -41,6 +42,9 @@ final class TablePopupMenu
     /** Serializable class version number. */
     private static final long serialVersionUID = 1769395419445648694L;
 
+    /** The model associated with the menu. */
+    private final TableModel model_;
+
 
     // ======================================================================
     // Constructors
@@ -48,9 +52,18 @@ final class TablePopupMenu
 
     /**
      * Initializes a new instance of the {@code TablePopupMenu} class.
+     * 
+     * @param model
+     *        The model associated with the menu; must not be {@code null}.
      */
-    TablePopupMenu()
+    TablePopupMenu(
+        /* @NonNull */
+        final TableModel model )
     {
+        assert model != null;
+
+        model_ = model;
+
         initializeComponent();
     }
 
@@ -60,17 +73,18 @@ final class TablePopupMenu
     // ======================================================================
 
     /**
-     * Creates the Add Component menu.
+     * Creates the add component menu.
      * 
-     * @return The Add Component menu; never {@code null}.
+     * @return The add component menu; never {@code null}.
      */
     /* @NonNull */
-    private static JMenu createAddComponentMenu()
+    private JMenu createAddComponentMenu()
     {
         return ComponentPrototypesExtensionPoint.createMenu( //
             NlsMessages.TablePopupMenu_addComponent_text, //
             KeyStroke.getKeyStroke( NlsMessages.TablePopupMenu_addComponent_mnemonic ).getKeyCode(), //
-            Actions.getAddComponentAction() );
+            Actions.getAddComponentAction(), //
+            model_ );
     }
 
     /**

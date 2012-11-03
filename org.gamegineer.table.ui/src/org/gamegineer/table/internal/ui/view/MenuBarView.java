@@ -74,17 +74,18 @@ final class MenuBarView
     // ======================================================================
 
     /**
-     * Creates the Add Component menu.
+     * Creates the add component menu.
      * 
-     * @return The Add Component menu; never {@code null}.
+     * @return The add component menu; never {@code null}.
      */
     /* @NonNull */
-    private static JMenu createAddComponentMenu()
+    private JMenu createAddComponentMenu()
     {
         return ComponentPrototypesExtensionPoint.createMenu( //
             NlsMessages.MenuBarView_addComponent_text, //
             KeyStroke.getKeyStroke( NlsMessages.MenuBarView_addComponent_mnemonic ).getKeyCode(), //
-            Actions.getAddComponentAction() );
+            Actions.getAddComponentAction(), //
+            model_.getTableModel() );
     }
 
     /**
@@ -186,7 +187,7 @@ final class MenuBarView
      * @return The table menu; never {@code null}.
      */
     /* @NonNull */
-    private static JMenu createTableMenu()
+    private JMenu createTableMenu()
     {
         final JMenu menu = createTopLevelMenu( NlsMessages.MenuBarView_table_text );
         menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.MenuBarView_table_mnemonic ).getKeyCode() );

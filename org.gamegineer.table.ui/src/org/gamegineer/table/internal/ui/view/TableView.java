@@ -75,6 +75,8 @@ import org.gamegineer.table.internal.ui.BundleImages;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
 import org.gamegineer.table.internal.ui.dialogs.selectremoteplayer.SelectRemotePlayerDialog;
+import org.gamegineer.table.internal.ui.model.ComponentModel;
+import org.gamegineer.table.internal.ui.model.ContainerModel;
 import org.gamegineer.table.internal.ui.model.ITableModelListener;
 import org.gamegineer.table.internal.ui.model.ModelException;
 import org.gamegineer.table.internal.ui.model.TableModel;
@@ -843,8 +845,21 @@ final class TableView
     /* @Nullable */
     private IContainer getFocusedContainer()
     {
-        final IComponent component = model_.getFocusedComponent();
-        return (component instanceof IContainer) ? (IContainer)component : null;
+        final ContainerModel containerModel = getFocusedContainerModel();
+        return (containerModel != null) ? containerModel.getComponent() : null;
+    }
+
+    /**
+     * Gets the model associated with the focused container.
+     * 
+     * @return The model associated with the focused container or {@code null}
+     *         if no container has the focus.
+     */
+    /* @Nullable */
+    private ContainerModel getFocusedContainerModel()
+    {
+        final ComponentModel componentModel = model_.getFocusedComponentModel();
+        return (componentModel instanceof ContainerModel) ? (ContainerModel)componentModel : null;
     }
 
     /**
@@ -1811,12 +1826,13 @@ final class TableView
         {
             assert location != null;
 
-            if( getFocusedContainer() != null )
+            final ContainerModel containerModel = getFocusedContainerModel();
+            if( containerModel != null )
             {
-                return new CardPilePopupMenu();
+                return new CardPilePopupMenu( containerModel );
             }
 
-            return new TablePopupMenu();
+            return new TablePopupMenu( model_ );
         }
 
         /*

@@ -27,6 +27,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.internal.ui.model.ContainerModel;
 import org.gamegineer.table.internal.ui.prototype.ComponentPrototypesExtensionPoint;
 
 /**
@@ -43,6 +44,9 @@ final class CardPilePopupMenu
     /** Serializable class version number. */
     private static final long serialVersionUID = 8397677136081557526L;
 
+    /** The model associated with the menu. */
+    private final ContainerModel model_;
+
 
     // ======================================================================
     // Constructors
@@ -50,9 +54,18 @@ final class CardPilePopupMenu
 
     /**
      * Initializes a new instance of the {@code CardPilePopupMenu} class.
+     * 
+     * @param model
+     *        The model associated with the menu; must not be {@code null}.
      */
-    CardPilePopupMenu()
+    CardPilePopupMenu(
+        /* @NonNull */
+        final ContainerModel model )
     {
+        assert model != null;
+
+        model_ = model;
+
         initializeComponent();
     }
 
@@ -62,17 +75,18 @@ final class CardPilePopupMenu
     // ======================================================================
 
     /**
-     * Creates the Add Component menu.
+     * Creates the add component menu.
      * 
-     * @return The Add Component menu; never {@code null}.
+     * @return The add component menu; never {@code null}.
      */
     /* @NonNull */
-    private static JMenu createAddComponentMenu()
+    private JMenu createAddComponentMenu()
     {
         return ComponentPrototypesExtensionPoint.createMenu( //
             NlsMessages.CardPilePopupMenu_addComponent_text, //
             KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addComponent_mnemonic ).getKeyCode(), //
-            Actions.getAddComponentAction() );
+            Actions.getAddComponentAction(), //
+            model_ );
     }
 
     /**

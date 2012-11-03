@@ -45,6 +45,7 @@ import org.gamegineer.table.internal.ui.util.TableUtils;
 @ThreadSafe
 public final class ContainerModel
     extends ComponentModel
+    implements IComponentModelParent
 {
     // ======================================================================
     // Fields
@@ -141,7 +142,7 @@ public final class ContainerModel
         assert Thread.holdsLock( getLock() );
 
         final ComponentModel componentModel = ComponentModelFactory.createComponentModel( component );
-        componentModel.initialize( getTableModel() );
+        componentModel.initialize( this );
         componentModels_.add( componentIndex, componentModel );
 
         componentModel.addComponentModelListener( componentModelListener_ );
@@ -348,15 +349,25 @@ public final class ContainerModel
     }
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.ComponentModel#initialize(org.gamegineer.table.internal.ui.model.TableModel)
+     * @see org.gamegineer.table.internal.ui.model.IComponentModelParent#getTableModel()
+     */
+    @Override
+    public TableModel getTableModel()
+    {
+        final IComponentModelParent parent = getParent();
+        return (parent != null) ? parent.getTableModel() : null;
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ComponentModel#initialize(org.gamegineer.table.internal.ui.model.IComponentModelParent)
      */
     @Override
     void initialize(
-        final TableModel tableModel )
+        final IComponentModelParent parent )
     {
         synchronized( getLock() )
         {
-            super.initialize( tableModel );
+            super.initialize( parent );
 
             final List<IComponent> components = TableUtils.addContainerListenerAndGetComponents( getComponent(), containerListener_ );
             int componentIndex = 0;
