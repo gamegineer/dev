@@ -64,27 +64,18 @@ final class ComponentPrototypeMenuBuilder
      * Initializes a new instance of the {@code ComponentPrototypeMenuBuilder}
      * class.
      * 
-     * @param rootMenuLabel
-     *        The root menu label; must not be {@code null}.
-     * @param rootMenuMnemonic
-     *        The root menu mnemonic.
      * @param menuItemAction
      *        The action used for all menu items; must not be {@code null}.
      */
     ComponentPrototypeMenuBuilder(
         /* @NonNull */
-        final String rootMenuLabel,
-        final int rootMenuMnemonic,
-        /* @NonNull */
         final Action menuItemAction )
     {
-        assert rootMenuLabel != null;
         assert menuItemAction != null;
 
         menuItemAction_ = menuItemAction;
         menuItemCollections_ = new HashMap<String, Collection<JMenuItem>>();
         rootMenuDescriptor_ = new MenuDescriptor( null );
-        rootMenuDescriptor_.setMenu( rootMenuLabel, rootMenuMnemonic );
     }
 
 
@@ -133,7 +124,75 @@ final class ComponentPrototypeMenuBuilder
         assert componentPrototypeCategory != null;
 
         final MenuDescriptor menuDescriptor = rootMenuDescriptor_.getDescendantMenuDescriptor( componentPrototypeCategory.getPath() );
-        menuDescriptor.setMenu( componentPrototypeCategory.getName(), componentPrototypeCategory.getMnemonic() );
+        final JMenu menu = new JMenu( componentPrototypeCategory.getName() );
+        menu.setMnemonic( componentPrototypeCategory.getMnemonic() );
+        menuDescriptor.setMenu( menu );
+    }
+
+    /**
+     * Builds the component prototype menu based on the state of this builder
+     * using the specified root menu.
+     * 
+     * @param rootMenu
+     *        The root menu; must not be {@code null}.
+     */
+    void buildMenu(
+        /* @NonNull */
+        final JMenu rootMenu )
+    {
+        assert rootMenu != null;
+
+        rootMenu.removeAll();
+        rootMenuDescriptor_.setMenu( rootMenu );
+        buildMenu( rootMenuDescriptor_ );
+    }
+
+    /**
+     * Builds the menu associated with the specified menu descriptor.
+     * 
+     * @param menuDescriptor
+     *        The menu descriptor; must not be {@code null}.
+     */
+    private void buildMenu(
+        /* @NonNull */
+        final MenuDescriptor menuDescriptor )
+    {
+        assert menuDescriptor != null;
+
+        final JMenu menu = menuDescriptor.getMenu();
+        if( menu != null )
+        {
+            final Collection<MenuDescriptor> childMenuDescriptors = menuDescriptor.getChildMenuDescriptors();
+            for( final MenuDescriptor childMenuDescriptor : childMenuDescriptors )
+            {
+                final JMenu childMenu = childMenuDescriptor.getMenu();
+                if( childMenu != null )
+                {
+                    buildMenu( childMenuDescriptor );
+                    menu.add( childMenu );
+                }
+            }
+
+            final Collection<JMenuItem> menuItems = menuItemCollections_.get( menuDescriptor.getId() );
+            if( (menuItems != null) && !menuItems.isEmpty() )
+            {
+                if( !childMenuDescriptors.isEmpty() )
+                {
+                    menu.addSeparator();
+                }
+
+                for( final JMenuItem menuItem : menuItems )
+                {
+                    menu.add( menuItem );
+                }
+            }
+        }
+        else
+        {
+            final Collection<String> ids = new ArrayList<String>();
+            collectAllComponentPrototypeCategoryIds( menuDescriptor, ids );
+            Loggers.getDefaultLogger().warning( NonNlsMessages.ComponentPrototypeMenuBuilder_buildMenu_orphanedCategories( ids ) );
+        }
     }
 
     /**
@@ -162,71 +221,6 @@ final class ComponentPrototypeMenuBuilder
         {
             collectAllComponentPrototypeCategoryIds( childMenuDescriptor, ids );
         }
-    }
-
-    /**
-     * Creates a new menu based on the state of this builder.
-     * 
-     * @return A new menu; never {@code null}.
-     */
-    /* @NonNull */
-    JMenu toMenu()
-    {
-        final JMenu rootMenu = toMenu( rootMenuDescriptor_ );
-        assert rootMenu != null;
-        return rootMenu;
-    }
-
-    /**
-     * Creates a new menu from the specified menu descriptor.
-     * 
-     * @param menuDescriptor
-     *        The menu descriptor; must not be {@code null}.
-     * 
-     * @return The new menu or {@code null} if a menu is not associated with the
-     *         specified menu descriptor.
-     */
-    /* @Nullable */
-    private JMenu toMenu(
-        /* @NonNull */
-        final MenuDescriptor menuDescriptor )
-    {
-        assert menuDescriptor != null;
-
-        final JMenu menu = menuDescriptor.getMenu();
-        if( menu == null )
-        {
-            final Collection<String> ids = new ArrayList<String>();
-            collectAllComponentPrototypeCategoryIds( menuDescriptor, ids );
-            Loggers.getDefaultLogger().warning( NonNlsMessages.ComponentPrototypeMenuBuilder_toMenu_orphanedCategories( ids ) );
-            return null;
-        }
-
-        final Collection<MenuDescriptor> childMenuDescriptors = menuDescriptor.getChildMenuDescriptors();
-        for( final MenuDescriptor childMenuDescriptor : childMenuDescriptors )
-        {
-            final JMenu childMenu = toMenu( childMenuDescriptor );
-            if( childMenu != null )
-            {
-                menu.add( childMenu );
-            }
-        }
-
-        final Collection<JMenuItem> menuItems = menuItemCollections_.get( menuDescriptor.getId() );
-        if( (menuItems != null) && !menuItems.isEmpty() )
-        {
-            if( !childMenuDescriptors.isEmpty() )
-            {
-                menu.addSeparator();
-            }
-
-            for( final JMenuItem menuItem : menuItems )
-            {
-                menu.add( menuItem );
-            }
-        }
-
-        return menu;
     }
 
 
@@ -395,21 +389,17 @@ final class ComponentPrototypeMenuBuilder
          * This method must not be called more than once.
          * </p>
          * 
-         * @param label
-         *        The menu label; must not be {@code null}.
-         * @param mnemonic
-         *        The menu mnemonic.
+         * @param menu
+         *        The menu; must not be {@code null}.
          */
         void setMenu(
             /* @NonNull */
-            final String label,
-            final int mnemonic )
+            final JMenu menu )
         {
-            assert label != null;
+            assert menu != null;
             assert menu_ == null;
 
-            menu_ = new JMenu( label );
-            menu_.setMnemonic( mnemonic );
+            menu_ = menu;
         }
     }
 }

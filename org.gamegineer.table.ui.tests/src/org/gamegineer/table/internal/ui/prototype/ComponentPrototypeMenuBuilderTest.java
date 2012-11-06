@@ -47,6 +47,9 @@ public final class ComponentPrototypeMenuBuilderTest
     // Fields
     // ======================================================================
 
+    /** The actual root menu. */
+    private JMenu actualRootMenu_;
+
     /** The component prototype menu builder under test in the fixture. */
     private ComponentPrototypeMenuBuilder componentPrototypeMenuBuilder_;
 
@@ -169,7 +172,9 @@ public final class ComponentPrototypeMenuBuilderTest
         final int expectedRootMnemonic = KeyEvent.VK_0;
         expectedRootMenu_ = new JMenu( expectedRootName );
         expectedRootMenu_.setMnemonic( expectedRootMnemonic );
-        componentPrototypeMenuBuilder_ = new ComponentPrototypeMenuBuilder( expectedRootName, expectedRootMnemonic, new BasicAction() );
+        actualRootMenu_ = new JMenu( expectedRootName );
+        actualRootMenu_.setMnemonic( expectedRootMnemonic );
+        componentPrototypeMenuBuilder_ = new ComponentPrototypeMenuBuilder( new BasicAction() );
     }
 
     /**
@@ -195,8 +200,9 @@ public final class ComponentPrototypeMenuBuilderTest
 
         componentPrototypeMenuBuilder_.addComponentPrototypeCategory( new ComponentPrototypeCategory( categoryId, categoryName, categoryMnemonic, Collections.<String>emptyList() ) );
         componentPrototypeMenuBuilder_.addComponentPrototype( new ComponentPrototype( componentPrototypeName, componentPrototypeMnemonic, categoryId, componentPrototypeFactory ) );
+        componentPrototypeMenuBuilder_.buildMenu( actualRootMenu_ );
 
-        assertMenuEquals( expectedRootMenu_, componentPrototypeMenuBuilder_.toMenu() );
+        assertMenuEquals( expectedRootMenu_, actualRootMenu_ );
     }
 
     /**
@@ -222,8 +228,9 @@ public final class ComponentPrototypeMenuBuilderTest
 
         componentPrototypeMenuBuilder_.addComponentPrototype( new ComponentPrototype( componentPrototypeName, componentPrototypeMnemonic, categoryId, componentPrototypeFactory ) );
         componentPrototypeMenuBuilder_.addComponentPrototypeCategory( new ComponentPrototypeCategory( categoryId, categoryName, categoryMnemonic, Collections.<String>emptyList() ) );
+        componentPrototypeMenuBuilder_.buildMenu( actualRootMenu_ );
 
-        assertMenuEquals( expectedRootMenu_, componentPrototypeMenuBuilder_.toMenu() );
+        assertMenuEquals( expectedRootMenu_, actualRootMenu_ );
     }
 
     /**
@@ -239,8 +246,9 @@ public final class ComponentPrototypeMenuBuilderTest
         final String name = "name"; //$NON-NLS-1$
 
         componentPrototypeMenuBuilder_.addComponentPrototype( new ComponentPrototype( name, mnemonic, "unknown", componentPrototypeFactory ) ); //$NON-NLS-1$
+        componentPrototypeMenuBuilder_.buildMenu( actualRootMenu_ );
 
-        assertMenuEquals( expectedRootMenu_, componentPrototypeMenuBuilder_.toMenu() );
+        assertMenuEquals( expectedRootMenu_, actualRootMenu_ );
     }
 
     /**
@@ -258,8 +266,9 @@ public final class ComponentPrototypeMenuBuilderTest
         expectedRootMenu_.add( menuItem );
 
         componentPrototypeMenuBuilder_.addComponentPrototype( new ComponentPrototype( name, mnemonic, null, componentPrototypeFactory ) );
+        componentPrototypeMenuBuilder_.buildMenu( actualRootMenu_ );
 
-        assertMenuEquals( expectedRootMenu_, componentPrototypeMenuBuilder_.toMenu() );
+        assertMenuEquals( expectedRootMenu_, actualRootMenu_ );
     }
 
     /**
@@ -286,8 +295,9 @@ public final class ComponentPrototypeMenuBuilderTest
 
         componentPrototypeMenuBuilder_.addComponentPrototypeCategory( new ComponentPrototypeCategory( id1, name1, mnemonic1, Arrays.<String>asList() ) );
         componentPrototypeMenuBuilder_.addComponentPrototypeCategory( new ComponentPrototypeCategory( id2, name2, mnemonic2, Arrays.asList( id1 ) ) );
+        componentPrototypeMenuBuilder_.buildMenu( actualRootMenu_ );
 
-        assertMenuEquals( expectedRootMenu_, componentPrototypeMenuBuilder_.toMenu() );
+        assertMenuEquals( expectedRootMenu_, actualRootMenu_ );
     }
 
     /**
@@ -314,8 +324,9 @@ public final class ComponentPrototypeMenuBuilderTest
 
         componentPrototypeMenuBuilder_.addComponentPrototypeCategory( new ComponentPrototypeCategory( id2, name2, mnemonic2, Arrays.asList( id1 ) ) );
         componentPrototypeMenuBuilder_.addComponentPrototypeCategory( new ComponentPrototypeCategory( id1, name1, mnemonic1, Arrays.<String>asList() ) );
+        componentPrototypeMenuBuilder_.buildMenu( actualRootMenu_ );
 
-        assertMenuEquals( expectedRootMenu_, componentPrototypeMenuBuilder_.toMenu() );
+        assertMenuEquals( expectedRootMenu_, actualRootMenu_ );
     }
 
     /**
@@ -334,19 +345,20 @@ public final class ComponentPrototypeMenuBuilderTest
         expectedRootMenu_.add( menu );
 
         componentPrototypeMenuBuilder_.addComponentPrototypeCategory( new ComponentPrototypeCategory( id, name, mnemonic, Collections.<String>emptyList() ) );
+        componentPrototypeMenuBuilder_.buildMenu( actualRootMenu_ );
 
-        assertMenuEquals( expectedRootMenu_, componentPrototypeMenuBuilder_.toMenu() );
+        assertMenuEquals( expectedRootMenu_, actualRootMenu_ );
     }
 
     /**
-     * Ensures the {@link ComponentPrototypeMenuBuilder#toMenu} method returns
-     * the correct value when the menu builder is empty.
+     * Ensures the {@link ComponentPrototypeMenuBuilder#buildMenu} method builds
+     * the menu correctly when the menu builder is empty.
      */
     @Test
-    public void testToMenu_Empty()
+    public void testBuildMenu_Empty()
     {
-        final JMenu actualValue = componentPrototypeMenuBuilder_.toMenu();
+        componentPrototypeMenuBuilder_.buildMenu( actualRootMenu_ );
 
-        assertEquals( 0, actualValue.getMenuComponentCount() );
+        assertMenuEquals( expectedRootMenu_, actualRootMenu_ );
     }
 }

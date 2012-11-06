@@ -80,11 +80,10 @@ final class TablePopupMenu
     /* @NonNull */
     private JMenu createAddComponentMenu()
     {
-        return ComponentPrototypesExtensionPoint.createMenu( //
-            NlsMessages.TablePopupMenu_addComponent_text, //
-            KeyStroke.getKeyStroke( NlsMessages.TablePopupMenu_addComponent_mnemonic ).getKeyCode(), //
-            Actions.getAddComponentAction(), //
-            model_ );
+        final JMenu menu = new JMenu( NlsMessages.TablePopupMenu_addComponent_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.TablePopupMenu_addComponent_mnemonic ).getKeyCode() );
+        ComponentPrototypesExtensionPoint.buildMenu( menu, Actions.getAddComponentAction(), model_ );
+        return menu;
     }
 
     /**

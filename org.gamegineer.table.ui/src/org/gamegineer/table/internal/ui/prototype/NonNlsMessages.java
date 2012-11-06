@@ -45,9 +45,15 @@ final class NonNlsMessages
     // --- ComponentPrototypeMenuBuilder ------------------------------------
 
     /** The component prototype categories are orphans. */
-    public static String ComponentPrototypeMenuBuilder_toMenu_orphanedCategories;
+    public static String ComponentPrototypeMenuBuilder_buildMenu_orphanedCategories;
 
     // --- ComponentPrototypesExtensionPoint --------------------------------
+
+    /** The component prototype category configuration element is illegal. */
+    public static String ComponentPrototypesExtensionPoint_buildMenu_illegalComponentPrototypeCategoryConfigurationElement;
+
+    /** The component prototype configuration element is illegal. */
+    public static String ComponentPrototypesExtensionPoint_buildMenu_illegalComponentPrototypeConfigurationElement;
 
     /** The component prototype factory is missing. */
     public static String ComponentPrototypesExtensionPoint_createComponentPrototype_missingFactory;
@@ -66,12 +72,6 @@ final class NonNlsMessages
 
     /** The component prototype category name is missing. */
     public static String ComponentPrototypesExtensionPoint_createComponentPrototypeCategory_missingName;
-
-    /** The component prototype category configuration element is illegal. */
-    public static String ComponentPrototypesExtensionPoint_createMenu_illegalComponentPrototypeCategoryConfigurationElement;
-
-    /** The component prototype configuration element is illegal. */
-    public static String ComponentPrototypesExtensionPoint_createMenu_illegalComponentPrototypeConfigurationElement;
 
     /** The source does not represent a legal mnemonic. */
     public static String ComponentPrototypesExtensionPoint_decodeMnemonic_illegalSource;
@@ -145,10 +145,10 @@ final class NonNlsMessages
      *         categories are orphans; never {@code null}.
      */
     /* @NonNull */
-    static String ComponentPrototypeMenuBuilder_toMenu_orphanedCategories(
+    static String ComponentPrototypeMenuBuilder_buildMenu_orphanedCategories(
         /* @NonNull */
         final Collection<String> componentPrototypeCategoryIds )
     {
-        return bind( ComponentPrototypeMenuBuilder_toMenu_orphanedCategories, componentPrototypeCategoryIds );
+        return bind( ComponentPrototypeMenuBuilder_buildMenu_orphanedCategories, componentPrototypeCategoryIds );
     }
 }

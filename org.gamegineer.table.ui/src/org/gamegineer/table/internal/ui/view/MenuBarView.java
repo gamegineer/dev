@@ -81,11 +81,10 @@ final class MenuBarView
     /* @NonNull */
     private JMenu createAddComponentMenu()
     {
-        return ComponentPrototypesExtensionPoint.createMenu( //
-            NlsMessages.MenuBarView_addComponent_text, //
-            KeyStroke.getKeyStroke( NlsMessages.MenuBarView_addComponent_mnemonic ).getKeyCode(), //
-            Actions.getAddComponentAction(), //
-            model_.getTableModel() );
+        final JMenu menu = new JMenu( NlsMessages.MenuBarView_addComponent_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.MenuBarView_addComponent_mnemonic ).getKeyCode() );
+        ComponentPrototypesExtensionPoint.buildMenu( menu, Actions.getAddComponentAction(), model_.getTableModel() );
+        return menu;
     }
 
     /**

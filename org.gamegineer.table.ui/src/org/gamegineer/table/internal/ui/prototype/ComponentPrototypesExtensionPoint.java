@@ -30,6 +30,8 @@ import java.util.logging.Level;
 import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.KeyStroke;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.expressions.EvaluationResult;
 import org.eclipse.core.expressions.Expression;
@@ -127,6 +129,120 @@ public final class ComponentPrototypesExtensionPoint
     // ======================================================================
 
     /**
+     * Builds the component prototype menu using the extension registry.
+     * 
+     * @param rootMenu
+     *        The root menu; must not be {@code null}.
+     * @param menuItemAction
+     *        The action used for all menu items; must not be {@code null}.
+     * @param evaluationContextProvider
+     *        The evaluation context provider; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code rootMenu}, {@code menuItemAction}, or
+     *         {@code evaluationContextProvider} is {@code null}.
+     */
+    public static void buildMenu(
+        /* @NonNull */
+        final JMenu rootMenu,
+        /* @NonNull */
+        final Action menuItemAction,
+        /* @NonNull */
+        final IEvaluationContextProvider evaluationContextProvider )
+    {
+        assertArgumentNotNull( rootMenu, "rootMenu" ); //$NON-NLS-1$
+        assertArgumentNotNull( menuItemAction, "menuItemAction" ); //$NON-NLS-1$
+        assertArgumentNotNull( evaluationContextProvider, "evaluationContextProvider" ); //$NON-NLS-1$
+
+        rootMenu.addMenuListener( new MenuListener()
+        {
+            @Override
+            public void menuCanceled(
+                @SuppressWarnings( "unused" )
+                final MenuEvent event )
+            {
+                // do nothing
+            }
+
+            @Override
+            public void menuDeselected(
+                @SuppressWarnings( "unused" )
+                final MenuEvent event )
+            {
+                // do nothing
+            }
+
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void menuSelected(
+                final MenuEvent event )
+            {
+                buildMenuInternal( (JMenu)event.getSource(), menuItemAction, evaluationContextProvider );
+            }
+        } );
+    }
+
+    /**
+     * Builds the component prototype menu using the extension registry.
+     * 
+     * @param rootMenu
+     *        The root menu; must not be {@code null}.
+     * @param menuItemAction
+     *        The action used for all menu items; must not be {@code null}.
+     * @param evaluationContextProvider
+     *        The evaluation context provider; must not be {@code null}.
+     */
+    private static void buildMenuInternal(
+        /* @NonNull */
+        final JMenu rootMenu,
+        /* @NonNull */
+        final Action menuItemAction,
+        /* @NonNull */
+        final IEvaluationContextProvider evaluationContextProvider )
+    {
+        assert rootMenu != null;
+        assert menuItemAction != null;
+        assert evaluationContextProvider != null;
+
+        final ComponentPrototypeMenuBuilder menuBuilder = new ComponentPrototypeMenuBuilder( menuItemAction );
+
+        final IExtensionRegistry extensionRegistry = Activator.getDefault().getExtensionRegistry();
+        if( extensionRegistry != null )
+        {
+            for( final IConfigurationElement configurationElement : extensionRegistry.getConfigurationElementsFor( BundleConstants.COMPONENT_PROTOTYPES_EXTENSION_POINT_UNIQUE_ID ) )
+            {
+                if( COMPONENT_PROTOTYPE_ELEM_NAME.equals( configurationElement.getName() ) )
+                {
+                    if( isConfigurationElementEnabled( configurationElement, evaluationContextProvider ) )
+                    {
+                        try
+                        {
+                            menuBuilder.addComponentPrototype( createComponentPrototype( configurationElement ) );
+                        }
+                        catch( final IllegalArgumentException e )
+                        {
+                            Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.ComponentPrototypesExtensionPoint_buildMenu_illegalComponentPrototypeConfigurationElement, e );
+                        }
+                    }
+                }
+                else if( COMPONENT_PROTOTYPE_CATEGORY_ELEM_NAME.equals( configurationElement.getName() ) )
+                {
+                    try
+                    {
+                        menuBuilder.addComponentPrototypeCategory( createComponentPrototypeCategory( configurationElement ) );
+                    }
+                    catch( final IllegalArgumentException e )
+                    {
+                        Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.ComponentPrototypesExtensionPoint_buildMenu_illegalComponentPrototypeCategoryConfigurationElement, e );
+                    }
+                }
+            }
+        }
+
+        menuBuilder.buildMenu( rootMenu );
+    }
+
+    /**
      * Creates a new component prototype from the specified component prototype
      * configuration element.
      * 
@@ -198,76 +314,6 @@ public final class ComponentPrototypesExtensionPoint
         final List<String> parentCategoryPath = decodeCategoryPath( encodedParentCategoryPath );
 
         return new ComponentPrototypeCategory( id, name, mnemonic, parentCategoryPath );
-    }
-
-    /**
-     * Creates a new component prototype menu using the extension registry.
-     * 
-     * @param rootMenuLabel
-     *        The root menu label; must not be {@code null}.
-     * @param rootMenuMnemonic
-     *        The root menu mnemonic.
-     * @param menuItemAction
-     *        The action used for all menu items; must not be {@code null}.
-     * @param evaluationContextProvider
-     *        The evaluation context provider; must not be {@code null}.
-     * 
-     * @return A new component prototype menu; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code rootMenuLabel}, {@code menuItemAction}, or
-     *         {@code evaluationContextProvider} is {@code null}.
-     */
-    /* @NonNull */
-    public static JMenu createMenu(
-        /* @NonNull */
-        final String rootMenuLabel,
-        final int rootMenuMnemonic,
-        /* @NonNull */
-        final Action menuItemAction,
-        /* @NonNull */
-        final IEvaluationContextProvider evaluationContextProvider )
-    {
-        assertArgumentNotNull( rootMenuLabel, "rootMenuLabel" ); //$NON-NLS-1$
-        assertArgumentNotNull( menuItemAction, "menuItemAction" ); //$NON-NLS-1$
-        assertArgumentNotNull( evaluationContextProvider, "evaluationContextProvider" ); //$NON-NLS-1$
-
-        final ComponentPrototypeMenuBuilder menuBuilder = new ComponentPrototypeMenuBuilder( rootMenuLabel, rootMenuMnemonic, menuItemAction );
-
-        final IExtensionRegistry extensionRegistry = Activator.getDefault().getExtensionRegistry();
-        if( extensionRegistry != null )
-        {
-            for( final IConfigurationElement configurationElement : extensionRegistry.getConfigurationElementsFor( BundleConstants.COMPONENT_PROTOTYPES_EXTENSION_POINT_UNIQUE_ID ) )
-            {
-                if( COMPONENT_PROTOTYPE_ELEM_NAME.equals( configurationElement.getName() ) )
-                {
-                    if( isConfigurationElementEnabled( configurationElement, evaluationContextProvider ) )
-                    {
-                        try
-                        {
-                            menuBuilder.addComponentPrototype( createComponentPrototype( configurationElement ) );
-                        }
-                        catch( final IllegalArgumentException e )
-                        {
-                            Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.ComponentPrototypesExtensionPoint_createMenu_illegalComponentPrototypeConfigurationElement, e );
-                        }
-                    }
-                }
-                else if( COMPONENT_PROTOTYPE_CATEGORY_ELEM_NAME.equals( configurationElement.getName() ) )
-                {
-                    try
-                    {
-                        menuBuilder.addComponentPrototypeCategory( createComponentPrototypeCategory( configurationElement ) );
-                    }
-                    catch( final IllegalArgumentException e )
-                    {
-                        Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.ComponentPrototypesExtensionPoint_createMenu_illegalComponentPrototypeCategoryConfigurationElement, e );
-                    }
-                }
-            }
-        }
-
-        return menuBuilder.toMenu();
     }
 
     /**

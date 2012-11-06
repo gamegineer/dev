@@ -22,11 +22,11 @@
 package org.gamegineer.table.internal.ui.prototype;
 
 import static org.junit.Assert.assertEquals;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.Action;
+import javax.swing.JMenu;
 import javax.swing.KeyStroke;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
@@ -205,6 +205,37 @@ public final class ComponentPrototypesExtensionPointTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
+    }
+
+    /**
+     * Ensures the {@link ComponentPrototypesExtensionPoint#buildMenu} method
+     * throws an exception when passed a {@code null} evaluation context
+     * provider.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testBuildMenu_EvaluationContextProvider_Null()
+    {
+        ComponentPrototypesExtensionPoint.buildMenu( new JMenu(), EasyMock.createMock( Action.class ), null );
+    }
+
+    /**
+     * Ensures the {@link ComponentPrototypesExtensionPoint#buildMenu} method
+     * throws an exception when passed a {@code null} menu item action.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testBuildMenu_MenuItemAction_Null()
+    {
+        ComponentPrototypesExtensionPoint.buildMenu( new JMenu(), null, EasyMock.createMock( IEvaluationContextProvider.class ) );
+    }
+
+    /**
+     * Ensures the {@link ComponentPrototypesExtensionPoint#buildMenu} method
+     * throws an exception when passed a {@code null} root menu.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testBuildMenu_RootMenu_Null()
+    {
+        ComponentPrototypesExtensionPoint.buildMenu( null, EasyMock.createMock( Action.class ), EasyMock.createMock( IEvaluationContextProvider.class ) );
     }
 
     /**
@@ -411,48 +442,5 @@ public final class ComponentPrototypesExtensionPointTest
         assertEquals( expectedMnemonic, actualValue.getMnemonic() );
         assertEquals( expectedName, actualValue.getName() );
         assertEquals( expectedPath, actualValue.getPath() );
-    }
-
-    /**
-     * Ensures the {@link ComponentPrototypesExtensionPoint#createMenu} method
-     * throws an exception when passed a {@code null} evaluation context
-     * provider.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateMenu_EvaluationContextProvider_Null()
-    {
-        ComponentPrototypesExtensionPoint.createMenu( //
-            "rootMenuLabel", //$NON-NLS-1$
-            KeyEvent.VK_1, //
-            EasyMock.createMock( Action.class ), //
-            null );
-    }
-
-    /**
-     * Ensures the {@link ComponentPrototypesExtensionPoint#createMenu} method
-     * throws an exception when passed a {@code null} menu item action.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateMenu_MenuItemAction_Null()
-    {
-        ComponentPrototypesExtensionPoint.createMenu( //
-            "rootMenuLabel", //$NON-NLS-1$
-            KeyEvent.VK_1, //
-            null, //
-            EasyMock.createMock( IEvaluationContextProvider.class ) );
-    }
-
-    /**
-     * Ensures the {@link ComponentPrototypesExtensionPoint#createMenu} method
-     * throws an exception when passed a {@code null} root menu label.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateMenu_RootMenuLabel_Null()
-    {
-        ComponentPrototypesExtensionPoint.createMenu( //
-            null, //
-            KeyEvent.VK_1, //
-            EasyMock.createMock( Action.class ), //
-            EasyMock.createMock( IEvaluationContextProvider.class ) );
     }
 }

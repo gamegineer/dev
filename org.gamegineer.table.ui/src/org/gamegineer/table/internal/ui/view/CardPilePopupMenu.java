@@ -82,11 +82,10 @@ final class CardPilePopupMenu
     /* @NonNull */
     private JMenu createAddComponentMenu()
     {
-        return ComponentPrototypesExtensionPoint.createMenu( //
-            NlsMessages.CardPilePopupMenu_addComponent_text, //
-            KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addComponent_mnemonic ).getKeyCode(), //
-            Actions.getAddComponentAction(), //
-            model_ );
+        final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_addComponent_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addComponent_mnemonic ).getKeyCode() );
+        ComponentPrototypesExtensionPoint.buildMenu( menu, Actions.getAddComponentAction(), model_ );
+        return menu;
     }
 
     /**
