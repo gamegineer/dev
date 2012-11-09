@@ -152,47 +152,57 @@ final class ComponentPrototypeMenuBuilder
      * 
      * @param menuDescriptor
      *        The menu descriptor; must not be {@code null}.
+     * 
+     * @return {@code true} if the menu associated with the specified menu
+     *         descriptor should be added to its parent menu or {@code false} if
+     *         it should be excluded.
      */
-    private void buildMenu(
+    private boolean buildMenu(
         /* @NonNull */
         final MenuDescriptor menuDescriptor )
     {
         assert menuDescriptor != null;
 
         final JMenu menu = menuDescriptor.getMenu();
-        if( menu != null )
-        {
-            final Collection<MenuDescriptor> childMenuDescriptors = menuDescriptor.getChildMenuDescriptors();
-            for( final MenuDescriptor childMenuDescriptor : childMenuDescriptors )
-            {
-                final JMenu childMenu = childMenuDescriptor.getMenu();
-                if( childMenu != null )
-                {
-                    buildMenu( childMenuDescriptor );
-                    menu.add( childMenu );
-                }
-            }
-
-            final Collection<JMenuItem> menuItems = menuItemCollections_.get( menuDescriptor.getId() );
-            if( (menuItems != null) && !menuItems.isEmpty() )
-            {
-                if( !childMenuDescriptors.isEmpty() )
-                {
-                    menu.addSeparator();
-                }
-
-                for( final JMenuItem menuItem : menuItems )
-                {
-                    menu.add( menuItem );
-                }
-            }
-        }
-        else
+        if( menu == null )
         {
             final Collection<String> ids = new ArrayList<String>();
             collectAllComponentPrototypeCategoryIds( menuDescriptor, ids );
             Loggers.getDefaultLogger().warning( NonNlsMessages.ComponentPrototypeMenuBuilder_buildMenu_orphanedCategories( ids ) );
+            return false;
         }
+
+        int childMenuCount = 0;
+        for( final MenuDescriptor childMenuDescriptor : menuDescriptor.getChildMenuDescriptors() )
+        {
+            final JMenu childMenu = childMenuDescriptor.getMenu();
+            if( childMenu != null )
+            {
+                if( buildMenu( childMenuDescriptor ) )
+                {
+                    menu.add( childMenu );
+                    ++childMenuCount;
+                }
+            }
+        }
+
+        final Collection<JMenuItem> menuItems = menuItemCollections_.get( menuDescriptor.getId() );
+        if( (menuItems != null) && !menuItems.isEmpty() )
+        {
+            if( childMenuCount > 0 )
+            {
+                menu.addSeparator();
+            }
+
+            for( final JMenuItem menuItem : menuItems )
+            {
+                menu.add( menuItem );
+            }
+
+            return true;
+        }
+
+        return childMenuCount > 0;
     }
 
     /**

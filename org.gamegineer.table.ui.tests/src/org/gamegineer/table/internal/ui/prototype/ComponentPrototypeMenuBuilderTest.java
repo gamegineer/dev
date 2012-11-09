@@ -292,9 +292,16 @@ public final class ComponentPrototypeMenuBuilderTest
         final JMenu menu2 = new JMenu( name2 );
         menu2.setMnemonic( mnemonic2 );
         menu1.add( menu2 );
+        final IComponentPrototypeFactory componentPrototypeFactory = EasyMock.createMock( IComponentPrototypeFactory.class );
+        final int componentPrototypeMnemonic = KeyEvent.VK_3;
+        final String componentPrototypeName = "componentPrototypeName"; //$NON-NLS-1$
+        final JMenuItem menuItem = new JMenu( componentPrototypeName );
+        menuItem.setMnemonic( componentPrototypeMnemonic );
+        menu2.add( menuItem );
 
         componentPrototypeMenuBuilder_.addComponentPrototypeCategory( new ComponentPrototypeCategory( id1, name1, mnemonic1, Arrays.<String>asList() ) );
         componentPrototypeMenuBuilder_.addComponentPrototypeCategory( new ComponentPrototypeCategory( id2, name2, mnemonic2, Arrays.asList( id1 ) ) );
+        componentPrototypeMenuBuilder_.addComponentPrototype( new ComponentPrototype( componentPrototypeName, componentPrototypeMnemonic, id2, componentPrototypeFactory ) );
         componentPrototypeMenuBuilder_.buildMenu( actualRootMenu_ );
 
         assertMenuEquals( expectedRootMenu_, actualRootMenu_ );
@@ -321,9 +328,16 @@ public final class ComponentPrototypeMenuBuilderTest
         final JMenu menu2 = new JMenu( name2 );
         menu2.setMnemonic( mnemonic2 );
         menu1.add( menu2 );
+        final IComponentPrototypeFactory componentPrototypeFactory = EasyMock.createMock( IComponentPrototypeFactory.class );
+        final int componentPrototypeMnemonic = KeyEvent.VK_3;
+        final String componentPrototypeName = "componentPrototypeName"; //$NON-NLS-1$
+        final JMenuItem menuItem = new JMenu( componentPrototypeName );
+        menuItem.setMnemonic( componentPrototypeMnemonic );
+        menu2.add( menuItem );
 
         componentPrototypeMenuBuilder_.addComponentPrototypeCategory( new ComponentPrototypeCategory( id2, name2, mnemonic2, Arrays.asList( id1 ) ) );
         componentPrototypeMenuBuilder_.addComponentPrototypeCategory( new ComponentPrototypeCategory( id1, name1, mnemonic1, Arrays.<String>asList() ) );
+        componentPrototypeMenuBuilder_.addComponentPrototype( new ComponentPrototype( componentPrototypeName, componentPrototypeMnemonic, id2, componentPrototypeFactory ) );
         componentPrototypeMenuBuilder_.buildMenu( actualRootMenu_ );
 
         assertMenuEquals( expectedRootMenu_, actualRootMenu_ );
@@ -343,8 +357,37 @@ public final class ComponentPrototypeMenuBuilderTest
         final JMenu menu = new JMenu( name );
         menu.setMnemonic( mnemonic );
         expectedRootMenu_.add( menu );
+        final IComponentPrototypeFactory componentPrototypeFactory = EasyMock.createMock( IComponentPrototypeFactory.class );
+        final int componentPrototypeMnemonic = KeyEvent.VK_2;
+        final String componentPrototypeName = "componentPrototypeName"; //$NON-NLS-1$
+        final JMenuItem menuItem = new JMenu( componentPrototypeName );
+        menuItem.setMnemonic( componentPrototypeMnemonic );
+        menu.add( menuItem );
 
         componentPrototypeMenuBuilder_.addComponentPrototypeCategory( new ComponentPrototypeCategory( id, name, mnemonic, Collections.<String>emptyList() ) );
+        componentPrototypeMenuBuilder_.addComponentPrototype( new ComponentPrototype( componentPrototypeName, componentPrototypeMnemonic, id, componentPrototypeFactory ) );
+        componentPrototypeMenuBuilder_.buildMenu( actualRootMenu_ );
+
+        assertMenuEquals( expectedRootMenu_, actualRootMenu_ );
+    }
+
+    /**
+     * Ensures the {@link ComponentPrototypeMenuBuilder#buildMenu} method
+     * excludes component prototype categories from the menu when they have no
+     * component prototype descendants.
+     */
+    @Test
+    public void testBuildMenu_ComponentPrototypeCategoryWithNoComponentPrototypeDescendants()
+    {
+        final String id1 = "id1"; //$NON-NLS-1$
+        final int mnemonic1 = KeyEvent.VK_1;
+        final String name1 = "name1"; //$NON-NLS-1$
+        final String id2 = "id2"; //$NON-NLS-1$
+        final int mnemonic2 = KeyEvent.VK_2;
+        final String name2 = "name2"; //$NON-NLS-1$
+
+        componentPrototypeMenuBuilder_.addComponentPrototypeCategory( new ComponentPrototypeCategory( id1, name1, mnemonic1, Arrays.<String>asList() ) );
+        componentPrototypeMenuBuilder_.addComponentPrototypeCategory( new ComponentPrototypeCategory( id2, name2, mnemonic2, Arrays.asList( id1 ) ) );
         componentPrototypeMenuBuilder_.buildMenu( actualRootMenu_ );
 
         assertMenuEquals( expectedRootMenu_, actualRootMenu_ );
