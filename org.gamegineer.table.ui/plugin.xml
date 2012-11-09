@@ -58,6 +58,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.ace" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.clubs"
@@ -67,6 +70,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.two" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.clubs"
@@ -76,6 +82,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.three" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.clubs"
@@ -85,6 +94,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.four" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.clubs"
@@ -94,6 +106,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.five" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.clubs"
@@ -103,6 +118,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.six" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.clubs"
@@ -112,6 +130,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.seven" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.clubs"
@@ -121,6 +142,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.eight" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.clubs"
@@ -130,6 +154,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.nine" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.clubs"
@@ -139,6 +166,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.ten" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.clubs"
@@ -148,6 +178,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.jack" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.clubs"
@@ -157,6 +190,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.queen" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.clubs"
@@ -166,6 +202,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.clubs.king" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.diamonds"
@@ -175,6 +214,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.ace" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.diamonds"
@@ -184,6 +226,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.two" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.diamonds"
@@ -193,6 +238,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.three" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.diamonds"
@@ -202,6 +250,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.four" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.diamonds"
@@ -211,6 +262,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.five" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.diamonds"
@@ -220,6 +274,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.six" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.diamonds"
@@ -229,6 +286,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.seven" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.diamonds"
@@ -238,6 +298,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.eight" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.diamonds"
@@ -247,6 +310,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.nine" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.diamonds"
@@ -256,6 +322,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.ten" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.diamonds"
@@ -265,6 +334,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.jack" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.diamonds"
@@ -274,6 +346,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.queen" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.diamonds"
@@ -283,6 +358,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.diamonds.king" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.hearts"
@@ -292,6 +370,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.ace" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.hearts"
@@ -301,6 +382,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.two" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.hearts"
@@ -310,6 +394,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.three" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.hearts"
@@ -319,6 +406,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.four" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.hearts"
@@ -328,6 +418,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.five" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.hearts"
@@ -337,6 +430,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.six" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.hearts"
@@ -346,6 +442,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.seven" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.hearts"
@@ -355,6 +454,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.eight" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.hearts"
@@ -364,6 +466,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.nine" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.hearts"
@@ -373,6 +478,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.ten" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.hearts"
@@ -382,6 +490,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.jack" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.hearts"
@@ -391,6 +502,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.queen" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.hearts"
@@ -400,6 +514,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.hearts.king" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.spades"
@@ -409,6 +526,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.ace" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.spades"
@@ -418,6 +538,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.two" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.spades"
@@ -427,6 +550,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.three" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.spades"
@@ -436,6 +562,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.four" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.spades"
@@ -445,6 +574,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.five" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.spades"
@@ -454,6 +586,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.six" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.spades"
@@ -463,6 +598,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.seven" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.spades"
@@ -472,6 +610,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.eight" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.spades"
@@ -481,6 +622,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.nine" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.spades"
@@ -490,6 +634,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.ten" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.spades"
@@ -499,6 +646,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.jack" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.spades"
@@ -508,6 +658,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.queen" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.spades"
@@ -517,6 +670,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.spades.king" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.card.special"
@@ -526,6 +682,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="faceDesign" value="org.gamegineer.cardSurfaces.special.joker" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 mnemonic="%componentPrototype.cardPile.default.mnemonic"
@@ -533,6 +692,11 @@
             <factory class="org.gamegineer.table.internal.ui.prototypes.CardPilePrototypeFactory">
                 <parameter name="baseDesign" value="org.gamegineer.cardPileBases.default" />
             </factory>
+            <enablement>
+                <not>
+                    <with variable="table.focusedComponent" />
+                </not>
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.deck"
@@ -542,6 +706,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="includeJokers" value="false" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
         <componentPrototype
                 category="org.gamegineer.componentPrototypes.category.deck"
@@ -551,6 +718,9 @@
                 <parameter name="backDesign" value="org.gamegineer.cardSurfaces.back.red" />
                 <parameter name="includeJokers" value="true" />
             </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
         </componentPrototype>
     </extension>
     <extension
