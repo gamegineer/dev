@@ -1,12 +1,13 @@
 Gamegineer
 Version 0.14.0
-XX XX XXXX
+14 November 2012
 
 Defects closed:
-    * [#68] Table not redrawn properly during drag operations when table origin does not coincide with view origin
+    * [#69] Race condition in event delivery to views
+    * [#70] After deleting the focused card pile, card pile actions are still enabled
 
 Enhancements closed:
-    * [#67] Remove All Cards action should be disabled when focused card pile is empty
+    None
 
 Tasks closed:
     None
