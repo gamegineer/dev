@@ -23,9 +23,6 @@ package org.gamegineer.table.internal.core;
 
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
-import org.gamegineer.table.core.ComponentStrategyId;
-import org.gamegineer.table.core.ComponentSurfaceDesignId;
-import org.gamegineer.table.core.ContainerLayoutId;
 
 /**
  * A utility class to manage non-localized messages for the package.
@@ -81,14 +78,6 @@ final class NonNlsMessages
     /** The memento specifies an unknown component type. */
     public static String ComponentFactory_createComponent_unknownComponentType;
 
-    // --- ComponentStrategyRegistry ----------------------------------------
-
-    /** A component strategy is already registered for the specified identifier. */
-    public static String ComponentStrategyRegistry_registerComponentStrategy_componentStrategy_registered;
-
-    /** The component strategy is not registered for the specified identifier. */
-    public static String ComponentStrategyRegistry_unregisterComponentStrategy_componentStrategy_unregistered;
-
     // --- ComponentStrategyRegistryExtensionPointAdapter -------------------
 
     /** The component strategy registry service is already bound. */
@@ -117,20 +106,6 @@ final class NonNlsMessages
 
     /** The extension registry service is not bound. */
     public static String ComponentStrategyRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound;
-
-    // --- ComponentSurfaceDesignRegistry -----------------------------------
-
-    /**
-     * A component surface design is already registered for the specified
-     * identifier.
-     */
-    public static String ComponentSurfaceDesignRegistry_registerComponentSurfaceDesign_componentSurfaceDesign_registered;
-
-    /**
-     * The component surface design is not registered for the specified
-     * identifier.
-     */
-    public static String ComponentSurfaceDesignRegistry_unregisterComponentSurfaceDesign_componentSurfaceDesign_unregistered;
 
     // --- ComponentSurfaceDesignRegistryExtensionPointAdapter --------------
 
@@ -217,14 +192,6 @@ final class NonNlsMessages
     /** The container listener is not registered. */
     public static String Container_removeContainerListener_listener_notRegistered;
 
-    // --- ContainerLayoutRegistry ------------------------------------------
-
-    /** A container layout is already registered for the specified identifier. */
-    public static String ContainerLayoutRegistry_registerContainerLayout_containerLayout_registered;
-
-    /** The container layout is not registered for the specified identifier. */
-    public static String ContainerLayoutRegistry_unregisterContainerLayout_containerLayout_unregistered;
-
     // --- ContainerLayoutRegistryExtensionPointAdapter ---------------------
 
     /** The container layout registry service is already bound. */
@@ -303,44 +270,6 @@ final class NonNlsMessages
     // Methods
     // ======================================================================
 
-    // --- ComponentStrategyRegistry ----------------------------------------
-
-    /**
-     * Gets the formatted message indicating a component strategy is already
-     * registered for the specified identifier.
-     * 
-     * @param componentStrategyId
-     *        The component strategy identifier; must not be {@code null}.
-     * 
-     * @return The formatted message indicating a component strategy is already
-     *         registered for the specified identifier; never {@code null}.
-     */
-    /* @NonNull */
-    static String ComponentStrategyRegistry_registerComponentStrategy_componentStrategy_registered(
-        /* @NonNull */
-        final ComponentStrategyId componentStrategyId )
-    {
-        return bind( ComponentStrategyRegistry_registerComponentStrategy_componentStrategy_registered, componentStrategyId );
-    }
-
-    /**
-     * Gets the formatted message indicating the component strategy is not
-     * registered for the specified identifier.
-     * 
-     * @param componentStrategyId
-     *        The component strategy identifier; must not be {@code null}.
-     * 
-     * @return The formatted message indicating the component strategy is not
-     *         registered for the specified identifier; never {@code null}.
-     */
-    /* @NonNull */
-    static String ComponentStrategyRegistry_unregisterComponentStrategy_componentStrategy_unregistered(
-        /* @NonNull */
-        final ComponentStrategyId componentStrategyId )
-    {
-        return bind( ComponentStrategyRegistry_unregisterComponentStrategy_componentStrategy_unregistered, componentStrategyId );
-    }
-
     // --- ComponentStrategyRegistryExtensionPointAdapter -------------------
 
     /**
@@ -359,45 +288,6 @@ final class NonNlsMessages
         final String componentStrategyId )
     {
         return bind( ComponentStrategyRegistryExtensionPointAdapter_registerComponentStrategy_parseError, componentStrategyId );
-    }
-
-    // --- ComponentSurfaceDesignRegistry -----------------------------------
-
-    /**
-     * Gets the formatted message indicating a component surface design is
-     * already registered for the specified identifier.
-     * 
-     * @param componentSurfaceDesignId
-     *        The component surface design identifier; must not be {@code null}.
-     * 
-     * @return The formatted message indicating a component surface design is
-     *         already registered for the specified identifier; never
-     *         {@code null}.
-     */
-    /* @NonNull */
-    static String ComponentSurfaceDesignRegistry_registerComponentSurfaceDesign_componentSurfaceDesign_registered(
-        /* @NonNull */
-        final ComponentSurfaceDesignId componentSurfaceDesignId )
-    {
-        return bind( ComponentSurfaceDesignRegistry_registerComponentSurfaceDesign_componentSurfaceDesign_registered, componentSurfaceDesignId );
-    }
-
-    /**
-     * Gets the formatted message indicating the component surface design is not
-     * registered for the specified identifier.
-     * 
-     * @param componentSurfaceDesignId
-     *        The component surface design identifier; must not be {@code null}.
-     * 
-     * @return The formatted message indicating the component surface design is
-     *         not registered for the specified identifier; never {@code null}.
-     */
-    /* @NonNull */
-    static String ComponentSurfaceDesignRegistry_unregisterComponentSurfaceDesign_componentSurfaceDesign_unregistered(
-        /* @NonNull */
-        final ComponentSurfaceDesignId componentSurfaceDesignId )
-    {
-        return bind( ComponentSurfaceDesignRegistry_unregisterComponentSurfaceDesign_componentSurfaceDesign_unregistered, componentSurfaceDesignId );
     }
 
     // --- ComponentSurfaceDesignRegistryExtensionPointAdapter --------------
@@ -419,44 +309,6 @@ final class NonNlsMessages
         final String componentSurfaceDesignId )
     {
         return bind( ComponentSurfaceDesignRegistryExtensionPointAdapter_registerComponentSurfaceDesign_parseError, componentSurfaceDesignId );
-    }
-
-    // --- ContainerLayoutRegistry ------------------------------------------
-
-    /**
-     * Gets the formatted message indicating a container layout is already
-     * registered for the specified identifier.
-     * 
-     * @param containerLayoutId
-     *        The container layout identifier; must not be {@code null}.
-     * 
-     * @return The formatted message indicating a container layout is already
-     *         registered for the specified identifier; never {@code null}.
-     */
-    /* @NonNull */
-    static String ContainerLayoutRegistry_registerContainerLayout_containerLayout_registered(
-        /* @NonNull */
-        final ContainerLayoutId containerLayoutId )
-    {
-        return bind( ContainerLayoutRegistry_registerContainerLayout_containerLayout_registered, containerLayoutId );
-    }
-
-    /**
-     * Gets the formatted message indicating the container layout is not
-     * registered for the specified identifier.
-     * 
-     * @param containerLayoutId
-     *        The container layout identifier; must not be {@code null}.
-     * 
-     * @return The formatted message indicating the container layout is not
-     *         registered for the specified identifier; never {@code null}.
-     */
-    /* @NonNull */
-    static String ContainerLayoutRegistry_unregisterContainerLayout_containerLayout_unregistered(
-        /* @NonNull */
-        final ContainerLayoutId containerLayoutId )
-    {
-        return bind( ContainerLayoutRegistry_unregisterContainerLayout_containerLayout_unregistered, containerLayoutId );
     }
 
     // --- ContainerLayoutRegistryExtensionPointAdapter ---------------------

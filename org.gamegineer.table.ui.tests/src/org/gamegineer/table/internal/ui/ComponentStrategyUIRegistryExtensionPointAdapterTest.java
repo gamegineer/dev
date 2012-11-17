@@ -113,7 +113,7 @@ public final class ComponentStrategyUIRegistryExtensionPointAdapterTest
         } ).anyTimes();
         final IComponentStrategyUIRegistry componentStrategyUIRegistry = mocksControl_.createMock( IComponentStrategyUIRegistry.class );
         final Capture<IComponentStrategyUI> componentStrategyUICapture = new Capture<IComponentStrategyUI>();
-        componentStrategyUIRegistry.registerComponentStrategyUI( EasyMock.capture( componentStrategyUICapture ) );
+        componentStrategyUIRegistry.register( EasyMock.capture( componentStrategyUICapture ) );
         mocksControl_.replay();
         componentStrategyUIRegistryExtensionPointAdapter_.bindComponentStrategyUIRegistry( componentStrategyUIRegistry );
         componentStrategyUIRegistryExtensionPointAdapter_.bindExtensionRegistry( extensionRegistry );
@@ -203,9 +203,9 @@ public final class ComponentStrategyUIRegistryExtensionPointAdapterTest
             configurationElement
         } ).anyTimes();
         final IComponentStrategyUIRegistry componentStrategyUIRegistry = mocksControl_.createMock( IComponentStrategyUIRegistry.class );
-        componentStrategyUIRegistry.registerComponentStrategyUI( EasyMock.notNull( IComponentStrategyUI.class ) );
+        componentStrategyUIRegistry.register( EasyMock.notNull( IComponentStrategyUI.class ) );
         final Capture<IComponentStrategyUI> componentStrategyUICapture = new Capture<IComponentStrategyUI>();
-        componentStrategyUIRegistry.unregisterComponentStrategyUI( EasyMock.capture( componentStrategyUICapture ) );
+        componentStrategyUIRegistry.unregister( EasyMock.capture( componentStrategyUICapture ) );
         mocksControl_.replay();
         componentStrategyUIRegistryExtensionPointAdapter_.bindComponentStrategyUIRegistry( componentStrategyUIRegistry );
         componentStrategyUIRegistryExtensionPointAdapter_.bindExtensionRegistry( extensionRegistry );

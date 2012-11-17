@@ -21,29 +21,15 @@
 
 package org.gamegineer.table.core;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import java.util.Collection;
-import org.junit.Before;
-import org.junit.Test;
+import org.gamegineer.common.core.util.registry.AbstractRegistryTestCase;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
  * {@link org.gamegineer.table.core.IContainerLayoutRegistry} interface.
  */
 public abstract class AbstractContainerLayoutRegistryTestCase
+    extends AbstractRegistryTestCase<ContainerLayoutId, IContainerLayout>
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The container layout registry under test in the fixture. */
-    private IContainerLayoutRegistry containerLayoutRegistry_;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -61,187 +47,32 @@ public abstract class AbstractContainerLayoutRegistryTestCase
     // Methods
     // ======================================================================
 
-    /**
-     * Creates the container layout registry to be tested.
-     * 
-     * @return The container layout registry to be tested; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
+    /*
+     * @see org.gamegineer.common.core.util.registry.AbstractRegistryTestCase#cloneObject(java.lang.Object)
      */
-    /* @NonNull */
-    protected abstract IContainerLayoutRegistry createContainerLayoutRegistry()
-        throws Exception;
-
-    /**
-     * Sets up the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Before
-    public void setUp()
-        throws Exception
+    @Override
+    protected final IContainerLayout cloneObject(
+        final IContainerLayout object )
     {
-        containerLayoutRegistry_ = createContainerLayoutRegistry();
-        assertNotNull( containerLayoutRegistry_ );
+        return TestContainerLayouts.cloneContainerLayout( object );
     }
 
-    /**
-     * Ensures the {@link IContainerLayoutRegistry#getContainerLayout} method
-     * returns the correct value when passed an identifier that is absent.
+    /*
+     * @see org.gamegineer.common.core.util.registry.AbstractRegistryTestCase#createUniqueObject()
      */
-    @Test
-    public void testGetContainerLayout_Id_Absent()
+    @Override
+    protected final IContainerLayout createUniqueObject()
     {
-        assertNull( containerLayoutRegistry_.getContainerLayout( ContainerLayoutId.fromString( "unknownId" ) ) ); //$NON-NLS-1$
+        return TestContainerLayouts.createUniqueContainerLayout();
     }
 
-    /**
-     * Ensures the {@link IContainerLayoutRegistry#getContainerLayout} method
-     * throws an exception when passed a {@code null} identifier.
+    /*
+     * @see org.gamegineer.common.core.util.registry.AbstractRegistryTestCase#getObjectId(java.lang.Object)
      */
-    @Test( expected = NullPointerException.class )
-    public void testGetContainerLayout_Id_Null()
+    @Override
+    protected final ContainerLayoutId getObjectId(
+        final IContainerLayout object )
     {
-        containerLayoutRegistry_.getContainerLayout( null );
-    }
-
-    /**
-     * Ensures the {@link IContainerLayoutRegistry#getContainerLayout} method
-     * returns the correct value when passed an identifier that is present.
-     */
-    @Test
-    public void testGetContainerLayout_Id_Present()
-    {
-        final IContainerLayout expectedContainerLayout = TestContainerLayouts.createUniqueContainerLayout();
-        containerLayoutRegistry_.registerContainerLayout( expectedContainerLayout );
-
-        final IContainerLayout actualContainerLayout = containerLayoutRegistry_.getContainerLayout( expectedContainerLayout.getId() );
-
-        assertSame( expectedContainerLayout, actualContainerLayout );
-    }
-
-    /**
-     * Ensures the {@link IContainerLayoutRegistry#getContainerLayouts} method
-     * returns a copy of the registered container layout collection.
-     */
-    @Test
-    public void testGetContainerLayouts_ReturnValue_Copy()
-    {
-        final Collection<IContainerLayout> containerLayouts = containerLayoutRegistry_.getContainerLayouts();
-        final int expectedContainerLayoutsSize = containerLayouts.size();
-
-        containerLayouts.add( TestContainerLayouts.createUniqueContainerLayout() );
-
-        assertEquals( expectedContainerLayoutsSize, containerLayoutRegistry_.getContainerLayouts().size() );
-    }
-
-    /**
-     * Ensures the {@link IContainerLayoutRegistry#getContainerLayouts} method
-     * returns a snapshot of the registered container layout collection.
-     */
-    @Test
-    public void testGetContainerLayouts_ReturnValue_Snapshot()
-    {
-        final Collection<IContainerLayout> containerLayouts = containerLayoutRegistry_.getContainerLayouts();
-        containerLayoutRegistry_.registerContainerLayout( TestContainerLayouts.createUniqueContainerLayout() );
-
-        assertTrue( containerLayouts.size() != containerLayoutRegistry_.getContainerLayouts().size() );
-    }
-
-    /**
-     * Ensures the {@link IContainerLayoutRegistry#registerContainerLayout}
-     * method throws an exception when passed a {@code null} container layout.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRegisterContainerLayout_ContainerLayout_Null()
-    {
-        containerLayoutRegistry_.registerContainerLayout( null );
-    }
-
-    /**
-     * Ensures the {@link IContainerLayoutRegistry#registerContainerLayout}
-     * method throws an exception when a container layout with the same
-     * identifier is already registered.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testRegisterContainerLayout_ContainerLayout_Registered()
-    {
-        final IContainerLayout containerLayout = TestContainerLayouts.createUniqueContainerLayout();
-        containerLayoutRegistry_.registerContainerLayout( containerLayout );
-
-        containerLayoutRegistry_.registerContainerLayout( TestContainerLayouts.cloneContainerLayout( containerLayout ) );
-    }
-
-    /**
-     * Ensures the {@link IContainerLayoutRegistry#registerContainerLayout}
-     * method registers an unregistered container layout.
-     */
-    @Test
-    public void testRegisterContainerLayout_ContainerLayout_Unregistered()
-    {
-        final IContainerLayout containerLayout = TestContainerLayouts.createUniqueContainerLayout();
-
-        containerLayoutRegistry_.registerContainerLayout( containerLayout );
-
-        assertTrue( containerLayoutRegistry_.getContainerLayouts().contains( containerLayout ) );
-    }
-
-    /**
-     * Ensures the {@link IContainerLayoutRegistry#unregisterContainerLayout}
-     * method throws an exception when passed a {@code null} container layout.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testUnregisterContainerLayout_ContainerLayout_Null()
-    {
-        containerLayoutRegistry_.unregisterContainerLayout( null );
-    }
-
-    /**
-     * Ensures the {@link IContainerLayoutRegistry#unregisterContainerLayout}
-     * method throws an exception when passed a container layout whose
-     * identifier was previously registered but by a different container layout
-     * instance.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testUnregisterContainerLayout_ContainerLayout_Registered_DifferentInstance()
-    {
-        final IContainerLayout containerLayout = TestContainerLayouts.createUniqueContainerLayout();
-        final int originalContainerLayoutsSize = containerLayoutRegistry_.getContainerLayouts().size();
-        containerLayoutRegistry_.registerContainerLayout( containerLayout );
-        assertEquals( originalContainerLayoutsSize + 1, containerLayoutRegistry_.getContainerLayouts().size() );
-
-        containerLayoutRegistry_.unregisterContainerLayout( TestContainerLayouts.cloneContainerLayout( containerLayout ) );
-    }
-
-    /**
-     * Ensures the {@link IContainerLayoutRegistry#unregisterContainerLayout}
-     * method unregisters a previously registered container layout.
-     */
-    @Test
-    public void testUnregisterContainerLayout_ContainerLayout_Registered_SameInstance()
-    {
-        final IContainerLayout containerLayout = TestContainerLayouts.createUniqueContainerLayout();
-        final int originalContainerLayoutsSize = containerLayoutRegistry_.getContainerLayouts().size();
-        containerLayoutRegistry_.registerContainerLayout( containerLayout );
-        assertEquals( originalContainerLayoutsSize + 1, containerLayoutRegistry_.getContainerLayouts().size() );
-
-        containerLayoutRegistry_.unregisterContainerLayout( containerLayout );
-
-        assertEquals( originalContainerLayoutsSize, containerLayoutRegistry_.getContainerLayouts().size() );
-    }
-
-    /**
-     * Ensures the {@link IContainerLayoutRegistry#unregisterContainerLayout}
-     * method throws an exception when passed a container layout that was not
-     * previously registered.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testUnregisterContainerLayout_ContainerLayout_Unregistered()
-    {
-        final IContainerLayout containerLayout = TestContainerLayouts.createUniqueContainerLayout();
-
-        containerLayoutRegistry_.unregisterContainerLayout( containerLayout );
+        return object.getId();
     }
 }

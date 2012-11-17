@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.ui;
 
-import java.util.Collection;
+import org.gamegineer.common.core.util.registry.IRegistry;
 import org.gamegineer.table.core.ComponentStrategyId;
 
 /**
@@ -33,69 +33,9 @@ import org.gamegineer.table.core.ComponentStrategyId;
  * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface IComponentStrategyUIRegistry
+    extends IRegistry<ComponentStrategyId, IComponentStrategyUI>
 {
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Gets the component strategy user interface with the specified identifier.
-     * 
-     * @param id
-     *        The component strategy identifier; must not be {@code null}.
-     * 
-     * @return The component strategy user interface with the specified
-     *         identifier or {@code null} if no such identifier is registered.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
-     */
-    /* @Nullable */
-    public IComponentStrategyUI getComponentStrategyUI(
-        /* @NonNull */
-        ComponentStrategyId id );
-
-    /**
-     * Gets a collection of all component strategy user interfaces registered
-     * with this service.
-     * 
-     * @return A collection of all component strategy user interfaces registered
-     *         with this service; never {@code null}. This collection is a
-     *         snapshot of the component strategy user interfaces registered at
-     *         the time of the call.
-     */
-    /* @NonNull */
-    public Collection<IComponentStrategyUI> getComponentStrategyUIs();
-
-    /**
-     * Registers the specified component strategy user interface.
-     * 
-     * @param componentStrategyUI
-     *        The component strategy user interface; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If a component strategy user interface with the same identifier
-     *         is already registered.
-     * @throws java.lang.NullPointerException
-     *         If {@code componentStrategyUI} is {@code null}.
-     */
-    public void registerComponentStrategyUI(
-        /* @NonNull */
-        IComponentStrategyUI componentStrategyUI );
-
-    /**
-     * Unregisters the specified component strategy user interface.
-     * 
-     * @param componentStrategyUI
-     *        The component strategy user interface; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If the specified component strategy user interface was not
-     *         previously registered.
-     * @throws java.lang.NullPointerException
-     *         If {@code componentStrategyUI} is {@code null}.
-     */
-    public void unregisterComponentStrategyUI(
-        /* @NonNull */
-        IComponentStrategyUI componentStrategyUI );
 }

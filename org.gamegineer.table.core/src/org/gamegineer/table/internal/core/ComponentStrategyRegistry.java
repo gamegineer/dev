@@ -21,13 +21,8 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.util.registry.AbstractRegistry;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.IComponentStrategy;
 import org.gamegineer.table.core.IComponentStrategyRegistry;
@@ -37,16 +32,9 @@ import org.gamegineer.table.core.IComponentStrategyRegistry;
  */
 @ThreadSafe
 public final class ComponentStrategyRegistry
+    extends AbstractRegistry<ComponentStrategyId, IComponentStrategy>
     implements IComponentStrategyRegistry
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The collection of component strategies directly managed by this object. */
-    private final ConcurrentMap<ComponentStrategyId, IComponentStrategy> componentStrategies_;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -57,7 +45,6 @@ public final class ComponentStrategyRegistry
      */
     public ComponentStrategyRegistry()
     {
-        componentStrategies_ = new ConcurrentHashMap<ComponentStrategyId, IComponentStrategy>();
     }
 
 
@@ -66,49 +53,12 @@ public final class ComponentStrategyRegistry
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.IComponentStrategyRegistry#getComponentStrategies()
+     * @see org.gamegineer.common.core.util.registry.AbstractRegistry#getId(java.lang.Object)
      */
     @Override
-    public Collection<IComponentStrategy> getComponentStrategies()
+    protected ComponentStrategyId getId(
+        final IComponentStrategy object )
     {
-        return new ArrayList<IComponentStrategy>( componentStrategies_.values() );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponentStrategyRegistry#getComponentStrategy(org.gamegineer.table.core.ComponentStrategyId)
-     */
-    @Override
-    public IComponentStrategy getComponentStrategy(
-        final ComponentStrategyId id )
-    {
-        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
-
-        return componentStrategies_.get( id );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponentStrategyRegistry#registerComponentStrategy(org.gamegineer.table.core.IComponentStrategy)
-     */
-    @Override
-    public void registerComponentStrategy(
-        final IComponentStrategy componentStrategy )
-    {
-        assertArgumentNotNull( componentStrategy, "componentStrategy" ); //$NON-NLS-1$
-        assertArgumentLegal( componentStrategies_.putIfAbsent( componentStrategy.getId(), componentStrategy ) == null, "componentStrategy", NonNlsMessages.ComponentStrategyRegistry_registerComponentStrategy_componentStrategy_registered( componentStrategy.getId() ) ); //$NON-NLS-1$
-
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Registered component strategy '%1$s'", componentStrategy.getId() ) ); //$NON-NLS-1$
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponentStrategyRegistry#unregisterComponentStrategy(org.gamegineer.table.core.IComponentStrategy)
-     */
-    @Override
-    public void unregisterComponentStrategy(
-        final IComponentStrategy componentStrategy )
-    {
-        assertArgumentNotNull( componentStrategy, "componentStrategy" ); //$NON-NLS-1$
-        assertArgumentLegal( componentStrategies_.remove( componentStrategy.getId(), componentStrategy ), "componentStrategy", NonNlsMessages.ComponentStrategyRegistry_unregisterComponentStrategy_componentStrategy_unregistered( componentStrategy.getId() ) ); //$NON-NLS-1$
-
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Unregistered component strategy '%1$s'", componentStrategy.getId() ) ); //$NON-NLS-1$
+        return object.getId();
     }
 }

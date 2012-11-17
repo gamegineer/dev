@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.core;
 
-import java.util.Collection;
+import org.gamegineer.common.core.util.registry.IRegistry;
 
 /**
  * A service for the management and discovery of component surface designs.
@@ -31,69 +31,9 @@ import java.util.Collection;
  * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface IComponentSurfaceDesignRegistry
+    extends IRegistry<ComponentSurfaceDesignId, ComponentSurfaceDesign>
 {
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Gets the component surface design with the specified identifier.
-     * 
-     * @param id
-     *        The component surface design identifier; must not be {@code null}.
-     * 
-     * @return The component surface design with the specified identifier or
-     *         {@code null} if no such identifier is registered.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
-     */
-    /* @Nullable */
-    public ComponentSurfaceDesign getComponentSurfaceDesign(
-        /* @NonNull */
-        ComponentSurfaceDesignId id );
-
-    /**
-     * Gets a collection of all component surface designs registered with this
-     * service.
-     * 
-     * @return A collection of all component surface designs registered with
-     *         this service; never {@code null}. This collection is a snapshot
-     *         of the component surface designs registered at the time of the
-     *         call.
-     */
-    /* @NonNull */
-    public Collection<ComponentSurfaceDesign> getComponentSurfaceDesigns();
-
-    /**
-     * Registers the specified component surface design.
-     * 
-     * @param componentSurfaceDesign
-     *        The component surface design; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If a component surface design with the same identifier is already
-     *         registered.
-     * @throws java.lang.NullPointerException
-     *         If {@code componentSurfaceDesign} is {@code null}.
-     */
-    public void registerComponentSurfaceDesign(
-        /* @NonNull */
-        ComponentSurfaceDesign componentSurfaceDesign );
-
-    /**
-     * Unregisters the specified component surface design.
-     * 
-     * @param componentSurfaceDesign
-     *        The component surface design; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If the specified component surface design was not previously
-     *         registered.
-     * @throws java.lang.NullPointerException
-     *         If {@code componentSurfaceDesign} is {@code null}.
-     */
-    public void unregisterComponentSurfaceDesign(
-        /* @NonNull */
-        ComponentSurfaceDesign componentSurfaceDesign );
 }

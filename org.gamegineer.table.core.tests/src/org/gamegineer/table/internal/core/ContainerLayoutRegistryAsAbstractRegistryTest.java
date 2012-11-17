@@ -1,5 +1,5 @@
 /*
- * ContainerLayoutRegistryAsContainerLayoutRegistryTest.java
+ * ContainerLayoutRegistryAsAbstractRegistryTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,13 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 9, 2012 at 8:39:28 PM.
+ * Created on Nov 16, 2012 at 9:41:36 PM.
  */
 
 package org.gamegineer.table.internal.core;
 
-import org.gamegineer.common.core.util.registry.IRegistry;
-import org.gamegineer.table.core.AbstractContainerLayoutRegistryTestCase;
+import org.gamegineer.common.core.util.registry.AbstractAbstractRegistryTestCase;
+import org.gamegineer.common.core.util.registry.AbstractRegistry;
 import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.IContainerLayout;
 
@@ -30,10 +30,10 @@ import org.gamegineer.table.core.IContainerLayout;
  * A fixture for testing the
  * {@link org.gamegineer.table.internal.core.ContainerLayoutRegistry} class to
  * ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.IContainerLayoutRegistry} interface.
+ * {@link org.gamegineer.common.core.util.registry.AbstractRegistry} class.
  */
-public final class ContainerLayoutRegistryAsContainerLayoutRegistryTest
-    extends AbstractContainerLayoutRegistryTestCase
+public final class ContainerLayoutRegistryAsAbstractRegistryTest
+    extends AbstractAbstractRegistryTestCase<ContainerLayoutId, IContainerLayout>
 {
     // ======================================================================
     // Constructors
@@ -41,9 +41,9 @@ public final class ContainerLayoutRegistryAsContainerLayoutRegistryTest
 
     /**
      * Initializes a new instance of the
-     * {@code ContainerLayoutRegistryAsContainerLayoutRegistryTest} class.
+     * {@code ContainerLayoutRegistryAsAbstractRegistryTest} class.
      */
-    public ContainerLayoutRegistryAsContainerLayoutRegistryTest()
+    public ContainerLayoutRegistryAsAbstractRegistryTest()
     {
     }
 
@@ -53,10 +53,10 @@ public final class ContainerLayoutRegistryAsContainerLayoutRegistryTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractRegistryTestCase#createRegistry()
+     * @see org.gamegineer.common.core.util.registry.AbstractAbstractRegistryTestCase#createRegistry()
      */
     @Override
-    protected IRegistry<ContainerLayoutId, IContainerLayout> createRegistry()
+    protected AbstractRegistry<ContainerLayoutId, IContainerLayout> createRegistry()
     {
         return new ContainerLayoutRegistry();
     }

@@ -21,8 +21,10 @@
 
 package org.gamegineer.table.internal.ui;
 
+import org.gamegineer.common.core.util.registry.IRegistry;
+import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.ui.AbstractComponentSurfaceDesignUIRegistryTestCase;
-import org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry;
+import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
 
 /**
  * A fixture for testing the
@@ -52,10 +54,10 @@ public final class ComponentSurfaceDesignUIRegistryAsComponentSurfaceDesignUIReg
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.ui.AbstractComponentSurfaceDesignUIRegistryTestCase#createComponentSurfaceDesignUIRegistry()
+     * @see org.gamegineer.common.core.util.registry.AbstractRegistryTestCase#createRegistry()
      */
     @Override
-    protected IComponentSurfaceDesignUIRegistry createComponentSurfaceDesignUIRegistry()
+    protected IRegistry<ComponentSurfaceDesignId, ComponentSurfaceDesignUI> createRegistry()
     {
         return new ComponentSurfaceDesignUIRegistry();
     }

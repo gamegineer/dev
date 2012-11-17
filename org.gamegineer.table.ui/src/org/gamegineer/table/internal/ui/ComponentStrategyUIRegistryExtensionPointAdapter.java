@@ -310,7 +310,7 @@ public final class ComponentStrategyUIRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            componentStrategyUIRegistry_.registerComponentStrategyUI( componentStrategyUIRegistration.getComponentStrategyUI() );
+            componentStrategyUIRegistry_.register( componentStrategyUIRegistration.getComponentStrategyUI() );
             componentStrategyUIRegistrations_.add( componentStrategyUIRegistration );
         }
     }
@@ -414,7 +414,7 @@ public final class ComponentStrategyUIRegistryExtensionPointAdapter
 
         for( final ComponentStrategyUIRegistration componentStrategyUIRegistration : componentStrategyUIRegistrations_ )
         {
-            componentStrategyUIRegistry_.unregisterComponentStrategyUI( componentStrategyUIRegistration.getComponentStrategyUI() );
+            componentStrategyUIRegistry_.unregister( componentStrategyUIRegistration.getComponentStrategyUI() );
         }
 
         componentStrategyUIRegistrations_.clear();
@@ -440,7 +440,7 @@ public final class ComponentStrategyUIRegistryExtensionPointAdapter
                 final ComponentStrategyUIRegistration componentStrategyUIRegistration = iterator.next();
                 if( isComponentStrategyUIRegistrationContributedByExtension( componentStrategyUIRegistration, extension ) )
                 {
-                    componentStrategyUIRegistry_.unregisterComponentStrategyUI( componentStrategyUIRegistration.getComponentStrategyUI() );
+                    componentStrategyUIRegistry_.unregister( componentStrategyUIRegistration.getComponentStrategyUI() );
                     iterator.remove();
                 }
             }

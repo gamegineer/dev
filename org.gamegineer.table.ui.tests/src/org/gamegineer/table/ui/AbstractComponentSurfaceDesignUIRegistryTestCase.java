@@ -21,33 +21,16 @@
 
 package org.gamegineer.table.ui;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import java.util.Collection;
+import org.gamegineer.common.core.util.registry.AbstractRegistryTestCase;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
  * {@link org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry} interface.
  */
 public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
+    extends AbstractRegistryTestCase<ComponentSurfaceDesignId, ComponentSurfaceDesignUI>
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /**
-     * The component surface design user interface registry under test in the
-     * fixture.
-     */
-    private IComponentSurfaceDesignUIRegistry componentSurfaceDesignUIRegistry_;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -65,208 +48,32 @@ public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
     // Methods
     // ======================================================================
 
-    /**
-     * Creates the component surface design user interface registry to be
-     * tested.
-     * 
-     * @return The component surface design user interface registry to be
-     *         tested; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
+    /*
+     * @see org.gamegineer.common.core.util.registry.AbstractRegistryTestCase#cloneObject(java.lang.Object)
      */
-    /* @NonNull */
-    protected abstract IComponentSurfaceDesignUIRegistry createComponentSurfaceDesignUIRegistry()
-        throws Exception;
-
-    /**
-     * Sets up the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Before
-    public void setUp()
-        throws Exception
+    @Override
+    protected ComponentSurfaceDesignUI cloneObject(
+        final ComponentSurfaceDesignUI object )
     {
-        componentSurfaceDesignUIRegistry_ = createComponentSurfaceDesignUIRegistry();
-        assertNotNull( componentSurfaceDesignUIRegistry_ );
+        return TestComponentSurfaceDesignUIs.cloneComponentSurfaceDesignUI( object );
     }
 
-    /**
-     * Ensures the
-     * {@link IComponentSurfaceDesignUIRegistry#getComponentSurfaceDesignUI}
-     * method returns the correct value when passed an identifier that is
-     * absent.
+    /*
+     * @see org.gamegineer.common.core.util.registry.AbstractRegistryTestCase#createUniqueObject()
      */
-    @Test
-    public void testGetComponentSurfaceDesignUI_Id_Absent()
+    @Override
+    protected ComponentSurfaceDesignUI createUniqueObject()
     {
-        assertNull( componentSurfaceDesignUIRegistry_.getComponentSurfaceDesignUI( ComponentSurfaceDesignId.fromString( "unknownId" ) ) ); //$NON-NLS-1$
+        return TestComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI();
     }
 
-    /**
-     * Ensures the
-     * {@link IComponentSurfaceDesignUIRegistry#getComponentSurfaceDesignUI}
-     * method throws an exception when passed a {@code null} identifier.
+    /*
+     * @see org.gamegineer.common.core.util.registry.AbstractRegistryTestCase#getObjectId(java.lang.Object)
      */
-    @Test( expected = NullPointerException.class )
-    public void testGetComponentSurfaceDesignUI_Id_Null()
+    @Override
+    protected ComponentSurfaceDesignId getObjectId(
+        final ComponentSurfaceDesignUI object )
     {
-        componentSurfaceDesignUIRegistry_.getComponentSurfaceDesignUI( null );
-    }
-
-    /**
-     * Ensures the
-     * {@link IComponentSurfaceDesignUIRegistry#getComponentSurfaceDesignUI}
-     * method returns the correct value when passed an identifier that is
-     * present.
-     */
-    @Test
-    public void testGetComponentSurfaceDesignUI_Id_Present()
-    {
-        final ComponentSurfaceDesignUI expectedComponentSurfaceDesignUI = TestComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI();
-        componentSurfaceDesignUIRegistry_.registerComponentSurfaceDesignUI( expectedComponentSurfaceDesignUI );
-
-        final ComponentSurfaceDesignUI actualComponentSurfaceDesignUI = componentSurfaceDesignUIRegistry_.getComponentSurfaceDesignUI( expectedComponentSurfaceDesignUI.getId() );
-
-        assertSame( expectedComponentSurfaceDesignUI, actualComponentSurfaceDesignUI );
-    }
-
-    /**
-     * Ensures the
-     * {@link IComponentSurfaceDesignUIRegistry#getComponentSurfaceDesignUIs}
-     * method returns a copy of the registered component surface design user
-     * interface collection.
-     */
-    @Test
-    public void testGetComponentSurfaceDesignUIs_ReturnValue_Copy()
-    {
-        final Collection<ComponentSurfaceDesignUI> componentSurfaceDesignUIs = componentSurfaceDesignUIRegistry_.getComponentSurfaceDesignUIs();
-        final int expectedComponentSurfaceDesignUIsSize = componentSurfaceDesignUIs.size();
-
-        componentSurfaceDesignUIs.add( TestComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI() );
-
-        assertEquals( expectedComponentSurfaceDesignUIsSize, componentSurfaceDesignUIRegistry_.getComponentSurfaceDesignUIs().size() );
-    }
-
-    /**
-     * Ensures the
-     * {@link IComponentSurfaceDesignUIRegistry#getComponentSurfaceDesignUIs}
-     * method returns a snapshot of the registered component surface design user
-     * interface collection.
-     */
-    @Test
-    public void testGetComponentSurfaceDesignUIs_ReturnValue_Snapshot()
-    {
-        final Collection<ComponentSurfaceDesignUI> componentSurfaceDesignUIs = componentSurfaceDesignUIRegistry_.getComponentSurfaceDesignUIs();
-        componentSurfaceDesignUIRegistry_.registerComponentSurfaceDesignUI( TestComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI() );
-
-        assertTrue( componentSurfaceDesignUIs.size() != componentSurfaceDesignUIRegistry_.getComponentSurfaceDesignUIs().size() );
-    }
-
-    /**
-     * Ensures the
-     * {@link IComponentSurfaceDesignUIRegistry#registerComponentSurfaceDesignUI}
-     * method throws an exception when passed a {@code null} component surface
-     * design user interface.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRegisterComponentSurfaceDesignUI_ComponentSurfaceDesignUI_Null()
-    {
-        componentSurfaceDesignUIRegistry_.registerComponentSurfaceDesignUI( null );
-    }
-
-    /**
-     * Ensures the
-     * {@link IComponentSurfaceDesignUIRegistry#registerComponentSurfaceDesignUI}
-     * method throws an exception when a component surface design user interface
-     * with the same identifier is already registered.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testRegisterComponentSurfaceDesignUI_ComponentSurfaceDesignUI_Registered()
-    {
-        final ComponentSurfaceDesignUI componentSurfaceDesignUI = TestComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI();
-        componentSurfaceDesignUIRegistry_.registerComponentSurfaceDesignUI( componentSurfaceDesignUI );
-
-        componentSurfaceDesignUIRegistry_.registerComponentSurfaceDesignUI( TestComponentSurfaceDesignUIs.cloneComponentSurfaceDesignUI( componentSurfaceDesignUI ) );
-    }
-
-    /**
-     * Ensures the
-     * {@link IComponentSurfaceDesignUIRegistry#registerComponentSurfaceDesignUI}
-     * method registers an unregistered component surface design user interface.
-     */
-    @Test
-    public void testRegisterComponentSurfaceDesignUI_ComponentSurfaceDesignUI_Unregistered()
-    {
-        final ComponentSurfaceDesignUI componentSurfaceDesignUI = TestComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI();
-
-        componentSurfaceDesignUIRegistry_.registerComponentSurfaceDesignUI( componentSurfaceDesignUI );
-
-        assertTrue( componentSurfaceDesignUIRegistry_.getComponentSurfaceDesignUIs().contains( componentSurfaceDesignUI ) );
-    }
-
-    /**
-     * Ensures the
-     * {@link IComponentSurfaceDesignUIRegistry#unregisterComponentSurfaceDesignUI}
-     * method throws an exception when passed a {@code null} component surface
-     * design user interface.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testUnregisterComponentSurfaceDesignUI_ComponentSurfaceDesignUI_Null()
-    {
-        componentSurfaceDesignUIRegistry_.unregisterComponentSurfaceDesignUI( null );
-    }
-
-    /**
-     * Ensures the
-     * {@link IComponentSurfaceDesignUIRegistry#unregisterComponentSurfaceDesignUI}
-     * method throws an exception when passed a component surface design user
-     * interface whose identifier was previously registered but by a different
-     * component surface design user interface instance.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testUnregisterComponentSurfaceDesignUI_ComponentSurfaceDesignUI_Registered_DifferentInstance()
-    {
-        final ComponentSurfaceDesignUI componentSurfaceDesignUI = TestComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI();
-        final int originalComponentSurfaceDesignUIsSize = componentSurfaceDesignUIRegistry_.getComponentSurfaceDesignUIs().size();
-        componentSurfaceDesignUIRegistry_.registerComponentSurfaceDesignUI( componentSurfaceDesignUI );
-        assertEquals( originalComponentSurfaceDesignUIsSize + 1, componentSurfaceDesignUIRegistry_.getComponentSurfaceDesignUIs().size() );
-
-        componentSurfaceDesignUIRegistry_.unregisterComponentSurfaceDesignUI( TestComponentSurfaceDesignUIs.cloneComponentSurfaceDesignUI( componentSurfaceDesignUI ) );
-    }
-
-    /**
-     * Ensures the
-     * {@link IComponentSurfaceDesignUIRegistry#unregisterComponentSurfaceDesignUI}
-     * method unregisters a previously registered component surface design user
-     * interface.
-     */
-    @Test
-    public void testUnregisterComponentSurfaceDesignUI_ComponentSurfaceDesignUI_Registered_SameInstance()
-    {
-        final ComponentSurfaceDesignUI componentSurfaceDesignUI = TestComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI();
-        final int originalComponentSurfaceDesignUIsSize = componentSurfaceDesignUIRegistry_.getComponentSurfaceDesignUIs().size();
-        componentSurfaceDesignUIRegistry_.registerComponentSurfaceDesignUI( componentSurfaceDesignUI );
-        assertEquals( originalComponentSurfaceDesignUIsSize + 1, componentSurfaceDesignUIRegistry_.getComponentSurfaceDesignUIs().size() );
-
-        componentSurfaceDesignUIRegistry_.unregisterComponentSurfaceDesignUI( componentSurfaceDesignUI );
-
-        assertEquals( originalComponentSurfaceDesignUIsSize, componentSurfaceDesignUIRegistry_.getComponentSurfaceDesignUIs().size() );
-    }
-
-    /**
-     * Ensures the
-     * {@link IComponentSurfaceDesignUIRegistry#unregisterComponentSurfaceDesignUI}
-     * method throws an exception when passed a component surface design user
-     * interface that was not previously registered.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testUnregisterComponentSurfaceDesignUI_ComponentSurfaceDesignUI_Unregistered()
-    {
-        final ComponentSurfaceDesignUI componentSurfaceDesignUI = TestComponentSurfaceDesignUIs.createUniqueComponentSurfaceDesignUI();
-
-        componentSurfaceDesignUIRegistry_.unregisterComponentSurfaceDesignUI( componentSurfaceDesignUI );
+        return object.getId();
     }
 }

@@ -304,7 +304,7 @@ public final class ContainerLayoutRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            containerLayoutRegistry_.registerContainerLayout( containerLayoutRegistration.getContainerLayout() );
+            containerLayoutRegistry_.register( containerLayoutRegistration.getContainerLayout() );
             containerLayoutRegistrations_.add( containerLayoutRegistration );
         }
     }
@@ -405,7 +405,7 @@ public final class ContainerLayoutRegistryExtensionPointAdapter
 
         for( final ContainerLayoutRegistration containerLayoutRegistration : containerLayoutRegistrations_ )
         {
-            containerLayoutRegistry_.unregisterContainerLayout( containerLayoutRegistration.getContainerLayout() );
+            containerLayoutRegistry_.unregister( containerLayoutRegistration.getContainerLayout() );
         }
 
         containerLayoutRegistrations_.clear();
@@ -430,7 +430,7 @@ public final class ContainerLayoutRegistryExtensionPointAdapter
                 final ContainerLayoutRegistration containerLayoutRegistration = iterator.next();
                 if( isContainerLayoutRegistrationContributedByExtension( containerLayoutRegistration, extension ) )
                 {
-                    containerLayoutRegistry_.unregisterContainerLayout( containerLayoutRegistration.getContainerLayout() );
+                    containerLayoutRegistry_.unregister( containerLayoutRegistration.getContainerLayout() );
                     iterator.remove();
                 }
             }

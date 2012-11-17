@@ -21,13 +21,8 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.util.registry.AbstractRegistry;
 import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.core.IContainerLayoutRegistry;
@@ -37,16 +32,9 @@ import org.gamegineer.table.core.IContainerLayoutRegistry;
  */
 @ThreadSafe
 public final class ContainerLayoutRegistry
+    extends AbstractRegistry<ContainerLayoutId, IContainerLayout>
     implements IContainerLayoutRegistry
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The collection of container layouts directly managed by this object. */
-    private final ConcurrentMap<ContainerLayoutId, IContainerLayout> containerLayouts_;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -56,7 +44,6 @@ public final class ContainerLayoutRegistry
      */
     public ContainerLayoutRegistry()
     {
-        containerLayouts_ = new ConcurrentHashMap<ContainerLayoutId, IContainerLayout>();
     }
 
 
@@ -65,49 +52,12 @@ public final class ContainerLayoutRegistry
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.IContainerLayoutRegistry#getContainerLayout(org.gamegineer.table.core.ContainerLayoutId)
+     * @see org.gamegineer.common.core.util.registry.AbstractRegistry#getId(java.lang.Object)
      */
     @Override
-    public IContainerLayout getContainerLayout(
-        final ContainerLayoutId id )
+    protected ContainerLayoutId getId(
+        final IContainerLayout object )
     {
-        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
-
-        return containerLayouts_.get( id );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IContainerLayoutRegistry#getContainerLayouts()
-     */
-    @Override
-    public Collection<IContainerLayout> getContainerLayouts()
-    {
-        return new ArrayList<IContainerLayout>( containerLayouts_.values() );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IContainerLayoutRegistry#registerContainerLayout(org.gamegineer.table.core.IContainerLayout)
-     */
-    @Override
-    public void registerContainerLayout(
-        final IContainerLayout containerLayout )
-    {
-        assertArgumentNotNull( containerLayout, "containerLayout" ); //$NON-NLS-1$
-        assertArgumentLegal( containerLayouts_.putIfAbsent( containerLayout.getId(), containerLayout ) == null, "containerLayout", NonNlsMessages.ContainerLayoutRegistry_registerContainerLayout_containerLayout_registered( containerLayout.getId() ) ); //$NON-NLS-1$
-
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Registered container layout '%1$s'", containerLayout.getId() ) ); //$NON-NLS-1$
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IContainerLayoutRegistry#unregisterContainerLayout(org.gamegineer.table.core.IContainerLayout)
-     */
-    @Override
-    public void unregisterContainerLayout(
-        final IContainerLayout containerLayout )
-    {
-        assertArgumentNotNull( containerLayout, "containerLayout" ); //$NON-NLS-1$
-        assertArgumentLegal( containerLayouts_.remove( containerLayout.getId(), containerLayout ), "containerLayout", NonNlsMessages.ContainerLayoutRegistry_unregisterContainerLayout_containerLayout_unregistered( containerLayout.getId() ) ); //$NON-NLS-1$
-
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Unregistered container layout '%1$s'", containerLayout.getId() ) ); //$NON-NLS-1$
+        return object.getId();
     }
 }

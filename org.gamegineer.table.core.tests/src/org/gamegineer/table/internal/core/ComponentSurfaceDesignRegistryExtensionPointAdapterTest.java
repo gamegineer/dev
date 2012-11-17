@@ -112,7 +112,7 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapterTest
         } );
         final IComponentSurfaceDesignRegistry componentSurfaceDesignRegistry = mocksControl_.createMock( IComponentSurfaceDesignRegistry.class );
         final Capture<ComponentSurfaceDesign> componentSurfaceDesignCapture = new Capture<ComponentSurfaceDesign>();
-        componentSurfaceDesignRegistry.registerComponentSurfaceDesign( EasyMock.capture( componentSurfaceDesignCapture ) );
+        componentSurfaceDesignRegistry.register( EasyMock.capture( componentSurfaceDesignCapture ) );
         mocksControl_.replay();
         componentSurfaceDesignRegistryExtensionPointAdapter_.bindComponentSurfaceDesignRegistry( componentSurfaceDesignRegistry );
         componentSurfaceDesignRegistryExtensionPointAdapter_.bindExtensionRegistry( extensionRegistry );
@@ -202,9 +202,9 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapterTest
             configurationElement
         } ).anyTimes();
         final IComponentSurfaceDesignRegistry componentSurfaceDesignRegistry = mocksControl_.createMock( IComponentSurfaceDesignRegistry.class );
-        componentSurfaceDesignRegistry.registerComponentSurfaceDesign( EasyMock.notNull( ComponentSurfaceDesign.class ) );
+        componentSurfaceDesignRegistry.register( EasyMock.notNull( ComponentSurfaceDesign.class ) );
         final Capture<ComponentSurfaceDesign> componentSurfaceDesignCapture = new Capture<ComponentSurfaceDesign>();
-        componentSurfaceDesignRegistry.unregisterComponentSurfaceDesign( EasyMock.capture( componentSurfaceDesignCapture ) );
+        componentSurfaceDesignRegistry.unregister( EasyMock.capture( componentSurfaceDesignCapture ) );
         mocksControl_.replay();
         componentSurfaceDesignRegistryExtensionPointAdapter_.bindComponentSurfaceDesignRegistry( componentSurfaceDesignRegistry );
         componentSurfaceDesignRegistryExtensionPointAdapter_.bindExtensionRegistry( extensionRegistry );

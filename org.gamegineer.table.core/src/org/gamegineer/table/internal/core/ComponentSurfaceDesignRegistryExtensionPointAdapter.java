@@ -319,7 +319,7 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            componentSurfaceDesignRegistry_.registerComponentSurfaceDesign( componentSurfaceDesignRegistration.getComponentSurfaceDesign() );
+            componentSurfaceDesignRegistry_.register( componentSurfaceDesignRegistration.getComponentSurfaceDesign() );
             componentSurfaceDesignRegistrations_.add( componentSurfaceDesignRegistration );
         }
     }
@@ -422,7 +422,7 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapter
 
         for( final ComponentSurfaceDesignRegistration componentSurfaceDesignRegistration : componentSurfaceDesignRegistrations_ )
         {
-            componentSurfaceDesignRegistry_.unregisterComponentSurfaceDesign( componentSurfaceDesignRegistration.getComponentSurfaceDesign() );
+            componentSurfaceDesignRegistry_.unregister( componentSurfaceDesignRegistration.getComponentSurfaceDesign() );
         }
 
         componentSurfaceDesignRegistrations_.clear();
@@ -448,7 +448,7 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapter
                 final ComponentSurfaceDesignRegistration componentSurfaceDesignRegistration = iterator.next();
                 if( isComponentSurfaceDesignRegistrationContributedByExtension( componentSurfaceDesignRegistration, extension ) )
                 {
-                    componentSurfaceDesignRegistry_.unregisterComponentSurfaceDesign( componentSurfaceDesignRegistration.getComponentSurfaceDesign() );
+                    componentSurfaceDesignRegistry_.unregister( componentSurfaceDesignRegistration.getComponentSurfaceDesign() );
                     iterator.remove();
                 }
             }

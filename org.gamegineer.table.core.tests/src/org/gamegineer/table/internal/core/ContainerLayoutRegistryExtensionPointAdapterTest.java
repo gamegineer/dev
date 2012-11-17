@@ -112,7 +112,7 @@ public final class ContainerLayoutRegistryExtensionPointAdapterTest
         } );
         final IContainerLayoutRegistry containerLayoutRegistry = mocksControl_.createMock( IContainerLayoutRegistry.class );
         final Capture<IContainerLayout> containerLayoutCapture = new Capture<IContainerLayout>();
-        containerLayoutRegistry.registerContainerLayout( EasyMock.capture( containerLayoutCapture ) );
+        containerLayoutRegistry.register( EasyMock.capture( containerLayoutCapture ) );
         mocksControl_.replay();
         containerLayoutRegistryExtensionPointAdapter_.bindContainerLayoutRegistry( containerLayoutRegistry );
         containerLayoutRegistryExtensionPointAdapter_.bindExtensionRegistry( extensionRegistry );
@@ -201,9 +201,9 @@ public final class ContainerLayoutRegistryExtensionPointAdapterTest
             configurationElement
         } ).anyTimes();
         final IContainerLayoutRegistry containerLayoutRegistry = mocksControl_.createMock( IContainerLayoutRegistry.class );
-        containerLayoutRegistry.registerContainerLayout( EasyMock.notNull( IContainerLayout.class ) );
+        containerLayoutRegistry.register( EasyMock.notNull( IContainerLayout.class ) );
         final Capture<IContainerLayout> containerLayoutCapture = new Capture<IContainerLayout>();
-        containerLayoutRegistry.unregisterContainerLayout( EasyMock.capture( containerLayoutCapture ) );
+        containerLayoutRegistry.unregister( EasyMock.capture( containerLayoutCapture ) );
         mocksControl_.replay();
         containerLayoutRegistryExtensionPointAdapter_.bindContainerLayoutRegistry( containerLayoutRegistry );
         containerLayoutRegistryExtensionPointAdapter_.bindExtensionRegistry( extensionRegistry );

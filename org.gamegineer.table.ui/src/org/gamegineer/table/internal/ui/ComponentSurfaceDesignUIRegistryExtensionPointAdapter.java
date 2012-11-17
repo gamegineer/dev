@@ -332,7 +332,7 @@ public final class ComponentSurfaceDesignUIRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            componentSurfaceDesignUIRegistry_.registerComponentSurfaceDesignUI( componentSurfaceDesignUIRegistration.getComponentSurfaceDesignUI() );
+            componentSurfaceDesignUIRegistry_.register( componentSurfaceDesignUIRegistration.getComponentSurfaceDesignUI() );
             componentSurfaceDesignUIRegistrations_.add( componentSurfaceDesignUIRegistration );
         }
     }
@@ -437,7 +437,7 @@ public final class ComponentSurfaceDesignUIRegistryExtensionPointAdapter
 
         for( final ComponentSurfaceDesignUIRegistration componentSurfaceDesignUIRegistration : componentSurfaceDesignUIRegistrations_ )
         {
-            componentSurfaceDesignUIRegistry_.unregisterComponentSurfaceDesignUI( componentSurfaceDesignUIRegistration.getComponentSurfaceDesignUI() );
+            componentSurfaceDesignUIRegistry_.unregister( componentSurfaceDesignUIRegistration.getComponentSurfaceDesignUI() );
         }
 
         componentSurfaceDesignUIRegistrations_.clear();
@@ -463,7 +463,7 @@ public final class ComponentSurfaceDesignUIRegistryExtensionPointAdapter
                 final ComponentSurfaceDesignUIRegistration componentSurfaceDesignUIRegistration = iterator.next();
                 if( isComponentSurfaceDesignUIRegistrationContributedByExtension( componentSurfaceDesignUIRegistration, extension ) )
                 {
-                    componentSurfaceDesignUIRegistry_.unregisterComponentSurfaceDesignUI( componentSurfaceDesignUIRegistration.getComponentSurfaceDesignUI() );
+                    componentSurfaceDesignUIRegistry_.unregister( componentSurfaceDesignUIRegistration.getComponentSurfaceDesignUI() );
                     iterator.remove();
                 }
             }

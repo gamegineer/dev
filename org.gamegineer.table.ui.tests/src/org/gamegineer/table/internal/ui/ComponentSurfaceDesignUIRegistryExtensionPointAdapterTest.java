@@ -120,7 +120,7 @@ public final class ComponentSurfaceDesignUIRegistryExtensionPointAdapterTest
         } ).anyTimes();
         final IComponentSurfaceDesignUIRegistry componentSurfaceDesignUIRegistry = mocksControl_.createMock( IComponentSurfaceDesignUIRegistry.class );
         final Capture<ComponentSurfaceDesignUI> componentSurfaceDesignUICapture = new Capture<ComponentSurfaceDesignUI>();
-        componentSurfaceDesignUIRegistry.registerComponentSurfaceDesignUI( EasyMock.capture( componentSurfaceDesignUICapture ) );
+        componentSurfaceDesignUIRegistry.register( EasyMock.capture( componentSurfaceDesignUICapture ) );
         mocksControl_.replay();
         componentSurfaceDesignUIRegistryExtensionPointAdapter_.bindComponentSurfaceDesignUIRegistry( componentSurfaceDesignUIRegistry );
         componentSurfaceDesignUIRegistryExtensionPointAdapter_.bindExtensionRegistry( extensionRegistry );
@@ -214,9 +214,9 @@ public final class ComponentSurfaceDesignUIRegistryExtensionPointAdapterTest
             configurationElement
         } ).anyTimes();
         final IComponentSurfaceDesignUIRegistry componentSurfaceDesignUIRegistry = mocksControl_.createMock( IComponentSurfaceDesignUIRegistry.class );
-        componentSurfaceDesignUIRegistry.registerComponentSurfaceDesignUI( EasyMock.notNull( ComponentSurfaceDesignUI.class ) );
+        componentSurfaceDesignUIRegistry.register( EasyMock.notNull( ComponentSurfaceDesignUI.class ) );
         final Capture<ComponentSurfaceDesignUI> componentSurfaceDesignUICapture = new Capture<ComponentSurfaceDesignUI>();
-        componentSurfaceDesignUIRegistry.unregisterComponentSurfaceDesignUI( EasyMock.capture( componentSurfaceDesignUICapture ) );
+        componentSurfaceDesignUIRegistry.unregister( EasyMock.capture( componentSurfaceDesignUICapture ) );
         mocksControl_.replay();
         componentSurfaceDesignUIRegistryExtensionPointAdapter_.bindComponentSurfaceDesignUIRegistry( componentSurfaceDesignUIRegistry );
         componentSurfaceDesignUIRegistryExtensionPointAdapter_.bindExtensionRegistry( extensionRegistry );

@@ -21,36 +21,20 @@
 
 package org.gamegineer.table.internal.ui;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.util.registry.AbstractRegistry;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.ui.IComponentStrategyUI;
 import org.gamegineer.table.ui.IComponentStrategyUIRegistry;
 
 /**
- * Implementation of
- * {@link org.gamegineer.table.ui.IComponentStrategyUIRegistry}.
+ * Implementation of {@link IComponentStrategyUIRegistry}.
  */
 @ThreadSafe
 public final class ComponentStrategyUIRegistry
+    extends AbstractRegistry<ComponentStrategyId, IComponentStrategyUI>
     implements IComponentStrategyUIRegistry
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /**
-     * The collection of component strategy user interfaces directly managed by
-     * this object.
-     */
-    private final ConcurrentMap<ComponentStrategyId, IComponentStrategyUI> componentStrategyUIs_;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -61,7 +45,6 @@ public final class ComponentStrategyUIRegistry
      */
     public ComponentStrategyUIRegistry()
     {
-        componentStrategyUIs_ = new ConcurrentHashMap<ComponentStrategyId, IComponentStrategyUI>();
     }
 
 
@@ -70,49 +53,12 @@ public final class ComponentStrategyUIRegistry
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.ui.IComponentStrategyUIRegistry#getComponentStrategyUI(org.gamegineer.table.core.ComponentStrategyId)
+     * @see org.gamegineer.common.core.util.registry.AbstractRegistry#getId(java.lang.Object)
      */
     @Override
-    public IComponentStrategyUI getComponentStrategyUI(
-        final ComponentStrategyId id )
+    protected ComponentStrategyId getId(
+        final IComponentStrategyUI object )
     {
-        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
-
-        return componentStrategyUIs_.get( id );
-    }
-
-    /*
-     * @see org.gamegineer.table.ui.IComponentStrategyUIRegistry#getComponentStrategyUIs()
-     */
-    @Override
-    public Collection<IComponentStrategyUI> getComponentStrategyUIs()
-    {
-        return new ArrayList<IComponentStrategyUI>( componentStrategyUIs_.values() );
-    }
-
-    /*
-     * @see org.gamegineer.table.ui.IComponentStrategyUIRegistry#registerComponentStrategyUI(org.gamegineer.table.ui.IComponentStrategyUI)
-     */
-    @Override
-    public void registerComponentStrategyUI(
-        final IComponentStrategyUI componentStrategyUI )
-    {
-        assertArgumentNotNull( componentStrategyUI, "componentStrategyUI" ); //$NON-NLS-1$
-        assertArgumentLegal( componentStrategyUIs_.putIfAbsent( componentStrategyUI.getId(), componentStrategyUI ) == null, "componentStrategyUI", NonNlsMessages.ComponentStrategyUIRegistry_registerComponentStrategyUI_componentStrategyUI_registered( componentStrategyUI.getId() ) ); //$NON-NLS-1$
-
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Registered component strategy user interface '%1$s'", componentStrategyUI.getId() ) ); //$NON-NLS-1$
-    }
-
-    /*
-     * @see org.gamegineer.table.ui.IComponentStrategyUIRegistry#unregisterComponentStrategyUI(org.gamegineer.table.ui.IComponentStrategyUI)
-     */
-    @Override
-    public void unregisterComponentStrategyUI(
-        final IComponentStrategyUI componentStrategyUI )
-    {
-        assertArgumentNotNull( componentStrategyUI, "componentStrategyUI" ); //$NON-NLS-1$
-        assertArgumentLegal( componentStrategyUIs_.remove( componentStrategyUI.getId(), componentStrategyUI ), "componentStrategyUI", NonNlsMessages.ComponentStrategyUIRegistry_unregisterComponentStrategyUI_componentStrategyUI_unregistered( componentStrategyUI.getId() ) ); //$NON-NLS-1$
-
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Unregistered component strategy user interface '%1$s'", componentStrategyUI.getId() ) ); //$NON-NLS-1$
+        return object.getId();
     }
 }

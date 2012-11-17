@@ -78,7 +78,7 @@ public final class ComponentSurfaceDesignUIRegistry
             throw new NoSuchComponentSurfaceDesignUIException( NonNlsMessages.ComponentSurfaceDesignUIRegistry_getComponentSurfaceDesignUI_componentSurfaceDesignUIRegistryNotAvailable );
         }
 
-        final ComponentSurfaceDesignUI componentSurfaceDesignUI = componentSurfaceDesignUIRegistry.getComponentSurfaceDesignUI( id );
+        final ComponentSurfaceDesignUI componentSurfaceDesignUI = componentSurfaceDesignUIRegistry.get( id );
         if( componentSurfaceDesignUI == null )
         {
             throw new NoSuchComponentSurfaceDesignUIException( NonNlsMessages.ComponentSurfaceDesignUIRegistry_getComponentSurfaceDesignUI_unknownComponentSurfaceDesignId( id ) );

@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.ui;
 
-import java.util.Collection;
+import org.gamegineer.common.core.util.registry.IRegistry;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 
 /**
@@ -33,72 +33,9 @@ import org.gamegineer.table.core.ComponentSurfaceDesignId;
  * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface IComponentSurfaceDesignUIRegistry
+    extends IRegistry<ComponentSurfaceDesignId, ComponentSurfaceDesignUI>
 {
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Gets the component surface design user interface with the specified
-     * identifier.
-     * 
-     * @param id
-     *        The component surface design identifier; must not be {@code null}.
-     * 
-     * @return The component surface design user interface with the specified
-     *         identifier or {@code null} if no such identifier is registered.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
-     */
-    /* @Nullable */
-    public ComponentSurfaceDesignUI getComponentSurfaceDesignUI(
-        /* @NonNull */
-        ComponentSurfaceDesignId id );
-
-    /**
-     * Gets a collection of all component surface design user interfaces
-     * registered with this service.
-     * 
-     * @return A collection of all component surface design user interfaces
-     *         registered with this service; never {@code null}. This collection
-     *         is a snapshot of the component surface design user interfaces
-     *         registered at the time of the call.
-     */
-    /* @NonNull */
-    public Collection<ComponentSurfaceDesignUI> getComponentSurfaceDesignUIs();
-
-    /**
-     * Registers the specified component surface design user interface.
-     * 
-     * @param componentSurfaceDesignUI
-     *        The component surface design user interface; must not be
-     *        {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If a component surface design user interface with the same
-     *         identifier is already registered.
-     * @throws java.lang.NullPointerException
-     *         If {@code componentSurfaceDesignUI} is {@code null}.
-     */
-    public void registerComponentSurfaceDesignUI(
-        /* @NonNull */
-        ComponentSurfaceDesignUI componentSurfaceDesignUI );
-
-    /**
-     * Unregisters the specified component surface design user interface.
-     * 
-     * @param componentSurfaceDesignUI
-     *        The component surface design user interface; must not be
-     *        {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If the specified component surface design user interface was not
-     *         previously registered.
-     * @throws java.lang.NullPointerException
-     *         If {@code componentSurfaceDesignUI} is {@code null}.
-     */
-    public void unregisterComponentSurfaceDesignUI(
-        /* @NonNull */
-        ComponentSurfaceDesignUI componentSurfaceDesignUI );
 }

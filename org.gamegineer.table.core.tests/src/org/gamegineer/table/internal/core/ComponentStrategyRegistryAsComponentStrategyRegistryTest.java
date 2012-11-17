@@ -21,8 +21,10 @@
 
 package org.gamegineer.table.internal.core;
 
+import org.gamegineer.common.core.util.registry.IRegistry;
 import org.gamegineer.table.core.AbstractComponentStrategyRegistryTestCase;
-import org.gamegineer.table.core.IComponentStrategyRegistry;
+import org.gamegineer.table.core.ComponentStrategyId;
+import org.gamegineer.table.core.IComponentStrategy;
 
 /**
  * A fixture for testing the
@@ -51,10 +53,10 @@ public final class ComponentStrategyRegistryAsComponentStrategyRegistryTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractComponentStrategyRegistryTestCase#createComponentStrategyRegistry()
+     * @see org.gamegineer.common.core.util.registry.AbstractRegistryTestCase#createRegistry()
      */
     @Override
-    protected IComponentStrategyRegistry createComponentStrategyRegistry()
+    protected IRegistry<ComponentStrategyId, IComponentStrategy> createRegistry()
     {
         return new ComponentStrategyRegistry();
     }

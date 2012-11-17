@@ -21,37 +21,21 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.util.registry.AbstractRegistry;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.IComponentSurfaceDesignRegistry;
 import org.gamegineer.table.internal.core.surfacedesigns.ComponentSurfaceDesigns;
 
 /**
- * Implementation of
- * {@link org.gamegineer.table.core.IComponentSurfaceDesignRegistry}.
+ * Implementation of {@link IComponentSurfaceDesignRegistry}.
  */
 @ThreadSafe
 public final class ComponentSurfaceDesignRegistry
+    extends AbstractRegistry<ComponentSurfaceDesignId, ComponentSurfaceDesign>
     implements IComponentSurfaceDesignRegistry
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /**
-     * The collection of component surface designs directly managed by this
-     * object.
-     */
-    private final ConcurrentMap<ComponentSurfaceDesignId, ComponentSurfaceDesign> componentSurfaceDesigns_;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -62,9 +46,7 @@ public final class ComponentSurfaceDesignRegistry
      */
     public ComponentSurfaceDesignRegistry()
     {
-        componentSurfaceDesigns_ = new ConcurrentHashMap<ComponentSurfaceDesignId, ComponentSurfaceDesign>();
-
-        registerComponentSurfaceDesign( ComponentSurfaceDesigns.NULL );
+        register( ComponentSurfaceDesigns.NULL );
     }
 
 
@@ -73,49 +55,12 @@ public final class ComponentSurfaceDesignRegistry
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.IComponentSurfaceDesignRegistry#getComponentSurfaceDesign(org.gamegineer.table.core.ComponentSurfaceDesignId)
+     * @see org.gamegineer.common.core.util.registry.AbstractRegistry#getId(java.lang.Object)
      */
     @Override
-    public ComponentSurfaceDesign getComponentSurfaceDesign(
-        final ComponentSurfaceDesignId id )
+    protected ComponentSurfaceDesignId getId(
+        final ComponentSurfaceDesign object )
     {
-        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
-
-        return componentSurfaceDesigns_.get( id );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponentSurfaceDesignRegistry#getComponentSurfaceDesigns()
-     */
-    @Override
-    public Collection<ComponentSurfaceDesign> getComponentSurfaceDesigns()
-    {
-        return new ArrayList<ComponentSurfaceDesign>( componentSurfaceDesigns_.values() );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponentSurfaceDesignRegistry#registerComponentSurfaceDesign(org.gamegineer.table.core.ComponentSurfaceDesign)
-     */
-    @Override
-    public void registerComponentSurfaceDesign(
-        final ComponentSurfaceDesign componentSurfaceDesign )
-    {
-        assertArgumentNotNull( componentSurfaceDesign, "componentSurfaceDesign" ); //$NON-NLS-1$
-        assertArgumentLegal( componentSurfaceDesigns_.putIfAbsent( componentSurfaceDesign.getId(), componentSurfaceDesign ) == null, "componentSurfaceDesign", NonNlsMessages.ComponentSurfaceDesignRegistry_registerComponentSurfaceDesign_componentSurfaceDesign_registered( componentSurfaceDesign.getId() ) ); //$NON-NLS-1$
-
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Registered component surface design '%1$s'", componentSurfaceDesign.getId() ) ); //$NON-NLS-1$
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponentSurfaceDesignRegistry#unregisterComponentSurfaceDesign(org.gamegineer.table.core.ComponentSurfaceDesign)
-     */
-    @Override
-    public void unregisterComponentSurfaceDesign(
-        final ComponentSurfaceDesign componentSurfaceDesign )
-    {
-        assertArgumentNotNull( componentSurfaceDesign, "componentSurfaceDesign" ); //$NON-NLS-1$
-        assertArgumentLegal( componentSurfaceDesigns_.remove( componentSurfaceDesign.getId(), componentSurfaceDesign ), "componentSurfaceDesign", NonNlsMessages.ComponentSurfaceDesignRegistry_unregisterComponentSurfaceDesign_componentSurfaceDesign_unregistered( componentSurfaceDesign.getId() ) ); //$NON-NLS-1$
-
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Unregistered component surface design '%1$s'", componentSurfaceDesign.getId() ) ); //$NON-NLS-1$
+        return object.getId();
     }
 }

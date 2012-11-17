@@ -24,8 +24,6 @@ package org.gamegineer.table.internal.ui;
 import java.net.URL;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
-import org.gamegineer.table.core.ComponentStrategyId;
-import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.osgi.framework.Bundle;
 
 /**
@@ -48,20 +46,6 @@ final class NonNlsMessages
 
     /** An error occurred while reading the image. */
     public static String BundleImages_getImage_readError;
-
-    // --- ComponentStrategyUIRegistry -------------------------------------
-
-    /**
-     * A component strategy user interface is already registered for the
-     * specified identifier.
-     */
-    public static String ComponentStrategyUIRegistry_registerComponentStrategyUI_componentStrategyUI_registered;
-
-    /**
-     * The component strategy user interface is not registered for the specified
-     * identifier.
-     */
-    public static String ComponentStrategyUIRegistry_unregisterComponentStrategyUI_componentStrategyUI_unregistered;
 
     // --- ComponentStrategyUIRegistryExtensionPointAdapter -----------------
 
@@ -91,20 +75,6 @@ final class NonNlsMessages
 
     /** The extension registry service is not bound. */
     public static String ComponentStrategyUIRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound;
-
-    // --- ComponentSurfaceDesignUIRegistry ---------------------------------
-
-    /**
-     * A component surface design user interface is already registered for the
-     * specified identifier.
-     */
-    public static String ComponentSurfaceDesignUIRegistry_registerComponentSurfaceDesignUI_componentSurfaceDesignUI_registered;
-
-    /**
-     * The component surface design user interface is not registered for the
-     * specified identifier.
-     */
-    public static String ComponentSurfaceDesignUIRegistry_unregisterComponentSurfaceDesignUI_componentSurfaceDesignUI_unregistered;
 
     // --- ComponentSurfaceDesignUIRegistryExtensionPointAdapter ------------
 
@@ -200,46 +170,6 @@ final class NonNlsMessages
         return bind( BundleImages_getImage_readError, imageUrl );
     }
 
-    // --- ComponentStrategyUIRegistry --------------------------------------
-
-    /**
-     * Gets the formatted message indicating a component strategy user interface
-     * is already registered for the specified identifier.
-     * 
-     * @param componentStrategyId
-     *        The component strategy identifier; must not be {@code null}.
-     * 
-     * @return The formatted message indicating a component strategy user
-     *         interface is already registered for the specified identifier;
-     *         never {@code null}.
-     */
-    /* @NonNull */
-    static String ComponentStrategyUIRegistry_registerComponentStrategyUI_componentStrategyUI_registered(
-        /* @NonNull */
-        final ComponentStrategyId componentStrategyId )
-    {
-        return bind( ComponentStrategyUIRegistry_registerComponentStrategyUI_componentStrategyUI_registered, componentStrategyId );
-    }
-
-    /**
-     * Gets the formatted message indicating the component strategy user
-     * interface is not registered for the specified identifier.
-     * 
-     * @param componentStrategyId
-     *        The component strategy identifier; must not be {@code null}.
-     * 
-     * @return The formatted message indicating the component strategy user
-     *         interface is not registered for the specified identifier; never
-     *         {@code null}.
-     */
-    /* @NonNull */
-    static String ComponentStrategyUIRegistry_unregisterComponentStrategyUI_componentStrategyUI_unregistered(
-        /* @NonNull */
-        final ComponentStrategyId componentStrategyId )
-    {
-        return bind( ComponentStrategyUIRegistry_unregisterComponentStrategyUI_componentStrategyUI_unregistered, componentStrategyId );
-    }
-
     // --- ComponentStrategyUIRegistryExtensionPointAdapter -----------------
 
     /**
@@ -259,46 +189,6 @@ final class NonNlsMessages
         final String componentStrategyId )
     {
         return bind( ComponentStrategyUIRegistryExtensionPointAdapter_registerComponentStrategyUI_parseError, componentStrategyId );
-    }
-
-    // --- ComponentSurfaceDesignUIRegistry ---------------------------------
-
-    /**
-     * Gets the formatted message indicating a component surface design user
-     * interface is already registered for the specified identifier.
-     * 
-     * @param componentSurfaceDesignId
-     *        The component surface design identifier; must not be {@code null}.
-     * 
-     * @return The formatted message indicating a component surface design user
-     *         interface is already registered for the specified identifier;
-     *         never {@code null}.
-     */
-    /* @NonNull */
-    static String ComponentSurfaceDesignUIRegistry_registerComponentSurfaceDesignUI_componentSurfaceDesignUI_registered(
-        /* @NonNull */
-        final ComponentSurfaceDesignId componentSurfaceDesignId )
-    {
-        return bind( ComponentSurfaceDesignUIRegistry_registerComponentSurfaceDesignUI_componentSurfaceDesignUI_registered, componentSurfaceDesignId );
-    }
-
-    /**
-     * Gets the formatted message indicating the component surface design user
-     * interface is not registered for the specified identifier.
-     * 
-     * @param componentSurfaceDesignId
-     *        The component surface design identifier; must not be {@code null}.
-     * 
-     * @return The formatted message indicating the component surface design
-     *         user interface is not registered for the specified identifier;
-     *         never {@code null}.
-     */
-    /* @NonNull */
-    static String ComponentSurfaceDesignUIRegistry_unregisterComponentSurfaceDesignUI_componentSurfaceDesignUI_unregistered(
-        /* @NonNull */
-        final ComponentSurfaceDesignId componentSurfaceDesignId )
-    {
-        return bind( ComponentSurfaceDesignUIRegistry_unregisterComponentSurfaceDesignUI_componentSurfaceDesignUI_unregistered, componentSurfaceDesignId );
     }
 
     // --- ComponentSurfaceDesignUIRegistryExtensionPointAdapter ------------

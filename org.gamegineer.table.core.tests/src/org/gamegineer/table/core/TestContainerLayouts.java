@@ -205,7 +205,7 @@ public final class TestContainerLayouts
 
         final IContainerLayoutRegistry containerLayoutRegistry = Activator.getDefault().getContainerLayoutRegistry();
         assert containerLayoutRegistry != null;
-        containerLayoutRegistry.registerContainerLayout( containerLayout );
+        containerLayoutRegistry.register( containerLayout );
         return containerLayout;
     }
 

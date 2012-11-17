@@ -21,29 +21,15 @@
 
 package org.gamegineer.table.core;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import java.util.Collection;
-import org.junit.Before;
-import org.junit.Test;
+import org.gamegineer.common.core.util.registry.AbstractRegistryTestCase;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
  * {@link org.gamegineer.table.core.IComponentSurfaceDesignRegistry} interface.
  */
 public abstract class AbstractComponentSurfaceDesignRegistryTestCase
+    extends AbstractRegistryTestCase<ComponentSurfaceDesignId, ComponentSurfaceDesign>
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The component surface design registry under test in the fixture. */
-    private IComponentSurfaceDesignRegistry componentSurfaceDesignRegistry_;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -61,202 +47,32 @@ public abstract class AbstractComponentSurfaceDesignRegistryTestCase
     // Methods
     // ======================================================================
 
-    /**
-     * Creates the component surface design registry to be tested.
-     * 
-     * @return The component surface design registry to be tested; never
-     *         {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
+    /*
+     * @see org.gamegineer.common.core.util.registry.AbstractRegistryTestCase#cloneObject(java.lang.Object)
      */
-    /* @NonNull */
-    protected abstract IComponentSurfaceDesignRegistry createComponentSurfaceDesignRegistry()
-        throws Exception;
-
-    /**
-     * Sets up the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Before
-    public void setUp()
-        throws Exception
+    @Override
+    protected ComponentSurfaceDesign cloneObject(
+        final ComponentSurfaceDesign object )
     {
-        componentSurfaceDesignRegistry_ = createComponentSurfaceDesignRegistry();
-        assertNotNull( componentSurfaceDesignRegistry_ );
+        return TestComponentSurfaceDesigns.cloneComponentSurfaceDesign( object );
     }
 
-    /**
-     * Ensures the
-     * {@link IComponentSurfaceDesignRegistry#getComponentSurfaceDesign} method
-     * returns the correct value when passed an identifier that is absent.
+    /*
+     * @see org.gamegineer.common.core.util.registry.AbstractRegistryTestCase#createUniqueObject()
      */
-    @Test
-    public void testGetComponentSurfaceDesign_Id_Absent()
+    @Override
+    protected ComponentSurfaceDesign createUniqueObject()
     {
-        assertNull( componentSurfaceDesignRegistry_.getComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "unknownId" ) ) ); //$NON-NLS-1$
+        return TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
     }
 
-    /**
-     * Ensures the
-     * {@link IComponentSurfaceDesignRegistry#getComponentSurfaceDesign} method
-     * throws an exception when passed a {@code null} identifier.
+    /*
+     * @see org.gamegineer.common.core.util.registry.AbstractRegistryTestCase#getObjectId(java.lang.Object)
      */
-    @Test( expected = NullPointerException.class )
-    public void testGetComponentSurfaceDesign_Id_Null()
+    @Override
+    protected ComponentSurfaceDesignId getObjectId(
+        final ComponentSurfaceDesign object )
     {
-        componentSurfaceDesignRegistry_.getComponentSurfaceDesign( null );
-    }
-
-    /**
-     * Ensures the
-     * {@link IComponentSurfaceDesignRegistry#getComponentSurfaceDesign} method
-     * returns the correct value when passed an identifier that is present.
-     */
-    @Test
-    public void testGetComponentSurfaceDesign_Id_Present()
-    {
-        final ComponentSurfaceDesign expectedComponentSurfaceDesign = TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
-        componentSurfaceDesignRegistry_.registerComponentSurfaceDesign( expectedComponentSurfaceDesign );
-
-        final ComponentSurfaceDesign actualComponentSurfaceDesign = componentSurfaceDesignRegistry_.getComponentSurfaceDesign( expectedComponentSurfaceDesign.getId() );
-
-        assertSame( expectedComponentSurfaceDesign, actualComponentSurfaceDesign );
-    }
-
-    /**
-     * Ensures the
-     * {@link IComponentSurfaceDesignRegistry#getComponentSurfaceDesigns} method
-     * returns a copy of the registered component surface design collection.
-     */
-    @Test
-    public void testGetComponentSurfaceDesigns_ReturnValue_Copy()
-    {
-        final Collection<ComponentSurfaceDesign> componentSurfaceDesigns = componentSurfaceDesignRegistry_.getComponentSurfaceDesigns();
-        final int expectedComponentSurfaceDesignsSize = componentSurfaceDesigns.size();
-
-        componentSurfaceDesigns.add( TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
-
-        assertEquals( expectedComponentSurfaceDesignsSize, componentSurfaceDesignRegistry_.getComponentSurfaceDesigns().size() );
-    }
-
-    /**
-     * Ensures the
-     * {@link IComponentSurfaceDesignRegistry#getComponentSurfaceDesigns} method
-     * returns a snapshot of the registered component surface design collection.
-     */
-    @Test
-    public void testGetComponentSurfaceDesigns_ReturnValue_Snapshot()
-    {
-        final Collection<ComponentSurfaceDesign> componentSurfaceDesigns = componentSurfaceDesignRegistry_.getComponentSurfaceDesigns();
-        componentSurfaceDesignRegistry_.registerComponentSurfaceDesign( TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
-
-        assertTrue( componentSurfaceDesigns.size() != componentSurfaceDesignRegistry_.getComponentSurfaceDesigns().size() );
-    }
-
-    /**
-     * Ensures the
-     * {@link IComponentSurfaceDesignRegistry#registerComponentSurfaceDesign}
-     * method throws an exception when passed a {@code null} component surface
-     * design.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRegisterComponentSurfaceDesign_ComponentSurfaceDesign_Null()
-    {
-        componentSurfaceDesignRegistry_.registerComponentSurfaceDesign( null );
-    }
-
-    /**
-     * Ensures the
-     * {@link IComponentSurfaceDesignRegistry#registerComponentSurfaceDesign}
-     * method throws an exception when a component surface design with the same
-     * identifier is already registered.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testRegisterComponentSurfaceDesign_ComponentSurfaceDesign_Registered()
-    {
-        final ComponentSurfaceDesign componentSurfaceDesign = TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
-        componentSurfaceDesignRegistry_.registerComponentSurfaceDesign( componentSurfaceDesign );
-
-        componentSurfaceDesignRegistry_.registerComponentSurfaceDesign( TestComponentSurfaceDesigns.cloneComponentSurfaceDesign( componentSurfaceDesign ) );
-    }
-
-    /**
-     * Ensures the
-     * {@link IComponentSurfaceDesignRegistry#registerComponentSurfaceDesign}
-     * method registers an unregistered component surface design.
-     */
-    @Test
-    public void testRegisterComponentSurfaceDesign_ComponentSurfaceDesign_Unregistered()
-    {
-        final ComponentSurfaceDesign componentSurfaceDesign = TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
-
-        componentSurfaceDesignRegistry_.registerComponentSurfaceDesign( componentSurfaceDesign );
-
-        assertTrue( componentSurfaceDesignRegistry_.getComponentSurfaceDesigns().contains( componentSurfaceDesign ) );
-    }
-
-    /**
-     * Ensures the
-     * {@link IComponentSurfaceDesignRegistry#unregisterComponentSurfaceDesign}
-     * method throws an exception when passed a {@code null} component surface
-     * design.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testUnregisterComponentSurfaceDesign_ComponentSurfaceDesign_Null()
-    {
-        componentSurfaceDesignRegistry_.unregisterComponentSurfaceDesign( null );
-    }
-
-    /**
-     * Ensures the
-     * {@link IComponentSurfaceDesignRegistry#unregisterComponentSurfaceDesign}
-     * method throws an exception when passed a component surface design whose
-     * identifier was previously registered but by a different component surface
-     * design instance.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testUnregisterComponentSurfaceDesign_ComponentSurfaceDesign_Registered_DifferentInstance()
-    {
-        final ComponentSurfaceDesign componentSurfaceDesign = TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
-        final int originalComponentSurfaceDesignsSize = componentSurfaceDesignRegistry_.getComponentSurfaceDesigns().size();
-        componentSurfaceDesignRegistry_.registerComponentSurfaceDesign( componentSurfaceDesign );
-        assertEquals( originalComponentSurfaceDesignsSize + 1, componentSurfaceDesignRegistry_.getComponentSurfaceDesigns().size() );
-
-        componentSurfaceDesignRegistry_.unregisterComponentSurfaceDesign( TestComponentSurfaceDesigns.cloneComponentSurfaceDesign( componentSurfaceDesign ) );
-    }
-
-    /**
-     * Ensures the
-     * {@link IComponentSurfaceDesignRegistry#unregisterComponentSurfaceDesign}
-     * method unregisters a previously registered component surface design.
-     */
-    @Test
-    public void testUnregisterComponentSurfaceDesign_ComponentSurfaceDesign_Registered_SameInstance()
-    {
-        final ComponentSurfaceDesign componentSurfaceDesign = TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
-        final int originalComponentSurfaceDesignsSize = componentSurfaceDesignRegistry_.getComponentSurfaceDesigns().size();
-        componentSurfaceDesignRegistry_.registerComponentSurfaceDesign( componentSurfaceDesign );
-        assertEquals( originalComponentSurfaceDesignsSize + 1, componentSurfaceDesignRegistry_.getComponentSurfaceDesigns().size() );
-
-        componentSurfaceDesignRegistry_.unregisterComponentSurfaceDesign( componentSurfaceDesign );
-
-        assertEquals( originalComponentSurfaceDesignsSize, componentSurfaceDesignRegistry_.getComponentSurfaceDesigns().size() );
-    }
-
-    /**
-     * Ensures the
-     * {@link IComponentSurfaceDesignRegistry#unregisterComponentSurfaceDesign}
-     * method throws an exception when passed a component surface design that
-     * was not previously registered.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testUnregisterComponentSurfaceDesign_ComponentSurfaceDesign_Unregistered()
-    {
-        final ComponentSurfaceDesign componentSurfaceDesign = TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
-
-        componentSurfaceDesignRegistry_.unregisterComponentSurfaceDesign( componentSurfaceDesign );
+        return object.getId();
     }
 }

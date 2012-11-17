@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.core;
 
-import java.util.Collection;
+import org.gamegineer.common.core.util.registry.IRegistry;
 
 /**
  * A service for the management and discovery of container layouts.
@@ -31,66 +31,9 @@ import java.util.Collection;
  * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface IContainerLayoutRegistry
+    extends IRegistry<ContainerLayoutId, IContainerLayout>
 {
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Gets the container layout with the specified identifier.
-     * 
-     * @param id
-     *        The container layout identifier; must not be {@code null}.
-     * 
-     * @return The container layout with the specified identifier or
-     *         {@code null} if no such identifier is registered.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
-     */
-    /* @Nullable */
-    public IContainerLayout getContainerLayout(
-        /* @NonNull */
-        ContainerLayoutId id );
-
-    /**
-     * Gets a collection of all container layouts registered with this service.
-     * 
-     * @return A collection of all container layouts registered with this
-     *         service; never {@code null}. This collection is a snapshot of the
-     *         container layouts registered at the time of the call.
-     */
-    /* @NonNull */
-    public Collection<IContainerLayout> getContainerLayouts();
-
-    /**
-     * Registers the specified container layout.
-     * 
-     * @param containerLayout
-     *        The container layout; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If a container layout with the same identifier is already
-     *         registered.
-     * @throws java.lang.NullPointerException
-     *         If {@code containerLayout} is {@code null}.
-     */
-    public void registerContainerLayout(
-        /* @NonNull */
-        IContainerLayout containerLayout );
-
-    /**
-     * Unregisters the specified container layout.
-     * 
-     * @param containerLayout
-     *        The container layout; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If the specified container layout was not previously registered.
-     * @throws java.lang.NullPointerException
-     *         If {@code containerLayout} is {@code null}.
-     */
-    public void unregisterContainerLayout(
-        /* @NonNull */
-        IContainerLayout containerLayout );
 }

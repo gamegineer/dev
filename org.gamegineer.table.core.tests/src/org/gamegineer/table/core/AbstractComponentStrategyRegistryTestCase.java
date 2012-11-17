@@ -21,29 +21,15 @@
 
 package org.gamegineer.table.core;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import java.util.Collection;
-import org.junit.Before;
-import org.junit.Test;
+import org.gamegineer.common.core.util.registry.AbstractRegistryTestCase;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
  * {@link org.gamegineer.table.core.IComponentStrategyRegistry} interface.
  */
 public abstract class AbstractComponentStrategyRegistryTestCase
+    extends AbstractRegistryTestCase<ComponentStrategyId, IComponentStrategy>
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The component strategy registry under test in the fixture. */
-    private IComponentStrategyRegistry componentStrategyRegistry_;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -61,193 +47,32 @@ public abstract class AbstractComponentStrategyRegistryTestCase
     // Methods
     // ======================================================================
 
-    /**
-     * Creates the component strategy registry to be tested.
-     * 
-     * @return The component strategy registry to be tested; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
+    /*
+     * @see org.gamegineer.common.core.util.registry.AbstractRegistryTestCase#cloneObject(java.lang.Object)
      */
-    /* @NonNull */
-    protected abstract IComponentStrategyRegistry createComponentStrategyRegistry()
-        throws Exception;
-
-    /**
-     * Sets up the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Before
-    public void setUp()
-        throws Exception
+    @Override
+    protected final IComponentStrategy cloneObject(
+        final IComponentStrategy object )
     {
-        componentStrategyRegistry_ = createComponentStrategyRegistry();
-        assertNotNull( componentStrategyRegistry_ );
+        return TestComponentStrategies.cloneComponentStrategy( object );
     }
 
-    /**
-     * Ensures the {@link IComponentStrategyRegistry#getComponentStrategies}
-     * method returns a copy of the registered component strategy collection.
+    /*
+     * @see org.gamegineer.common.core.util.registry.AbstractRegistryTestCase#createUniqueObject()
      */
-    @Test
-    public void testGetComponentStrategies_ReturnValue_Copy()
+    @Override
+    protected final IComponentStrategy createUniqueObject()
     {
-        final Collection<IComponentStrategy> componentStrategies = componentStrategyRegistry_.getComponentStrategies();
-        final int expectedComponentStrategiesSize = componentStrategies.size();
-
-        componentStrategies.add( TestComponentStrategies.createUniqueComponentStrategy() );
-
-        assertEquals( expectedComponentStrategiesSize, componentStrategyRegistry_.getComponentStrategies().size() );
+        return TestComponentStrategies.createUniqueComponentStrategy();
     }
 
-    /**
-     * Ensures the {@link IComponentStrategyRegistry#getComponentStrategies}
-     * method returns a snapshot of the registered component strategy
-     * collection.
+    /*
+     * @see org.gamegineer.common.core.util.registry.AbstractRegistryTestCase#getObjectId(java.lang.Object)
      */
-    @Test
-    public void testGetComponentStrategies_ReturnValue_Snapshot()
+    @Override
+    protected final ComponentStrategyId getObjectId(
+        final IComponentStrategy object )
     {
-        final Collection<IComponentStrategy> componentStrategies = componentStrategyRegistry_.getComponentStrategies();
-        componentStrategyRegistry_.registerComponentStrategy( TestComponentStrategies.createUniqueComponentStrategy() );
-
-        assertTrue( componentStrategies.size() != componentStrategyRegistry_.getComponentStrategies().size() );
-    }
-
-    /**
-     * Ensures the {@link IComponentStrategyRegistry#getComponentStrategy}
-     * method returns the correct value when passed an identifier that is
-     * absent.
-     */
-    @Test
-    public void testGetComponentStrategy_Id_Absent()
-    {
-        assertNull( componentStrategyRegistry_.getComponentStrategy( ComponentStrategyId.fromString( "unknownId" ) ) ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@link IComponentStrategyRegistry#getComponentStrategy}
-     * method throws an exception when passed a {@code null} identifier.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetComponentStrategy_Id_Null()
-    {
-        componentStrategyRegistry_.getComponentStrategy( null );
-    }
-
-    /**
-     * Ensures the {@link IComponentStrategyRegistry#getComponentStrategy}
-     * method returns the correct value when passed an identifier that is
-     * present.
-     */
-    @Test
-    public void testGetComponentStrategy_Id_Present()
-    {
-        final IComponentStrategy expectedComponentStrategy = TestComponentStrategies.createUniqueComponentStrategy();
-        componentStrategyRegistry_.registerComponentStrategy( expectedComponentStrategy );
-
-        final IComponentStrategy actualComponentStrategy = componentStrategyRegistry_.getComponentStrategy( expectedComponentStrategy.getId() );
-
-        assertSame( expectedComponentStrategy, actualComponentStrategy );
-    }
-
-    /**
-     * Ensures the {@link IComponentStrategyRegistry#registerComponentStrategy}
-     * method throws an exception when passed a {@code null} component strategy.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRegisterComponentStrategy_ComponentStrategy_Null()
-    {
-        componentStrategyRegistry_.registerComponentStrategy( null );
-    }
-
-    /**
-     * Ensures the {@link IComponentStrategyRegistry#registerComponentStrategy}
-     * method throws an exception when a component strategy with the same
-     * identifier is already registered.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testRegisterComponentStrategy_ComponentStrategy_Registered()
-    {
-        final IComponentStrategy componentStrategy = TestComponentStrategies.createUniqueComponentStrategy();
-        componentStrategyRegistry_.registerComponentStrategy( componentStrategy );
-
-        componentStrategyRegistry_.registerComponentStrategy( TestComponentStrategies.cloneComponentStrategy( componentStrategy ) );
-    }
-
-    /**
-     * Ensures the {@link IComponentStrategyRegistry#registerComponentStrategy}
-     * method registers an unregistered component strategy.
-     */
-    @Test
-    public void testRegisterComponentStrategy_ComponentStrategy_Unregistered()
-    {
-        final IComponentStrategy componentStrategy = TestComponentStrategies.createUniqueComponentStrategy();
-
-        componentStrategyRegistry_.registerComponentStrategy( componentStrategy );
-
-        assertTrue( componentStrategyRegistry_.getComponentStrategies().contains( componentStrategy ) );
-    }
-
-    /**
-     * Ensures the
-     * {@link IComponentStrategyRegistry#unregisterComponentStrategy} method
-     * throws an exception when passed a {@code null} component strategy.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testUnregisterComponentStrategy_ComponentStrategy_Null()
-    {
-        componentStrategyRegistry_.unregisterComponentStrategy( null );
-    }
-
-    /**
-     * Ensures the
-     * {@link IComponentStrategyRegistry#unregisterComponentStrategy} method
-     * throws an exception when passed a component strategy whose identifier was
-     * previously registered but by a different component strategy instance.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testUnregisterComponentStrategy_ComponentStrategy_Registered_DifferentInstance()
-    {
-        final IComponentStrategy componentStrategy = TestComponentStrategies.createUniqueComponentStrategy();
-        final int originalComponentStrategiesSize = componentStrategyRegistry_.getComponentStrategies().size();
-        componentStrategyRegistry_.registerComponentStrategy( componentStrategy );
-        assertEquals( originalComponentStrategiesSize + 1, componentStrategyRegistry_.getComponentStrategies().size() );
-
-        componentStrategyRegistry_.unregisterComponentStrategy( TestComponentStrategies.cloneComponentStrategy( componentStrategy ) );
-    }
-
-    /**
-     * Ensures the
-     * {@link IComponentStrategyRegistry#unregisterComponentStrategy} method
-     * unregisters a previously registered component strategy.
-     */
-    @Test
-    public void testUnregisterComponentStrategy_ComponentStrategy_Registered_SameInstance()
-    {
-        final IComponentStrategy componentStrategy = TestComponentStrategies.createUniqueComponentStrategy();
-        final int originalComponentStrategiesSize = componentStrategyRegistry_.getComponentStrategies().size();
-        componentStrategyRegistry_.registerComponentStrategy( componentStrategy );
-        assertEquals( originalComponentStrategiesSize + 1, componentStrategyRegistry_.getComponentStrategies().size() );
-
-        componentStrategyRegistry_.unregisterComponentStrategy( componentStrategy );
-
-        assertEquals( originalComponentStrategiesSize, componentStrategyRegistry_.getComponentStrategies().size() );
-    }
-
-    /**
-     * Ensures the
-     * {@link IComponentStrategyRegistry#unregisterComponentStrategy} method
-     * throws an exception when passed a component strategy that was not
-     * previously registered.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testUnregisterComponentStrategy_ComponentStrategy_Unregistered()
-    {
-        final IComponentStrategy componentStrategy = TestComponentStrategies.createUniqueComponentStrategy();
-
-        componentStrategyRegistry_.unregisterComponentStrategy( componentStrategy );
+        return object.getId();
     }
 }

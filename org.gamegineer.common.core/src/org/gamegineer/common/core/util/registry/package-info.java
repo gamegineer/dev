@@ -1,5 +1,5 @@
 /*
- * IComponentStrategyRegistry.java
+ * package-info.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,24 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 3, 2012 at 9:26:00 PM.
+ * Created on Nov 15, 2012 at 9:32:31 PM.
  */
-
-package org.gamegineer.table.core;
-
-import org.gamegineer.common.core.util.registry.IRegistry;
 
 /**
- * A service for the management and discovery of component strategies.
- * 
- * @noextend This interface is not intended to be extended by clients.
- * 
- * @noimplement This interface is not intended to be implemented by clients.
+ * Provides classes and interfaces that support the Registry pattern.
  */
-public interface IComponentStrategyRegistry
-    extends IRegistry<ComponentStrategyId, IComponentStrategy>
-{
-    // ======================================================================
-    // Methods
-    // ======================================================================
-}
+package org.gamegineer.common.core.util.registry;
