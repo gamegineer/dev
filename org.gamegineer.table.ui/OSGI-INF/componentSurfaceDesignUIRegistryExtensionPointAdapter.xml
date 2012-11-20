@@ -7,17 +7,17 @@
 	<implementation
 			class="org.gamegineer.table.internal.ui.ComponentSurfaceDesignUIRegistryExtensionPointAdapter" />
 	<reference
-			bind="bindComponentSurfaceDesignUIRegistry"
-			cardinality="1..1"
-			interface="org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry"
-			name="componentSurfaceDesignUIRegistry"
-			policy="static"
-			unbind="unbindComponentSurfaceDesignUIRegistry" />
-	<reference
 			bind="bindExtensionRegistry"
 			cardinality="1..1"
 			interface="org.eclipse.core.runtime.IExtensionRegistry"
 			name="extensionRegistry"
 			policy="static"
 			unbind="unbindExtensionRegistry" />
+    <reference
+            bind="bindObjectRegistry"
+            cardinality="1..1"
+            interface="org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry"
+            name="objectRegistry"
+            policy="static"
+            unbind="unbindObjectRegistry" />
 </scr:component>

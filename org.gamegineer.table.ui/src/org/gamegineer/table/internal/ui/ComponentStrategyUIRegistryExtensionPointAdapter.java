@@ -21,25 +21,13 @@
 
 package org.gamegineer.table.internal.ui;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.logging.Level;
-import net.jcip.annotations.GuardedBy;
-import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.IRegistryEventListener;
+import org.gamegineer.common.core.util.registry.AbstractRegistryExtensionPointAdapter;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.ui.IComponentStrategyUI;
-import org.gamegineer.table.ui.IComponentStrategyUIRegistry;
 
 /**
  * A component that adapts component strategy user interfaces published via the
@@ -48,7 +36,7 @@ import org.gamegineer.table.ui.IComponentStrategyUIRegistry;
  */
 @ThreadSafe
 public final class ComponentStrategyUIRegistryExtensionPointAdapter
-    implements IRegistryEventListener
+    extends AbstractRegistryExtensionPointAdapter<ComponentStrategyId, IComponentStrategyUI>
 {
     // ======================================================================
     // Fields
@@ -66,24 +54,6 @@ public final class ComponentStrategyUIRegistryExtensionPointAdapter
      */
     private static final String ATTR_ID = "id"; //$NON-NLS-1$
 
-    /**
-     * The collection of component strategy user interface registrations
-     * contributed from the extension registry.
-     */
-    @GuardedBy( "lock_" )
-    private Collection<ComponentStrategyUIRegistration> componentStrategyUIRegistrations_;
-
-    /** The component strategy user interface registry service. */
-    @GuardedBy( "lock_" )
-    private IComponentStrategyUIRegistry componentStrategyUIRegistry_;
-
-    /** The extension registry service. */
-    @GuardedBy( "lock_" )
-    private IExtensionRegistry extensionRegistry_;
-
-    /** The instance lock. */
-    private final Object lock_;
-
 
     // ======================================================================
     // Constructors
@@ -95,10 +65,6 @@ public final class ComponentStrategyUIRegistryExtensionPointAdapter
      */
     public ComponentStrategyUIRegistryExtensionPointAdapter()
     {
-        componentStrategyUIRegistrations_ = new ArrayList<ComponentStrategyUIRegistration>();
-        componentStrategyUIRegistry_ = null;
-        extensionRegistry_ = null;
-        lock_ = new Object();
     }
 
 
@@ -106,121 +72,19 @@ public final class ComponentStrategyUIRegistryExtensionPointAdapter
     // Methods
     // ======================================================================
 
-    /**
-     * Activates this component.
-     */
-    public void activate()
-    {
-        synchronized( lock_ )
-        {
-            registerComponentStrategyUIs();
-            extensionRegistry_.addListener( this, BundleConstants.COMPONENT_STRATEGY_UIS_EXTENSION_POINT_UNIQUE_ID );
-        }
-    }
-
     /*
-     * @see org.eclipse.core.runtime.IRegistryEventListener#added(org.eclipse.core.runtime.IExtension[])
+     * @see org.gamegineer.common.core.util.registry.AbstractRegistryExtensionPointAdapter#createObject(org.eclipse.core.runtime.IConfigurationElement)
      */
     @Override
-    public void added(
-        final IExtension[] extensions )
-    {
-        for( final IExtension extension : extensions )
-        {
-            for( final IConfigurationElement configurationElement : extension.getConfigurationElements() )
-            {
-                registerComponentStrategyUI( configurationElement );
-            }
-        }
-    }
-
-    /*
-     * @see org.eclipse.core.runtime.IRegistryEventListener#added(org.eclipse.core.runtime.IExtensionPoint[])
-     */
-    @Override
-    public void added(
-        @SuppressWarnings( "unused" )
-        final IExtensionPoint[] extensionPoints )
-    {
-        // do nothing
-    }
-
-    /**
-     * Binds the component strategy user interface registry service to this
-     * component.
-     * 
-     * @param componentStrategyUIRegistry
-     *        The component strategy user interface registry service; must not
-     *        be {@code null}.
-     * 
-     * @throws java.lang.IllegalStateException
-     *         If the component strategy user interface registry is already
-     *         bound.
-     * @throws java.lang.NullPointerException
-     *         If {@code componentStrategyUIRegistry} is {@code null}.
-     */
-    public void bindComponentStrategyUIRegistry(
-        /* @NonNull */
-        final IComponentStrategyUIRegistry componentStrategyUIRegistry )
-    {
-        assertArgumentNotNull( componentStrategyUIRegistry, "componentStrategyUIRegistry" ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            assertStateLegal( componentStrategyUIRegistry_ == null, NonNlsMessages.ComponentStrategyUIRegistryExtensionPointAdapter_bindComponentStrategyUIRegistry_bound );
-            componentStrategyUIRegistry_ = componentStrategyUIRegistry;
-        }
-    }
-
-    /**
-     * Binds the extension registry service to this component.
-     * 
-     * @param extensionRegistry
-     *        The extension registry service; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalStateException
-     *         If the extension registry is already bound.
-     * @throws java.lang.NullPointerException
-     *         If {@code extensionRegistry} is {@code null}.
-     */
-    public void bindExtensionRegistry(
-        /* @NonNull */
-        final IExtensionRegistry extensionRegistry )
-    {
-        assertArgumentNotNull( extensionRegistry, "extensionRegistry" ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            assertStateLegal( extensionRegistry_ == null, NonNlsMessages.ComponentStrategyUIRegistryExtensionPointAdapter_bindExtensionRegistry_bound );
-            extensionRegistry_ = extensionRegistry;
-        }
-    }
-
-    /**
-     * Creates a component strategy user interface registration based on the
-     * specified extension configuration element.
-     * 
-     * @param configurationElement
-     *        The extension configuration element; must not be {@code null}.
-     * 
-     * @return A component strategy user interface registration; never
-     *         {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If the configuration element represents an illegal component
-     *         strategy user interface.
-     */
-    /* @NonNull */
-    private static ComponentStrategyUIRegistration createComponentStrategyUIRegistration(
-        /* @NonNull */
+    protected IComponentStrategyUI createObject(
         final IConfigurationElement configurationElement )
     {
-        assert configurationElement != null;
+        assertArgumentNotNull( configurationElement, "configurationElement" ); //$NON-NLS-1$
 
         final String idString = configurationElement.getAttribute( ATTR_ID );
         if( idString == null )
         {
-            throw new IllegalArgumentException( NonNlsMessages.ComponentStrategyUIRegistryExtensionPointAdapter_createComponentStrategyUIRegistration_missingId );
+            throw new IllegalArgumentException( NonNlsMessages.ComponentStrategyUIRegistryExtensionPointAdapter_createObject_missingId );
         }
         @SuppressWarnings( "unused" )
         final ComponentStrategyId id = ComponentStrategyId.fromString( idString );
@@ -234,314 +98,18 @@ public final class ComponentStrategyUIRegistryExtensionPointAdapter
         }
         catch( final CoreException e )
         {
-            throw new IllegalArgumentException( NonNlsMessages.ComponentStrategyUIRegistryExtensionPointAdapter_createComponentStrategyUIRegistration_createComponentStrategyUIError, e );
+            throw new IllegalArgumentException( NonNlsMessages.ComponentStrategyUIRegistryExtensionPointAdapter_createObject_createComponentStrategyUIError, e );
         }
 
-        return new ComponentStrategyUIRegistration( configurationElement.getDeclaringExtension(), componentStrategyUI );
-    }
-
-    /**
-     * Deactivates this component.
-     */
-    public void deactivate()
-    {
-        synchronized( lock_ )
-        {
-            extensionRegistry_.removeListener( this );
-            unregisterComponentStrategyUIs();
-        }
-    }
-
-    /**
-     * Indicates the specified component strategy user interface registration
-     * was contributed by the specified extension.
-     * 
-     * @param componentStrategyUIRegistration
-     *        The component strategy user interface registration; must not be
-     *        {@code null}.
-     * @param extension
-     *        The extension; must not be {@code null}.
-     * 
-     * @return {@code true} if the specified component strategy user interface
-     *         registration was contributed by the specified extension;
-     *         otherwise {@code false}.
-     */
-    private static boolean isComponentStrategyUIRegistrationContributedByExtension(
-        /* @NonNull */
-        final ComponentStrategyUIRegistration componentStrategyUIRegistration,
-        /* @NonNull */
-        final IExtension extension )
-    {
-        assert componentStrategyUIRegistration != null;
-        assert extension != null;
-
-        if( !componentStrategyUIRegistration.getExtensionNamespaceId().equals( extension.getNamespaceIdentifier() ) )
-        {
-            return false;
-        }
-
-        final String extensionSimpleId = componentStrategyUIRegistration.getExtensionSimpleId();
-        return (extensionSimpleId == null) || extensionSimpleId.equals( extension.getSimpleIdentifier() );
-    }
-
-    /**
-     * Registers the component strategy user interface represented by the
-     * specified extension configuration element.
-     * 
-     * @param configurationElement
-     *        The extension configuration element; must not be {@code null}.
-     */
-    private void registerComponentStrategyUI(
-        /* @NonNull */
-        final IConfigurationElement configurationElement )
-    {
-        assert configurationElement != null;
-
-        final ComponentStrategyUIRegistration componentStrategyUIRegistration;
-        try
-        {
-            componentStrategyUIRegistration = createComponentStrategyUIRegistration( configurationElement );
-        }
-        catch( final IllegalArgumentException e )
-        {
-            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ComponentStrategyUIRegistryExtensionPointAdapter_registerComponentStrategyUI_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
-            return;
-        }
-
-        synchronized( lock_ )
-        {
-            componentStrategyUIRegistry_.register( componentStrategyUIRegistration.getComponentStrategyUI() );
-            componentStrategyUIRegistrations_.add( componentStrategyUIRegistration );
-        }
-    }
-
-    /**
-     * Registers all component strategy user interfaces in the extension
-     * registry.
-     */
-    @GuardedBy( "lock_" )
-    private void registerComponentStrategyUIs()
-    {
-        assert Thread.holdsLock( lock_ );
-
-        for( final IConfigurationElement configurationElement : extensionRegistry_.getConfigurationElementsFor( BundleConstants.COMPONENT_STRATEGY_UIS_EXTENSION_POINT_UNIQUE_ID ) )
-        {
-            registerComponentStrategyUI( configurationElement );
-        }
+        return componentStrategyUI;
     }
 
     /*
-     * @see org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse.core.runtime.IExtension[])
+     * @see org.gamegineer.common.core.util.registry.AbstractRegistryExtensionPointAdapter#getExtensionPointId()
      */
     @Override
-    public void removed(
-        final IExtension[] extensions )
+    protected String getExtensionPointId()
     {
-        for( final IExtension extension : extensions )
-        {
-            unregisterComponentStrategyUIs( extension );
-        }
-    }
-
-    /*
-     * @see org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse.core.runtime.IExtensionPoint[])
-     */
-    @Override
-    public void removed(
-        @SuppressWarnings( "unused" )
-        final IExtensionPoint[] extensionPoints )
-    {
-        // do nothing
-    }
-
-    /**
-     * Unbinds the component strategy user interface registry service from this
-     * component.
-     * 
-     * @param componentStrategyUIRegistry
-     *        The component strategy user interface registry service; must not
-     *        be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code componentStrategyUIRegistry} is not currently bound.
-     * @throws java.lang.NullPointerException
-     *         If {@code componentStrategyUIRegistry} is {@code null}.
-     */
-    public void unbindComponentStrategyUIRegistry(
-        /* @NonNull */
-        final IComponentStrategyUIRegistry componentStrategyUIRegistry )
-    {
-        assertArgumentNotNull( componentStrategyUIRegistry, "componentStrategyUIRegistry" ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            assertArgumentLegal( componentStrategyUIRegistry_ == componentStrategyUIRegistry, "componentStrategyUIRegistry", NonNlsMessages.ComponentStrategyUIRegistryExtensionPointAdapter_unbindComponentStrategyUIRegistry_notBound ); //$NON-NLS-1$
-            componentStrategyUIRegistry_ = null;
-        }
-    }
-
-    /**
-     * Unbinds the extension registry service from this component.
-     * 
-     * @param extensionRegistry
-     *        The extension registry service; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code extensionRegistry} is not currently bound.
-     * @throws java.lang.NullPointerException
-     *         If {@code extensionRegistry} is {@code null}.
-     */
-    public void unbindExtensionRegistry(
-        /* @NonNull */
-        final IExtensionRegistry extensionRegistry )
-    {
-        assertArgumentNotNull( extensionRegistry, "extensionRegistry" ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            assertArgumentLegal( extensionRegistry_ == extensionRegistry, "extensionRegistry", NonNlsMessages.ComponentStrategyUIRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound ); //$NON-NLS-1$
-            extensionRegistry_ = null;
-        }
-    }
-
-    /**
-     * Unregisters all component strategy user interfaces.
-     */
-    @GuardedBy( "lock_" )
-    private void unregisterComponentStrategyUIs()
-    {
-        assert Thread.holdsLock( lock_ );
-
-        for( final ComponentStrategyUIRegistration componentStrategyUIRegistration : componentStrategyUIRegistrations_ )
-        {
-            componentStrategyUIRegistry_.unregister( componentStrategyUIRegistration.getComponentStrategyUI() );
-        }
-
-        componentStrategyUIRegistrations_.clear();
-    }
-
-    /**
-     * Unregisters all component strategy user interfaces contributed by the
-     * specified extension.
-     * 
-     * @param extension
-     *        The extension; must not be {@code null}.
-     */
-    private void unregisterComponentStrategyUIs(
-        /* @NonNull */
-        final IExtension extension )
-    {
-        assert extension != null;
-
-        synchronized( lock_ )
-        {
-            for( final Iterator<ComponentStrategyUIRegistration> iterator = componentStrategyUIRegistrations_.iterator(); iterator.hasNext(); )
-            {
-                final ComponentStrategyUIRegistration componentStrategyUIRegistration = iterator.next();
-                if( isComponentStrategyUIRegistrationContributedByExtension( componentStrategyUIRegistration, extension ) )
-                {
-                    componentStrategyUIRegistry_.unregister( componentStrategyUIRegistration.getComponentStrategyUI() );
-                    iterator.remove();
-                }
-            }
-        }
-    }
-
-
-    // ======================================================================
-    // Nested Types
-    // ======================================================================
-
-    /**
-     * Describes a component strategy user interface that was registered from an
-     * extension.
-     */
-    @Immutable
-    private static final class ComponentStrategyUIRegistration
-    {
-        // ==================================================================
-        // Fields
-        // ==================================================================
-
-        /** The component strategy user interface contributed by the extension. */
-        private final IComponentStrategyUI componentStrategyUI_;
-
-        /** The namespace identifier of the contributing extension. */
-        private final String extensionNamespaceId_;
-
-        /** The simple identifier of the contributing extension. */
-        private final String extensionSimpleId_;
-
-
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the
-         * {@code ComponentStrategyUIRegistration} class.
-         * 
-         * @param extension
-         *        The extension that contributed the component strategy user
-         *        interface; must not be {@code null}.
-         * @param componentStrategyUI
-         *        The component strategy user interface contributed by the
-         *        extension; must not be {@code null}.
-         */
-        ComponentStrategyUIRegistration(
-            /* @NonNull */
-            final IExtension extension,
-            /* @NonNull */
-            final IComponentStrategyUI componentStrategyUI )
-        {
-            assert extension != null;
-            assert componentStrategyUI != null;
-
-            componentStrategyUI_ = componentStrategyUI;
-            extensionNamespaceId_ = extension.getNamespaceIdentifier();
-            extensionSimpleId_ = extension.getSimpleIdentifier();
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /**
-         * Gets the component strategy user interface contributed by the
-         * extension.
-         * 
-         * @return The component strategy user interface contributed by the
-         *         extension; never {@code null}.
-         */
-        /* @NonNull */
-        IComponentStrategyUI getComponentStrategyUI()
-        {
-            return componentStrategyUI_;
-        }
-
-        /**
-         * Gets the namespace identifier of the contributing extension.
-         * 
-         * @return The namespace identifier of the contributing extension; never
-         *         {@code null}.
-         */
-        /* @NonNull */
-        String getExtensionNamespaceId()
-        {
-            return extensionNamespaceId_;
-        }
-
-        /**
-         * Gets the simple identifier of the contributing extension.
-         * 
-         * @return The simple identifier of the contributing extension; may be
-         *         {@code null}.
-         */
-        /* @Nullable */
-        String getExtensionSimpleId()
-        {
-            return extensionSimpleId_;
-        }
+        return BundleConstants.COMPONENT_STRATEGY_UIS_EXTENSION_POINT_UNIQUE_ID;
     }
 }

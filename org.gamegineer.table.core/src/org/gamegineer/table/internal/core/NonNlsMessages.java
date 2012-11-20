@@ -80,67 +80,31 @@ final class NonNlsMessages
 
     // --- ComponentStrategyRegistryExtensionPointAdapter -------------------
 
-    /** The component strategy registry service is already bound. */
-    public static String ComponentStrategyRegistryExtensionPointAdapter_bindComponentStrategyRegistry_bound;
-
-    /** The extension registry service is already bound. */
-    public static String ComponentStrategyRegistryExtensionPointAdapter_bindExtensionRegistry_bound;
-
     /**
      * An error occurred while creating the component strategy of a component
      * strategy configuration element.
      */
-    public static String ComponentStrategyRegistryExtensionPointAdapter_createComponentStrategyRegistration_createComponentStrategyError;
+    public static String ComponentStrategyRegistryExtensionPointAdapter_createObject_createComponentStrategyError;
 
     /** The component strategy identifier is missing. */
-    public static String ComponentStrategyRegistryExtensionPointAdapter_createComponentStrategyRegistration_missingId;
-
-    /**
-     * An error occurred while parsing the component strategy configuration
-     * element.
-     */
-    public static String ComponentStrategyRegistryExtensionPointAdapter_registerComponentStrategy_parseError;
-
-    /** The component strategy registry service is not bound. */
-    public static String ComponentStrategyRegistryExtensionPointAdapter_unbindComponentStrategyRegistry_notBound;
-
-    /** The extension registry service is not bound. */
-    public static String ComponentStrategyRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound;
+    public static String ComponentStrategyRegistryExtensionPointAdapter_createObject_missingId;
 
     // --- ComponentSurfaceDesignRegistryExtensionPointAdapter --------------
 
-    /** The component surface design registry service is already bound. */
-    public static String ComponentSurfaceDesignRegistryExtensionPointAdapter_bindComponentSurfaceDesignRegistry_bound;
-
-    /** The extension registry service is already bound. */
-    public static String ComponentSurfaceDesignRegistryExtensionPointAdapter_bindExtensionRegistry_bound;
-
     /** The component surface design identifier is missing. */
-    public static String ComponentSurfaceDesignRegistryExtensionPointAdapter_createComponentSurfaceDesignRegistration_missingId;
+    public static String ComponentSurfaceDesignRegistryExtensionPointAdapter_createObject_missingId;
 
     /**
      * An error occurred while parsing the height attribute of a component
      * surface design configuration element.
      */
-    public static String ComponentSurfaceDesignRegistryExtensionPointAdapter_createComponentSurfaceDesignRegistration_parseHeightError;
+    public static String ComponentSurfaceDesignRegistryExtensionPointAdapter_createObject_parseHeightError;
 
     /**
      * An error occurred while parsing the width attribute of a component
      * surface design configuration element.
      */
-    public static String ComponentSurfaceDesignRegistryExtensionPointAdapter_createComponentSurfaceDesignRegistration_parseWidthError;
-
-    /**
-     * An error occurred while parsing the component surface design
-     * configuration element.
-     */
-    public static String ComponentSurfaceDesignRegistryExtensionPointAdapter_registerComponentSurfaceDesign_parseError;
-
-    /** The component surface design registry service is not bound. */
-    public static String ComponentSurfaceDesignRegistryExtensionPointAdapter_unbindComponentSurfaceDesignRegistry_notBound;
-
-    /** The extension registry service is not bound. */
-    public static String ComponentSurfaceDesignRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound;
+    public static String ComponentSurfaceDesignRegistryExtensionPointAdapter_createObject_parseWidthError;
 
     // --- Container --------------------------------------------------------
 
@@ -194,32 +158,14 @@ final class NonNlsMessages
 
     // --- ContainerLayoutRegistryExtensionPointAdapter ---------------------
 
-    /** The container layout registry service is already bound. */
-    public static String ContainerLayoutRegistryExtensionPointAdapter_bindContainerLayoutRegistry_bound;
-
-    /** The extension registry service is already bound. */
-    public static String ContainerLayoutRegistryExtensionPointAdapter_bindExtensionRegistry_bound;
-
     /**
      * An error occurred while creating the container layout of a container
      * layout configuration element.
      */
-    public static String ContainerLayoutRegistryExtensionPointAdapter_createContainerLayoutRegistration_createContainerLayoutError;
+    public static String ContainerLayoutRegistryExtensionPointAdapter_createObject_createContainerLayoutError;
 
     /** The container layout identifier is missing. */
-    public static String ContainerLayoutRegistryExtensionPointAdapter_createContainerLayoutRegistration_missingId;
-
-    /**
-     * An error occurred while parsing the container layout configuration
-     * element.
-     */
-    public static String ContainerLayoutRegistryExtensionPointAdapter_registerContainerLayout_parseError;
-
-    /** The container layout registry service is not bound. */
-    public static String ContainerLayoutRegistryExtensionPointAdapter_unbindContainerLayoutRegistry_notBound;
-
-    /** The extension registry service is not bound. */
-    public static String ContainerLayoutRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound;
+    public static String ContainerLayoutRegistryExtensionPointAdapter_createObject_missingId;
 
     // --- MementoUtils -----------------------------------------------------
 
@@ -269,67 +215,6 @@ final class NonNlsMessages
     // ======================================================================
     // Methods
     // ======================================================================
-
-    // --- ComponentStrategyRegistryExtensionPointAdapter -------------------
-
-    /**
-     * Gets the formatted message indicating an error occurred while parsing the
-     * component strategy configuration element.
-     * 
-     * @param componentStrategyId
-     *        The component strategy identifier; must not be {@code null}.
-     * 
-     * @return The formatted message indicating an error occurred while parsing
-     *         the component strategy configuration element; never {@code null}.
-     */
-    /* @NonNull */
-    static String ComponentStrategyRegistryExtensionPointAdapter_registerComponentStrategy_parseError(
-        /* @NonNull */
-        final String componentStrategyId )
-    {
-        return bind( ComponentStrategyRegistryExtensionPointAdapter_registerComponentStrategy_parseError, componentStrategyId );
-    }
-
-    // --- ComponentSurfaceDesignRegistryExtensionPointAdapter --------------
-
-    /**
-     * Gets the formatted message indicating an error occurred while parsing the
-     * component surface design configuration element.
-     * 
-     * @param componentSurfaceDesignId
-     *        The component surface design identifier; must not be {@code null}.
-     * 
-     * @return The formatted message indicating an error occurred while parsing
-     *         the component surface design configuration element; never
-     *         {@code null}.
-     */
-    /* @NonNull */
-    static String ComponentSurfaceDesignRegistryExtensionPointAdapter_registerComponentSurfaceDesign_parseError(
-        /* @NonNull */
-        final String componentSurfaceDesignId )
-    {
-        return bind( ComponentSurfaceDesignRegistryExtensionPointAdapter_registerComponentSurfaceDesign_parseError, componentSurfaceDesignId );
-    }
-
-    // --- ContainerLayoutRegistryExtensionPointAdapter ---------------------
-
-    /**
-     * Gets the formatted message indicating an error occurred while parsing the
-     * container layout configuration element.
-     * 
-     * @param containerLayoutId
-     *        The container layout identifier; must not be {@code null}.
-     * 
-     * @return The formatted message indicating an error occurred while parsing
-     *         the container layout configuration element; never {@code null}.
-     */
-    /* @NonNull */
-    static String ContainerLayoutRegistryExtensionPointAdapter_registerContainerLayout_parseError(
-        /* @NonNull */
-        final String containerLayoutId )
-    {
-        return bind( ContainerLayoutRegistryExtensionPointAdapter_registerContainerLayout_parseError, containerLayoutId );
-    }
 
     // --- MementoUtils -----------------------------------------------------
 

@@ -49,73 +49,31 @@ final class NonNlsMessages
 
     // --- ComponentStrategyUIRegistryExtensionPointAdapter -----------------
 
-    /** The component strategy user interface registry service is already bound. */
-    public static String ComponentStrategyUIRegistryExtensionPointAdapter_bindComponentStrategyUIRegistry_bound;
-
-    /** The extension registry service is already bound. */
-    public static String ComponentStrategyUIRegistryExtensionPointAdapter_bindExtensionRegistry_bound;
-
     /**
      * An error occurred while creating the component strategy user interface of
      * a component strategy user interface configuration element.
      */
-    public static String ComponentStrategyUIRegistryExtensionPointAdapter_createComponentStrategyUIRegistration_createComponentStrategyUIError;
+    public static String ComponentStrategyUIRegistryExtensionPointAdapter_createObject_createComponentStrategyUIError;
 
     /** The component strategy identifier is missing. */
-    public static String ComponentStrategyUIRegistryExtensionPointAdapter_createComponentStrategyUIRegistration_missingId;
-
-    /**
-     * An error occurred while parsing the component strategy user interface
-     * configuration element.
-     */
-    public static String ComponentStrategyUIRegistryExtensionPointAdapter_registerComponentStrategyUI_parseError;
-
-    /** The component strategy user interface registry service is not bound. */
-    public static String ComponentStrategyUIRegistryExtensionPointAdapter_unbindComponentStrategyUIRegistry_notBound;
-
-    /** The extension registry service is not bound. */
-    public static String ComponentStrategyUIRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound;
+    public static String ComponentStrategyUIRegistryExtensionPointAdapter_createObject_missingId;
 
     // --- ComponentSurfaceDesignUIRegistryExtensionPointAdapter ------------
 
-    /**
-     * The component surface design user interface registry service is already
-     * bound.
-     */
-    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_bindComponentSurfaceDesignUIRegistry_bound;
-
-    /** The extension registry service is already bound. */
-    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_bindExtensionRegistry_bound;
-
     /** The bundle hosting the component surface design icon was not found. */
-    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createComponentSurfaceDesignUIRegistration_iconBundleNotFound;
+    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconBundleNotFound;
 
     /** The component surface design icon file was not found. */
-    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createComponentSurfaceDesignUIRegistration_iconFileNotFound;
+    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconFileNotFound;
 
     /** The component surface design icon path is missing. */
-    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createComponentSurfaceDesignUIRegistration_missingIconPath;
+    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_missingIconPath;
 
     /** The component surface design identifier is missing. */
-    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createComponentSurfaceDesignUIRegistration_missingId;
+    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_missingId;
 
     /** The component surface design name is missing. */
-    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createComponentSurfaceDesignUIRegistration_missingName;
-
-    /**
-     * An error occurred while parsing the component surface design user
-     * interface configuration element.
-     */
-    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_registerComponentSurfaceDesignUI_parseError;
-
-    /**
-     * The component surface design user interface registry service is not
-     * bound.
-     */
-    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_unbindComponentSurfaceDesignUIRegistry_notBound;
-
-    /** The extension registry service is not bound. */
-    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound;
+    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_missingName;
 
     // --- TableRunner ------------------------------------------------------
 
@@ -170,27 +128,6 @@ final class NonNlsMessages
         return bind( BundleImages_getImage_readError, imageUrl );
     }
 
-    // --- ComponentStrategyUIRegistryExtensionPointAdapter -----------------
-
-    /**
-     * Gets the formatted message indicating an error occurred while parsing the
-     * component strategy user interface configuration element.
-     * 
-     * @param componentStrategyId
-     *        The component strategy identifier; must not be {@code null}.
-     * 
-     * @return The formatted message indicating an error occurred while parsing
-     *         the component strategy user interface configuration element;
-     *         never {@code null}.
-     */
-    /* @NonNull */
-    static String ComponentStrategyUIRegistryExtensionPointAdapter_registerComponentStrategyUI_parseError(
-        /* @NonNull */
-        final String componentStrategyId )
-    {
-        return bind( ComponentStrategyUIRegistryExtensionPointAdapter_registerComponentStrategyUI_parseError, componentStrategyId );
-    }
-
     // --- ComponentSurfaceDesignUIRegistryExtensionPointAdapter ------------
 
     /**
@@ -204,11 +141,11 @@ final class NonNlsMessages
      *         surface design icon file was not found; never {@code null}.
      */
     /* @NonNull */
-    static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createComponentSurfaceDesignUIRegistration_iconBundleNotFound(
+    static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconBundleNotFound(
         /* @NonNull */
         final String name )
     {
-        return bind( ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createComponentSurfaceDesignUIRegistration_iconBundleNotFound, name );
+        return bind( ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconBundleNotFound, name );
     }
 
     /**
@@ -226,31 +163,12 @@ final class NonNlsMessages
      *         icon file was not found; never {@code null}.
      */
     /* @NonNull */
-    static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createComponentSurfaceDesignUIRegistration_iconFileNotFound(
+    static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconFileNotFound(
         /* @NonNull */
         final Bundle bundle,
         /* @NonNull */
         final String path )
     {
-        return bind( ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createComponentSurfaceDesignUIRegistration_iconFileNotFound, bundle.getSymbolicName(), path );
-    }
-
-    /**
-     * Gets the formatted message indicating an error occurred while parsing the
-     * component surface design user interface configuration element.
-     * 
-     * @param componentSurfaceDesignId
-     *        The component surface design identifier; must not be {@code null}.
-     * 
-     * @return The formatted message indicating an error occurred while parsing
-     *         the component surface design user interface configuration
-     *         element; never {@code null}.
-     */
-    /* @NonNull */
-    static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_registerComponentSurfaceDesignUI_parseError(
-        /* @NonNull */
-        final String componentSurfaceDesignId )
-    {
-        return bind( ComponentSurfaceDesignUIRegistryExtensionPointAdapter_registerComponentSurfaceDesignUI_parseError, componentSurfaceDesignId );
+        return bind( ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconFileNotFound, bundle.getSymbolicName(), path );
     }
 }
