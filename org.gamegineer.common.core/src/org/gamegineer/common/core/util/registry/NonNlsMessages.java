@@ -39,10 +39,10 @@ final class NonNlsMessages
     // --- AbstractRegistry -------------------------------------------------
 
     /** An object is already registered for the specified identifier. */
-    public static String AbstractRegistry_register_object_registered;
+    public static String AbstractRegistry_registerObject_object_registered;
 
     /** The object is not registered for the specified identifier. */
-    public static String AbstractRegistry_unregister_object_unregistered;
+    public static String AbstractRegistry_unregisterObject_object_unregistered;
 
     // --- AbstractRegistryExtensionPointAdapter ----------------------------
 
@@ -99,11 +99,11 @@ final class NonNlsMessages
      *         for the specified identifier; never {@code null}.
      */
     /* @NonNull */
-    static String AbstractRegistry_register_object_registered(
+    static String AbstractRegistry_registerObject_object_registered(
         /* @NonNull */
         final Object id )
     {
-        return bind( AbstractRegistry_register_object_registered, id );
+        return bind( AbstractRegistry_registerObject_object_registered, id );
     }
 
     /**
@@ -117,11 +117,11 @@ final class NonNlsMessages
      *         the specified identifier; never {@code null}.
      */
     /* @NonNull */
-    static String AbstractRegistry_unregister_object_unregistered(
+    static String AbstractRegistry_unregisterObject_object_unregistered(
         /* @NonNull */
         final Object id )
     {
-        return bind( AbstractRegistry_unregister_object_unregistered, id );
+        return bind( AbstractRegistry_unregisterObject_object_unregistered, id );
     }
 
     // --- AbstractRegistryExtensionPointAdapter ----------------------------

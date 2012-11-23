@@ -286,7 +286,7 @@ public final class TestComponentStrategies
 
         final IComponentStrategyRegistry componentStrategyRegistry = Activator.getDefault().getComponentStrategyRegistry();
         assert componentStrategyRegistry != null;
-        componentStrategyRegistry.register( componentStrategy );
+        componentStrategyRegistry.registerObject( componentStrategy );
         return componentStrategy;
     }
 

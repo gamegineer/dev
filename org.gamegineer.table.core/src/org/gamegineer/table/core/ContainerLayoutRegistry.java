@@ -75,7 +75,7 @@ public final class ContainerLayoutRegistry
             throw new NoSuchContainerLayoutException( NonNlsMessages.ContainerLayoutRegistry_getContainerLayout_containerLayoutRegistryNotAvailable );
         }
 
-        final IContainerLayout containerLayout = containerLayoutRegistry.get( id );
+        final IContainerLayout containerLayout = containerLayoutRegistry.getObject( id );
         if( containerLayout == null )
         {
             throw new NoSuchContainerLayoutException( NonNlsMessages.ContainerLayoutRegistry_getContainerLayout_unknownContainerLayoutId( id ) );

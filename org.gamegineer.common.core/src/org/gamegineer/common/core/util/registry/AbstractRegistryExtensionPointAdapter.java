@@ -314,7 +314,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
 
         synchronized( lock_ )
         {
-            objectRegistry_.register( objectRegistration.getObject() );
+            objectRegistry_.registerObject( objectRegistration.getObject() );
             objectRegistrations_.add( objectRegistration );
         }
     }
@@ -401,7 +401,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
 
         for( final ObjectRegistration<ObjectType> objectRegistration : objectRegistrations_ )
         {
-            objectRegistry_.unregister( objectRegistration.getObject() );
+            objectRegistry_.unregisterObject( objectRegistration.getObject() );
         }
 
         objectRegistrations_.clear();
@@ -426,7 +426,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
                 final ObjectRegistration<ObjectType> objectRegistration = iterator.next();
                 if( isObjectRegistrationContributedByExtension( objectRegistration, extension ) )
                 {
-                    objectRegistry_.unregister( objectRegistration.getObject() );
+                    objectRegistry_.unregisterObject( objectRegistration.getObject() );
                     iterator.remove();
                 }
             }

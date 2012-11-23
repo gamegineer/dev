@@ -68,24 +68,15 @@ public abstract class AbstractRegistry<ObjectIdType, ObjectType>
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.util.registry.IRegistry#get(java.lang.Object)
+     * @see org.gamegineer.common.core.util.registry.IRegistry#getObject(java.lang.Object)
      */
     @Override
-    public final ObjectType get(
+    public final ObjectType getObject(
         final ObjectIdType id )
     {
         assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
 
         return objects_.get( id );
-    }
-
-    /*
-     * @see org.gamegineer.common.core.util.registry.IRegistry#getAll()
-     */
-    @Override
-    public final Collection<ObjectType> getAll()
-    {
-        return new ArrayList<ObjectType>( objects_.values() );
     }
 
     /**
@@ -100,34 +91,43 @@ public abstract class AbstractRegistry<ObjectIdType, ObjectType>
      *         If {@code object} is {@code null}.
      */
     /* @NonNull */
-    protected abstract ObjectIdType getId(
+    protected abstract ObjectIdType getObjectId(
         /* @NonNull */
         ObjectType object );
 
     /*
-     * @see org.gamegineer.common.core.util.registry.IRegistry#register(java.lang.Object)
+     * @see org.gamegineer.common.core.util.registry.IRegistry#getObjects()
      */
     @Override
-    public final void register(
+    public final Collection<ObjectType> getObjects()
+    {
+        return new ArrayList<ObjectType>( objects_.values() );
+    }
+
+    /*
+     * @see org.gamegineer.common.core.util.registry.IRegistry#registerObject(java.lang.Object)
+     */
+    @Override
+    public final void registerObject(
         final ObjectType object )
     {
         assertArgumentNotNull( object, "object" ); //$NON-NLS-1$
-        final ObjectIdType id = getId( object );
-        assertArgumentLegal( objects_.putIfAbsent( id, object ) == null, "object", NonNlsMessages.AbstractRegistry_register_object_registered( id ) ); //$NON-NLS-1$
+        final ObjectIdType id = getObjectId( object );
+        assertArgumentLegal( objects_.putIfAbsent( id, object ) == null, "object", NonNlsMessages.AbstractRegistry_registerObject_object_registered( id ) ); //$NON-NLS-1$
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Registered object '%s'", id ) ); //$NON-NLS-1$
     }
 
     /*
-     * @see org.gamegineer.common.core.util.registry.IRegistry#unregister(java.lang.Object)
+     * @see org.gamegineer.common.core.util.registry.IRegistry#unregisterObject(java.lang.Object)
      */
     @Override
-    public final void unregister(
+    public final void unregisterObject(
         final ObjectType object )
     {
         assertArgumentNotNull( object, "object" ); //$NON-NLS-1$
-        final ObjectIdType id = getId( object );
-        assertArgumentLegal( objects_.remove( id, object ), "object", NonNlsMessages.AbstractRegistry_unregister_object_unregistered( id ) ); //$NON-NLS-1$
+        final ObjectIdType id = getObjectId( object );
+        assertArgumentLegal( objects_.remove( id, object ), "object", NonNlsMessages.AbstractRegistry_unregisterObject_object_unregistered( id ) ); //$NON-NLS-1$
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Unregistered object '%s'", id ) ); //$NON-NLS-1$
     }

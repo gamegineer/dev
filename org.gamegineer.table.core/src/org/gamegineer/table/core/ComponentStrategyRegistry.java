@@ -76,7 +76,7 @@ public final class ComponentStrategyRegistry
             throw new NoSuchComponentStrategyException( NonNlsMessages.ComponentStrategyRegistry_getComponentStrategy_componentStrategyRegistryNotAvailable );
         }
 
-        final IComponentStrategy componentStrategy = componentStrategyRegistry.get( id );
+        final IComponentStrategy componentStrategy = componentStrategyRegistry.getObject( id );
         if( componentStrategy == null )
         {
             throw new NoSuchComponentStrategyException( NonNlsMessages.ComponentStrategyRegistry_getComponentStrategy_unknownComponentStrategyId( id ) );

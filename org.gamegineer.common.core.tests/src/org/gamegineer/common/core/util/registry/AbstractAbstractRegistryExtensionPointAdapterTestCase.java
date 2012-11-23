@@ -176,7 +176,7 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Obje
         } );
         final IRegistry<ObjectIdType, ObjectType> objectRegistry = mocksControl_.createMock( IRegistry.class );
         final Capture<ObjectType> objectCapture = new Capture<ObjectType>();
-        objectRegistry.register( EasyMock.capture( objectCapture ) );
+        objectRegistry.registerObject( EasyMock.capture( objectCapture ) );
         mocksControl_.replay();
         registryExtensionPointAdapter_.bindObjectRegistry( objectRegistry );
         registryExtensionPointAdapter_.bindExtensionRegistry( extensionRegistry );
@@ -283,9 +283,9 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Obje
             configurationElement
         } ).anyTimes();
         final IRegistry<ObjectIdType, ObjectType> objectRegistry = mocksControl_.createMock( IRegistry.class );
-        objectRegistry.register( EasyMock.<ObjectType>notNull() );
+        objectRegistry.registerObject( EasyMock.<ObjectType>notNull() );
         final Capture<ObjectType> objectCapture = new Capture<ObjectType>();
-        objectRegistry.unregister( EasyMock.capture( objectCapture ) );
+        objectRegistry.unregisterObject( EasyMock.capture( objectCapture ) );
         mocksControl_.replay();
         registryExtensionPointAdapter_.bindObjectRegistry( objectRegistry );
         registryExtensionPointAdapter_.bindExtensionRegistry( extensionRegistry );

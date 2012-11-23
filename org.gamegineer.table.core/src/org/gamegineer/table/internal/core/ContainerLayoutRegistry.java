@@ -52,10 +52,10 @@ public final class ContainerLayoutRegistry
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractRegistry#getId(java.lang.Object)
+     * @see org.gamegineer.common.core.util.registry.AbstractRegistry#getObjectId(java.lang.Object)
      */
     @Override
-    protected ContainerLayoutId getId(
+    protected ContainerLayoutId getObjectId(
         final IContainerLayout object )
     {
         return object.getId();

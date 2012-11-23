@@ -53,10 +53,10 @@ public final class ComponentSurfaceDesignUIRegistry
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractRegistry#getId(java.lang.Object)
+     * @see org.gamegineer.common.core.util.registry.AbstractRegistry#getObjectId(java.lang.Object)
      */
     @Override
-    protected ComponentSurfaceDesignId getId(
+    protected ComponentSurfaceDesignId getObjectId(
         final ComponentSurfaceDesignUI object )
     {
         return object.getId();

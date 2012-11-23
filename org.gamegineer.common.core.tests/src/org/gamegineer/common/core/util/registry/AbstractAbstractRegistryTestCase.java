@@ -88,12 +88,12 @@ public abstract class AbstractAbstractRegistryTestCase<ObjectIdType, ObjectType>
     }
 
     /**
-     * Ensures the {@link AbstractRegistry#getId} method throws an exception
-     * when passed a {@code null} object.
+     * Ensures the {@link AbstractRegistry#getObjectId} method throws an
+     * exception when passed a {@code null} object.
      */
     @Test( expected = NullPointerException.class )
-    public void testGetId_Object_Null()
+    public void testGetObjectId_Object_Null()
     {
-        registry_.getId( null );
+        registry_.getObjectId( null );
     }
 }

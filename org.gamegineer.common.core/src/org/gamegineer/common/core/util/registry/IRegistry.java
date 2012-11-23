@@ -50,7 +50,7 @@ public interface IRegistry<ObjectIdType, ObjectType>
      *         If {@code id} is {@code null}.
      */
     /* @Nullable */
-    public ObjectType get(
+    public ObjectType getObject(
         /* @NonNull */
         ObjectIdType id );
 
@@ -62,7 +62,7 @@ public interface IRegistry<ObjectIdType, ObjectType>
      *         registered at the time of the call.
      */
     /* @NonNull */
-    public Collection<ObjectType> getAll();
+    public Collection<ObjectType> getObjects();
 
     /**
      * Registers the specified object.
@@ -75,7 +75,7 @@ public interface IRegistry<ObjectIdType, ObjectType>
      * @throws java.lang.NullPointerException
      *         If {@code object} is {@code null}.
      */
-    public void register(
+    public void registerObject(
         /* @NonNull */
         ObjectType object );
 
@@ -90,7 +90,7 @@ public interface IRegistry<ObjectIdType, ObjectType>
      * @throws java.lang.NullPointerException
      *         If {@code object} is {@code null}.
      */
-    public void unregister(
+    public void unregisterObject(
         /* @NonNull */
         ObjectType object );
 }

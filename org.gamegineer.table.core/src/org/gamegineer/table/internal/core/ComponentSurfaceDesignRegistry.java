@@ -46,7 +46,7 @@ public final class ComponentSurfaceDesignRegistry
      */
     public ComponentSurfaceDesignRegistry()
     {
-        register( ComponentSurfaceDesigns.NULL );
+        registerObject( ComponentSurfaceDesigns.NULL );
     }
 
 
@@ -55,10 +55,10 @@ public final class ComponentSurfaceDesignRegistry
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractRegistry#getId(java.lang.Object)
+     * @see org.gamegineer.common.core.util.registry.AbstractRegistry#getObjectId(java.lang.Object)
      */
     @Override
-    protected ComponentSurfaceDesignId getId(
+    protected ComponentSurfaceDesignId getObjectId(
         final ComponentSurfaceDesign object )
     {
         return object.getId();

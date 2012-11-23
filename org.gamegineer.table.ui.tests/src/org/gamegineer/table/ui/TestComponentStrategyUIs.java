@@ -224,7 +224,7 @@ public final class TestComponentStrategyUIs
 
         final IComponentStrategyUIRegistry componentStrategyUIRegistry = Activator.getDefault().getComponentStrategyUIRegistry();
         assert componentStrategyUIRegistry != null;
-        componentStrategyUIRegistry.register( componentStrategyUI );
+        componentStrategyUIRegistry.registerObject( componentStrategyUI );
         return componentStrategyUI;
     }
 

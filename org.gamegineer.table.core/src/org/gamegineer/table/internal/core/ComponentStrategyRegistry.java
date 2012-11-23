@@ -53,10 +53,10 @@ public final class ComponentStrategyRegistry
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractRegistry#getId(java.lang.Object)
+     * @see org.gamegineer.common.core.util.registry.AbstractRegistry#getObjectId(java.lang.Object)
      */
     @Override
-    protected ComponentStrategyId getId(
+    protected ComponentStrategyId getObjectId(
         final IComponentStrategy object )
     {
         return object.getId();

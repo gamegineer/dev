@@ -132,157 +132,157 @@ public abstract class AbstractRegistryTestCase<ObjectIdType, ObjectType>
     }
 
     /**
-     * Ensures the {@link IRegistry#get} method returns the correct value when
-     * passed an identifier that is absent.
+     * Ensures the {@link IRegistry#getObject} method returns the correct value
+     * when passed an identifier that is absent.
      */
     @Test
-    public void testGet_Id_Absent()
+    public void testGetObject_Id_Absent()
     {
-        assertNull( registry_.get( getObjectId( createUniqueObject() ) ) );
+        assertNull( registry_.getObject( getObjectId( createUniqueObject() ) ) );
     }
 
     /**
-     * Ensures the {@link IRegistry#get} method throws an exception when passed
-     * a {@code null} identifier.
+     * Ensures the {@link IRegistry#getObject} method throws an exception when
+     * passed a {@code null} identifier.
      */
     @Test( expected = NullPointerException.class )
-    public void testGet_Id_Null()
+    public void testGetObject_Id_Null()
     {
-        registry_.get( null );
+        registry_.getObject( null );
     }
 
     /**
-     * Ensures the {@link IRegistry#get} method returns the correct value when
-     * passed an identifier that is present.
+     * Ensures the {@link IRegistry#getObject} method returns the correct value
+     * when passed an identifier that is present.
      */
     @Test
-    public void testGet_Id_Present()
+    public void testGetObject_Id_Present()
     {
         final ObjectType expectedObject = createUniqueObject();
-        registry_.register( expectedObject );
+        registry_.registerObject( expectedObject );
 
-        final ObjectType actualObject = registry_.get( getObjectId( expectedObject ) );
+        final ObjectType actualObject = registry_.getObject( getObjectId( expectedObject ) );
 
         assertSame( expectedObject, actualObject );
     }
 
     /**
-     * Ensures the {@link IRegistry#getAll} method returns a copy of the
+     * Ensures the {@link IRegistry#getObjects} method returns a copy of the
      * registered object collection.
      */
     @Test
-    public void testGetAll_ReturnValue_Copy()
+    public void testGetObjects_ReturnValue_Copy()
     {
-        final Collection<ObjectType> objects = registry_.getAll();
+        final Collection<ObjectType> objects = registry_.getObjects();
         final int expectedObjectsSize = objects.size();
 
         objects.add( createUniqueObject() );
 
-        assertEquals( expectedObjectsSize, registry_.getAll().size() );
+        assertEquals( expectedObjectsSize, registry_.getObjects().size() );
     }
 
     /**
-     * Ensures the {@link IRegistry#getAll} method returns a snapshot of the
+     * Ensures the {@link IRegistry#getObjects} method returns a snapshot of the
      * registered object collection.
      */
     @Test
-    public void testGetAll_ReturnValue_Snapshot()
+    public void testGetObjects_ReturnValue_Snapshot()
     {
-        final Collection<ObjectType> objects = registry_.getAll();
-        registry_.register( createUniqueObject() );
+        final Collection<ObjectType> objects = registry_.getObjects();
+        registry_.registerObject( createUniqueObject() );
 
-        assertTrue( objects.size() != registry_.getAll().size() );
+        assertTrue( objects.size() != registry_.getObjects().size() );
     }
 
     /**
-     * Ensures the {@link IRegistry#register} method throws an exception when
-     * passed a {@code null} object.
+     * Ensures the {@link IRegistry#registerObject} method throws an exception
+     * when passed a {@code null} object.
      */
     @Test( expected = NullPointerException.class )
-    public void testRegister_Object_Null()
+    public void testRegisterObject_Object_Null()
     {
-        registry_.register( null );
+        registry_.registerObject( null );
     }
 
     /**
-     * Ensures the {@link IRegistry#register} method throws an exception when an
-     * object with the same identifier is already registered.
+     * Ensures the {@link IRegistry#registerObject} method throws an exception
+     * when an object with the same identifier is already registered.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testRegister_Object_Registered()
+    public void testRegisterObject_Object_Registered()
     {
         final ObjectType object = createUniqueObject();
-        registry_.register( object );
+        registry_.registerObject( object );
 
-        registry_.register( cloneObject( object ) );
+        registry_.registerObject( cloneObject( object ) );
     }
 
     /**
-     * Ensures the {@link IRegistry#register} method registers an unregistered
-     * object.
+     * Ensures the {@link IRegistry#registerObject} method registers an
+     * unregistered object.
      */
     @Test
-    public void testRegister_Object_Unregistered()
+    public void testRegisterObject_Object_Unregistered()
     {
         final ObjectType object = createUniqueObject();
 
-        registry_.register( object );
+        registry_.registerObject( object );
 
-        assertTrue( registry_.getAll().contains( object ) );
+        assertTrue( registry_.getObjects().contains( object ) );
     }
 
     /**
-     * Ensures the {@link IRegistry#unregister} method throws an exception when
-     * passed a {@code null} object.
+     * Ensures the {@link IRegistry#unregisterObject} method throws an exception
+     * when passed a {@code null} object.
      */
     @Test( expected = NullPointerException.class )
-    public void testUnregister_Object_Null()
+    public void testUnregisterObject_Object_Null()
     {
-        registry_.unregister( null );
+        registry_.unregisterObject( null );
     }
 
     /**
-     * Ensures the {@link IRegistry#unregister} method throws an exception when
-     * passed an object whose identifier was previously registered but by a
+     * Ensures the {@link IRegistry#unregisterObject} method throws an exception
+     * when passed an object whose identifier was previously registered but by a
      * different object instance.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testUnregister_Object_Registered_DifferentInstance()
+    public void testUnregisterObject_Object_Registered_DifferentInstance()
     {
         final ObjectType object = createUniqueObject();
-        final int originalObjectsSize = registry_.getAll().size();
-        registry_.register( object );
-        assertEquals( originalObjectsSize + 1, registry_.getAll().size() );
+        final int originalObjectsSize = registry_.getObjects().size();
+        registry_.registerObject( object );
+        assertEquals( originalObjectsSize + 1, registry_.getObjects().size() );
 
-        registry_.unregister( cloneObject( object ) );
+        registry_.unregisterObject( cloneObject( object ) );
     }
 
     /**
-     * Ensures the {@link IRegistry#unregister} method unregisters a previously
-     * registered object.
+     * Ensures the {@link IRegistry#unregisterObject} method unregisters a
+     * previously registered object.
      */
     @Test
-    public void testUnregister_Object_Registered_SameInstance()
+    public void testUnregisterObject_Object_Registered_SameInstance()
     {
         final ObjectType object = createUniqueObject();
-        final int originalObjectsSize = registry_.getAll().size();
-        registry_.register( object );
-        assertEquals( originalObjectsSize + 1, registry_.getAll().size() );
+        final int originalObjectsSize = registry_.getObjects().size();
+        registry_.registerObject( object );
+        assertEquals( originalObjectsSize + 1, registry_.getObjects().size() );
 
-        registry_.unregister( object );
+        registry_.unregisterObject( object );
 
-        assertEquals( originalObjectsSize, registry_.getAll().size() );
+        assertEquals( originalObjectsSize, registry_.getObjects().size() );
     }
 
     /**
-     * Ensures the {@link IRegistry#unregister} method throws an exception when
-     * passed an object that was not previously registered.
+     * Ensures the {@link IRegistry#unregisterObject} method throws an exception
+     * when passed an object that was not previously registered.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testUnregister_Object_Unregistered()
+    public void testUnregisterObject_Object_Unregistered()
     {
         final ObjectType object = createUniqueObject();
 
-        registry_.unregister( object );
+        registry_.unregisterObject( object );
     }
 }

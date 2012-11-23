@@ -145,7 +145,7 @@ public final class TestComponentSurfaceDesigns
 
         final IComponentSurfaceDesignRegistry componentSurfaceDesignRegistry = Activator.getDefault().getComponentSurfaceDesignRegistry();
         assert componentSurfaceDesignRegistry != null;
-        componentSurfaceDesignRegistry.register( componentSurfaceDesign );
+        componentSurfaceDesignRegistry.registerObject( componentSurfaceDesign );
         return componentSurfaceDesign;
     }
 }
