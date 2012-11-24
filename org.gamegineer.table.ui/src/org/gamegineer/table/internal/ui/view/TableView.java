@@ -728,7 +728,7 @@ final class TableView
         mouseInputHandlers.put( DragPrimedMouseInputHandler.class, new DragPrimedMouseInputHandler() );
         mouseInputHandlers.put( DraggingCardsMouseInputHandler.class, new DraggingCardsMouseInputHandler() );
         mouseInputHandlers.put( DraggingCardPileMouseInputHandler.class, new DraggingCardPileMouseInputHandler() );
-        mouseInputHandlers.put( DraggingTableMouseInputHandler.class, new DraggingTableMouseInputHandler() );
+        mouseInputHandlers.put( PanningTableMouseInputHandler.class, new PanningTableMouseInputHandler() );
         mouseInputHandlers.put( PopupMenuMouseInputHandler.class, new PopupMenuMouseInputHandler() );
         return mouseInputHandlers;
     }
@@ -1262,10 +1262,10 @@ final class TableView
                 {
                     setMouseInputHandler( DragPrimedMouseInputHandler.class, event );
                 }
-                else
-                {
-                    setMouseInputHandler( DraggingTableMouseInputHandler.class, event );
-                }
+            }
+            else if( SwingUtilities.isMiddleMouseButton( event ) )
+            {
+                setMouseInputHandler( PanningTableMouseInputHandler.class, event );
             }
         }
 
@@ -1303,7 +1303,7 @@ final class TableView
             }
             else
             {
-                newCursor = Cursors.getHandCursor();
+                newCursor = Cursors.getDefaultCursor();
             }
 
             if( newCursor != getCursor() )
@@ -1675,10 +1675,10 @@ final class TableView
     }
 
     /**
-     * The mouse input handler that is active when the table is being dragged.
+     * The mouse input handler that is active when the table is being panned.
      */
     @NotThreadSafe
-    private final class DraggingTableMouseInputHandler
+    private final class PanningTableMouseInputHandler
         extends AbstractMouseInputHandler
     {
         // ==================================================================
@@ -1701,9 +1701,9 @@ final class TableView
 
         /**
          * Initializes a new instance of the
-         * {@code DraggingTableMouseInputHandler} class.
+         * {@code PanningTableMouseInputHandler} class.
          */
-        DraggingTableMouseInputHandler()
+        PanningTableMouseInputHandler()
         {
             originalLocation_ = new Point( 0, 0 );
             originalOriginOffset_ = new Dimension( 0, 0 );
@@ -1762,7 +1762,7 @@ final class TableView
         public void mouseReleased(
             final MouseEvent event )
         {
-            if( SwingUtilities.isLeftMouseButton( event ) )
+            if( SwingUtilities.isMiddleMouseButton( event ) )
             {
                 setMouseInputHandler( DefaultMouseInputHandler.class, null );
             }
