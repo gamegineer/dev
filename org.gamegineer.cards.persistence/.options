@@ -1,0 +1,4 @@
+# Debugging options for the org.gamegineer.cards.persistence bundle.
+
+# Reports default bundle activity.
+org.gamegineer.cards.persistence/debug=false

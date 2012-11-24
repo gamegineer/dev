@@ -7,6 +7,12 @@
 <project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/net.jcip.annotations,net.jcip.annotations"/>
 <project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/net.jcip.annotations.source,net.jcip.annotations.source"/>
 <project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.builder,org.gamegineer.builder"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.cards.core,org.gamegineer.cards.core"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.cards.core.tests,org.gamegineer.cards.core.tests"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.cards.feature.base,org.gamegineer.cards.feature.base"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.cards.feature.base.tests,org.gamegineer.cards.feature.base.tests"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.cards.persistence,org.gamegineer.cards.persistence"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.cards.persistence.tests,org.gamegineer.cards.persistence.tests"/>
 <project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.common.core,org.gamegineer.common.core"/>
 <project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.common.core.tests,org.gamegineer.common.core.tests"/>
 <project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.common.feature.base,org.gamegineer.common.feature.base"/>
