@@ -1250,7 +1250,10 @@ final class TableView
             final MouseEvent event )
         {
             final IContainer container = getFocusableContainer( getMouseLocation( event ) );
-            model_.setFocus( container );
+            if( !SwingUtilities.isMiddleMouseButton( event ) )
+            {
+                model_.setFocus( container );
+            }
 
             if( event.isPopupTrigger() )
             {
