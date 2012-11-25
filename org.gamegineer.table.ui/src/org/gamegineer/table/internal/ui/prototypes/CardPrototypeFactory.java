@@ -31,7 +31,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.Status;
 import org.gamegineer.cards.core.CardOrientation;
-import org.gamegineer.table.core.ComponentStrategyId;
+import org.gamegineer.cards.core.CardsComponentStrategyIds;
 import org.gamegineer.table.core.ComponentStrategyRegistry;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ComponentSurfaceDesignRegistry;
@@ -103,7 +103,7 @@ public final class CardPrototypeFactory
 
         try
         {
-            final IComponent card = tableEnvironment.createComponent( ComponentStrategyRegistry.getComponentStrategy( ComponentStrategyId.fromString( "org.gamegineer.cards.componentStrategies.card" ) ) ); //$NON-NLS-1$
+            final IComponent card = tableEnvironment.createComponent( ComponentStrategyRegistry.getComponentStrategy( CardsComponentStrategyIds.CARD ) );
             card.setSurfaceDesign( CardOrientation.BACK, ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( backDesignId_ ) );
             card.setSurfaceDesign( CardOrientation.FACE, ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( faceDesignId_ ) );
             return Collections.singletonList( card );
