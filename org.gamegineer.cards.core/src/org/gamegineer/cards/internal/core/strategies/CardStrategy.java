@@ -19,15 +19,15 @@
  * Created on Aug 1, 2012 at 8:14:04 PM.
  */
 
-package org.gamegineer.table.internal.core.strategies;
+package org.gamegineer.cards.internal.core.strategies;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.core.CardOrientation;
+import org.gamegineer.cards.core.CardOrientation;
+import org.gamegineer.cards.core.CardsComponentStrategyIds;
 import org.gamegineer.table.core.ComponentOrientation;
-import org.gamegineer.table.core.ComponentStrategyIds;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 
 /**
@@ -54,7 +54,7 @@ public final class CardStrategy
      */
     public CardStrategy()
     {
-        super( ComponentStrategyIds.CARD );
+        super( CardsComponentStrategyIds.CARD );
     }
 
 
@@ -72,12 +72,12 @@ public final class CardStrategy
     }
 
     /*
-     * @see org.gamegineer.table.internal.core.strategies.AbstractComponentStrategy#getDefaultSurfaceDesignId()
+     * @see org.gamegineer.cards.internal.core.strategies.AbstractComponentStrategy#getDefaultSurfaceDesignId()
      */
     @Override
     ComponentSurfaceDesignId getDefaultSurfaceDesignId()
     {
-        return ComponentSurfaceDesignId.fromString( "org.gamegineer.cardSurfaceDesigns.default" ); //$NON-NLS-1$
+        return ComponentSurfaceDesignId.fromString( "org.gamegineer.cards.cardSurfaceDesigns.default" ); //$NON-NLS-1$
     }
 
     /*

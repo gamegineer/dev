@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<scr:component
+			name="org.gamegineer.cards.persistence.serializable.cardOrientationPersistenceDelegate"
+			xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+		<implementation
+				class="org.gamegineer.cards.internal.persistence.serializable.CardOrientationPersistenceDelegate" />
+		<service>
+			<provide
+					interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegate" />
+		</service>
+		<property
+				name="delegators"
+				type="String">
+			org.gamegineer.cards.core.CardOrientation
+       </property>
+	</scr:component>
+    <scr:component
+            name="org.gamegineer.cards.persistence.serializable.cardPileOrientationPersistenceDelegate"
+            xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+        <implementation
+                class="org.gamegineer.cards.internal.persistence.serializable.CardPileOrientationPersistenceDelegate" />
+        <service>
+            <provide
+                    interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegate" />
+        </service>
+        <property
+                name="delegators"
+                type="String">
+            org.gamegineer.cards.core.CardPileOrientation
+       </property>
+    </scr:component>
+</root>

@@ -56,11 +56,11 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.cards.core.CardPileOrientation;
 import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.common.ui.window.WindowConstants;
 import org.gamegineer.common.ui.wizard.IWizard;
 import org.gamegineer.common.ui.wizard.WizardDialog;
-import org.gamegineer.table.core.CardPileOrientation;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.ComponentStrategyRegistry;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
@@ -619,7 +619,7 @@ final class TableView
 
         try
         {
-            final IContainer cardPile = model_.getTable().getTableEnvironment().createContainer( ComponentStrategyRegistry.getContainerStrategy( ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.cardPile" ) ) ); //$NON-NLS-1$
+            final IContainer cardPile = model_.getTable().getTableEnvironment().createContainer( ComponentStrategyRegistry.getContainerStrategy( ComponentStrategyId.fromString( "org.gamegineer.cards.componentStrategies.cardPile" ) ) ); //$NON-NLS-1$
             cardPile.setSurfaceDesign( CardPileOrientation.BASE, baseDesign );
             return cardPile;
         }

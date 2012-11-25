@@ -33,14 +33,8 @@ public final class ComponentStrategyIds
     // Fields
     // ======================================================================
 
-    /** The card component strategy identifier. */
-    public static final ComponentStrategyId CARD = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.card" ); //$NON-NLS-1$
-
-    /** The card pile component strategy identifier. */
-    public static final ComponentStrategyId CARD_PILE = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.cardPile" ); //$NON-NLS-1$
-
     /** The tabletop component strategy identifier. */
-    public static final ComponentStrategyId TABLETOP = ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.tabletop" ); //$NON-NLS-1$
+    public static final ComponentStrategyId TABLETOP = ComponentStrategyId.fromString( "org.gamegineer.table.componentStrategies.tabletop" ); //$NON-NLS-1$
 
 
     // ======================================================================

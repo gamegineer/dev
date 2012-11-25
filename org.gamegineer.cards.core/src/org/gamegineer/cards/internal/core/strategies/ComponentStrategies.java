@@ -1,5 +1,5 @@
 /*
- * CardOrientationAsExtensibleEnumTest.java
+ * ComponentStrategies.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,45 +16,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 12, 2012 at 8:01:41 PM.
+ * Created on Aug 13, 2012 at 7:53:44 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.cards.internal.core.strategies;
 
-import org.gamegineer.common.core.util.AbstractExtensibleEnumTestCase;
-import org.gamegineer.common.core.util.ExtensibleEnum;
+import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.core.IComponentStrategy;
+import org.gamegineer.table.core.IContainerStrategy;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.core.CardOrientation}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.common.core.util.ExtensibleEnum} class
+ * A collection of component strategies for the cards game.
  */
-public final class CardOrientationAsExtensibleEnumTest
-    extends AbstractExtensibleEnumTestCase
+@ThreadSafe
+public final class ComponentStrategies
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The card component strategy. */
+    public static final IComponentStrategy CARD = new CardStrategy();
+
+    /** The card pile container strategy. */
+    public static final IContainerStrategy CARD_PILE = new CardPileStrategy();
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code CardOrientationAsExtensibleEnumTest} class.
+     * Initializes a new instance of the {@code ComponentStrategies} class.
      */
-    public CardOrientationAsExtensibleEnumTest()
+    private ComponentStrategies()
     {
-    }
-
-
-    // ======================================================================
-    // Methods
-    // ======================================================================
-
-    /*
-     * @see org.gamegineer.common.core.util.AbstractExtensibleEnumTestCase#getType()
-     */
-    @Override
-    protected Class<? extends ExtensibleEnum> getType()
-    {
-        return CardOrientation.class;
     }
 }

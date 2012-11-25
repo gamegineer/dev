@@ -1,5 +1,5 @@
 /*
- * CardStrategyUI.java
+ * package-info.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,30 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Sep 28, 2012 at 10:32:09 PM.
+ * Created on Nov 24, 2012 at 8:02:14 PM.
  */
-
-package org.gamegineer.table.internal.ui.strategies;
-
-import net.jcip.annotations.Immutable;
-import org.gamegineer.cards.core.CardsComponentStrategyIds;
 
 /**
- * A component strategy user interface that represents a card.
+ * Provides interfaces and classes the define the cards model.
  */
-@Immutable
-public final class CardStrategyUI
-    extends AbstractComponentStrategyUI
-{
-    // ======================================================================
-    // Constructors
-    // ======================================================================
-
-    /**
-     * Initializes a new instance of the {@code CardStrategyUI} class.
-     */
-    public CardStrategyUI()
-    {
-        super( CardsComponentStrategyIds.CARD );
-    }
-}
+package org.gamegineer.cards.core;

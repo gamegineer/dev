@@ -1,5 +1,5 @@
 /*
- * CardPileOrientationTest.java
+ * CardStrategyAsComponentStrategyTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,28 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 12, 2012 at 8:02:46 PM.
+ * Created on Aug 1, 2012 at 8:19:30 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.cards.internal.core.strategies;
 
-import static org.junit.Assert.assertEquals;
-import org.junit.Test;
+import org.gamegineer.table.core.AbstractComponentStrategyTestCase;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.core.CardPileOrientation} enumeration.
+ * {@link org.gamegineer.cards.internal.core.strategies.CardStrategy} class to
+ * ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.core.IComponentStrategy} interface.
  */
-public final class CardPileOrientationTest
+public final class CardStrategyAsComponentStrategyTest
+    extends AbstractComponentStrategyTestCase<CardStrategy>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardPileOrientationTest} class.
+     * Initializes a new instance of the
+     * {@code CardStrategyAsComponentStrategyTest} class.
      */
-    public CardPileOrientationTest()
+    public CardStrategyAsComponentStrategyTest()
     {
     }
 
@@ -46,26 +49,12 @@ public final class CardPileOrientationTest
     // Methods
     // ======================================================================
 
-    /**
-     * Ensures the {@link CardPileOrientation#inverse} method returns the
-     * correct value for the {@link CardPileOrientation#BASE} value.
+    /*
+     * @see org.gamegineer.table.core.AbstractComponentStrategyTestCase#createComponentStrategy()
      */
-    @Test
-    public void testInverse_Base()
+    @Override
+    protected CardStrategy createComponentStrategy()
     {
-        assertEquals( CardPileOrientation.BASE, CardPileOrientation.BASE.inverse() );
-    }
-
-    /**
-     * Ensures the {@link CardPileOrientation#inverse} method supports all known
-     * enumeration values.
-     */
-    @Test
-    public void testInverse_NoUnsupportedValues()
-    {
-        for( final CardPileOrientation orientation : CardPileOrientation.values( CardPileOrientation.class ) )
-        {
-            orientation.inverse();
-        }
+        return new CardStrategy();
     }
 }

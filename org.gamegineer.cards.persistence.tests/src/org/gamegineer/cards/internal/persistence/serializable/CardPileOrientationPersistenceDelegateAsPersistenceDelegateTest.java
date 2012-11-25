@@ -19,16 +19,16 @@
  * Created on Apr 12, 2012 at 9:00:57 PM.
  */
 
-package org.gamegineer.table.internal.persistence.serializable;
+package org.gamegineer.cards.internal.persistence.serializable;
 
+import org.gamegineer.cards.core.CardPileOrientation;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
-import org.gamegineer.table.core.CardPileOrientation;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.persistence.serializable.CardPileOrientationPersistenceDelegate}
+ * {@link org.gamegineer.cards.internal.persistence.serializable.CardPileOrientationPersistenceDelegate}
  * class to ensure it does not violate the contract of the
  * {@link org.gamegineer.common.persistence.serializable.IPersistenceDelegate}
  * interface.

@@ -36,7 +36,7 @@ public final class ComponentSurfaceDesigns
     // ======================================================================
 
     /** The null component surface design. */
-    public static final ComponentSurfaceDesign NULL = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.componentSurfaceDesigns.null" ), 0, 0 ); //$NON-NLS-1$
+    public static final ComponentSurfaceDesign NULL = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.componentSurfaceDesigns.null" ), 0, 0 ); //$NON-NLS-1$
 
 
     // ======================================================================

@@ -19,15 +19,15 @@
  * Created on Aug 1, 2012 at 8:14:11 PM.
  */
 
-package org.gamegineer.table.internal.core.strategies;
+package org.gamegineer.cards.internal.core.strategies;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.core.CardPileOrientation;
+import org.gamegineer.cards.core.CardPileOrientation;
+import org.gamegineer.cards.core.CardsComponentStrategyIds;
 import org.gamegineer.table.core.ComponentOrientation;
-import org.gamegineer.table.core.ComponentStrategyIds;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.internal.core.layouts.ContainerLayouts;
@@ -56,7 +56,7 @@ public final class CardPileStrategy
      */
     public CardPileStrategy()
     {
-        super( ComponentStrategyIds.CARD_PILE );
+        super( CardsComponentStrategyIds.CARD_PILE );
     }
 
 
@@ -70,6 +70,7 @@ public final class CardPileStrategy
     @Override
     public IContainerLayout getDefaultLayout()
     {
+        // FIXME: this should be requested from the registry; need a public null object to fall back to; remove internal import
         return ContainerLayouts.STACKED;
     }
 
@@ -83,12 +84,12 @@ public final class CardPileStrategy
     }
 
     /*
-     * @see org.gamegineer.table.internal.core.strategies.AbstractComponentStrategy#getDefaultSurfaceDesignId()
+     * @see org.gamegineer.cards.internal.core.strategies.AbstractComponentStrategy#getDefaultSurfaceDesignId()
      */
     @Override
     ComponentSurfaceDesignId getDefaultSurfaceDesignId()
     {
-        return ComponentSurfaceDesignId.fromString( "org.gamegineer.cardPileSurfaceDesigns.default" ); //$NON-NLS-1$
+        return ComponentSurfaceDesignId.fromString( "org.gamegineer.cards.cardPileSurfaceDesigns.default" ); //$NON-NLS-1$
     }
 
     /*

@@ -1,5 +1,5 @@
 /*
- * CardPileStrategyUI.java
+ * AbstractContainerStrategy.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,30 +16,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Sep 28, 2012 at 10:32:17 PM.
+ * Created on Aug 21, 2012 at 8:42:12 PM.
  */
 
-package org.gamegineer.table.internal.ui.strategies;
+package org.gamegineer.cards.internal.core.strategies;
 
 import net.jcip.annotations.Immutable;
-import org.gamegineer.cards.core.CardsComponentStrategyIds;
+import org.gamegineer.table.core.ComponentStrategyId;
+import org.gamegineer.table.core.IContainerStrategy;
 
 /**
- * A component strategy user interface that represents a card pile.
+ * Superclass for all container strategies.
  */
 @Immutable
-public final class CardPileStrategyUI
-    extends AbstractContainerStrategyUI
+abstract class AbstractContainerStrategy
+    extends AbstractComponentStrategy
+    implements IContainerStrategy
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardPileStrategyUI} class.
+     * Initializes a new instance of the {@code AbstractContainerStrategy}
+     * class.
+     * 
+     * @param id
+     *        The component strategy identifier; must not be {@code null}.
      */
-    public CardPileStrategyUI()
+    AbstractContainerStrategy(
+        /* @NonNull */
+        final ComponentStrategyId id )
     {
-        super( CardsComponentStrategyIds.CARD_PILE );
+        super( id );
     }
 }

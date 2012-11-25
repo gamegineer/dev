@@ -30,7 +30,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.Status;
-import org.gamegineer.table.core.CardOrientation;
+import org.gamegineer.cards.core.CardOrientation;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.ComponentStrategyRegistry;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
@@ -120,7 +120,7 @@ public final class DeckPrototypeFactory
         assert faceDesignId != null;
         try
         {
-            final IComponent card = tableEnvironment.createComponent( ComponentStrategyRegistry.getComponentStrategy( ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.card" ) ) ); //$NON-NLS-1$
+            final IComponent card = tableEnvironment.createComponent( ComponentStrategyRegistry.getComponentStrategy( ComponentStrategyId.fromString( "org.gamegineer.cards.componentStrategies.card" ) ) ); //$NON-NLS-1$
             card.setSurfaceDesign( CardOrientation.BACK, ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( backDesignId_ ) );
             card.setSurfaceDesign( CardOrientation.FACE, ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( faceDesignId ) );
             return card;
@@ -146,58 +146,58 @@ public final class DeckPrototypeFactory
         assertArgumentNotNull( tableEnvironment, "tableEnvironment" ); //$NON-NLS-1$
 
         final String[] encodedStandardFaceDesignIds = new String[] {
-            "org.gamegineer.cardSurfaces.clubs.ace", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.clubs.two", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.clubs.three", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.clubs.four", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.clubs.five", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.clubs.six", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.clubs.seven", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.clubs.eight", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.clubs.nine", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.clubs.ten", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.clubs.jack", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.clubs.queen", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.clubs.king", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.ace", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.two", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.three", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.four", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.five", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.six", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.seven", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.eight", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.nine", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.ten", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.jack", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.queen", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.diamonds.king", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.ace", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.two", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.three", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.four", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.five", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.six", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.seven", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.eight", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.nine", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.ten", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.jack", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.queen", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.hearts.king", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.ace", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.two", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.three", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.four", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.five", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.six", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.seven", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.eight", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.nine", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.ten", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.jack", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.queen", //$NON-NLS-1$
-            "org.gamegineer.cardSurfaces.spades.king", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.clubs.ace", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.clubs.two", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.clubs.three", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.clubs.four", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.clubs.five", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.clubs.six", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.clubs.seven", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.clubs.eight", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.clubs.nine", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.clubs.ten", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.clubs.jack", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.clubs.queen", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.clubs.king", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.diamonds.ace", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.diamonds.two", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.diamonds.three", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.diamonds.four", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.diamonds.five", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.diamonds.six", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.diamonds.seven", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.diamonds.eight", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.diamonds.nine", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.diamonds.ten", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.diamonds.jack", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.diamonds.queen", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.diamonds.king", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.hearts.ace", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.hearts.two", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.hearts.three", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.hearts.four", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.hearts.five", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.hearts.six", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.hearts.seven", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.hearts.eight", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.hearts.nine", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.hearts.ten", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.hearts.jack", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.hearts.queen", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.hearts.king", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.spades.ace", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.spades.two", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.spades.three", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.spades.four", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.spades.five", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.spades.six", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.spades.seven", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.spades.eight", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.spades.nine", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.spades.ten", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.spades.jack", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.spades.queen", //$NON-NLS-1$
+            "org.gamegineer.cards.cardSurfaces.spades.king", //$NON-NLS-1$
         };
 
         final List<IComponent> cards = new ArrayList<IComponent>( encodedStandardFaceDesignIds.length + 2 );
@@ -209,7 +209,7 @@ public final class DeckPrototypeFactory
 
         if( includeJokers_ )
         {
-            final ComponentSurfaceDesignId jokerFaceDesignId = ComponentSurfaceDesignId.fromString( "org.gamegineer.cardSurfaces.special.joker" ); //$NON-NLS-1$
+            final ComponentSurfaceDesignId jokerFaceDesignId = ComponentSurfaceDesignId.fromString( "org.gamegineer.cards.cardSurfaces.special.joker" ); //$NON-NLS-1$
             cards.add( createCard( tableEnvironment, jokerFaceDesignId ) );
             cards.add( createCard( tableEnvironment, jokerFaceDesignId ) );
         }

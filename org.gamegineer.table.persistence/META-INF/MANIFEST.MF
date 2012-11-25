@@ -12,6 +12,5 @@ Import-Package: net.jcip.annotations;version="1.0.0",
  org.gamegineer.common.core.runtime;version="[0.15.0,0.16.0)",
  org.gamegineer.common.persistence.serializable;version="[0.15.0,0.16.0)",
  org.gamegineer.table.core;version="[0.15.0,0.16.0)",
- org.gamegineer.table.internal.core;version="[0.15.0,0.16.0)",
  org.osgi.framework;version="1.6.0"
 Service-Component: OSGI-INF/serializablePersistenceDelegates.xml

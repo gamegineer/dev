@@ -19,7 +19,7 @@
  * Created on Aug 4, 2012 at 9:44:14 PM.
  */
 
-package org.gamegineer.table.internal.core.strategies;
+package org.gamegineer.cards.internal.core.strategies;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,9 +30,9 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IExecutableExtensionFactory;
 import org.eclipse.core.runtime.Status;
+import org.gamegineer.cards.internal.core.BundleConstants;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.IComponentStrategy;
-import org.gamegineer.table.internal.core.BundleConstants;
 
 /**
  * A factory for creating component strategies located in this bundle from the
@@ -69,7 +69,8 @@ public final class ComponentStrategyExtensionFactory
     static
     {
         final Map<ComponentStrategyId, IComponentStrategy> componentStrategies = new HashMap<ComponentStrategyId, IComponentStrategy>();
-        componentStrategies.put( ComponentStrategies.TABLETOP.getId(), ComponentStrategies.TABLETOP );
+        componentStrategies.put( ComponentStrategies.CARD.getId(), ComponentStrategies.CARD );
+        componentStrategies.put( ComponentStrategies.CARD_PILE.getId(), ComponentStrategies.CARD_PILE );
         COMPONENT_STRATEGIES = Collections.unmodifiableMap( componentStrategies );
     }
 

@@ -30,7 +30,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.Status;
-import org.gamegineer.table.core.CardPileOrientation;
+import org.gamegineer.cards.core.CardPileOrientation;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.ComponentStrategyRegistry;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
@@ -93,7 +93,7 @@ public final class CardPilePrototypeFactory
 
         try
         {
-            final IComponent cardPile = tableEnvironment.createContainer( ComponentStrategyRegistry.getContainerStrategy( ComponentStrategyId.fromString( "org.gamegineer.componentStrategies.cardPile" ) ) ); //$NON-NLS-1$
+            final IComponent cardPile = tableEnvironment.createContainer( ComponentStrategyRegistry.getContainerStrategy( ComponentStrategyId.fromString( "org.gamegineer.cards.componentStrategies.cardPile" ) ) ); //$NON-NLS-1$
             cardPile.setSurfaceDesign( CardPileOrientation.BASE, ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( baseDesignId_ ) );
             return Collections.singletonList( cardPile );
         }

@@ -19,7 +19,7 @@
  * Created on May 9, 2010 at 9:36:35 PM.
  */
 
-package org.gamegineer.table.internal.persistence.serializable;
+package org.gamegineer.cards.internal.persistence.serializable;
 
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;

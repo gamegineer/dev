@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+    <extension
+            point="org.gamegineer.table.core.componentStrategies">
+        <componentStrategy
+                className="org.gamegineer.cards.internal.core.strategies.ComponentStrategyExtensionFactory"
+                id="org.gamegineer.cards.componentStrategies.card" />
+        <componentStrategy
+                className="org.gamegineer.cards.internal.core.strategies.ComponentStrategyExtensionFactory"
+                id="org.gamegineer.cards.componentStrategies.cardPile" />
+    </extension>
+    <extension
+            point="org.gamegineer.table.core.componentSurfaceDesigns">
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardPileBases.default"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardPileSurfaceDesigns.default"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaceDesigns.default"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.back.blue"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.back.red"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.clubs.ace"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.clubs.two"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.clubs.three"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.clubs.four"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.clubs.five"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.clubs.six"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.clubs.seven"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.clubs.eight"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.clubs.nine"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.clubs.ten"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.clubs.jack"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.clubs.queen"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.clubs.king"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.diamonds.ace"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.diamonds.two"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.diamonds.three"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.diamonds.four"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.diamonds.five"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.diamonds.six"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.diamonds.seven"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.diamonds.eight"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.diamonds.nine"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.diamonds.ten"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.diamonds.jack"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.diamonds.queen"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.diamonds.king"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.hearts.ace"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.hearts.two"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.hearts.three"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.hearts.four"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.hearts.five"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.hearts.six"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.hearts.seven"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.hearts.eight"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.hearts.nine"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.hearts.ten"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.hearts.jack"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.hearts.queen"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.hearts.king"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.spades.ace"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.spades.two"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.spades.three"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.spades.four"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.spades.five"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.spades.six"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.spades.seven"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.spades.eight"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.spades.nine"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.spades.ten"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.spades.jack"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.spades.queen"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.spades.king"
+                width="71" />
+        <componentSurfaceDesign
+                height="96"
+                id="org.gamegineer.cards.cardSurfaces.special.joker"
+                width="71" />
+    </extension>
+
+</plugin>

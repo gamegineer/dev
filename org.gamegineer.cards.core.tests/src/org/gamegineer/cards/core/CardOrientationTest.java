@@ -19,13 +19,13 @@
  * Created on Oct 11, 2009 at 11:13:44 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.cards.core;
 
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.core.CardOrientation}
+ * A fixture for testing the {@link org.gamegineer.cards.core.CardOrientation}
  * enumeration.
  */
 public final class CardOrientationTest

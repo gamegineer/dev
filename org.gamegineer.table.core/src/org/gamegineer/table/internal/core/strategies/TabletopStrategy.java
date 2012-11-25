@@ -98,7 +98,7 @@ public final class TabletopStrategy
     @Override
     ComponentSurfaceDesignId getDefaultSurfaceDesignId()
     {
-        return ComponentSurfaceDesignId.fromString( "org.gamegineer.tabletopSurfaceDesigns.default" ); //$NON-NLS-1$
+        return ComponentSurfaceDesignId.fromString( "org.gamegineer.table.tabletopSurfaceDesigns.default" ); //$NON-NLS-1$
     }
 
     /*
