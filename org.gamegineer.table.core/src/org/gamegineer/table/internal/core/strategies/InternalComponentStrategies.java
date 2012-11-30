@@ -1,5 +1,5 @@
 /*
- * ComponentStrategies.java
+ * InternalComponentStrategies.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -25,10 +25,10 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.IContainerStrategy;
 
 /**
- * A collection of common component strategies.
+ * A collection of component strategies provided by this bundle.
  */
 @ThreadSafe
-public final class ComponentStrategies
+public final class InternalComponentStrategies
 {
     // ======================================================================
     // Fields
@@ -43,9 +43,10 @@ public final class ComponentStrategies
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ComponentStrategies} class.
+     * Initializes a new instance of the {@code InternalComponentStrategies}
+     * class.
      */
-    private ComponentStrategies()
+    private InternalComponentStrategies()
     {
     }
 }

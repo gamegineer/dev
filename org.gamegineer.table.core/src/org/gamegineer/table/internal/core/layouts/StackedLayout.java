@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.core.layouts;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -36,7 +35,7 @@ import org.gamegineer.table.core.IContainerLayout;
  * container with one component placed on top of the other with no offset.
  */
 @Immutable
-public final class StackedLayout
+final class StackedLayout
     extends AbstractContainerLayout
 {
     // ======================================================================
@@ -60,21 +59,18 @@ public final class StackedLayout
      * @param id
      *        The container layout identifier; must not be {@code null}.
      * @param componentsPerStackLevel
-     *        The number of components per stack level.
+     *        The number of components per stack level; must be positive.
      * @param stackLevelOffsetX
      *        The offset of each stack level in the x-direction in table
-     *        coordinates.
+     *        coordinates; must be positive.
      * @param stackLevelOffsetY
      *        The offset of each stack level in the y-direction in table
-     *        coordinates.
+     *        coordinates; must be positive.
      * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code componentsPerStackLevel}, {@code stackLevelOffsetX}, or
-     *         {@code stackLevelOffsetY} is not positive.
      * @throws java.lang.NullPointerException
      *         If {@code id} is {@code null}.
      */
-    public StackedLayout(
+    StackedLayout(
         /* @NonNull */
         final ContainerLayoutId id,
         final int componentsPerStackLevel,
@@ -83,9 +79,9 @@ public final class StackedLayout
     {
         super( id );
 
-        assertArgumentLegal( componentsPerStackLevel > 0, "componentsPerStackLevel", NonNlsMessages.StackedLayout_ctor_componentsPerStackLevel_notPositive ); //$NON-NLS-1$
-        assertArgumentLegal( stackLevelOffsetX > 0, "stackLevelOffsetX", NonNlsMessages.StackedLayout_ctor_stackLevelOffsetX_notPositive ); //$NON-NLS-1$
-        assertArgumentLegal( stackLevelOffsetY > 0, "stackLevelOffsetY", NonNlsMessages.StackedLayout_ctor_stackLevelOffsetY_notPositive ); //$NON-NLS-1$
+        assert componentsPerStackLevel > 0;
+        assert stackLevelOffsetX > 0;
+        assert stackLevelOffsetY > 0;
 
         componentsPerStackLevel_ = componentsPerStackLevel;
         stackLevelOffset_ = new Dimension( stackLevelOffsetX, stackLevelOffsetY );
@@ -133,27 +129,5 @@ public final class StackedLayout
 
         final int stackLevel = index / componentsPerStackLevel_;
         return new Dimension( stackLevelOffset_.width * stackLevel, stackLevelOffset_.height * stackLevel );
-    }
-
-    /**
-     * Gets the number of components per stack level.
-     * 
-     * @return The number of components per stack level.
-     */
-    public int getComponentsPerStackLevel()
-    {
-        return componentsPerStackLevel_;
-    }
-
-    /**
-     * Gets the offset of each stack level in table coordinates.
-     * 
-     * @return The offset of each stack level in table coordinates; never
-     *         {@code null}.
-     */
-    /* @NonNull */
-    public Dimension getStackLevelOffset()
-    {
-        return new Dimension( stackLevelOffset_ );
     }
 }

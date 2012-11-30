@@ -36,14 +36,6 @@ final class NonNlsMessages
     // Fields
     // ======================================================================
 
-    // --- AccordianLayout --------------------------------------------------
-
-    /**
-     * The offset in the y-direction is zero when the offset in the x-direction
-     * is zero.
-     */
-    public static String AccordianLayout_ctor_offsetY_zero;
-
     // --- ContainerLayoutExtensionFactory ----------------------------------
 
     /** The container layout identifier is unknown. */
@@ -51,17 +43,6 @@ final class NonNlsMessages
 
     /** The container layout identifier is missing. */
     public static String ContainerLayoutExtensionFactory_setInitializationData_missingId;
-
-    // --- StackedLayout ----------------------------------------------------
-
-    /** The components per stack level count is not positive. */
-    public static String StackedLayout_ctor_componentsPerStackLevel_notPositive;
-
-    /** The stack level offset in the x-direction is not positive. */
-    public static String StackedLayout_ctor_stackLevelOffsetX_notPositive;
-
-    /** The stack level offset in the y-direction is not positive. */
-    public static String StackedLayout_ctor_stackLevelOffsetY_notPositive;
 
 
     // ======================================================================

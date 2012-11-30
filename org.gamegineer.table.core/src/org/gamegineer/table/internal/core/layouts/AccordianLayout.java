@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.core.layouts;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import java.awt.Dimension;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.ContainerLayoutId;
@@ -38,7 +37,7 @@ import org.gamegineer.table.core.IContainerLayout;
  * </p>
  */
 @Immutable
-public final class AccordianLayout
+final class AccordianLayout
     extends AbstractContainerLayout
 {
     // ======================================================================
@@ -63,14 +62,12 @@ public final class AccordianLayout
      *        coordinates.
      * @param offsetY
      *        The offset of each component in the y-direction in table
-     *        coordinates.
+     *        coordinates; must not be zero if {@code offsetX} is zero.
      * 
-     * @throws java.lang.IllegalArgumentException
-     *         If both {@code offsetX} and {@code offsetY} are zero.
      * @throws java.lang.NullPointerException
      *         If {@code id} is {@code null}.
      */
-    public AccordianLayout(
+    AccordianLayout(
         /* @NonNull */
         final ContainerLayoutId id,
         final int offsetX,
@@ -78,7 +75,7 @@ public final class AccordianLayout
     {
         super( id );
 
-        assertArgumentLegal( (offsetX != 0) || (offsetY != 0), "offsetY", NonNlsMessages.AccordianLayout_ctor_offsetY_zero ); //$NON-NLS-1$
+        assert (offsetX != 0) || (offsetY != 0);
 
         offset_ = new Dimension( offsetX, offsetY );
     }
@@ -100,17 +97,5 @@ public final class AccordianLayout
         assert index >= 0;
 
         return new Dimension( index * offset_.width, index * offset_.height );
-    }
-
-    /**
-     * Gets the offset of each component in table coordinates.
-     * 
-     * @return The offset of each component in table coordinates; never
-     *         {@code null}.
-     */
-    /* @NonNull */
-    public Dimension getOffset()
-    {
-        return new Dimension( offset_ );
     }
 }

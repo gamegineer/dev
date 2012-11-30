@@ -35,7 +35,7 @@ import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.internal.core.strategies.ComponentStrategies;
+import org.gamegineer.table.internal.core.strategies.InternalComponentStrategies;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ITable}.
@@ -78,7 +78,7 @@ final class Table
         assert tableEnvironment != null;
 
         tableEnvironment_ = tableEnvironment;
-        tabletop_ = new Container( tableEnvironment, ComponentStrategies.TABLETOP );
+        tabletop_ = new Container( tableEnvironment, InternalComponentStrategies.TABLETOP );
 
         getLock().lock();
         try

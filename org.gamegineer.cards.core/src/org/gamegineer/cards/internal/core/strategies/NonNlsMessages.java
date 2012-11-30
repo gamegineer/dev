@@ -41,6 +41,11 @@ final class NonNlsMessages
     /** The default component surface design is not available. */
     public static String AbstractComponentStrategy_getDefaultSurfaceDesign_notAvailable;
 
+    // --- AbstractContainerStrategy ----------------------------------------
+
+    /** The default container layout is not available. */
+    public static String AbstractContainerStrategy_getDefaultLayout_notAvailable;
+
     // --- ComponentStrategyExtensionFactory --------------------------------
 
     /** The component strategy identifier is unknown. */

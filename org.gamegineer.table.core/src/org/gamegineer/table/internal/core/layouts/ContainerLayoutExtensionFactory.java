@@ -69,12 +69,12 @@ public final class ContainerLayoutExtensionFactory
     static
     {
         final Map<ContainerLayoutId, IContainerLayout> containerLayouts = new HashMap<ContainerLayoutId, IContainerLayout>();
-        containerLayouts.put( ContainerLayouts.ABSOLUTE.getId(), ContainerLayouts.ABSOLUTE );
-        containerLayouts.put( ContainerLayouts.ACCORDIAN_DOWN.getId(), ContainerLayouts.ACCORDIAN_DOWN );
-        containerLayouts.put( ContainerLayouts.ACCORDIAN_LEFT.getId(), ContainerLayouts.ACCORDIAN_LEFT );
-        containerLayouts.put( ContainerLayouts.ACCORDIAN_RIGHT.getId(), ContainerLayouts.ACCORDIAN_RIGHT );
-        containerLayouts.put( ContainerLayouts.ACCORDIAN_UP.getId(), ContainerLayouts.ACCORDIAN_UP );
-        containerLayouts.put( ContainerLayouts.STACKED.getId(), ContainerLayouts.STACKED );
+        containerLayouts.put( InternalContainerLayouts.ABSOLUTE.getId(), InternalContainerLayouts.ABSOLUTE );
+        containerLayouts.put( InternalContainerLayouts.ACCORDIAN_DOWN.getId(), InternalContainerLayouts.ACCORDIAN_DOWN );
+        containerLayouts.put( InternalContainerLayouts.ACCORDIAN_LEFT.getId(), InternalContainerLayouts.ACCORDIAN_LEFT );
+        containerLayouts.put( InternalContainerLayouts.ACCORDIAN_RIGHT.getId(), InternalContainerLayouts.ACCORDIAN_RIGHT );
+        containerLayouts.put( InternalContainerLayouts.ACCORDIAN_UP.getId(), InternalContainerLayouts.ACCORDIAN_UP );
+        containerLayouts.put( InternalContainerLayouts.STACKED.getId(), InternalContainerLayouts.STACKED );
         CONTAINER_LAYOUTS = Collections.unmodifiableMap( containerLayouts );
     }
 

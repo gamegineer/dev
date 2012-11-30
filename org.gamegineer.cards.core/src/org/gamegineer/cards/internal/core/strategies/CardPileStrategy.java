@@ -29,8 +29,7 @@ import org.gamegineer.cards.core.CardPileOrientation;
 import org.gamegineer.cards.core.CardsComponentStrategyIds;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
-import org.gamegineer.table.core.IContainerLayout;
-import org.gamegineer.table.internal.core.layouts.ContainerLayouts;
+import org.gamegineer.table.core.ContainerLayoutId;
 
 /**
  * A component strategy that represents a card pile.
@@ -65,13 +64,12 @@ public final class CardPileStrategy
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.IContainerStrategy#getDefaultLayout()
+     * @see org.gamegineer.cards.internal.core.strategies.AbstractContainerStrategy#getDefaultLayoutId()
      */
     @Override
-    public IContainerLayout getDefaultLayout()
+    ContainerLayoutId getDefaultLayoutId()
     {
-        // FIXME: this should be requested from the registry; need a public null object to fall back to; remove internal import
-        return ContainerLayouts.STACKED;
+        return ContainerLayoutId.fromString( "org.gamegineer.table.containerLayouts.stacked" ); //$NON-NLS-1$
     }
 
     /*

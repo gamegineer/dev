@@ -29,15 +29,15 @@ import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentStrategyIds;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
+import org.gamegineer.table.core.ContainerLayouts;
 import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.core.TabletopOrientation;
-import org.gamegineer.table.internal.core.layouts.ContainerLayouts;
 
 /**
  * A component strategy that represents a tabletop.
  */
 @Immutable
-public final class TabletopStrategy
+final class TabletopStrategy
     extends AbstractContainerStrategy
 {
     // ======================================================================
@@ -55,7 +55,7 @@ public final class TabletopStrategy
     /**
      * Initializes a new instance of the {@code TabletopStrategy} class.
      */
-    public TabletopStrategy()
+    TabletopStrategy()
     {
         super( ComponentStrategyIds.TABLETOP );
     }

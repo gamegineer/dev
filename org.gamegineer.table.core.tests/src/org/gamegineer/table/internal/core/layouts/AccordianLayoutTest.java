@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.core.layouts;
 
 import static org.junit.Assert.assertEquals;
-import java.awt.Dimension;
 import java.awt.Point;
 import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.IComponent;
@@ -70,55 +69,6 @@ public final class AccordianLayoutTest
     public void testConstructor_Id_Null()
     {
         new AccordianLayout( null, 1, 1 );
-    }
-
-    /**
-     * Ensures the constructor does not throw an exception when passed an offset
-     * in the x-direction that is non-zero and an offset in the y-direction that
-     * is zero.
-     */
-    @Test
-    public void testConstructor_OffsetX_NonZero_OffsetY_Zero()
-    {
-        new AccordianLayout( DEFAULT_ID, 1, 0 );
-    }
-
-    /**
-     * Ensures the constructor throws an exception when passed an offset in the
-     * x-direction that is zero and an offset in the y-direction that is zero.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testConstructor_OffsetX_Zero_OffsetY_Zero()
-    {
-        new AccordianLayout( DEFAULT_ID, 0, 0 );
-    }
-
-    /**
-     * Ensures the constructor does not throw an exception when passed an offset
-     * in the x-direction that is zero and an offset in the y-direction that is
-     * non-zero.
-     */
-    @Test
-    public void testConstructor_OffsetX_Zero_OffsetY_NonZero()
-    {
-        new AccordianLayout( DEFAULT_ID, 0, 1 );
-    }
-
-    /**
-     * Ensures the {@link AccordianLayout#getOffset} method returns a copy of
-     * the offset.
-     */
-    @Test
-    public void testGetOffset_ReturnValue_Copy()
-    {
-        final AccordianLayout layout = new AccordianLayout( DEFAULT_ID, 1, 1 );
-        final Dimension offset = layout.getOffset();
-        final Dimension expectedValue = new Dimension( offset );
-
-        offset.setSize( 1000, 1000 );
-        final Dimension actualValue = layout.getOffset();
-
-        assertEquals( expectedValue, actualValue );
     }
 
     /**

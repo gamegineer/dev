@@ -1,5 +1,5 @@
 /*
- * ContainerLayouts.java
+ * InternalContainerLayouts.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -26,10 +26,10 @@ import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.IContainerLayout;
 
 /**
- * A collection of common container layouts.
+ * A collection of container layouts provided by this bundle.
  */
 @ThreadSafe
-public final class ContainerLayouts
+public final class InternalContainerLayouts
 {
     // ======================================================================
     // Fields
@@ -81,9 +81,9 @@ public final class ContainerLayouts
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ContainerLayouts}.
+     * Initializes a new instance of the {@code InternalContainerLayouts}.
      */
-    private ContainerLayouts()
+    private InternalContainerLayouts()
     {
     }
 }

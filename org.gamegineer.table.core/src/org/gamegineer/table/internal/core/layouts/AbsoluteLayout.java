@@ -33,7 +33,7 @@ import org.gamegineer.table.core.IContainerLayout;
  * container at their absolute table coordinates.
  */
 @Immutable
-public final class AbsoluteLayout
+final class AbsoluteLayout
     extends AbstractContainerLayout
 {
     // ======================================================================
@@ -49,7 +49,7 @@ public final class AbsoluteLayout
      * @throws java.lang.NullPointerException
      *         If {@code id} is {@code null}.
      */
-    public AbsoluteLayout(
+    AbsoluteLayout(
         /* @NonNull */
         final ContainerLayoutId id )
     {

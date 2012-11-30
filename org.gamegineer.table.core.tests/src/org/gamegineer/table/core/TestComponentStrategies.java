@@ -32,8 +32,6 @@ import java.util.concurrent.atomic.AtomicLong;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.core.Activator;
-import org.gamegineer.table.internal.core.layouts.ContainerLayouts;
-import org.gamegineer.table.internal.core.surfacedesigns.ComponentSurfaceDesigns;
 
 /**
  * A factory for creating various types of component strategies suitable for

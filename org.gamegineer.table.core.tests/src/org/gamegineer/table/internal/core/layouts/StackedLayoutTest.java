@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.core.layouts;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import java.awt.Dimension;
 import java.awt.Point;
 import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.IComponent;
@@ -64,16 +63,6 @@ public final class StackedLayoutTest
     // ======================================================================
 
     /**
-     * Ensures the constructor throws an exception when passed an illegal
-     * components per stack level count that is zero.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testConstructor_ComponentsPerStackLevel_Zero()
-    {
-        new StackedLayout( DEFAULT_ID, 0, 1, 1 );
-    }
-
-    /**
      * Ensures the constructor throws an exception when passed a {@code null}
      * identifier.
      */
@@ -81,26 +70,6 @@ public final class StackedLayoutTest
     public void testConstructor_Id_Null()
     {
         new StackedLayout( null, 1, 1, 1 );
-    }
-
-    /**
-     * Ensures the constructor throws an exception when passed an illegal stack
-     * level offset in the x-direction that is zero.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testConstructor_StackLevelOffsetX_Zero()
-    {
-        new StackedLayout( DEFAULT_ID, 1, 0, 1 );
-    }
-
-    /**
-     * Ensures the constructor throws an exception when passed an illegal stack
-     * level offset in the y-direction that is zero.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testConstructor_StackLevelOffsetY_Zero()
-    {
-        new StackedLayout( DEFAULT_ID, 1, 1, 0 );
     }
 
     /**
@@ -150,23 +119,6 @@ public final class StackedLayoutTest
         final int actualIndex = layout.getComponentIndex( container, location );
 
         assertEquals( 1, actualIndex );
-    }
-
-    /**
-     * Ensures the {@link StackedLayout#getStackLevelOffset} method returns a
-     * copy of the stack level offset.
-     */
-    @Test
-    public void testGetStackLevelOffset_ReturnValue_Copy()
-    {
-        final StackedLayout layout = new StackedLayout( DEFAULT_ID, 1, 1, 1 );
-        final Dimension stackLevelOffset = layout.getStackLevelOffset();
-        final Dimension expectedValue = new Dimension( stackLevelOffset );
-
-        stackLevelOffset.setSize( 1000, 1000 );
-        final Dimension actualValue = layout.getStackLevelOffset();
-
-        assertEquals( expectedValue, actualValue );
     }
 
     /**

@@ -32,10 +32,10 @@ import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ComponentSurfaceDesignRegistry;
+import org.gamegineer.table.core.ComponentSurfaceDesigns;
 import org.gamegineer.table.core.IComponentStrategy;
 import org.gamegineer.table.core.NoSuchComponentSurfaceDesignException;
 import org.gamegineer.table.internal.core.Loggers;
-import org.gamegineer.table.internal.core.surfacedesigns.ComponentSurfaceDesigns;
 
 /**
  * Superclass for all component strategies.

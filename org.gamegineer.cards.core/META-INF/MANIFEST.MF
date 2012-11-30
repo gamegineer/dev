@@ -14,7 +14,5 @@ Import-Package: net.jcip.annotations;version="1.0.0",
  org.gamegineer.common.core.runtime;version="[0.15.0,0.16.0)",
  org.gamegineer.common.core.util;version="[0.15.0,0.16.0)",
  org.gamegineer.table.core;version="[0.15.0,0.16.0)",
- org.gamegineer.table.internal.core.layouts;version="[0.15.0,0.16.0)",
- org.gamegineer.table.internal.core.surfacedesigns;version="[0.15.0,0.16.0)",
  org.osgi.framework;version="1.6.0"
 Require-Bundle: org.eclipse.equinox.registry;bundle-version="3.5.101"

@@ -19,11 +19,9 @@
  * Created on Aug 16, 2012 at 9:38:38 PM.
  */
 
-package org.gamegineer.table.internal.core.surfacedesigns;
+package org.gamegineer.table.core;
 
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.ComponentSurfaceDesign;
-import org.gamegineer.table.core.ComponentSurfaceDesignId;
 
 /**
  * A collection of common component surface designs.

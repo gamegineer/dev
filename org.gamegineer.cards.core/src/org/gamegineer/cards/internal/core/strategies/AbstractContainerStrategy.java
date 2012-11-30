@@ -21,9 +21,16 @@
 
 package org.gamegineer.cards.internal.core.strategies;
 
+import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
+import org.gamegineer.cards.internal.core.Loggers;
 import org.gamegineer.table.core.ComponentStrategyId;
+import org.gamegineer.table.core.ContainerLayoutId;
+import org.gamegineer.table.core.ContainerLayoutRegistry;
+import org.gamegineer.table.core.ContainerLayouts;
+import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.core.IContainerStrategy;
+import org.gamegineer.table.core.NoSuchContainerLayoutException;
 
 /**
  * Superclass for all container strategies.
@@ -50,4 +57,36 @@ abstract class AbstractContainerStrategy
     {
         super( id );
     }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /*
+     * @see org.gamegineer.table.core.IContainerStrategy#getDefaultLayout()
+     */
+    @Override
+    public final IContainerLayout getDefaultLayout()
+    {
+        try
+        {
+            return ContainerLayoutRegistry.getContainerLayout( getDefaultLayoutId() );
+        }
+        catch( final NoSuchContainerLayoutException e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.AbstractContainerStrategy_getDefaultLayout_notAvailable, e );
+        }
+
+        return ContainerLayouts.ABSOLUTE;
+    }
+
+    /**
+     * Gets the identifier of the default container layout.
+     * 
+     * @return The identifier of the default container layout; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    abstract ContainerLayoutId getDefaultLayoutId();
 }
