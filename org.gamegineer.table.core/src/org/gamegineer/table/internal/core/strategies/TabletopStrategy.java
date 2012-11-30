@@ -26,11 +26,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.core.AbstractContainerStrategy;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentStrategyIds;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
-import org.gamegineer.table.core.ContainerLayouts;
-import org.gamegineer.table.core.IContainerLayout;
+import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.TabletopOrientation;
 
 /**
@@ -66,12 +66,12 @@ final class TabletopStrategy
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.IContainerStrategy#getDefaultLayout()
+     * @see org.gamegineer.table.core.AbstractContainerStrategy#getDefaultLayoutId()
      */
     @Override
-    public IContainerLayout getDefaultLayout()
+    protected ContainerLayoutId getDefaultLayoutId()
     {
-        return ContainerLayouts.ABSOLUTE;
+        return ContainerLayoutId.fromString( "org.gamegineer.table.containerLayouts.absolute" ); //$NON-NLS-1$
     }
 
     /*
@@ -93,10 +93,10 @@ final class TabletopStrategy
     }
 
     /*
-     * @see org.gamegineer.table.internal.core.strategies.AbstractComponentStrategy#getDefaultSurfaceDesignId()
+     * @see org.gamegineer.table.core.AbstractComponentStrategy#getDefaultSurfaceDesignId()
      */
     @Override
-    ComponentSurfaceDesignId getDefaultSurfaceDesignId()
+    protected ComponentSurfaceDesignId getDefaultSurfaceDesignId()
     {
         return ComponentSurfaceDesignId.fromString( "org.gamegineer.table.tabletopSurfaceDesigns.default" ); //$NON-NLS-1$
     }

@@ -19,17 +19,17 @@
  * Created on Aug 21, 2012 at 8:42:12 PM.
  */
 
-package org.gamegineer.table.internal.core.strategies;
+package org.gamegineer.table.core;
 
+import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.core.ComponentStrategyId;
-import org.gamegineer.table.core.IContainerStrategy;
+import org.gamegineer.table.internal.core.Loggers;
 
 /**
  * Superclass for all container strategies.
  */
 @Immutable
-abstract class AbstractContainerStrategy
+public abstract class AbstractContainerStrategy
     extends AbstractComponentStrategy
     implements IContainerStrategy
 {
@@ -43,11 +43,46 @@ abstract class AbstractContainerStrategy
      * 
      * @param id
      *        The component strategy identifier; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code id} is {@code null}.
      */
-    AbstractContainerStrategy(
+    protected AbstractContainerStrategy(
         /* @NonNull */
         final ComponentStrategyId id )
     {
         super( id );
     }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /*
+     * @see org.gamegineer.table.core.IContainerStrategy#getDefaultLayout()
+     */
+    @Override
+    public final IContainerLayout getDefaultLayout()
+    {
+        try
+        {
+            return ContainerLayoutRegistry.getContainerLayout( getDefaultLayoutId() );
+        }
+        catch( final NoSuchContainerLayoutException e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.AbstractContainerStrategy_getDefaultLayout_notAvailable, e );
+        }
+
+        return ContainerLayouts.ABSOLUTE;
+    }
+
+    /**
+     * Gets the identifier of the default container layout.
+     * 
+     * @return The identifier of the default container layout; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    protected abstract ContainerLayoutId getDefaultLayoutId();
 }

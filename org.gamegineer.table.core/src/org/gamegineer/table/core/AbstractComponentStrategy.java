@@ -19,29 +19,22 @@
  * Created on Aug 21, 2012 at 8:42:02 PM.
  */
 
-package org.gamegineer.cards.internal.core.strategies;
+package org.gamegineer.table.core;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Point;
 import java.util.Collection;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.cards.internal.core.Loggers;
-import org.gamegineer.table.core.ComponentOrientation;
-import org.gamegineer.table.core.ComponentStrategyId;
-import org.gamegineer.table.core.ComponentSurfaceDesign;
-import org.gamegineer.table.core.ComponentSurfaceDesignId;
-import org.gamegineer.table.core.ComponentSurfaceDesignRegistry;
-import org.gamegineer.table.core.ComponentSurfaceDesigns;
-import org.gamegineer.table.core.IComponentStrategy;
-import org.gamegineer.table.core.NoSuchComponentSurfaceDesignException;
+import org.gamegineer.table.internal.core.Loggers;
 
 /**
  * Superclass for all component strategies.
  */
 @Immutable
-abstract class AbstractComponentStrategy
+public abstract class AbstractComponentStrategy
     implements IComponentStrategy
 {
     // ======================================================================
@@ -62,12 +55,15 @@ abstract class AbstractComponentStrategy
      * 
      * @param id
      *        The component strategy identifier; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code id} is {@code null}.
      */
-    AbstractComponentStrategy(
+    protected AbstractComponentStrategy(
         /* @NonNull */
         final ComponentStrategyId id )
     {
-        assert id != null;
+        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
 
         id_ = id;
     }
@@ -129,7 +125,7 @@ abstract class AbstractComponentStrategy
      *         {@code null}.
      */
     /* @NonNull */
-    abstract ComponentSurfaceDesignId getDefaultSurfaceDesignId();
+    protected abstract ComponentSurfaceDesignId getDefaultSurfaceDesignId();
 
     /*
      * @see org.gamegineer.table.core.IComponentStrategy#getDefaultSurfaceDesigns()

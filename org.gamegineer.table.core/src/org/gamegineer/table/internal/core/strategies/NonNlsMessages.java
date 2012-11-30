@@ -36,11 +36,6 @@ final class NonNlsMessages
     // Fields
     // ======================================================================
 
-    // --- AbstractComponentStrategy ----------------------------------------
-
-    /** The default component surface design is not available. */
-    public static String AbstractComponentStrategy_getDefaultSurfaceDesign_notAvailable;
-
     // --- ComponentStrategyExtensionFactory --------------------------------
 
     /** The component strategy identifier is unknown. */

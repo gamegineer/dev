@@ -27,6 +27,7 @@ import java.util.Collections;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.cards.core.CardPileOrientation;
 import org.gamegineer.cards.core.CardsComponentStrategyIds;
+import org.gamegineer.table.core.AbstractContainerStrategy;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ContainerLayoutId;
@@ -35,7 +36,7 @@ import org.gamegineer.table.core.ContainerLayoutId;
  * A component strategy that represents a card pile.
  */
 @Immutable
-public final class CardPileStrategy
+final class CardPileStrategy
     extends AbstractContainerStrategy
 {
     // ======================================================================
@@ -53,7 +54,7 @@ public final class CardPileStrategy
     /**
      * Initializes a new instance of the {@code CardPileStrategy} class.
      */
-    public CardPileStrategy()
+    CardPileStrategy()
     {
         super( CardsComponentStrategyIds.CARD_PILE );
     }
@@ -64,10 +65,10 @@ public final class CardPileStrategy
     // ======================================================================
 
     /*
-     * @see org.gamegineer.cards.internal.core.strategies.AbstractContainerStrategy#getDefaultLayoutId()
+     * @see org.gamegineer.table.core.AbstractContainerStrategy#getDefaultLayoutId()
      */
     @Override
-    ContainerLayoutId getDefaultLayoutId()
+    protected ContainerLayoutId getDefaultLayoutId()
     {
         return ContainerLayoutId.fromString( "org.gamegineer.table.containerLayouts.stacked" ); //$NON-NLS-1$
     }
@@ -82,10 +83,10 @@ public final class CardPileStrategy
     }
 
     /*
-     * @see org.gamegineer.cards.internal.core.strategies.AbstractComponentStrategy#getDefaultSurfaceDesignId()
+     * @see org.gamegineer.table.core.AbstractComponentStrategy#getDefaultSurfaceDesignId()
      */
     @Override
-    ComponentSurfaceDesignId getDefaultSurfaceDesignId()
+    protected ComponentSurfaceDesignId getDefaultSurfaceDesignId()
     {
         return ComponentSurfaceDesignId.fromString( "org.gamegineer.cards.cardPileSurfaceDesigns.default" ); //$NON-NLS-1$
     }

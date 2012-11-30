@@ -1,5 +1,5 @@
 /*
- * ComponentStrategies.java
+ * TabletopStrategyAsAbstractContainerStrategyTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,40 +16,45 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 13, 2012 at 7:53:44 PM.
+ * Created on Nov 29, 2012 at 11:43:35 PM.
  */
 
-package org.gamegineer.cards.internal.core.strategies;
+package org.gamegineer.table.internal.core.strategies;
 
-import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.IComponentStrategy;
-import org.gamegineer.table.core.IContainerStrategy;
+import org.gamegineer.table.core.AbstractAbstractContainerStrategyTestCase;
 
 /**
- * A collection of component strategies for the cards game.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.core.strategies.TabletopStrategy} class
+ * to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.core.AbstractContainerStrategy} class.
  */
-@ThreadSafe
-public final class ComponentStrategies
+public final class TabletopStrategyAsAbstractContainerStrategyTest
+    extends AbstractAbstractContainerStrategyTestCase<TabletopStrategy>
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The card component strategy. */
-    public static final IComponentStrategy CARD = new CardStrategy();
-
-    /** The card pile container strategy. */
-    public static final IContainerStrategy CARD_PILE = new CardPileStrategy();
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ComponentStrategies} class.
+     * Initializes a new instance of the
+     * {@code TabletopStrategyAsAbstractContainerStrategyTest} class.
      */
-    private ComponentStrategies()
+    public TabletopStrategyAsAbstractContainerStrategyTest()
     {
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /*
+     * @see org.gamegineer.table.core.AbstractAbstractComponentStrategyTestCase#createComponentStrategy()
+     */
+    @Override
+    protected TabletopStrategy createComponentStrategy()
+    {
+        return new TabletopStrategy();
     }
 }
