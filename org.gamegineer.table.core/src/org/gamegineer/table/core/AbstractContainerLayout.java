@@ -19,23 +19,19 @@
  * Created on May 5, 2012 at 10:08:36 PM.
  */
 
-package org.gamegineer.table.internal.core.layouts;
+package org.gamegineer.table.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.List;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.core.ContainerLayoutId;
-import org.gamegineer.table.core.IComponent;
-import org.gamegineer.table.core.IContainer;
-import org.gamegineer.table.core.IContainerLayout;
 
 /**
  * Superclass for implementations of {@link IContainerLayout}.
  */
 @Immutable
-abstract class AbstractContainerLayout
+public abstract class AbstractContainerLayout
     implements IContainerLayout
 {
     // ======================================================================
@@ -59,7 +55,7 @@ abstract class AbstractContainerLayout
      * @throws java.lang.NullPointerException
      *         If {@code id} is {@code null}.
      */
-    AbstractContainerLayout(
+    protected AbstractContainerLayout(
         /* @NonNull */
         final ContainerLayoutId id )
     {
@@ -75,7 +71,8 @@ abstract class AbstractContainerLayout
 
     /**
      * This implementation returns the top-most component within the specified
-     * container at the specified location.
+     * container at the specified location. Subclasses may override and are not
+     * required to call the superclass implementation.
      * 
      * @see org.gamegineer.table.core.IContainerLayout#getComponentIndex(org.gamegineer.table.core.IContainer,
      *      java.awt.Point)
@@ -107,13 +104,18 @@ abstract class AbstractContainerLayout
      * @param container
      *        The container; must not be {@code null}.
      * @param index
-     *        The component index; must be non-negative.
+     *        The component index.
      * 
      * @return The offset from the container origin in table coordinates of the
      *         component at the specified index; never {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code index} is negative.
+     * @throws java.lang.NullPointerException
+     *         If {@code container} is {@code null}.
      */
     /* @NonNull */
-    abstract Dimension getComponentOffsetAt(
+    protected abstract Dimension getComponentOffsetAt(
         /* @NonNull */
         IContainer container,
         int index );

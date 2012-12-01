@@ -36,6 +36,11 @@ final class NonNlsMessages
     // Fields
     // ======================================================================
 
+    // --- AbstractContainerLayout ------------------------------------------
+
+    /** The component index is negative. */
+    public static String AbstractContainerLayout_getComponentOffsetAt_index_negative;
+
     // --- ContainerLayoutExtensionFactory ----------------------------------
 
     /** The container layout identifier is unknown. */

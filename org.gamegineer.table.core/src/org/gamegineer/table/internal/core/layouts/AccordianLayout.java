@@ -21,8 +21,11 @@
 
 package org.gamegineer.table.internal.core.layouts;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.core.AbstractContainerLayout;
 import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerLayout;
@@ -86,15 +89,15 @@ final class AccordianLayout
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.core.AbstractContainerLayout#getComponentOffsetAt(org.gamegineer.table.core.IContainer, int)
+     * @see org.gamegineer.table.core.AbstractContainerLayout#getComponentOffsetAt(org.gamegineer.table.core.IContainer, int)
      */
     @Override
-    Dimension getComponentOffsetAt(
+    protected Dimension getComponentOffsetAt(
         final IContainer container,
         final int index )
     {
-        assert container != null;
-        assert index >= 0;
+        assertArgumentNotNull( container, "container" ); //$NON-NLS-1$
+        assertArgumentLegal( index >= 0, "index", NonNlsMessages.AbstractContainerLayout_getComponentOffsetAt_index_negative ); //$NON-NLS-1$
 
         return new Dimension( index * offset_.width, index * offset_.height );
     }
