@@ -31,6 +31,7 @@ import org.gamegineer.table.core.AbstractContainerStrategy;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ContainerLayoutId;
+import org.gamegineer.table.core.ContainerLayoutIds;
 
 /**
  * A component strategy that represents a card pile.
@@ -70,7 +71,7 @@ final class CardPileStrategy
     @Override
     protected ContainerLayoutId getDefaultLayoutId()
     {
-        return ContainerLayoutId.fromString( "org.gamegineer.table.containerLayouts.stacked" ); //$NON-NLS-1$
+        return ContainerLayoutIds.STACKED;
     }
 
     /*

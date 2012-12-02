@@ -31,6 +31,7 @@ import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentStrategyIds;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ContainerLayoutId;
+import org.gamegineer.table.core.ContainerLayoutIds;
 import org.gamegineer.table.core.TabletopOrientation;
 
 /**
@@ -71,7 +72,7 @@ final class TabletopStrategy
     @Override
     protected ContainerLayoutId getDefaultLayoutId()
     {
-        return ContainerLayoutId.fromString( "org.gamegineer.table.containerLayouts.absolute" ); //$NON-NLS-1$
+        return ContainerLayoutIds.ABSOLUTE;
     }
 
     /*
