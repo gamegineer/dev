@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Collections;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.cards.core.CardOrientation;
+import org.gamegineer.cards.core.CardSurfaceDesignIds;
 import org.gamegineer.cards.core.CardsComponentStrategyIds;
 import org.gamegineer.table.core.AbstractComponentStrategy;
 import org.gamegineer.table.core.ComponentOrientation;
@@ -78,7 +79,7 @@ final class CardStrategy
     @Override
     protected ComponentSurfaceDesignId getDefaultSurfaceDesignId()
     {
-        return ComponentSurfaceDesignId.fromString( "org.gamegineer.cards.cardSurfaceDesigns.default" ); //$NON-NLS-1$
+        return CardSurfaceDesignIds.DEFAULT;
     }
 
     /*

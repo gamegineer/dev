@@ -33,6 +33,7 @@ import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.ContainerLayoutIds;
 import org.gamegineer.table.core.TabletopOrientation;
+import org.gamegineer.table.core.TabletopSurfaceDesignIds;
 
 /**
  * A component strategy that represents a tabletop.
@@ -99,7 +100,7 @@ final class TabletopStrategy
     @Override
     protected ComponentSurfaceDesignId getDefaultSurfaceDesignId()
     {
-        return ComponentSurfaceDesignId.fromString( "org.gamegineer.table.tabletopSurfaceDesigns.default" ); //$NON-NLS-1$
+        return TabletopSurfaceDesignIds.DEFAULT;
     }
 
     /*
