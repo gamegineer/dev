@@ -27,7 +27,7 @@ import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.core.TestComponents;
+import org.gamegineer.table.ui.TestComponents;
 import org.junit.Before;
 import org.junit.Test;
 

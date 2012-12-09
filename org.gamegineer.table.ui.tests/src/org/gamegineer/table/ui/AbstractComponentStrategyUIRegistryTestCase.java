@@ -23,6 +23,7 @@ package org.gamegineer.table.ui;
 
 import org.gamegineer.common.core.util.registry.AbstractRegistryTestCase;
 import org.gamegineer.table.core.ComponentStrategyId;
+import org.gamegineer.table.core.TestComponentStrategies;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
@@ -64,7 +65,7 @@ public abstract class AbstractComponentStrategyUIRegistryTestCase
     @Override
     protected IComponentStrategyUI createUniqueObject()
     {
-        return TestComponentStrategyUIs.createUniqueComponentStrategyUI();
+        return TestComponentStrategyUIs.createComponentStrategyUI( TestComponentStrategies.createUniqueComponentStrategy().getId() );
     }
 
     /*

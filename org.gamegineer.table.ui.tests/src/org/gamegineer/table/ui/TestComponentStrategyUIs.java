@@ -22,7 +22,6 @@
 package org.gamegineer.table.ui;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.util.concurrent.atomic.AtomicLong;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ComponentStrategyId;
@@ -45,9 +44,6 @@ public final class TestComponentStrategyUIs
 
     /** The null container strategy user interface. */
     private static final IContainerStrategyUI NULL_CONTAINER_STRATEGY_UI = new NullContainerStrategyUI();
-
-    /** The next unique component strategy identifier. */
-    private static final AtomicLong nextComponentStrategyId_ = new AtomicLong();
 
 
     // ======================================================================
@@ -91,6 +87,28 @@ public final class TestComponentStrategyUIs
     }
 
     /**
+     * Creates a new component strategy user interface with the specified
+     * identifier.
+     * 
+     * @param id
+     *        The component strategy identifier; must not be {@code null}.
+     * 
+     * @return A new component strategy user interface; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code id} is {@code null}.
+     */
+    /* @NonNull */
+    public static IComponentStrategyUI createComponentStrategyUI(
+        /* @NonNull */
+        final ComponentStrategyId id )
+    {
+        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
+
+        return registerComponentStrategyUI( createComponentStrategyUIDecorator( NULL_COMPONENT_STRATEGY_UI, id ) );
+    }
+
+    /**
      * Creates a decorator for the specified component strategy user interface.
      * 
      * @param componentStrategyUI
@@ -130,6 +148,28 @@ public final class TestComponentStrategyUIs
     }
 
     /**
+     * Creates a new container strategy user interface with the specified
+     * identifier.
+     * 
+     * @param id
+     *        The component strategy identifier; must not be {@code null}.
+     * 
+     * @return A new container strategy user interface; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code id} is {@code null}.
+     */
+    /* @NonNull */
+    public static IContainerStrategyUI createContainerStrategyUI(
+        /* @NonNull */
+        final ComponentStrategyId id )
+    {
+        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
+
+        return registerComponentStrategyUI( createContainerStrategyUIDecorator( NULL_CONTAINER_STRATEGY_UI, id ) );
+    }
+
+    /**
      * Creates a decorator for the specified container strategy user interface.
      * 
      * @param containerStrategyUI
@@ -166,40 +206,6 @@ public final class TestComponentStrategyUIs
                 return containerStrategyUI.isFocusable();
             }
         };
-    }
-
-    /**
-     * Creates a new component strategy user interface with a unique identifier.
-     * 
-     * @return A new component strategy user interface; never {@code null}.
-     */
-    /* @NonNull */
-    public static IComponentStrategyUI createUniqueComponentStrategyUI()
-    {
-        return registerComponentStrategyUI( createComponentStrategyUIDecorator( NULL_COMPONENT_STRATEGY_UI, getUniqueComponentStrategyId() ) );
-    }
-
-    /**
-     * Creates a new container strategy user interface with a unique identifier.
-     * 
-     * @return A new container strategy user interface; never {@code null}.
-     */
-    /* @NonNull */
-    public static IContainerStrategyUI createUniqueContainerStrategyUI()
-    {
-        return registerComponentStrategyUI( createContainerStrategyUIDecorator( NULL_CONTAINER_STRATEGY_UI, getUniqueComponentStrategyId() ) );
-    }
-
-    /**
-     * Gets a unique component strategy identifier.
-     * 
-     * @return A unique component strategy identifier; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static ComponentStrategyId getUniqueComponentStrategyId()
-    {
-        return ComponentStrategyId.fromString( String.format( "component-strategy-%1$d", nextComponentStrategyId_.incrementAndGet() ) ); //$NON-NLS-1$
     }
 
     /**

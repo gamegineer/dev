@@ -23,7 +23,7 @@ package org.gamegineer.table.internal.ui.model;
 
 import java.lang.reflect.Method;
 import org.gamegineer.table.core.TableEnvironmentFactory;
-import org.gamegineer.table.core.TestComponents;
+import org.gamegineer.table.ui.TestComponents;
 
 /**
  * A fixture for testing the

@@ -25,8 +25,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Rectangle;
 import org.gamegineer.table.core.TableEnvironmentFactory;
-import org.gamegineer.table.core.TestComponents;
 import org.gamegineer.table.internal.ui.model.ComponentModelFactory;
+import org.gamegineer.table.ui.TestComponents;
 import org.junit.Before;
 import org.junit.Test;
 

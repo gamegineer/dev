@@ -24,8 +24,8 @@ package org.gamegineer.table.internal.ui.model;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.core.IComponent;
-import org.gamegineer.table.core.TestComponents;
 import org.gamegineer.table.core.TestContainerLayouts;
+import org.gamegineer.table.ui.TestComponents;
 import org.junit.Before;
 import org.junit.Test;
 

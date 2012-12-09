@@ -37,7 +37,7 @@ import org.easymock.IMocksControl;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
-import org.gamegineer.table.core.TestComponents;
+import org.gamegineer.table.ui.TestComponents;
 import org.junit.Before;
 import org.junit.Test;
 
