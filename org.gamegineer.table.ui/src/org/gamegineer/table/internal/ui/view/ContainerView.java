@@ -22,8 +22,8 @@
 package org.gamegineer.table.internal.ui.view;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -50,18 +50,6 @@ final class ContainerView
     // ======================================================================
 
     /**
-     * The horizontal padding between the focus border and the container in
-     * table coordinates.
-     */
-    private static final int HORIZONTAL_PADDING = 2;
-
-    /**
-     * The vertical padding between the focus border and the container in table
-     * coordinates.
-     */
-    private static final int VERTICAL_PADDING = 2;
-
-    /**
      * The collection of component views ordered from the component at the
      * bottom of the container to the component at the top of the container.
      */
@@ -85,7 +73,7 @@ final class ContainerView
         /* @NonNull */
         final ContainerModel containerModel )
     {
-        super( containerModel );
+        super( containerModel, new Dimension( 2, 2 ) );
 
         componentViews_ = new ArrayList<ComponentView>();
         containerModelListener_ = null;
@@ -194,17 +182,6 @@ final class ContainerView
     }
 
     /*
-     * @see org.gamegineer.table.internal.ui.view.ComponentView#getBounds()
-     */
-    @Override
-    Rectangle getBounds()
-    {
-        final Rectangle bounds = super.getBounds();
-        bounds.grow( HORIZONTAL_PADDING, VERTICAL_PADDING );
-        return bounds;
-    }
-
-    /*
      * @see org.gamegineer.table.internal.ui.view.ComponentView#getComponentModel()
      */
     @Override
@@ -239,46 +216,18 @@ final class ContainerView
      */
     @Override
     void paint(
-        final Component c,
+        final Component component,
         final Graphics g )
     {
-        assert c != null;
-        assert g != null;
-        assert isInitialized();
+        super.paint( component, g );
 
         final Rectangle clipBounds = g.getClipBounds();
-        final Rectangle viewBounds = getBounds();
-
-        getActiveComponentSurfaceDesignUI().getIcon().paintIcon( c, g, viewBounds.x + HORIZONTAL_PADDING, viewBounds.y + VERTICAL_PADDING );
-
         for( final ComponentView componentView : componentViews_ )
         {
             if( clipBounds.intersects( componentView.getBounds() ) )
             {
-                componentView.paint( c, g );
+                componentView.paint( component, g );
             }
-        }
-
-        final Color borderColor;
-        if( getComponentModel().isFocused() )
-        {
-            borderColor = Color.GREEN;
-        }
-        else if( getComponentModel().isHovered() )
-        {
-            borderColor = Color.YELLOW;
-        }
-        else
-        {
-            borderColor = null;
-        }
-
-        if( borderColor != null )
-        {
-            final Color oldColor = g.getColor();
-            g.setColor( borderColor );
-            g.drawRect( viewBounds.x, viewBounds.y, viewBounds.width - 1, viewBounds.height - 1 );
-            g.setColor( oldColor );
         }
     }
 

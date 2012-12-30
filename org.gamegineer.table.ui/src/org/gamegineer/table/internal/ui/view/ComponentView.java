@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.ui.view;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.logging.Level;
@@ -49,6 +50,9 @@ class ComponentView
     // Fields
     // ======================================================================
 
+    /** The default padding. */
+    private static final Dimension DEFAULT_PADDING = new Dimension( 0, 0 );
+
     /** The model associated with this view. */
     private final ComponentModel componentModel_;
 
@@ -57,6 +61,12 @@ class ComponentView
 
     /** The dirty bounds of this view in table coordinates. */
     private final Rectangle dirtyBounds_;
+
+    /**
+     * The amount of padding between the component surface and the border in
+     * table coordinates.
+     */
+    private final Dimension padding_;
 
     /** The table view that owns this view. */
     private TableView tableView_;
@@ -76,11 +86,38 @@ class ComponentView
         /* @NonNull */
         final ComponentModel componentModel )
     {
+        this( componentModel, DEFAULT_PADDING );
+    }
+
+    /**
+     * Initializes a new instance of the {@code ComponentView} class with the
+     * specified amount of padding.
+     * 
+     * <p>
+     * This constructor is not intended to be called by clients; it is only for
+     * the use of subclasses.
+     * </p>
+     * 
+     * @param componentModel
+     *        The model associated with this view; must not be {@code null}.
+     * @param padding
+     *        The amount of padding between the component surface and the
+     *        border in table coordinates; must not be negative.
+     */
+    ComponentView(
+        /* @NonNull */
+        final ComponentModel componentModel,
+        /* @NonNull */
+        final Dimension padding )
+    {
         assert componentModel != null;
+        assert padding != null;
+        assert (padding.width >= 0) && (padding.height >= 0);
 
         componentModel_ = componentModel;
         componentModelListener_ = null;
         dirtyBounds_ = new Rectangle();
+        padding_ = new Dimension( padding );
         tableView_ = null;
     }
 
@@ -150,16 +187,11 @@ class ComponentView
     /**
      * Gets the active component surface design user interface.
      * 
-     * <p>
-     * This method is not intended to be called by clients; it is only for the
-     * use of subclasses.
-     * </p>
-     * 
      * @return The active component surface design user interface; never
      *         {@code null}.
      */
     /* @NonNull */
-    final ComponentSurfaceDesignUI getActiveComponentSurfaceDesignUI()
+    private ComponentSurfaceDesignUI getActiveComponentSurfaceDesignUI()
     {
         final ComponentSurfaceDesign componentSurfaceDesign = componentModel_.getComponent().getSurfaceDesign( componentModel_.getComponent().getOrientation() );
         try
@@ -177,16 +209,14 @@ class ComponentView
     /**
      * Gets the bounds of this view in table coordinates.
      * 
-     * <p>
-     * Subclasses are not required to call the superclass method.
-     * </p>
-     * 
      * @return The bounds of this view in table coordinates; never {@code null}.
      */
     /* @NonNull */
-    Rectangle getBounds()
+    final Rectangle getBounds()
     {
-        return componentModel_.getComponent().getBounds();
+        final Rectangle bounds = componentModel_.getComponent().getBounds();
+        bounds.grow( padding_.width, padding_.height );
+        return bounds;
     }
 
     /**
@@ -261,8 +291,9 @@ class ComponentView
      * Paints this view.
      * 
      * <p>
-     * This method must only be called after the view is initialized. Subclasses
-     * are not required to call the superclass implementation.
+     * This method must only be called after the view is initialized. This
+     * implementation paints the active surface design and the border.
+     * Subclasses are not required to call the superclass implementation.
      * </p>
      * 
      * @param component
@@ -281,7 +312,26 @@ class ComponentView
         assert isInitialized();
 
         final Rectangle viewBounds = getBounds();
-        getActiveComponentSurfaceDesignUI().getIcon().paintIcon( component, g, viewBounds.x, viewBounds.y );
+        paintSurface( component, g, viewBounds );
+        paintBorder( g, viewBounds );
+    }
+
+    /**
+     * Paints the component border.
+     * 
+     * @param g
+     *        The graphics context in which to paint; must not be {@code null}.
+     * @param viewBounds
+     *        The view bounds; must not be {@code null}.
+     */
+    private void paintBorder(
+        /* @NonNull */
+        final Graphics g,
+        /* @NonNull */
+        final Rectangle viewBounds )
+    {
+        assert g != null;
+        assert viewBounds != null;
 
         final Color borderColor;
         if( componentModel_.isFocused() )
@@ -304,6 +354,31 @@ class ComponentView
             g.drawRect( viewBounds.x, viewBounds.y, viewBounds.width - 1, viewBounds.height - 1 );
             g.setColor( oldColor );
         }
+    }
+
+    /**
+     * Paints the component surface.
+     * 
+     * @param component
+     *        The component in which to paint; must not be {@code null}.
+     * @param g
+     *        The graphics context in which to paint; must not be {@code null}.
+     * @param viewBounds
+     *        The view bounds; must not be {@code null}.
+     */
+    private void paintSurface(
+        /* @NonNull */
+        final Component component,
+        /* @NonNull */
+        final Graphics g,
+        /* @NonNull */
+        final Rectangle viewBounds )
+    {
+        assert component != null;
+        assert g != null;
+        assert viewBounds != null;
+
+        getActiveComponentSurfaceDesignUI().getIcon().paintIcon( component, g, viewBounds.x + padding_.width, viewBounds.y + padding_.height );
     }
 
     /**
