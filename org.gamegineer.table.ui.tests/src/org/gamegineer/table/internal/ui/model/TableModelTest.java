@@ -181,6 +181,15 @@ public final class TableModelTest
     }
 
     /**
+     * Fires a table model hover changed event for the table model under test in
+     * the fixture.
+     */
+    private void fireTableModelHoverChangedEvent()
+    {
+        fireTableModelEvent( "fireTableModelHoverChanged" ); //$NON-NLS-1$
+    }
+
+    /**
      * Fires a table model origin offset changed event for the table model under
      * test in the fixture.
      */
@@ -464,6 +473,23 @@ public final class TableModelTest
     }
 
     /**
+     * Ensures the {@link TableModel#open()} method fires a table model hover
+     * changed event.
+     */
+    @Test
+    public void testOpen_FiresTableModelHoverChangedEvent()
+    {
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableModelHoverChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
+
+        model_.open();
+
+        niceMocksControl_.verify();
+    }
+
+    /**
      * Ensures the {@link TableModel#open()} method fires a table model origin
      * offset changed event.
      */
@@ -574,6 +600,29 @@ public final class TableModelTest
 
     /**
      * Ensures the {@link TableModel#open(File)} method fires a table model
+     * hover changed event.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testOpenFromFile_FiresTableModelHoverChangedEvent()
+        throws Exception
+    {
+        final File file = createTemporaryFile();
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableModelHoverChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
+        model_.save( file );
+        model_.addTableModelListener( listener );
+
+        model_.open( file );
+
+        niceMocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@link TableModel#open(File)} method fires a table model
      * origin offset changed event.
      * 
      * @throws java.lang.Exception
@@ -615,6 +664,28 @@ public final class TableModelTest
 
         niceMocksControl_.verify();
         assertNull( model_.getFocusedComponent() );
+    }
+
+    /**
+     * Ensures a table model hover changed event is fired if the component with
+     * the hover is removed from the table.
+     */
+    @Test
+    public void testRemoveHoveredComponent_FiresTableModelHoverChangedEvent()
+    {
+        final IComponent component = createUniqueContainer();
+        model_.getTable().getTabletop().addComponent( component );
+        model_.setHover( component );
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableModelHoverChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
+
+        assertEquals( component, model_.getHoveredComponent() );
+        model_.getTable().getTabletop().removeComponent( component );
+
+        niceMocksControl_.verify();
+        assertNull( model_.getHoveredComponent() );
     }
 
     /**
@@ -751,6 +822,55 @@ public final class TableModelTest
     }
 
     /**
+     * Ensures the {@link TableModel#setHover} method correctly changes the
+     * hover.
+     */
+    @Test
+    public void testSetHover()
+    {
+        final IContainer container1 = createUniqueContainer();
+        model_.getTable().getTabletop().addComponent( container1 );
+        final IContainer container2 = createUniqueContainer();
+        model_.getTable().getTabletop().addComponent( container2 );
+
+        model_.setHover( container1 );
+        assertTrue( model_.getComponentModel( container1.getPath() ).isHovered() );
+        assertFalse( model_.getComponentModel( container2.getPath() ).isHovered() );
+        model_.setHover( container2 );
+        assertFalse( model_.getComponentModel( container1.getPath() ).isHovered() );
+        assertTrue( model_.getComponentModel( container2.getPath() ).isHovered() );
+    }
+
+    /**
+     * Ensures the {@link TableModel#setHover} method does not throw an
+     * exception when passed a {@code null} component.
+     */
+    @Test
+    public void testSetHover_Component_Null()
+    {
+        model_.setHover( null );
+    }
+
+    /**
+     * Ensures the {@link TableModel#setHover} method fires a table model hover
+     * changed event.
+     */
+    @Test
+    public void testSetHover_FiresTableModelHoverChangedEvent()
+    {
+        final IContainer container = createUniqueContainer();
+        model_.getTable().getTabletop().addComponent( container );
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableModelHoverChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
+
+        model_.setHover( container );
+
+        niceMocksControl_.verify();
+    }
+
+    /**
      * Ensures the {@link TableModel#setOriginOffset} method fires a table model
      * origin offset changed event.
      */
@@ -882,6 +1002,28 @@ public final class TableModelTest
         model_.addTableModelListener( listener2 );
 
         fireTableModelFocusChangedEvent();
+
+        niceMocksControl_.verify();
+    }
+
+    /**
+     * Ensures the table model hover changed event catches any exception thrown
+     * by the {@link ITableModelListener#tableModelHoverChanged} method of a
+     * table model listener.
+     */
+    @Test
+    public void testTableModelHoverChanged_CatchesListenerException()
+    {
+        final ITableModelListener listener1 = niceMocksControl_.createMock( ITableModelListener.class );
+        listener1.tableModelHoverChanged( EasyMock.notNull( TableModelEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final ITableModelListener listener2 = niceMocksControl_.createMock( ITableModelListener.class );
+        listener2.tableModelHoverChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener1 );
+        model_.addTableModelListener( listener2 );
+
+        fireTableModelHoverChangedEvent();
 
         niceMocksControl_.verify();
     }

@@ -75,6 +75,13 @@ public final class TableModel
     @GuardedBy( "lock_" )
     private ComponentModel focusedComponentModel_;
 
+    /**
+     * The model associated with the hovered component or {@code null} if no
+     * component has the hover.
+     */
+    @GuardedBy( "lock_" )
+    private ComponentModel hoveredComponentModel_;
+
     /** Indicates the table model is dirty. */
     @GuardedBy( "lock_" )
     private boolean isDirty_;
@@ -110,6 +117,7 @@ public final class TableModel
     {
         file_ = null;
         focusedComponentModel_ = null;
+        hoveredComponentModel_ = null;
         isDirty_ = false;
         listeners_ = new CopyOnWriteArrayList<ITableModelListener>();
         lock_ = new Object();
@@ -229,6 +237,27 @@ public final class TableModel
             catch( final RuntimeException e )
             {
                 Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableModel_tableModelFocusChanged_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a table model hover changed event.
+     */
+    private void fireTableModelHoverChanged()
+    {
+        assert !Thread.holdsLock( lock_ );
+
+        final TableModelEvent event = new TableModelEvent( this );
+        for( final ITableModelListener listener : listeners_ )
+        {
+            try
+            {
+                listener.tableModelHoverChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableModel_tableModelHoverChanged_unexpectedException, e );
             }
         }
     }
@@ -424,6 +453,34 @@ public final class TableModel
     }
 
     /**
+     * Gets the hovered component.
+     * 
+     * @return The hovered component or {@code null} if no component has the
+     *         hover.
+     */
+    /* @Nullable */
+    public IComponent getHoveredComponent()
+    {
+        final ComponentModel hoveredComponentModel = getHoveredComponentModel();
+        return (hoveredComponentModel != null) ? hoveredComponentModel.getComponent() : null;
+    }
+
+    /**
+     * Gets the model associated with the hovered component.
+     * 
+     * @return The model associated with the hovered component or {@code null}
+     *         if no component has the hover.
+     */
+    /* @Nullable */
+    public ComponentModel getHoveredComponentModel()
+    {
+        synchronized( lock_ )
+        {
+            return hoveredComponentModel_;
+        }
+    }
+
+    /**
      * Gets the offset of the table origin relative to the view origin in table
      * coordinates.
      * 
@@ -526,6 +583,7 @@ public final class TableModel
         {
             file_ = null;
             focusedComponentModel_ = null;
+            hoveredComponentModel_ = null;
             isDirty_ = false;
             originOffset_.setSize( new Dimension( 0, 0 ) );
         }
@@ -533,6 +591,7 @@ public final class TableModel
         fireTableChanged();
         fireTableModelFileChanged();
         fireTableModelFocusChanged();
+        fireTableModelHoverChanged();
         fireTableModelOriginOffsetChanged();
         fireTableModelDirtyFlagChanged();
     }
@@ -560,6 +619,7 @@ public final class TableModel
         {
             file_ = file;
             focusedComponentModel_ = null;
+            hoveredComponentModel_ = null;
             isDirty_ = false;
             originOffset_.setSize( new Dimension( 0, 0 ) );
         }
@@ -567,6 +627,7 @@ public final class TableModel
         fireTableChanged();
         fireTableModelFileChanged();
         fireTableModelFocusChanged();
+        fireTableModelHoverChanged();
         fireTableModelOriginOffsetChanged();
         fireTableModelDirtyFlagChanged();
     }
@@ -704,6 +765,52 @@ public final class TableModel
             if( newFocusedComponentModel != null )
             {
                 newFocusedComponentModel.setFocused( true );
+            }
+        }
+    }
+
+    /**
+     * Sets the hover to the specified component.
+     * 
+     * @param component
+     *        The component to receive the hover or {@code null} if no component
+     *        should have the hover.
+     */
+    public void setHover(
+        /* @Nullable */
+        final IComponent component )
+    {
+        final ComponentModel componentModel = getComponentModel( component );
+        final boolean componentHoverChanged;
+        final ComponentModel oldHoveredComponentModel;
+        final ComponentModel newHoveredComponentModel;
+
+        synchronized( lock_ )
+        {
+            if( componentModel != hoveredComponentModel_ )
+            {
+                componentHoverChanged = true;
+                oldHoveredComponentModel = hoveredComponentModel_;
+                newHoveredComponentModel = componentModel;
+                hoveredComponentModel_ = componentModel;
+            }
+            else
+            {
+                componentHoverChanged = false;
+                oldHoveredComponentModel = null;
+                newHoveredComponentModel = null;
+            }
+        }
+
+        if( componentHoverChanged )
+        {
+            if( oldHoveredComponentModel != null )
+            {
+                oldHoveredComponentModel.setHover( false );
+            }
+            if( newHoveredComponentModel != null )
+            {
+                newHoveredComponentModel.setHover( true );
             }
         }
     }
@@ -865,6 +972,19 @@ public final class TableModel
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
             fireTableModelFocusChanged();
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.ui.model.ComponentModelListener#componentModelHoverChanged(org.gamegineer.table.internal.ui.model.ComponentModelEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void componentModelHoverChanged(
+            final ComponentModelEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            fireTableModelHoverChanged();
         }
     }
 

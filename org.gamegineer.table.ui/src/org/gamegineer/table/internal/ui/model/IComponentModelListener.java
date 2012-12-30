@@ -79,6 +79,20 @@ public interface IComponentModelListener
         ComponentModelEvent event );
 
     /**
+     * Invoked after the component model has gained or lost the logical hover.
+     * 
+     * @param event
+     *        The event describing the component model; must not be {@code null}
+     *        .
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void componentModelHoverChanged(
+        /* @NonNull */
+        ComponentModelEvent event );
+
+    /**
      * Invoked after the orientation of the component associated with the model
      * has changed.
      * 

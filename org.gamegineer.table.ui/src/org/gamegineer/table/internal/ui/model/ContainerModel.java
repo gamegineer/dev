@@ -463,6 +463,18 @@ public final class ContainerModel
 
             fireComponentModelFocusChanged();
         }
+
+        /*
+         * @see org.gamegineer.table.internal.ui.model.ComponentModelListener#componentModelHoverChanged(org.gamegineer.table.internal.ui.model.ComponentModelEvent)
+         */
+        @Override
+        public void componentModelHoverChanged(
+            final ComponentModelEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            fireComponentModelHoverChanged();
+        }
     }
 
     /**
@@ -519,6 +531,12 @@ public final class ContainerModel
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
             final ComponentModel componentModel = getComponentModel( event.getComponentIndex() );
+            if( componentModel.isHovered() )
+            {
+                final TableModel tableModel = getTableModel();
+                assert tableModel != null;
+                tableModel.setHover( null );
+            }
             if( componentModel.isFocused() )
             {
                 final TableModel tableModel = getTableModel();

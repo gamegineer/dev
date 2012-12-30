@@ -90,6 +90,18 @@ public class ComponentModelListener
     /**
      * This implementation does nothing.
      * 
+     * @see org.gamegineer.table.internal.ui.model.IComponentModelListener#componentModelHoverChanged(org.gamegineer.table.internal.ui.model.ComponentModelEvent)
+     */
+    @Override
+    public void componentModelHoverChanged(
+        final ComponentModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+    }
+
+    /**
+     * This implementation does nothing.
+     * 
      * @see org.gamegineer.table.internal.ui.model.IComponentModelListener#componentOrientationChanged(org.gamegineer.table.internal.ui.model.ComponentModelEvent)
      */
     @Override

@@ -1,6 +1,6 @@
 /*
  * ITableModelListener.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -84,6 +84,19 @@ public interface ITableModelListener
      *         If {@code event} is {@code null}.
      */
     public void tableModelFocusChanged(
+        /* @NonNull */
+        TableModelEvent event );
+
+    /**
+     * Invoked after the table model hover has changed.
+     * 
+     * @param event
+     *        The event describing the table model; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void tableModelHoverChanged(
         /* @NonNull */
         TableModelEvent event );
 

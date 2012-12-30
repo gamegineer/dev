@@ -1228,6 +1228,7 @@ final class TableView
         void activate(
             final MouseEvent event )
         {
+            updateHover( event );
             updateCursor( event );
         }
 
@@ -1238,6 +1239,7 @@ final class TableView
         public void mouseMoved(
             final MouseEvent event )
         {
+            updateHover( event );
             updateCursor( event );
         }
 
@@ -1252,6 +1254,7 @@ final class TableView
             final IContainer container = getFocusableContainer( getMouseLocation( event ) );
             if( !SwingUtilities.isMiddleMouseButton( event ) )
             {
+                model_.setHover( container );
                 model_.setFocus( container );
             }
 
@@ -1313,6 +1316,21 @@ final class TableView
             {
                 setCursor( newCursor );
             }
+        }
+
+        /**
+         * Updates the hover.
+         * 
+         * @param event
+         *        The mouse event; may be {@code null} if no mouse event is
+         *        available.
+         */
+        @SuppressWarnings( "synthetic-access" )
+        private void updateHover(
+            /* @Nullable */
+            final MouseEvent event )
+        {
+            model_.setHover( getFocusableContainer( getMouseLocation( event ) ) );
         }
     }
 
@@ -1516,6 +1534,7 @@ final class TableView
                         mobileCardPile_.setLayout( sourceCardPile_.getLayout() );
                         model_.getTable().getTabletop().addComponent( mobileCardPile_ );
                         mobileCardPile_.addComponents( draggedComponents );
+                        model_.setHover( mobileCardPile_ );
                         model_.setFocus( mobileCardPile_ );
                     }
                     catch( final ModelException e )
@@ -1573,6 +1592,7 @@ final class TableView
                 final IContainer cardPile = getFocusableContainer( mouseLocation );
                 final IContainer targetCardPile = (cardPile != null) ? cardPile : sourceCardPile_;
                 targetCardPile.addComponents( mobileCardPile_.removeAllComponents() );
+                model_.setHover( targetCardPile );
                 model_.setFocus( targetCardPile );
 
                 setMouseInputHandler( DefaultMouseInputHandler.class, null );

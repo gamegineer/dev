@@ -115,6 +115,17 @@ class ComponentView
     }
 
     /**
+     * Invoked after the component model has gained or lost the logical hover.
+     */
+    private void componentModelHoverChanged()
+    {
+        if( isInitialized() )
+        {
+            repaint();
+        }
+    }
+
+    /**
      * Invoked after the component orientation has changed.
      */
     private void componentOrientationChanged()
@@ -272,10 +283,24 @@ class ComponentView
         final Rectangle viewBounds = getBounds();
         getActiveComponentSurfaceDesignUI().getIcon().paintIcon( component, g, viewBounds.x, viewBounds.y );
 
+        final Color borderColor;
         if( componentModel_.isFocused() )
         {
+            borderColor = Color.GREEN;
+        }
+        else if( componentModel_.isHovered() )
+        {
+            borderColor = Color.YELLOW;
+        }
+        else
+        {
+            borderColor = null;
+        }
+
+        if( borderColor != null )
+        {
             final Color oldColor = g.getColor();
-            g.setColor( Color.GREEN );
+            g.setColor( borderColor );
             g.drawRect( viewBounds.x, viewBounds.y, viewBounds.width - 1, viewBounds.height - 1 );
             g.setColor( oldColor );
         }
@@ -381,6 +406,26 @@ class ComponentView
                 public void run()
                 {
                     ComponentView.this.componentModelFocusChanged();
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.ui.model.ComponentModelListener#componentModelHoverChanged(org.gamegineer.table.internal.ui.model.ComponentModelEvent)
+         */
+        @Override
+        public void componentModelHoverChanged(
+            final ComponentModelEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    ComponentView.this.componentModelHoverChanged();
                 }
             } );
         }

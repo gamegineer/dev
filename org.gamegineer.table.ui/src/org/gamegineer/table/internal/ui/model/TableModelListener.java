@@ -102,6 +102,18 @@ public class TableModelListener
     /**
      * This implementation does nothing.
      * 
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelHoverChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     */
+    @Override
+    public void tableModelHoverChanged(
+        final TableModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+    }
+
+    /**
+     * This implementation does nothing.
+     * 
      * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelOriginOffsetChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
      */
     @Override

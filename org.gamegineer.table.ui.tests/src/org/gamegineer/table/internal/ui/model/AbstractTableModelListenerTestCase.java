@@ -123,6 +123,16 @@ public abstract class AbstractTableModelListenerTestCase
     }
 
     /**
+     * Ensures the {@link ITableModelListener#tableModelHoverChanged} method
+     * throws an exception when passed a {@code null} event.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testTableModelHoverChanged_Event_Null()
+    {
+        listener_.tableModelHoverChanged( null );
+    }
+
+    /**
      * Ensures the {@link ITableModelListener#tableModelOriginOffsetChanged}
      * method throws an exception when passed a {@code null} event.
      */

@@ -259,10 +259,24 @@ final class ContainerView
             }
         }
 
+        final Color borderColor;
         if( getComponentModel().isFocused() )
         {
+            borderColor = Color.GREEN;
+        }
+        else if( getComponentModel().isHovered() )
+        {
+            borderColor = Color.YELLOW;
+        }
+        else
+        {
+            borderColor = null;
+        }
+
+        if( borderColor != null )
+        {
             final Color oldColor = g.getColor();
-            g.setColor( Color.GREEN );
+            g.setColor( borderColor );
             g.drawRect( viewBounds.x, viewBounds.y, viewBounds.width - 1, viewBounds.height - 1 );
             g.setColor( oldColor );
         }

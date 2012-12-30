@@ -105,6 +105,15 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     }
 
     /**
+     * Fires a component model hover changed event for the fixture component
+     * model.
+     */
+    private void fireComponentModelHoverChangedEvent()
+    {
+        componentModel_.fireComponentModelHoverChanged();
+    }
+
+    /**
      * Fires a component orientation changed event for the fixture component
      * model.
      */
@@ -316,6 +325,28 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     }
 
     /**
+     * Ensures the component model hover changed event catches any exception
+     * thrown by the {@link IComponentModelListener#componentModelHoverChanged}
+     * method of a component model listener.
+     */
+    @Test
+    public void testComponentModelHoverChanged_CatchesListenerException()
+    {
+        final IComponentModelListener listener1 = mocksControl_.createMock( IComponentModelListener.class );
+        listener1.componentModelHoverChanged( EasyMock.notNull( ComponentModelEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final IComponentModelListener listener2 = mocksControl_.createMock( IComponentModelListener.class );
+        listener2.componentModelHoverChanged( EasyMock.notNull( ComponentModelEvent.class ) );
+        mocksControl_.replay();
+        componentModel_.addComponentModelListener( listener1 );
+        componentModel_.addComponentModelListener( listener2 );
+
+        fireComponentModelHoverChangedEvent();
+
+        mocksControl_.verify();
+    }
+
+    /**
      * Ensures the component orientation changed event catches any exception
      * thrown by the {@link IComponentModelListener#componentOrientationChanged}
      * method of a component model listener.
@@ -440,6 +471,40 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
         componentModel_.addComponentModelListener( listener );
 
         componentModel_.setFocused( false );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@link ComponentModel#setHover} method fires a component
+     * model hover changed event after the component model gained the hover.
+     */
+    @Test
+    public void testSetHover_GainedHover_FiresComponentModelHoverChangedEvent()
+    {
+        final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
+        listener.componentModelHoverChanged( EasyMock.notNull( ComponentModelEvent.class ) );
+        mocksControl_.replay();
+        componentModel_.addComponentModelListener( listener );
+
+        componentModel_.setHover( true );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@link ComponentModel#setHover} method fires a component
+     * model hover changed event after the component model lost the hover.
+     */
+    @Test
+    public void testSetHover_LostHover_FiresComponentModelHoverChangedEvent()
+    {
+        final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
+        listener.componentModelHoverChanged( EasyMock.notNull( ComponentModelEvent.class ) );
+        mocksControl_.replay();
+        componentModel_.addComponentModelListener( listener );
+
+        componentModel_.setHover( false );
 
         mocksControl_.verify();
     }

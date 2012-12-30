@@ -61,6 +61,12 @@ final class NonNlsMessages
 
     /**
      * An unexpected exception was thrown from
+     * IComponentModelListener.componentModelHoverChanged().
+     */
+    public static String ComponentModel_componentModelHoverChanged_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
      * IComponentModelListener.componentOrientationChanged().
      */
     public static String ComponentModel_componentOrientationChanged_unexpectedException;
@@ -173,6 +179,12 @@ final class NonNlsMessages
      * ITableModelListener.tableModelFocusChanged().
      */
     public static String TableModel_tableModelFocusChanged_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
+     * ITableModelListener.tableModelHoverChanged().
+     */
+    public static String TableModel_tableModelHoverChanged_unexpectedException;
 
     /**
      * An unexpected exception was thrown from

@@ -114,6 +114,16 @@ public abstract class AbstractComponentModelListenerTestCase
     }
 
     /**
+     * Ensures the {@link IComponentModelListener#componentModelHoverChanged}
+     * method throws an exception when passed a {@code null} event.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testComponentModelHoverChanged_Event_Null()
+    {
+        listener_.componentModelHoverChanged( null );
+    }
+
+    /**
      * Ensures the {@link IComponentModelListener#componentOrientationChanged}
      * method throws an exception when passed a {@code null} event.
      */

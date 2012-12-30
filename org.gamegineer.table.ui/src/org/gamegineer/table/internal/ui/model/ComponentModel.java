@@ -64,6 +64,10 @@ public class ComponentModel
     @GuardedBy( "getLock()" )
     private boolean isFocused_;
 
+    /** Indicates the associated component has the hover. */
+    @GuardedBy( "getLock()" )
+    private boolean isHovered_;
+
     /** The collection of component model listeners. */
     private final CopyOnWriteArrayList<IComponentModelListener> listeners_;
 
@@ -96,6 +100,7 @@ public class ComponentModel
         componentListener_ = new ComponentListener();
         componentStrategyUI_ = getComponentStrategyUI( component.getStrategy() );
         isFocused_ = false;
+        isHovered_ = false;
         listeners_ = new CopyOnWriteArrayList<IComponentModelListener>();
         lock_ = new Object();
         parent_ = null;
@@ -185,6 +190,27 @@ public class ComponentModel
             catch( final RuntimeException e )
             {
                 Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ComponentModel_componentModelFocusChanged_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a component model hover changed event.
+     */
+    final void fireComponentModelHoverChanged()
+    {
+        assert !Thread.holdsLock( lock_ );
+
+        final ComponentModelEvent event = new ComponentModelEvent( this );
+        for( final IComponentModelListener listener : listeners_ )
+        {
+            try
+            {
+                listener.componentModelHoverChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ComponentModel_componentModelHoverChanged_unexpectedException, e );
             }
         }
     }
@@ -367,6 +393,20 @@ public class ComponentModel
     }
 
     /**
+     * Indicates the associated component has the hover.
+     * 
+     * @return {@code true} if the associated component has the hover; otherwise
+     *         {@code false}.
+     */
+    public final boolean isHovered()
+    {
+        synchronized( getLock() )
+        {
+            return isHovered_;
+        }
+    }
+
+    /**
      * Removes the specified component model listener from this component model.
      * 
      * @param listener
@@ -401,6 +441,24 @@ public class ComponentModel
         }
 
         fireComponentModelFocusChanged();
+    }
+
+    /**
+     * Sets or removes the hover from the associated component.
+     * 
+     * @param isHovered
+     *        {@code true} if the associated component has the hover; otherwise
+     *        {@code false}.
+     */
+    final void setHover(
+        final boolean isHovered )
+    {
+        synchronized( getLock() )
+        {
+            isHovered_ = isHovered;
+        }
+
+        fireComponentModelHoverChanged();
     }
 
     /**
