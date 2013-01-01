@@ -207,7 +207,7 @@
         <javadoc
                 access="private"
                 author="true"
-                bottom="Copyright 2008-2012 Gamegineer contributors and others.  All rights reserved."
+                bottom="Copyright 2008-2013 Gamegineer contributors and others.  All rights reserved."
                 destdir="${buildDirectory}/${buildLabel}/docs/api"
                 doctitle="Gamegineer API"
                 failonerror="true"

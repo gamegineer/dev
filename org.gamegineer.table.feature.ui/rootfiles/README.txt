@@ -2,7 +2,7 @@ Gamegineer
 Version 0.15.0
 XX XX XXXX
 
-Copyright 2008-2012 Gamegineer contributors and others. 
+Copyright 2008-2013 Gamegineer contributors and others. 
 All rights reserved. 
 
 
