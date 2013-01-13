@@ -1,6 +1,6 @@
 /*
  * TableModelTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -35,8 +35,11 @@ import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.core.ComponentPath;
+import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
+import org.gamegineer.table.ui.IComponentStrategyUI;
+import org.gamegineer.table.ui.IContainerStrategyUI;
 import org.gamegineer.table.ui.TestComponents;
 import org.junit.Before;
 import org.junit.Test;
@@ -96,26 +99,94 @@ public final class TableModelTest
 
     /**
      * Creates a new component with unique attributes using the fixture table
-     * environment.
+     * environment and default user interface properties.
      * 
      * @return A new component; never {@code null}.
      */
     /* @NonNull */
     private IComponent createUniqueComponent()
     {
-        return TestComponents.createUniqueComponent( model_.getTable().getTableEnvironment() );
+        return createUniqueComponent( ComponentFocusability.NOT_FOCUSABLE );
+    }
+
+    /**
+     * Creates a new component with unique attributes using the fixture table
+     * environment and the specified user interface properties.
+     * 
+     * @param componentFocusability
+     *        Indicates the component is focusable or not; must not be
+     *        {@code null}.
+     * 
+     * @return A new component; never {@code null}.
+     */
+    /* @NonNull */
+    private IComponent createUniqueComponent(
+        /* @NonNull */
+        final ComponentFocusability componentFocusability )
+    {
+        assert componentFocusability != null;
+
+        final IComponentStrategyUI componentStrategyUI = new IComponentStrategyUI()
+        {
+            @Override
+            public ComponentStrategyId getId()
+            {
+                return null;
+            }
+
+            @Override
+            public boolean isFocusable()
+            {
+                return componentFocusability == ComponentFocusability.FOCUSABLE;
+            }
+        };
+        return TestComponents.createUniqueComponent( model_.getTable().getTableEnvironment(), componentStrategyUI );
     }
 
     /**
      * Creates a new container with unique attributes using the fixture table
-     * environment.
+     * environment and default user interface properties.
      * 
      * @return A new container; never {@code null}.
      */
     /* @NonNull */
     private IContainer createUniqueContainer()
     {
-        return TestComponents.createUniqueContainer( model_.getTable().getTableEnvironment() );
+        return createUniqueContainer( ComponentFocusability.FOCUSABLE );
+    }
+
+    /**
+     * Creates a new container with unique attributes using the fixture table
+     * environment and the specified user interface properties.
+     * 
+     * @param componentFocusability
+     *        Indicates the container is focusable or not; must not be
+     *        {@code null}.
+     * 
+     * @return A new container; never {@code null}.
+     */
+    /* @NonNull */
+    private IContainer createUniqueContainer(
+        /* @NonNull */
+        final ComponentFocusability componentFocusability )
+    {
+        assert componentFocusability != null;
+
+        final IContainerStrategyUI containerStrategyUI = new IContainerStrategyUI()
+        {
+            @Override
+            public ComponentStrategyId getId()
+            {
+                return null;
+            }
+
+            @Override
+            public boolean isFocusable()
+            {
+                return componentFocusability == ComponentFocusability.FOCUSABLE;
+            }
+        };
+        return TestComponents.createUniqueContainer( model_.getTable().getTableEnvironment(), containerStrategyUI );
     }
 
     /**
@@ -367,6 +438,166 @@ public final class TableModelTest
     public void testGetFocusableComponent_Location_Null()
     {
         model_.getFocusableComponent( null );
+    }
+
+    /**
+     * Ensures the {@link TableModel#getFocusableComponent(Point, IComponent)}
+     * method returns the expected component when a starting component is
+     * specified and a focusable component that is an ancestor of the starting
+     * component exists at the specified location.
+     */
+    @Test
+    public void testGetFocusableComponentWithStartingComponent_StartingComponent_NonNull_Location_AncestorFocusableComponent()
+    {
+        final IContainer parentContainer = createUniqueContainer();
+        model_.getTable().getTabletop().addComponent( parentContainer );
+        final IContainer container = createUniqueContainer();
+        parentContainer.addComponent( container );
+        final IComponent childComponent = createUniqueComponent();
+        container.addComponent( childComponent );
+        final IComponent expectedComponent = parentContainer;
+
+        final IComponent actualComponent = model_.getFocusableComponent( new Point( 0, 0 ), container );
+
+        assertSame( expectedComponent, actualComponent );
+    }
+
+    /**
+     * Ensures the {@link TableModel#getFocusableComponent(Point, IComponent)}
+     * method returns the expected component when a starting component is
+     * specified and a focusable component that is a descendant of the starting
+     * component exists at the specified location.
+     */
+    @Test
+    public void testGetFocusableComponentWithStartingComponent_StartingComponent_NonNull_Location_DescendantFocusableComponent()
+    {
+        final IContainer parentContainer = createUniqueContainer( ComponentFocusability.NOT_FOCUSABLE );
+        model_.getTable().getTabletop().addComponent( parentContainer );
+        final IContainer container = createUniqueContainer();
+        parentContainer.addComponent( container );
+        final IComponent childComponent = createUniqueComponent( ComponentFocusability.FOCUSABLE );
+        container.addComponent( childComponent );
+        final IComponent expectedComponent = childComponent;
+
+        final IComponent actualComponent = model_.getFocusableComponent( new Point( 0, 0 ), container );
+
+        assertSame( expectedComponent, actualComponent );
+    }
+
+    /**
+     * Ensures the {@link TableModel#getFocusableComponent(Point, IComponent)}
+     * method returns the expected component when a starting component is
+     * specified and no other focusable component exists at the specified
+     * location.
+     */
+    @Test
+    public void testGetFocusableComponentWithStartingComponent_StartingComponent_NonNull_Location_NoOtherFocusableComponent()
+    {
+        final IContainer parentContainer = createUniqueContainer( ComponentFocusability.NOT_FOCUSABLE );
+        model_.getTable().getTabletop().addComponent( parentContainer );
+        final IContainer container = createUniqueContainer();
+        parentContainer.addComponent( container );
+        final IComponent childComponent = createUniqueComponent();
+        container.addComponent( childComponent );
+        final IComponent expectedComponent = container;
+
+        final IComponent actualComponent = model_.getFocusableComponent( new Point( 0, 0 ), container );
+
+        assertSame( expectedComponent, actualComponent );
+    }
+
+    /**
+     * Ensures the {@link TableModel#getFocusableComponent(Point, IComponent)}
+     * method returns the expected component when no starting component is
+     * specified and a focusable component exists at the specified location.
+     */
+    @Test
+    public void testGetFocusableComponentWithStartingComponent_StartingComponent_Null_Location_FocusableComponent()
+    {
+        final IContainer container = createUniqueContainer();
+        model_.getTable().getTabletop().addComponent( container );
+        final IComponent childComponent = createUniqueComponent();
+        container.addComponent( childComponent );
+        final IComponent expectedComponent = container;
+
+        final IComponent actualComponent = model_.getFocusableComponent( new Point( 0, 0 ), null );
+
+        assertSame( expectedComponent, actualComponent );
+    }
+
+    /**
+     * Ensures the {@link TableModel#getFocusableComponent(Point, IComponent)}
+     * method returns {@code null} when no starting component is specified and
+     * no component exists at the specified location.
+     */
+    @Test
+    public void testGetFocusableComponentWithStartingComponent_StartingComponent_Null_Location_NoComponent()
+    {
+        model_.getTable().getTabletop().addComponent( createUniqueContainer() );
+
+        assertNull( model_.getFocusableComponent( new Point( Integer.MIN_VALUE, Integer.MIN_VALUE ), null ) );
+    }
+
+    /**
+     * Ensures the {@link TableModel#getFocusableComponent(Point, IComponent)}
+     * method returns {@code null} when no starting component is specified and
+     * no focusable component exists at the specified location.
+     */
+    @Test
+    public void testGetFocusableComponentWithStartingComponent_StartingComponent_Null_Location_NoFocusableComponent()
+    {
+        model_.getTable().getTabletop().addComponent( createUniqueComponent() );
+
+        assertNull( model_.getFocusableComponent( new Point( 0, 0 ), null ) );
+    }
+
+    /**
+     * Ensures the {@link TableModel#getFocusableComponent(Point, IComponent)}
+     * method throws an exception when passed a {@code null} location.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGetFocusableComponentWithStartingComponent_Location_Null()
+    {
+        model_.getFocusableComponent( null, EasyMock.createMock( IComponent.class ) );
+    }
+
+    /**
+     * Ensures the {@link TableModel#getFocusableContainer} method returns the
+     * expected container when a focusable container exists at the specified
+     * location.
+     */
+    @Test
+    public void testGetFocusableContainer_Location_FocusableContainer()
+    {
+        final IContainer expectedContainer = createUniqueContainer();
+        model_.getTable().getTabletop().addComponent( expectedContainer );
+        expectedContainer.addComponent( createUniqueComponent( ComponentFocusability.FOCUSABLE ) );
+
+        final IContainer actualContainer = model_.getFocusableContainer( new Point( 0, 0 ) );
+
+        assertSame( expectedContainer, actualContainer );
+    }
+
+    /**
+     * Ensures the {@link TableModel#getFocusableContainer} method returns
+     * {@code null} when no container exists at the specified location.
+     */
+    @Test
+    public void testGetFocusableContainer_Location_NoContainer()
+    {
+        model_.getTable().getTabletop().addComponent( createUniqueComponent( ComponentFocusability.FOCUSABLE ) );
+
+        assertNull( model_.getFocusableContainer( new Point( 0, 0 ) ) );
+    }
+
+    /**
+     * Ensures the {@link TableModel#getFocusableContainer} method throws an
+     * exception when passed a {@code null} location.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGetFocusableContainer_Location_Null()
+    {
+        model_.getFocusableContainer( null );
     }
 
     /**
@@ -1048,5 +1279,26 @@ public final class TableModelTest
         fireTableModelOriginOffsetChangedEvent();
 
         niceMocksControl_.verify();
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * Indicates the focusability of a table component.
+     */
+    private static enum ComponentFocusability
+    {
+        // ==================================================================
+        // Enum Constants
+        // ==================================================================
+
+        /** Indicates the component is focusable. */
+        FOCUSABLE,
+
+        /** Indicates the component is not focusable. */
+        NOT_FOCUSABLE;
     }
 }

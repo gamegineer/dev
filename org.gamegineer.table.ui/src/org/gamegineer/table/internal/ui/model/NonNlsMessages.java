@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -146,6 +146,9 @@ final class NonNlsMessages
 
     /** The component path does not exist in the table. */
     public static String TableModel_getComponentModel_path_notExists;
+
+    /** The component strategy user interface does not exist. */
+    public static String TableModel_getFocusableComponent_componentStrategyUI_notExists;
 
     /** An error occurred while reading the table memento. */
     public static String TableModel_readTableMemento_error;

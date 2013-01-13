@@ -1,6 +1,6 @@
 /*
  * TestComponentStrategyUIs.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,10 +40,10 @@ public final class TestComponentStrategyUIs
     // ======================================================================
 
     /** The null component strategy user interface. */
-    private static final IComponentStrategyUI NULL_COMPONENT_STRATEGY_UI = new NullComponentStrategyUI();
+    static final IComponentStrategyUI NULL_COMPONENT_STRATEGY_UI = new NullComponentStrategyUI();
 
     /** The null container strategy user interface. */
-    private static final IContainerStrategyUI NULL_CONTAINER_STRATEGY_UI = new NullContainerStrategyUI();
+    static final IContainerStrategyUI NULL_CONTAINER_STRATEGY_UI = new NullContainerStrategyUI();
 
 
     // ======================================================================
@@ -103,9 +103,36 @@ public final class TestComponentStrategyUIs
         /* @NonNull */
         final ComponentStrategyId id )
     {
-        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
+        return createComponentStrategyUI( id, NULL_COMPONENT_STRATEGY_UI );
+    }
 
-        return registerComponentStrategyUI( createComponentStrategyUIDecorator( NULL_COMPONENT_STRATEGY_UI, id ) );
+    /**
+     * Creates a new component strategy user interface with the specified
+     * identifier that delegates to the specified component strategy user
+     * interface.
+     * 
+     * @param id
+     *        The component strategy identifier; must not be {@code null}.
+     * @param componentStrategyUI
+     *        The component strategy user interface to which all operations will
+     *        be delegated; must not be {@code null}.
+     * 
+     * @return A new component strategy user interface; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code id} or {@code componentStrategyUI} is {@code null}.
+     */
+    /* @NonNull */
+    public static IComponentStrategyUI createComponentStrategyUI(
+        /* @NonNull */
+        final ComponentStrategyId id,
+        /* @NonNull */
+        final IComponentStrategyUI componentStrategyUI )
+    {
+        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
+        assertArgumentNotNull( componentStrategyUI, "componentStrategyUI" ); //$NON-NLS-1$
+
+        return registerComponentStrategyUI( createComponentStrategyUIDecorator( componentStrategyUI, id ) );
     }
 
     /**
@@ -164,9 +191,36 @@ public final class TestComponentStrategyUIs
         /* @NonNull */
         final ComponentStrategyId id )
     {
-        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
+        return createContainerStrategyUI( id, NULL_CONTAINER_STRATEGY_UI );
+    }
 
-        return registerComponentStrategyUI( createContainerStrategyUIDecorator( NULL_CONTAINER_STRATEGY_UI, id ) );
+    /**
+     * Creates a new container strategy user interface with the specified
+     * identifier that delegates to the specified container strategy user
+     * interface.
+     * 
+     * @param id
+     *        The component strategy identifier; must not be {@code null}.
+     * @param containerStrategyUI
+     *        The container strategy user interface to which all operations will
+     *        be delegated; must not be {@code null}.
+     * 
+     * @return A new container strategy user interface; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code id} or {@code containerStrategyUI} is {@code null}.
+     */
+    /* @NonNull */
+    public static IContainerStrategyUI createContainerStrategyUI(
+        /* @NonNull */
+        final ComponentStrategyId id,
+        /* @NonNull */
+        final IContainerStrategyUI containerStrategyUI )
+    {
+        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
+        assertArgumentNotNull( containerStrategyUI, "containerStrategyUI" ); //$NON-NLS-1$
+
+        return registerComponentStrategyUI( createContainerStrategyUIDecorator( containerStrategyUI, id ) );
     }
 
     /**

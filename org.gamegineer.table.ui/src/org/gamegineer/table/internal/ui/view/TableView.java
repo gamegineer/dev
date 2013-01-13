@@ -132,6 +132,12 @@ final class TableView
     /** The tabletop view. */
     private ContainerView tabletopView_;
 
+    /**
+     * Indicates the active mouse handler should update the focus in the Mouse
+     * Released handler (as opposed to the Mouse Pressed handler).
+     */
+    private boolean updateFocusOnMouseReleased_;
+
 
     // ======================================================================
     // Constructors
@@ -158,6 +164,7 @@ final class TableView
         mouseInputListener_ = createMouseInputListener();
         tableModelListener_ = null;
         tabletopView_ = null;
+        updateFocusOnMouseReleased_ = false;
 
         initializeComponent();
     }
@@ -816,27 +823,6 @@ final class TableView
     }
 
     /**
-     * Gets the focusable container in the table at the specified location.
-     * 
-     * @param location
-     *        The location in table coordinates; must not be {@code null}.
-     * 
-     * @return The focusable container in the table at the specified location or
-     *         {@code null} if no focusable container in the table is at that
-     *         location.
-     */
-    /* @Nullable */
-    private IContainer getFocusableContainer(
-        /* @NonNull */
-        final Point location )
-    {
-        assert location != null;
-
-        final IComponent component = model_.getFocusableComponent( location );
-        return (component instanceof IContainer) ? (IContainer)component : null;
-    }
-
-    /**
      * Gets the focused container.
      * 
      * @return The focused container or {@code null} if no container has the
@@ -1195,6 +1181,20 @@ final class TableView
 
             return TableView.this.getMouseLocation();
         }
+
+        /**
+         * Subclasses may override but must call the superclass implementation.
+         * 
+         * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void mouseReleased(
+            @SuppressWarnings( "unused" )
+            final MouseEvent event )
+        {
+            updateFocusOnMouseReleased_ = false;
+        }
     }
 
     /**
@@ -1251,12 +1251,7 @@ final class TableView
         public void mousePressed(
             final MouseEvent event )
         {
-            final IContainer container = getFocusableContainer( getMouseLocation( event ) );
-            if( !SwingUtilities.isMiddleMouseButton( event ) )
-            {
-                model_.setHover( container );
-                model_.setFocus( container );
-            }
+            updateFocus( event );
 
             if( event.isPopupTrigger() )
             {
@@ -1264,7 +1259,7 @@ final class TableView
             }
             else if( SwingUtilities.isLeftMouseButton( event ) )
             {
-                if( container != null )
+                if( model_.getFocusedComponent() != null )
                 {
                     setMouseInputHandler( DragPrimedMouseInputHandler.class, event );
                 }
@@ -1287,6 +1282,8 @@ final class TableView
             {
                 setMouseInputHandler( PopupMenuMouseInputHandler.class, event );
             }
+
+            super.mouseReleased( event );
         }
 
         /**
@@ -1319,6 +1316,34 @@ final class TableView
         }
 
         /**
+         * Updates the focus.
+         * 
+         * @param event
+         *        The mouse event; must not be {@code null}.
+         */
+        @SuppressWarnings( "synthetic-access" )
+        private void updateFocus(
+            /* @NonNull */
+            final MouseEvent event )
+        {
+            assert event != null;
+
+            if( SwingUtilities.isLeftMouseButton( event ) || SwingUtilities.isRightMouseButton( event ) )
+            {
+                final Point mouseLocation = getMouseLocation( event );
+                final IComponent focusedComponent = model_.getFocusedComponent();
+                if( (focusedComponent != null) && focusedComponent.getBounds().contains( mouseLocation ) )
+                {
+                    updateFocusOnMouseReleased_ = SwingUtilities.isLeftMouseButton( event );
+                }
+                else
+                {
+                    model_.setFocus( model_.getFocusableComponent( mouseLocation ) );
+                }
+            }
+        }
+
+        /**
          * Updates the hover.
          * 
          * @param event
@@ -1330,7 +1355,7 @@ final class TableView
             /* @Nullable */
             final MouseEvent event )
         {
-            model_.setHover( getFocusableContainer( getMouseLocation( event ) ) );
+            model_.setHover( model_.getFocusableComponent( getMouseLocation( event ), model_.getFocusedComponent() ) );
         }
     }
 
@@ -1461,9 +1486,35 @@ final class TableView
         public void mouseReleased(
             final MouseEvent event )
         {
+            if( updateFocusOnMouseReleased_ )
+            {
+                updateFocus( event );
+            }
+
             if( SwingUtilities.isLeftMouseButton( event ) )
             {
                 setMouseInputHandler( DefaultMouseInputHandler.class, null );
+            }
+
+            super.mouseReleased( event );
+        }
+
+        /**
+         * Updates the focus.
+         * 
+         * @param event
+         *        The mouse event; must not be {@code null}.
+         */
+        @SuppressWarnings( "synthetic-access" )
+        private void updateFocus(
+            /* @NonNull */
+            final MouseEvent event )
+        {
+            assert event != null;
+
+            if( SwingUtilities.isLeftMouseButton( event ) )
+            {
+                model_.setFocus( model_.getFocusableComponent( getMouseLocation( event ), model_.getFocusedComponent() ) );
             }
         }
     }
@@ -1518,10 +1569,10 @@ final class TableView
         void activate(
             final MouseEvent event )
         {
-            final Point mouseLocation = getMouseLocation( event );
-            sourceCardPile_ = getFocusableContainer( mouseLocation );
+            sourceCardPile_ = getFocusedContainer();
             if( sourceCardPile_ != null )
             {
+                final Point mouseLocation = getMouseLocation( event );
                 final List<IComponent> draggedComponents = sourceCardPile_.removeComponents( mouseLocation );
                 if( !draggedComponents.isEmpty() )
                 {
@@ -1589,7 +1640,7 @@ final class TableView
                 model_.getTable().getTabletop().removeComponent( mobileCardPile_ );
 
                 final Point mouseLocation = getMouseLocation( event );
-                final IContainer cardPile = getFocusableContainer( mouseLocation );
+                final IContainer cardPile = model_.getFocusableContainer( mouseLocation );
                 final IContainer targetCardPile = (cardPile != null) ? cardPile : sourceCardPile_;
                 targetCardPile.addComponents( mobileCardPile_.removeAllComponents() );
                 model_.setHover( targetCardPile );
@@ -1597,6 +1648,8 @@ final class TableView
 
                 setMouseInputHandler( DefaultMouseInputHandler.class, null );
             }
+
+            super.mouseReleased( event );
         }
     }
 
@@ -1647,11 +1700,11 @@ final class TableView
         void activate(
             final MouseEvent event )
         {
-            final Point mouseLocation = getMouseLocation( event );
-            draggedCardPile_ = getFocusableContainer( mouseLocation );
+            draggedCardPile_ = getFocusedContainer();
             if( draggedCardPile_ != null )
             {
                 final Point cardPileLocation = draggedCardPile_.getLocation();
+                final Point mouseLocation = getMouseLocation( event );
                 draggedCardPileLocationOffset_.setSize( cardPileLocation.x - mouseLocation.x, cardPileLocation.y - mouseLocation.y );
             }
             else
@@ -1694,6 +1747,8 @@ final class TableView
             {
                 setMouseInputHandler( DefaultMouseInputHandler.class, null );
             }
+
+            super.mouseReleased( event );
         }
     }
 
@@ -1789,6 +1844,8 @@ final class TableView
             {
                 setMouseInputHandler( DefaultMouseInputHandler.class, null );
             }
+
+            super.mouseReleased( event );
         }
     }
 

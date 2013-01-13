@@ -1,6 +1,6 @@
 /*
  * TableModel.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -42,6 +42,7 @@ import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.common.persistence.serializable.ObjectStreams;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.internal.ui.Loggers;
@@ -52,6 +53,9 @@ import org.gamegineer.table.net.PlayerRole;
 import org.gamegineer.table.net.TableNetworkDisconnectedEvent;
 import org.gamegineer.table.net.TableNetworkEvent;
 import org.gamegineer.table.net.TableNetworkFactory;
+import org.gamegineer.table.ui.ComponentStrategyUIRegistry;
+import org.gamegineer.table.ui.IComponentStrategyUI;
+import org.gamegineer.table.ui.NoSuchComponentStrategyUIException;
 
 /**
  * The table model.
@@ -406,22 +410,159 @@ public final class TableModel
 
         synchronized( lock_ )
         {
-            final IComponent component = table_.getComponent( location );
-            if( component == null )
-            {
-                return null;
-            }
+            return getFocusableComponent( location, IComponent.class );
+        }
+    }
 
-            for( ComponentModel componentModel = getComponentModel( component.getPath() ); (componentModel != null) && (componentModel.getComponent().getContainer() != null); componentModel = getComponentModel( componentModel.getComponent().getContainer().getPath() ) )
+    /**
+     * Gets the focusable component in the table at the specified location
+     * beginning the search with the specified component.
+     * 
+     * <p>
+     * This method starts the search from the specified component and works its
+     * way up the ancestor axis until it finds a focusable component. If no
+     * focusable component is found when the end of the axis is reached, the
+     * search begins again as if no starting component was specified.
+     * </p>
+     * 
+     * @param location
+     *        The location in table coordinates; must not be {@code null}.
+     * @param startingComponent
+     *        The component from which the search will begin or {@code null} to
+     *        return the top-most focusable component.
+     * 
+     * @return The focusable component in the table at the specified location or
+     *         {@code null} if no focusable component in the table is at that
+     *         location.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code location} is {@code null}.
+     */
+    /* @Nullable */
+    public IComponent getFocusableComponent(
+        /* @NonNull */
+        final Point location,
+        /* @Nullable */
+        final IComponent startingComponent )
+    {
+        // TODO: allow search axis to be specified: ancestor, descendant,
+        // previous-sibling, following-sibling
+
+        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
+
+        if( (startingComponent == null) || !startingComponent.getBounds().contains( location ) )
+        {
+            return getFocusableComponent( location );
+        }
+
+        IComponent focusableComponent = null;
+        synchronized( lock_ )
+        {
+            IComponent component = startingComponent.getContainer();
+            do
             {
-                if( componentModel.isFocusable() )
+                if( component != null )
                 {
-                    return componentModel.getComponent();
+                    if( component == startingComponent )
+                    {
+                        focusableComponent = startingComponent;
+                    }
+                    else if( component.getBounds().contains( location ) )
+                    {
+                        try
+                        {
+                            final IComponentStrategyUI componentStrategyUI = ComponentStrategyUIRegistry.getComponentStrategyUI( component.getStrategy().getId() );
+                            if( componentStrategyUI.isFocusable() )
+                            {
+                                focusableComponent = component;
+                            }
+                        }
+                        catch( final NoSuchComponentStrategyUIException e )
+                        {
+                            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableModel_getFocusableComponent_componentStrategyUI_notExists, e );
+                        }
+                    }
+
+                    component = component.getContainer();
                 }
+                else
+                {
+                    component = getFocusableComponent( location );
+                }
+            } while( focusableComponent == null );
+        }
+
+        return focusableComponent;
+    }
+
+    /**
+     * Gets the focusable component in the table of the specified type at the
+     * specified location.
+     * 
+     * @param <T>
+     *        The component type.
+     * 
+     * @param location
+     *        The location in table coordinates; must not be {@code null}.
+     * @param type
+     *        The type of the component; must not be {@code null}.
+     * 
+     * @return The focusable component in the table of the specified type at the
+     *         specified location or {@code null} if no focusable component in
+     *         the table of the specified type is at that location.
+     */
+    /* @Nullable */
+    private <T extends IComponent> T getFocusableComponent(
+        /* @NonNull */
+        final Point location,
+        /* @NonNull */
+        final Class<T> type )
+    {
+        assert location != null;
+        assert type != null;
+        assert Thread.holdsLock( lock_ );
+
+        final IComponent component = table_.getComponent( location );
+        if( component == null )
+        {
+            return null;
+        }
+
+        for( ComponentModel componentModel = getComponentModel( component.getPath() ); (componentModel != null) && (componentModel.getComponent().getContainer() != null); componentModel = getComponentModel( componentModel.getComponent().getContainer().getPath() ) )
+        {
+            if( componentModel.isFocusable() && type.isInstance( componentModel.getComponent() ) )
+            {
+                return type.cast( componentModel.getComponent() );
             }
         }
 
         return null;
+    }
+
+    /**
+     * Gets the focusable container in the table at the specified location.
+     * 
+     * @param location
+     *        The location in table coordinates; must not be {@code null}.
+     * 
+     * @return The focusable container in the table at the specified location or
+     *         {@code null} if no focusable container in the table is at that
+     *         location.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code location} is {@code null}.
+     */
+    /* @Nullable */
+    public IContainer getFocusableContainer(
+        /* @NonNull */
+        final Point location )
+    {
+        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            return getFocusableComponent( location, IContainer.class );
+        }
     }
 
     /**

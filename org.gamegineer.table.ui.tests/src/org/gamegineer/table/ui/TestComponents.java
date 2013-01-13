@@ -1,6 +1,6 @@
 /*
  * TestComponents.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -58,7 +58,8 @@ public final class TestComponents
 
     /**
      * Creates a new component with unique surface designs for the specified
-     * table environment.
+     * table environment and registers a default component strategy user
+     * interface for it.
      * 
      * @param tableEnvironment
      *        The table environment associated with the new component; must not
@@ -74,15 +75,43 @@ public final class TestComponents
         /* @NonNull */
         final ITableEnvironment tableEnvironment )
     {
+        return createUniqueComponent( tableEnvironment, TestComponentStrategyUIs.NULL_COMPONENT_STRATEGY_UI );
+    }
+
+    /**
+     * Creates a new component with unique surface designs for the specified
+     * table environment and registers the specified component strategy user
+     * interface for it.
+     * 
+     * @param tableEnvironment
+     *        The table environment associated with the new component; must not
+     *        be {@code null}.
+     * @param componentStrategyUI
+     *        The component strategy user interface; must not be {@code null}.
+     * 
+     * @return A new component; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code tableEnvironment} or {@code componentStrategyUI} is
+     *         {@code null}.
+     */
+    /* @NonNull */
+    public static IComponent createUniqueComponent(
+        /* @NonNull */
+        final ITableEnvironment tableEnvironment,
+        /* @NonNull */
+        final IComponentStrategyUI componentStrategyUI )
+    {
         final IComponent component = org.gamegineer.table.core.TestComponents.createUniqueComponent( tableEnvironment );
         @SuppressWarnings( "unused" )
-        final IComponentStrategyUI componentStrategyUI = TestComponentStrategyUIs.createComponentStrategyUI( component.getStrategy().getId() );
+        final IComponentStrategyUI decoratedComponentStrategyUI = TestComponentStrategyUIs.createComponentStrategyUI( component.getStrategy().getId(), componentStrategyUI );
         return component;
     }
 
     /**
      * Creates a new container with unique surface designs for the specified
-     * table environment.
+     * table environment and registers a default container strategy user
+     * interface for it.
      * 
      * @param tableEnvironment
      *        The table environment associated with the new container; must not
@@ -98,9 +127,36 @@ public final class TestComponents
         /* @NonNull */
         final ITableEnvironment tableEnvironment )
     {
+        return createUniqueContainer( tableEnvironment, TestComponentStrategyUIs.NULL_CONTAINER_STRATEGY_UI );
+    }
+
+    /**
+     * Creates a new container with unique surface designs for the specified
+     * table environment and registers the specified container strategy user
+     * interface for it.
+     * 
+     * @param tableEnvironment
+     *        The table environment associated with the new container; must not
+     *        be {@code null}.
+     * @param containerStrategyUI
+     *        The container strategy user interface; must not be {@code null}.
+     * 
+     * @return A new container; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code tableEnvironment} or {@code containerStrategyUI} is
+     *         {@code null}.
+     */
+    /* @NonNull */
+    public static IContainer createUniqueContainer(
+        /* @NonNull */
+        final ITableEnvironment tableEnvironment,
+        /* @NonNull */
+        final IContainerStrategyUI containerStrategyUI )
+    {
         final IContainer container = org.gamegineer.table.core.TestComponents.createUniqueContainer( tableEnvironment );
         @SuppressWarnings( "unused" )
-        final IContainerStrategyUI containerStrategyUI = TestComponentStrategyUIs.createContainerStrategyUI( container.getStrategy().getId() );
+        final IContainerStrategyUI decoratedContainerStrategyUI = TestComponentStrategyUIs.createContainerStrategyUI( container.getStrategy().getId(), containerStrategyUI );
         return container;
     }
 }
