@@ -1,6 +1,6 @@
 /*
  * ContainerView.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.ui.view;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -73,7 +72,7 @@ final class ContainerView
         /* @NonNull */
         final ContainerModel containerModel )
     {
-        super( containerModel, new Dimension( 2, 2 ) );
+        super( containerModel );
 
         componentViews_ = new ArrayList<ComponentView>();
         containerModelListener_ = null;

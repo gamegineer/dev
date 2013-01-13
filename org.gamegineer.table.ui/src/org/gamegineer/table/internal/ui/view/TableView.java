@@ -1,6 +1,6 @@
 /*
  * TableView.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -942,6 +942,50 @@ final class TableView
                 tabletopView_.paint( this, g );
             }
         }
+
+        final ComponentModel hoveredComponentModel = model_.getHoveredComponentModel();
+        final ComponentModel focusedComponentModel = model_.getFocusedComponentModel();
+        if( (hoveredComponentModel != null) && (hoveredComponentModel != focusedComponentModel) )
+        {
+            paintComponentBorder( g, hoveredComponentModel, Color.YELLOW );
+        }
+        if( focusedComponentModel != null )
+        {
+            paintComponentBorder( g, focusedComponentModel, Color.GREEN );
+        }
+    }
+
+    /**
+     * Paints a border around the specified component.
+     * 
+     * @param g
+     *        The graphics context in which to paint; must not be {@code null}.
+     * @param componentModel
+     *        The component model; must not be {@code null}.
+     * @param color
+     *        The border color; must not be {@code null}.
+     */
+    private static void paintComponentBorder(
+        /* @NonNull */
+        final Graphics g,
+        /* @NonNull */
+        final ComponentModel componentModel,
+        /* @NonNull */
+        final Color color )
+    {
+        assert g != null;
+        assert componentModel != null;
+        assert color != null;
+
+        final Rectangle componentBounds = componentModel.getComponent().getBounds();
+        final Color oldColor = g.getColor();
+        g.setColor( color );
+        g.drawRect( //
+            componentBounds.x - ComponentView.HORIZONTAL_PADDING, //
+            componentBounds.y - ComponentView.VERTICAL_PADDING, //
+            componentBounds.width + (2 * ComponentView.HORIZONTAL_PADDING) - 1, //
+            componentBounds.height + (2 * ComponentView.VERTICAL_PADDING) - 1 );
+        g.setColor( oldColor );
     }
 
     /**

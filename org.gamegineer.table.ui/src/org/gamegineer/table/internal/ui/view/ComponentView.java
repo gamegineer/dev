@@ -1,6 +1,6 @@
 /*
  * ComponentView.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,6 @@ package org.gamegineer.table.internal.ui.view;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.logging.Level;
@@ -50,8 +49,23 @@ class ComponentView
     // Fields
     // ======================================================================
 
-    /** The default padding. */
-    private static final Dimension DEFAULT_PADDING = new Dimension( 0, 0 );
+    // TODO: remove all padding logic from this class.  this will require converting
+    // TableView.repaintTable(Rectangle) to repaintTable(ComponentView).
+
+    /**
+     * The horizontal padding between the component surface and the border in
+     * table dimensions.
+     */
+    static final int HORIZONTAL_PADDING = 2;
+
+    /** The color used to mask the component surface when it has the hover. */
+    private static final Color HOVER_COLOR = new Color( Color.YELLOW.getRGB() + (64 << 24), true );
+
+    /**
+     * The vertical padding between the component surface and the border in
+     * table dimensions.
+     */
+    static final int VERTICAL_PADDING = 2;
 
     /** The model associated with this view. */
     private final ComponentModel componentModel_;
@@ -61,12 +75,6 @@ class ComponentView
 
     /** The dirty bounds of this view in table coordinates. */
     private final Rectangle dirtyBounds_;
-
-    /**
-     * The amount of padding between the component surface and the border in
-     * table coordinates.
-     */
-    private final Dimension padding_;
 
     /** The table view that owns this view. */
     private TableView tableView_;
@@ -86,38 +94,11 @@ class ComponentView
         /* @NonNull */
         final ComponentModel componentModel )
     {
-        this( componentModel, DEFAULT_PADDING );
-    }
-
-    /**
-     * Initializes a new instance of the {@code ComponentView} class with the
-     * specified amount of padding.
-     * 
-     * <p>
-     * This constructor is not intended to be called by clients; it is only for
-     * the use of subclasses.
-     * </p>
-     * 
-     * @param componentModel
-     *        The model associated with this view; must not be {@code null}.
-     * @param padding
-     *        The amount of padding between the component surface and the
-     *        border in table coordinates; must not be negative.
-     */
-    ComponentView(
-        /* @NonNull */
-        final ComponentModel componentModel,
-        /* @NonNull */
-        final Dimension padding )
-    {
         assert componentModel != null;
-        assert padding != null;
-        assert (padding.width >= 0) && (padding.height >= 0);
 
         componentModel_ = componentModel;
         componentModelListener_ = null;
         dirtyBounds_ = new Rectangle();
-        padding_ = new Dimension( padding );
         tableView_ = null;
     }
 
@@ -215,7 +196,7 @@ class ComponentView
     final Rectangle getBounds()
     {
         final Rectangle bounds = componentModel_.getComponent().getBounds();
-        bounds.grow( padding_.width, padding_.height );
+        bounds.grow( HORIZONTAL_PADDING, VERTICAL_PADDING );
         return bounds;
     }
 
@@ -312,73 +293,22 @@ class ComponentView
         assert isInitialized();
 
         final Rectangle viewBounds = getBounds();
-        paintSurface( component, g, viewBounds );
-        paintBorder( g, viewBounds );
-    }
 
-    /**
-     * Paints the component border.
-     * 
-     * @param g
-     *        The graphics context in which to paint; must not be {@code null}.
-     * @param viewBounds
-     *        The view bounds; must not be {@code null}.
-     */
-    private void paintBorder(
-        /* @NonNull */
-        final Graphics g,
-        /* @NonNull */
-        final Rectangle viewBounds )
-    {
-        assert g != null;
-        assert viewBounds != null;
+        getActiveComponentSurfaceDesignUI().getIcon().paintIcon( component, g, viewBounds.x + HORIZONTAL_PADDING, viewBounds.y + VERTICAL_PADDING );
 
-        final Color borderColor;
-        if( componentModel_.isFocused() )
+        if( componentModel_.isHovered() )
         {
-            borderColor = Color.GREEN;
-        }
-        else if( componentModel_.isHovered() )
-        {
-            borderColor = Color.YELLOW;
-        }
-        else
-        {
-            borderColor = null;
-        }
-
-        if( borderColor != null )
-        {
+            // TODO: mask rectangle with the non-transparent pixels in the active surface image
+            // so we don't paint over pixels that should be fully transparent
             final Color oldColor = g.getColor();
-            g.setColor( borderColor );
-            g.drawRect( viewBounds.x, viewBounds.y, viewBounds.width - 1, viewBounds.height - 1 );
+            g.setColor( HOVER_COLOR );
+            g.fillRect( //
+                viewBounds.x + HORIZONTAL_PADDING, //
+                viewBounds.y + VERTICAL_PADDING, //
+                viewBounds.width - (2 * HORIZONTAL_PADDING) - 1, //
+                viewBounds.height - (2 * VERTICAL_PADDING) - 1 );
             g.setColor( oldColor );
         }
-    }
-
-    /**
-     * Paints the component surface.
-     * 
-     * @param component
-     *        The component in which to paint; must not be {@code null}.
-     * @param g
-     *        The graphics context in which to paint; must not be {@code null}.
-     * @param viewBounds
-     *        The view bounds; must not be {@code null}.
-     */
-    private void paintSurface(
-        /* @NonNull */
-        final Component component,
-        /* @NonNull */
-        final Graphics g,
-        /* @NonNull */
-        final Rectangle viewBounds )
-    {
-        assert component != null;
-        assert g != null;
-        assert viewBounds != null;
-
-        getActiveComponentSurfaceDesignUI().getIcon().paintIcon( component, g, viewBounds.x + padding_.width, viewBounds.y + padding_.height );
     }
 
     /**
