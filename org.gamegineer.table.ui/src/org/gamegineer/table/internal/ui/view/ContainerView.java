@@ -223,7 +223,7 @@ final class ContainerView
         final Rectangle clipBounds = g.getClipBounds();
         for( final ComponentView componentView : componentViews_ )
         {
-            if( clipBounds.intersects( componentView.getBounds() ) )
+            if( clipBounds.intersects( componentView.getComponentModel().getComponent().getBounds() ) )
             {
                 componentView.paint( component, g );
             }

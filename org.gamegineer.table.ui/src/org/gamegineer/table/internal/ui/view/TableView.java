@@ -102,6 +102,12 @@ final class TableView
     // Fields
     // ======================================================================
 
+    /**
+     * The amount of padding between a component and any border drawn around it
+     * in table dimensions.
+     */
+    private static final Dimension PADDING = new Dimension( 2, 2 );
+
     /** Serializable class version number. */
     private static final long serialVersionUID = 3574703230407179091L;
 
@@ -937,7 +943,7 @@ final class TableView
 
         if( tabletopView_ != null )
         {
-            if( clipBounds.intersects( tabletopView_.getBounds() ) )
+            if( clipBounds.intersects( tabletopView_.getComponentModel().getComponent().getBounds() ) )
             {
                 tabletopView_.paint( this, g );
             }
@@ -980,11 +986,7 @@ final class TableView
         final Rectangle componentBounds = componentModel.getComponent().getBounds();
         final Color oldColor = g.getColor();
         g.setColor( color );
-        g.drawRect( //
-            componentBounds.x - ComponentView.HORIZONTAL_PADDING, //
-            componentBounds.y - ComponentView.VERTICAL_PADDING, //
-            componentBounds.width + (2 * ComponentView.HORIZONTAL_PADDING) - 1, //
-            componentBounds.height + (2 * ComponentView.VERTICAL_PADDING) - 1 );
+        g.drawRect( componentBounds.x - PADDING.width, componentBounds.y - PADDING.height, componentBounds.width + (2 * PADDING.width) - 1, componentBounds.height + (2 * PADDING.height) - 1 );
         g.setColor( oldColor );
     }
 
@@ -1063,6 +1065,7 @@ final class TableView
         assert region != null;
 
         final Rectangle viewRegion = new Rectangle( region );
+        viewRegion.grow( PADDING.width, PADDING.height ); // ensure there is enough room to draw border if necessary
         convertRectangleFromTable( viewRegion );
         repaint( viewRegion );
     }

@@ -49,23 +49,8 @@ class ComponentView
     // Fields
     // ======================================================================
 
-    // TODO: remove all padding logic from this class.  this will require converting
-    // TableView.repaintTable(Rectangle) to repaintTable(ComponentView).
-
-    /**
-     * The horizontal padding between the component surface and the border in
-     * table dimensions.
-     */
-    static final int HORIZONTAL_PADDING = 2;
-
     /** The color used to mask the component surface when it has the hover. */
     private static final Color HOVER_COLOR = new Color( Color.YELLOW.getRGB() + (64 << 24), true );
-
-    /**
-     * The vertical padding between the component surface and the border in
-     * table dimensions.
-     */
-    static final int VERTICAL_PADDING = 2;
 
     /** The model associated with this view. */
     private final ComponentModel componentModel_;
@@ -114,10 +99,10 @@ class ComponentView
     {
         if( isInitialized() )
         {
-            final Rectangle viewBounds = getBounds();
-            dirtyBounds_.add( viewBounds );
+            final Rectangle bounds = componentModel_.getComponent().getBounds();
+            dirtyBounds_.add( bounds );
             repaint();
-            dirtyBounds_.setBounds( viewBounds );
+            dirtyBounds_.setBounds( bounds );
         }
     }
 
@@ -188,19 +173,6 @@ class ComponentView
     }
 
     /**
-     * Gets the bounds of this view in table coordinates.
-     * 
-     * @return The bounds of this view in table coordinates; never {@code null}.
-     */
-    /* @NonNull */
-    final Rectangle getBounds()
-    {
-        final Rectangle bounds = componentModel_.getComponent().getBounds();
-        bounds.grow( HORIZONTAL_PADDING, VERTICAL_PADDING );
-        return bounds;
-    }
-
-    /**
      * Gets the model associated with this view.
      * 
      * <p>
@@ -250,7 +222,7 @@ class ComponentView
         assert !isInitialized();
 
         tableView_ = tableView;
-        dirtyBounds_.setBounds( getBounds() );
+        dirtyBounds_.setBounds( componentModel_.getComponent().getBounds() );
         componentModelListener_ = new ComponentModelListener();
         componentModel_.addComponentModelListener( componentModelListener_ );
 
@@ -292,9 +264,9 @@ class ComponentView
         assert g != null;
         assert isInitialized();
 
-        final Rectangle viewBounds = getBounds();
+        final Rectangle bounds = componentModel_.getComponent().getBounds();
 
-        getActiveComponentSurfaceDesignUI().getIcon().paintIcon( component, g, viewBounds.x + HORIZONTAL_PADDING, viewBounds.y + VERTICAL_PADDING );
+        getActiveComponentSurfaceDesignUI().getIcon().paintIcon( component, g, bounds.x, bounds.y );
 
         if( componentModel_.isHovered() )
         {
@@ -302,11 +274,7 @@ class ComponentView
             // so we don't paint over pixels that should be fully transparent
             final Color oldColor = g.getColor();
             g.setColor( HOVER_COLOR );
-            g.fillRect( //
-                viewBounds.x + HORIZONTAL_PADDING, //
-                viewBounds.y + VERTICAL_PADDING, //
-                viewBounds.width - (2 * HORIZONTAL_PADDING) - 1, //
-                viewBounds.height - (2 * VERTICAL_PADDING) - 1 );
+            g.fillRect( bounds.x, bounds.y, bounds.width, bounds.height );
             g.setColor( oldColor );
         }
     }
