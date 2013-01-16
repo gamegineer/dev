@@ -589,54 +589,6 @@ final class TableView
     }
 
     /**
-     * Creates the background paint.
-     * 
-     * @return The background paint; never {@code null}.
-     */
-    /* @NonNull */
-    private static Paint createBackgroundPaint()
-    {
-        final BufferedImage image = Activator.getDefault().getBundleImages().getImage( BundleImages.BACKGROUND_GREEN_FELT );
-        if( image != null )
-        {
-            return new TexturePaint( image, new Rectangle( 0, 0, image.getWidth(), image.getHeight() ) );
-        }
-
-        return new Color( 0, 128, 0 );
-    }
-
-    /**
-     * Creates a new card pile with the specified surface design.
-     * 
-     * @param baseDesign
-     *        The card pile base surface design; must not be {@code null}.
-     * 
-     * @return A new card pile; never {@code null}.
-     * 
-     * @throws org.gamegineer.table.internal.ui.model.ModelException
-     *         If an error occurs creating the card pile.
-     */
-    /* @NonNull */
-    private IContainer createCardPile(
-        /* @NonNull */
-        final ComponentSurfaceDesign baseDesign )
-        throws ModelException
-    {
-        assert baseDesign != null;
-
-        try
-        {
-            final IContainer cardPile = model_.getTable().getTableEnvironment().createContainer( ComponentStrategyRegistry.getContainerStrategy( CardsComponentStrategyIds.CARD_PILE ) );
-            cardPile.setSurfaceDesign( CardPileOrientation.BASE, baseDesign );
-            return cardPile;
-        }
-        catch( final NoSuchComponentStrategyException e )
-        {
-            throw new ModelException( e );
-        }
-    }
-
-    /**
      * Converts the specified point from the table coordinate system to the view
      * coordinate system.
      * 
@@ -688,14 +640,51 @@ final class TableView
     }
 
     /**
-     * Creates a view for the tabletop and adds it to the table view.
+     * Creates the background paint.
+     * 
+     * @return The background paint; never {@code null}.
      */
-    private void createTabletopView()
+    /* @NonNull */
+    private static Paint createBackgroundPaint()
     {
-        assert tabletopView_ == null;
+        final BufferedImage image = Activator.getDefault().getBundleImages().getImage( BundleImages.BACKGROUND_GREEN_FELT );
+        if( image != null )
+        {
+            return new TexturePaint( image, new Rectangle( 0, 0, image.getWidth(), image.getHeight() ) );
+        }
 
-        tabletopView_ = new ContainerView( model_.getTabletopModel() );
-        tabletopView_.initialize( this );
+        return new Color( 0, 128, 0 );
+    }
+
+    /**
+     * Creates a new card pile with the specified surface design.
+     * 
+     * @param baseDesign
+     *        The card pile base surface design; must not be {@code null}.
+     * 
+     * @return A new card pile; never {@code null}.
+     * 
+     * @throws org.gamegineer.table.internal.ui.model.ModelException
+     *         If an error occurs creating the card pile.
+     */
+    /* @NonNull */
+    private IContainer createCardPile(
+        /* @NonNull */
+        final ComponentSurfaceDesign baseDesign )
+        throws ModelException
+    {
+        assert baseDesign != null;
+
+        try
+        {
+            final IContainer cardPile = model_.getTable().getTableEnvironment().createContainer( ComponentStrategyRegistry.getContainerStrategy( CardsComponentStrategyIds.CARD_PILE ) );
+            cardPile.setSurfaceDesign( CardPileOrientation.BASE, baseDesign );
+            return cardPile;
+        }
+        catch( final NoSuchComponentStrategyException e )
+        {
+            throw new ModelException( e );
+        }
     }
 
     /**
@@ -782,6 +771,17 @@ final class TableView
                 mouseInputHandler_.mouseReleased( event );
             }
         };
+    }
+
+    /**
+     * Creates a view for the tabletop and adds it to the table view.
+     */
+    private void createTabletopView()
+    {
+        assert tabletopView_ == null;
+
+        tabletopView_ = new ContainerView( model_.getTabletopModel() );
+        tabletopView_.initialize( this );
     }
 
     /**
@@ -1020,18 +1020,6 @@ final class TableView
         }
     }
 
-    /**
-     * Removes the card at the top of the focused card pile.
-     */
-    private void removeTopCard()
-    {
-        final IContainer container = getFocusedContainer();
-        if( container != null )
-        {
-            container.removeTopComponent();
-        }
-    }
-
     /*
      * @see javax.swing.JComponent#removeNotify()
      */
@@ -1048,6 +1036,18 @@ final class TableView
         actionMediator_.unbindAll();
 
         super.removeNotify();
+    }
+
+    /**
+     * Removes the card at the top of the focused card pile.
+     */
+    private void removeTopCard()
+    {
+        final IContainer container = getFocusedContainer();
+        if( container != null )
+        {
+            container.removeTopComponent();
+        }
     }
 
     /**
@@ -1564,6 +1564,105 @@ final class TableView
     }
 
     /**
+     * The mouse input handler that is active when a card pile is being dragged.
+     */
+    @NotThreadSafe
+    private final class DraggingCardPileMouseInputHandler
+        extends AbstractMouseInputHandler
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The card pile being dragged. */
+        private IContainer draggedCardPile_;
+
+        /**
+         * The offset between the mouse pointer and the dragged card pile
+         * location.
+         */
+        private final Dimension draggedCardPileLocationOffset_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the
+         * {@code DraggingCardPileMouseInputHandler} class.
+         */
+        DraggingCardPileMouseInputHandler()
+        {
+            draggedCardPileLocationOffset_ = new Dimension( 0, 0 );
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#activate(java.awt.event.MouseEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        void activate(
+            final MouseEvent event )
+        {
+            draggedCardPile_ = getFocusedContainer();
+            if( draggedCardPile_ != null )
+            {
+                final Point cardPileLocation = draggedCardPile_.getLocation();
+                final Point mouseLocation = getMouseLocation( event );
+                draggedCardPileLocationOffset_.setSize( cardPileLocation.x - mouseLocation.x, cardPileLocation.y - mouseLocation.y );
+            }
+            else
+            {
+                setMouseInputHandler( DefaultMouseInputHandler.class, null );
+            }
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#deactivate()
+         */
+        @Override
+        void deactivate()
+        {
+            draggedCardPile_ = null;
+            draggedCardPileLocationOffset_.setSize( 0, 0 );
+        }
+
+        /*
+         * @see java.awt.event.MouseAdapter#mouseDragged(java.awt.event.MouseEvent)
+         */
+        @Override
+        public void mouseDragged(
+            final MouseEvent event )
+        {
+            final Point location = getMouseLocation( event );
+            location.translate( draggedCardPileLocationOffset_.width, draggedCardPileLocationOffset_.height );
+            draggedCardPile_.setLocation( location );
+        }
+
+        /*
+         * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void mouseReleased(
+            final MouseEvent event )
+        {
+            if( SwingUtilities.isLeftMouseButton( event ) )
+            {
+                setMouseInputHandler( DefaultMouseInputHandler.class, null );
+            }
+
+            super.mouseReleased( event );
+        }
+    }
+
+    /**
      * The mouse input handler that is active when a collection of cards are
      * being dragged.
      */
@@ -1690,105 +1789,6 @@ final class TableView
                 model_.setHover( targetCardPile );
                 model_.setFocus( targetCardPile );
 
-                setMouseInputHandler( DefaultMouseInputHandler.class, null );
-            }
-
-            super.mouseReleased( event );
-        }
-    }
-
-    /**
-     * The mouse input handler that is active when a card pile is being dragged.
-     */
-    @NotThreadSafe
-    private final class DraggingCardPileMouseInputHandler
-        extends AbstractMouseInputHandler
-    {
-        // ==================================================================
-        // Fields
-        // ==================================================================
-
-        /** The card pile being dragged. */
-        private IContainer draggedCardPile_;
-
-        /**
-         * The offset between the mouse pointer and the dragged card pile
-         * location.
-         */
-        private final Dimension draggedCardPileLocationOffset_;
-
-
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the
-         * {@code DraggingCardPileMouseInputHandler} class.
-         */
-        DraggingCardPileMouseInputHandler()
-        {
-            draggedCardPileLocationOffset_ = new Dimension( 0, 0 );
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#activate(java.awt.event.MouseEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        void activate(
-            final MouseEvent event )
-        {
-            draggedCardPile_ = getFocusedContainer();
-            if( draggedCardPile_ != null )
-            {
-                final Point cardPileLocation = draggedCardPile_.getLocation();
-                final Point mouseLocation = getMouseLocation( event );
-                draggedCardPileLocationOffset_.setSize( cardPileLocation.x - mouseLocation.x, cardPileLocation.y - mouseLocation.y );
-            }
-            else
-            {
-                setMouseInputHandler( DefaultMouseInputHandler.class, null );
-            }
-        }
-
-        /*
-         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#deactivate()
-         */
-        @Override
-        void deactivate()
-        {
-            draggedCardPile_ = null;
-            draggedCardPileLocationOffset_.setSize( 0, 0 );
-        }
-
-        /*
-         * @see java.awt.event.MouseAdapter#mouseDragged(java.awt.event.MouseEvent)
-         */
-        @Override
-        public void mouseDragged(
-            final MouseEvent event )
-        {
-            final Point location = getMouseLocation( event );
-            location.translate( draggedCardPileLocationOffset_.width, draggedCardPileLocationOffset_.height );
-            draggedCardPile_.setLocation( location );
-        }
-
-        /*
-         * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void mouseReleased(
-            final MouseEvent event )
-        {
-            if( SwingUtilities.isLeftMouseButton( event ) )
-            {
                 setMouseInputHandler( DefaultMouseInputHandler.class, null );
             }
 
