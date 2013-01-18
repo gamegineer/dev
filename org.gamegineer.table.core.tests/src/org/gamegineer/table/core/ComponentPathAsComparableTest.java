@@ -1,6 +1,6 @@
 /*
- * ComponentPathAsEquatableTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * ComponentPathAsComparableTest.java
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,24 +23,25 @@ package org.gamegineer.table.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import org.gamegineer.test.core.AbstractEquatableTestCase;
+import org.gamegineer.test.core.AbstractComparableTestCase;
 
 /**
  * A fixture for testing the {@link org.gamegineer.table.core.ComponentPath}
- * class to ensure it does not violate the contract of the equatable interface.
+ * class to ensure it does not violate the contract of the
+ * {@link java.lang.Comparable} interface.
  */
-public final class ComponentPathAsEquatableTest
-    extends AbstractEquatableTestCase<ComponentPath>
+public final class ComponentPathAsComparableTest
+    extends AbstractComparableTestCase<ComponentPath>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ComponentPathAsEquatableTest}
+     * Initializes a new instance of the {@code ComponentPathAsComparableTest}
      * class.
      */
-    public ComponentPathAsEquatableTest()
+    public ComponentPathAsComparableTest()
     {
     }
 
@@ -50,12 +51,38 @@ public final class ComponentPathAsEquatableTest
     // ======================================================================
 
     /*
+     * @see org.gamegineer.test.core.AbstractComparableTestCase#createGreaterThanInstances()
+     */
+    @Override
+    protected Collection<ComponentPath> createGreaterThanInstances()
+    {
+        final Collection<ComponentPath> others = new ArrayList<ComponentPath>();
+        others.add( new ComponentPath( new ComponentPath( new ComponentPath( null, 1 ), 1 ), 0 ) );
+        others.add( new ComponentPath( new ComponentPath( null, 1 ), 2 ) );
+        others.add( new ComponentPath( new ComponentPath( null, 2 ), 1 ) );
+        return others;
+    }
+
+    /*
+     * @see org.gamegineer.test.core.AbstractComparableTestCase#createLessThanInstances()
+     */
+    @Override
+    protected Collection<ComponentPath> createLessThanInstances()
+    {
+        final Collection<ComponentPath> others = new ArrayList<ComponentPath>();
+        others.add( new ComponentPath( null, 1 ) );
+        others.add( new ComponentPath( new ComponentPath( null, 1 ), 0 ) );
+        others.add( new ComponentPath( new ComponentPath( null, 0 ), 1 ) );
+        return others;
+    }
+
+    /*
      * @see org.gamegineer.test.core.AbstractEquatableTestCase#createReferenceInstance()
      */
     @Override
     protected ComponentPath createReferenceInstance()
     {
-        return new ComponentPath( new ComponentPath( null, 0 ), 1 );
+        return new ComponentPath( new ComponentPath( null, 1 ), 1 );
     }
 
     /*
@@ -66,8 +93,9 @@ public final class ComponentPathAsEquatableTest
     {
         final Collection<ComponentPath> others = new ArrayList<ComponentPath>();
         others.add( new ComponentPath( null, 1 ) );
-        others.add( new ComponentPath( new ComponentPath( null, 1 ), 1 ) );
-        others.add( new ComponentPath( new ComponentPath( null, 0 ), 0 ) );
+        others.add( new ComponentPath( new ComponentPath( null, 0 ), 1 ) );
+        others.add( new ComponentPath( new ComponentPath( null, 1 ), 0 ) );
+        others.add( new ComponentPath( new ComponentPath( new ComponentPath( null, 1 ), 1 ), 1 ) );
         return others;
     }
 }

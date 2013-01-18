@@ -1,6 +1,6 @@
 /*
  * ComponentPath.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import net.jcip.annotations.Immutable;
+import org.gamegineer.common.core.util.ComparableUtils;
 import org.gamegineer.common.core.util.ObjectUtils;
 
 /**
@@ -45,6 +46,7 @@ import org.gamegineer.common.core.util.ObjectUtils;
  */
 @Immutable
 public final class ComponentPath
+    implements Comparable<ComponentPath>
 {
     // ======================================================================
     // Fields
@@ -89,6 +91,22 @@ public final class ComponentPath
     // ======================================================================
 
     /*
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    @Override
+    public int compareTo(
+        final ComponentPath other )
+    {
+        final int parentPathCompareResult = ComparableUtils.compareTo( parentPath_, other.parentPath_ );
+        if( parentPathCompareResult != 0 )
+        {
+            return parentPathCompareResult;
+        }
+
+        return index_ - other.index_;
+    }
+
+    /*
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -105,8 +123,7 @@ public final class ComponentPath
             return false;
         }
 
-        final ComponentPath other = (ComponentPath)obj;
-        return ObjectUtils.equals( parentPath_, other.parentPath_ ) && (index_ == other.index_);
+        return compareTo( (ComponentPath)obj ) == 0;
     }
 
     /**
