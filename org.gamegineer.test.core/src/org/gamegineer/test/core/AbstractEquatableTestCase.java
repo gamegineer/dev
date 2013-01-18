@@ -1,6 +1,6 @@
 /*
  * AbstractEquatableTestCase.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -41,7 +41,7 @@ import org.junit.Test;
  * </p>
  * 
  * @param <T>
- *        The type of the object.
+ *        The type of the equatable class.
  */
 public abstract class AbstractEquatableTestCase<T>
 {
