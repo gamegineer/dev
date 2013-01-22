@@ -1,6 +1,6 @@
 /*
  * ITable.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.table.core;
 
 import java.awt.Point;
+import java.util.List;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
 
 /**
@@ -58,12 +59,7 @@ public interface ITable
         ComponentPath path );
 
     /**
-     * Gets the component in this table at the specified location.
-     * 
-     * <p>
-     * If two or more components occupy the specified location, the top-most
-     * component will be returned.
-     * </p>
+     * Gets the top-most component in this table at the specified location.
      * 
      * <p>
      * Note that the returned component may have been moved by the time this
@@ -74,7 +70,7 @@ public interface ITable
      * @param location
      *        The location in table coordinates; must not be {@code null}.
      * 
-     * @return The component in this table at the specified location or
+     * @return The top-most component in this table at the specified location or
      *         {@code null} if no component in this table is at that location.
      * 
      * @throws java.lang.NullPointerException
@@ -82,6 +78,31 @@ public interface ITable
      */
     /* @Nullable */
     public IComponent getComponent(
+        /* @NonNull */
+        Point location );
+
+    /**
+     * Gets the components in this table at the specified location.
+     * 
+     * <p>
+     * Note that the returned components may have been moved by the time this
+     * method returns to the caller. Therefore, callers should not cache the
+     * results of this method for an extended period of time.
+     * </p>
+     * 
+     * @param location
+     *        The location in table coordinates; must not be {@code null}.
+     * 
+     * @return The collection of components in this table at the specified
+     *         location; never {@code null}. The components are returned in
+     *         order from the bottom-most component to the top-most component;
+     *         never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code location} is {@code null}.
+     */
+    /* @NonNull */
+    public List<IComponent> getComponents(
         /* @NonNull */
         Point location );
 

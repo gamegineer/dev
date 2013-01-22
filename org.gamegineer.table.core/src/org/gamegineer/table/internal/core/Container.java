@@ -1,6 +1,6 @@
 /*
  * Container.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -359,19 +359,15 @@ final class Container
     }
 
     /**
-     * Gets the component within this container's bounds (including the
+     * Gets the top-most component within this container's bounds (including the
      * container itself) at the specified location.
-     * 
-     * <p>
-     * If two or more components occupy the specified location, the top-most
-     * component will be returned.
-     * </p>
      * 
      * @param location
      *        The location in table coordinates; must not be {@code null}.
      * 
-     * @return The component within this container's bounds at the specified
-     *         location or {@code null} if no component is at that location.
+     * @return The top-most component within this container's bounds at the
+     *         specified location or {@code null} if no component is at that
+     *         location.
      */
     @GuardedBy( "getLock()" )
     /* @Nullable */
@@ -555,6 +551,31 @@ final class Container
     public IContainerStrategy getStrategy()
     {
         return (IContainerStrategy)super.getStrategy();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.core.Component#hitTest(java.awt.Point, java.util.List)
+     */
+    @Override
+    boolean hitTest(
+        final Point location,
+        final List<IComponent> components )
+    {
+        assert location != null;
+        assert components != null;
+        assert getLock().isHeldByCurrentThread();
+
+        if( super.hitTest( location, components ) )
+        {
+            for( final Component component : components_ )
+            {
+                component.hitTest( location, components );
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     /*

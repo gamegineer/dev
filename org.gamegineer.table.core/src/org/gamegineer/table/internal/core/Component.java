@@ -1,6 +1,6 @@
 /*
  * Component.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,6 +29,7 @@ import java.awt.Rectangle;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
@@ -471,6 +472,44 @@ class Component
     public final TableEnvironment getTableEnvironment()
     {
         return tableEnvironment_;
+    }
+
+    /**
+     * Hit tests this component against the specified location.
+     * 
+     * <p>
+     * This implementation adds this component to the specified collection if it
+     * occupies the specified location. Subclasses may override and must call
+     * the superclass implementation.
+     * </p>
+     * 
+     * @param location
+     *        The location in table coordinates; must not be {@code null}.
+     * @param components
+     *        The collection that receives the components that occupy the
+     *        specified location; must not be {@code null}.
+     * 
+     * @return {@code true} if this component occupies the specified location;
+     *         otherwise {@code false}.
+     */
+    @GuardedBy( "getLock()" )
+    boolean hitTest(
+        /* @NonNull */
+        final Point location,
+        /* @NonNull */
+        final List<IComponent> components )
+    {
+        assert location != null;
+        assert components != null;
+        assert getLock().isHeldByCurrentThread();
+
+        if( getBounds().contains( location ) )
+        {
+            components.add( this );
+            return true;
+        }
+
+        return false;
     }
 
     /**

@@ -1,6 +1,6 @@
 /*
  * Table.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,9 @@ package org.gamegineer.table.internal.core;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +49,18 @@ final class Table
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /** The component comparator that orders components by their paths. */
+    private static final Comparator<IComponent> COMPONENT_COMPARATOR = new Comparator<IComponent>()
+    {
+        @Override
+        public int compare(
+            final IComponent component1,
+            final IComponent component2 )
+        {
+            return component1.getPath().compareTo( component2.getPath() );
+        }
+    };
 
     /** The name of the memento attribute that stores the tabletop memento. */
     private static final String TABLETOP_MEMENTO_ATTRIBUTE_NAME = "table.tabletop"; //$NON-NLS-1$
@@ -211,6 +225,33 @@ final class Table
         {
             getLock().unlock();
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITable#getComponents(java.awt.Point)
+     */
+    @Override
+    public List<IComponent> getComponents(
+        final Point location )
+    {
+        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
+
+        final List<IComponent> components = new ArrayList<IComponent>();
+
+        getLock().lock();
+        try
+        {
+            if( tabletop_.hitTest( location, components ) )
+            {
+                Collections.sort( components, COMPONENT_COMPARATOR );
+            }
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+
+        return components;
     }
 
     /**

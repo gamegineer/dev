@@ -1,6 +1,6 @@
 /*
  * AbstractTableTestCase.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,10 +22,14 @@
 package org.gamegineer.table.core;
 
 import static org.gamegineer.table.core.Assert.assertTableEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import java.awt.Point;
+import java.util.Arrays;
+import java.util.List;
 import org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.junit.Before;
@@ -282,6 +286,127 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
         assertSame( expectedTabletop, actualTabletop );
         assertSame( expectedContainer, actualContainer );
         assertSame( expectedComponent, actualComponent );
+    }
+
+    /**
+     * Ensures the {@link ITable#getComponents} method returns an empty
+     * collection when a component is absent at the specified location.
+     */
+    @Test
+    public void testGetComponents_Location_ComponentAbsent()
+    {
+        assertTrue( table_.getComponents( new Point( Integer.MIN_VALUE, Integer.MIN_VALUE ) ).isEmpty() );
+    }
+
+    /**
+     * Ensures the {@link ITable#getComponents} method returns the correct
+     * component collection when multiple components are present at the
+     * specified location.
+     */
+    @Test
+    public void testGetComponents_Location_ComponentPresent_MultipleComponents()
+    {
+        final Point location1 = new Point( 7, 420 );
+        final Point location2 = new Point( 7, -420 );
+        final Point location3 = new Point( 7, 840 );
+        //
+        final IContainer container1 = createUniqueContainer();
+        container1.setLocation( location1 );
+        table_.getTabletop().addComponent( container1 );
+        final IComponent component1 = createUniqueComponent();
+        component1.setLocation( location1 );
+        container1.addComponent( component1 );
+        final IComponent component2 = createUniqueComponent();
+        component2.setLocation( location1 );
+        container1.addComponent( component2 );
+        //
+        final IContainer container2 = createUniqueContainer();
+        container2.setLocation( location2 );
+        table_.getTabletop().addComponent( container2 );
+        final IComponent component3 = createUniqueComponent();
+        component3.setLocation( location2 );
+        container2.addComponent( component3 );
+        final IComponent component4 = createUniqueComponent();
+        component4.setLocation( location2 );
+        container2.addComponent( component4 );
+        //
+        final IContainer container3 = createUniqueContainer();
+        container3.setLocation( location1 );
+        table_.getTabletop().addComponent( container3 );
+        final IComponent component5 = createUniqueComponent();
+        component5.setLocation( location1 );
+        container3.addComponent( component5 );
+        final IComponent component6 = createUniqueComponent();
+        component6.setLocation( location3 );
+        container3.addComponent( component6 );
+        //
+        final List<IComponent> expectedComponents = Arrays.asList( //
+            table_.getTabletop(), //
+            container1, //
+            container3, //
+            component1, //
+            component2, //
+            component5 );
+
+        final List<IComponent> actualComponents = table_.getComponents( location1 );
+
+        assertEquals( expectedComponents, actualComponents );
+    }
+
+    /**
+     * Ensures the {@link ITable#getComponents} method returns the correct
+     * component collection when a single component is present at the specified
+     * location.
+     */
+    @Test
+    public void testGetComponents_Location_ComponentPresent_SingleComponent()
+    {
+        final Point location = new Point( 7, 42 );
+        final IComponent component = createUniqueComponent();
+        component.setLocation( location );
+        table_.getTabletop().addComponent( component );
+        final List<IComponent> expectedComponents = Arrays.asList( //
+            table_.getTabletop(), //
+            component );
+
+        final List<IComponent> actualComponents = table_.getComponents( location );
+
+        assertEquals( expectedComponents, actualComponents );
+    }
+
+    /**
+     * Ensures the {@link ITable#getComponents} method throws an exception when
+     * passed a {@code null} location.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGetComponents_Location_Null()
+    {
+        table_.getComponents( null );
+    }
+
+    /**
+     * Ensures the {@link ITable#getComponents} method returns a copy of the
+     * component collection.
+     */
+    @Test
+    public void testGetComponents_ReturnValue_Copy()
+    {
+        final List<IComponent> components = table_.getComponents( new Point( 0, 0 ) );
+        final int expectedComponentsSize = components.size();
+
+        table_.getTabletop().addComponent( createUniqueComponent() );
+
+        assertEquals( expectedComponentsSize, components.size() );
+    }
+
+    /**
+     * Ensures the {@link ITable#getComponents} method does not return
+     * {@code null}.
+     */
+    @Test
+    public void testGetComponents_ReturnValue_NonNull()
+    {
+        assertNotNull( table_.getComponents( new Point( Integer.MIN_VALUE, Integer.MIN_VALUE ) ) );
     }
 
     /**
