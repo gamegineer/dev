@@ -216,15 +216,8 @@ final class Table
     {
         assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
 
-        getLock().lock();
-        try
-        {
-            return tabletop_.getComponent( location );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
+        final List<IComponent> components = getComponents( location );
+        return components.isEmpty() ? null : components.get( components.size() - 1 );
     }
 
     /*

@@ -359,44 +359,6 @@ final class Container
     }
 
     /**
-     * Gets the top-most component within this container's bounds (including the
-     * container itself) at the specified location.
-     * 
-     * @param location
-     *        The location in table coordinates; must not be {@code null}.
-     * 
-     * @return The top-most component within this container's bounds at the
-     *         specified location or {@code null} if no component is at that
-     *         location.
-     */
-    @GuardedBy( "getLock()" )
-    /* @Nullable */
-    IComponent getComponent(
-        /* @NonNull */
-        final Point location )
-    {
-        assert location != null;
-        assert getLock().isHeldByCurrentThread();
-
-        if( getBounds().contains( location ) )
-        {
-            if( getComponentCount() == 0 )
-            {
-                return this;
-            }
-
-            final int index = getComponentIndex( location );
-            if( index != -1 )
-            {
-                final Component component = getComponent( index );
-                return (component instanceof Container) ? ((Container)component).getComponent( location ) : component;
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * Gets the component in this container at the specified path.
      * 
      * @param paths
@@ -450,11 +412,6 @@ final class Container
     /**
      * Gets the index of the component in this container at the specified
      * location.
-     * 
-     * <p>
-     * This method follows the same rules defined by
-     * {@link #getComponent(Point)}.
-     * </p>
      * 
      * @param location
      *        The location in table coordinates; must not be {@code null}.
