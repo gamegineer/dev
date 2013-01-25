@@ -31,6 +31,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
@@ -53,9 +55,6 @@ import org.gamegineer.table.net.PlayerRole;
 import org.gamegineer.table.net.TableNetworkDisconnectedEvent;
 import org.gamegineer.table.net.TableNetworkEvent;
 import org.gamegineer.table.net.TableNetworkFactory;
-import org.gamegineer.table.ui.ComponentStrategyUIRegistry;
-import org.gamegineer.table.ui.IComponentStrategyUI;
-import org.gamegineer.table.ui.NoSuchComponentStrategyUIException;
 
 /**
  * The table model.
@@ -415,20 +414,20 @@ public final class TableModel
     }
 
     /**
-     * Gets the focusable component in the table at the specified location
-     * beginning the search with the specified component.
+     * Gets the focusable component in the table at the specified location along
+     * the specified vector.
      * 
      * <p>
-     * This method starts the search from the specified component and works its
-     * way up the ancestor axis until it finds a focusable component. If no
-     * focusable component is found when the end of the axis is reached, the
-     * search begins again as if no starting component was specified.
+     * This method starts the search from the origin of the specified vector and
+     * works its way along the specified axis until it finds a focusable
+     * component. If no focusable component is found when the end of the axis is
+     * reached, the search wraps around to the end of the opposite axis.
      * </p>
      * 
      * @param location
      *        The location in table coordinates; must not be {@code null}.
-     * @param startingComponent
-     *        The component from which the search will begin or {@code null} to
+     * @param searchVector
+     *        The vector along which the search will proceed or {@code null} to
      *        return the top-most focusable component.
      * 
      * @return The focusable component in the table at the specified location or
@@ -443,14 +442,12 @@ public final class TableModel
         /* @NonNull */
         final Point location,
         /* @Nullable */
-        final IComponent startingComponent )
+        final ComponentVector searchVector )
     {
-        // TODO: allow search axis to be specified: ancestor, descendant,
-        // previous-sibling, following-sibling
-
         assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
 
-        if( (startingComponent == null) || !startingComponent.getBounds().contains( location ) )
+        // TODO: handle this case locally within this method; might be able to get rid of other overloads
+        if( (searchVector == null) || !searchVector.getOrigin().getBounds().contains( location ) )
         {
             return getFocusableComponent( location );
         }
@@ -458,38 +455,44 @@ public final class TableModel
         IComponent focusableComponent = null;
         synchronized( lock_ )
         {
-            IComponent component = startingComponent.getContainer();
-            do
+            final List<IComponent> components = table_.getComponents( location );
+            if( !components.isEmpty() )
             {
-                if( component != null )
-                {
-                    if( component == startingComponent )
+                final int originIndex = Collections.binarySearch( //
+                    components, //
+                    searchVector.getOrigin(), //
+                    new Comparator<IComponent>()
                     {
-                        focusableComponent = startingComponent;
-                    }
-                    else if( component.getBounds().contains( location ) )
-                    {
-                        try
+                        @Override
+                        public int compare(
+                            final IComponent o1,
+                            final IComponent o2 )
                         {
-                            final IComponentStrategyUI componentStrategyUI = ComponentStrategyUIRegistry.getComponentStrategyUI( component.getStrategy().getId() );
-                            if( componentStrategyUI.isFocusable() )
+                            return o1.getPath().compareTo( o2.getPath() );
+                        }
+                    } );
+                if( (originIndex >= 0) && (originIndex < components.size()) )
+                {
+                    int index = originIndex;
+                    do
+                    {
+                        index = getNextSearchIndex( components, index, searchVector.getDirection() );
+                        if( index == originIndex )
+                        {
+                            focusableComponent = searchVector.getOrigin();
+                        }
+                        else
+                        {
+                            final ComponentModel componentModel = getComponentModel( components.get( index ) );
+                            if( (componentModel != null) && componentModel.isFocusable() )
                             {
-                                focusableComponent = component;
+                                focusableComponent = componentModel.getComponent();
                             }
                         }
-                        catch( final NoSuchComponentStrategyUIException e )
-                        {
-                            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableModel_getFocusableComponent_componentStrategyUI_notExists, e );
-                        }
-                    }
 
-                    component = component.getContainer();
+                    } while( focusableComponent == null );
                 }
-                else
-                {
-                    component = getFocusableComponent( location );
-                }
-            } while( focusableComponent == null );
+            }
         }
 
         return focusableComponent;
@@ -618,6 +621,42 @@ public final class TableModel
         synchronized( lock_ )
         {
             return hoveredComponentModel_;
+        }
+    }
+
+    /**
+     * Gets the next search index for the specified search criteria.
+     * 
+     * @param components
+     *        The list of components being searched in ascending z-order order;
+     *        must not be {@code null}.
+     * @param index
+     *        The current search index.
+     * @param searchAxis
+     *        The search axis; must not be {@code null}.
+     * 
+     * @return The next search index.
+     */
+    private static int getNextSearchIndex(
+        /* @NonNull */
+        final List<IComponent> components,
+        final int index,
+        /* @NonNull */
+        final ComponentAxis searchAxis )
+    {
+        assert components != null;
+        assert searchAxis != null;
+
+        switch( searchAxis )
+        {
+            case PRECEDING:
+                return (index > 0) ? (index - 1) : (components.size() - 1);
+
+            case FOLLOWING:
+                return (index < (components.size() - 1)) ? (index + 1) : 0;
+
+            default:
+                throw new AssertionError( "unsupported component axis: " + searchAxis ); //$NON-NLS-1$
         }
     }
 

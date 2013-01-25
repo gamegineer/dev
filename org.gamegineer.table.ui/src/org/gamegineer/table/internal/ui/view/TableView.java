@@ -75,7 +75,9 @@ import org.gamegineer.table.internal.ui.BundleImages;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
 import org.gamegineer.table.internal.ui.dialogs.selectremoteplayer.SelectRemotePlayerDialog;
+import org.gamegineer.table.internal.ui.model.ComponentAxis;
 import org.gamegineer.table.internal.ui.model.ComponentModel;
+import org.gamegineer.table.internal.ui.model.ComponentVector;
 import org.gamegineer.table.internal.ui.model.ContainerModel;
 import org.gamegineer.table.internal.ui.model.ITableModelListener;
 import org.gamegineer.table.internal.ui.model.ModelException;
@@ -252,6 +254,8 @@ final class TableView
         model_.addTableModelListener( tableModelListener_ );
         addKeyListener( keyListener_ );
         addMouseListener( mouseInputListener_ );
+        // TODO: add a key listener so we can notify mouse handler to update focus/hover state based on key presses
+        // will probably rename "mouse handler" to "input handler"
         addMouseMotionListener( mouseInputListener_ );
 
         createTabletopView();
@@ -1195,6 +1199,49 @@ final class TableView
         }
 
         /**
+         * Creates a search vector from the focused component based on the
+         * specified event state.
+         * 
+         * @param event
+         *        The input event; may be {@code null} if no input event is
+         *        available.
+         * 
+         * @return A search vector from the focused component or {@code null} if
+         *         no component has the focus.
+         */
+        /* @Nullable */
+        @SuppressWarnings( "synthetic-access" )
+        protected final ComponentVector createSearchVectorFromFocusedComponent(
+            /* @Nullable */
+            final InputEvent event )
+        {
+            final IComponent focusedComponent = model_.getFocusedComponent();
+            if( focusedComponent == null )
+            {
+                return null;
+            }
+
+            final ComponentAxis searchAxis;
+            if( event != null )
+            {
+                if( (event.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) == InputEvent.SHIFT_DOWN_MASK )
+                {
+                    searchAxis = ComponentAxis.FOLLOWING;
+                }
+                else
+                {
+                    searchAxis = ComponentAxis.PRECEDING;
+                }
+            }
+            else
+            {
+                searchAxis = ComponentAxis.PRECEDING;
+            }
+
+            return new ComponentVector( focusedComponent, searchAxis );
+        }
+
+        /**
          * Deactivates this handler.
          */
         void deactivate()
@@ -1402,7 +1449,7 @@ final class TableView
             /* @Nullable */
             final MouseEvent event )
         {
-            model_.setHover( model_.getFocusableComponent( getMouseLocation( event ), model_.getFocusedComponent() ) );
+            model_.setHover( model_.getFocusableComponent( getMouseLocation( event ), createSearchVectorFromFocusedComponent( event ) ) );
         }
     }
 
@@ -1561,7 +1608,7 @@ final class TableView
 
             if( SwingUtilities.isLeftMouseButton( event ) )
             {
-                model_.setFocus( model_.getFocusableComponent( getMouseLocation( event ), model_.getFocusedComponent() ) );
+                model_.setFocus( model_.getFocusableComponent( getMouseLocation( event ), createSearchVectorFromFocusedComponent( event ) ) );
             }
         }
     }

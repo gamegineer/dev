@@ -441,37 +441,17 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@link TableModel#getFocusableComponent(Point, IComponent)}
-     * method returns the expected component when a starting component is
-     * specified and a focusable component that is an ancestor of the starting
-     * component exists at the specified location.
+     * Ensures the
+     * {@link TableModel#getFocusableComponent(Point, ComponentVector)} method
+     * returns the expected component when a search vector using the
+     * {@link ComponentAxis#FOLLOWING} direction is specified and a focusable
+     * component that follows the search vector origin component exists at the
+     * specified location.
      */
     @Test
-    public void testGetFocusableComponentWithStartingComponent_StartingComponent_NonNull_Location_AncestorFocusableComponent()
+    public void testGetFocusableComponentWithSearchVector_SearchVector_FollowingDirection_Location_FollowingFocusableComponent()
     {
         final IContainer parentContainer = createUniqueContainer();
-        model_.getTable().getTabletop().addComponent( parentContainer );
-        final IContainer container = createUniqueContainer();
-        parentContainer.addComponent( container );
-        final IComponent childComponent = createUniqueComponent();
-        container.addComponent( childComponent );
-        final IComponent expectedComponent = parentContainer;
-
-        final IComponent actualComponent = model_.getFocusableComponent( new Point( 0, 0 ), container );
-
-        assertSame( expectedComponent, actualComponent );
-    }
-
-    /**
-     * Ensures the {@link TableModel#getFocusableComponent(Point, IComponent)}
-     * method returns the expected component when a starting component is
-     * specified and a focusable component that is a descendant of the starting
-     * component exists at the specified location.
-     */
-    @Test
-    public void testGetFocusableComponentWithStartingComponent_StartingComponent_NonNull_Location_DescendantFocusableComponent()
-    {
-        final IContainer parentContainer = createUniqueContainer( ComponentFocusability.NOT_FOCUSABLE );
         model_.getTable().getTabletop().addComponent( parentContainer );
         final IContainer container = createUniqueContainer();
         parentContainer.addComponent( container );
@@ -479,19 +459,20 @@ public final class TableModelTest
         container.addComponent( childComponent );
         final IComponent expectedComponent = childComponent;
 
-        final IComponent actualComponent = model_.getFocusableComponent( new Point( 0, 0 ), container );
+        final IComponent actualComponent = model_.getFocusableComponent( new Point( 0, 0 ), new ComponentVector( container, ComponentAxis.FOLLOWING ) );
 
         assertSame( expectedComponent, actualComponent );
     }
 
     /**
-     * Ensures the {@link TableModel#getFocusableComponent(Point, IComponent)}
-     * method returns the expected component when a starting component is
-     * specified and no other focusable component exists at the specified
-     * location.
+     * Ensures the
+     * {@link TableModel#getFocusableComponent(Point, ComponentVector)} method
+     * returns the expected component when a search vector using the
+     * {@link ComponentAxis#FOLLOWING} direction is specified and no other
+     * focusable component exists at the specified location.
      */
     @Test
-    public void testGetFocusableComponentWithStartingComponent_StartingComponent_NonNull_Location_NoOtherFocusableComponent()
+    public void testGetFocusableComponentWithSearchVector_SearchVector_FollowingDirection_Location_NoOtherFocusableComponent()
     {
         final IContainer parentContainer = createUniqueContainer( ComponentFocusability.NOT_FOCUSABLE );
         model_.getTable().getTabletop().addComponent( parentContainer );
@@ -501,18 +482,43 @@ public final class TableModelTest
         container.addComponent( childComponent );
         final IComponent expectedComponent = container;
 
-        final IComponent actualComponent = model_.getFocusableComponent( new Point( 0, 0 ), container );
+        final IComponent actualComponent = model_.getFocusableComponent( new Point( 0, 0 ), new ComponentVector( container, ComponentAxis.FOLLOWING ) );
 
         assertSame( expectedComponent, actualComponent );
     }
 
     /**
-     * Ensures the {@link TableModel#getFocusableComponent(Point, IComponent)}
-     * method returns the expected component when no starting component is
-     * specified and a focusable component exists at the specified location.
+     * Ensures the
+     * {@link TableModel#getFocusableComponent(Point, ComponentVector)} method
+     * returns the expected component when a search vector using the
+     * {@link ComponentAxis#FOLLOWING} direction is specified and a focusable
+     * component that precedes the search vector origin exists at the specified
+     * location.
      */
     @Test
-    public void testGetFocusableComponentWithStartingComponent_StartingComponent_Null_Location_FocusableComponent()
+    public void testGetFocusableComponentWithSearchVector_SearchVector_FollowingDirection_Location_PrecedingFocusableComponent()
+    {
+        final IContainer parentContainer = createUniqueContainer();
+        model_.getTable().getTabletop().addComponent( parentContainer );
+        final IContainer container = createUniqueContainer();
+        parentContainer.addComponent( container );
+        final IComponent childComponent = createUniqueComponent();
+        container.addComponent( childComponent );
+        final IComponent expectedComponent = parentContainer;
+
+        final IComponent actualComponent = model_.getFocusableComponent( new Point( 0, 0 ), new ComponentVector( container, ComponentAxis.FOLLOWING ) );
+
+        assertSame( expectedComponent, actualComponent );
+    }
+
+    /**
+     * Ensures the
+     * {@link TableModel#getFocusableComponent(Point, ComponentVector)} method
+     * returns the expected component when no search vector is specified and a
+     * focusable component exists at the specified location.
+     */
+    @Test
+    public void testGetFocusableComponentWithSearchVector_SearchVector_Null_Location_FocusableComponent()
     {
         final IContainer container = createUniqueContainer();
         model_.getTable().getTabletop().addComponent( container );
@@ -526,12 +532,13 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@link TableModel#getFocusableComponent(Point, IComponent)}
-     * method returns {@code null} when no starting component is specified and
-     * no component exists at the specified location.
+     * Ensures the
+     * {@link TableModel#getFocusableComponent(Point, ComponentVector)} method
+     * returns {@code null} when no search vector is specified and no component
+     * exists at the specified location.
      */
     @Test
-    public void testGetFocusableComponentWithStartingComponent_StartingComponent_Null_Location_NoComponent()
+    public void testGetFocusableComponentWithSearchVector_SearchVector_Null_Location_NoComponent()
     {
         model_.getTable().getTabletop().addComponent( createUniqueContainer() );
 
@@ -539,12 +546,13 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@link TableModel#getFocusableComponent(Point, IComponent)}
-     * method returns {@code null} when no starting component is specified and
-     * no focusable component exists at the specified location.
+     * Ensures the
+     * {@link TableModel#getFocusableComponent(Point, ComponentVector)} method
+     * returns {@code null} when no search vector is specified and no focusable
+     * component exists at the specified location.
      */
     @Test
-    public void testGetFocusableComponentWithStartingComponent_StartingComponent_Null_Location_NoFocusableComponent()
+    public void testGetFocusableComponentWithSearchVector_SearchVector_Null_Location_NoFocusableComponent()
     {
         model_.getTable().getTabletop().addComponent( createUniqueComponent() );
 
@@ -552,13 +560,85 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@link TableModel#getFocusableComponent(Point, IComponent)}
-     * method throws an exception when passed a {@code null} location.
+     * Ensures the
+     * {@link TableModel#getFocusableComponent(Point, ComponentVector)} method
+     * returns the expected component when a search vector using the
+     * {@link ComponentAxis#PRECEDING} direction is specified and a focusable
+     * component that follows the search vector origin component exists at the
+     * specified location.
+     */
+    @Test
+    public void testGetFocusableComponentWithSearchVector_SearchVector_PrecedingDirection_Location_FollowingFocusableComponent()
+    {
+        final IContainer parentContainer = createUniqueContainer( ComponentFocusability.NOT_FOCUSABLE );
+        model_.getTable().getTabletop().addComponent( parentContainer );
+        final IContainer container = createUniqueContainer();
+        parentContainer.addComponent( container );
+        final IComponent childComponent = createUniqueComponent( ComponentFocusability.FOCUSABLE );
+        container.addComponent( childComponent );
+        final IComponent expectedComponent = childComponent;
+
+        final IComponent actualComponent = model_.getFocusableComponent( new Point( 0, 0 ), new ComponentVector( container, ComponentAxis.PRECEDING ) );
+
+        assertSame( expectedComponent, actualComponent );
+    }
+
+    /**
+     * Ensures the
+     * {@link TableModel#getFocusableComponent(Point, ComponentVector)} method
+     * returns the expected component when a search vector using the
+     * {@link ComponentAxis#PRECEDING} direction is specified and no other
+     * focusable component exists at the specified location.
+     */
+    @Test
+    public void testGetFocusableComponentWithSearchVector_SearchVector_PrecedingDirection_Location_NoOtherFocusableComponent()
+    {
+        final IContainer parentContainer = createUniqueContainer( ComponentFocusability.NOT_FOCUSABLE );
+        model_.getTable().getTabletop().addComponent( parentContainer );
+        final IContainer container = createUniqueContainer();
+        parentContainer.addComponent( container );
+        final IComponent childComponent = createUniqueComponent();
+        container.addComponent( childComponent );
+        final IComponent expectedComponent = container;
+
+        final IComponent actualComponent = model_.getFocusableComponent( new Point( 0, 0 ), new ComponentVector( container, ComponentAxis.PRECEDING ) );
+
+        assertSame( expectedComponent, actualComponent );
+    }
+
+    /**
+     * Ensures the
+     * {@link TableModel#getFocusableComponent(Point, ComponentVector)} method
+     * returns the expected component when a search vector using the
+     * {@link ComponentAxis#PRECEDING} direction is specified and a focusable
+     * component that precedes the search vector origin exists at the specified
+     * location.
+     */
+    @Test
+    public void testGetFocusableComponentWithSearchVector_SearchVector_PrecedingDirection_Location_PrecedingFocusableComponent()
+    {
+        final IContainer parentContainer = createUniqueContainer();
+        model_.getTable().getTabletop().addComponent( parentContainer );
+        final IContainer container = createUniqueContainer();
+        parentContainer.addComponent( container );
+        final IComponent childComponent = createUniqueComponent();
+        container.addComponent( childComponent );
+        final IComponent expectedComponent = parentContainer;
+
+        final IComponent actualComponent = model_.getFocusableComponent( new Point( 0, 0 ), new ComponentVector( container, ComponentAxis.PRECEDING ) );
+
+        assertSame( expectedComponent, actualComponent );
+    }
+
+    /**
+     * Ensures the
+     * {@link TableModel#getFocusableComponent(Point, ComponentVector)} method
+     * throws an exception when passed a {@code null} location.
      */
     @Test( expected = NullPointerException.class )
-    public void testGetFocusableComponentWithStartingComponent_Location_Null()
+    public void testGetFocusableComponentWithSearchVector_Location_Null()
     {
-        model_.getFocusableComponent( null, EasyMock.createMock( IComponent.class ) );
+        model_.getFocusableComponent( null, new ComponentVector( EasyMock.createMock( IComponent.class ), ComponentAxis.PRECEDING ) );
     }
 
     /**
