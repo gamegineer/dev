@@ -268,6 +268,7 @@ class ComponentView
 
         getActiveComponentSurfaceDesignUI().getIcon().paintIcon( component, g, bounds.x, bounds.y );
 
+        // TODO: add similar effect when focused?
         if( componentModel_.isHovered() )
         {
             // TODO: mask rectangle with the non-transparent pixels in the active surface image
