@@ -119,17 +119,17 @@ final class TableView
     /** The background paint. */
     private final Paint backgroundPaint_;
 
+    /** The current input handler. */
+    private AbstractInputHandler inputHandler_;
+
+    /** The collection of input handler singletons. */
+    private final Map<Class<? extends AbstractInputHandler>, AbstractInputHandler> inputHandlers_;
+
     /** The key listener for this view. */
     private final KeyListener keyListener_;
 
     /** The model associated with this view. */
     private final TableModel model_;
-
-    /** The current mouse input handler. */
-    private AbstractMouseInputHandler mouseInputHandler_;
-
-    /** The collection of mouse input handler singletons. */
-    private final Map<Class<? extends AbstractMouseInputHandler>, AbstractMouseInputHandler> mouseInputHandlers_;
 
     /** The mouse input listener for this view. */
     private final MouseInputListener mouseInputListener_;
@@ -141,7 +141,7 @@ final class TableView
     private ContainerView tabletopView_;
 
     /**
-     * Indicates the active mouse handler should update the focus in the Mouse
+     * Indicates the active input handler should update the focus in the Mouse
      * Released handler (as opposed to the Mouse Pressed handler).
      */
     private boolean updateFocusOnMouseReleased_;
@@ -165,10 +165,10 @@ final class TableView
 
         actionMediator_ = new ActionMediator();
         backgroundPaint_ = createBackgroundPaint();
+        inputHandlers_ = createInputHandlers();
+        inputHandler_ = inputHandlers_.get( DefaultInputHandler.class );
         keyListener_ = createKeyListener();
         model_ = model;
-        mouseInputHandlers_ = createMouseInputHandlers();
-        mouseInputHandler_ = mouseInputHandlers_.get( DefaultMouseInputHandler.class );
         mouseInputListener_ = createMouseInputListener();
         tableModelListener_ = null;
         tabletopView_ = null;
@@ -254,8 +254,6 @@ final class TableView
         model_.addTableModelListener( tableModelListener_ );
         addKeyListener( keyListener_ );
         addMouseListener( mouseInputListener_ );
-        // TODO: add a key listener so we can notify mouse handler to update focus/hover state based on key presses
-        // will probably rename "mouse handler" to "input handler"
         addMouseMotionListener( mouseInputListener_ );
 
         createTabletopView();
@@ -698,6 +696,25 @@ final class TableView
     }
 
     /**
+     * Creates the collection of input handler singletons for the view.
+     * 
+     * @return The collection of input handler singletons for the view; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    private Map<Class<? extends AbstractInputHandler>, AbstractInputHandler> createInputHandlers()
+    {
+        final Map<Class<? extends AbstractInputHandler>, AbstractInputHandler> inputHandlers = new HashMap<Class<? extends AbstractInputHandler>, AbstractInputHandler>();
+        inputHandlers.put( DefaultInputHandler.class, new DefaultInputHandler() );
+        inputHandlers.put( DragPrimedInputHandler.class, new DragPrimedInputHandler() );
+        inputHandlers.put( DraggingCardsInputHandler.class, new DraggingCardsInputHandler() );
+        inputHandlers.put( DraggingCardPileInputHandler.class, new DraggingCardPileInputHandler() );
+        inputHandlers.put( PanningTableInputHandler.class, new PanningTableInputHandler() );
+        inputHandlers.put( PopupMenuInputHandler.class, new PopupMenuInputHandler() );
+        return inputHandlers;
+    }
+
+    /**
      * Creates the key listener for the view.
      * 
      * @return The key listener for the view; never {@code null}.
@@ -709,34 +726,33 @@ final class TableView
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
+            public void keyPressed(
+                final KeyEvent event )
+            {
+                inputHandler_.keyPressed( event );
+            }
+
+            @Override
+            @SuppressWarnings( "synthetic-access" )
             public void keyReleased(
                 final KeyEvent event )
             {
                 if( event.getKeyCode() == KeyEvent.VK_CONTEXT_MENU )
                 {
-                    setMouseInputHandler( PopupMenuMouseInputHandler.class, null );
+                    setInputHandler( PopupMenuInputHandler.class, event );
                 }
+
+                inputHandler_.keyReleased( event );
+            }
+
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void keyTyped(
+                final KeyEvent event )
+            {
+                inputHandler_.keyTyped( event );
             }
         };
-    }
-
-    /**
-     * Creates the collection of mouse input handler singletons for the view.
-     * 
-     * @return The collection of mouse input handler singletons for the view;
-     *         never {@code null}.
-     */
-    /* @NonNull */
-    private Map<Class<? extends AbstractMouseInputHandler>, AbstractMouseInputHandler> createMouseInputHandlers()
-    {
-        final Map<Class<? extends AbstractMouseInputHandler>, AbstractMouseInputHandler> mouseInputHandlers = new HashMap<Class<? extends AbstractMouseInputHandler>, AbstractMouseInputHandler>();
-        mouseInputHandlers.put( DefaultMouseInputHandler.class, new DefaultMouseInputHandler() );
-        mouseInputHandlers.put( DragPrimedMouseInputHandler.class, new DragPrimedMouseInputHandler() );
-        mouseInputHandlers.put( DraggingCardsMouseInputHandler.class, new DraggingCardsMouseInputHandler() );
-        mouseInputHandlers.put( DraggingCardPileMouseInputHandler.class, new DraggingCardPileMouseInputHandler() );
-        mouseInputHandlers.put( PanningTableMouseInputHandler.class, new PanningTableMouseInputHandler() );
-        mouseInputHandlers.put( PopupMenuMouseInputHandler.class, new PopupMenuMouseInputHandler() );
-        return mouseInputHandlers;
     }
 
     /**
@@ -754,7 +770,7 @@ final class TableView
             public void mouseDragged(
                 final MouseEvent event )
             {
-                mouseInputHandler_.mouseDragged( event );
+                inputHandler_.mouseDragged( event );
             }
 
             @Override
@@ -762,7 +778,7 @@ final class TableView
             public void mouseMoved(
                 final MouseEvent event )
             {
-                mouseInputHandler_.mouseMoved( event );
+                inputHandler_.mouseMoved( event );
             }
 
             @Override
@@ -770,7 +786,7 @@ final class TableView
             public void mousePressed(
                 final MouseEvent event )
             {
-                mouseInputHandler_.mousePressed( event );
+                inputHandler_.mousePressed( event );
             }
 
             @Override
@@ -778,7 +794,7 @@ final class TableView
             public void mouseReleased(
                 final MouseEvent event )
             {
-                mouseInputHandler_.mouseReleased( event );
+                inputHandler_.mouseReleased( event );
             }
         };
     }
@@ -1117,28 +1133,27 @@ final class TableView
     }
 
     /**
-     * Sets the current mouse input handler
+     * Sets the current input handler
      * 
      * @param handlerClass
-     *        The class of the mouse input handler to activate; must not be
+     *        The class of the input handler to activate; must not be
      *        {@code null}.
      * @param event
-     *        The mouse event that triggered activation of the mouse input
-     *        handler; may be {@code null} if no mouse event triggered the
-     *        activation.
+     *        The input event that triggered activation of the input handler;
+     *        may be {@code null} if no input event triggered the activation.
      */
-    private void setMouseInputHandler(
+    private void setInputHandler(
         /* @NonNUll */
-        final Class<? extends AbstractMouseInputHandler> handlerClass,
+        final Class<? extends AbstractInputHandler> handlerClass,
         /* @Nullable */
-        final MouseEvent event )
+        final InputEvent event )
     {
         assert handlerClass != null;
 
-        mouseInputHandler_.deactivate();
-        mouseInputHandler_ = mouseInputHandlers_.get( handlerClass );
-        assert mouseInputHandler_ != null;
-        mouseInputHandler_.activate( event );
+        inputHandler_.deactivate();
+        inputHandler_ = inputHandlers_.get( handlerClass );
+        assert inputHandler_ != null;
+        inputHandler_.activate( event );
     }
 
     /**
@@ -1155,7 +1170,7 @@ final class TableView
     // ======================================================================
 
     /**
-     * Superclass for all mouse input handlers.
+     * Superclass for all input handlers.
      * 
      * <p>
      * Instances of this class represent the State participant of the State
@@ -1163,18 +1178,18 @@ final class TableView
      * </p>
      */
     @Immutable
-    private abstract class AbstractMouseInputHandler
+    private abstract class AbstractInputHandler
         extends MouseInputAdapter
+        implements KeyListener
     {
         // ==================================================================
         // Constructors
         // ==================================================================
 
         /**
-         * Initializes a new instance of the {@code AbstractMouseInputHandler}
-         * class.
+         * Initializes a new instance of the {@code AbstractInputHandler} class.
          */
-        protected AbstractMouseInputHandler()
+        protected AbstractInputHandler()
         {
         }
 
@@ -1186,16 +1201,21 @@ final class TableView
         /**
          * Activates this handler.
          * 
+         * <p>
+         * This implementation does nothing. Subclasses may override and are not
+         * required to call the superclass implementation.
+         * </p>
+         * 
          * @param event
-         *        The mouse event that triggered activation of this handler; may
-         *        be {@code null} if no mouse event triggered the activation.
+         *        The input event that triggered activation of this handler; may
+         *        be {@code null} if no input event triggered the activation.
          */
         void activate(
-            /* @NonNull */
+            /* @Nullable */
             @SuppressWarnings( "unused" )
-            final MouseEvent event )
+            final InputEvent event )
         {
-            // default implementation does nothing
+            // do nothing
         }
 
         /**
@@ -1243,19 +1263,25 @@ final class TableView
 
         /**
          * Deactivates this handler.
+         * 
+         * <p>
+         * This implementation does nothing. Subclasses may override and are not
+         * required to call the superclass implementation.
+         * </p>
          */
         void deactivate()
         {
-            // default implementation does nothing
+            // do nothing
         }
 
         /**
          * Gets the mouse location in table coordinates associated with the
-         * specified mouse event or the current mouse location if no mouse event
-         * is available.
+         * specified input event or the current mouse location if the input
+         * event does not include the mouse location or no input event is
+         * available.
          * 
          * @param event
-         *        The mouse event; may be {@code null} if no mouse event is
+         *        The input event; may be {@code null} if no input event is
          *        available.
          * 
          * @return The mouse location in table coordinates; never {@code null}.
@@ -1264,16 +1290,58 @@ final class TableView
         @SuppressWarnings( "synthetic-access" )
         protected final Point getMouseLocation(
             /* @Nullable */
-            final MouseEvent event )
+            final InputEvent event )
         {
-            if( event != null )
+            if( event instanceof MouseEvent )
             {
-                final Point location = event.getPoint();
+                final Point location = ((MouseEvent)event).getPoint();
                 convertPointToTable( location );
                 return location;
             }
 
             return TableView.this.getMouseLocation();
+        }
+
+        /**
+         * This implementation does nothing. Subclasses may override and are not
+         * required to call the superclass implementation.
+         * 
+         * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+         */
+        @Override
+        public void keyPressed(
+            @SuppressWarnings( "unused" )
+            final KeyEvent event )
+        {
+            // do nothing
+        }
+
+        /**
+         * This implementation does nothing. Subclasses may override and are not
+         * required to call the superclass implementation.
+         * 
+         * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+         */
+        @Override
+        public void keyReleased(
+            @SuppressWarnings( "unused" )
+            final KeyEvent event )
+        {
+            // do nothing
+        }
+
+        /**
+         * This implementation does nothing. Subclasses may override and are not
+         * required to call the superclass implementation.
+         * 
+         * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+         */
+        @Override
+        public void keyTyped(
+            @SuppressWarnings( "unused" )
+            final KeyEvent event )
+        {
+            // do nothing
         }
 
         /**
@@ -1292,21 +1360,20 @@ final class TableView
     }
 
     /**
-     * The default mouse input handler.
+     * The default input handler.
      */
     @Immutable
-    private final class DefaultMouseInputHandler
-        extends AbstractMouseInputHandler
+    private final class DefaultInputHandler
+        extends AbstractInputHandler
     {
         // ==================================================================
         // Constructors
         // ==================================================================
 
         /**
-         * Initializes a new instance of the {@code DefaultMouseInputHandler}
-         * class.
+         * Initializes a new instance of the {@code DefaultInputHandler} class.
          */
-        DefaultMouseInputHandler()
+        DefaultInputHandler()
         {
         }
 
@@ -1316,14 +1383,34 @@ final class TableView
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#activate(java.awt.event.MouseEvent)
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractInputHandler#activate(java.awt.event.InputEvent)
          */
         @Override
         void activate(
-            final MouseEvent event )
+            final InputEvent event )
         {
             updateHover( event );
             updateCursor( event );
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractInputHandler#keyPressed(java.awt.event.KeyEvent)
+         */
+        @Override
+        public void keyPressed(
+            final KeyEvent event )
+        {
+            updateHover( event );
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractInputHandler#keyReleased(java.awt.event.KeyEvent)
+         */
+        @Override
+        public void keyReleased(
+            final KeyEvent event )
+        {
+            updateHover( event );
         }
 
         /*
@@ -1349,18 +1436,18 @@ final class TableView
 
             if( event.isPopupTrigger() )
             {
-                setMouseInputHandler( PopupMenuMouseInputHandler.class, event );
+                setInputHandler( PopupMenuInputHandler.class, event );
             }
             else if( SwingUtilities.isLeftMouseButton( event ) )
             {
                 if( model_.getFocusedComponent() != null )
                 {
-                    setMouseInputHandler( DragPrimedMouseInputHandler.class, event );
+                    setInputHandler( DragPrimedInputHandler.class, event );
                 }
             }
             else if( SwingUtilities.isMiddleMouseButton( event ) )
             {
-                setMouseInputHandler( PanningTableMouseInputHandler.class, event );
+                setInputHandler( PanningTableInputHandler.class, event );
             }
         }
 
@@ -1374,7 +1461,7 @@ final class TableView
         {
             if( event.isPopupTrigger() )
             {
-                setMouseInputHandler( PopupMenuMouseInputHandler.class, event );
+                setInputHandler( PopupMenuInputHandler.class, event );
             }
 
             super.mouseReleased( event );
@@ -1384,13 +1471,13 @@ final class TableView
          * Updates the mouse cursor.
          * 
          * @param event
-         *        The mouse event; may be {@code null} if no mouse event is
+         *        The input event; may be {@code null} if no input event is
          *        available.
          */
         @SuppressWarnings( "synthetic-access" )
         private void updateCursor(
             /* @Nullable */
-            final MouseEvent event )
+            final InputEvent event )
         {
             final IComponent component = model_.getFocusableComponent( getMouseLocation( event ) );
             final Cursor newCursor;
@@ -1441,25 +1528,25 @@ final class TableView
          * Updates the hover.
          * 
          * @param event
-         *        The mouse event; may be {@code null} if no mouse event is
+         *        The input event; may be {@code null} if no input event is
          *        available.
          */
         @SuppressWarnings( "synthetic-access" )
         private void updateHover(
             /* @Nullable */
-            final MouseEvent event )
+            final InputEvent event )
         {
             model_.setHover( model_.getFocusableComponent( getMouseLocation( event ), createSearchVectorFromFocusedComponent( event ) ) );
         }
     }
 
     /**
-     * The mouse input handler that is active when a drag operation is primed
-     * but has not yet begun.
+     * The input handler that is active when a drag operation is primed but has
+     * not yet begun.
      */
     @NotThreadSafe
-    private final class DragPrimedMouseInputHandler
-        extends AbstractMouseInputHandler
+    private final class DragPrimedInputHandler
+        extends AbstractInputHandler
     {
         // ==================================================================
         // Fields
@@ -1483,10 +1570,10 @@ final class TableView
         // ==================================================================
 
         /**
-         * Initializes a new instance of the {@code DragPrimedMouseInputHandler}
+         * Initializes a new instance of the {@code DragPrimedInputHandler}
          * class.
          */
-        DragPrimedMouseInputHandler()
+        DragPrimedInputHandler()
         {
             originalLocation_ = new Point( 0, 0 );
         }
@@ -1497,11 +1584,11 @@ final class TableView
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#activate(java.awt.event.MouseEvent)
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractInputHandler#activate(java.awt.event.InputEvent)
          */
         @Override
         void activate(
-            final MouseEvent event )
+            final InputEvent event )
         {
             originalLocation_.setLocation( getMouseLocation( event ) );
         }
@@ -1528,7 +1615,7 @@ final class TableView
         }
 
         /*
-         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#deactivate()
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractInputHandler#deactivate()
          */
         @Override
         void deactivate()
@@ -1553,21 +1640,21 @@ final class TableView
                     {
                         if( (event.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK )
                         {
-                            setMouseInputHandler( DraggingCardPileMouseInputHandler.class, event );
+                            setInputHandler( DraggingCardPileInputHandler.class, event );
                         }
                         else
                         {
-                            setMouseInputHandler( DraggingCardsMouseInputHandler.class, event );
+                            setInputHandler( DraggingCardsInputHandler.class, event );
                         }
                     }
                     else
                     {
-                        setMouseInputHandler( DefaultMouseInputHandler.class, event );
+                        setInputHandler( DefaultInputHandler.class, event );
                     }
                 }
                 else
                 {
-                    setMouseInputHandler( DefaultMouseInputHandler.class, event );
+                    setInputHandler( DefaultInputHandler.class, event );
                 }
             }
         }
@@ -1587,7 +1674,7 @@ final class TableView
 
             if( SwingUtilities.isLeftMouseButton( event ) )
             {
-                setMouseInputHandler( DefaultMouseInputHandler.class, null );
+                setInputHandler( DefaultInputHandler.class, null );
             }
 
             super.mouseReleased( event );
@@ -1614,11 +1701,11 @@ final class TableView
     }
 
     /**
-     * The mouse input handler that is active when a card pile is being dragged.
+     * The input handler that is active when a card pile is being dragged.
      */
     @NotThreadSafe
-    private final class DraggingCardPileMouseInputHandler
-        extends AbstractMouseInputHandler
+    private final class DraggingCardPileInputHandler
+        extends AbstractInputHandler
     {
         // ==================================================================
         // Fields
@@ -1640,9 +1727,9 @@ final class TableView
 
         /**
          * Initializes a new instance of the
-         * {@code DraggingCardPileMouseInputHandler} class.
+         * {@code DraggingCardPileInputHandler} class.
          */
-        DraggingCardPileMouseInputHandler()
+        DraggingCardPileInputHandler()
         {
             draggedCardPileLocationOffset_ = new Dimension( 0, 0 );
         }
@@ -1653,12 +1740,12 @@ final class TableView
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#activate(java.awt.event.MouseEvent)
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractInputHandler#activate(java.awt.event.InputEvent)
          */
         @Override
         @SuppressWarnings( "synthetic-access" )
         void activate(
-            final MouseEvent event )
+            final InputEvent event )
         {
             draggedCardPile_ = getFocusedContainer();
             if( draggedCardPile_ != null )
@@ -1669,12 +1756,12 @@ final class TableView
             }
             else
             {
-                setMouseInputHandler( DefaultMouseInputHandler.class, null );
+                setInputHandler( DefaultInputHandler.class, null );
             }
         }
 
         /*
-         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#deactivate()
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractInputHandler#deactivate()
          */
         @Override
         void deactivate()
@@ -1705,7 +1792,7 @@ final class TableView
         {
             if( SwingUtilities.isLeftMouseButton( event ) )
             {
-                setMouseInputHandler( DefaultMouseInputHandler.class, null );
+                setInputHandler( DefaultInputHandler.class, null );
             }
 
             super.mouseReleased( event );
@@ -1713,12 +1800,12 @@ final class TableView
     }
 
     /**
-     * The mouse input handler that is active when a collection of cards are
-     * being dragged.
+     * The input handler that is active when a collection of cards are being
+     * dragged.
      */
     @NotThreadSafe
-    private final class DraggingCardsMouseInputHandler
-        extends AbstractMouseInputHandler
+    private final class DraggingCardsInputHandler
+        extends AbstractInputHandler
     {
         // ==================================================================
         // Fields
@@ -1741,10 +1828,10 @@ final class TableView
         // ==================================================================
 
         /**
-         * Initializes a new instance of the
-         * {@code DraggingCardsMouseInputHandler} class.
+         * Initializes a new instance of the {@code DraggingCardsInputHandler}
+         * class.
          */
-        DraggingCardsMouseInputHandler()
+        DraggingCardsInputHandler()
         {
             mobileCardPileOriginOffset_ = new Dimension( 0, 0 );
         }
@@ -1755,12 +1842,12 @@ final class TableView
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#activate(java.awt.event.MouseEvent)
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractInputHandler#activate(java.awt.event.InputEvent)
          */
         @Override
         @SuppressWarnings( "synthetic-access" )
         void activate(
-            final MouseEvent event )
+            final InputEvent event )
         {
             sourceCardPile_ = getFocusedContainer();
             if( sourceCardPile_ != null )
@@ -1788,17 +1875,17 @@ final class TableView
                 }
                 else
                 {
-                    setMouseInputHandler( DefaultMouseInputHandler.class, null );
+                    setInputHandler( DefaultInputHandler.class, null );
                 }
             }
             else
             {
-                setMouseInputHandler( DefaultMouseInputHandler.class, null );
+                setInputHandler( DefaultInputHandler.class, null );
             }
         }
 
         /*
-         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#deactivate()
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractInputHandler#deactivate()
          */
         @Override
         void deactivate()
@@ -1839,7 +1926,7 @@ final class TableView
                 model_.setHover( targetCardPile );
                 model_.setFocus( targetCardPile );
 
-                setMouseInputHandler( DefaultMouseInputHandler.class, null );
+                setInputHandler( DefaultInputHandler.class, null );
             }
 
             super.mouseReleased( event );
@@ -1847,11 +1934,11 @@ final class TableView
     }
 
     /**
-     * The mouse input handler that is active when the table is being panned.
+     * The input handler that is active when the table is being panned.
      */
     @NotThreadSafe
-    private final class PanningTableMouseInputHandler
-        extends AbstractMouseInputHandler
+    private final class PanningTableInputHandler
+        extends AbstractInputHandler
     {
         // ==================================================================
         // Fields
@@ -1872,10 +1959,10 @@ final class TableView
         // ==================================================================
 
         /**
-         * Initializes a new instance of the
-         * {@code PanningTableMouseInputHandler} class.
+         * Initializes a new instance of the {@code PanningTableInputHandler}
+         * class.
          */
-        PanningTableMouseInputHandler()
+        PanningTableInputHandler()
         {
             originalLocation_ = new Point( 0, 0 );
             originalOriginOffset_ = new Dimension( 0, 0 );
@@ -1887,12 +1974,12 @@ final class TableView
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#activate(java.awt.event.MouseEvent)
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractInputHandler#activate(java.awt.event.InputEvent)
          */
         @Override
         @SuppressWarnings( "synthetic-access" )
         void activate(
-            final MouseEvent event )
+            final InputEvent event )
         {
             final Point location = getMouseLocation( event );
             convertPointFromTable( location );
@@ -1903,7 +1990,7 @@ final class TableView
         }
 
         /*
-         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#deactivate()
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractInputHandler#deactivate()
          */
         @Override
         void deactivate()
@@ -1936,7 +2023,7 @@ final class TableView
         {
             if( SwingUtilities.isMiddleMouseButton( event ) )
             {
-                setMouseInputHandler( DefaultMouseInputHandler.class, null );
+                setInputHandler( DefaultInputHandler.class, null );
             }
 
             super.mouseReleased( event );
@@ -1944,11 +2031,11 @@ final class TableView
     }
 
     /**
-     * The mouse input handler that is active when a popup menu is visible.
+     * The input handler that is active when a popup menu is visible.
      */
     @Immutable
-    private final class PopupMenuMouseInputHandler
-        extends AbstractMouseInputHandler
+    private final class PopupMenuInputHandler
+        extends AbstractInputHandler
         implements PopupMenuListener
     {
         // ==================================================================
@@ -1956,10 +2043,10 @@ final class TableView
         // ==================================================================
 
         /**
-         * Initializes a new instance of the {@code PopupMenuMouseInputHandler}
+         * Initializes a new instance of the {@code PopupMenuInputHandler}
          * class.
          */
-        PopupMenuMouseInputHandler()
+        PopupMenuInputHandler()
         {
         }
 
@@ -1969,12 +2056,12 @@ final class TableView
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#activate(java.awt.event.MouseEvent)
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractInputHandler#activate(java.awt.event.InputEvent)
          */
         @Override
         @SuppressWarnings( "synthetic-access" )
         void activate(
-            final MouseEvent event )
+            final InputEvent event )
         {
             final Point location = getMouseLocation( event );
             final JPopupMenu menu = getPopupMenu( location );
@@ -2018,7 +2105,7 @@ final class TableView
             @SuppressWarnings( "unused" )
             final PopupMenuEvent event )
         {
-            setMouseInputHandler( DefaultMouseInputHandler.class, null );
+            setInputHandler( DefaultInputHandler.class, null );
         }
 
         /*
@@ -2030,7 +2117,7 @@ final class TableView
             @SuppressWarnings( "unused" )
             final PopupMenuEvent event )
         {
-            setMouseInputHandler( DefaultMouseInputHandler.class, null );
+            setInputHandler( DefaultInputHandler.class, null );
         }
 
         /*
