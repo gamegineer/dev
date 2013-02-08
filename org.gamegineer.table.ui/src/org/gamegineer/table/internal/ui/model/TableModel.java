@@ -388,14 +388,13 @@ public final class TableModel
     }
 
     /**
-     * Gets the focusable component in the table at the specified location.
+     * Gets the top-most focusable component at the specified location.
      * 
      * @param location
      *        The location in table coordinates; must not be {@code null}.
      * 
-     * @return The focusable component in the table at the specified location or
-     *         {@code null} if no focusable component in the table is at that
-     *         location.
+     * @return The top-most focusable component at the specified location or
+     *         {@code null} if no focusable component is at that location.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code location} is {@code null}.
@@ -405,17 +404,12 @@ public final class TableModel
         /* @NonNull */
         final Point location )
     {
-        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            return getFocusableComponent( location, IComponent.class );
-        }
+        return getFocusableComponent( location, null );
     }
 
     /**
-     * Gets the focusable component in the table at the specified location along
-     * the specified vector.
+     * Gets the focusable component at the specified location along the
+     * specified vector.
      * 
      * <p>
      * This method starts the search from the origin of the specified vector and
@@ -430,9 +424,8 @@ public final class TableModel
      *        The vector along which the search will proceed or {@code null} to
      *        return the top-most focusable component.
      * 
-     * @return The focusable component in the table at the specified location or
-     *         {@code null} if no focusable component in the table is at that
-     *         location.
+     * @return The focusable component at the specified location or {@code null}
+     *         if no focusable component is at that location.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code location} is {@code null}.
@@ -446,78 +439,44 @@ public final class TableModel
     {
         assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
 
-        // TODO: handle this case locally within this method; might be able to get rid of other overloads
-        if( (searchVector == null) || !searchVector.getOrigin().getBounds().contains( location ) )
-        {
-            return getFocusableComponent( location );
-        }
-
-        IComponent focusableComponent = null;
         synchronized( lock_ )
         {
-            final List<IComponent> components = table_.getComponents( location );
-            if( !components.isEmpty() )
-            {
-                final int originIndex = Collections.binarySearch( //
-                    components, //
-                    searchVector.getOrigin(), //
-                    new Comparator<IComponent>()
-                    {
-                        @Override
-                        public int compare(
-                            final IComponent o1,
-                            final IComponent o2 )
-                        {
-                            return o1.getPath().compareTo( o2.getPath() );
-                        }
-                    } );
-                if( (originIndex >= 0) && (originIndex < components.size()) )
-                {
-                    int index = originIndex;
-                    do
-                    {
-                        index = getNextSearchIndex( components, index, searchVector.getDirection() );
-                        if( index == originIndex )
-                        {
-                            focusableComponent = searchVector.getOrigin();
-                        }
-                        else
-                        {
-                            final ComponentModel componentModel = getComponentModel( components.get( index ) );
-                            if( (componentModel != null) && componentModel.isFocusable() )
-                            {
-                                focusableComponent = componentModel.getComponent();
-                            }
-                        }
-
-                    } while( focusableComponent == null );
-                }
-            }
+            return getFocusableComponent( location, searchVector, IComponent.class );
         }
-
-        return focusableComponent;
     }
 
     /**
-     * Gets the focusable component in the table of the specified type at the
-     * specified location.
+     * Gets the focusable component of the specified type at the specified
+     * location along the specified vector.
+     * 
+     * <p>
+     * The contract of this method is identical to
+     * {@link #getFocusableComponent(Point, ComponentVector)} with the addition
+     * it will only return a focusable component of the specified type.
+     * </p>
      * 
      * @param <T>
      *        The component type.
      * 
      * @param location
      *        The location in table coordinates; must not be {@code null}.
+     * @param searchVector
+     *        The vector along which the search will proceed or {@code null} to
+     *        return the top-most focusable component of the specified type.
      * @param type
      *        The type of the component; must not be {@code null}.
      * 
-     * @return The focusable component in the table of the specified type at the
-     *         specified location or {@code null} if no focusable component in
-     *         the table of the specified type is at that location.
+     * @return The focusable component of the specified type at the specified
+     *         location or {@code null} if no focusable component of the
+     *         specified type is at that location.
      */
+    @GuardedBy( "lock_" )
     /* @Nullable */
     private <T extends IComponent> T getFocusableComponent(
         /* @NonNull */
         final Point location,
+        /* @Nullable */
+        final ComponentVector searchVector,
         /* @NonNull */
         final Class<T> type )
     {
@@ -525,32 +484,64 @@ public final class TableModel
         assert type != null;
         assert Thread.holdsLock( lock_ );
 
-        final IComponent component = table_.getComponent( location );
-        if( component == null )
-        {
-            return null;
-        }
+        T focusableComponent = null;
 
-        for( ComponentModel componentModel = getComponentModel( component.getPath() ); (componentModel != null) && (componentModel.getComponent().getContainer() != null); componentModel = getComponentModel( componentModel.getComponent().getContainer().getPath() ) )
+        final List<IComponent> components = table_.getComponents( location );
+        if( !components.isEmpty() )
         {
-            if( componentModel.isFocusable() && type.isInstance( componentModel.getComponent() ) )
+            final IComponent searchOrigin;
+            final ComponentAxis searchDirection;
+            if( (searchVector != null) && searchVector.getOrigin().getBounds().contains( location ) )
             {
-                return type.cast( componentModel.getComponent() );
+                searchOrigin = searchVector.getOrigin();
+                searchDirection = searchVector.getDirection();
+            }
+            else
+            {
+                searchOrigin = components.get( 0 );
+                searchDirection = ComponentAxis.PRECEDING;
+            }
+
+            final int originIndex = Collections.binarySearch( //
+                components, //
+                searchOrigin, //
+                new Comparator<IComponent>()
+                {
+                    @Override
+                    public int compare(
+                        final IComponent o1,
+                        final IComponent o2 )
+                    {
+                        return o1.getPath().compareTo( o2.getPath() );
+                    }
+                } );
+            if( originIndex >= 0 )
+            {
+                int index = originIndex;
+                do
+                {
+                    index = getNextSearchIndex( components, index, searchDirection );
+                    final ComponentModel componentModel = getComponentModel( components.get( index ) );
+                    if( (componentModel != null) && componentModel.isFocusable() && type.isInstance( componentModel.getComponent() ) )
+                    {
+                        focusableComponent = type.cast( componentModel.getComponent() );
+                    }
+
+                } while( (focusableComponent == null) && (index != originIndex) );
             }
         }
 
-        return null;
+        return focusableComponent;
     }
 
     /**
-     * Gets the focusable container in the table at the specified location.
+     * Gets the top-most focusable container at the specified location.
      * 
      * @param location
      *        The location in table coordinates; must not be {@code null}.
      * 
-     * @return The focusable container in the table at the specified location or
-     *         {@code null} if no focusable container in the table is at that
-     *         location.
+     * @return The top-most focusable container at the specified location or
+     *         {@code null} if no focusable container is at that location.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code location} is {@code null}.
@@ -564,7 +555,7 @@ public final class TableModel
 
         synchronized( lock_ )
         {
-            return getFocusableComponent( location, IContainer.class );
+            return getFocusableComponent( location, null, IContainer.class );
         }
     }
 
