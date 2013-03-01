@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,11 +32,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
+import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
+import org.gamegineer.table.core.IDragContext;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.internal.core.strategies.InternalComponentStrategies;
 
@@ -68,6 +71,13 @@ final class Table
     /** The path to the tabletop component. */
     private static final ComponentPath TABLETOP_PATH = new ComponentPath( null, 0 );
 
+    /**
+     * The drag context for the active drag-and-drop operation or {@code null}
+     * if a drag-and-drop operation is not active.
+     */
+    @GuardedBy( "getLock()" )
+    private IDragContext dragContext_;
+
     /** The table environment. */
     private final TableEnvironment tableEnvironment_;
 
@@ -91,6 +101,7 @@ final class Table
     {
         assert tableEnvironment != null;
 
+        dragContext_ = null;
         tableEnvironment_ = tableEnvironment;
         tabletop_ = new Container( tableEnvironment, InternalComponentStrategies.TABLETOP );
 
@@ -111,6 +122,40 @@ final class Table
     // ======================================================================
 
     /*
+     * @see org.gamegineer.table.core.ITable#beginDrag(java.awt.Point, org.gamegineer.table.core.IComponent)
+     */
+    @Override
+    public IDragContext beginDrag(
+        final Point location,
+        final IComponent component )
+    {
+        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
+        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
+
+        getLock().lock();
+        try
+        {
+            assertArgumentLegal( component.getContainer() != null, "component", NonNlsMessages.Table_beginDrag_component_noContainer ); //$NON-NLS-1$
+            assertArgumentLegal( component.getTable() == this, "component", NonNlsMessages.Table_beginDrag_component_notExists ); //$NON-NLS-1$
+            assertStateLegal( !isDragActive(), NonNlsMessages.Table_beginDrag_dragActive );
+
+            final Point originalOrigin = component.getOrigin();
+            final Container oldParent = (Container)component.getContainer();
+            final Container newParent = new Container( tableEnvironment_, oldParent.getStrategy() );
+            oldParent.removeComponent( component );
+            newParent.addComponent( component );
+            tabletop_.addComponent( newParent );
+
+            dragContext_ = new DragContext( this, new Point( location ), originalOrigin, oldParent, newParent );
+            return dragContext_;
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+    }
+
+    /*
      * @see org.gamegineer.common.core.util.memento.IMementoOriginator#createMemento()
      */
     @Override
@@ -129,6 +174,21 @@ final class Table
         }
 
         return Collections.unmodifiableMap( memento );
+    }
+
+    /**
+     * Ends the active drag-and-drop operation.
+     * 
+     * <p>
+     * This method does nothing if a drag-and-drop operation is not active.
+     * </p>
+     */
+    @GuardedBy( "getLock()" )
+    void endDrag()
+    {
+        assert getLock().isHeldByCurrentThread();
+
+        dragContext_ = null;
     }
 
     /**
@@ -283,6 +343,20 @@ final class Table
     public IContainer getTabletop()
     {
         return tabletop_;
+    }
+
+    /**
+     * Indicates a drag-and-drop operation is active.
+     * 
+     * @return {@code true} if a drag-and-drop operation is active; otherwise
+     *         {@code false}.
+     */
+    @GuardedBy( "getLock()" )
+    boolean isDragActive()
+    {
+        assert getLock().isHeldByCurrentThread();
+
+        return dragContext_ != null;
     }
 
     /*

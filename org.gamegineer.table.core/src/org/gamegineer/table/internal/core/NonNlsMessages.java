@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -167,6 +167,11 @@ final class NonNlsMessages
     /** The container layout identifier is missing. */
     public static String ContainerLayoutRegistryExtensionPointAdapter_createObject_missingId;
 
+    // --- DragContext ------------------------------------------------------
+
+    /** A drag-and-drop operation is not active. */
+    public static String DragContext_dragNotActive;
+
     // --- MementoUtils -----------------------------------------------------
 
     /** The required attribute is absent. */
@@ -182,6 +187,15 @@ final class NonNlsMessages
     public static String MementoUtils_memento_wrongType;
 
     // --- Table ------------------------------------------------------------
+
+    /** The component has no container. */
+    public static String Table_beginDrag_component_noContainer;
+
+    /** The component does not exist in the table. */
+    public static String Table_beginDrag_component_notExists;
+
+    /** A drag-and-drop operation is active. */
+    public static String Table_beginDrag_dragActive;
 
     /** The component path does not exist in the table. */
     public static String Table_getComponent_path_notExists;
