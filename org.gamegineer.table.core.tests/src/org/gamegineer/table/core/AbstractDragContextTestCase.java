@@ -61,7 +61,6 @@ public abstract class AbstractDragContextTestCase
      * The original index of the component being dragged within the source
      * container.
      */
-    @SuppressWarnings( "unused" )
     private int originalDragComponentIndex_;
 
     /** The original location of the component being dragged. */
@@ -227,8 +226,7 @@ public abstract class AbstractDragContextTestCase
 
         assertSame( sourceContainer_, dragComponent_.getContainer() );
 
-        // FIXME: Current table API doesn't allow for insertion of a component at an arbitrary index within a container.
-        //assertEquals( originalDragComponentIndex_, dragComponent_.getPath().getIndex() );
+        assertEquals( originalDragComponentIndex_, dragComponent_.getPath().getIndex() );
     }
 
     /**

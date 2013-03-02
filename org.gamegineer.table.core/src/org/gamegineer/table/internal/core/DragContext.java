@@ -54,6 +54,12 @@ final class DragContext
      */
     private final Container mobileContainer_;
 
+    /**
+     * The original index of the component being dragged within the source
+     * container.
+     */
+    private final int originalDragComponentIndex_;
+
     /** The original origin of the component being dragged in table coordinates. */
     private final Point originalDragComponentOrigin_;
 
@@ -81,6 +87,9 @@ final class DragContext
      *        The initial drag location in table coordinates; must not be
      *        {@code null}. No copy is made of this value and it must not be
      *        modified after calling this method.
+     * @param originalDragComponentIndex
+     *        The original index of the component being dragged within the
+     *        source container.
      * @param originalDragComponentOrigin
      *        The original origin of the component being dragged in table
      *        coordinates; must not be {@code null}. No copy is made of this
@@ -97,6 +106,7 @@ final class DragContext
         final Table table,
         /* @NonNull */
         final Point initialLocation,
+        final int originalDragComponentIndex,
         /* @NonNull */
         final Point originalDragComponentOrigin,
         /* @NonNull */
@@ -112,6 +122,7 @@ final class DragContext
 
         initialLocation_ = initialLocation;
         mobileContainer_ = mobileContainer;
+        originalDragComponentIndex_ = originalDragComponentIndex;
         originalDragComponentOrigin_ = originalDragComponentOrigin;
         originalMobileContainerOrigin_ = mobileContainer.getOrigin();
         sourceContainer_ = sourceContainer;
@@ -153,6 +164,7 @@ final class DragContext
         assert component != null;
         assert table.getTableEnvironment().getLock().isHeldByCurrentThread();
 
+        final int originalDragComponentIndex = component.getPath().getIndex();
         final Point originalDragComponentOrigin = component.getOrigin();
         final Container sourceContainer = component.getContainer();
         sourceContainer.removeComponent( component );
@@ -161,7 +173,7 @@ final class DragContext
         mobileContainer.addComponent( component );
         table.getTabletop().addComponent( mobileContainer );
 
-        return new DragContext( table, new Point( location ), originalDragComponentOrigin, sourceContainer, mobileContainer );
+        return new DragContext( table, new Point( location ), originalDragComponentIndex, originalDragComponentOrigin, sourceContainer, mobileContainer );
     }
 
     /*
@@ -179,7 +191,7 @@ final class DragContext
             final IComponent dragComponent = mobileContainer_.removeTopComponent();
             table_.getTabletop().removeComponent( mobileContainer_ );
             dragComponent.setOrigin( originalDragComponentOrigin_ );
-            sourceContainer_.addComponent( dragComponent );
+            sourceContainer_.addComponent( dragComponent, originalDragComponentIndex_ );
 
             table_.endDrag();
         }
