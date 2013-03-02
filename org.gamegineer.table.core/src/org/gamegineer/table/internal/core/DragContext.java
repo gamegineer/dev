@@ -71,8 +71,6 @@ final class DragContext
     // Constructors
     // ======================================================================
 
-    // TODO: consider replacing ctor with a factory method and move Table.beginDrag() logic to it
-
     /**
      * Initializes a new instance of the {@code DragContext} class.
      * 
@@ -81,10 +79,12 @@ final class DragContext
      *        {@code null}.
      * @param initialLocation
      *        The initial drag location in table coordinates; must not be
-     *        {@code null}.
+     *        {@code null}. No copy is made of this value and it must not be
+     *        modified after calling this method.
      * @param originalDragComponentOrigin
      *        The original origin of the component being dragged in table
-     *        coordinates; must not be {@code null}.
+     *        coordinates; must not be {@code null}. No copy is made of this
+     *        value and it must not be modified after calling this method.
      * @param sourceContainer
      *        The container that originally held the components being dragged;
      *        must not be {@code null}.
@@ -92,7 +92,7 @@ final class DragContext
      *        The container used to hold the components being dragged during the
      *        drag-and-drop operation; must not be {@code null}.
      */
-    DragContext(
+    private DragContext(
         /* @NonNull */
         final Table table,
         /* @NonNull */
@@ -122,6 +122,47 @@ final class DragContext
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Begins a drag-and-drop operation.
+     * 
+     * @param table
+     *        The table associated with the drag-and-drop operation; must not be
+     *        {@code null}.
+     * @param location
+     *        The beginning drag location in table coordinates; must not be
+     *        {@code null}.
+     * @param component
+     *        The component to be dragged; must not be {@code null}.
+     * 
+     * @return A new instance of the {@code DragContext} class; never
+     *         {@code null}.
+     */
+    @GuardedBy( "table.getTableEnvironment().getLock()" )
+    /* @NonNull */
+    static DragContext beginDrag(
+        /* @NonNull */
+        final Table table,
+        /* @NonNull */
+        final Point location,
+        /* @NonNull */
+        final Component component )
+    {
+        assert table != null;
+        assert location != null;
+        assert component != null;
+        assert table.getTableEnvironment().getLock().isHeldByCurrentThread();
+
+        final Point originalDragComponentOrigin = component.getOrigin();
+        final Container sourceContainer = component.getContainer();
+        sourceContainer.removeComponent( component );
+
+        final Container mobileContainer = new Container( table.getTableEnvironment(), sourceContainer.getStrategy() );
+        mobileContainer.addComponent( component );
+        table.getTabletop().addComponent( mobileContainer );
+
+        return new DragContext( table, new Point( location ), originalDragComponentOrigin, sourceContainer, mobileContainer );
+    }
 
     /*
      * @see org.gamegineer.table.core.IDragContext#cancel()

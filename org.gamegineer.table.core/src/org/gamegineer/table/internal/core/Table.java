@@ -139,14 +139,7 @@ final class Table
             assertArgumentLegal( component.getTable() == this, "component", NonNlsMessages.Table_beginDrag_component_notExists ); //$NON-NLS-1$
             assertStateLegal( !isDragActive(), NonNlsMessages.Table_beginDrag_dragActive );
 
-            final Point originalOrigin = component.getOrigin();
-            final Container oldParent = (Container)component.getContainer();
-            final Container newParent = new Container( tableEnvironment_, oldParent.getStrategy() );
-            oldParent.removeComponent( component );
-            newParent.addComponent( component );
-            tabletop_.addComponent( newParent );
-
-            dragContext_ = new DragContext( this, new Point( location ), originalOrigin, oldParent, newParent );
+            dragContext_ = DragContext.beginDrag( this, location, (Component)component );
             return dragContext_;
         }
         finally
