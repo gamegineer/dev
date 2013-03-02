@@ -1,6 +1,6 @@
 /*
  * IContainer.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -56,6 +56,29 @@ public interface IContainer
         IComponent component );
 
     /**
+     * Adds the specified component to this container at the specified index.
+     * 
+     * @param component
+     *        The component; must not be {@code null}.
+     * @param index
+     *        The index at which the component will be added.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code component} is already contained in a container or if
+     *         {@code component} was created by a table environment other than
+     *         the table environment that created this container.
+     * @throws java.lang.IndexOutOfBoundsException
+     *         If {@code index} is out of range (
+     *         {@code index < 0 || index > getComponentCount()}).
+     * @throws java.lang.NullPointerException
+     *         If {@code component} is {@code null}.
+     */
+    public void addComponent(
+        /* @NonNull */
+        IComponent component,
+        int index );
+
+    /**
      * Adds the specified collection of components to the top of this container.
      * 
      * @param components
@@ -74,6 +97,34 @@ public interface IContainer
     public void addComponents(
         /* @NonNull */
         List<IComponent> components );
+
+    /**
+     * Adds the specified collection of components to this container at the
+     * specified index.
+     * 
+     * @param components
+     *        The collection of components to be added to this container; must
+     *        not be {@code null}. The components are added to the this
+     *        container at the specified index in the order they appear in the
+     *        collection.
+     * @param index
+     *        The index at which the components will be added.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code components} contains a {@code null} element; if any
+     *         component is already contained in a container; or if any
+     *         component was created by a table environment other than the table
+     *         environment that created this container.
+     * @throws java.lang.IndexOutOfBoundsException
+     *         If {@code index} is out of range (
+     *         {@code index < 0 || index > getComponentCount()}).
+     * @throws java.lang.NullPointerException
+     *         If {@code components} is {@code null}.
+     */
+    public void addComponents(
+        /* @NonNull */
+        List<IComponent> components,
+        int index );
 
     /**
      * Adds the specified container listener to this container.

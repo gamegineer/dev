@@ -1,6 +1,6 @@
 /*
  * AbstractContainerTestCase.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -218,11 +218,11 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IContainer#addComponent} method adds a component to
-     * the container.
+     * Ensures the {@link IContainer#addComponent(IComponent)} method adds a
+     * component to the top of the container.
      */
     @Test
-    public void testAddComponent_AddsComponent()
+    public void testAddComponent_AddsComponentToTop()
     {
         final IComponent component = createUniqueComponent();
 
@@ -234,9 +234,9 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IContainer#addComponent} method throws an exception
-     * when passed an illegal component that was created by a different table
-     * environment.
+     * Ensures the {@link IContainer#addComponent(IComponent)} method throws an
+     * exception when passed an illegal component that was created by a
+     * different table environment.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddComponent_Component_Illegal_CreatedByDifferentTableEnvironment()
@@ -248,8 +248,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IContainer#addComponent} method throws an exception
-     * when passed an illegal component that is already contained in a
+     * Ensures the {@link IContainer#addComponent(IComponent)} method throws an
+     * exception when passed an illegal component that is already contained in a
      * container.
      */
     @Test( expected = IllegalArgumentException.class )
@@ -263,8 +263,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IContainer#addComponent} method throws an exception
-     * when passed a {@code null} component.
+     * Ensures the {@link IContainer#addComponent(IComponent)} method throws an
+     * exception when passed a {@code null} component.
      */
     @Test( expected = NullPointerException.class )
     public void testAddComponent_Component_Null()
@@ -273,8 +273,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IContainer#addComponent} method changes the location
-     * the component to reflect the container location.
+     * Ensures the {@link IContainer#addComponent(IComponent)} method changes
+     * the location the component to reflect the container location.
      */
     @Test
     public void testAddComponent_ChangesComponentLocation()
@@ -291,8 +291,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IContainer#addComponent} method changes the container
-     * bounds.
+     * Ensures the {@link IContainer#addComponent(IComponent)} method changes
+     * the container bounds.
      */
     @Test( timeout = 1000 )
     public void testAddComponent_ChangesContainerBounds()
@@ -315,12 +315,14 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IContainer#addComponent} method fires a component
-     * added event.
+     * Ensures the {@link IContainer#addComponent(IComponent)} method fires a
+     * component added event.
      */
     @Test
     public void testAddComponent_FiresComponentAddedEvent()
     {
+        getContainer().addComponent( createUniqueComponent() );
+        getContainer().addComponent( createUniqueComponent() );
         final IComponent component = createUniqueComponent();
         final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
         final Capture<ContainerContentChangedEvent> eventCapture = new Capture<ContainerContentChangedEvent>();
@@ -333,15 +335,162 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         mocksControl_.verify();
         assertSame( getContainer(), eventCapture.getValue().getContainer() );
         assertSame( component, eventCapture.getValue().getComponent() );
-        assertEquals( 0, eventCapture.getValue().getComponentIndex() );
+        assertEquals( 2, eventCapture.getValue().getComponentIndex() );
     }
 
     /**
-     * Ensures the {@link IContainer#addComponents} method adds components to
-     * the container.
+     * Ensures the {@link IContainer#addComponent(IComponent, int)} method adds
+     * a component to the container at the specified index.
      */
     @Test
-    public void testAddComponents_AddsComponents()
+    public void testAddComponentAtIndex_AddsComponentAtIndex()
+    {
+        final IComponent component1 = createUniqueComponent();
+        getContainer().addComponent( component1 );
+        final IComponent component2 = createUniqueComponent();
+        final IComponent component3 = createUniqueComponent();
+        getContainer().addComponent( component3 );
+        final List<IComponent> expectedValue = Arrays.asList( component1, component2, component3 );
+
+        getContainer().addComponent( component2, 1 );
+
+        assertEquals( expectedValue, getContainer().getComponents() );
+        assertSame( getContainer(), component2.getContainer() );
+    }
+
+    /**
+     * Ensures the {@link IContainer#addComponent(IComponent, int)} method
+     * throws an exception when passed an illegal component that was created by
+     * a different table environment.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testAddComponentAtIndex_Component_Illegal_CreatedByDifferentTableEnvironment()
+    {
+        final TableEnvironmentType otherTableEnvironment = createTableEnvironment();
+        final IComponent otherComponent = createUniqueComponent( otherTableEnvironment );
+
+        getContainer().addComponent( otherComponent, 0 );
+    }
+
+    /**
+     * Ensures the {@link IContainer#addComponent(IComponent, int)} method
+     * throws an exception when passed an illegal component that is already
+     * contained in a container.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testAddComponentAtIndex_Component_Illegal_Owned()
+    {
+        final IContainer otherContainer = createUniqueContainer();
+        final IComponent component = createUniqueComponent();
+        otherContainer.addComponent( component );
+
+        getContainer().addComponent( component, 0 );
+    }
+
+    /**
+     * Ensures the {@link IContainer#addComponent(IComponent, int)} method
+     * throws an exception when passed a {@code null} component.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testAddComponentAtIndex_Component_Null()
+    {
+        getContainer().addComponent( null, 0 );
+    }
+
+    /**
+     * Ensures the {@link IContainer#addComponent(IComponent, int)} method
+     * changes the location the component to reflect the container location.
+     */
+    @Test
+    public void testAddComponentAtIndex_ChangesComponentLocation()
+    {
+        final IComponent component = createUniqueComponent();
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        mocksControl_.replay();
+        component.addComponentListener( listener );
+
+        getContainer().addComponent( component, 0 );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@link IContainer#addComponent(IComponent, int)} method
+     * changes the container bounds.
+     */
+    @Test( timeout = 1000 )
+    public void testAddComponentAtIndex_ChangesContainerBounds()
+    {
+        getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
+        getContainer().setSurfaceDesign( getContainer().getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        mocksControl_.replay();
+        getContainer().addComponentListener( listener );
+        final Rectangle originalContainerBounds = getContainer().getBounds();
+
+        do
+        {
+            getContainer().addComponent( createUniqueComponent(), getContainer().getComponentCount() );
+
+        } while( originalContainerBounds.equals( getContainer().getBounds() ) );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@link IContainer#addComponent(IComponent, int)} method fires
+     * a component added event.
+     */
+    @Test
+    public void testAddComponentAtIndex_FiresComponentAddedEvent()
+    {
+        getContainer().addComponent( createUniqueComponent() );
+        getContainer().addComponent( createUniqueComponent() );
+        final IComponent component = createUniqueComponent();
+        final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
+        final Capture<ContainerContentChangedEvent> eventCapture = new Capture<ContainerContentChangedEvent>();
+        listener.componentAdded( EasyMock.capture( eventCapture ) );
+        mocksControl_.replay();
+        getContainer().addContainerListener( listener );
+
+        getContainer().addComponent( component, 1 );
+
+        mocksControl_.verify();
+        assertSame( getContainer(), eventCapture.getValue().getContainer() );
+        assertSame( component, eventCapture.getValue().getComponent() );
+        assertEquals( 1, eventCapture.getValue().getComponentIndex() );
+    }
+
+    /**
+     * Ensures the {@link IContainer#addComponent(IComponent, int)} method
+     * throws an exception when passed an index that is out of bounds because it
+     * is greater than the component count.
+     */
+    @Test( expected = IndexOutOfBoundsException.class )
+    public void testAddComponentAtIndex_Index_OutOfBounds_GreaterThanComponentCount()
+    {
+        getContainer().addComponent( createUniqueComponent(), getContainer().getComponentCount() + 1 );
+    }
+
+    /**
+     * Ensures the {@link IContainer#addComponent(IComponent, int)} method
+     * throws an exception when passed an index that is out of bounds because it
+     * is less than zero.
+     */
+    @Test( expected = IndexOutOfBoundsException.class )
+    public void testAddComponentAtIndex_Index_OutOfBounds_LessThanZero()
+    {
+        getContainer().addComponent( createUniqueComponent(), -1 );
+    }
+
+    /**
+     * Ensures the {@link IContainer#addComponents(List)} method adds components
+     * to the top of the container.
+     */
+    @Test
+    public void testAddComponents_AddsComponentsToTop()
     {
         final IComponent component1 = createUniqueComponent();
         final IComponent component2 = createUniqueComponent();
@@ -356,9 +505,9 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IContainer#addComponents} method throws an exception
-     * when passed an illegal component collection that contains at least one
-     * component that was created by a different table environment.
+     * Ensures the {@link IContainer#addComponents(List)} method throws an
+     * exception when passed an illegal component collection that contains at
+     * least one component that was created by a different table environment.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddComponents_Components_Illegal_ContainsComponentCreatedByDifferentTableEnvironment()
@@ -370,9 +519,9 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IContainer#addComponents} method throws an exception
-     * when passed an illegal component collection that contains at least one
-     * component already contained in a container.
+     * Ensures the {@link IContainer#addComponents(List)} method throws an
+     * exception when passed an illegal component collection that contains at
+     * least one component already contained in a container.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddComponents_Components_Illegal_ContainsOwnedComponent()
@@ -385,9 +534,9 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IContainer#addComponents} method throws an exception
-     * when passed an illegal component collection that contains a {@code null}
-     * element.
+     * Ensures the {@link IContainer#addComponents(List)} method throws an
+     * exception when passed an illegal component collection that contains a
+     * {@code null} element.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddComponents_Components_Illegal_ContainsNullElement()
@@ -396,8 +545,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IContainer#addComponents} method throws an exception
-     * when passed a {@code null} component collection.
+     * Ensures the {@link IContainer#addComponents(List)} method throws an
+     * exception when passed a {@code null} component collection.
      */
     @Test( expected = NullPointerException.class )
     public void testAddComponents_Components_Null()
@@ -406,8 +555,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IContainer#addComponents} method changes the location
-     * of the components to reflect the container location.
+     * Ensures the {@link IContainer#addComponents(List)} method changes the
+     * location of the components to reflect the container location.
      */
     @Test
     public void testAddComponents_ChangesComponentLocation()
@@ -424,8 +573,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IContainer#addComponents} method changes the container
-     * bounds.
+     * Ensures the {@link IContainer#addComponents(List)} method changes the
+     * container bounds.
      */
     @Test( timeout = 1000 )
     public void testAddComponents_ChangesContainerBounds()
@@ -448,21 +597,199 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IContainer#addComponents} method fires a component
-     * added event.
+     * Ensures the {@link IContainer#addComponents(List)} method fires a
+     * component added event.
      */
     @Test
     public void testAddComponents_FiresComponentAddedEvent()
     {
+        getContainer().addComponent( createUniqueComponent() );
+        getContainer().addComponent( createUniqueComponent() );
+        final IComponent component1 = createUniqueComponent();
+        final IComponent component2 = createUniqueComponent();
         final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
-        listener.componentAdded( EasyMock.notNull( ContainerContentChangedEvent.class ) );
-        EasyMock.expectLastCall().times( 2 );
+        final Capture<ContainerContentChangedEvent> eventCapture1 = new Capture<ContainerContentChangedEvent>();
+        listener.componentAdded( EasyMock.capture( eventCapture1 ) );
+        final Capture<ContainerContentChangedEvent> eventCapture2 = new Capture<ContainerContentChangedEvent>();
+        listener.componentAdded( EasyMock.capture( eventCapture2 ) );
         mocksControl_.replay();
         getContainer().addContainerListener( listener );
 
-        getContainer().addComponents( Arrays.asList( createUniqueComponent(), createUniqueComponent() ) );
+        getContainer().addComponents( Arrays.asList( component1, component2 ) );
 
         mocksControl_.verify();
+        assertSame( getContainer(), eventCapture1.getValue().getContainer() );
+        assertSame( component1, eventCapture1.getValue().getComponent() );
+        assertEquals( 2, eventCapture1.getValue().getComponentIndex() );
+        assertSame( getContainer(), eventCapture2.getValue().getContainer() );
+        assertSame( component2, eventCapture2.getValue().getComponent() );
+        assertEquals( 3, eventCapture2.getValue().getComponentIndex() );
+    }
+
+    /**
+     * Ensures the {@link IContainer#addComponents(List, int)} method adds
+     * components to the container at the specified index.
+     */
+    @Test
+    public void testAddComponentsAtIndex_AddsComponentsAtIndex()
+    {
+        final IComponent component1 = createUniqueComponent();
+        getContainer().addComponent( component1 );
+        final IComponent component2 = createUniqueComponent();
+        final IComponent component3 = createUniqueComponent();
+        final IComponent component4 = createUniqueComponent();
+        getContainer().addComponent( component4 );
+        final List<IComponent> expectedValue = Arrays.asList( component1, component2, component3, component4 );
+
+        getContainer().addComponents( Arrays.asList( component2, component3 ), 1 );
+
+        assertEquals( expectedValue, getContainer().getComponents() );
+        assertSame( getContainer(), component2.getContainer() );
+        assertSame( getContainer(), component3.getContainer() );
+    }
+
+    /**
+     * Ensures the {@link IContainer#addComponents(List, int)} method throws an
+     * exception when passed an illegal component collection that contains at
+     * least one component that was created by a different table environment.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testAddComponentsAtIndex_Components_Illegal_ContainsComponentCreatedByDifferentTableEnvironment()
+    {
+        final TableEnvironmentType otherTableEnvironment = createTableEnvironment();
+        final IComponent otherComponent = createUniqueComponent( otherTableEnvironment );
+
+        getContainer().addComponents( Arrays.asList( createUniqueComponent(), otherComponent ), 0 );
+    }
+
+    /**
+     * Ensures the {@link IContainer#addComponents(List, int)} method throws an
+     * exception when passed an illegal component collection that contains at
+     * least one component already contained in a container.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testAddComponentsAtIndex_Components_Illegal_ContainsOwnedComponent()
+    {
+        final IContainer otherContainer = createUniqueContainer();
+        final IComponent component = createUniqueComponent();
+        otherContainer.addComponent( component );
+
+        getContainer().addComponents( Arrays.asList( createUniqueComponent(), component ), 0 );
+    }
+
+    /**
+     * Ensures the {@link IContainer#addComponents(List, int)} method throws an
+     * exception when passed an illegal component collection that contains a
+     * {@code null} element.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testAddComponentsAtIndex_Components_Illegal_ContainsNullElement()
+    {
+        getContainer().addComponents( Collections.<IComponent>singletonList( null ), 0 );
+    }
+
+    /**
+     * Ensures the {@link IContainer#addComponents(List, int)} method throws an
+     * exception when passed a {@code null} component collection.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testAddComponentsAtIndex_Components_Null()
+    {
+        getContainer().addComponents( null, 0 );
+    }
+
+    /**
+     * Ensures the {@link IContainer#addComponents(List, int)} method changes
+     * the location of the components to reflect the container location.
+     */
+    @Test
+    public void testAddComponentsAtIndex_ChangesComponentLocation()
+    {
+        final IComponent component = createUniqueComponent();
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        mocksControl_.replay();
+        component.addComponentListener( listener );
+
+        getContainer().addComponents( Collections.singletonList( component ), 0 );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@link IContainer#addComponents(List, int)} method changes
+     * the container bounds.
+     */
+    @Test( timeout = 1000 )
+    public void testAddComponentsAtIndex_ChangesContainerBounds()
+    {
+        getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
+        getContainer().setSurfaceDesign( getContainer().getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        mocksControl_.replay();
+        getContainer().addComponentListener( listener );
+        final Rectangle originalContainerBounds = getContainer().getBounds();
+
+        do
+        {
+            getContainer().addComponents( Collections.singletonList( createUniqueComponent() ), getContainer().getComponentCount() );
+
+        } while( originalContainerBounds.equals( getContainer().getBounds() ) );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@link IContainer#addComponents(List, int)} method fires a
+     * component added event.
+     */
+    @Test
+    public void testAddComponentsAtIndex_FiresComponentAddedEvent()
+    {
+        getContainer().addComponent( createUniqueComponent() );
+        getContainer().addComponent( createUniqueComponent() );
+        final IComponent component1 = createUniqueComponent();
+        final IComponent component2 = createUniqueComponent();
+        final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
+        final Capture<ContainerContentChangedEvent> eventCapture1 = new Capture<ContainerContentChangedEvent>();
+        listener.componentAdded( EasyMock.capture( eventCapture1 ) );
+        final Capture<ContainerContentChangedEvent> eventCapture2 = new Capture<ContainerContentChangedEvent>();
+        listener.componentAdded( EasyMock.capture( eventCapture2 ) );
+        mocksControl_.replay();
+        getContainer().addContainerListener( listener );
+
+        getContainer().addComponents( Arrays.asList( component1, component2 ), 1 );
+
+        mocksControl_.verify();
+        assertSame( getContainer(), eventCapture1.getValue().getContainer() );
+        assertSame( component1, eventCapture1.getValue().getComponent() );
+        assertEquals( 1, eventCapture1.getValue().getComponentIndex() );
+        assertSame( getContainer(), eventCapture2.getValue().getContainer() );
+        assertSame( component2, eventCapture2.getValue().getComponent() );
+        assertEquals( 2, eventCapture2.getValue().getComponentIndex() );
+    }
+
+    /**
+     * Ensures the {@link IContainer#addComponents(List, int)} method throws an
+     * exception when passed an index that is out of bounds because it is
+     * greater than the component count.
+     */
+    @Test( expected = IndexOutOfBoundsException.class )
+    public void testAddComponentsAtIndex_Index_OutOfBounds_GreaterThanComponentCount()
+    {
+        getContainer().addComponents( Arrays.asList( createUniqueComponent() ), getContainer().getComponentCount() + 1 );
+    }
+
+    /**
+     * Ensures the {@link IContainer#addComponents(List, int)} method throws an
+     * exception when passed an index that is out of bounds because it is less
+     * than zero.
+     */
+    @Test( expected = IndexOutOfBoundsException.class )
+    public void testAddComponentsAtIndex_Index_OutOfBounds_LessThanZero()
+    {
+        getContainer().addComponents( Arrays.asList( createUniqueComponent() ), -1 );
     }
 
     /**

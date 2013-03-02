@@ -127,7 +127,20 @@ final class Container
     {
         assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
 
-        addComponents( Collections.singletonList( component ) );
+        addComponents( Collections.singletonList( component ), null );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IContainer#addComponent(org.gamegineer.table.core.IComponent, int)
+     */
+    @Override
+    public void addComponent(
+        final IComponent component,
+        final int index )
+    {
+        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
+
+        addComponents( Collections.singletonList( component ), new Integer( index ) );
     }
 
     /*
@@ -139,6 +152,52 @@ final class Container
     {
         assertArgumentNotNull( components, "components" ); //$NON-NLS-1$
 
+        addComponents( components, null );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IContainer#addComponents(java.util.List, int)
+     */
+    @Override
+    public void addComponents(
+        final List<IComponent> components,
+        final int index )
+    {
+        assertArgumentNotNull( components, "components" ); //$NON-NLS-1$
+
+        addComponents( components, new Integer( index ) );
+    }
+
+    /**
+     * Adds the specified collection of components to this container at the
+     * specified index.
+     * 
+     * @param components
+     *        The collection of components to be added to this container; must
+     *        not be {@code null}. The components are added to the this
+     *        container at the specified index in the order they appear in the
+     *        collection.
+     * @param boxedIndex
+     *        The index at which the components will be added or {@code null} if
+     *        the components should be added to the top of this container.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code components} contains a {@code null} element; if any
+     *         component is already contained in a container; or if any
+     *         component was created by a table environment other than the table
+     *         environment that created this container.
+     * @throws java.lang.IndexOutOfBoundsException
+     *         If {@code boxedIndex} is not {@code null} and out of range (
+     *         {@code index < 0 || index > getComponentCount()}).
+     */
+    private void addComponents(
+        /* @NonNull */
+        final List<IComponent> components,
+        /* @Nullable */
+        final Integer boxedIndex )
+    {
+        assert components != null;
+
         final List<Component> addedComponents = new ArrayList<Component>();
         final int firstComponentIndex;
         final boolean containerBoundsChanged;
@@ -147,7 +206,8 @@ final class Container
         try
         {
             final Rectangle oldBounds = getBounds();
-            firstComponentIndex = components_.size();
+            int index = (boxedIndex != null) ? boxedIndex.intValue() : components_.size();
+            firstComponentIndex = index;
 
             for( final IComponent component : components )
             {
@@ -160,7 +220,7 @@ final class Container
                 assertArgumentLegal( typedComponent.getTableEnvironment() == getTableEnvironment(), "components", NonNlsMessages.Container_addComponents_components_containsComponentCreatedByDifferentTableEnvironment ); //$NON-NLS-1$
 
                 typedComponent.setParent( this );
-                components_.add( typedComponent );
+                components_.add( index++, typedComponent );
                 addedComponents.add( typedComponent );
             }
 
