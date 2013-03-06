@@ -25,10 +25,12 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.locks.ReentrantLock;
 import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
@@ -54,20 +56,14 @@ final class DragContext
      */
     private final Container mobileContainer_;
 
-    /**
-     * The original index of the component being dragged within the source
-     * container.
-     */
-    private final int originalDragComponentIndex_;
-
-    /** The original origin of the component being dragged in table coordinates. */
-    private final Point originalDragComponentOrigin_;
-
     /** The original origin of the mobile container in table coordinates. */
     private final Point originalMobileContainerOrigin_;
 
-    /** The container that originally held the components being dragged. */
-    private final Container sourceContainer_;
+    /**
+     * The collection of component states prior to the beginning of the
+     * drag-and-drop operation.
+     */
+    private final List<PreDragComponentState> preDragComponentStates_;
 
     /** The table associated with the drag context. */
     private final Table table_;
@@ -87,16 +83,11 @@ final class DragContext
      *        The initial drag location in table coordinates; must not be
      *        {@code null}. No copy is made of this value and it must not be
      *        modified after calling this method.
-     * @param originalDragComponentIndex
-     *        The original index of the component being dragged within the
-     *        source container.
-     * @param originalDragComponentOrigin
-     *        The original origin of the component being dragged in table
-     *        coordinates; must not be {@code null}. No copy is made of this
-     *        value and it must not be modified after calling this method.
-     * @param sourceContainer
-     *        The container that originally held the components being dragged;
-     *        must not be {@code null}.
+     * @param preDragComponentStates
+     *        The collection of component states prior to the beginning of the
+     *        drag-and-drop operation; must not be {@code null}. No copy is made
+     *        of this value and it must not be modified after calling this
+     *        method.
      * @param mobileContainer
      *        The container used to hold the components being dragged during the
      *        drag-and-drop operation; must not be {@code null}.
@@ -106,26 +97,20 @@ final class DragContext
         final Table table,
         /* @NonNull */
         final Point initialLocation,
-        final int originalDragComponentIndex,
         /* @NonNull */
-        final Point originalDragComponentOrigin,
-        /* @NonNull */
-        final Container sourceContainer,
+        final List<PreDragComponentState> preDragComponentStates,
         /* @NonNull */
         final Container mobileContainer )
     {
         assert table != null;
         assert initialLocation != null;
-        assert originalDragComponentOrigin != null;
-        assert sourceContainer != null;
+        assert preDragComponentStates != null;
         assert mobileContainer != null;
 
         initialLocation_ = initialLocation;
         mobileContainer_ = mobileContainer;
-        originalDragComponentIndex_ = originalDragComponentIndex;
-        originalDragComponentOrigin_ = originalDragComponentOrigin;
         originalMobileContainerOrigin_ = mobileContainer.getOrigin();
-        sourceContainer_ = sourceContainer;
+        preDragComponentStates_ = preDragComponentStates;
         table_ = table;
     }
 
@@ -164,8 +149,7 @@ final class DragContext
         assert component != null;
         assert table.getTableEnvironment().getLock().isHeldByCurrentThread();
 
-        final int originalDragComponentIndex = component.getPath().getIndex();
-        final Point originalDragComponentOrigin = component.getOrigin();
+        final PreDragComponentState preDragComponentState = new PreDragComponentState( component );
         final Container sourceContainer = component.getContainer();
         sourceContainer.removeComponent( component );
 
@@ -173,7 +157,7 @@ final class DragContext
         mobileContainer.addComponent( component );
         table.getTabletop().addComponent( mobileContainer );
 
-        return new DragContext( table, new Point( location ), originalDragComponentIndex, originalDragComponentOrigin, sourceContainer, mobileContainer );
+        return new DragContext( table, new Point( location ), Collections.singletonList( preDragComponentState ), mobileContainer );
     }
 
     /*
@@ -187,11 +171,13 @@ final class DragContext
         {
             assertStateLegal( table_.isDragActive(), NonNlsMessages.DragContext_dragNotActive );
 
-            // FIXME: assuming only a single component is being dragged
-            final IComponent dragComponent = mobileContainer_.removeTopComponent();
+            mobileContainer_.removeAllComponents();
             table_.getTabletop().removeComponent( mobileContainer_ );
-            dragComponent.setOrigin( originalDragComponentOrigin_ );
-            sourceContainer_.addComponent( dragComponent, originalDragComponentIndex_ );
+
+            for( final PreDragComponentState preDragComponentState : preDragComponentStates_ )
+            {
+                preDragComponentState.revert();
+            }
 
             table_.endDrag();
         }
@@ -239,10 +225,9 @@ final class DragContext
 
             moveMobileContainer( location );
 
-            // FIXME: assuming only a single component is being dragged
-            final IComponent dragComponent = mobileContainer_.removeTopComponent();
+            final List<IComponent> dragComponents = mobileContainer_.removeAllComponents();
             table_.getTabletop().removeComponent( mobileContainer_ );
-            getTargetContainer( location ).addComponent( dragComponent );
+            getDropContainer( location ).addComponents( dragComponents );
 
             table_.endDrag();
         }
@@ -253,29 +238,17 @@ final class DragContext
     }
 
     /**
-     * Gets the table environment lock.
-     * 
-     * @return The table environment lock; never {@code null}.
-     */
-    /* @NonNull */
-    private ReentrantLock getLock()
-    {
-        return table_.getTableEnvironment().getLock();
-    }
-
-    /**
-     * Gets the target container for the drop at the specified location.
+     * Gets the container for the drop at the specified location.
      * 
      * @param location
-     *        The ending drag location in table coordinates; must not be
-     *        {@code null}.
+     *        The drop location in table coordinates; must not be {@code null}.
      * 
-     * @return The target container for the drop at the specified location;
-     *         never {@code null}.
+     * @return The container for the drop at the specified location; never
+     *         {@code null}.
      */
     @GuardedBy( "getLock()" )
     /* @NonNull */
-    private IContainer getTargetContainer(
+    private IContainer getDropContainer(
         /* @NonNull */
         final Point location )
     {
@@ -296,6 +269,17 @@ final class DragContext
     }
 
     /**
+     * Gets the table environment lock.
+     * 
+     * @return The table environment lock; never {@code null}.
+     */
+    /* @NonNull */
+    private ReentrantLock getLock()
+    {
+        return table_.getTableEnvironment().getLock();
+    }
+
+    /**
      * Moves the mobile container based on the specified drag location.
      * 
      * @param location
@@ -309,5 +293,76 @@ final class DragContext
 
         final Dimension offset = new Dimension( location.x - initialLocation_.x, location.y - initialLocation_.y );
         mobileContainer_.setOrigin( new Point( originalMobileContainerOrigin_.x + offset.width, originalMobileContainerOrigin_.y + offset.height ) );
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * The state of a component being dragged prior to beginning the
+     * drag-and-drop operation.
+     */
+    @Immutable
+    private static final class PreDragComponentState
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The component being dragged. */
+        private final Component component_;
+
+        /** The component container prior to being dragged. */
+        private final Container container_;
+
+        /**
+         * The component index within the source container prior to being
+         * dragged.
+         */
+        private final int index_;
+
+        /** The component origin prior to being dragged. */
+        private final Point origin_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code PreDragComponentState}
+         * class.
+         * 
+         * @param component
+         *        The component being dragged; must not be {@code null}.
+         */
+        PreDragComponentState(
+            /* @NonNull */
+            final Component component )
+        {
+            assert component != null;
+
+            component_ = component;
+            container_ = component.getContainer();
+            index_ = component.getPath().getIndex();
+            origin_ = component.getOrigin();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /**
+         * Reverts the state of the component to its state before beginning the
+         * drag-and-drop operation.
+         */
+        void revert()
+        {
+            component_.setOrigin( origin_ );
+            container_.addComponent( component_, index_ );
+        }
     }
 }
