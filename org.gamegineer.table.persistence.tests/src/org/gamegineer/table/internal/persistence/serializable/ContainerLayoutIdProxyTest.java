@@ -1,6 +1,6 @@
 /*
  * ContainerLayoutIdProxyTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -48,8 +48,9 @@ public final class ContainerLayoutIdProxyTest
     // ======================================================================
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * container layout identifier.
+     * Ensures the {@link ContainerLayoutIdProxy#ContainerLayoutIdProxy}
+     * constructor throws an exception when passed a {@code null} container
+     * layout identifier.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_ContainerLayoutId_Null()

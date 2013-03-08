@@ -1,6 +1,6 @@
 /*
  * AbstractNodeTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -139,8 +139,8 @@ public final class AbstractNodeTest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * node layer.
+     * Ensures the {@link AbstractNode#AbstractNode} constructor throws an
+     * exception when passed a {@code null} node layer.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_NodeLayer_Null()
@@ -149,8 +149,8 @@ public final class AbstractNodeTest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * table network controller.
+     * Ensures the {@link AbstractNode#AbstractNode} constructor throws an
+     * exception when passed a {@code null} table network controller.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_TableNetworkController_Null()

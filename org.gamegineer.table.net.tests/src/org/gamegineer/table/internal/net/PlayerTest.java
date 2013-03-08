@@ -1,6 +1,6 @@
 /*
  * PlayerTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -108,8 +108,8 @@ public final class PlayerTest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * name.
+     * Ensures the {@link Player#Player} constructor throws an exception when
+     * passed a {@code null} name.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_Name_Null()

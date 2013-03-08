@@ -1,6 +1,6 @@
 /*
  * ComponentSurfaceDesignIdProxyTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -48,8 +48,10 @@ public final class ComponentSurfaceDesignIdProxyTest
     // ======================================================================
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * component surface design identifier.
+     * Ensures the
+     * {@link ComponentSurfaceDesignIdProxy#ComponentSurfaceDesignIdProxy}
+     * constructor throws an exception when passed a {@code null} component
+     * surface design identifier.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_ComponentSurfaceDesignId_Null()

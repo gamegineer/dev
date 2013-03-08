@@ -1,6 +1,6 @@
 /*
  * MainModelEventTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -70,8 +70,8 @@ public final class MainModelEventTest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * source.
+     * Ensures the {@link MainModelEvent#MainModelEvent} constructor throws an
+     * exception when passed a {@code null} source.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_Source_Null()

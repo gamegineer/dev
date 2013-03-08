@@ -1,6 +1,6 @@
 /*
  * LoggerConfigurationTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -129,8 +129,8 @@ public final class LoggerConfigurationTest
     }
 
     /**
-     * Ensures the constructor makes a copy of the logging properties
-     * collection.
+     * Ensures the {@link LoggerConfiguration#LoggerConfiguration} constructor
+     * makes a copy of the logging properties collection.
      */
     @Test
     public void testConstructor_Properties_Copy()

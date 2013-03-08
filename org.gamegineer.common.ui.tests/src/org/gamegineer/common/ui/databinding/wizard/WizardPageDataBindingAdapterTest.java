@@ -1,6 +1,6 @@
 /*
  * WizardPageDataBindingAdapterTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -52,8 +52,10 @@ public final class WizardPageDataBindingAdapterTest
     // ======================================================================
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * data binding context.
+     * Ensures the
+     * {@link WizardPageDataBindingAdapter#WizardPageDataBindingAdapter}
+     * constructor throws an exception when passed a {@code null} data binding
+     * context.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_DataBindingContext_Null()
@@ -62,8 +64,9 @@ public final class WizardPageDataBindingAdapterTest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * wizard page.
+     * Ensures the
+     * {@link WizardPageDataBindingAdapter#WizardPageDataBindingAdapter}
+     * constructor throws an exception when passed a {@code null} wizard page.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_WizardPage_Null()

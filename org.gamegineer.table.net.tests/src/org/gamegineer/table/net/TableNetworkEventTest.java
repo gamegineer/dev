@@ -1,6 +1,6 @@
 /*
  * TableNetworkEventTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -72,8 +72,8 @@ public final class TableNetworkEventTest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * table network.
+     * Ensures the {@link TableNetworkEvent#TableNetworkEvent} constructor
+     * throws an exception when passed a {@code null} table network.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_TableNetwork_Null()

@@ -1,6 +1,6 @@
 /*
  * AbstractRemoteNodeTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -143,8 +143,8 @@ public final class AbstractRemoteNodeTest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * table network node.
+     * Ensures the {@link AbstractRemoteNode#AbstractRemoteNode} constructor
+     * throws an exception when passed a {@code null} table network node.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_Node_Null()
@@ -153,8 +153,8 @@ public final class AbstractRemoteNodeTest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * node layer.
+     * Ensures the {@link AbstractRemoteNode#AbstractRemoteNode} constructor
+     * throws an exception when passed a {@code null} node layer.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_NodeLayer_Null()

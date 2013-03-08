@@ -1,6 +1,6 @@
 /*
  * JMenuItemGroupTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -49,8 +49,8 @@ public final class JMenuItemGroupTest
     // ======================================================================
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * action.
+     * Ensures the {@link JMenuItemGroup#JMenuItemGroup} constructor throws an
+     * exception when passed a {@code null} action.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_Action_Null()
@@ -59,8 +59,8 @@ public final class JMenuItemGroupTest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * content provider.
+     * Ensures the {@link JMenuItemGroup#JMenuItemGroup} constructor throws an
+     * exception when passed a {@code null} content provider.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_ContentProvider_Null()
@@ -69,8 +69,8 @@ public final class JMenuItemGroupTest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * menu.
+     * Ensures the {@link JMenuItemGroup#JMenuItemGroup} constructor throws an
+     * exception when passed a {@code null} menu.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_Menu_Null()

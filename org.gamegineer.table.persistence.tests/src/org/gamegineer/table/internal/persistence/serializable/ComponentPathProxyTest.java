@@ -1,6 +1,6 @@
 /*
  * ComponentPathProxyTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -47,8 +47,8 @@ public final class ComponentPathProxyTest
     // ======================================================================
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * component path.
+     * Ensures the {@link ComponentPathProxy#ComponentPathProxy} constructor
+     * throws an exception when passed a {@code null} component path.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_ComponentPath_Null()

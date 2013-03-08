@@ -1,6 +1,6 @@
 /*
  * ComponentSurfaceDesignUITest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -50,8 +50,8 @@ public final class ComponentSurfaceDesignUITest
     // ======================================================================
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * icon.
+     * Ensures the {@link ComponentSurfaceDesignUI#ComponentSurfaceDesignUI}
+     * constructor throws an exception when passed a {@code null} icon.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_Icon_Null()
@@ -60,8 +60,8 @@ public final class ComponentSurfaceDesignUITest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * identifier.
+     * Ensures the {@link ComponentSurfaceDesignUI#ComponentSurfaceDesignUI}
+     * constructor throws an exception when passed a {@code null} identifier.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_Id_Null()
@@ -70,8 +70,8 @@ public final class ComponentSurfaceDesignUITest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * name.
+     * Ensures the {@link ComponentSurfaceDesignUI#ComponentSurfaceDesignUI}
+     * constructor throws an exception when passed a {@code null} name.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_Name_Null()

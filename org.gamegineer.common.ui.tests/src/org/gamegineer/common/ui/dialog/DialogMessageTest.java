@@ -1,6 +1,6 @@
 /*
  * DialogMessageTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -46,8 +46,8 @@ public final class DialogMessageTest
     // ======================================================================
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * text.
+     * Ensures the {@link DialogMessage#DialogMessage} constructor throws an
+     * exception when passed a {@code null} text.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_Text_Null()
@@ -56,8 +56,8 @@ public final class DialogMessageTest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * type.
+     * Ensures the {@link DialogMessage#DialogMessage} constructor throws an
+     * exception when passed a {@code null} type.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_Type_Null()

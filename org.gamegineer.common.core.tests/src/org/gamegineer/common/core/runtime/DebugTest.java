@@ -1,6 +1,6 @@
 /*
  * DebugTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -46,8 +46,8 @@ public final class DebugTest
     // ======================================================================
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * bundle symbolic name.
+     * Ensures the {@link Debug#Debug} constructor throws an exception when
+     * passed a {@code null} bundle symbolic name.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_BundleSymbolicName_Null()

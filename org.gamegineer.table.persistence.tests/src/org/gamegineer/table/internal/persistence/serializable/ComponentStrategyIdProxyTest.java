@@ -1,6 +1,6 @@
 /*
  * ComponentStrategyIdProxyTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -48,8 +48,9 @@ public final class ComponentStrategyIdProxyTest
     // ======================================================================
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * component strategy identifier.
+     * Ensures the {@link ComponentStrategyIdProxy#ComponentStrategyIdProxy}
+     * constructor throws an exception when passed a {@code null} component
+     * strategy identifier.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_ComponentStrategyId_Null()

@@ -48,8 +48,8 @@ public final class ComponentVectorTest
     // ======================================================================
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * direction.
+     * Ensures the {@link ComponentVector#ComponentVector} constructor throws an
+     * exception when passed a {@code null} direction.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_Direction_Null()
@@ -58,8 +58,8 @@ public final class ComponentVectorTest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * origin.
+     * Ensures the {@link ComponentVector#ComponentVector} constructor throws an
+     * exception when passed a {@code null} origin.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_Origin_Null()

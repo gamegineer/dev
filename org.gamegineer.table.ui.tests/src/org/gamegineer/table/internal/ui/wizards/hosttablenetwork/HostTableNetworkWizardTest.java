@@ -1,6 +1,6 @@
 /*
  * HostTableNetworkWizardTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -48,8 +48,8 @@ public final class HostTableNetworkWizardTest
     // ======================================================================
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * table model.
+     * Ensures the {@link HostTableNetworkWizard#HostTableNetworkWizard}
+     * constructor throws an exception when passed a {@code null} table model.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_TableModel_Null()

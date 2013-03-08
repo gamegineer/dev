@@ -1,6 +1,6 @@
 /*
  * FrameworkLogHandlerTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -46,8 +46,8 @@ public final class FrameworkLogHandlerTest
     // ======================================================================
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * framework log.
+     * Ensures the {@link FrameworkLogHandler#FrameworkLogHandler} constructor
+     * throws an exception when passed a {@code null} framework log.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_FrameworkLog_Null()

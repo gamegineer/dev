@@ -1,6 +1,6 @@
 /*
  * TableNetworkConfigurationTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -51,8 +51,8 @@ public final class TableNetworkConfigurationTest
     // ======================================================================
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * host name.
+     * Ensures the {@link TableNetworkConfiguration#TableNetworkConfiguration}
+     * constructor throws an exception when passed a {@code null} host name.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_HostName_Null()
@@ -61,8 +61,9 @@ public final class TableNetworkConfigurationTest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * local player name.
+     * Ensures the {@link TableNetworkConfiguration#TableNetworkConfiguration}
+     * constructor throws an exception when passed a {@code null} local player
+     * name.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_LocalPlayerName_Null()
@@ -71,8 +72,8 @@ public final class TableNetworkConfigurationTest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * local table.
+     * Ensures the {@link TableNetworkConfiguration#TableNetworkConfiguration}
+     * constructor throws an exception when passed a {@code null} local table.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_LocalTable_Null()
@@ -81,7 +82,8 @@ public final class TableNetworkConfigurationTest
     }
 
     /**
-     * Ensures the constructor makes a copy of the password.
+     * Ensures the {@link TableNetworkConfiguration#TableNetworkConfiguration}
+     * constructor makes a copy of the password.
      */
     @Test
     public void testConstructor_Password_Copy()
@@ -97,8 +99,8 @@ public final class TableNetworkConfigurationTest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * password.
+     * Ensures the {@link TableNetworkConfiguration#TableNetworkConfiguration}
+     * constructor throws an exception when passed a {@code null} password.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_Password_Null()

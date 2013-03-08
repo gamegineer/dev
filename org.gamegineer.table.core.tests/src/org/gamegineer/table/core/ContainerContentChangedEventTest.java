@@ -1,6 +1,6 @@
 /*
  * ContainerContentChangedEventTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -71,8 +71,9 @@ public final class ContainerContentChangedEventTest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * component.
+     * Ensures the
+     * {@link ContainerContentChangedEvent#ContainerContentChangedEvent}
+     * constructor throws an exception when passed a {@code null} component.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_Component_Null()
@@ -81,8 +82,10 @@ public final class ContainerContentChangedEventTest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed an illegal
-     * component index that is negative.
+     * Ensures the
+     * {@link ContainerContentChangedEvent#ContainerContentChangedEvent}
+     * constructor throws an exception when passed an illegal component index
+     * that is negative.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_ComponentIndex_Illegal_Negative()
@@ -91,8 +94,9 @@ public final class ContainerContentChangedEventTest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * source.
+     * Ensures the
+     * {@link ContainerContentChangedEvent#ContainerContentChangedEvent}
+     * constructor throws an exception when passed a {@code null} source.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_Source_Null()

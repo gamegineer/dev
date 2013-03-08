@@ -1,6 +1,6 @@
 /*
  * TableAdvisorTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -49,8 +49,8 @@ public final class TableAdvisorTest
     // ======================================================================
 
     /**
-     * Ensures the constructor makes a deep copy of the application argument
-     * collection.
+     * Ensures the {@link TableAdvisor#TableAdvisor} constructor makes a deep
+     * copy of the application argument collection.
      */
     @Test
     public void testConstructor_AppArgs_DeepCopy()
@@ -64,8 +64,9 @@ public final class TableAdvisorTest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed an illegal
-     * application argument collection that contains a {@code null} element.
+     * Ensures the {@link TableAdvisor#TableAdvisor} constructor throws an
+     * exception when passed an illegal application argument collection that
+     * contains a {@code null} element.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_AppArgs_Illegal_ContainsNullElement()
@@ -74,8 +75,8 @@ public final class TableAdvisorTest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * application argument collection.
+     * Ensures the {@link TableAdvisor#TableAdvisor} constructor throws an
+     * exception when passed a {@code null} application argument collection.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_AppArgs_Null()

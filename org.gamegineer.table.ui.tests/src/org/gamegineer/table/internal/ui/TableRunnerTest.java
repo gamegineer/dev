@@ -1,6 +1,6 @@
 /*
  * TableRunnerTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -46,8 +46,8 @@ public final class TableRunnerTest
     // ======================================================================
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * table advisor.
+     * Ensures the {@link TableRunner#TableRunner} constructor throws an
+     * exception when passed a {@code null} table advisor.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_Advisor_Null()

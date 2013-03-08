@@ -1,6 +1,6 @@
 /*
  * ComponentPathTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -49,8 +49,8 @@ public final class ComponentPathTest
     // ======================================================================
 
     /**
-     * Ensures the constructor throws an exception when passed an illegal index
-     * that is negative.
+     * Ensures the {@link ComponentPath#ComponentPath} constructor throws an
+     * exception when passed an illegal index that is negative.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_Index_Illegal_Negative()

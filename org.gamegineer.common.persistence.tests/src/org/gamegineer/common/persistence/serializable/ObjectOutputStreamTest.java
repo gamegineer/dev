@@ -1,6 +1,6 @@
 /*
  * ObjectOutputStreamTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -49,8 +49,9 @@ public final class ObjectOutputStreamTest
     // ======================================================================
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * persistence delegate registry.
+     * Ensures the {@link ObjectOutputStream#ObjectOutputStream} constructor
+     * throws an exception when passed a {@code null} persistence delegate
+     * registry.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -63,8 +64,8 @@ public final class ObjectOutputStreamTest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * stream.
+     * Ensures the {@link ObjectOutputStream#ObjectOutputStream} constructor
+     * throws an exception when passed a {@code null} stream.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
