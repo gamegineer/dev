@@ -25,7 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.locks.ReentrantLock;
@@ -34,7 +34,9 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
+import org.gamegineer.table.core.IContainerStrategy;
 import org.gamegineer.table.core.IDragContext;
+import org.gamegineer.table.core.IDragStrategy;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.IDragContext}.
@@ -149,15 +151,31 @@ final class DragContext
         assert component != null;
         assert table.getTableEnvironment().getLock().isHeldByCurrentThread();
 
-        final PreDragComponentState preDragComponentState = new PreDragComponentState( component );
-        final Container sourceContainer = component.getContainer();
-        sourceContainer.removeComponent( component );
+        // TODO: just use a null container strategy
+        final IContainerStrategy mobileContainerStrategy = component.getContainer().getStrategy();
 
-        final Container mobileContainer = new Container( table.getTableEnvironment(), sourceContainer.getStrategy() );
-        mobileContainer.addComponent( component );
+        final IDragStrategy dragStrategy = component.getDragStrategy();
+        final List<IComponent> dragComponents = dragStrategy.getDragComponents();
+        // TODO: need to abort drag if dragComponents.isEmpty() -- change signature of ITable.beginDrag() to allow null return value?
+        final List<PreDragComponentState> preDragComponentStates = new ArrayList<PreDragComponentState>( dragComponents.size() );
+        for( final IComponent dragComponent : dragComponents )
+        {
+            // TODO: modify IDragStrategy.getDragComponents() to return paths instead of components to avoid casts
+            preDragComponentStates.add( new PreDragComponentState( (Component)dragComponent ) );
+        }
+        for( final IComponent dragComponent : dragComponents )
+        {
+            dragComponent.getContainer().removeComponent( dragComponent );
+        }
+
+        final Container mobileContainer = new Container( table.getTableEnvironment(), mobileContainerStrategy );
+        for( final IComponent dragComponent : dragComponents )
+        {
+            mobileContainer.addComponent( dragComponent );
+        }
         table.getTabletop().addComponent( mobileContainer );
 
-        return new DragContext( table, new Point( location ), Collections.singletonList( preDragComponentState ), mobileContainer );
+        return new DragContext( table, new Point( location ), preDragComponentStates, mobileContainer );
     }
 
     /*
@@ -224,6 +242,8 @@ final class DragContext
             assertStateLegal( table_.isDragActive(), NonNlsMessages.DragContext_dragNotActive );
 
             moveMobileContainer( location );
+
+            // TODO: need to consult the drag strategy
 
             final List<IComponent> dragComponents = mobileContainer_.removeAllComponents();
             table_.getTabletop().removeComponent( mobileContainer_ );

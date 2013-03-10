@@ -46,6 +46,7 @@ import org.gamegineer.table.core.ComponentSurfaceDesignRegistry;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.IComponentStrategy;
+import org.gamegineer.table.core.IDragStrategy;
 import org.gamegineer.table.core.NoSuchComponentSurfaceDesignException;
 
 /**
@@ -290,6 +291,17 @@ class Component
         {
             getLock().unlock();
         }
+    }
+
+    /**
+     * Gets the drag strategy for this component.
+     * 
+     * @return The drag strategy for this component; never {@code null}.
+     */
+    /* @NonNull */
+    final IDragStrategy getDragStrategy()
+    {
+        return strategy_.getDragStrategyFactory().createDragStrategy( this );
     }
 
     /*

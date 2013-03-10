@@ -1,6 +1,6 @@
 /*
  * TestComponentStrategies.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -148,6 +148,12 @@ public final class TestComponentStrategies
             }
 
             @Override
+            public IDragStrategyFactory getDragStrategyFactory()
+            {
+                return componentStrategy.getDragStrategyFactory();
+            }
+
+            @Override
             public ComponentStrategyId getId()
             {
                 return componentStrategyId;
@@ -213,6 +219,12 @@ public final class TestComponentStrategies
             public Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns()
             {
                 return containerStrategy.getDefaultSurfaceDesigns();
+            }
+
+            @Override
+            public IDragStrategyFactory getDragStrategyFactory()
+            {
+                return containerStrategy.getDragStrategyFactory();
             }
 
             @Override
@@ -364,6 +376,15 @@ public final class TestComponentStrategies
             final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new HashMap<ComponentOrientation, ComponentSurfaceDesign>();
             surfaceDesigns.put( NullOrientation.DEFAULT, ComponentSurfaceDesigns.NULL );
             return surfaceDesigns;
+        }
+
+        /*
+         * @see org.gamegineer.table.core.IComponentStrategy#getDragStrategyFactory()
+         */
+        @Override
+        public IDragStrategyFactory getDragStrategyFactory()
+        {
+            return new DefaultDragStrategyFactory();
         }
 
         /*

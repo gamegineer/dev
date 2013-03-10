@@ -1,6 +1,6 @@
 /*
  * AbstractComponentStrategyTestCase.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -238,6 +238,16 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
         {
             assertNotNull( surfaceDesign );
         }
+    }
+
+    /**
+     * Ensures the {@link IComponentStrategy#getDragStrategyFactory} method does
+     * not return {@code null}.
+     */
+    @Test
+    public void testGetDragStrategyFactory_ReturnValue_NonNull()
+    {
+        assertNotNull( componentStrategy_.getDragStrategyFactory() );
     }
 
     /**

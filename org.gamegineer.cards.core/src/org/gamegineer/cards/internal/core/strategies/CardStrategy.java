@@ -1,6 +1,6 @@
 /*
  * CardStrategy.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,9 +21,11 @@
 
 package org.gamegineer.cards.internal.core.strategies;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.cards.core.CardOrientation;
 import org.gamegineer.cards.core.CardSurfaceDesignIds;
@@ -31,6 +33,11 @@ import org.gamegineer.cards.core.CardsComponentStrategyIds;
 import org.gamegineer.table.core.AbstractComponentStrategy;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
+import org.gamegineer.table.core.DefaultDragStrategy;
+import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.IContainer;
+import org.gamegineer.table.core.IDragStrategy;
+import org.gamegineer.table.core.IDragStrategyFactory;
 
 /**
  * A component strategy that represents a card.
@@ -80,6 +87,48 @@ final class CardStrategy
     protected ComponentSurfaceDesignId getDefaultSurfaceDesignId()
     {
         return CardSurfaceDesignIds.DEFAULT;
+    }
+
+    /*
+     * @see org.gamegineer.table.core.AbstractComponentStrategy#getDragStrategyFactory()
+     */
+    @Override
+    public IDragStrategyFactory getDragStrategyFactory()
+    {
+        return new IDragStrategyFactory()
+        {
+            @Override
+            public IDragStrategy createDragStrategy(
+                final IComponent component )
+            {
+                assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
+
+                final IContainer container = component.getContainer();
+                if( (container != null) && CardsComponentStrategyIds.CARD_PILE.equals( container.getStrategy().getId() ) )
+                {
+                    return new IDragStrategy()
+                    {
+                        @Override
+                        public boolean canDrop(
+                            final IContainer dropContainer )
+                        {
+                            assertArgumentNotNull( dropContainer, "dropContainer" ); //$NON-NLS-1$
+
+                            return CardsComponentStrategyIds.CARD_PILE.equals( dropContainer.getStrategy().getId() );
+                        }
+
+                        @Override
+                        public List<IComponent> getDragComponents()
+                        {
+                            final List<IComponent> components = container.getComponents();
+                            return components.subList( component.getPath().getIndex(), components.size() );
+                        }
+                    };
+                }
+
+                return new DefaultDragStrategy( component );
+            }
+        };
     }
 
     /*

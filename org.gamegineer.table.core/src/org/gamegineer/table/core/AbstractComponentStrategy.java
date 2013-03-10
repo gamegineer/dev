@@ -1,6 +1,6 @@
 /*
  * AbstractComponentStrategy.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -142,6 +142,19 @@ public abstract class AbstractComponentStrategy
         }
 
         return surfaceDesigns;
+    }
+
+    /**
+     * This implementation returns a factory that creates a strategy that only
+     * drags the component and allows it to be dropped anywhere. Subclasses may
+     * override and are not required to call the superclass implementation.
+     * 
+     * @see org.gamegineer.table.core.IComponentStrategy#getDragStrategyFactory()
+     */
+    @Override
+    public IDragStrategyFactory getDragStrategyFactory()
+    {
+        return new DefaultDragStrategyFactory();
     }
 
     /*

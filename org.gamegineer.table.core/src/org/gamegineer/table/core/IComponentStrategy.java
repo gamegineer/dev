@@ -1,6 +1,6 @@
 /*
  * IComponentStrategy.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -70,6 +70,16 @@ public interface IComponentStrategy
      */
     /* @NonNull */
     public Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns();
+
+    /**
+     * Gets the drag strategy factory for components associated with this
+     * strategy.
+     * 
+     * @return The drag strategy factory for components associated with this
+     *         strategy; never {@code null}.
+     */
+    /* @NonNull */
+    public IDragStrategyFactory getDragStrategyFactory();
 
     /**
      * Gets the component strategy identifier.

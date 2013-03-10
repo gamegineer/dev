@@ -1,6 +1,6 @@
 /*
  * TestComponents.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -47,7 +47,7 @@ public final class TestComponents
 
     /**
      * Creates a new component with unique surface designs for the specified
-     * table environment.
+     * table environment using a default component strategy.
      * 
      * @param tableEnvironment
      *        The table environment associated with the new component; must not
@@ -63,14 +63,40 @@ public final class TestComponents
         /* @NonNull */
         final ITableEnvironment tableEnvironment )
     {
-        final IComponent component = tableEnvironment.createComponent( TestComponentStrategies.createUniqueComponentStrategy() );
+        return createUniqueComponent( tableEnvironment, TestComponentStrategies.createUniqueComponentStrategy() );
+    }
+
+    /**
+     * Creates a new component with unique surface designs for the specified
+     * table environment using the specified component strategy.
+     * 
+     * @param tableEnvironment
+     *        The table environment associated with the new component; must not
+     *        be {@code null}.
+     * @param componentStrategy
+     *        The component strategy; must not be {@code null}.
+     * 
+     * @return A new component; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code tableEnvironment} or {@code componentStrategy} is
+     *         {@code null}.
+     */
+    /* @NonNull */
+    public static IComponent createUniqueComponent(
+        /* @NonNull */
+        final ITableEnvironment tableEnvironment,
+        /* @NonNull */
+        final IComponentStrategy componentStrategy )
+    {
+        final IComponent component = tableEnvironment.createComponent( componentStrategy );
         setUniqueSurfaceDesigns( component );
         return component;
     }
 
     /**
      * Creates a new container with unique surface designs for the specified
-     * table environment.
+     * table environment using a default container strategy.
      * 
      * @param tableEnvironment
      *        The table environment associated with the new container; must not
@@ -86,7 +112,33 @@ public final class TestComponents
         /* @NonNull */
         final ITableEnvironment tableEnvironment )
     {
-        final IContainer container = tableEnvironment.createContainer( TestComponentStrategies.createUniqueContainerStrategy() );
+        return createUniqueContainer( tableEnvironment, TestComponentStrategies.createUniqueContainerStrategy() );
+    }
+
+    /**
+     * Creates a new container with unique surface designs for the specified
+     * table environment using the specified container strategy.
+     * 
+     * @param tableEnvironment
+     *        The table environment associated with the new container; must not
+     *        be {@code null}.
+     * @param containerStrategy
+     *        The container strategy; must not be {@code null}.
+     * 
+     * @return A new container; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code tableEnvironment} or {@code containerStrategy} is
+     *         {@code null}.
+     */
+    /* @NonNull */
+    public static IContainer createUniqueContainer(
+        /* @NonNull */
+        final ITableEnvironment tableEnvironment,
+        /* @NonNull */
+        final IContainerStrategy containerStrategy )
+    {
+        final IContainer container = tableEnvironment.createContainer( containerStrategy );
         setUniqueSurfaceDesigns( container );
         return container;
     }
