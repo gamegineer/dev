@@ -32,9 +32,9 @@ import java.util.concurrent.locks.ReentrantLock;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.core.ComponentStrategies;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
-import org.gamegineer.table.core.IContainerStrategy;
 import org.gamegineer.table.core.IDragContext;
 import org.gamegineer.table.core.IDragStrategy;
 
@@ -151,9 +151,6 @@ final class DragContext
         assert component != null;
         assert table.getTableEnvironment().getLock().isHeldByCurrentThread();
 
-        // TODO: just use a null container strategy
-        final IContainerStrategy mobileContainerStrategy = component.getContainer().getStrategy();
-
         final IDragStrategy dragStrategy = component.getDragStrategy();
         final List<IComponent> dragComponents = dragStrategy.getDragComponents();
         // TODO: need to abort drag if dragComponents.isEmpty() -- change signature of ITable.beginDrag() to allow null return value?
@@ -168,7 +165,7 @@ final class DragContext
             dragComponent.getContainer().removeComponent( dragComponent );
         }
 
-        final Container mobileContainer = new Container( table.getTableEnvironment(), mobileContainerStrategy );
+        final Container mobileContainer = new Container( table.getTableEnvironment(), ComponentStrategies.NULL_CONTAINER );
         for( final IComponent dragComponent : dragComponents )
         {
             mobileContainer.addComponent( dragComponent );

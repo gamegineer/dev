@@ -23,13 +23,9 @@ package org.gamegineer.table.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Point;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
-import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.core.Activator;
 
@@ -43,18 +39,6 @@ public final class TestComponentStrategies
     // ======================================================================
     // Fields
     // ======================================================================
-
-    /** The null component strategy. */
-    private static final IComponentStrategy NULL_COMPONENT_STRATEGY = new NullComponentStrategy();
-
-    /** The null component strategy identifier. */
-    public static final ComponentStrategyId NULL_COMPONENT_STRATEGY_ID = NULL_COMPONENT_STRATEGY.getId();
-
-    /** The null container strategy. */
-    private static final IContainerStrategy NULL_CONTAINER_STRATEGY = new NullContainerStrategy();
-
-    /** The null container strategy identifier. */
-    public static final ComponentStrategyId NULL_CONTAINER_STRATEGY_ID = NULL_CONTAINER_STRATEGY.getId();
 
     /** The next unique component strategy identifier. */
     private static final AtomicLong nextComponentStrategyId_ = new AtomicLong();
@@ -249,7 +233,7 @@ public final class TestComponentStrategies
     /* @NonNull */
     public static IComponentStrategy createUniqueComponentStrategy()
     {
-        return registerComponentStrategy( createComponentStrategyDecorator( NULL_COMPONENT_STRATEGY, getUniqueComponentStrategyId() ) );
+        return registerComponentStrategy( createComponentStrategyDecorator( ComponentStrategies.NULL_COMPONENT, getUniqueComponentStrategyId() ) );
     }
 
     /**
@@ -260,7 +244,7 @@ public final class TestComponentStrategies
     /* @NonNull */
     public static IContainerStrategy createUniqueContainerStrategy()
     {
-        return registerComponentStrategy( createContainerStrategyDecorator( NULL_CONTAINER_STRATEGY, getUniqueComponentStrategyId() ) );
+        return registerComponentStrategy( createContainerStrategyDecorator( ComponentStrategies.NULL_CONTAINER, getUniqueComponentStrategyId() ) );
     }
 
     /**
@@ -298,221 +282,5 @@ public final class TestComponentStrategies
         assert componentStrategyRegistry != null;
         componentStrategyRegistry.registerObject( componentStrategy );
         return componentStrategy;
-    }
-
-
-    // ======================================================================
-    // Nested Types
-    // ======================================================================
-
-    /**
-     * A null component strategy.
-     */
-    @Immutable
-    private static class NullComponentStrategy
-        implements IComponentStrategy
-    {
-        // ==================================================================
-        // Fields
-        // ==================================================================
-
-        /** The strategy identifier. */
-        private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.table.componentStrategies.nullComponent" ); //$NON-NLS-1$
-
-        /** The collection of supported component orientations. */
-        private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( NullOrientation.values( NullOrientation.class ) ) );
-
-
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code NullComponentStrategy}
-         * class.
-         */
-        NullComponentStrategy()
-        {
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.core.IComponentStrategy#getDefaultLocation()
-         */
-        @Override
-        public final Point getDefaultLocation()
-        {
-            return new Point( 0, 0 );
-        }
-
-        /*
-         * @see org.gamegineer.table.core.IComponentStrategy#getDefaultOrientation()
-         */
-        @Override
-        public final ComponentOrientation getDefaultOrientation()
-        {
-            return NullOrientation.DEFAULT;
-        }
-
-        /*
-         * @see org.gamegineer.table.core.IComponentStrategy#getDefaultOrigin()
-         */
-        @Override
-        public final Point getDefaultOrigin()
-        {
-            return getDefaultLocation();
-        }
-
-        /*
-         * @see org.gamegineer.table.core.IComponentStrategy#getDefaultSurfaceDesigns()
-         */
-        @Override
-        public final Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns()
-        {
-            final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new HashMap<ComponentOrientation, ComponentSurfaceDesign>();
-            surfaceDesigns.put( NullOrientation.DEFAULT, ComponentSurfaceDesigns.NULL );
-            return surfaceDesigns;
-        }
-
-        /*
-         * @see org.gamegineer.table.core.IComponentStrategy#getDragStrategyFactory()
-         */
-        @Override
-        public IDragStrategyFactory getDragStrategyFactory()
-        {
-            return new DefaultDragStrategyFactory();
-        }
-
-        /*
-         * @see org.gamegineer.table.core.IComponentStrategy#getId()
-         */
-        @Override
-        public ComponentStrategyId getId()
-        {
-            return ID;
-        }
-
-        /*
-         * @see org.gamegineer.table.core.IComponentStrategy#getSupportedOrientations()
-         */
-        @Override
-        public final Collection<ComponentOrientation> getSupportedOrientations()
-        {
-            return SUPPORTED_ORIENTATIONS;
-        }
-    }
-
-    /**
-     * A null container strategy.
-     */
-    @Immutable
-    private static final class NullContainerStrategy
-        extends NullComponentStrategy
-        implements IContainerStrategy
-    {
-        // ==================================================================
-        // Fields
-        // ==================================================================
-
-        /** The strategy identifier. */
-        private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.table.componentStrategies.nullContainer" ); //$NON-NLS-1$
-
-
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code NullContainerStrategy}
-         * class.
-         */
-        NullContainerStrategy()
-        {
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.core.IContainerStrategy#getDefaultLayout()
-         */
-        @Override
-        public IContainerLayout getDefaultLayout()
-        {
-            return ContainerLayouts.ABSOLUTE;
-        }
-
-        /*
-         * @see org.gamegineer.table.internal.core.NullComponentStrategy#getId()
-         */
-        @Override
-        public ComponentStrategyId getId()
-        {
-            return ID;
-        }
-    }
-
-    /**
-     * A null component orientation.
-     */
-    @Immutable
-    private static final class NullOrientation
-        extends ComponentOrientation
-    {
-        // ==================================================================
-        // Fields
-        // ==================================================================
-
-        /** Serializable class version number. */
-        private static final long serialVersionUID = 1L;
-
-        /** The default orientation. */
-        static final NullOrientation DEFAULT = new NullOrientation( "default", 0 ); //$NON-NLS-1$
-
-
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code NullOrientation} class.
-         * 
-         * @param name
-         *        The name of the enum constant; must not be {@code null}.
-         * @param ordinal
-         *        The ordinal of the enum constant.
-         * 
-         * @throws java.lang.IllegalArgumentException
-         *         If {@code ordinal} is negative.
-         * @throws java.lang.NullPointerException
-         *         If {@code name} is {@code null}.
-         */
-        private NullOrientation(
-            /* @NonNull */
-            final String name,
-            final int ordinal )
-        {
-            super( name, ordinal );
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.core.ComponentOrientation#inverse()
-         */
-        @Override
-        public ComponentOrientation inverse()
-        {
-            return this;
-        }
     }
 }

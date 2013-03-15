@@ -24,8 +24,8 @@ package org.gamegineer.table.ui;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.core.ComponentStrategies;
 import org.gamegineer.table.core.ComponentStrategyId;
-import org.gamegineer.table.core.TestComponentStrategies;
 import org.gamegineer.table.internal.ui.Activator;
 
 /**
@@ -323,7 +323,7 @@ public final class TestComponentStrategyUIs
         @Override
         public ComponentStrategyId getId()
         {
-            return TestComponentStrategies.NULL_COMPONENT_STRATEGY_ID;
+            return ComponentStrategies.NULL_COMPONENT.getId();
         }
 
         /*
@@ -367,7 +367,7 @@ public final class TestComponentStrategyUIs
         @Override
         public ComponentStrategyId getId()
         {
-            return TestComponentStrategies.NULL_CONTAINER_STRATEGY_ID;
+            return ComponentStrategies.NULL_CONTAINER.getId();
         }
 
         /*
