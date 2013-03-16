@@ -28,6 +28,7 @@ import static org.junit.Assert.assertSame;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import net.jcip.annotations.Immutable;
@@ -128,7 +129,7 @@ public abstract class AbstractDragContextTestCase
 
     /**
      * Creates a new component with unique attributes using the fixture table
-     * environment with the specified origin.
+     * environment with the specified origin and a custom drag strategy factory.
      * 
      * @param x
      *        The x-coordinate of the container origin.
@@ -142,21 +143,81 @@ public abstract class AbstractDragContextTestCase
         final int x,
         final int y )
     {
-        final IComponent component = TestComponents.createUniqueComponent( table_.getTableEnvironment(), createUniqueComponentStrategy() );
+        final IDragStrategyFactory dragStrategyFactory = new IDragStrategyFactory()
+        {
+            @Override
+            public IDragStrategy createDragStrategy(
+                final IComponent component )
+            {
+                return new IDragStrategy()
+                {
+                    @Override
+                    public boolean canDrop(
+                        @SuppressWarnings( "unused" )
+                        final IContainer dropContainer )
+                    {
+                        return true;
+                    }
+
+                    @Override
+                    public List<IComponent> getDragComponents()
+                    {
+                        // drag the target component and the sibling immediately above it, if present
+                        final List<IComponent> components = component.getContainer().getComponents();
+                        final int beginIndex = component.getPath().getIndex();
+                        final int endIndex = ((beginIndex + 1) < components.size()) ? (beginIndex + 1) : (components.size() - 1);
+                        return components.subList( beginIndex, endIndex + 1 );
+                    }
+                };
+            }
+        };
+        return createUniqueComponent( x, y, dragStrategyFactory );
+    }
+
+    /**
+     * Creates a new component with unique attributes using the fixture table
+     * environment with the specified origin and drag strategy factory.
+     * 
+     * @param x
+     *        The x-coordinate of the container origin.
+     * @param y
+     *        The y-coordinate of the container origin.
+     * @param dragStrategyFactory
+     *        The drag strategy factory; must not be {@code null}.
+     * 
+     * @return A new component; never {@code null}.
+     */
+    /* @NonNull */
+    private IComponent createUniqueComponent(
+        final int x,
+        final int y,
+        /* @NonNull */
+        final IDragStrategyFactory dragStrategyFactory )
+    {
+        assert dragStrategyFactory != null;
+
+        final IComponent component = TestComponents.createUniqueComponent( table_.getTableEnvironment(), createUniqueComponentStrategy( dragStrategyFactory ) );
         component.setOrigin( new Point( x, y ) );
         component.setSurfaceDesign( component.getOrientation(), DEFAULT_SURFACE_DESIGN );
         return component;
     }
 
     /**
-     * Creates a new component strategy with unique attributes that uses a
-     * custom drag strategy for this fixture.
+     * Creates a new component strategy with unique attributes that uses the
+     * specified drag strategy factory.
+     * 
+     * @param dragStrategyFactory
+     *        The drag strategy factory; must not be {@code null}.
      * 
      * @return A new component strategy; never {@code null}.
      */
     /* @NonNull */
-    private static IComponentStrategy createUniqueComponentStrategy()
+    private static IComponentStrategy createUniqueComponentStrategy(
+        /* @NonNull */
+        final IDragStrategyFactory dragStrategyFactory )
     {
+        assert dragStrategyFactory != null;
+
         final IComponentStrategy delegate = TestComponentStrategies.createUniqueComponentStrategy();
         return new IComponentStrategy()
         {
@@ -187,34 +248,7 @@ public abstract class AbstractDragContextTestCase
             @Override
             public IDragStrategyFactory getDragStrategyFactory()
             {
-                return new IDragStrategyFactory()
-                {
-                    @Override
-                    public IDragStrategy createDragStrategy(
-                        final IComponent component )
-                    {
-                        return new IDragStrategy()
-                        {
-                            @Override
-                            public boolean canDrop(
-                                @SuppressWarnings( "unused" )
-                                final IContainer dropContainer )
-                            {
-                                return true;
-                            }
-
-                            @Override
-                            public List<IComponent> getDragComponents()
-                            {
-                                // drag the target component and the sibling immediately above it, if present
-                                final List<IComponent> components = component.getContainer().getComponents();
-                                final int beginIndex = component.getPath().getIndex();
-                                final int endIndex = ((beginIndex + 1) < components.size()) ? (beginIndex + 1) : (components.size() - 1);
-                                return components.subList( beginIndex, endIndex + 1 );
-                            }
-                        };
-                    }
-                };
+                return dragStrategyFactory;
             }
 
             @Override
@@ -442,6 +476,55 @@ public abstract class AbstractDragContextTestCase
         {
             assertEquals( new Point( preDragComponentState.location.x + 22, preDragComponentState.location.y + 44 ), preDragComponentState.component.getLocation() );
         }
+    }
+
+    /**
+     * Ensures the {@link IDragContext#drop} method cancels the drag-and-drop
+     * operation when the underlying drag strategy indicates a drop is not
+     * allowed on the target container.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testDrop_DropNotAllowedOnTargetContainer()
+        throws Exception
+    {
+        dragContext_.cancel();
+        final IDragStrategyFactory dragStrategyFactory = new IDragStrategyFactory()
+        {
+            @Override
+            public IDragStrategy createDragStrategy(
+                final IComponent component )
+            {
+                return new IDragStrategy()
+                {
+                    @Override
+                    public boolean canDrop(
+                        @SuppressWarnings( "unused" )
+                        final IContainer dropContainer )
+                    {
+                        return false;
+                    }
+
+                    @Override
+                    public List<IComponent> getDragComponents()
+                    {
+                        return Collections.singletonList( component );
+                    }
+                };
+            }
+        };
+        final IComponent component = createUniqueComponent( 1000, 1000, dragStrategyFactory );
+        table_.getTabletop().addComponent( component );
+        final PreDragComponentState preDragComponentState = new PreDragComponentState( component );
+
+        dragContext_ = createDragContext( component.getLocation(), component );
+        dragContext_.drop( new Point( 0, 0 ) );
+
+        assertEquals( preDragComponentState.container, component.getContainer() );
+        assertEquals( preDragComponentState.index, component.getPath().getIndex() );
+        assertEquals( preDragComponentState.location, component.getLocation() );
     }
 
     /**

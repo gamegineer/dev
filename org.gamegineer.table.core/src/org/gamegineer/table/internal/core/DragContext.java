@@ -49,6 +49,9 @@ final class DragContext
     // Fields
     // ======================================================================
 
+    /** The drag strategy. */
+    private final IDragStrategy dragStrategy_;
+
     /** The initial drag location in table coordinates. */
     private final Point initialLocation_;
 
@@ -93,6 +96,8 @@ final class DragContext
      * @param mobileContainer
      *        The container used to hold the components being dragged during the
      *        drag-and-drop operation; must not be {@code null}.
+     * @param dragStrategy
+     *        The drag strategy; must not be {@code null}.
      */
     private DragContext(
         /* @NonNull */
@@ -102,13 +107,17 @@ final class DragContext
         /* @NonNull */
         final List<PreDragComponentState> preDragComponentStates,
         /* @NonNull */
-        final Container mobileContainer )
+        final Container mobileContainer,
+        /* @NonNull */
+        final IDragStrategy dragStrategy )
     {
         assert table != null;
         assert initialLocation != null;
         assert preDragComponentStates != null;
         assert mobileContainer != null;
+        assert dragStrategy != null;
 
+        dragStrategy_ = dragStrategy;
         initialLocation_ = initialLocation;
         mobileContainer_ = mobileContainer;
         originalMobileContainerOrigin_ = mobileContainer.getOrigin();
@@ -173,7 +182,7 @@ final class DragContext
         }
         table.getTabletop().addComponent( mobileContainer );
 
-        return new DragContext( table, new Point( location ), preDragComponentStates, mobileContainer );
+        return new DragContext( table, new Point( location ), preDragComponentStates, mobileContainer, dragStrategy );
     }
 
     /*
@@ -187,15 +196,7 @@ final class DragContext
         {
             assertStateLegal( table_.isDragActive(), NonNlsMessages.DragContext_dragNotActive );
 
-            mobileContainer_.removeAllComponents();
-            table_.getTabletop().removeComponent( mobileContainer_ );
-
-            for( final PreDragComponentState preDragComponentState : preDragComponentStates_ )
-            {
-                preDragComponentState.revert();
-            }
-
-            table_.endDrag();
+            endDrag( null );
         }
         finally
         {
@@ -225,6 +226,52 @@ final class DragContext
         }
     }
 
+    /**
+     * Ends the drag-and-drop operation.
+     * 
+     * @param location
+     *        The ending drag location in table coordinates or {@code null} if
+     *        the drag-and-drop operation should be reverted.
+     */
+    @GuardedBy( "getLock()" )
+    private void endDrag(
+        /* @Nullable */
+        final Point location )
+    {
+        assert getLock().isHeldByCurrentThread();
+
+        final List<IComponent> dragComponents = mobileContainer_.removeAllComponents();
+        table_.getTabletop().removeComponent( mobileContainer_ );
+
+        boolean revert = false;
+        if( location != null )
+        {
+            final IContainer dropContainer = getDropContainer( location );
+            if( dragStrategy_.canDrop( dropContainer ) )
+            {
+                dropContainer.addComponents( dragComponents );
+            }
+            else
+            {
+                revert = true;
+            }
+        }
+        else
+        {
+            revert = true;
+        }
+
+        if( revert )
+        {
+            for( final PreDragComponentState preDragComponentState : preDragComponentStates_ )
+            {
+                preDragComponentState.revert();
+            }
+        }
+
+        table_.endDrag();
+    }
+
     /*
      * @see org.gamegineer.table.core.IDragContext#drop(java.awt.Point)
      */
@@ -240,14 +287,7 @@ final class DragContext
             assertStateLegal( table_.isDragActive(), NonNlsMessages.DragContext_dragNotActive );
 
             moveMobileContainer( location );
-
-            // TODO: need to consult the drag strategy
-
-            final List<IComponent> dragComponents = mobileContainer_.removeAllComponents();
-            table_.getTabletop().removeComponent( mobileContainer_ );
-            getDropContainer( location ).addComponents( dragComponents );
-
-            table_.endDrag();
+            endDrag( location );
         }
         finally
         {
