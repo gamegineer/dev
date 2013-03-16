@@ -154,20 +154,17 @@ final class DragContext
         final IDragStrategy dragStrategy = component.getDragStrategy();
         final List<IComponent> dragComponents = dragStrategy.getDragComponents();
         // TODO: need to abort drag if dragComponents.isEmpty() -- change signature of ITable.beginDrag() to allow null return value?
+
         final List<PreDragComponentState> preDragComponentStates = new ArrayList<PreDragComponentState>( dragComponents.size() );
         for( final IComponent dragComponent : dragComponents )
         {
-            // TODO: modify IDragStrategy.getDragComponents() to return paths instead of components to avoid casts
-            preDragComponentStates.add( new PreDragComponentState( (Component)dragComponent ) );
-        }
-        for( final IComponent dragComponent : dragComponents )
-        {
-            dragComponent.getContainer().removeComponent( dragComponent );
+            preDragComponentStates.add( new PreDragComponentState( dragComponent ) );
         }
 
         final Container mobileContainer = new Container( table.getTableEnvironment(), ComponentStrategies.NULL_CONTAINER );
         for( final IComponent dragComponent : dragComponents )
         {
+            dragComponent.getContainer().removeComponent( dragComponent );
             mobileContainer.addComponent( dragComponent );
         }
         table.getTabletop().addComponent( mobileContainer );
@@ -329,10 +326,10 @@ final class DragContext
         // ==================================================================
 
         /** The component being dragged. */
-        private final Component component_;
+        private final IComponent component_;
 
         /** The component container prior to being dragged. */
-        private final Container container_;
+        private final IContainer container_;
 
         /**
          * The component index within the source container prior to being
@@ -357,7 +354,7 @@ final class DragContext
          */
         PreDragComponentState(
             /* @NonNull */
-            final Component component )
+            final IComponent component )
         {
             assert component != null;
 
