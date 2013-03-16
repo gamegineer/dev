@@ -133,11 +133,12 @@ final class DragContext
      * @param component
      *        The component to be dragged; must not be {@code null}.
      * 
-     * @return A new instance of the {@code DragContext} class; never
-     *         {@code null}.
+     * @return A new instance of the {@code DragContext} class or {@code null}
+     *         if a drag-and-drop operation is not possible for the specified
+     *         arguments.
      */
     @GuardedBy( "table.getTableEnvironment().getLock()" )
-    /* @NonNull */
+    /* @Nullable */
     static DragContext beginDrag(
         /* @NonNull */
         final Table table,
@@ -153,7 +154,10 @@ final class DragContext
 
         final IDragStrategy dragStrategy = component.getDragStrategy();
         final List<IComponent> dragComponents = dragStrategy.getDragComponents();
-        // TODO: need to abort drag if dragComponents.isEmpty() -- change signature of ITable.beginDrag() to allow null return value?
+        if( dragComponents.isEmpty() )
+        {
+            return null;
+        }
 
         final List<PreDragComponentState> preDragComponentStates = new ArrayList<PreDragComponentState>( dragComponents.size() );
         for( final IComponent dragComponent : dragComponents )

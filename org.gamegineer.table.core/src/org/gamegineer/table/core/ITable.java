@@ -49,8 +49,9 @@ public interface ITable
      *        The component from which the drag-and-drop operation will begin;
      *        must not be {@code null}.
      * 
-     * @return A context defining the new drag-and-drop operation; never
-     *         {@code null}.
+     * @return A context defining the new drag-and-drop operation or
+     *         {@code null} if a drag-and-drop operation is not possible for the
+     *         specified arguments.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code component} does not exist in this table or
@@ -61,7 +62,7 @@ public interface ITable
      * @throws java.lang.NullPointerException
      *         If {@code location} or {@code component} is {@code null}.
      */
-    /* @NonNull */
+    /* @Nullable */
     public IDragContext beginDrag(
         /* @NonNull */
         Point location,

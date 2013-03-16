@@ -30,7 +30,10 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import java.awt.Point;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import org.easymock.EasyMock;
 import org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
@@ -142,6 +145,70 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
+     * Creates a new component with unique attributes using the fixture table
+     * environment and the specified drag strategy factory.
+     * 
+     * @param dragStrategyFactory
+     *        The drag strategy factory; must not be {@code null}.
+     * 
+     * @return A new component; never {@code null}.
+     */
+    /* @NonNull */
+    private IComponent createUniqueComponent(
+        /* @NonNull */
+        final IDragStrategyFactory dragStrategyFactory )
+    {
+        assert dragStrategyFactory != null;
+
+        final IComponentStrategy defaultCmponentStrategy = TestComponentStrategies.createUniqueComponentStrategy();
+        final IComponentStrategy componentStrategy = new IComponentStrategy()
+        {
+            @Override
+            public Point getDefaultLocation()
+            {
+                return defaultCmponentStrategy.getDefaultLocation();
+            }
+
+            @Override
+            public ComponentOrientation getDefaultOrientation()
+            {
+                return defaultCmponentStrategy.getDefaultOrientation();
+            }
+
+            @Override
+            public Point getDefaultOrigin()
+            {
+                return defaultCmponentStrategy.getDefaultOrigin();
+            }
+
+            @Override
+            public Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns()
+            {
+                return defaultCmponentStrategy.getDefaultSurfaceDesigns();
+            }
+
+            @Override
+            public IDragStrategyFactory getDragStrategyFactory()
+            {
+                return dragStrategyFactory;
+            }
+
+            @Override
+            public ComponentStrategyId getId()
+            {
+                return defaultCmponentStrategy.getId();
+            }
+
+            @Override
+            public Collection<ComponentOrientation> getSupportedOrientations()
+            {
+                return defaultCmponentStrategy.getSupportedOrientations();
+            }
+        };
+        return TestComponents.createUniqueComponent( tableEnvironment_, componentStrategy );
+    }
+
+    /**
      * Creates a new container with unique attributes using the fixture table
      * environment.
      * 
@@ -193,20 +260,10 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
         table_.getTabletop().addComponent( component );
         final Point originalComponentLocation = component.getLocation();
 
-        table_.beginDrag( new Point( 0, 0 ), component );
+        assertNotNull( table_.beginDrag( new Point( 0, 0 ), component ) );
 
         assertEquals( originalComponentLocation, component.getLocation() );
         assertNotSame( table_.getTabletop(), component.getContainer() );
-    }
-
-    /**
-     * Ensures the {@link ITable#beginDrag} method throws an exception when
-     * passed an illegal component that does not exist in the table.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testBeginDrag_Component_Illegal_NotExistsInTable()
-    {
-        table_.beginDrag( new Point( 0, 0 ), createUniqueComponent() );
     }
 
     /**
@@ -217,6 +274,16 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     public void testBeginDrag_Component_Illegal_NoContainer()
     {
         table_.beginDrag( new Point( 0, 0 ), table_.getTabletop() );
+    }
+
+    /**
+     * Ensures the {@link ITable#beginDrag} method throws an exception when
+     * passed an illegal component that does not exist in the table.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testBeginDrag_Component_Illegal_NotExistsInTable()
+    {
+        table_.beginDrag( new Point( 0, 0 ), createUniqueComponent() );
     }
 
     /**
@@ -240,7 +307,9 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
-     * Ensures the {@link ITable#beginDrag} method does not return {@code null}.
+     * Ensures the {@link ITable#beginDrag} method does not return {@code null}
+     * when the underlying drag strategy indicates a drag-and-drop operation is
+     * allowed.
      */
     @Test
     public void testBeginDrag_ReturnValue_NonNull()
@@ -249,6 +318,45 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
         table_.getTabletop().addComponent( component );
 
         assertNotNull( table_.beginDrag( new Point( 0, 0 ), component ) );
+    }
+
+    /**
+     * Ensures the {@link ITable#beginDrag} method returns {@code null} when the
+     * underlying drag strategy indicates a drag-and-drop operation is
+     * disallowed.
+     */
+    @Test
+    public void testBeginDrag_ReturnValue_Null()
+    {
+        final IDragStrategyFactory dragStrategyFactory = new IDragStrategyFactory()
+        {
+            @Override
+            public IDragStrategy createDragStrategy(
+                @SuppressWarnings( "unused" )
+                final IComponent component )
+            {
+                return new IDragStrategy()
+                {
+                    @Override
+                    public boolean canDrop(
+                        @SuppressWarnings( "unused" )
+                        final IContainer dropContainer )
+                    {
+                        return false;
+                    }
+
+                    @Override
+                    public List<IComponent> getDragComponents()
+                    {
+                        return Collections.emptyList();
+                    }
+                };
+            }
+        };
+        final IComponent component = createUniqueComponent( dragStrategyFactory );
+        table_.getTabletop().addComponent( component );
+
+        assertNull( table_.beginDrag( new Point( 0, 0 ), component ) );
     }
 
     /**
@@ -263,7 +371,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
         final IComponent component2 = createUniqueComponent();
         table_.getTabletop().addComponent( component2 );
 
-        table_.beginDrag( new Point( 0, 0 ), component1 );
+        assertNotNull( table_.beginDrag( new Point( 0, 0 ), component1 ) );
         table_.beginDrag( new Point( 0, 0 ), component2 );
     }
 
