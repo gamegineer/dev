@@ -251,6 +251,16 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     }
 
     /**
+     * Ensures the {@link IComponentStrategy#getExtension} method throws an
+     * exception when passed a {@code null} type.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGetExtension_Type_Null()
+    {
+        componentStrategy_.getExtension( null );
+    }
+
+    /**
      * Ensures the {@link IComponentStrategy#getId} method does not return
      * {@code null}.
      */

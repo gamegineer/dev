@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.core;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.Collection;
@@ -140,9 +141,21 @@ public final class ComponentStrategies
          * @see org.gamegineer.table.core.IComponentStrategy#getDragStrategyFactory()
          */
         @Override
-        public IDragStrategyFactory getDragStrategyFactory()
+        public final IDragStrategyFactory getDragStrategyFactory()
         {
             return new DefaultDragStrategyFactory();
+        }
+
+        /*
+         * @see org.gamegineer.table.core.IComponentStrategy#getExtension(java.lang.Class)
+         */
+        @Override
+        public final <T> T getExtension(
+            final Class<T> type )
+        {
+            assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
+
+            return null;
         }
 
         /*

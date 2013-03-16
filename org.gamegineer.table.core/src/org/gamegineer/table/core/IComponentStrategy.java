@@ -82,6 +82,27 @@ public interface IComponentStrategy
     public IDragStrategyFactory getDragStrategyFactory();
 
     /**
+     * Gets the component strategy extension of the specified type.
+     * 
+     * @param <T>
+     *        The component strategy extension type.
+     * 
+     * @param type
+     *        The component strategy extension type; must not be {@code null}.
+     * 
+     * @return The component strategy extension of the specified type or
+     *         {@code null} if the component strategy does not support the
+     *         specified extension.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code type} is {@code null}.
+     */
+    /* @Nullable */
+    public <T> T getExtension(
+        /* @NonNull */
+        Class<T> type );
+
+    /**
      * Gets the component strategy identifier.
      * 
      * @return The component strategy identifier; never {@code null}.

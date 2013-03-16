@@ -300,6 +300,18 @@ final class Table
         return components;
     }
 
+    /*
+     * @see org.gamegineer.table.core.ITable#getExtension(java.lang.Class)
+     */
+    @Override
+    public <T> T getExtension(
+        final Class<T> type )
+    {
+        assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
+
+        return null;
+    }
+
     /**
      * Gets the table environment lock.
      * 

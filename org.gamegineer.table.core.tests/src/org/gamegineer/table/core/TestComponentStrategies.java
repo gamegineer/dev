@@ -138,6 +138,13 @@ public final class TestComponentStrategies
             }
 
             @Override
+            public <T> T getExtension(
+                final Class<T> type )
+            {
+                return componentStrategy.getExtension( type );
+            }
+
+            @Override
             public ComponentStrategyId getId()
             {
                 return componentStrategyId;
@@ -209,6 +216,13 @@ public final class TestComponentStrategies
             public IDragStrategyFactory getDragStrategyFactory()
             {
                 return containerStrategy.getDragStrategyFactory();
+            }
+
+            @Override
+            public <T> T getExtension(
+                final Class<T> type )
+            {
+                return containerStrategy.getExtension( type );
             }
 
             @Override

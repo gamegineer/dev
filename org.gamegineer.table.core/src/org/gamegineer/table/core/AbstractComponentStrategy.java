@@ -157,6 +157,21 @@ public abstract class AbstractComponentStrategy
         return new DefaultDragStrategyFactory();
     }
 
+    /**
+     * This implementation always returns {@code null}. Subclasses may override
+     * and are not required to call the superclass implementation.
+     * 
+     * @see org.gamegineer.table.core.IComponentStrategy#getExtension(java.lang.Class)
+     */
+    @Override
+    public <T> T getExtension(
+        final Class<T> type )
+    {
+        assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
+
+        return null;
+    }
+
     /*
      * @see org.gamegineer.table.core.IComponentStrategy#getId()
      */

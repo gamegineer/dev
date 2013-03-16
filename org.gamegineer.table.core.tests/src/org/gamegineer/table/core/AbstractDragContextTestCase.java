@@ -252,6 +252,13 @@ public abstract class AbstractDragContextTestCase
             }
 
             @Override
+            public <T> T getExtension(
+                final Class<T> type )
+            {
+                return delegate.getExtension( type );
+            }
+
+            @Override
             public ComponentStrategyId getId()
             {
                 return delegate.getId();

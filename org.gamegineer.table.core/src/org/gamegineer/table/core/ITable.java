@@ -137,6 +137,26 @@ public interface ITable
         Point location );
 
     /**
+     * Gets the table extension of the specified type.
+     * 
+     * @param <T>
+     *        The table extension type.
+     * 
+     * @param type
+     *        The table extension type; must not be {@code null}.
+     * 
+     * @return The table extension of the specified type or {@code null} if the
+     *         table does not support the specified extension.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code type} is {@code null}.
+     */
+    /* @Nullable */
+    public <T> T getExtension(
+        /* @NonNull */
+        Class<T> type );
+
+    /**
      * Gets the table environment associated with this table.
      * 
      * @return The table environment associated with this table; never

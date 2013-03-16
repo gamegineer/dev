@@ -194,6 +194,13 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
             }
 
             @Override
+            public <T> T getExtension(
+                final Class<T> type )
+            {
+                return delegate.getExtension( type );
+            }
+
+            @Override
             public ComponentStrategyId getId()
             {
                 return delegate.getId();
@@ -603,6 +610,16 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     public void testGetComponents_ReturnValue_NonNull()
     {
         assertNotNull( table_.getComponents( new Point( Integer.MIN_VALUE, Integer.MIN_VALUE ) ) );
+    }
+
+    /**
+     * Ensures the {@link ITable#getExtension} method throws an exception when
+     * passed a {@code null} type.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGetExtension_Type_Null()
+    {
+        table_.getExtension( null );
     }
 
     /**
