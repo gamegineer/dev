@@ -160,31 +160,31 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     {
         assert dragStrategyFactory != null;
 
-        final IComponentStrategy defaultCmponentStrategy = TestComponentStrategies.createUniqueComponentStrategy();
+        final IComponentStrategy delegate = TestComponentStrategies.createUniqueComponentStrategy();
         final IComponentStrategy componentStrategy = new IComponentStrategy()
         {
             @Override
             public Point getDefaultLocation()
             {
-                return defaultCmponentStrategy.getDefaultLocation();
+                return delegate.getDefaultLocation();
             }
 
             @Override
             public ComponentOrientation getDefaultOrientation()
             {
-                return defaultCmponentStrategy.getDefaultOrientation();
+                return delegate.getDefaultOrientation();
             }
 
             @Override
             public Point getDefaultOrigin()
             {
-                return defaultCmponentStrategy.getDefaultOrigin();
+                return delegate.getDefaultOrigin();
             }
 
             @Override
             public Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns()
             {
-                return defaultCmponentStrategy.getDefaultSurfaceDesigns();
+                return delegate.getDefaultSurfaceDesigns();
             }
 
             @Override
@@ -196,13 +196,13 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
             @Override
             public ComponentStrategyId getId()
             {
-                return defaultCmponentStrategy.getId();
+                return delegate.getId();
             }
 
             @Override
             public Collection<ComponentOrientation> getSupportedOrientations()
             {
-                return defaultCmponentStrategy.getSupportedOrientations();
+                return delegate.getSupportedOrientations();
             }
         };
         return TestComponents.createUniqueComponent( tableEnvironment_, componentStrategy );
