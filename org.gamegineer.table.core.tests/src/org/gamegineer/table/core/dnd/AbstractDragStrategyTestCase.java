@@ -19,7 +19,7 @@
  * Created on Mar 8, 2013 at 9:59:24 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.core.dnd;
 
 import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
@@ -27,7 +27,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.core.IDragStrategy} interface.
+ * {@link org.gamegineer.table.core.dnd.IDragStrategy} interface.
  */
 public abstract class AbstractDragStrategyTestCase
 {

@@ -1,5 +1,5 @@
 /*
- * DefaultDragStrategyAsDragStrategyTest.java
+ * DefaultDragStrategyFactoryAsDragStrategyFactoryTest.java
  * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
@@ -16,21 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Mar 8, 2013 at 10:05:47 PM.
+ * Created on Mar 9, 2013 at 9:01:31 PM.
  */
 
-package org.gamegineer.table.core;
-
-import org.easymock.EasyMock;
+package org.gamegineer.table.core.dnd;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.core.DefaultDragStrategy} class to ensure it does
- * not violate the contract of the
- * {@link org.gamegineer.table.core.IDragStrategy} interface.
+ * {@link org.gamegineer.table.core.dnd.DefaultDragStrategyFactory} class to
+ * ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.core.dnd.IDragStrategyFactory} interface.
  */
-public final class DefaultDragStrategyAsDragStrategyTest
-    extends AbstractDragStrategyTestCase
+public final class DefaultDragStrategyFactoryAsDragStrategyFactoryTest
+    extends AbstractDragStrategyFactoryTestCase
 {
     // ======================================================================
     // Constructors
@@ -38,9 +36,9 @@ public final class DefaultDragStrategyAsDragStrategyTest
 
     /**
      * Initializes a new instance of the
-     * {@code DefaultDragStrategyAsDragStrategyTest} class.
+     * {@code DefaultDragStrategyFactoryAsDragStrategyFactoryTest} class.
      */
-    public DefaultDragStrategyAsDragStrategyTest()
+    public DefaultDragStrategyFactoryAsDragStrategyFactoryTest()
     {
     }
 
@@ -50,11 +48,11 @@ public final class DefaultDragStrategyAsDragStrategyTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractDragStrategyTestCase#createDragStrategy()
+     * @see org.gamegineer.table.core.AbstractDragStrategyFactoryTestCase#createDragStrategyFactory()
      */
     @Override
-    protected IDragStrategy createDragStrategy()
+    protected IDragStrategyFactory createDragStrategyFactory()
     {
-        return new DefaultDragStrategy( EasyMock.createMock( IComponent.class ) );
+        return new DefaultDragStrategyFactory();
     }
 }

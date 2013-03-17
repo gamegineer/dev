@@ -24,17 +24,12 @@ package org.gamegineer.table.core;
 import static org.gamegineer.table.core.Assert.assertTableEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import java.awt.Point;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import org.easymock.EasyMock;
 import org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.junit.Before;
@@ -145,77 +140,6 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
-     * Creates a new component with unique attributes using the fixture table
-     * environment and the specified drag strategy factory.
-     * 
-     * @param dragStrategyFactory
-     *        The drag strategy factory; must not be {@code null}.
-     * 
-     * @return A new component; never {@code null}.
-     */
-    /* @NonNull */
-    private IComponent createUniqueComponent(
-        /* @NonNull */
-        final IDragStrategyFactory dragStrategyFactory )
-    {
-        assert dragStrategyFactory != null;
-
-        final IComponentStrategy delegate = TestComponentStrategies.createUniqueComponentStrategy();
-        final IComponentStrategy componentStrategy = new IComponentStrategy()
-        {
-            @Override
-            public Point getDefaultLocation()
-            {
-                return delegate.getDefaultLocation();
-            }
-
-            @Override
-            public ComponentOrientation getDefaultOrientation()
-            {
-                return delegate.getDefaultOrientation();
-            }
-
-            @Override
-            public Point getDefaultOrigin()
-            {
-                return delegate.getDefaultOrigin();
-            }
-
-            @Override
-            public Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns()
-            {
-                return delegate.getDefaultSurfaceDesigns();
-            }
-
-            @Override
-            public IDragStrategyFactory getDragStrategyFactory()
-            {
-                return dragStrategyFactory;
-            }
-
-            @Override
-            public <T> T getExtension(
-                final Class<T> type )
-            {
-                return delegate.getExtension( type );
-            }
-
-            @Override
-            public ComponentStrategyId getId()
-            {
-                return delegate.getId();
-            }
-
-            @Override
-            public Collection<ComponentOrientation> getSupportedOrientations()
-            {
-                return delegate.getSupportedOrientations();
-            }
-        };
-        return TestComponents.createUniqueComponent( tableEnvironment_, componentStrategy );
-    }
-
-    /**
      * Creates a new container with unique attributes using the fixture table
      * environment.
      * 
@@ -253,133 +177,6 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
         assertNotNull( table_ );
 
         super.setUp();
-    }
-
-    /**
-     * Ensures the {@link ITable#beginDrag} method begins a drag-and-drop
-     * operation by moving the target component to a new container used
-     * specifically for dragging but does not change the component location.
-     */
-    @Test
-    public void testBeginDrag_BeginsDragAndDropOperation()
-    {
-        final IComponent component = createUniqueComponent();
-        table_.getTabletop().addComponent( component );
-        final Point originalComponentLocation = component.getLocation();
-
-        assertNotNull( table_.beginDrag( new Point( 0, 0 ), component ) );
-
-        assertEquals( originalComponentLocation, component.getLocation() );
-        assertNotSame( table_.getTabletop(), component.getContainer() );
-    }
-
-    /**
-     * Ensures the {@link ITable#beginDrag} method throws an exception when
-     * passed an illegal component that has no container.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testBeginDrag_Component_Illegal_NoContainer()
-    {
-        table_.beginDrag( new Point( 0, 0 ), table_.getTabletop() );
-    }
-
-    /**
-     * Ensures the {@link ITable#beginDrag} method throws an exception when
-     * passed an illegal component that does not exist in the table.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testBeginDrag_Component_Illegal_NotExistsInTable()
-    {
-        table_.beginDrag( new Point( 0, 0 ), createUniqueComponent() );
-    }
-
-    /**
-     * Ensures the {@link ITable#beginDrag} method throws an exception when
-     * passed a {@code null} component.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testBeginDrag_Component_Null()
-    {
-        table_.beginDrag( new Point( 0, 0 ), null );
-    }
-
-    /**
-     * Ensures the {@link ITable#beginDrag} method throws an exception when
-     * passed a {@code null} location.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testBeginDrag_Location_Null()
-    {
-        table_.beginDrag( null, EasyMock.createMock( IComponent.class ) );
-    }
-
-    /**
-     * Ensures the {@link ITable#beginDrag} method does not return {@code null}
-     * when the underlying drag strategy indicates a drag-and-drop operation is
-     * allowed.
-     */
-    @Test
-    public void testBeginDrag_ReturnValue_NonNull()
-    {
-        final IComponent component = createUniqueComponent();
-        table_.getTabletop().addComponent( component );
-
-        assertNotNull( table_.beginDrag( new Point( 0, 0 ), component ) );
-    }
-
-    /**
-     * Ensures the {@link ITable#beginDrag} method returns {@code null} when the
-     * underlying drag strategy indicates a drag-and-drop operation is
-     * disallowed.
-     */
-    @Test
-    public void testBeginDrag_ReturnValue_Null()
-    {
-        final IDragStrategyFactory dragStrategyFactory = new IDragStrategyFactory()
-        {
-            @Override
-            public IDragStrategy createDragStrategy(
-                @SuppressWarnings( "unused" )
-                final IComponent component )
-            {
-                return new IDragStrategy()
-                {
-                    @Override
-                    public boolean canDrop(
-                        @SuppressWarnings( "unused" )
-                        final IContainer dropContainer )
-                    {
-                        return false;
-                    }
-
-                    @Override
-                    public List<IComponent> getDragComponents()
-                    {
-                        return Collections.emptyList();
-                    }
-                };
-            }
-        };
-        final IComponent component = createUniqueComponent( dragStrategyFactory );
-        table_.getTabletop().addComponent( component );
-
-        assertNull( table_.beginDrag( new Point( 0, 0 ), component ) );
-    }
-
-    /**
-     * Ensures the {@link ITable#beginDrag} method throws an exception when the
-     * table state is illegal because a drag-and-drop operation is active.
-     */
-    @Test( expected = IllegalStateException.class )
-    public void testBeginDrag_State_Illegal_DragAndDropOperationActive()
-    {
-        final IComponent component1 = createUniqueComponent();
-        table_.getTabletop().addComponent( component1 );
-        final IComponent component2 = createUniqueComponent();
-        table_.getTabletop().addComponent( component2 );
-
-        assertNotNull( table_.beginDrag( new Point( 0, 0 ), component1 ) );
-        table_.beginDrag( new Point( 0, 0 ), component2 );
     }
 
     /**

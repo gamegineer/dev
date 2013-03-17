@@ -33,11 +33,11 @@ import org.gamegineer.cards.core.CardsComponentStrategyIds;
 import org.gamegineer.table.core.AbstractComponentStrategy;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
-import org.gamegineer.table.core.DefaultDragStrategy;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
-import org.gamegineer.table.core.IDragStrategy;
-import org.gamegineer.table.core.IDragStrategyFactory;
+import org.gamegineer.table.core.dnd.DefaultDragStrategy;
+import org.gamegineer.table.core.dnd.IDragStrategy;
+import org.gamegineer.table.core.dnd.IDragStrategyFactory;
 
 /**
  * A component strategy that represents a card.

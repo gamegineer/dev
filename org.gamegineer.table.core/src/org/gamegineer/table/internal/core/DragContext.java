@@ -35,11 +35,11 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ComponentStrategies;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
-import org.gamegineer.table.core.IDragContext;
-import org.gamegineer.table.core.IDragStrategy;
+import org.gamegineer.table.core.dnd.IDragContext;
+import org.gamegineer.table.core.dnd.IDragStrategy;
 
 /**
- * Implementation of {@link org.gamegineer.table.core.IDragContext}.
+ * Implementation of {@link org.gamegineer.table.core.dnd.IDragContext}.
  */
 @ThreadSafe
 final class DragContext
@@ -186,7 +186,7 @@ final class DragContext
     }
 
     /*
-     * @see org.gamegineer.table.core.IDragContext#cancel()
+     * @see org.gamegineer.table.core.dnd.IDragContext#cancel()
      */
     @Override
     public void cancel()
@@ -205,7 +205,7 @@ final class DragContext
     }
 
     /*
-     * @see org.gamegineer.table.core.IDragContext#drag(java.awt.Point)
+     * @see org.gamegineer.table.core.dnd.IDragContext#drag(java.awt.Point)
      */
     @Override
     public void drag(
@@ -273,7 +273,7 @@ final class DragContext
     }
 
     /*
-     * @see org.gamegineer.table.core.IDragContext#drop(java.awt.Point)
+     * @see org.gamegineer.table.core.dnd.IDragContext#drop(java.awt.Point)
      */
     @Override
     public void drop(

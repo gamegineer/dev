@@ -24,6 +24,7 @@ package org.gamegineer.table.core;
 import java.awt.Point;
 import java.util.Collection;
 import java.util.Map;
+import org.gamegineer.table.core.dnd.IDragStrategyFactory;
 
 /**
  * A strategy for customizing the behavior of a component.

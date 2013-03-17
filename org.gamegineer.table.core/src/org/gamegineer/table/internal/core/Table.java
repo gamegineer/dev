@@ -38,8 +38,9 @@ import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
-import org.gamegineer.table.core.IDragContext;
 import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.dnd.IDragContext;
+import org.gamegineer.table.core.dnd.IDragSource;
 import org.gamegineer.table.internal.core.strategies.InternalComponentStrategies;
 
 /**
@@ -47,7 +48,7 @@ import org.gamegineer.table.internal.core.strategies.InternalComponentStrategies
  */
 @ThreadSafe
 final class Table
-    implements IComponentParent, ITable
+    implements IComponentParent, IDragSource, ITable
 {
     // ======================================================================
     // Fields
@@ -122,7 +123,7 @@ final class Table
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.ITable#beginDrag(java.awt.Point, org.gamegineer.table.core.IComponent)
+     * @see org.gamegineer.table.core.dnd.IDragSource#beginDrag(java.awt.Point, org.gamegineer.table.core.IComponent)
      */
     @Override
     public IDragContext beginDrag(
@@ -308,6 +309,11 @@ final class Table
         final Class<T> type )
     {
         assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
+
+        if( type.isInstance( this ) )
+        {
+            return type.cast( this );
+        }
 
         return null;
     }

@@ -1,5 +1,5 @@
 /*
- * IDragContext.java
+ * IDragSource.java
  * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
@@ -16,63 +16,55 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Feb 18, 2013 at 8:34:08 PM.
+ * Created on Mar 16, 2013 at 8:01:36 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.core.dnd;
 
 import java.awt.Point;
+import org.gamegineer.table.core.IComponent;
 
 /**
- * The context for a table drag-and-drop operation.
+ * A table extension that initiates a drag-and-drop operation.
  * 
  * @noextend This interface is not intended to be extended by clients.
  * 
  * @noimplement This interface is not intended to be implemented by clients.
  */
-public interface IDragContext
+public interface IDragSource
 {
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Cancels the drag-and-drop operation.
-     * 
-     * @throws java.lang.IllegalStateException
-     *         If the drag-and-drop operation is not active.
-     */
-    public void cancel();
-
-    /**
-     * Continues the drag-and-drop operation.
+     * Begins a drag-and-drop operation in the associated table.
      * 
      * @param location
-     *        The new drag location in table coordinates; must not be
+     *        The beginning drag location in table coordinates; must not be
      *        {@code null}.
+     * @param component
+     *        The component from which the drag-and-drop operation will begin;
+     *        must not be {@code null}.
      * 
+     * @return A context defining the new drag-and-drop operation or
+     *         {@code null} if a drag-and-drop operation is not possible for the
+     *         specified arguments.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code component} does not exist in the associated table or
+     *         {@code component} has no container (i.e. {@code component} is the
+     *         tabletop).
      * @throws java.lang.IllegalStateException
-     *         If the drag-and-drop operation is not active.
+     *         If there is an active drag-and-drop operation in the associated
+     *         table.
      * @throws java.lang.NullPointerException
-     *         If {@code location} is {@code null}.
+     *         If {@code location} or {@code component} is {@code null}.
      */
-    public void drag(
+    /* @Nullable */
+    public IDragContext beginDrag(
         /* @NonNull */
-        Point location );
-
-    /**
-     * Ends the drag-and-drop operation.
-     * 
-     * @param location
-     *        The ending drag location in table coordinates; must not be
-     *        {@code null}.
-     * 
-     * @throws java.lang.IllegalStateException
-     *         If the drag-and-drop operation is not active.
-     * @throws java.lang.NullPointerException
-     *         If {@code location} is {@code null}.
-     */
-    public void drop(
+        Point location,
         /* @NonNull */
-        Point location );
+        IComponent component );
 }

@@ -1,5 +1,5 @@
 /*
- * IDragStrategyFactory.java
+ * DefaultDragStrategyTest.java
  * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
@@ -16,35 +16,42 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Mar 9, 2013 at 8:44:19 PM.
+ * Created on Mar 8, 2013 at 10:13:04 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.core.dnd;
+
+import org.junit.Test;
 
 /**
- * A factory for creating instances of {@link IDragStrategy}.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.core.dnd.DefaultDragStrategy} class.
  */
-public interface IDragStrategyFactory
+public final class DefaultDragStrategyTest
 {
+    // ======================================================================
+    // Constructors
+    // ======================================================================
+
+    /**
+     * Initializes a new instance of the {@code DefaultDragStrategyTest} class.
+     */
+    public DefaultDragStrategyTest()
+    {
+    }
+
+
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Creates a new drag strategy for a drag-and-drop operation that begins
-     * with the specified component.
-     * 
-     * @param component
-     *        The component from which the drag-and-drop operation will begin;
-     *        must not be {@code null}.
-     * 
-     * @return A new drag strategy; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code component} is {@code null}.
+     * Ensures the {@link DefaultDragStrategy#DefaultDragStrategy} constructor
+     * throws an exception when passed a {@code null} drag component.
      */
-    /* @NonNull */
-    public IDragStrategy createDragStrategy(
-        /* @NonNull */
-        IComponent component );
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_DragComponent_Null()
+    {
+        new DefaultDragStrategy( null );
+    }
 }

@@ -36,10 +36,10 @@ import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.ContainerLayoutIds;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
-import org.gamegineer.table.core.IDragStrategy;
-import org.gamegineer.table.core.IDragStrategyFactory;
 import org.gamegineer.table.core.TabletopOrientation;
 import org.gamegineer.table.core.TabletopSurfaceDesignIds;
+import org.gamegineer.table.core.dnd.IDragStrategy;
+import org.gamegineer.table.core.dnd.IDragStrategyFactory;
 
 /**
  * A component strategy that represents a tabletop.

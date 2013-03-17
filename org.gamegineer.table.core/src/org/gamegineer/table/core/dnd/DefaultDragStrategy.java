@@ -19,12 +19,14 @@
  * Created on Mar 8, 2013 at 10:04:35 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.core.dnd;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Collections;
 import java.util.List;
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.IContainer;
 
 /**
  * Default implementation of {@link IDragStrategy} that only drags the source
@@ -70,7 +72,7 @@ public final class DefaultDragStrategy
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.IDragStrategy#canDrop(org.gamegineer.table.core.IContainer)
+     * @see org.gamegineer.table.core.dnd.IDragStrategy#canDrop(org.gamegineer.table.core.IContainer)
      */
     @Override
     public boolean canDrop(
@@ -82,7 +84,7 @@ public final class DefaultDragStrategy
     }
 
     /*
-     * @see org.gamegineer.table.core.IDragStrategy#getDragComponents()
+     * @see org.gamegineer.table.core.dnd.IDragStrategy#getDragComponents()
      */
     @Override
     public List<IComponent> getDragComponents()

@@ -19,9 +19,11 @@
  * Created on Mar 8, 2013 at 9:28:56 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.core.dnd;
 
 import java.util.List;
+import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.IContainer;
 
 /**
  * A strategy for customizing the behavior of a drag-and-drop operation.

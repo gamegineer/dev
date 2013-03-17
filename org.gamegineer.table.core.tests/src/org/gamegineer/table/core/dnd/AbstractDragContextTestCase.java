@@ -19,7 +19,7 @@
  * Created on Feb 22, 2013 at 9:56:41 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.core.dnd;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -32,12 +32,22 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.core.ComponentOrientation;
+import org.gamegineer.table.core.ComponentStrategyId;
+import org.gamegineer.table.core.ComponentSurfaceDesign;
+import org.gamegineer.table.core.ComponentSurfaceDesignId;
+import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.IComponentStrategy;
+import org.gamegineer.table.core.IContainer;
+import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.TestComponentStrategies;
+import org.gamegineer.table.core.TestComponents;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.core.IDragContext} interface.
+ * {@link org.gamegineer.table.core.dnd.IDragContext} interface.
  */
 public abstract class AbstractDragContextTestCase
 {
@@ -53,6 +63,12 @@ public abstract class AbstractDragContextTestCase
 
     /** The drag context under test in the fixture. */
     private IDragContext dragContext_;
+
+    /**
+     * The drag source associated with the drag context under test in the
+     * fixture.
+     */
+    private IDragSource dragSource_;
 
     /**
      * The container used to hold the components being dragged during the
@@ -89,31 +105,6 @@ public abstract class AbstractDragContextTestCase
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Creates the drag context to be tested.
-     * 
-     * @param location
-     *        The beginning drag location in table coordinates; must not be
-     *        {@code null}.
-     * @param component
-     *        The component from which the drag-and-drop operation will begin;
-     *        must not be {@code null}.
-     * 
-     * @return The drag context to be tested; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     * @throws java.lang.NullPointerException
-     *         If {@code location} or {@code component} is {@code null}.
-     */
-    /* @NonNull */
-    protected abstract IDragContext createDragContext(
-        /* @NonNull */
-        Point location,
-        /* @NonNull */
-        IComponent component )
-        throws Exception;
 
     /**
      * Creates a new component with unique attributes using the fixture table
@@ -313,6 +304,9 @@ public abstract class AbstractDragContextTestCase
         throws Exception
     {
         table_ = getTable();
+        assertNotNull( table_ );
+        dragSource_ = table_.getExtension( IDragSource.class );
+        assertNotNull( dragSource_ );
 
         final IContainer sourceContainer = createUniqueContainer( 0, 0 );
         sourceContainer.addComponent( createUniqueComponent( 0, 0 ) );
@@ -334,7 +328,7 @@ public abstract class AbstractDragContextTestCase
 
         beginDragLocation_ = new Point( 0, 0 );
 
-        dragContext_ = createDragContext( beginDragLocation_, dragComponent1 );
+        dragContext_ = dragSource_.beginDrag( beginDragLocation_, dragComponent1 );
         assertNotNull( dragContext_ );
         mobileContainer_ = dragComponent1.getContainer();
     }
@@ -367,7 +361,7 @@ public abstract class AbstractDragContextTestCase
 
         dragContext_.cancel();
 
-        assertNotNull( table_.beginDrag( new Point( 0, 0 ), component ) );
+        assertNotNull( dragSource_.beginDrag( new Point( 0, 0 ), component ) );
     }
 
     /**
@@ -526,7 +520,7 @@ public abstract class AbstractDragContextTestCase
         table_.getTabletop().addComponent( component );
         final PreDragComponentState preDragComponentState = new PreDragComponentState( component );
 
-        dragContext_ = createDragContext( component.getLocation(), component );
+        dragContext_ = dragSource_.beginDrag( component.getLocation(), component );
         dragContext_.drop( new Point( 0, 0 ) );
 
         assertEquals( preDragComponentState.container, component.getContainer() );
@@ -546,7 +540,7 @@ public abstract class AbstractDragContextTestCase
 
         dragContext_.drop( new Point( 0, 0 ) );
 
-        assertNotNull( table_.beginDrag( new Point( 0, 0 ), component ) );
+        assertNotNull( dragSource_.beginDrag( new Point( 0, 0 ), component ) );
     }
 
     /**

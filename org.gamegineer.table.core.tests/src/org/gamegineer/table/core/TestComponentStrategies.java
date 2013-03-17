@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.core.dnd.IDragStrategyFactory;
 import org.gamegineer.table.internal.core.Activator;
 
 /**

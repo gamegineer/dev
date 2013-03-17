@@ -28,6 +28,8 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.core.dnd.DefaultDragStrategyFactory;
+import org.gamegineer.table.core.dnd.IDragStrategyFactory;
 import org.gamegineer.table.internal.core.Loggers;
 
 /**

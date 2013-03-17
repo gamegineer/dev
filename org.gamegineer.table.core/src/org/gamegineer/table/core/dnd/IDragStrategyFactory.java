@@ -1,5 +1,5 @@
 /*
- * DefaultDragStrategyFactory.java
+ * IDragStrategyFactory.java
  * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
@@ -16,45 +16,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Mar 9, 2013 at 8:56:50 PM.
+ * Created on Mar 9, 2013 at 8:44:19 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.core.dnd;
 
-import net.jcip.annotations.Immutable;
+import org.gamegineer.table.core.IComponent;
 
 /**
- * Implementation of {@link IDragStrategyFactory} for creating instances of
- * {@link DefaultDragStrategy}.
+ * A factory for creating instances of {@link IDragStrategy}.
  */
-@Immutable
-public final class DefaultDragStrategyFactory
-    implements IDragStrategyFactory
+public interface IDragStrategyFactory
 {
-    // ======================================================================
-    // Constructors
-    // ======================================================================
-
-    /**
-     * Initializes a new instance of the {@code DefaultDragStrategyFactory}
-     * class.
-     */
-    public DefaultDragStrategyFactory()
-    {
-    }
-
-
     // ======================================================================
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.core.IDragStrategyFactory#createDragStrategy(org.gamegineer.table.core.IComponent)
+    /**
+     * Creates a new drag strategy for a drag-and-drop operation that begins
+     * with the specified component.
+     * 
+     * @param component
+     *        The component from which the drag-and-drop operation will begin;
+     *        must not be {@code null}.
+     * 
+     * @return A new drag strategy; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code component} is {@code null}.
      */
-    @Override
+    /* @NonNull */
     public IDragStrategy createDragStrategy(
-        final IComponent component )
-    {
-        return new DefaultDragStrategy( component );
-    }
+        /* @NonNull */
+        IComponent component );
 }

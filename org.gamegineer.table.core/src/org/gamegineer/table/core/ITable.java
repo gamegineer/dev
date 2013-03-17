@@ -40,36 +40,6 @@ public interface ITable
     // ======================================================================
 
     /**
-     * Begins a drag-and-drop operation.
-     * 
-     * @param location
-     *        The beginning drag location in table coordinates; must not be
-     *        {@code null}.
-     * @param component
-     *        The component from which the drag-and-drop operation will begin;
-     *        must not be {@code null}.
-     * 
-     * @return A context defining the new drag-and-drop operation or
-     *         {@code null} if a drag-and-drop operation is not possible for the
-     *         specified arguments.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code component} does not exist in this table or
-     *         {@code component} has no container (i.e. {@code component} is the
-     *         tabletop).
-     * @throws java.lang.IllegalStateException
-     *         If there is an active drag-and-drop operation.
-     * @throws java.lang.NullPointerException
-     *         If {@code location} or {@code component} is {@code null}.
-     */
-    /* @Nullable */
-    public IDragContext beginDrag(
-        /* @NonNull */
-        Point location,
-        /* @NonNull */
-        IComponent component );
-
-    /**
      * Gets the component in this table at the specified path.
      * 
      * @param path

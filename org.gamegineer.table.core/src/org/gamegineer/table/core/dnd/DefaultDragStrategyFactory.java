@@ -1,5 +1,5 @@
 /*
- * DefaultDragStrategyTest.java
+ * DefaultDragStrategyFactory.java
  * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
@@ -16,27 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Mar 8, 2013 at 10:13:04 PM.
+ * Created on Mar 9, 2013 at 8:56:50 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.core.dnd;
 
-import org.junit.Test;
+import net.jcip.annotations.Immutable;
+import org.gamegineer.table.core.IComponent;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.core.DefaultDragStrategy} class.
+ * Implementation of {@link IDragStrategyFactory} for creating instances of
+ * {@link DefaultDragStrategy}.
  */
-public final class DefaultDragStrategyTest
+@Immutable
+public final class DefaultDragStrategyFactory
+    implements IDragStrategyFactory
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code DefaultDragStrategyTest} class.
+     * Initializes a new instance of the {@code DefaultDragStrategyFactory}
+     * class.
      */
-    public DefaultDragStrategyTest()
+    public DefaultDragStrategyFactory()
     {
     }
 
@@ -45,13 +49,13 @@ public final class DefaultDragStrategyTest
     // Methods
     // ======================================================================
 
-    /**
-     * Ensures the {@link DefaultDragStrategy#DefaultDragStrategy} constructor
-     * throws an exception when passed a {@code null} drag component.
+    /*
+     * @see org.gamegineer.table.core.dnd.IDragStrategyFactory#createDragStrategy(org.gamegineer.table.core.IComponent)
      */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_DragComponent_Null()
+    @Override
+    public IDragStrategy createDragStrategy(
+        final IComponent component )
     {
-        new DefaultDragStrategy( null );
+        return new DefaultDragStrategy( component );
     }
 }

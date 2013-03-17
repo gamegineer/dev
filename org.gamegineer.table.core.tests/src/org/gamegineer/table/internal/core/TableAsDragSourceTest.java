@@ -1,5 +1,5 @@
 /*
- * DragContextAsDragContextTest.java
+ * TableAsDragSourceTest.java
  * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
@@ -16,22 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Feb 22, 2013 at 10:09:20 PM.
+ * Created on Mar 16, 2013 at 8:53:42 PM.
  */
 
 package org.gamegineer.table.internal.core;
 
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.core.dnd.AbstractDragContextTestCase;
+import org.gamegineer.table.core.dnd.AbstractDragSourceTestCase;
+import org.junit.Before;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.DragContext} class to ensure it
- * does not violate the contract of the
- * {@link org.gamegineer.table.core.dnd.IDragContext} interface.
+ * A fixture for testing the {@link org.gamegineer.table.internal.core.Table}
+ * class to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.core.dnd.IDragSource} interface.
  */
-public final class DragContextAsDragContextTest
-    extends AbstractDragContextTestCase
+public final class TableAsDragSourceTest
+    extends AbstractDragSourceTestCase
 {
     // ======================================================================
     // Fields
@@ -46,10 +46,9 @@ public final class DragContextAsDragContextTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code DragContextAsDragContextTest}
-     * class.
+     * Initializes a new instance of the {@code TableAsDragSourceTest} class.
      */
-    public DragContextAsDragContextTest()
+    public TableAsDragSourceTest()
     {
     }
 
@@ -59,7 +58,7 @@ public final class DragContextAsDragContextTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractDragContextTestCase#getTable()
+     * @see org.gamegineer.table.core.dnd.AbstractDragSourceTestCase#getTable()
      */
     @Override
     protected ITable getTable()
@@ -68,8 +67,9 @@ public final class DragContextAsDragContextTest
     }
 
     /*
-     * @see org.gamegineer.table.core.AbstractDragContextTestCase#setUp()
+     * @see org.gamegineer.table.core.dnd.AbstractDragSourceTestCase#setUp()
      */
+    @Before
     @Override
     public void setUp()
         throws Exception
