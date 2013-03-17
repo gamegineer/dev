@@ -33,6 +33,14 @@ public final class DefaultDragStrategyFactory
     implements IDragStrategyFactory
 {
     // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The singleton instance of this class. */
+    public static final DefaultDragStrategyFactory INSTANCE = new DefaultDragStrategyFactory();
+
+
+    // ======================================================================
     // Constructors
     // ======================================================================
 
@@ -40,7 +48,7 @@ public final class DefaultDragStrategyFactory
      * Initializes a new instance of the {@code DefaultDragStrategyFactory}
      * class.
      */
-    public DefaultDragStrategyFactory()
+    private DefaultDragStrategyFactory()
     {
     }
 

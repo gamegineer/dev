@@ -156,7 +156,7 @@ public abstract class AbstractComponentStrategy
     @Override
     public IDragStrategyFactory getDragStrategyFactory()
     {
-        return new DefaultDragStrategyFactory();
+        return DefaultDragStrategyFactory.INSTANCE;
     }
 
     /**

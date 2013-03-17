@@ -145,7 +145,7 @@ public final class ComponentStrategies
         @Override
         public final IDragStrategyFactory getDragStrategyFactory()
         {
-            return new DefaultDragStrategyFactory();
+            return DefaultDragStrategyFactory.INSTANCE;
         }
 
         /*
