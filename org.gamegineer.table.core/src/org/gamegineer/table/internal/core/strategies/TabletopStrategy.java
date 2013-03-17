@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.core.strategies;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.Collection;
@@ -106,12 +107,20 @@ final class TabletopStrategy
     }
 
     /*
-     * @see org.gamegineer.table.core.AbstractComponentStrategy#getDragStrategyFactory()
+     * @see org.gamegineer.table.core.AbstractComponentStrategy#getExtension(java.lang.Class)
      */
     @Override
-    public IDragStrategyFactory getDragStrategyFactory()
+    public <T> T getExtension(
+        final Class<T> type )
     {
-        return NullDragStrategyFactory.INSTANCE;
+        assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
+
+        if( type == IDragStrategyFactory.class )
+        {
+            return type.cast( NullDragStrategyFactory.INSTANCE );
+        }
+
+        return super.getExtension( type );
     }
 
     /*

@@ -35,8 +35,10 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ComponentStrategies;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
+import org.gamegineer.table.core.dnd.DefaultDragStrategyFactory;
 import org.gamegineer.table.core.dnd.IDragContext;
 import org.gamegineer.table.core.dnd.IDragStrategy;
+import org.gamegineer.table.core.dnd.IDragStrategyFactory;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.dnd.IDragContext}.
@@ -161,7 +163,7 @@ final class DragContext
         assert component != null;
         assert table.getTableEnvironment().getLock().isHeldByCurrentThread();
 
-        final IDragStrategy dragStrategy = component.getDragStrategy();
+        final IDragStrategy dragStrategy = getDragStrategy( component );
         final List<IComponent> dragComponents = dragStrategy.getDragComponents();
         if( dragComponents.isEmpty() )
         {
@@ -293,6 +295,31 @@ final class DragContext
         {
             getLock().unlock();
         }
+    }
+
+    /**
+     * Gets the drag strategy for the specified component.
+     * 
+     * @param component
+     *        The component; must not be {@code null}.
+     * 
+     * @return The drag strategy for the specified component; never {@code null}
+     *         .
+     */
+    /* @NonNull */
+    private static IDragStrategy getDragStrategy(
+        /* @NonNull */
+        final IComponent component )
+    {
+        assert component != null;
+
+        IDragStrategyFactory dragStrategyFactory = component.getStrategy().getExtension( IDragStrategyFactory.class );
+        if( dragStrategyFactory == null )
+        {
+            dragStrategyFactory = DefaultDragStrategyFactory.INSTANCE;
+        }
+
+        return dragStrategyFactory.createDragStrategy( component );
     }
 
     /**

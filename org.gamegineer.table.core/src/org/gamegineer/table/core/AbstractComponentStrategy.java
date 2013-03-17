@@ -28,8 +28,6 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.core.dnd.DefaultDragStrategyFactory;
-import org.gamegineer.table.core.dnd.IDragStrategyFactory;
 import org.gamegineer.table.internal.core.Loggers;
 
 /**
@@ -144,19 +142,6 @@ public abstract class AbstractComponentStrategy
         }
 
         return surfaceDesigns;
-    }
-
-    /**
-     * This implementation returns a factory that creates a strategy that only
-     * drags the component and allows it to be dropped anywhere. Subclasses may
-     * override and are not required to call the superclass implementation.
-     * 
-     * @see org.gamegineer.table.core.IComponentStrategy#getDragStrategyFactory()
-     */
-    @Override
-    public IDragStrategyFactory getDragStrategyFactory()
-    {
-        return DefaultDragStrategyFactory.INSTANCE;
     }
 
     /**

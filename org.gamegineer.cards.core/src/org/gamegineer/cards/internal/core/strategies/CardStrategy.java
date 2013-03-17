@@ -50,6 +50,9 @@ final class CardStrategy
     // Fields
     // ======================================================================
 
+    /** The card drag strategy factory. */
+    private static final IDragStrategyFactory DRAG_STRATEGY_FACTORY = createDragStrategyFactory();
+
     /** The collection of supported card orientations. */
     private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( CardOrientation.values( CardOrientation.class ) ) );
 
@@ -71,29 +74,13 @@ final class CardStrategy
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.core.IComponentStrategy#getDefaultOrientation()
+    /**
+     * Creates a drag strategy factory appropriate for cards.
+     * 
+     * @return A new drag strategy factory; never {@code null}.
      */
-    @Override
-    public ComponentOrientation getDefaultOrientation()
-    {
-        return CardOrientation.FACE;
-    }
-
-    /*
-     * @see org.gamegineer.table.core.AbstractComponentStrategy#getDefaultSurfaceDesignId()
-     */
-    @Override
-    protected ComponentSurfaceDesignId getDefaultSurfaceDesignId()
-    {
-        return CardSurfaceDesignIds.DEFAULT;
-    }
-
-    /*
-     * @see org.gamegineer.table.core.AbstractComponentStrategy#getDragStrategyFactory()
-     */
-    @Override
-    public IDragStrategyFactory getDragStrategyFactory()
+    /* @NonNull */
+    private static IDragStrategyFactory createDragStrategyFactory()
     {
         return new IDragStrategyFactory()
         {
@@ -129,6 +116,41 @@ final class CardStrategy
                 return new DefaultDragStrategy( component );
             }
         };
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponentStrategy#getDefaultOrientation()
+     */
+    @Override
+    public ComponentOrientation getDefaultOrientation()
+    {
+        return CardOrientation.FACE;
+    }
+
+    /*
+     * @see org.gamegineer.table.core.AbstractComponentStrategy#getDefaultSurfaceDesignId()
+     */
+    @Override
+    protected ComponentSurfaceDesignId getDefaultSurfaceDesignId()
+    {
+        return CardSurfaceDesignIds.DEFAULT;
+    }
+
+    /*
+     * @see org.gamegineer.table.core.AbstractComponentStrategy#getExtension(java.lang.Class)
+     */
+    @Override
+    public <T> T getExtension(
+        final Class<T> type )
+    {
+        assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
+
+        if( type == IDragStrategyFactory.class )
+        {
+            return type.cast( DRAG_STRATEGY_FACTORY );
+        }
+
+        return super.getExtension( type );
     }
 
     /*

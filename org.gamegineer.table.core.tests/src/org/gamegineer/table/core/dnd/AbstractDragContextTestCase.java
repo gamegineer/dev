@@ -237,15 +237,14 @@ public abstract class AbstractDragContextTestCase
             }
 
             @Override
-            public IDragStrategyFactory getDragStrategyFactory()
-            {
-                return dragStrategyFactory;
-            }
-
-            @Override
             public <T> T getExtension(
                 final Class<T> type )
             {
+                if( type == IDragStrategyFactory.class )
+                {
+                    return type.cast( dragStrategyFactory );
+                }
+
                 return delegate.getExtension( type );
             }
 

@@ -27,7 +27,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.dnd.IDragStrategyFactory;
 import org.gamegineer.table.internal.core.Activator;
 
 /**
@@ -133,12 +132,6 @@ public final class TestComponentStrategies
             }
 
             @Override
-            public IDragStrategyFactory getDragStrategyFactory()
-            {
-                return componentStrategy.getDragStrategyFactory();
-            }
-
-            @Override
             public <T> T getExtension(
                 final Class<T> type )
             {
@@ -211,12 +204,6 @@ public final class TestComponentStrategies
             public Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns()
             {
                 return containerStrategy.getDefaultSurfaceDesigns();
-            }
-
-            @Override
-            public IDragStrategyFactory getDragStrategyFactory()
-            {
-                return containerStrategy.getDragStrategyFactory();
             }
 
             @Override

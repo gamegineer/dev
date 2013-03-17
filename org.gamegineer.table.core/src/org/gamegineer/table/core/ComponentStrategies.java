@@ -30,8 +30,6 @@ import java.util.HashMap;
 import java.util.Map;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.dnd.DefaultDragStrategyFactory;
-import org.gamegineer.table.core.dnd.IDragStrategyFactory;
 
 /**
  * A collection of common component strategies.
@@ -137,15 +135,6 @@ public final class ComponentStrategies
             final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new HashMap<ComponentOrientation, ComponentSurfaceDesign>();
             surfaceDesigns.put( NullOrientation.DEFAULT, ComponentSurfaceDesigns.NULL );
             return surfaceDesigns;
-        }
-
-        /*
-         * @see org.gamegineer.table.core.IComponentStrategy#getDragStrategyFactory()
-         */
-        @Override
-        public final IDragStrategyFactory getDragStrategyFactory()
-        {
-            return DefaultDragStrategyFactory.INSTANCE;
         }
 
         /*

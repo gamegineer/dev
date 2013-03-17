@@ -241,16 +241,6 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     }
 
     /**
-     * Ensures the {@link IComponentStrategy#getDragStrategyFactory} method does
-     * not return {@code null}.
-     */
-    @Test
-    public void testGetDragStrategyFactory_ReturnValue_NonNull()
-    {
-        assertNotNull( componentStrategy_.getDragStrategyFactory() );
-    }
-
-    /**
      * Ensures the {@link IComponentStrategy#getExtension} method throws an
      * exception when passed a {@code null} type.
      */

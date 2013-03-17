@@ -24,7 +24,6 @@ package org.gamegineer.table.core;
 import java.awt.Point;
 import java.util.Collection;
 import java.util.Map;
-import org.gamegineer.table.core.dnd.IDragStrategyFactory;
 
 /**
  * A strategy for customizing the behavior of a component.
@@ -71,16 +70,6 @@ public interface IComponentStrategy
      */
     /* @NonNull */
     public Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns();
-
-    /**
-     * Gets the drag strategy factory for components associated with this
-     * strategy.
-     * 
-     * @return The drag strategy factory for components associated with this
-     *         strategy; never {@code null}.
-     */
-    /* @NonNull */
-    public IDragStrategyFactory getDragStrategyFactory();
 
     /**
      * Gets the component strategy extension of the specified type.
