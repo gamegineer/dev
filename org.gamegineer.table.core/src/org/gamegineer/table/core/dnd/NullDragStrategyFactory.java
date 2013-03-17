@@ -34,13 +34,21 @@ public final class NullDragStrategyFactory
     implements IDragStrategyFactory
 {
     // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The singleton instance of the class. */
+    public static final NullDragStrategyFactory INSTANCE = new NullDragStrategyFactory();
+
+
+    // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
      * Initializes a new instance of the {@code NullDragStrategyFactory} class.
      */
-    public NullDragStrategyFactory()
+    private NullDragStrategyFactory()
     {
     }
 
@@ -58,6 +66,6 @@ public final class NullDragStrategyFactory
     {
         assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
 
-        return new NullDragStrategy();
+        return NullDragStrategy.INSTANCE;
     }
 }

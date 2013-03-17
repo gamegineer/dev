@@ -111,7 +111,7 @@ final class TabletopStrategy
     @Override
     public IDragStrategyFactory getDragStrategyFactory()
     {
-        return new NullDragStrategyFactory();
+        return NullDragStrategyFactory.INSTANCE;
     }
 
     /*

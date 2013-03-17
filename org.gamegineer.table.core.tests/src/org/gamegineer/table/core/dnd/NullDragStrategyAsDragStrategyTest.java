@@ -53,6 +53,6 @@ public final class NullDragStrategyAsDragStrategyTest
     @Override
     protected IDragStrategy createDragStrategy()
     {
-        return new NullDragStrategy();
+        return NullDragStrategy.INSTANCE;
     }
 }

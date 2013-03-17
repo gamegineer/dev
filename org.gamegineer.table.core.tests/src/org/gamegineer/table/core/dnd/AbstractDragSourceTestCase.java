@@ -261,7 +261,7 @@ public abstract class AbstractDragSourceTestCase
     @Test
     public void testBeginDrag_ReturnValue_Null()
     {
-        final IComponent component = createUniqueComponent( new NullDragStrategyFactory() );
+        final IComponent component = createUniqueComponent( NullDragStrategyFactory.INSTANCE );
         table_.getTabletop().addComponent( component );
 
         assertNull( dragSource_.beginDrag( new Point( 0, 0 ), component ) );

@@ -53,6 +53,6 @@ public final class NullDragStrategyFactoryAsDragStrategyFactoryTest
     @Override
     protected IDragStrategyFactory createDragStrategyFactory()
     {
-        return new NullDragStrategyFactory();
+        return NullDragStrategyFactory.INSTANCE;
     }
 }

@@ -36,13 +36,21 @@ public final class NullDragStrategy
     implements IDragStrategy
 {
     // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The singleton instance of the class. */
+    public static final NullDragStrategy INSTANCE = new NullDragStrategy();
+
+
+    // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
      * Initializes a new instance of the {@code NullDragStrategy} class.
      */
-    public NullDragStrategy()
+    private NullDragStrategy()
     {
     }
 
