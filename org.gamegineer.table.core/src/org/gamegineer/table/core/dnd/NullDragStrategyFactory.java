@@ -37,7 +37,7 @@ public final class NullDragStrategyFactory
     // Fields
     // ======================================================================
 
-    /** The singleton instance of the class. */
+    /** The singleton instance of this class. */
     public static final NullDragStrategyFactory INSTANCE = new NullDragStrategyFactory();
 
 

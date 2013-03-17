@@ -39,7 +39,7 @@ public final class NullDragStrategy
     // Fields
     // ======================================================================
 
-    /** The singleton instance of the class. */
+    /** The singleton instance of this class. */
     public static final NullDragStrategy INSTANCE = new NullDragStrategy();
 
 
