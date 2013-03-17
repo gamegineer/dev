@@ -27,8 +27,6 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import java.awt.Point;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import org.easymock.EasyMock;
 import org.gamegineer.table.core.ComponentOrientation;
@@ -36,7 +34,6 @@ import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentStrategy;
-import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TestComponentStrategies;
 import org.gamegineer.table.core.TestComponents;
@@ -264,32 +261,7 @@ public abstract class AbstractDragSourceTestCase
     @Test
     public void testBeginDrag_ReturnValue_Null()
     {
-        final IDragStrategyFactory dragStrategyFactory = new IDragStrategyFactory()
-        {
-            @Override
-            public IDragStrategy createDragStrategy(
-                @SuppressWarnings( "unused" )
-                final IComponent component )
-            {
-                return new IDragStrategy()
-                {
-                    @Override
-                    public boolean canDrop(
-                        @SuppressWarnings( "unused" )
-                        final IContainer dropContainer )
-                    {
-                        return false;
-                    }
-
-                    @Override
-                    public List<IComponent> getDragComponents()
-                    {
-                        return Collections.emptyList();
-                    }
-                };
-            }
-        };
-        final IComponent component = createUniqueComponent( dragStrategyFactory );
+        final IComponent component = createUniqueComponent( new NullDragStrategyFactory() );
         table_.getTabletop().addComponent( component );
 
         assertNull( dragSource_.beginDrag( new Point( 0, 0 ), component ) );

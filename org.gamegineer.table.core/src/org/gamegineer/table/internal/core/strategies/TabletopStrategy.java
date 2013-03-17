@@ -21,12 +21,10 @@
 
 package org.gamegineer.table.internal.core.strategies;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.AbstractContainerStrategy;
 import org.gamegineer.table.core.ComponentOrientation;
@@ -34,12 +32,10 @@ import org.gamegineer.table.core.ComponentStrategyIds;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.ContainerLayoutIds;
-import org.gamegineer.table.core.IComponent;
-import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.TabletopOrientation;
 import org.gamegineer.table.core.TabletopSurfaceDesignIds;
-import org.gamegineer.table.core.dnd.IDragStrategy;
 import org.gamegineer.table.core.dnd.IDragStrategyFactory;
+import org.gamegineer.table.core.dnd.NullDragStrategyFactory;
 
 /**
  * A component strategy that represents a tabletop.
@@ -51,39 +47,6 @@ final class TabletopStrategy
     // ======================================================================
     // Fields
     // ======================================================================
-
-    /** The tabletop drag strategy. */
-    private static final IDragStrategy DRAG_STRATEGY = new IDragStrategy()
-    {
-        @Override
-        public boolean canDrop(
-            final IContainer dropContainer )
-        {
-            assertArgumentNotNull( dropContainer, "dropContainer" ); //$NON-NLS-1$
-
-            return false;
-        }
-
-        @Override
-        public List<IComponent> getDragComponents()
-        {
-            return Collections.emptyList();
-        }
-    };
-
-    /** The tabletop drag strategy factory. */
-    private static final IDragStrategyFactory DRAG_STRATEGY_FACTORY = new IDragStrategyFactory()
-    {
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public IDragStrategy createDragStrategy(
-            final IComponent component )
-        {
-            assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
-
-            return DRAG_STRATEGY;
-        }
-    };
 
     /** The collection of supported tabletop orientations. */
     private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( TabletopOrientation.values( TabletopOrientation.class ) ) );
@@ -148,7 +111,7 @@ final class TabletopStrategy
     @Override
     public IDragStrategyFactory getDragStrategyFactory()
     {
-        return DRAG_STRATEGY_FACTORY;
+        return new NullDragStrategyFactory();
     }
 
     /*
