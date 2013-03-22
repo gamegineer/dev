@@ -1,6 +1,6 @@
 /*
  * ComponentStrategyUIs.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,6 +40,12 @@ public final class ComponentStrategyUIs
 
     /** The card pile container strategy user interface. */
     public static final IContainerStrategyUI CARD_PILE = new CardPileStrategyUI();
+
+    /** The null component strategy user interface. */
+    public static final IComponentStrategyUI NULL_COMPONENT = new NullComponentStrategyUI();
+
+    /** The null container strategy user interface. */
+    public static final IContainerStrategyUI NULL_CONTAINER = new NullContainerStrategyUI();
 
     /** The tabletop container strategy user interface. */
     public static final IContainerStrategyUI TABLETOP = new TabletopStrategyUI();

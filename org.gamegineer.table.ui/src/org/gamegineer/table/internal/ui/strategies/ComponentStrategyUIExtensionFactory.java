@@ -1,6 +1,6 @@
 /*
  * ComponentStrategyUIExtensionFactory.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -74,6 +74,8 @@ public final class ComponentStrategyUIExtensionFactory
         final Map<ComponentStrategyId, IComponentStrategyUI> componentStrategyUIs = new HashMap<ComponentStrategyId, IComponentStrategyUI>();
         componentStrategyUIs.put( ComponentStrategyUIs.CARD.getId(), ComponentStrategyUIs.CARD );
         componentStrategyUIs.put( ComponentStrategyUIs.CARD_PILE.getId(), ComponentStrategyUIs.CARD_PILE );
+        componentStrategyUIs.put( ComponentStrategyUIs.NULL_COMPONENT.getId(), ComponentStrategyUIs.NULL_COMPONENT );
+        componentStrategyUIs.put( ComponentStrategyUIs.NULL_CONTAINER.getId(), ComponentStrategyUIs.NULL_CONTAINER );
         componentStrategyUIs.put( ComponentStrategyUIs.TABLETOP.getId(), ComponentStrategyUIs.TABLETOP );
         COMPONENT_STRATEGY_UIS = Collections.unmodifiableMap( componentStrategyUIs );
     }

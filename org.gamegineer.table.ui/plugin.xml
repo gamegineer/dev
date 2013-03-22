@@ -733,6 +733,12 @@
                 id="org.gamegineer.cards.componentStrategies.cardPile" />
         <componentStrategyUI
                 className="org.gamegineer.table.internal.ui.strategies.ComponentStrategyUIExtensionFactory"
+                id="org.gamegineer.table.componentStrategies.nullComponent" />
+        <componentStrategyUI
+                className="org.gamegineer.table.internal.ui.strategies.ComponentStrategyUIExtensionFactory"
+                id="org.gamegineer.table.componentStrategies.nullContainer" />
+        <componentStrategyUI
+                className="org.gamegineer.table.internal.ui.strategies.ComponentStrategyUIExtensionFactory"
                 id="org.gamegineer.table.componentStrategies.tabletop" />
     </extension>
     <extension
@@ -961,6 +967,10 @@
                 icon="icons/cards/special-joker.png"
                 id="org.gamegineer.cards.cardSurfaceDesigns.special.joker"
                 name="%cardSurfaceDesign.special.joker.name" />
+        <componentSurfaceDesignUI
+                icon="icons/components/null.png"
+                id="org.gamegineer.table.componentSurfaceDesigns.null"
+                name="%componentSurfaceDesign.null.name" />
         <componentSurfaceDesignUI
                 icon="icons/tabletops/default.png"
                 id="org.gamegineer.table.tabletopSurfaceDesigns.default"
