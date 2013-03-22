@@ -66,6 +66,9 @@
                <documentation>
                   the name of the component surface design
                </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
             </annotation>
          </attribute>
          <attribute name="icon" type="string" use="required">
