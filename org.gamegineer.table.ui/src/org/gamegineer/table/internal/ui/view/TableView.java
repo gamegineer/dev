@@ -56,20 +56,17 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.cards.core.CardPileOrientation;
-import org.gamegineer.cards.core.CardsComponentStrategyIds;
 import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.common.ui.window.WindowConstants;
 import org.gamegineer.common.ui.wizard.IWizard;
 import org.gamegineer.common.ui.wizard.WizardDialog;
-import org.gamegineer.table.core.ComponentStrategyRegistry;
-import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.ContainerLayoutRegistry;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
-import org.gamegineer.table.core.NoSuchComponentStrategyException;
 import org.gamegineer.table.core.NoSuchContainerLayoutException;
+import org.gamegineer.table.core.dnd.IDragContext;
+import org.gamegineer.table.core.dnd.IDragSource;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.BundleImages;
 import org.gamegineer.table.internal.ui.Loggers;
@@ -80,7 +77,6 @@ import org.gamegineer.table.internal.ui.model.ComponentModel;
 import org.gamegineer.table.internal.ui.model.ComponentVector;
 import org.gamegineer.table.internal.ui.model.ContainerModel;
 import org.gamegineer.table.internal.ui.model.ITableModelListener;
-import org.gamegineer.table.internal.ui.model.ModelException;
 import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.internal.ui.model.TableModelEvent;
 import org.gamegineer.table.internal.ui.prototype.ComponentPrototypeUtils;
@@ -665,37 +661,6 @@ final class TableView
     }
 
     /**
-     * Creates a new card pile with the specified surface design.
-     * 
-     * @param baseDesign
-     *        The card pile base surface design; must not be {@code null}.
-     * 
-     * @return A new card pile; never {@code null}.
-     * 
-     * @throws org.gamegineer.table.internal.ui.model.ModelException
-     *         If an error occurs creating the card pile.
-     */
-    /* @NonNull */
-    private IContainer createCardPile(
-        /* @NonNull */
-        final ComponentSurfaceDesign baseDesign )
-        throws ModelException
-    {
-        assert baseDesign != null;
-
-        try
-        {
-            final IContainer cardPile = model_.getTable().getTableEnvironment().createContainer( ComponentStrategyRegistry.getContainerStrategy( CardsComponentStrategyIds.CARD_PILE ) );
-            cardPile.setSurfaceDesign( CardPileOrientation.BASE, baseDesign );
-            return cardPile;
-        }
-        catch( final NoSuchComponentStrategyException e )
-        {
-            throw new ModelException( e );
-        }
-    }
-
-    /**
      * Creates the collection of input handler singletons for the view.
      * 
      * @return The collection of input handler singletons for the view; never
@@ -707,8 +672,7 @@ final class TableView
         final Map<Class<? extends AbstractInputHandler>, AbstractInputHandler> inputHandlers = new HashMap<Class<? extends AbstractInputHandler>, AbstractInputHandler>();
         inputHandlers.put( DefaultInputHandler.class, new DefaultInputHandler() );
         inputHandlers.put( DragPrimedInputHandler.class, new DragPrimedInputHandler() );
-        inputHandlers.put( DraggingCardsInputHandler.class, new DraggingCardsInputHandler() );
-        inputHandlers.put( DraggingCardPileInputHandler.class, new DraggingCardPileInputHandler() );
+        inputHandlers.put( DraggingComponentInputHandler.class, new DraggingComponentInputHandler() );
         inputHandlers.put( PanningTableInputHandler.class, new PanningTableInputHandler() );
         inputHandlers.put( PopupMenuInputHandler.class, new PopupMenuInputHandler() );
         return inputHandlers;
@@ -1638,14 +1602,7 @@ final class TableView
                 {
                     if( model_.isEditable() )
                     {
-                        if( (event.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK )
-                        {
-                            setInputHandler( DraggingCardPileInputHandler.class, event );
-                        }
-                        else
-                        {
-                            setInputHandler( DraggingCardsInputHandler.class, event );
-                        }
+                        setInputHandler( DraggingComponentInputHandler.class, event );
                     }
                     else
                     {
@@ -1701,24 +1658,18 @@ final class TableView
     }
 
     /**
-     * The input handler that is active when a card pile is being dragged.
+     * The input handler that is active when a component is being dragged.
      */
     @NotThreadSafe
-    private final class DraggingCardPileInputHandler
+    private final class DraggingComponentInputHandler
         extends AbstractInputHandler
     {
         // ==================================================================
         // Fields
         // ==================================================================
 
-        /** The card pile being dragged. */
-        private IContainer draggedCardPile_;
-
-        /**
-         * The offset between the mouse pointer and the dragged card pile
-         * location.
-         */
-        private final Dimension draggedCardPileLocationOffset_;
+        /** The drag context. */
+        private IDragContext dragContext_;
 
 
         // ==================================================================
@@ -1727,11 +1678,11 @@ final class TableView
 
         /**
          * Initializes a new instance of the
-         * {@code DraggingCardPileInputHandler} class.
+         * {@code DraggingComponentInputHandler} class.
          */
-        DraggingCardPileInputHandler()
+        DraggingComponentInputHandler()
         {
-            draggedCardPileLocationOffset_ = new Dimension( 0, 0 );
+            dragContext_ = null;
         }
 
 
@@ -1747,134 +1698,22 @@ final class TableView
         void activate(
             final InputEvent event )
         {
-            draggedCardPile_ = getFocusedContainer();
-            if( draggedCardPile_ != null )
+            final IComponent focusedComponent = model_.getFocusedComponent();
+            if( focusedComponent != null )
             {
-                final Point cardPileLocation = draggedCardPile_.getLocation();
-                final Point mouseLocation = getMouseLocation( event );
-                draggedCardPileLocationOffset_.setSize( cardPileLocation.x - mouseLocation.x, cardPileLocation.y - mouseLocation.y );
-            }
-            else
-            {
-                setInputHandler( DefaultInputHandler.class, null );
-            }
-        }
-
-        /*
-         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractInputHandler#deactivate()
-         */
-        @Override
-        void deactivate()
-        {
-            draggedCardPile_ = null;
-            draggedCardPileLocationOffset_.setSize( 0, 0 );
-        }
-
-        /*
-         * @see java.awt.event.MouseAdapter#mouseDragged(java.awt.event.MouseEvent)
-         */
-        @Override
-        public void mouseDragged(
-            final MouseEvent event )
-        {
-            final Point location = getMouseLocation( event );
-            location.translate( draggedCardPileLocationOffset_.width, draggedCardPileLocationOffset_.height );
-            draggedCardPile_.setLocation( location );
-        }
-
-        /*
-         * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void mouseReleased(
-            final MouseEvent event )
-        {
-            if( SwingUtilities.isLeftMouseButton( event ) )
-            {
-                setInputHandler( DefaultInputHandler.class, null );
-            }
-
-            super.mouseReleased( event );
-        }
-    }
-
-    /**
-     * The input handler that is active when a collection of cards are being
-     * dragged.
-     */
-    @NotThreadSafe
-    private final class DraggingCardsInputHandler
-        extends AbstractInputHandler
-    {
-        // ==================================================================
-        // Fields
-        // ==================================================================
-
-        /** The card pile that temporarily holds the cards being dragged. */
-        private IContainer mobileCardPile_;
-
-        /**
-         * The offset between the mouse pointer and the mobile card pile origin.
-         */
-        private final Dimension mobileCardPileOriginOffset_;
-
-        /** The card pile that is the source of the cards being dragged. */
-        private IContainer sourceCardPile_;
-
-
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code DraggingCardsInputHandler}
-         * class.
-         */
-        DraggingCardsInputHandler()
-        {
-            mobileCardPileOriginOffset_ = new Dimension( 0, 0 );
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractInputHandler#activate(java.awt.event.InputEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        void activate(
-            final InputEvent event )
-        {
-            sourceCardPile_ = getFocusedContainer();
-            if( sourceCardPile_ != null )
-            {
-                final Point mouseLocation = getMouseLocation( event );
-                final List<IComponent> draggedComponents = sourceCardPile_.removeComponents( mouseLocation );
-                if( !draggedComponents.isEmpty() )
+                final IDragSource dragSource = model_.getTable().getExtension( IDragSource.class );
+                if( dragSource != null )
                 {
-                    try
+                    dragContext_ = dragSource.beginDrag( getMouseLocation( event ), focusedComponent );
+                    // TODO: need to set focus/hover to mobile container?
+                    if( dragContext_ == null )
                     {
-                        final Point draggedCardsOrigin = draggedComponents.get( 0 ).getLocation();
-                        mobileCardPileOriginOffset_.setSize( draggedCardsOrigin.x - mouseLocation.x, draggedCardsOrigin.y - mouseLocation.y );
-                        mobileCardPile_ = createCardPile( sourceCardPile_.getSurfaceDesign( CardPileOrientation.BASE ) );
-                        mobileCardPile_.setOrigin( draggedCardsOrigin );
-                        mobileCardPile_.setLayout( sourceCardPile_.getLayout() );
-                        model_.getTable().getTabletop().addComponent( mobileCardPile_ );
-                        mobileCardPile_.addComponents( draggedComponents );
-                        model_.setHover( mobileCardPile_ );
-                        model_.setFocus( mobileCardPile_ );
-                    }
-                    catch( final ModelException e )
-                    {
-                        Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableView_draggingCards_error, e );
+                        setInputHandler( DefaultInputHandler.class, null );
                     }
                 }
                 else
                 {
+                    Loggers.getDefaultLogger().severe( NonNlsMessages.TableView_draggingComponent_dragSourceNotAvailable );
                     setInputHandler( DefaultInputHandler.class, null );
                 }
             }
@@ -1890,9 +1729,7 @@ final class TableView
         @Override
         void deactivate()
         {
-            mobileCardPile_ = null;
-            mobileCardPileOriginOffset_.setSize( 0, 0 );
-            sourceCardPile_ = null;
+            dragContext_ = null;
         }
 
         /*
@@ -1902,9 +1739,9 @@ final class TableView
         public void mouseDragged(
             final MouseEvent event )
         {
-            final Point location = getMouseLocation( event );
-            location.translate( mobileCardPileOriginOffset_.width, mobileCardPileOriginOffset_.height );
-            mobileCardPile_.setOrigin( location );
+            assert dragContext_ != null;
+
+            dragContext_.drag( getMouseLocation( event ) );
         }
 
         /*
@@ -1917,15 +1754,10 @@ final class TableView
         {
             if( SwingUtilities.isLeftMouseButton( event ) )
             {
-                model_.getTable().getTabletop().removeComponent( mobileCardPile_ );
+                assert dragContext_ != null;
 
-                final Point mouseLocation = getMouseLocation( event );
-                final IContainer cardPile = model_.getFocusableContainer( mouseLocation );
-                final IContainer targetCardPile = (cardPile != null) ? cardPile : sourceCardPile_;
-                targetCardPile.addComponents( mobileCardPile_.removeAllComponents() );
-                model_.setHover( targetCardPile );
-                model_.setFocus( targetCardPile );
-
+                // TODO: need to set focus/hover to drop target; should drop() return the target container (or null in the case no drop occurred)?
+                dragContext_.drop( getMouseLocation( event ) );
                 setInputHandler( DefaultInputHandler.class, null );
             }
 

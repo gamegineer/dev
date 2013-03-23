@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -69,8 +69,8 @@ final class NonNlsMessages
     /** An error occurred while adding a new component to the table. */
     public static String TableView_addComponent_error;
 
-    /** An error occurred while dragging cards. */
-    public static String TableView_draggingCards_error;
+    /** The drag source extension is not available. */
+    public static String TableView_draggingComponent_dragSourceNotAvailable;
 
     /** An error occurred while setting the card pile layout. */
     public static String TableView_setCardPileLayout_error;
