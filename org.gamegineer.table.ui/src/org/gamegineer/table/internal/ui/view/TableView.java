@@ -260,14 +260,14 @@ final class TableView
      */
     private void bindActions()
     {
-        final ActionListener setCardPileLayoutActionListener = new ActionListener()
+        final ActionListener setContainerLayoutActionListener = new ActionListener()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 final ActionEvent event )
             {
-                setCardPileLayout( ContainerLayoutId.fromString( event.getActionCommand() ) );
+                setContainerLayout( ContainerLayoutId.fromString( event.getActionCommand() ) );
             }
         };
         actionMediator_.bindActionListener( Actions.getAddComponentAction(), new ActionListener()
@@ -416,11 +416,11 @@ final class TableView
                 resetTableOrigin();
             }
         } );
-        actionMediator_.bindActionListener( Actions.getSetAccordianDownCardPileLayoutAction(), setCardPileLayoutActionListener );
-        actionMediator_.bindActionListener( Actions.getSetAccordianLeftCardPileLayoutAction(), setCardPileLayoutActionListener );
-        actionMediator_.bindActionListener( Actions.getSetAccordianRightCardPileLayoutAction(), setCardPileLayoutActionListener );
-        actionMediator_.bindActionListener( Actions.getSetAccordianUpCardPileLayoutAction(), setCardPileLayoutActionListener );
-        actionMediator_.bindActionListener( Actions.getSetStackedCardPileLayoutAction(), setCardPileLayoutActionListener );
+        actionMediator_.bindActionListener( Actions.getSetAccordianDownContainerLayoutAction(), setContainerLayoutActionListener );
+        actionMediator_.bindActionListener( Actions.getSetAccordianLeftContainerLayoutAction(), setContainerLayoutActionListener );
+        actionMediator_.bindActionListener( Actions.getSetAccordianRightContainerLayoutAction(), setContainerLayoutActionListener );
+        actionMediator_.bindActionListener( Actions.getSetAccordianUpContainerLayoutAction(), setContainerLayoutActionListener );
+        actionMediator_.bindActionListener( Actions.getSetStackedContainerLayoutAction(), setContainerLayoutActionListener );
 
         final IPredicate<Action> hasEditableCardPilePredicate = new IPredicate<Action>()
         {
@@ -460,7 +460,7 @@ final class TableView
                 return model_.isEditable();
             }
         };
-        final IPredicate<Action> hasEditableFocusedCardPilePredicate = new IPredicate<Action>()
+        final IPredicate<Action> hasEditableFocusedContainerPredicate = new IPredicate<Action>()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -541,7 +541,7 @@ final class TableView
         actionMediator_.bindShouldEnablePredicate( Actions.getRemoveAllCardPilesAction(), hasEditableCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getRemoveAllCardsAction(), hasEditableCardPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getRemoveCardAction(), hasEditableCardPredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getRemoveCardPileAction(), hasEditableFocusedCardPilePredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getRemoveCardPileAction(), hasEditableFocusedContainerPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getRequestTableNetworkControlAction(), new IPredicate<Action>()
         {
             @Override
@@ -554,13 +554,13 @@ final class TableView
                 return (localPlayer != null) && !localPlayer.hasRole( PlayerRole.EDITOR ) && !localPlayer.hasRole( PlayerRole.EDITOR_REQUESTER );
             }
         } );
-        actionMediator_.bindShouldEnablePredicate( Actions.getSetAccordianDownCardPileLayoutAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getSetAccordianLeftCardPileLayoutAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getSetAccordianRightCardPileLayoutAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getSetAccordianUpCardPileLayoutAction(), hasEditableFocusedCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getSetStackedCardPileLayoutAction(), hasEditableFocusedCardPilePredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getSetAccordianDownContainerLayoutAction(), hasEditableFocusedContainerPredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getSetAccordianLeftContainerLayoutAction(), hasEditableFocusedContainerPredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getSetAccordianRightContainerLayoutAction(), hasEditableFocusedContainerPredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getSetAccordianUpContainerLayoutAction(), hasEditableFocusedContainerPredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getSetStackedContainerLayoutAction(), hasEditableFocusedContainerPredicate );
 
-        final IPredicate<Action> isCardPileLayoutSelectedPredicate = new IPredicate<Action>()
+        final IPredicate<Action> isContainerLayoutSelectedPredicate = new IPredicate<Action>()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -577,11 +577,11 @@ final class TableView
             }
 
         };
-        actionMediator_.bindShouldSelectPredicate( Actions.getSetAccordianDownCardPileLayoutAction(), isCardPileLayoutSelectedPredicate );
-        actionMediator_.bindShouldSelectPredicate( Actions.getSetAccordianLeftCardPileLayoutAction(), isCardPileLayoutSelectedPredicate );
-        actionMediator_.bindShouldSelectPredicate( Actions.getSetAccordianRightCardPileLayoutAction(), isCardPileLayoutSelectedPredicate );
-        actionMediator_.bindShouldSelectPredicate( Actions.getSetAccordianUpCardPileLayoutAction(), isCardPileLayoutSelectedPredicate );
-        actionMediator_.bindShouldSelectPredicate( Actions.getSetStackedCardPileLayoutAction(), isCardPileLayoutSelectedPredicate );
+        actionMediator_.bindShouldSelectPredicate( Actions.getSetAccordianDownContainerLayoutAction(), isContainerLayoutSelectedPredicate );
+        actionMediator_.bindShouldSelectPredicate( Actions.getSetAccordianLeftContainerLayoutAction(), isContainerLayoutSelectedPredicate );
+        actionMediator_.bindShouldSelectPredicate( Actions.getSetAccordianRightContainerLayoutAction(), isContainerLayoutSelectedPredicate );
+        actionMediator_.bindShouldSelectPredicate( Actions.getSetAccordianUpContainerLayoutAction(), isContainerLayoutSelectedPredicate );
+        actionMediator_.bindShouldSelectPredicate( Actions.getSetStackedContainerLayoutAction(), isContainerLayoutSelectedPredicate );
     }
 
     /**
@@ -1071,12 +1071,12 @@ final class TableView
     }
 
     /**
-     * Sets the layout of the focused card pile to the specified value.
+     * Sets the layout of the focused container to the specified value.
      * 
      * @param layoutId
-     *        The identifier of the card pile layout; must not be {@code null}.
+     *        The identifier of the container layout; must not be {@code null}.
      */
-    private void setCardPileLayout(
+    private void setContainerLayout(
         /* @NonNull */
         final ContainerLayoutId layoutId )
     {
@@ -1091,7 +1091,7 @@ final class TableView
             }
             catch( final NoSuchContainerLayoutException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableView_setCardPileLayout_error, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableView_setContainerLayout_error, e );
             }
         }
     }

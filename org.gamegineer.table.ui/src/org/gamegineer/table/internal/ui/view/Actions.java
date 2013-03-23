@@ -1,6 +1,6 @@
 /*
  * Actions.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -113,33 +113,33 @@ final class Actions
 
     /**
      * The identifier of the action used to set the accordian down layout on a
-     * card pile.
+     * container.
      */
-    private static final String SET_ACCORDIAN_DOWN_CARD_PILE_LAYOUT_ACTION_ID = "setAccordianDownCardPileLayoutAction"; //$NON-NLS-1$
+    private static final String SET_ACCORDIAN_DOWN_CONTAINER_LAYOUT_ACTION_ID = "setAccordianDownContainerLayoutAction"; //$NON-NLS-1$
 
     /**
      * The identifier of the action used to set the accordian left layout on a
-     * card pile.
+     * container.
      */
-    private static final String SET_ACCORDIAN_LEFT_CARD_PILE_LAYOUT_ACTION_ID = "setAccordianLeftCardPileLayoutAction"; //$NON-NLS-1$
+    private static final String SET_ACCORDIAN_LEFT_CONTAINER_LAYOUT_ACTION_ID = "setAccordianLeftContainerLayoutAction"; //$NON-NLS-1$
 
     /**
      * The identifier of the action used to set the accordian right layout on a
-     * card pile.
+     * container.
      */
-    private static final String SET_ACCORDIAN_RIGHT_CARD_PILE_LAYOUT_ACTION_ID = "setAccordianRightCardPileLayoutAction"; //$NON-NLS-1$
+    private static final String SET_ACCORDIAN_RIGHT_CONTAINER_LAYOUT_ACTION_ID = "setAccordianRightContainerLayoutAction"; //$NON-NLS-1$
 
     /**
      * The identifier of the action used to set the accordian up layout on a
-     * card pile.
+     * container.
      */
-    private static final String SET_ACCORDIAN_UP_CARD_PILE_LAYOUT_ACTION_ID = "setAccordianUpCardPileLayoutAction"; //$NON-NLS-1$
+    private static final String SET_ACCORDIAN_UP_CONTAINER_LAYOUT_ACTION_ID = "setAccordianUpContainerLayoutAction"; //$NON-NLS-1$
 
     /**
-     * The identifier of the action used to set the stacked layout on a card
-     * pile.
+     * The identifier of the action used to set the stacked layout on a
+     * container.
      */
-    private static final String SET_STACKED_CARD_PILE_LAYOUT_ACTION_ID = "setStackedCardPileLayoutAction"; //$NON-NLS-1$
+    private static final String SET_STACKED_CONTAINER_LAYOUT_ACTION_ID = "setStackedContainerLayoutAction"; //$NON-NLS-1$
 
     /** The collection of actions. */
     private static final Map<String, BasicAction> actions_ = createActions();
@@ -364,54 +364,54 @@ final class Actions
                 putValue( NAME, NlsMessages.SaveTableAsAction_text );
             }
         } );
-        actions.put( SET_ACCORDIAN_DOWN_CARD_PILE_LAYOUT_ACTION_ID, new BasicAction()
+        actions.put( SET_ACCORDIAN_DOWN_CONTAINER_LAYOUT_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
             {
                 putValue( ACTION_COMMAND_KEY, ContainerLayoutIds.ACCORDIAN_DOWN.toString() );
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetAccordianDownCardPileLayoutAction_mnemonic ).getKeyCode() );
-                putValue( NAME, NlsMessages.SetAccordianDownCardPileLayoutAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetAccordianDownContainerLayoutAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.SetAccordianDownContainerLayoutAction_text );
             }
         } );
-        actions.put( SET_ACCORDIAN_LEFT_CARD_PILE_LAYOUT_ACTION_ID, new BasicAction()
+        actions.put( SET_ACCORDIAN_LEFT_CONTAINER_LAYOUT_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
             {
                 putValue( ACTION_COMMAND_KEY, ContainerLayoutIds.ACCORDIAN_LEFT.toString() );
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetAccordianLeftCardPileLayoutAction_mnemonic ).getKeyCode() );
-                putValue( NAME, NlsMessages.SetAccordianLeftCardPileLayoutAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetAccordianLeftContainerLayoutAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.SetAccordianLeftContainerLayoutAction_text );
             }
         } );
-        actions.put( SET_ACCORDIAN_RIGHT_CARD_PILE_LAYOUT_ACTION_ID, new BasicAction()
+        actions.put( SET_ACCORDIAN_RIGHT_CONTAINER_LAYOUT_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
             {
                 putValue( ACTION_COMMAND_KEY, ContainerLayoutIds.ACCORDIAN_RIGHT.toString() );
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetAccordianRightCardPileLayoutAction_mnemonic ).getKeyCode() );
-                putValue( NAME, NlsMessages.SetAccordianRightCardPileLayoutAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetAccordianRightContainerLayoutAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.SetAccordianRightContainerLayoutAction_text );
             }
         } );
-        actions.put( SET_ACCORDIAN_UP_CARD_PILE_LAYOUT_ACTION_ID, new BasicAction()
+        actions.put( SET_ACCORDIAN_UP_CONTAINER_LAYOUT_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
             {
                 putValue( ACTION_COMMAND_KEY, ContainerLayoutIds.ACCORDIAN_UP.toString() );
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetAccordianUpCardPileLayoutAction_mnemonic ).getKeyCode() );
-                putValue( NAME, NlsMessages.SetAccordianUpCardPileLayoutAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetAccordianUpContainerLayoutAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.SetAccordianUpContainerLayoutAction_text );
             }
         } );
-        actions.put( SET_STACKED_CARD_PILE_LAYOUT_ACTION_ID, new BasicAction()
+        actions.put( SET_STACKED_CONTAINER_LAYOUT_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
             {
                 putValue( ACTION_COMMAND_KEY, ContainerLayoutIds.STACKED.toString() );
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetStackedCardPileLayoutAction_mnemonic ).getKeyCode() );
-                putValue( NAME, NlsMessages.SetStackedCardPileLayoutAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetStackedContainerLayoutAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.SetStackedContainerLayoutAction_text );
             }
         } );
 
@@ -640,61 +640,61 @@ final class Actions
     }
 
     /**
-     * Gets the set accordian down card pile layout action.
+     * Gets the set accordian down container layout action.
      * 
-     * @return The set accordian down card pile layout action; never
+     * @return The set accordian down container layout action; never
      *         {@code null}.
      */
     /* @NonNull */
-    static BasicAction getSetAccordianDownCardPileLayoutAction()
+    static BasicAction getSetAccordianDownContainerLayoutAction()
     {
-        return actions_.get( SET_ACCORDIAN_DOWN_CARD_PILE_LAYOUT_ACTION_ID );
+        return actions_.get( SET_ACCORDIAN_DOWN_CONTAINER_LAYOUT_ACTION_ID );
     }
 
     /**
-     * Gets the set accordian left card pile layout action.
+     * Gets the set accordian left container layout action.
      * 
-     * @return The set accordian left card pile layout action; never
+     * @return The set accordian left container layout action; never
      *         {@code null}.
      */
     /* @NonNull */
-    static BasicAction getSetAccordianLeftCardPileLayoutAction()
+    static BasicAction getSetAccordianLeftContainerLayoutAction()
     {
-        return actions_.get( SET_ACCORDIAN_LEFT_CARD_PILE_LAYOUT_ACTION_ID );
+        return actions_.get( SET_ACCORDIAN_LEFT_CONTAINER_LAYOUT_ACTION_ID );
     }
 
     /**
-     * Gets the set accordian right card pile layout action.
+     * Gets the set accordian right container layout action.
      * 
-     * @return The set accordian right card pile layout action; never
+     * @return The set accordian right container layout action; never
      *         {@code null}.
      */
     /* @NonNull */
-    static BasicAction getSetAccordianRightCardPileLayoutAction()
+    static BasicAction getSetAccordianRightContainerLayoutAction()
     {
-        return actions_.get( SET_ACCORDIAN_RIGHT_CARD_PILE_LAYOUT_ACTION_ID );
+        return actions_.get( SET_ACCORDIAN_RIGHT_CONTAINER_LAYOUT_ACTION_ID );
     }
 
     /**
-     * Gets the set accordian up card pile layout action.
+     * Gets the set accordian up container layout action.
      * 
-     * @return The set accordian up card pile layout action; never {@code null}.
+     * @return The set accordian up container layout action; never {@code null}.
      */
     /* @NonNull */
-    static BasicAction getSetAccordianUpCardPileLayoutAction()
+    static BasicAction getSetAccordianUpContainerLayoutAction()
     {
-        return actions_.get( SET_ACCORDIAN_UP_CARD_PILE_LAYOUT_ACTION_ID );
+        return actions_.get( SET_ACCORDIAN_UP_CONTAINER_LAYOUT_ACTION_ID );
     }
 
     /**
-     * Gets the set stacked card pile layout action.
+     * Gets the set stacked container layout action.
      * 
-     * @return The set stacked card pile layout action; never {@code null}.
+     * @return The set stacked container layout action; never {@code null}.
      */
     /* @NonNull */
-    static BasicAction getSetStackedCardPileLayoutAction()
+    static BasicAction getSetStackedContainerLayoutAction()
     {
-        return actions_.get( SET_STACKED_CARD_PILE_LAYOUT_ACTION_ID );
+        return actions_.get( SET_STACKED_CONTAINER_LAYOUT_ACTION_ID );
     }
 
     /**

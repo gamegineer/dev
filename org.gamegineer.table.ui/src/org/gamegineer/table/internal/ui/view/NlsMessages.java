@@ -1,6 +1,6 @@
 /*
  * NlsMessages.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -321,45 +321,45 @@ final class NlsMessages
     /** The save table as action text. */
     public static String SaveTableAsAction_text;
 
-    // --- SetAccordianDownCardPileLayoutAction -----------------------------
+    // --- SetAccordianDownContainerLayoutAction ----------------------------
 
-    /** The set accordian down card pile layout action mnemonic. */
-    public static String SetAccordianDownCardPileLayoutAction_mnemonic;
+    /** The set accordian down container layout action mnemonic. */
+    public static String SetAccordianDownContainerLayoutAction_mnemonic;
 
-    /** The set accordian down card pile layout action text. */
-    public static String SetAccordianDownCardPileLayoutAction_text;
+    /** The set accordian down container layout action text. */
+    public static String SetAccordianDownContainerLayoutAction_text;
 
-    // --- SetAccordianLeftCardPileLayoutAction -----------------------------
+    // --- SetAccordianLeftContainerLayoutAction ----------------------------
 
-    /** The set accordian left card pile layout action mnemonic. */
-    public static String SetAccordianLeftCardPileLayoutAction_mnemonic;
+    /** The set accordian left container layout action mnemonic. */
+    public static String SetAccordianLeftContainerLayoutAction_mnemonic;
 
-    /** The set accordian left card pile layout action text. */
-    public static String SetAccordianLeftCardPileLayoutAction_text;
+    /** The set accordian left container layout action text. */
+    public static String SetAccordianLeftContainerLayoutAction_text;
 
-    // --- SetAccordianRightCardPileLayoutAction ----------------------------
+    // --- SetAccordianRightContainerLayoutAction ---------------------------
 
-    /** The set accordian right card pile layout action mnemonic. */
-    public static String SetAccordianRightCardPileLayoutAction_mnemonic;
+    /** The set accordian right container layout action mnemonic. */
+    public static String SetAccordianRightContainerLayoutAction_mnemonic;
 
-    /** The set accordian right card pile layout action text. */
-    public static String SetAccordianRightCardPileLayoutAction_text;
+    /** The set accordian right container layout action text. */
+    public static String SetAccordianRightContainerLayoutAction_text;
 
-    // --- SetAccordianUpCardPileLayoutAction -------------------------------
+    // --- SetAccordianUpContainerLayoutAction ------------------------------
 
-    /** The set accordian up card pile layout action mnemonic. */
-    public static String SetAccordianUpCardPileLayoutAction_mnemonic;
+    /** The set accordian up container layout action mnemonic. */
+    public static String SetAccordianUpContainerLayoutAction_mnemonic;
 
-    /** The set accordian up card pile layout action text. */
-    public static String SetAccordianUpCardPileLayoutAction_text;
+    /** The set accordian up container layout action text. */
+    public static String SetAccordianUpContainerLayoutAction_text;
 
-    // --- SetStackedCardPileLayoutAction -----------------------------------
+    // --- SetStackedContainerLayoutAction ----------------------------------
 
-    /** The set stacked card pile layout action mnemonic. */
-    public static String SetStackedCardPileLayoutAction_mnemonic;
+    /** The set stacked container layout action mnemonic. */
+    public static String SetStackedContainerLayoutAction_mnemonic;
 
-    /** The set stacked card pile layout action text. */
-    public static String SetStackedCardPileLayoutAction_text;
+    /** The set stacked container layout action text. */
+    public static String SetStackedContainerLayoutAction_text;
 
     // --- TableNetworkPlayerView -------------------------------------------
 

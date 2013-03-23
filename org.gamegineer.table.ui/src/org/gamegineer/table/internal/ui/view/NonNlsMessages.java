@@ -72,8 +72,8 @@ final class NonNlsMessages
     /** The drag source extension is not available. */
     public static String TableView_draggingComponent_dragSourceNotAvailable;
 
-    /** An error occurred while setting the card pile layout. */
-    public static String TableView_setCardPileLayout_error;
+    /** An error occurred while setting the container layout. */
+    public static String TableView_setContainerLayout_error;
 
     // --- ViewUtils --------------------------------------------------------
 

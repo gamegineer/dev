@@ -1,6 +1,6 @@
 /*
  * CardPilePopupMenu.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -99,11 +99,11 @@ final class CardPilePopupMenu
         final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_layout_text );
         menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_layout_mnemonic ).getKeyCode() );
         final ButtonGroup layoutButtonGroup = new ButtonGroup();
-        layoutButtonGroup.add( menu.add( new JRadioButtonMenuItem( Actions.getSetStackedCardPileLayoutAction() ) ) );
-        layoutButtonGroup.add( menu.add( new JRadioButtonMenuItem( Actions.getSetAccordianUpCardPileLayoutAction() ) ) );
-        layoutButtonGroup.add( menu.add( new JRadioButtonMenuItem( Actions.getSetAccordianDownCardPileLayoutAction() ) ) );
-        layoutButtonGroup.add( menu.add( new JRadioButtonMenuItem( Actions.getSetAccordianLeftCardPileLayoutAction() ) ) );
-        layoutButtonGroup.add( menu.add( new JRadioButtonMenuItem( Actions.getSetAccordianRightCardPileLayoutAction() ) ) );
+        layoutButtonGroup.add( menu.add( new JRadioButtonMenuItem( Actions.getSetStackedContainerLayoutAction() ) ) );
+        layoutButtonGroup.add( menu.add( new JRadioButtonMenuItem( Actions.getSetAccordianUpContainerLayoutAction() ) ) );
+        layoutButtonGroup.add( menu.add( new JRadioButtonMenuItem( Actions.getSetAccordianDownContainerLayoutAction() ) ) );
+        layoutButtonGroup.add( menu.add( new JRadioButtonMenuItem( Actions.getSetAccordianLeftContainerLayoutAction() ) ) );
+        layoutButtonGroup.add( menu.add( new JRadioButtonMenuItem( Actions.getSetAccordianRightContainerLayoutAction() ) ) );
         return menu;
     }
 
