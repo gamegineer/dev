@@ -1074,8 +1074,37 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IContainer#removeComponent} method throws an exception
-     * when passed an illegal component that is not owned by the container.
+     * Ensures the {@link IContainer#removeComponent(IComponent)} method changes
+     * the container bounds.
+     */
+    @Test( timeout = 1000 )
+    public void testRemoveComponent_ChangesContainerBounds()
+    {
+        getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
+        getContainer().setSurfaceDesign( getContainer().getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        EasyMock.expectLastCall().times( 2 );
+        mocksControl_.replay();
+        getContainer().addComponentListener( listener );
+        final Rectangle originalContainerBounds = getContainer().getBounds();
+
+        IComponent component = null;
+        do
+        {
+            component = createUniqueComponent();
+            getContainer().addComponent( component );
+
+        } while( originalContainerBounds.equals( getContainer().getBounds() ) );
+        getContainer().removeComponent( component );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@link IContainer#removeComponent(IComponent)} method throws
+     * an exception when passed an illegal component that is not owned by the
+     * container.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveComponent_Component_Illegal_NotOwned()
@@ -1084,8 +1113,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IContainer#removeComponent} method throws an exception
-     * when passed a {@code null} component.
+     * Ensures the {@link IContainer#removeComponent(IComponent)} method throws
+     * an exception when passed a {@code null} component.
      */
     @Test( expected = NullPointerException.class )
     public void testRemoveComponent_Component_Null()
@@ -1094,8 +1123,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IContainer#removeComponent} method fires a component
-     * removed event.
+     * Ensures the {@link IContainer#removeComponent(IComponent)} method fires a
+     * component removed event.
      */
     @Test
     public void testRemoveComponent_FiresComponentRemovedEvent()
@@ -1117,8 +1146,8 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IContainer#removeComponent} method removes a
-     * component.
+     * Ensures the {@link IContainer#removeComponent(IComponent)} method removes
+     * a component.
      */
     @Test
     public void testRemoveComponent_RemovesComponent()
@@ -1127,6 +1156,97 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         getContainer().addComponent( component );
 
         getContainer().removeComponent( component );
+
+        final List<IComponent> components = getContainer().getComponents();
+        assertFalse( components.contains( component ) );
+        assertEquals( 0, components.size() );
+        assertNull( component.getContainer() );
+    }
+
+    /**
+     * Ensures the {@link IContainer#removeComponent(int)} method changes the
+     * container bounds.
+     */
+    @Test( timeout = 1000 )
+    public void testRemoveComponentAtIndex_ChangesContainerBounds()
+    {
+        getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
+        getContainer().setSurfaceDesign( getContainer().getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        EasyMock.expectLastCall().times( 2 );
+        mocksControl_.replay();
+        getContainer().addComponentListener( listener );
+        final Rectangle originalContainerBounds = getContainer().getBounds();
+
+        IComponent component = null;
+        do
+        {
+            component = createUniqueComponent();
+            getContainer().addComponent( component );
+
+        } while( originalContainerBounds.equals( getContainer().getBounds() ) );
+        getContainer().removeComponent( getContainer().getComponentCount() - 1 );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@link IContainer#removeComponent(int)} method fires a
+     * component removed event.
+     */
+    @Test
+    public void testRemoveComponentAtIndex_FiresComponentRemovedEvent()
+    {
+        final IComponent component = createUniqueComponent();
+        getContainer().addComponent( component );
+        final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
+        final Capture<ContainerContentChangedEvent> eventCapture = new Capture<ContainerContentChangedEvent>();
+        listener.componentRemoved( EasyMock.capture( eventCapture ) );
+        mocksControl_.replay();
+        getContainer().addContainerListener( listener );
+
+        getContainer().removeComponent( 0 );
+
+        mocksControl_.verify();
+        assertSame( getContainer(), eventCapture.getValue().getContainer() );
+        assertSame( component, eventCapture.getValue().getComponent() );
+        assertEquals( 0, eventCapture.getValue().getComponentIndex() );
+    }
+
+    /**
+     * Ensures the {@link IContainer#removeComponent(int)} method throws an
+     * exception when passed an index that is out of bounds because it is
+     * greater than the component count.
+     */
+    @Test( expected = IndexOutOfBoundsException.class )
+    public void testRemoveComponentAtIndex_Index_OutOfBounds_GreaterThanComponentCount()
+    {
+        getContainer().removeComponent( getContainer().getComponentCount() + 1 );
+    }
+
+    /**
+     * Ensures the {@link IContainer#removeComponent(int)} method throws an
+     * exception when passed an index that is out of bounds because it is less
+     * than zero.
+     */
+    @Test( expected = IndexOutOfBoundsException.class )
+    public void testRemoveComponentAtIndex_Index_OutOfBounds_LessThanZero()
+    {
+        getContainer().removeComponent( -1 );
+    }
+
+    /**
+     * Ensures the {@link IContainer#removeComponent(int)} method removes a
+     * component.
+     */
+    @Test
+    public void testRemoveComponentAtIndex_RemovesComponent()
+    {
+        final IComponent component = createUniqueComponent();
+        getContainer().addComponent( component );
+
+        assertSame( component, getContainer().removeComponent( 0 ) );
 
         final List<IComponent> components = getContainer().getComponents();
         assertFalse( components.contains( component ) );

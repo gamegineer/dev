@@ -220,6 +220,22 @@ public interface IContainer
         IComponent component );
 
     /**
+     * Removes the component at the specified index from this container.
+     * 
+     * @param index
+     *        The index of the component to be removed.
+     * 
+     * @return The component that was removed; never {@code null}.
+     * 
+     * @throws java.lang.IndexOutOfBoundsException
+     *         If {@code index} is out of range (
+     *         {@code index < 0 || index > getComponentCount()}).
+     */
+    /* @NonNull */
+    public IComponent removeComponent(
+        int index );
+
+    /**
      * Removes all components in this container from the component at the
      * specified location to the top-most component.
      * 

@@ -631,33 +631,74 @@ final class Container
     {
         assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
 
-        final int componentIndex;
-
-        getLock().lock();
-        try
+        final ComponentRangeStrategy componentRangeStrategy = new ComponentRangeStrategy()
         {
-            assertArgumentLegal( component.getContainer() == this, "component", NonNlsMessages.Container_removeComponent_component_notOwned ); //$NON-NLS-1$
+            private int index_ = -1;
 
-            componentIndex = components_.indexOf( component );
-            assert componentIndex != -1;
-            final Component typedComponent = components_.remove( componentIndex );
-            assert typedComponent != null;
-            typedComponent.setParent( null );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
+            @GuardedBy( "getLock()" )
+            @SuppressWarnings( "synthetic-access" )
+            private void calculateComponentIndex()
+            {
+                assert getLock().isHeldByCurrentThread();
 
-        addEventNotification( new Runnable()
+                if( index_ == -1 )
+                {
+                    assertArgumentLegal( component.getContainer() == Container.this, "component", NonNlsMessages.Container_removeComponent_component_notOwned ); //$NON-NLS-1$
+                    index_ = components_.indexOf( component );
+                    assert index_ != -1;
+                }
+            }
+
+            @Override
+            int getLowerIndex()
+            {
+                assert getLock().isHeldByCurrentThread();
+
+                calculateComponentIndex();
+                return index_;
+            }
+
+            @Override
+            int getUpperIndex()
+            {
+                assert getLock().isHeldByCurrentThread();
+
+                calculateComponentIndex();
+                return index_ + 1;
+            }
+        };
+        final List<IComponent> components = removeComponents( componentRangeStrategy );
+        assert components.size() == 1;
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IContainer#removeComponent(int)
+     */
+    @Override
+    public IComponent removeComponent(
+        final int index )
+    {
+        final ComponentRangeStrategy componentRangeStrategy = new ComponentRangeStrategy()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
+            int getLowerIndex()
             {
-                fireComponentRemoved( component, componentIndex );
+                assert getLock().isHeldByCurrentThread();
+
+                return index;
             }
-        } );
+
+            @Override
+            int getUpperIndex()
+            {
+                assert getLock().isHeldByCurrentThread();
+
+                return index + 1;
+            }
+        };
+        final List<IComponent> components = removeComponents( componentRangeStrategy );
+        assert components.size() == 1;
+        return components.get( 0 );
     }
 
     /*
@@ -675,6 +716,8 @@ final class Container
             @SuppressWarnings( "synthetic-access" )
             int getLowerIndex()
             {
+                assert getLock().isHeldByCurrentThread();
+
                 final int componentIndex = getComponentIndex( location );
                 return (componentIndex != -1) ? componentIndex : components_.size();
             }
@@ -703,12 +746,13 @@ final class Container
         assert componentRangeStrategy != null;
 
         final List<Component> removedComponents = new ArrayList<Component>();
-        final int upperComponentIndex = componentRangeStrategy.getUpperIndex() - 1;
+        final int upperComponentIndex;
         final boolean containerBoundsChanged;
 
         getLock().lock();
         try
         {
+            upperComponentIndex = componentRangeStrategy.getUpperIndex() - 1;
             final Rectangle oldBounds = getBounds();
 
             removedComponents.addAll( components_.subList( componentRangeStrategy.getLowerIndex(), componentRangeStrategy.getUpperIndex() ) );
@@ -777,6 +821,8 @@ final class Container
             @SuppressWarnings( "synthetic-access" )
             int getLowerIndex()
             {
+                assert getLock().isHeldByCurrentThread();
+
                 return components_.isEmpty() ? 0 : components_.size() - 1;
             }
         };
@@ -963,8 +1009,11 @@ final class Container
          * 
          * @return The lower index of the component range, inclusive.
          */
+        @GuardedBy( "getLock()" )
         int getLowerIndex()
         {
+            assert getLock().isHeldByCurrentThread();
+
             return 0;
         }
 
@@ -978,9 +1027,12 @@ final class Container
          * 
          * @return The upper index of the component range, exclusive.
          */
+        @GuardedBy( "getLock()" )
         @SuppressWarnings( "synthetic-access" )
         int getUpperIndex()
         {
+            assert getLock().isHeldByCurrentThread();
+
             return components_.size();
         }
     }
