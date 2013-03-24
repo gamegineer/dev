@@ -1,6 +1,6 @@
 /*
  * AbstractComponentStrategyUI.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -75,14 +75,14 @@ abstract class AbstractComponentStrategyUI
     }
 
     /**
-     * This implementation returns {@code false}. Subclasses may override and
-     * are not required to call the superclass implementation.
+     * This implementation returns {@code true}. Subclasses may override and are
+     * not required to call the superclass implementation.
      * 
      * @see org.gamegineer.table.ui.IComponentStrategyUI#isFocusable()
      */
     @Override
     public boolean isFocusable()
     {
-        return false;
+        return true;
     }
 }

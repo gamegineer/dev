@@ -42,13 +42,4 @@ public final class CardStrategyUI
     {
         super( CardsComponentStrategyIds.CARD );
     }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.strategies.AbstractComponentStrategyUI#isFocusable()
-     */
-    @Override
-    public boolean isFocusable()
-    {
-        return true;
-    }
 }
