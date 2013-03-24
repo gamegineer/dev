@@ -1705,7 +1705,6 @@ final class TableView
                 if( dragSource != null )
                 {
                     dragContext_ = dragSource.beginDrag( getMouseLocation( event ), focusedComponent );
-                    // TODO: need to set focus/hover to mobile container?
                     if( dragContext_ == null )
                     {
                         setInputHandler( DefaultInputHandler.class, null );
@@ -1756,7 +1755,6 @@ final class TableView
             {
                 assert dragContext_ != null;
 
-                // TODO: need to set focus/hover to drop target; should drop() return the target container (or null in the case no drop occurred)?
                 dragContext_.drop( getMouseLocation( event ) );
                 setInputHandler( DefaultInputHandler.class, null );
             }
