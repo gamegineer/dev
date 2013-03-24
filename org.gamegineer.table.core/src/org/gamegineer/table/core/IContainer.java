@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.core;
 
-import java.awt.Point;
 import java.util.List;
 
 /**
@@ -234,23 +233,6 @@ public interface IContainer
     /* @NonNull */
     public IComponent removeComponent(
         int index );
-
-    /**
-     * Removes all components in this container from the component at the
-     * specified location to the top-most component.
-     * 
-     * @param location
-     *        The location in table coordinates; must not be {@code null}.
-     * 
-     * @return The collection of components removed from this container; never
-     *         {@code null}. The components are returned in order from the
-     *         component at the specified location to the component at the top
-     *         of the container.
-     */
-    /* @NonNull */
-    public List<IComponent> removeComponents(
-        /* @NonNull */
-        Point location );
 
     /**
      * Removes the specified container listener from this container.

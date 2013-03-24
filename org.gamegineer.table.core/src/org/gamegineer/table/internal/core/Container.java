@@ -470,28 +470,6 @@ final class Container
     }
 
     /**
-     * Gets the index of the component in this container at the specified
-     * location.
-     * 
-     * @param location
-     *        The location in table coordinates; must not be {@code null}.
-     * 
-     * @return The index of the component in this container at the specified
-     *         location or -1 if no component in this container is at that
-     *         location.
-     */
-    @GuardedBy( "getLock()" )
-    private int getComponentIndex(
-        /* @NonNull */
-        final Point location )
-    {
-        assert location != null;
-        assert getLock().isHeldByCurrentThread();
-
-        return layout_.getComponentIndex( this, location );
-    }
-
-    /**
      * Gets the collection of mementos representing the components in this
      * container.
      * 
@@ -699,30 +677,6 @@ final class Container
         final List<IComponent> components = removeComponents( componentRangeStrategy );
         assert components.size() == 1;
         return components.get( 0 );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IContainer#removeComponents(java.awt.Point)
-     */
-    @Override
-    public List<IComponent> removeComponents(
-        final Point location )
-    {
-        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
-
-        final ComponentRangeStrategy componentRangeStrategy = new ComponentRangeStrategy()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            int getLowerIndex()
-            {
-                assert getLock().isHeldByCurrentThread();
-
-                final int componentIndex = getComponentIndex( location );
-                return (componentIndex != -1) ? componentIndex : components_.size();
-            }
-        };
-        return removeComponents( componentRangeStrategy );
     }
 
     /**
