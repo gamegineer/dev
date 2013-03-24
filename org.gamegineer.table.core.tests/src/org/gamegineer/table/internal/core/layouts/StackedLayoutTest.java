@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.core.layouts;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import java.awt.Point;
 import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.IComponent;
@@ -70,55 +69,6 @@ public final class StackedLayoutTest
     public void testConstructor_Id_Null()
     {
         new StackedLayout( null, 1, 1, 1 );
-    }
-
-    /**
-     * Ensures the {@link StackedLayout#getComponentIndex} method returns
-     * {@code -1} when a component is present at the specified location but the
-     * component is not the top-most component.
-     */
-    @Test
-    public void testGetComponentIndex_Location_ComponentPresent_NotTopComponent()
-    {
-        final StackedLayout layout = new StackedLayout( DEFAULT_ID, 1, 10, 10 );
-        final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment();
-        final IContainer container = TestComponents.createUniqueContainer( tableEnvironment );
-        container.setOrigin( new Point( 0, 0 ) );
-        container.setLayout( layout );
-        final IComponent component1 = TestComponents.createUniqueComponent( tableEnvironment );
-        container.addComponent( component1 );
-        final IComponent component2 = TestComponents.createUniqueComponent( tableEnvironment );
-        container.addComponent( component2 );
-
-        final Point location = new Point( 0, 0 );
-        final int actualIndex = layout.getComponentIndex( container, location );
-
-        assertTrue( container.getBounds().contains( location ) );
-        assertEquals( -1, actualIndex );
-    }
-
-    /**
-     * Ensures the {@link StackedLayout#getComponentIndex} method returns the
-     * correct index when a component is present at the specified location and
-     * the component is the top-most component.
-     */
-    @Test
-    public void testGetComponentIndex_Location_ComponentPresent_TopComponent()
-    {
-        final StackedLayout layout = new StackedLayout( DEFAULT_ID, 1, 10, 10 );
-        final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment();
-        final IContainer container = TestComponents.createUniqueContainer( tableEnvironment );
-        container.setOrigin( new Point( 0, 0 ) );
-        container.setLayout( layout );
-        final IComponent component1 = TestComponents.createUniqueComponent( tableEnvironment );
-        container.addComponent( component1 );
-        final IComponent component2 = TestComponents.createUniqueComponent( tableEnvironment );
-        container.addComponent( component2 );
-
-        final Point location = new Point( 10, 10 );
-        final int actualIndex = layout.getComponentIndex( container, location );
-
-        assertEquals( 1, actualIndex );
     }
 
     /**

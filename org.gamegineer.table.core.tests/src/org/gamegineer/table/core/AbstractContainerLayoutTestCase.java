@@ -1,6 +1,6 @@
 /*
  * AbstractContainerLayoutTestCase.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,8 +22,6 @@
 package org.gamegineer.table.core;
 
 import static org.junit.Assert.assertNotNull;
-import java.awt.Point;
-import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -82,36 +80,6 @@ public abstract class AbstractContainerLayoutTestCase
     {
         layout_ = createContainerLayout();
         assertNotNull( layout_ );
-    }
-
-    /**
-     * Ensures the {@link IContainerLayout#getComponentIndex} method returns
-     * {@code -1} when the container is empty.
-     */
-    @Test
-    public void testGetComponentIndex_Container_Empty()
-    {
-        layout_.getComponentIndex( TestComponents.createUniqueContainer( TableEnvironmentFactory.createTableEnvironment() ), new Point( 0, 0 ) );
-    }
-
-    /**
-     * Ensures the {@link IContainerLayout#getComponentIndex} method throws an
-     * exception when passed a {@code null} container.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetComponentIndex_Container_Null()
-    {
-        layout_.getComponentIndex( null, new Point( 0, 0 ) );
-    }
-
-    /**
-     * Ensures the {@link IContainerLayout#getComponentIndex} method throws an
-     * exception when passed a {@code null} location.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetComponentIndex_Location_Null()
-    {
-        layout_.getComponentIndex( EasyMock.createMock( IContainer.class ), null );
     }
 
     /**

@@ -1,6 +1,6 @@
 /*
  * AbstractContainerLayout.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,6 @@ package org.gamegineer.table.core;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.util.List;
 import net.jcip.annotations.Immutable;
 
 /**
@@ -68,34 +67,6 @@ public abstract class AbstractContainerLayout
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * This implementation returns the top-most component within the specified
-     * container at the specified location. Subclasses may override and are not
-     * required to call the superclass implementation.
-     * 
-     * @see org.gamegineer.table.core.IContainerLayout#getComponentIndex(org.gamegineer.table.core.IContainer,
-     *      java.awt.Point)
-     */
-    @Override
-    public int getComponentIndex(
-        final IContainer container,
-        final Point location )
-    {
-        assertArgumentNotNull( container, "container" ); //$NON-NLS-1$
-        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
-
-        final List<IComponent> components = container.getComponents();
-        for( int index = components.size() - 1; index >= 0; --index )
-        {
-            if( components.get( index ).getBounds().contains( location ) )
-            {
-                return index;
-            }
-        }
-
-        return -1;
-    }
 
     /**
      * Gets the offset from the container origin in table coordinates of the

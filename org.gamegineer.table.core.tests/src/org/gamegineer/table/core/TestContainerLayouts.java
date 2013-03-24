@@ -1,6 +1,6 @@
 /*
  * TestContainerLayouts.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,6 @@ package org.gamegineer.table.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Point;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
@@ -80,14 +79,6 @@ public final class TestContainerLayouts
 
         return new IContainerLayout()
         {
-            @Override
-            public int getComponentIndex(
-                final IContainer container,
-                final Point location )
-            {
-                return containerLayout.getComponentIndex( container, location );
-            }
-
             @Override
             public ContainerLayoutId getId()
             {
@@ -254,26 +245,6 @@ public final class TestContainerLayouts
         // ==================================================================
         // Methods
         // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.core.IContainerLayout#getComponentIndex(org.gamegineer.table.core.IContainer, java.awt.Point)
-         */
-        @Override
-        public final int getComponentIndex(
-            final IContainer container,
-            final Point location )
-        {
-            final List<IComponent> components = container.getComponents();
-            for( int index = components.size() - 1; index >= 0; --index )
-            {
-                if( components.get( index ).getBounds().contains( location ) )
-                {
-                    return index;
-                }
-            }
-
-            return -1;
-        }
 
         /*
          * @see org.gamegineer.table.core.IContainerLayout#getId()

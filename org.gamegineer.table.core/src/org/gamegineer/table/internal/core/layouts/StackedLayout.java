@@ -1,6 +1,6 @@
 /*
  * StackedLayout.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,11 +24,9 @@ package org.gamegineer.table.internal.core.layouts;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
-import java.awt.Point;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.AbstractContainerLayout;
 import org.gamegineer.table.core.ContainerLayoutId;
-import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerLayout;
 
@@ -93,30 +91,6 @@ final class StackedLayout
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /*
-     * @see org.gamegineer.table.internal.core.AbstractContainerLayout#getComponentIndex(org.gamegineer.table.core.IContainer, java.awt.Point)
-     */
-    @Override
-    public int getComponentIndex(
-        final IContainer container,
-        final Point location )
-    {
-        assertArgumentNotNull( container, "container" ); //$NON-NLS-1$
-        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
-
-        final int topIndex = container.getComponentCount() - 1;
-        if( topIndex >= 0 )
-        {
-            final IComponent topComponent = container.getComponent( topIndex );
-            if( topComponent.getBounds().contains( location ) )
-            {
-                return topIndex;
-            }
-        }
-
-        return -1;
-    }
 
     /*
      * @see org.gamegineer.table.core.AbstractContainerLayout#getComponentOffsetAt(org.gamegineer.table.core.IContainer, int)
