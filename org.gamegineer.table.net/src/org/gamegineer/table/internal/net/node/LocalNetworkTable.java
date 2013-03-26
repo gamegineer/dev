@@ -1,6 +1,6 @@
 /*
  * LocalNetworkTable.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -593,7 +593,9 @@ final class LocalNetworkTable
          * @see org.gamegineer.table.core.IContainerListener#componentAdded(org.gamegineer.table.core.ContainerContentChangedEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
+        @SuppressWarnings( {
+            "boxing", "synthetic-access"
+        } )
         public void componentAdded(
             final ContainerContentChangedEvent event )
         {
@@ -617,6 +619,7 @@ final class LocalNetworkTable
                 containerPath = container.getPath();
                 if( containerPath != null )
                 {
+                    containerIncrement.setAddedComponentIndex( event.getComponentIndex() );
                     containerIncrement.setAddedComponentMementos( Collections.singletonList( component.createMemento() ) );
                 }
             }
@@ -661,6 +664,7 @@ final class LocalNetworkTable
                 containerPath = container.getPath();
                 if( containerPath != null )
                 {
+                    containerIncrement.setRemovedComponentIndex( event.getComponentIndex() );
                     containerIncrement.setRemovedComponentCount( 1 );
                 }
             }

@@ -1,6 +1,6 @@
 /*
  * NetworkTableUtils.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -183,11 +183,13 @@ public final class NetworkTableUtils
             }
         }
 
-        if( containerIncrement.getRemovedComponentCount() != null )
+        if( (containerIncrement.getRemovedComponentIndex() != null) && (containerIncrement.getRemovedComponentCount() != null) )
         {
             @SuppressWarnings( "boxing" )
+            final int removedComponentIndex = containerIncrement.getRemovedComponentIndex();
+            @SuppressWarnings( "boxing" )
             final int removedComponentCount = containerIncrement.getRemovedComponentCount();
-            if( removedComponentCount == container.getComponentCount() )
+            if( (removedComponentIndex == 0) && (removedComponentCount == container.getComponentCount()) )
             {
                 container.removeAllComponents();
             }
@@ -195,18 +197,20 @@ public final class NetworkTableUtils
             {
                 for( int index = 0; index < removedComponentCount; ++index )
                 {
-                    container.removeTopComponent();
+                    container.removeComponent( removedComponentIndex );
                 }
             }
         }
 
-        if( containerIncrement.getAddedComponentMementos() != null )
+        if( (containerIncrement.getAddedComponentIndex() != null) && (containerIncrement.getAddedComponentMementos() != null) )
         {
+            @SuppressWarnings( "boxing" )
+            int addedComponentIndex = containerIncrement.getAddedComponentIndex();
             for( final Object componentMemento : containerIncrement.getAddedComponentMementos() )
             {
                 try
                 {
-                    container.addComponent( container.getTableEnvironment().createComponent( componentMemento ) );
+                    container.addComponent( container.getTableEnvironment().createComponent( componentMemento ), addedComponentIndex++ );
                 }
                 catch( final MementoException e )
                 {
