@@ -250,15 +250,6 @@ public interface IContainer
         IContainerListener listener );
 
     /**
-     * Removes the component at the top of this container.
-     * 
-     * @return The component that was removed or {@code null} if this container
-     *         is empty.
-     */
-    /* @Nullable */
-    public IComponent removeTopComponent();
-
-    /**
      * Sets the layout of components in this container.
      * 
      * @param layout

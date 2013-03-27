@@ -1032,7 +1032,19 @@ final class TableView
         final IContainer container = getFocusedContainer();
         if( container != null )
         {
-            container.removeTopComponent();
+            container.getTableEnvironment().getLock().lock();
+            try
+            {
+                final int componentCount = container.getComponentCount();
+                if( componentCount != 0 )
+                {
+                    container.removeComponent( componentCount - 1 );
+                }
+            }
+            finally
+            {
+                container.getTableEnvironment().getLock().unlock();
+            }
         }
     }
 
