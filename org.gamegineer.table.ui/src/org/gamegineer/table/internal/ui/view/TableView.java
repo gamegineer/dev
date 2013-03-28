@@ -87,8 +87,6 @@ import org.gamegineer.table.net.PlayerRole;
 import org.gamegineer.table.ui.prototype.ComponentPrototypeFactoryException;
 import org.gamegineer.table.ui.prototype.IComponentPrototypeFactory;
 
-// TODO: Remove all references to "card" and "card pile".
-
 /**
  * A view of the table.
  */
@@ -207,22 +205,22 @@ final class TableView
                 final Dimension tableSize = getSize();
                 for( final IComponent component : components )
                 {
-                    final Dimension cardPileSize = component.getSize();
+                    final Dimension componentSize = component.getSize();
                     if( location.x < 0 )
                     {
                         location.x = 0;
                     }
-                    else if( location.x + cardPileSize.width > tableSize.width )
+                    else if( location.x + componentSize.width > tableSize.width )
                     {
-                        location.x = tableSize.width - cardPileSize.width;
+                        location.x = tableSize.width - componentSize.width;
                     }
                     if( location.y < 0 )
                     {
                         location.y = 0;
                     }
-                    else if( location.y + cardPileSize.height > tableSize.height )
+                    else if( location.y + componentSize.height > tableSize.height )
                     {
-                        location.y = tableSize.height - cardPileSize.height;
+                        location.y = tableSize.height - componentSize.height;
                     }
                     convertPointToTable( location );
                     component.setLocation( location );
