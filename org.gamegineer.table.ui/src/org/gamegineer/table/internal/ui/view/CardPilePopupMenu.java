@@ -114,13 +114,12 @@ final class CardPilePopupMenu
     {
         add( createAddComponentMenu() );
         addSeparator();
-        add( Actions.getRemoveCardAction() );
-        add( Actions.getRemoveAllCardsAction() );
-        add( Actions.getFlipCardAction() );
+        add( Actions.getRemoveComponentAction() );
+        add( Actions.getRemoveAllComponentsAction() );
         addSeparator();
         add( createLayoutMenu() );
         addSeparator();
-        add( Actions.getRemoveCardPileAction() );
+        add( Actions.getFlipCardAction() );
 
         addPopupMenuListener( MenuUtils.getDefaultPopupMenuListener() );
     }

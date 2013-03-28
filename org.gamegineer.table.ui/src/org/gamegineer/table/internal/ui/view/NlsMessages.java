@@ -231,7 +231,7 @@ final class NlsMessages
     /** The open new table action text. */
     public static String OpenNewTableAction_text;
 
-    // --- OpenTableAction -----------------------------------------------
+    // --- OpenTableAction --------------------------------------------------
 
     /** The open table action accelerator. */
     public static String OpenTableAction_accelerator;
@@ -242,49 +242,27 @@ final class NlsMessages
     /** The open table action text. */
     public static String OpenTableAction_text;
 
-    // --- RemoveAllCardPilesAction -----------------------------------------
+    // --- RemoveAllComponentsAction ----------------------------------------
 
-    /** The remove all card piles action accelerator. */
-    public static String RemoveAllCardPilesAction_accelerator;
+    /** The remove all components action accelerator. */
+    public static String RemoveAllComponentsAction_accelerator;
 
-    /** The remove all card piles action mnemonic. */
-    public static String RemoveAllCardPilesAction_mnemonic;
+    /** The remove all components action mnemonic. */
+    public static String RemoveAllComponentsAction_mnemonic;
 
-    /** The remove all card piles action text. */
-    public static String RemoveAllCardPilesAction_text;
+    /** The remove all components action text. */
+    public static String RemoveAllComponentsAction_text;
 
-    // --- RemoveAllCardsAction ---------------------------------------------
+    // --- RemoveComponentAction --------------------------------------------
 
-    /** The remove all cards action accelerator. */
-    public static String RemoveAllCardsAction_accelerator;
+    /** The remove component action accelerator. */
+    public static String RemoveComponentAction_accelerator;
 
-    /** The remove all cards action mnemonic. */
-    public static String RemoveAllCardsAction_mnemonic;
+    /** The remove component action mnemonic. */
+    public static String RemoveComponentAction_mnemonic;
 
-    /** The remove all cards action text. */
-    public static String RemoveAllCardsAction_text;
-
-    // --- RemoveCardAction -------------------------------------------------
-
-    /** The remove card action accelerator. */
-    public static String RemoveCardAction_accelerator;
-
-    /** The remove card action mnemonic. */
-    public static String RemoveCardAction_mnemonic;
-
-    /** The remove card action text. */
-    public static String RemoveCardAction_text;
-
-    // --- RemoveCardPileAction ---------------------------------------------
-
-    /** The remove card pile action accelerator. */
-    public static String RemoveCardPileAction_accelerator;
-
-    /** The remove card pile action mnemonic. */
-    public static String RemoveCardPileAction_mnemonic;
-
-    /** The remove card pile action text. */
-    public static String RemoveCardPileAction_text;
+    /** The remove component action text. */
+    public static String RemoveComponentAction_text;
 
     // --- RequestTableNetworkControlAction ---------------------------------
 

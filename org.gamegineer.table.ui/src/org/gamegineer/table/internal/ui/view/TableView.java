@@ -350,7 +350,7 @@ final class TableView
                 joinTableNetwork();
             }
         } );
-        actionMediator_.bindActionListener( Actions.getRemoveAllCardPilesAction(), new ActionListener()
+        actionMediator_.bindActionListener( Actions.getRemoveAllComponentsAction(), new ActionListener()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -358,10 +358,10 @@ final class TableView
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
-                removeAllCardPiles();
+                removeAllComponents();
             }
         } );
-        actionMediator_.bindActionListener( Actions.getRemoveAllCardsAction(), new ActionListener()
+        actionMediator_.bindActionListener( Actions.getRemoveComponentAction(), new ActionListener()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -369,29 +369,7 @@ final class TableView
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
-                removeAllCards();
-            }
-        } );
-        actionMediator_.bindActionListener( Actions.getRemoveCardAction(), new ActionListener()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void actionPerformed(
-                @SuppressWarnings( "unused" )
-                final ActionEvent event )
-            {
-                removeTopCard();
-            }
-        } );
-        actionMediator_.bindActionListener( Actions.getRemoveCardPileAction(), new ActionListener()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void actionPerformed(
-                @SuppressWarnings( "unused" )
-                final ActionEvent event )
-            {
-                removeFocusedCardPile();
+                removeComponent();
             }
         } );
         actionMediator_.bindActionListener( Actions.getRequestTableNetworkControlAction(), new ActionListener()
@@ -422,22 +400,6 @@ final class TableView
         actionMediator_.bindActionListener( Actions.getSetAccordianUpContainerLayoutAction(), setContainerLayoutActionListener );
         actionMediator_.bindActionListener( Actions.getSetStackedContainerLayoutAction(), setContainerLayoutActionListener );
 
-        final IPredicate<Action> hasEditableCardPilePredicate = new IPredicate<Action>()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public boolean evaluate(
-                @SuppressWarnings( "unused" )
-                final Action obj )
-            {
-                if( model_.getTable().getTabletop().getComponentCount() == 0 )
-                {
-                    return false;
-                }
-
-                return model_.isEditable();
-            }
-        };
         final IPredicate<Action> hasEditableCardPredicate = new IPredicate<Action>()
         {
             @Override
@@ -460,6 +422,22 @@ final class TableView
                 return model_.isEditable();
             }
         };
+        final IPredicate<Action> hasEditableFocusedComponentPredicate = new IPredicate<Action>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public boolean evaluate(
+                @SuppressWarnings( "unused" )
+                final Action obj )
+            {
+                if( getFocusedComponent() == null )
+                {
+                    return false;
+                }
+
+                return model_.isEditable();
+            }
+        };
         final IPredicate<Action> hasEditableFocusedContainerPredicate = new IPredicate<Action>()
         {
             @Override
@@ -469,6 +447,28 @@ final class TableView
                 final Action obj )
             {
                 if( getFocusedContainer() == null )
+                {
+                    return false;
+                }
+
+                return model_.isEditable();
+            }
+        };
+        final IPredicate<Action> hasEditableNonEmptyContainerPredicate = new IPredicate<Action>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public boolean evaluate(
+                @SuppressWarnings( "unused" )
+                final Action obj )
+            {
+                IContainer container = getFocusedContainer();
+                if( container == null )
+                {
+                    container = model_.getTable().getTabletop();
+                }
+
+                if( container.getComponentCount() == 0 )
                 {
                     return false;
                 }
@@ -538,10 +538,8 @@ final class TableView
         } );
         actionMediator_.bindShouldEnablePredicate( Actions.getHostTableNetworkAction(), isNetworkDisconnectedPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getJoinTableNetworkAction(), isNetworkDisconnectedPredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getRemoveAllCardPilesAction(), hasEditableCardPilePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getRemoveAllCardsAction(), hasEditableCardPredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getRemoveCardAction(), hasEditableCardPredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getRemoveCardPileAction(), hasEditableFocusedContainerPredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getRemoveAllComponentsAction(), hasEditableNonEmptyContainerPredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getRemoveComponentAction(), hasEditableFocusedComponentPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getRequestTableNetworkControlAction(), new IPredicate<Action>()
         {
             @Override
@@ -813,6 +811,31 @@ final class TableView
     }
 
     /**
+     * Gets the focused component.
+     * 
+     * @return The focused component or {@code null} if no component has the
+     *         focus.
+     */
+    /* @Nullable */
+    private IComponent getFocusedComponent()
+    {
+        final ComponentModel componentModel = getFocusedComponentModel();
+        return (componentModel != null) ? componentModel.getComponent() : null;
+    }
+
+    /**
+     * Gets the model associated with the focused component.
+     * 
+     * @return The model associated with the focused component or {@code null}
+     *         if no component has the focus.
+     */
+    /* @Nullable */
+    private ComponentModel getFocusedComponentModel()
+    {
+        return model_.getFocusedComponentModel();
+    }
+
+    /**
      * Gets the focused container.
      * 
      * @return The focused container or {@code null} if no container has the
@@ -975,34 +998,41 @@ final class TableView
     }
 
     /**
-     * Removes all card piles from the table.
+     * Removes all components from the focused container or the tabletop if no
+     * container has the focus.
      */
-    private void removeAllCardPiles()
+    private void removeAllComponents()
     {
-        model_.getTable().getTabletop().removeAllComponents();
-    }
-
-    /**
-     * Removes all cards from the focused card pile.
-     */
-    private void removeAllCards()
-    {
-        final IContainer container = getFocusedContainer();
-        if( container != null )
+        IContainer container = getFocusedContainer();
+        if( container == null )
         {
-            container.removeAllComponents();
+            container = model_.getTable().getTabletop();
         }
+
+        container.removeAllComponents();
     }
 
     /**
-     * Removes the focused card pile from the table.
+     * Removes the focused component.
      */
-    private void removeFocusedCardPile()
+    private void removeComponent()
     {
-        final IContainer container = getFocusedContainer();
-        if( container != null )
+        final IComponent component = getFocusedComponent();
+        if( component != null )
         {
-            model_.getTable().getTabletop().removeComponent( container );
+            component.getTableEnvironment().getLock().lock();
+            try
+            {
+                final IContainer container = component.getContainer();
+                if( container != null )
+                {
+                    container.removeComponent( component );
+                }
+            }
+            finally
+            {
+                component.getTableEnvironment().getLock().unlock();
+            }
         }
     }
 
@@ -1022,30 +1052,6 @@ final class TableView
         actionMediator_.unbindAll();
 
         super.removeNotify();
-    }
-
-    /**
-     * Removes the card at the top of the focused card pile.
-     */
-    private void removeTopCard()
-    {
-        final IContainer container = getFocusedContainer();
-        if( container != null )
-        {
-            container.getTableEnvironment().getLock().lock();
-            try
-            {
-                final int componentCount = container.getComponentCount();
-                if( componentCount != 0 )
-                {
-                    container.removeComponent( componentCount - 1 );
-                }
-            }
-            finally
-            {
-                container.getTableEnvironment().getLock().unlock();
-            }
-        }
     }
 
     /**

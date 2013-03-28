@@ -1,6 +1,6 @@
 /*
  * TablePopupMenu.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -93,7 +93,7 @@ final class TablePopupMenu
     {
         add( createAddComponentMenu() );
         addSeparator();
-        add( Actions.getRemoveAllCardPilesAction() );
+        add( Actions.getRemoveAllComponentsAction() );
 
         addPopupMenuListener( MenuUtils.getDefaultPopupMenuListener() );
     }

@@ -79,19 +79,15 @@ final class Actions
     private static final String OPEN_TABLE_ACTION_ID = "openTableAction"; //$NON-NLS-1$
 
     /**
-     * The identifier of the action used to remove all card piles from the
-     * table.
+     * The identifier of the action used to remove all components from a
+     * container.
      */
-    private static final String REMOVE_ALL_CARD_PILES_ACTION_ID = "removeAllCardPilesAction"; //$NON-NLS-1$
+    private static final String REMOVE_ALL_COMPONENTS_ACTION_ID = "removeAllComponentsAction"; //$NON-NLS-1$
 
-    /** The identifier of the action used to remove all cards from a card pile. */
-    private static final String REMOVE_ALL_CARDS_ACTION_ID = "removeAllCardsAction"; //$NON-NLS-1$
-
-    /** The identifier of the action used to remove a card from a card pile. */
-    private static final String REMOVE_CARD_ACTION_ID = "removeCardAction"; //$NON-NLS-1$
-
-    /** The identifier of the action used to remove a card pile from the table. */
-    private static final String REMOVE_CARD_PILE_ACTION_ID = "removeCardPileAction"; //$NON-NLS-1$
+    /**
+     * The identifier of the action used to remove a component from a container.
+     */
+    private static final String REMOVE_COMPONENT_ACTION_ID = "removeComponentAction"; //$NON-NLS-1$
 
     /** The identifier of the action used to request table network control. */
     private static final String REQUEST_TABLE_NETWORK_CONTROL_ID = "requestTableNetworkControlAction"; //$NON-NLS-1$
@@ -287,44 +283,24 @@ final class Actions
                 putValue( NAME, NlsMessages.OpenTableAction_text );
             }
         } );
-        actions.put( REMOVE_ALL_CARD_PILES_ACTION_ID, new BasicAction()
+        actions.put( REMOVE_ALL_COMPONENTS_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( NlsMessages.RemoveAllCardPilesAction_accelerator ) );
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.RemoveAllCardPilesAction_mnemonic ).getKeyCode() );
-                putValue( NAME, NlsMessages.RemoveAllCardPilesAction_text );
+                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( NlsMessages.RemoveAllComponentsAction_accelerator ) );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.RemoveAllComponentsAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.RemoveAllComponentsAction_text );
             }
         } );
-        actions.put( REMOVE_ALL_CARDS_ACTION_ID, new BasicAction()
+        actions.put( REMOVE_COMPONENT_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( NlsMessages.RemoveAllCardsAction_accelerator ) );
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.RemoveAllCardsAction_mnemonic ).getKeyCode() );
-                putValue( NAME, NlsMessages.RemoveAllCardsAction_text );
-            }
-        } );
-        actions.put( REMOVE_CARD_ACTION_ID, new BasicAction()
-        {
-            private static final long serialVersionUID = 1L;
-
-            {
-                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( NlsMessages.RemoveCardAction_accelerator ) );
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.RemoveCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, NlsMessages.RemoveCardAction_text );
-            }
-        } );
-        actions.put( REMOVE_CARD_PILE_ACTION_ID, new BasicAction()
-        {
-            private static final long serialVersionUID = 1L;
-
-            {
-                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( NlsMessages.RemoveCardPileAction_accelerator ) );
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.RemoveCardPileAction_mnemonic ).getKeyCode() );
-                putValue( NAME, NlsMessages.RemoveCardPileAction_text );
+                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( NlsMessages.RemoveComponentAction_accelerator ) );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.RemoveComponentAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.RemoveComponentAction_text );
             }
         } );
         actions.put( REQUEST_TABLE_NETWORK_CONTROL_ID, new BasicAction()
@@ -552,47 +528,25 @@ final class Actions
     }
 
     /**
-     * Gets the remove all card piles action.
+     * Gets the remove all components action.
      * 
-     * @return The remove all card piles action; never {@code null}.
+     * @return The remove all components action; never {@code null}.
      */
     /* @NonNull */
-    static BasicAction getRemoveAllCardPilesAction()
+    static BasicAction getRemoveAllComponentsAction()
     {
-        return actions_.get( REMOVE_ALL_CARD_PILES_ACTION_ID );
+        return actions_.get( REMOVE_ALL_COMPONENTS_ACTION_ID );
     }
 
     /**
-     * Gets the remove all cards action.
+     * Gets the remove component action.
      * 
-     * @return The remove all cards action; never {@code null}.
+     * @return The remove component action; never {@code null}.
      */
     /* @NonNull */
-    static BasicAction getRemoveAllCardsAction()
+    static BasicAction getRemoveComponentAction()
     {
-        return actions_.get( REMOVE_ALL_CARDS_ACTION_ID );
-    }
-
-    /**
-     * Gets the remove card action.
-     * 
-     * @return The remove card action; never {@code null}.
-     */
-    /* @NonNull */
-    static BasicAction getRemoveCardAction()
-    {
-        return actions_.get( REMOVE_CARD_ACTION_ID );
-    }
-
-    /**
-     * Gets the remove card pile action.
-     * 
-     * @return The remove card pile action; never {@code null}.
-     */
-    /* @NonNull */
-    static BasicAction getRemoveCardPileAction()
-    {
-        return actions_.get( REMOVE_CARD_PILE_ACTION_ID );
+        return actions_.get( REMOVE_COMPONENT_ACTION_ID );
     }
 
     /**

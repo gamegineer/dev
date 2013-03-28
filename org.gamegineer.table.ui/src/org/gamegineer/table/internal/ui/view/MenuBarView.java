@@ -192,13 +192,11 @@ final class MenuBarView
         menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.MenuBarView_table_mnemonic ).getKeyCode() );
         menu.add( createAddComponentMenu() );
         menu.addSeparator();
-        menu.add( Actions.getRemoveCardPileAction() );
-        menu.add( Actions.getRemoveAllCardPilesAction() );
+        menu.add( Actions.getRemoveComponentAction() );
+        menu.add( Actions.getRemoveAllComponentsAction() );
         menu.addSeparator();
         menu.add( createLayoutMenu() );
         menu.addSeparator();
-        menu.add( Actions.getRemoveCardAction() );
-        menu.add( Actions.getRemoveAllCardsAction() );
         menu.add( Actions.getFlipCardAction() );
         return menu;
     }
