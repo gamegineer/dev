@@ -197,7 +197,7 @@ final class MenuBarView
         menu.addSeparator();
         menu.add( createLayoutMenu() );
         menu.addSeparator();
-        menu.add( Actions.getFlipCardAction() );
+        menu.add( Actions.getFlipComponentAction() );
         return menu;
     }
 

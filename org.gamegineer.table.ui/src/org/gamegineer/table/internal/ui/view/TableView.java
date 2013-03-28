@@ -306,7 +306,7 @@ final class TableView
                 disconnectTableNetwork();
             }
         } );
-        actionMediator_.bindActionListener( Actions.getFlipCardAction(), new ActionListener()
+        actionMediator_.bindActionListener( Actions.getFlipComponentAction(), new ActionListener()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -314,7 +314,7 @@ final class TableView
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
-                flipTopCard();
+                flipComponent();
             }
         } );
         actionMediator_.bindActionListener( Actions.getGiveTableNetworkControlAction(), new ActionListener()
@@ -400,28 +400,6 @@ final class TableView
         actionMediator_.bindActionListener( Actions.getSetAccordianUpContainerLayoutAction(), setContainerLayoutActionListener );
         actionMediator_.bindActionListener( Actions.getSetStackedContainerLayoutAction(), setContainerLayoutActionListener );
 
-        final IPredicate<Action> hasEditableCardPredicate = new IPredicate<Action>()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public boolean evaluate(
-                @SuppressWarnings( "unused" )
-                final Action obj )
-            {
-                final IContainer container = getFocusedContainer();
-                if( container == null )
-                {
-                    return false;
-                }
-
-                if( container.getComponentCount() == 0 )
-                {
-                    return false;
-                }
-
-                return model_.isEditable();
-            }
-        };
         final IPredicate<Action> hasEditableFocusedComponentPredicate = new IPredicate<Action>()
         {
             @Override
@@ -523,7 +501,7 @@ final class TableView
             }
         } );
         actionMediator_.bindShouldEnablePredicate( Actions.getDisconnectTableNetworkAction(), isNetworkConnectedPredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getFlipCardAction(), hasEditableCardPredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getFlipComponentAction(), hasEditableFocusedComponentPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getGiveTableNetworkControlAction(), new IPredicate<Action>()
         {
             @Override
@@ -794,18 +772,21 @@ final class TableView
     }
 
     /**
-     * Flips the card at the top of the focused card pile.
+     * Flips the focused component.
      */
-    private void flipTopCard()
+    private void flipComponent()
     {
-        final IContainer container = getFocusedContainer();
-        if( container != null )
+        final IComponent component = getFocusedComponent();
+        if( component != null )
         {
-            final List<IComponent> components = container.getComponents();
-            if( !components.isEmpty() )
+            component.getTableEnvironment().getLock().lock();
+            try
             {
-                final IComponent component = components.get( components.size() - 1 );
                 component.setOrientation( component.getOrientation().inverse() );
+            }
+            finally
+            {
+                component.getTableEnvironment().getLock().unlock();
             }
         }
     }

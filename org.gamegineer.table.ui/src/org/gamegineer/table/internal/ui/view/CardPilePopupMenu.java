@@ -119,7 +119,7 @@ final class CardPilePopupMenu
         addSeparator();
         add( createLayoutMenu() );
         addSeparator();
-        add( Actions.getFlipCardAction() );
+        add( Actions.getFlipComponentAction() );
 
         addPopupMenuListener( MenuUtils.getDefaultPopupMenuListener() );
     }

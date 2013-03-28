@@ -100,16 +100,16 @@ final class NlsMessages
     /** The table file filter. */
     public static String FileChoosers_fileFilter_table;
 
-    // --- FlipCardAction ---------------------------------------------------
+    // --- FlipComponentAction ----------------------------------------------
 
-    /** The flip card action accelerator. */
-    public static String FlipCardAction_accelerator;
+    /** The flip component action accelerator. */
+    public static String FlipComponentAction_accelerator;
 
-    /** The flip card action mnemonic. */
-    public static String FlipCardAction_mnemonic;
+    /** The flip component action mnemonic. */
+    public static String FlipComponentAction_mnemonic;
 
-    /** The flip card action text. */
-    public static String FlipCardAction_text;
+    /** The flip component action text. */
+    public static String FlipComponentAction_text;
 
     // --- GiveTableNetworkControlAction ------------------------------------
 

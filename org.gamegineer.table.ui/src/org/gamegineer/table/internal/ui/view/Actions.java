@@ -57,8 +57,8 @@ final class Actions
     /** The identifier of the action used to exit the application. */
     private static final String EXIT_ACTION_ID = "exitAction"; //$NON-NLS-1$
 
-    /** The identifier of the action used to flip a card in a card pile. */
-    private static final String FLIP_CARD_ACTION_ID = "flipCardAction"; //$NON-NLS-1$
+    /** The identifier of the action used to flip a component. */
+    private static final String FLIP_COMPONENT_ACTION_ID = "flipComponentAction"; //$NON-NLS-1$
 
     /** The identifier of the action used to give table network control. */
     private static final String GIVE_TABLE_NETWORK_CONTROL_ID = "giveTableNetworkControlAction"; //$NON-NLS-1$
@@ -212,14 +212,14 @@ final class Actions
                 putValue( NAME, NlsMessages.ExitAction_text );
             }
         } );
-        actions.put( FLIP_CARD_ACTION_ID, new BasicAction()
+        actions.put( FLIP_COMPONENT_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( NlsMessages.FlipCardAction_accelerator ) );
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.FlipCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, NlsMessages.FlipCardAction_text );
+                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( NlsMessages.FlipComponentAction_accelerator ) );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.FlipComponentAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.FlipComponentAction_text );
             }
         } );
         actions.put( GIVE_TABLE_NETWORK_CONTROL_ID, new BasicAction()
@@ -451,14 +451,14 @@ final class Actions
     }
 
     /**
-     * Gets the flip card action.
+     * Gets the flip component action.
      * 
-     * @return The flip card action; never {@code null}.
+     * @return The flip component action; never {@code null}.
      */
     /* @NonNull */
-    static BasicAction getFlipCardAction()
+    static BasicAction getFlipComponentAction()
     {
-        return actions_.get( FLIP_CARD_ACTION_ID );
+        return actions_.get( FLIP_COMPONENT_ACTION_ID );
     }
 
     /**
