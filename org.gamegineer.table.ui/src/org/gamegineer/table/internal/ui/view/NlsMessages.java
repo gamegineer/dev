@@ -57,19 +57,27 @@ final class NlsMessages
     /** The cancel table network control request action text. */
     public static String CancelTableNetworkControlRequestAction_text;
 
-    // --- CardPilePopupMenu ------------------------------------------------
+    // --- ComponentPopupMenu -----------------------------------------------
 
     /** The Add Component menu mnemonic. */
-    public static String CardPilePopupMenu_addComponent_mnemonic;
+    public static String ComponentPopupMenu_addComponent_mnemonic;
 
     /** The Add Component menu text. */
-    public static String CardPilePopupMenu_addComponent_text;
+    public static String ComponentPopupMenu_addComponent_text;
+
+    // --- ContainerPopupMenu -----------------------------------------------
+
+    /** The Add Component menu mnemonic. */
+    public static String ContainerPopupMenu_addComponent_mnemonic;
+
+    /** The Add Component menu text. */
+    public static String ContainerPopupMenu_addComponent_text;
 
     /** The Layout menu mnemonic. */
-    public static String CardPilePopupMenu_layout_mnemonic;
+    public static String ContainerPopupMenu_layout_mnemonic;
 
     /** The Layout menu text. */
-    public static String CardPilePopupMenu_layout_text;
+    public static String ContainerPopupMenu_layout_text;
 
     // --- DisconnectTableNetworkAction -------------------------------------
 

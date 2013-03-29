@@ -1,5 +1,5 @@
 /*
- * CardPilePopupMenu.java
+ * ContainerPopupMenu.java
  * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
@@ -31,10 +31,10 @@ import org.gamegineer.table.internal.ui.model.ContainerModel;
 import org.gamegineer.table.internal.ui.prototype.ComponentPrototypesExtensionPoint;
 
 /**
- * The popup menu associated with a card pile.
+ * The popup menu associated with a container.
  */
 @NotThreadSafe
-final class CardPilePopupMenu
+final class ContainerPopupMenu
     extends JPopupMenu
 {
     // ======================================================================
@@ -53,12 +53,12 @@ final class CardPilePopupMenu
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardPilePopupMenu} class.
+     * Initializes a new instance of the {@code ContainerPopupMenu} class.
      * 
      * @param model
      *        The model associated with the menu; must not be {@code null}.
      */
-    CardPilePopupMenu(
+    ContainerPopupMenu(
         /* @NonNull */
         final ContainerModel model )
     {
@@ -82,8 +82,8 @@ final class CardPilePopupMenu
     /* @NonNull */
     private JMenu createAddComponentMenu()
     {
-        final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_addComponent_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addComponent_mnemonic ).getKeyCode() );
+        final JMenu menu = new JMenu( NlsMessages.ContainerPopupMenu_addComponent_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.ContainerPopupMenu_addComponent_mnemonic ).getKeyCode() );
         ComponentPrototypesExtensionPoint.buildMenu( menu, Actions.getAddComponentAction(), model_ );
         return menu;
     }
@@ -96,8 +96,8 @@ final class CardPilePopupMenu
     /* @NonNull */
     private static JMenu createLayoutMenu()
     {
-        final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_layout_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_layout_mnemonic ).getKeyCode() );
+        final JMenu menu = new JMenu( NlsMessages.ContainerPopupMenu_layout_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.ContainerPopupMenu_layout_mnemonic ).getKeyCode() );
         final ButtonGroup layoutButtonGroup = new ButtonGroup();
         layoutButtonGroup.add( menu.add( new JRadioButtonMenuItem( Actions.getSetStackedContainerLayoutAction() ) ) );
         layoutButtonGroup.add( menu.add( new JRadioButtonMenuItem( Actions.getSetAccordianUpContainerLayoutAction() ) ) );
@@ -117,9 +117,9 @@ final class CardPilePopupMenu
         add( Actions.getRemoveComponentAction() );
         add( Actions.getRemoveAllComponentsAction() );
         addSeparator();
-        add( createLayoutMenu() );
-        addSeparator();
         add( Actions.getFlipComponentAction() );
+        addSeparator();
+        add( createLayoutMenu() );
 
         addPopupMenuListener( MenuUtils.getDefaultPopupMenuListener() );
     }

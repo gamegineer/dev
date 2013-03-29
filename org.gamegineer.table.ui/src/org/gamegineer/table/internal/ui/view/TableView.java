@@ -191,42 +191,57 @@ final class TableView
 
         try
         {
-            final List<IComponent> components = componentPrototypeFactory.createComponentPrototype( model_.getTable().getTableEnvironment() );
+            model_.getTable().getTableEnvironment().getLock().lock();
+            try
+            {
+                final List<IComponent> components = componentPrototypeFactory.createComponentPrototype( model_.getTable().getTableEnvironment() );
 
-            final IContainer focusedContainer = getFocusedContainer();
-            if( focusedContainer != null )
-            {
-                focusedContainer.addComponents( components );
-            }
-            else
-            {
-                final Point location = getMouseLocation();
-                convertPointFromTable( location );
-                final Dimension tableSize = getSize();
-                for( final IComponent component : components )
+                final IComponent focusedComponent = getFocusedComponent();
+                if( focusedComponent != null )
                 {
-                    final Dimension componentSize = component.getSize();
-                    if( location.x < 0 )
+                    if( focusedComponent instanceof IContainer )
                     {
-                        location.x = 0;
+                        ((IContainer)focusedComponent).addComponents( components );
                     }
-                    else if( location.x + componentSize.width > tableSize.width )
+                    else
                     {
-                        location.x = tableSize.width - componentSize.width;
+                        focusedComponent.getContainer().addComponents( components );
                     }
-                    if( location.y < 0 )
-                    {
-                        location.y = 0;
-                    }
-                    else if( location.y + componentSize.height > tableSize.height )
-                    {
-                        location.y = tableSize.height - componentSize.height;
-                    }
-                    convertPointToTable( location );
-                    component.setLocation( location );
                 }
+                else
+                {
+                    final Point location = getMouseLocation();
+                    convertPointFromTable( location );
+                    final Dimension tableSize = getSize();
+                    for( final IComponent component : components )
+                    {
+                        final Dimension componentSize = component.getSize();
+                        if( location.x < 0 )
+                        {
+                            location.x = 0;
+                        }
+                        else if( location.x + componentSize.width > tableSize.width )
+                        {
+                            location.x = tableSize.width - componentSize.width;
+                        }
+                        if( location.y < 0 )
+                        {
+                            location.y = 0;
+                        }
+                        else if( location.y + componentSize.height > tableSize.height )
+                        {
+                            location.y = tableSize.height - componentSize.height;
+                        }
+                        convertPointToTable( location );
+                        component.setLocation( location );
+                    }
 
-                model_.getTable().getTabletop().addComponents( components );
+                    model_.getTable().getTabletop().addComponents( components );
+                }
+            }
+            finally
+            {
+                model_.getTable().getTableEnvironment().getLock().unlock();
             }
         }
         catch( final ComponentPrototypeFactoryException e )
@@ -1914,10 +1929,15 @@ final class TableView
         {
             assert location != null;
 
-            final ContainerModel containerModel = getFocusedContainerModel();
-            if( containerModel != null )
+            final ComponentModel componentModel = getFocusedComponentModel();
+            if( componentModel != null )
             {
-                return new CardPilePopupMenu( containerModel );
+                if( componentModel instanceof ContainerModel )
+                {
+                    return new ContainerPopupMenu( (ContainerModel)componentModel );
+                }
+
+                return new ComponentPopupMenu( componentModel );
             }
 
             return new TablePopupMenu( model_ );
