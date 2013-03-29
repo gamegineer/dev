@@ -362,7 +362,6 @@ final class Container
         {
             Rectangle bounds = super.getBounds();
 
-            // TODO: allow layout to optimize calculating child component bounding region
             for( final IComponent component : components_ )
             {
                 bounds = bounds.union( component.getBounds() );
