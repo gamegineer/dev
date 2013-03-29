@@ -446,7 +446,7 @@ final class TableView
                 return model_.isEditable();
             }
         };
-        final IPredicate<Action> hasEditableNonEmptyContainerPredicate = new IPredicate<Action>()
+        final IPredicate<Action> hasEditableFocusedNonEmptyContainerPredicate = new IPredicate<Action>()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -454,13 +454,18 @@ final class TableView
                 @SuppressWarnings( "unused" )
                 final Action obj )
             {
-                IContainer container = getFocusedContainer();
-                if( container == null )
+                final IContainer container;
+                final IComponent component = getFocusedComponent();
+                if( component != null )
+                {
+                    container = (component instanceof IContainer) ? (IContainer)component : null;
+                }
+                else
                 {
                     container = model_.getTable().getTabletop();
                 }
 
-                if( container.getComponentCount() == 0 )
+                if( (container == null) || (container.getComponentCount() == 0) )
                 {
                     return false;
                 }
@@ -530,7 +535,7 @@ final class TableView
         } );
         actionMediator_.bindShouldEnablePredicate( Actions.getHostTableNetworkAction(), isNetworkDisconnectedPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getJoinTableNetworkAction(), isNetworkDisconnectedPredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getRemoveAllComponentsAction(), hasEditableNonEmptyContainerPredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getRemoveAllComponentsAction(), hasEditableFocusedNonEmptyContainerPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getRemoveComponentAction(), hasEditableFocusedComponentPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getRequestTableNetworkControlAction(), new IPredicate<Action>()
         {
@@ -1005,17 +1010,25 @@ final class TableView
 
     /**
      * Removes all components from the focused container or the tabletop if no
-     * container has the focus.
+     * component has the focus.
      */
     private void removeAllComponents()
     {
-        IContainer container = getFocusedContainer();
-        if( container == null )
+        final IContainer container;
+        final IComponent component = getFocusedComponent();
+        if( component != null )
+        {
+            container = (component instanceof IContainer) ? (IContainer)component : null;
+        }
+        else
         {
             container = model_.getTable().getTabletop();
         }
 
-        container.removeAllComponents();
+        if( container != null )
+        {
+            container.removeAllComponents();
+        }
     }
 
     /**
