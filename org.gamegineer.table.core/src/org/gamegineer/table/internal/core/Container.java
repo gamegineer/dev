@@ -716,6 +716,8 @@ final class Container
                 component.setParent( null );
             }
 
+            layout_.layout( this );
+
             final Rectangle newBounds = getBounds();
             containerBoundsChanged = !newBounds.equals( oldBounds );
         }

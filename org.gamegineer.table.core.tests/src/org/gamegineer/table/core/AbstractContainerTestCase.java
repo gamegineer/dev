@@ -997,6 +997,26 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
+     * Ensures the {@link IContainer#removeAllComponents} method causes a layout
+     * when the container is not empty.
+     */
+    @Test
+    public void testRemoveAllComponents_NotEmpty_CausesLayout()
+    {
+        getContainer().addComponent( createUniqueComponent() );
+        getContainer().addComponent( createUniqueComponent() );
+        final IContainerLayout layout = mocksControl_.createMock( IContainerLayout.class );
+        layout.layout( getContainer() );
+        EasyMock.expectLastCall().times( 2 );
+        mocksControl_.replay();
+        getContainer().setLayout( layout );
+
+        getContainer().removeAllComponents();
+
+        mocksControl_.verify();
+    }
+
+    /**
      * Ensures the {@link IContainer#removeAllComponents} method changes the
      * container bounds when the container is not empty.
      */
@@ -1071,6 +1091,27 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         {
             assertNull( actualComponent.getContainer() );
         }
+    }
+
+    /**
+     * Ensures the {@link IContainer#removeComponent(IComponent)} method causes
+     * a layout after a component has been removed.
+     */
+    @Test
+    public void testRemoveComponent_CausesLayout()
+    {
+        final IComponent component = createUniqueComponent();
+        getContainer().addComponent( component );
+        getContainer().addComponent( createUniqueComponent() );
+        final IContainerLayout layout = mocksControl_.createMock( IContainerLayout.class );
+        layout.layout( getContainer() );
+        EasyMock.expectLastCall().times( 2 );
+        mocksControl_.replay();
+        getContainer().setLayout( layout );
+
+        getContainer().removeComponent( component );
+
+        mocksControl_.verify();
     }
 
     /**
@@ -1161,6 +1202,26 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         assertFalse( components.contains( component ) );
         assertEquals( 0, components.size() );
         assertNull( component.getContainer() );
+    }
+
+    /**
+     * Ensures the {@link IContainer#removeComponent(int)} method causes a
+     * layout after a component has been removed.
+     */
+    @Test
+    public void testRemoveComponentAtIndex_CausesLayout()
+    {
+        getContainer().addComponent( createUniqueComponent() );
+        getContainer().addComponent( createUniqueComponent() );
+        final IContainerLayout layout = mocksControl_.createMock( IContainerLayout.class );
+        layout.layout( getContainer() );
+        EasyMock.expectLastCall().times( 2 );
+        mocksControl_.replay();
+        getContainer().setLayout( layout );
+
+        getContainer().removeComponent( 0 );
+
+        mocksControl_.verify();
     }
 
     /**
