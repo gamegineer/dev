@@ -24,9 +24,9 @@
     <extension
             point="org.gamegineer.table.core.componentSurfaceDesigns">
         <componentSurfaceDesign
-                height="96"
+                height="8"
                 id="org.gamegineer.table.tabletopSurfaceDesigns.default"
-                width="71" />
+                width="8" />
     </extension>
     <extension
             point="org.gamegineer.table.core.containerLayouts">
