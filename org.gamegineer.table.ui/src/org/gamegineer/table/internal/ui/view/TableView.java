@@ -44,6 +44,7 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
 import java.util.logging.Level;
 import javax.swing.Action;
 import javax.swing.JOptionPane;
@@ -191,7 +192,7 @@ final class TableView
 
         try
         {
-            model_.getTable().getTableEnvironment().getLock().lock();
+            getTableEnvironmentLock().lock();
             try
             {
                 final List<IComponent> components = componentPrototypeFactory.createComponentPrototype( model_.getTable().getTableEnvironment() );
@@ -241,7 +242,7 @@ final class TableView
             }
             finally
             {
-                model_.getTable().getTableEnvironment().getLock().unlock();
+                getTableEnvironmentLock().unlock();
             }
         }
         catch( final ComponentPrototypeFactoryException e )
@@ -792,14 +793,14 @@ final class TableView
         final IComponent component = getFocusedComponent();
         if( component != null )
         {
-            component.getTableEnvironment().getLock().lock();
+            getTableEnvironmentLock().lock();
             try
             {
                 component.setOrientation( component.getOrientation().inverse() );
             }
             finally
             {
-                component.getTableEnvironment().getLock().unlock();
+                getTableEnvironmentLock().unlock();
             }
         }
     }
@@ -867,6 +868,17 @@ final class TableView
         SwingUtilities.convertPointFromScreen( location, this );
         convertPointToTable( location );
         return location;
+    }
+
+    /**
+     * Gets the table environment lock.
+     * 
+     * @return The table environment lock; never {@code null}.
+     */
+    /* @NonNull */
+    private Lock getTableEnvironmentLock()
+    {
+        return model_.getTable().getTableEnvironment().getLock();
     }
 
     /**
@@ -1014,7 +1026,7 @@ final class TableView
         final IComponent component = getFocusedComponent();
         if( component != null )
         {
-            component.getTableEnvironment().getLock().lock();
+            getTableEnvironmentLock().lock();
             try
             {
                 final IContainer container = component.getContainer();
@@ -1025,7 +1037,7 @@ final class TableView
             }
             finally
             {
-                component.getTableEnvironment().getLock().unlock();
+                getTableEnvironmentLock().unlock();
             }
         }
     }
