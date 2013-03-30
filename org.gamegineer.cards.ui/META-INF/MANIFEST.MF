@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: org.gamegineer.cards.internal.ui.Activator
+Bundle-Localization: plugin
+Bundle-ManifestVersion: 2
+Bundle-Name: %bundleName
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-SymbolicName: org.gamegineer.cards.ui
+Bundle-Vendor: %bundleVendor
+Bundle-Version: 0.15.0.qualifier
+Import-Package: net.jcip.annotations;version="1.0.0",
+ org.gamegineer.common.core.runtime;version="[0.15.0,0.16.0)",
+ org.osgi.framework;version="1.6.0"
