@@ -1,5 +1,5 @@
 /*
- * ComponentStrategyUIs.java
+ * InternalComponentStrategyUIs.java
  * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
@@ -16,33 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Sep 28, 2012 at 10:38:55 PM.
+ * Created on Mar 29, 2013 at 10:09:58 PM.
  */
 
-package org.gamegineer.table.internal.ui.strategies;
+package org.gamegineer.cards.internal.ui.strategies;
 
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.ui.IComponentStrategyUI;
 import org.gamegineer.table.ui.IContainerStrategyUI;
 
 /**
- * A collection of common component strategy user interfaces.
+ * A collection of component strategy user interfaces provided by this bundle.
  */
 @ThreadSafe
-public final class ComponentStrategyUIs
+public final class InternalComponentStrategyUIs
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The null component strategy user interface. */
-    public static final IComponentStrategyUI NULL_COMPONENT = new NullComponentStrategyUI();
+    /** The card component strategy user interface. */
+    public static final IComponentStrategyUI CARD = new CardStrategyUI();
 
-    /** The null container strategy user interface. */
-    public static final IContainerStrategyUI NULL_CONTAINER = new NullContainerStrategyUI();
-
-    /** The tabletop container strategy user interface. */
-    public static final IContainerStrategyUI TABLETOP = new TabletopStrategyUI();
+    /** The card pile container strategy user interface. */
+    public static final IContainerStrategyUI CARD_PILE = new CardPileStrategyUI();
 
 
     // ======================================================================
@@ -50,9 +47,10 @@ public final class ComponentStrategyUIs
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ComponentStrategyUIs} class.
+     * Initializes a new instance of the {@code InternalComponentStrategyUIs}
+     * class.
      */
-    private ComponentStrategyUIs()
+    private InternalComponentStrategyUIs()
     {
     }
 }
