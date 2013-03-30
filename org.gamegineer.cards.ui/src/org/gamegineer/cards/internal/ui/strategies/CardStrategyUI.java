@@ -29,7 +29,7 @@ import org.gamegineer.table.ui.AbstractComponentStrategyUI;
  * A component strategy user interface that represents a card.
  */
 @Immutable
-public final class CardStrategyUI
+final class CardStrategyUI
     extends AbstractComponentStrategyUI
 {
     // ======================================================================
@@ -39,7 +39,7 @@ public final class CardStrategyUI
     /**
      * Initializes a new instance of the {@code CardStrategyUI} class.
      */
-    public CardStrategyUI()
+    CardStrategyUI()
     {
         super( CardsComponentStrategyIds.CARD );
     }

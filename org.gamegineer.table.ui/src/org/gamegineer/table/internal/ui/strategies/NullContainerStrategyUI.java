@@ -29,7 +29,7 @@ import org.gamegineer.table.ui.AbstractContainerStrategyUI;
  * A null container strategy user interface.
  */
 @Immutable
-public final class NullContainerStrategyUI
+final class NullContainerStrategyUI
     extends AbstractContainerStrategyUI
 {
     // ======================================================================
@@ -39,7 +39,7 @@ public final class NullContainerStrategyUI
     /**
      * Initializes a new instance of the {@code NullContainerStrategyUI} class.
      */
-    public NullContainerStrategyUI()
+    NullContainerStrategyUI()
     {
         super( ComponentStrategies.NULL_CONTAINER.getId() );
     }

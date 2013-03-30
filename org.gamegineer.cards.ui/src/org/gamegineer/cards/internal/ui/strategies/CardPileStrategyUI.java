@@ -29,7 +29,7 @@ import org.gamegineer.table.ui.AbstractContainerStrategyUI;
  * A component strategy user interface that represents a card pile.
  */
 @Immutable
-public final class CardPileStrategyUI
+final class CardPileStrategyUI
     extends AbstractContainerStrategyUI
 {
     // ======================================================================
@@ -39,7 +39,7 @@ public final class CardPileStrategyUI
     /**
      * Initializes a new instance of the {@code CardPileStrategyUI} class.
      */
-    public CardPileStrategyUI()
+    CardPileStrategyUI()
     {
         super( CardsComponentStrategyIds.CARD_PILE );
     }

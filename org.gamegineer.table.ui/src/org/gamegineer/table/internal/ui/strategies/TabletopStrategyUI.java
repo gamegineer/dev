@@ -29,7 +29,7 @@ import org.gamegineer.table.ui.AbstractContainerStrategyUI;
  * A component strategy user interface that represents a tabletop.
  */
 @Immutable
-public final class TabletopStrategyUI
+final class TabletopStrategyUI
     extends AbstractContainerStrategyUI
 {
     // ======================================================================
@@ -39,7 +39,7 @@ public final class TabletopStrategyUI
     /**
      * Initializes a new instance of the {@code TabletopStrategyUI} class.
      */
-    public TabletopStrategyUI()
+    TabletopStrategyUI()
     {
         super( ComponentStrategyIds.TABLETOP );
     }
