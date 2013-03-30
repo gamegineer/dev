@@ -1,6 +1,6 @@
 /*
  * ComponentSurfaceDesignUIRegistryExtensionPointAdapterTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -95,7 +95,7 @@ public final class ComponentSurfaceDesignUIRegistryExtensionPointAdapterTest
     {
         final ComponentSurfaceDesignId id = ComponentSurfaceDesignId.fromString( "id" ); //$NON-NLS-1$
         final String name = "name"; //$NON-NLS-1$
-        final String iconPath = "icons/cards/back-blue.png"; //$NON-NLS-1$
+        final String iconPath = "icons/components/null.png"; //$NON-NLS-1$
         final IContributor contributor = ContributorFactoryOSGi.createContributor( Activator.getDefault().getBundleContext().getBundle() );
         EasyMock.expect( configurationElement.getAttribute( "id" ) ).andReturn( id.toString() ).anyTimes(); //$NON-NLS-1$
         EasyMock.expect( configurationElement.getAttribute( "name" ) ).andReturn( name ).anyTimes(); //$NON-NLS-1$

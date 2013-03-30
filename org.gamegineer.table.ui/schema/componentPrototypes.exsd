@@ -212,7 +212,7 @@
             category=&quot;org.gamegineer.prototypes.category.card.hearts&quot;
             mnemonic=&quot;A&quot;
             name=&quot;Ace&quot;&gt;
-        &lt;factory class=&quot;org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory&quot;&gt;
+        &lt;factory class=&quot;org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory&quot;&gt;
             &lt;parameter name=&quot;faceDesign&quot; value=&quot;org.gamegineer.cardSurfaces.hearts.ace&quot; /&gt;
             &lt;parameter name=&quot;backDesign&quot; value=&quot;org.gamegineer.cardSurfaces.back.red&quot; /&gt;
         &lt;/factory&gt;

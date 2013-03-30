@@ -35,12 +35,6 @@ public final class ComponentStrategyUIs
     // Fields
     // ======================================================================
 
-    /** The card component strategy user interface. */
-    public static final IComponentStrategyUI CARD = new CardStrategyUI();
-
-    /** The card pile container strategy user interface. */
-    public static final IContainerStrategyUI CARD_PILE = new CardPileStrategyUI();
-
     /** The null component strategy user interface. */
     public static final IComponentStrategyUI NULL_COMPONENT = new NullComponentStrategyUI();
 

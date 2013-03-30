@@ -1,6 +1,6 @@
 /*
  * AbstractContainerStrategyUI.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,17 +19,16 @@
  * Created on Sep 28, 2012 at 10:29:14 PM.
  */
 
-package org.gamegineer.table.internal.ui.strategies;
+package org.gamegineer.table.ui;
 
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.ComponentStrategyId;
-import org.gamegineer.table.ui.IContainerStrategyUI;
 
 /**
  * Superclass for all container strategy user interfaces.
  */
 @Immutable
-abstract class AbstractContainerStrategyUI
+public abstract class AbstractContainerStrategyUI
     extends AbstractComponentStrategyUI
     implements IContainerStrategyUI
 {
@@ -43,8 +42,11 @@ abstract class AbstractContainerStrategyUI
      * 
      * @param id
      *        The component strategy identifier; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code id} is {@code null}.
      */
-    AbstractContainerStrategyUI(
+    protected AbstractContainerStrategyUI(
         /* @NonNull */
         final ComponentStrategyId id )
     {
@@ -60,7 +62,7 @@ abstract class AbstractContainerStrategyUI
      * This implementation returns {@code true}. Subclasses may override and are
      * not required to call the superclass implementation.
      * 
-     * @see org.gamegineer.table.internal.ui.strategies.AbstractComponentStrategyUI#isFocusable()
+     * @see org.gamegineer.table.ui.AbstractComponentStrategyUI#isFocusable()
      */
     @Override
     public boolean isFocusable()

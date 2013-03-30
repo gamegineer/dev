@@ -1,6 +1,6 @@
 /*
  * package-info.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,15 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 24, 2012 at 7:59:49 PM.
+ * Created on Mar 29, 2013 at 10:08:29 PM.
  */
 
 /**
- * Provides component prototype implementations.
+ * Provides component strategy user interface implementations.
  * 
  * <p>
  * This package is only intended for use by members of the
- * {@code org.gamegineer.table} project.
+ * {@code org.gamegineer.cards} project.
  * </p>
  */
-package org.gamegineer.table.internal.ui.prototypes;
+package org.gamegineer.cards.internal.ui.strategies;

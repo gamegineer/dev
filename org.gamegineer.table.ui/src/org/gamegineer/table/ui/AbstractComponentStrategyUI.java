@@ -19,17 +19,17 @@
  * Created on Sep 28, 2012 at 10:29:06 PM.
  */
 
-package org.gamegineer.table.internal.ui.strategies;
+package org.gamegineer.table.ui;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.ComponentStrategyId;
-import org.gamegineer.table.ui.IComponentStrategyUI;
 
 /**
  * Superclass for all component strategy user interfaces.
  */
 @Immutable
-abstract class AbstractComponentStrategyUI
+public abstract class AbstractComponentStrategyUI
     implements IComponentStrategyUI
 {
     // ======================================================================
@@ -50,12 +50,15 @@ abstract class AbstractComponentStrategyUI
      * 
      * @param id
      *        The component strategy identifier; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code id} is {@code null}.
      */
-    AbstractComponentStrategyUI(
+    protected AbstractComponentStrategyUI(
         /* @NonNull */
         final ComponentStrategyId id )
     {
-        assert id != null;
+        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
 
         id_ = id;
     }

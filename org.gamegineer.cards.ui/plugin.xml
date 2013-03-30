@@ -1,0 +1,950 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+    <extension
+            point="org.gamegineer.table.ui.componentPrototypes">
+        <category
+                id="org.gamegineer.componentPrototypes.category.card"
+                mnemonic="%componentPrototype.category.card.mnemonic"
+                name="%componentPrototype.category.card.name" />
+        <category
+                id="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.category.card.clubs.mnemonic"
+                name="%componentPrototype.category.card.clubs.name"
+                parentCategory="org.gamegineer.componentPrototypes.category.card" />
+        <category
+                id="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.category.card.diamonds.mnemonic"
+                name="%componentPrototype.category.card.diamonds.name"
+                parentCategory="org.gamegineer.componentPrototypes.category.card" />
+        <category
+                id="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.category.card.hearts.mnemonic"
+                name="%componentPrototype.category.card.hearts.name"
+                parentCategory="org.gamegineer.componentPrototypes.category.card" />
+        <category
+                id="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.category.card.spades.mnemonic"
+                name="%componentPrototype.category.card.spades.name"
+                parentCategory="org.gamegineer.componentPrototypes.category.card" />
+        <category
+                id="org.gamegineer.componentPrototypes.category.card.special"
+                mnemonic="%componentPrototype.category.card.special.mnemonic"
+                name="%componentPrototype.category.card.special.name"
+                parentCategory="org.gamegineer.componentPrototypes.category.card" />
+        <category
+                id="org.gamegineer.componentPrototypes.category.deck"
+                mnemonic="%componentPrototype.category.deck.mnemonic"
+                name="%componentPrototype.category.deck.name" />
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.ace.mnemonic"
+                name="%componentPrototype.card.clubs.ace.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.clubs.ace" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.two.mnemonic"
+                name="%componentPrototype.card.clubs.two.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.clubs.two" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.three.mnemonic"
+                name="%componentPrototype.card.clubs.three.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.clubs.three" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.four.mnemonic"
+                name="%componentPrototype.card.clubs.four.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.clubs.four" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.five.mnemonic"
+                name="%componentPrototype.card.clubs.five.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.clubs.five" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.six.mnemonic"
+                name="%componentPrototype.card.clubs.six.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.clubs.six" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.seven.mnemonic"
+                name="%componentPrototype.card.clubs.seven.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.clubs.seven" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.eight.mnemonic"
+                name="%componentPrototype.card.clubs.eight.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.clubs.eight" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.nine.mnemonic"
+                name="%componentPrototype.card.clubs.nine.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.clubs.nine" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.ten.mnemonic"
+                name="%componentPrototype.card.clubs.ten.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.clubs.ten" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.jack.mnemonic"
+                name="%componentPrototype.card.clubs.jack.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.clubs.jack" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.queen.mnemonic"
+                name="%componentPrototype.card.clubs.queen.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.clubs.queen" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.clubs"
+                mnemonic="%componentPrototype.card.clubs.king.mnemonic"
+                name="%componentPrototype.card.clubs.king.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.clubs.king" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.ace.mnemonic"
+                name="%componentPrototype.card.diamonds.ace.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.diamonds.ace" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.two.mnemonic"
+                name="%componentPrototype.card.diamonds.two.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.diamonds.two" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.three.mnemonic"
+                name="%componentPrototype.card.diamonds.three.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.diamonds.three" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.four.mnemonic"
+                name="%componentPrototype.card.diamonds.four.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.diamonds.four" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.five.mnemonic"
+                name="%componentPrototype.card.diamonds.five.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.diamonds.five" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.six.mnemonic"
+                name="%componentPrototype.card.diamonds.six.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.diamonds.six" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.seven.mnemonic"
+                name="%componentPrototype.card.diamonds.seven.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.diamonds.seven" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.eight.mnemonic"
+                name="%componentPrototype.card.diamonds.eight.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.diamonds.eight" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.nine.mnemonic"
+                name="%componentPrototype.card.diamonds.nine.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.diamonds.nine" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.ten.mnemonic"
+                name="%componentPrototype.card.diamonds.ten.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.diamonds.ten" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.jack.mnemonic"
+                name="%componentPrototype.card.diamonds.jack.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.diamonds.jack" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.queen.mnemonic"
+                name="%componentPrototype.card.diamonds.queen.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.diamonds.queen" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.diamonds"
+                mnemonic="%componentPrototype.card.diamonds.king.mnemonic"
+                name="%componentPrototype.card.diamonds.king.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.diamonds.king" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.ace.mnemonic"
+                name="%componentPrototype.card.hearts.ace.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.hearts.ace" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.two.mnemonic"
+                name="%componentPrototype.card.hearts.two.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.hearts.two" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.three.mnemonic"
+                name="%componentPrototype.card.hearts.three.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.hearts.three" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.four.mnemonic"
+                name="%componentPrototype.card.hearts.four.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.hearts.four" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.five.mnemonic"
+                name="%componentPrototype.card.hearts.five.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.hearts.five" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.six.mnemonic"
+                name="%componentPrototype.card.hearts.six.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.hearts.six" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.seven.mnemonic"
+                name="%componentPrototype.card.hearts.seven.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.hearts.seven" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.eight.mnemonic"
+                name="%componentPrototype.card.hearts.eight.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.hearts.eight" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.nine.mnemonic"
+                name="%componentPrototype.card.hearts.nine.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.hearts.nine" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.ten.mnemonic"
+                name="%componentPrototype.card.hearts.ten.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.hearts.ten" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.jack.mnemonic"
+                name="%componentPrototype.card.hearts.jack.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.hearts.jack" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.queen.mnemonic"
+                name="%componentPrototype.card.hearts.queen.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.hearts.queen" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.hearts"
+                mnemonic="%componentPrototype.card.hearts.king.mnemonic"
+                name="%componentPrototype.card.hearts.king.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.hearts.king" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.ace.mnemonic"
+                name="%componentPrototype.card.spades.ace.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.spades.ace" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.two.mnemonic"
+                name="%componentPrototype.card.spades.two.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.spades.two" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.three.mnemonic"
+                name="%componentPrototype.card.spades.three.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.spades.three" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.four.mnemonic"
+                name="%componentPrototype.card.spades.four.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.spades.four" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.five.mnemonic"
+                name="%componentPrototype.card.spades.five.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.spades.five" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.six.mnemonic"
+                name="%componentPrototype.card.spades.six.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.spades.six" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.seven.mnemonic"
+                name="%componentPrototype.card.spades.seven.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.spades.seven" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.eight.mnemonic"
+                name="%componentPrototype.card.spades.eight.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.spades.eight" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.nine.mnemonic"
+                name="%componentPrototype.card.spades.nine.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.spades.nine" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.ten.mnemonic"
+                name="%componentPrototype.card.spades.ten.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.spades.ten" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.jack.mnemonic"
+                name="%componentPrototype.card.spades.jack.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.spades.jack" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.queen.mnemonic"
+                name="%componentPrototype.card.spades.queen.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.spades.queen" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.spades"
+                mnemonic="%componentPrototype.card.spades.king.mnemonic"
+                name="%componentPrototype.card.spades.king.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.spades.king" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.card.special"
+                mnemonic="%componentPrototype.card.special.joker.mnemonic"
+                name="%componentPrototype.card.special.joker.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="faceDesign" value="org.gamegineer.cards.cardSurfaceDesigns.special.joker" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                mnemonic="%componentPrototype.cardPile.default.mnemonic"
+                name="%componentPrototype.cardPile.default.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.CardPilePrototypeFactory">
+                <parameter name="baseDesign" value="org.gamegineer.cards.cardPileSurfaceDesigns.base" />
+            </factory>
+            <enablement>
+                <not>
+                    <with variable="table.focusedComponent" />
+                </not>
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.deck"
+                mnemonic="%componentPrototype.deck.standard52.mnemonic"
+                name="%componentPrototype.deck.standard52.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.DeckPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="includeJokers" value="false" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+        <componentPrototype
+                category="org.gamegineer.componentPrototypes.category.deck"
+                mnemonic="%componentPrototype.deck.standard54.mnemonic"
+                name="%componentPrototype.deck.standard54.name">
+            <factory class="org.gamegineer.cards.internal.ui.prototypes.DeckPrototypeFactory">
+                <parameter name="backDesign" value="org.gamegineer.cards.cardSurfaceDesigns.back.red" />
+                <parameter name="includeJokers" value="true" />
+            </factory>
+            <enablement>
+                <with variable="table.focusedComponent" />
+            </enablement>
+        </componentPrototype>
+    </extension>
+    <extension
+            point="org.gamegineer.table.ui.componentStrategyUIs">
+        <componentStrategyUI
+                className="org.gamegineer.cards.internal.ui.strategies.ComponentStrategyUIExtensionFactory"
+                id="org.gamegineer.cards.componentStrategies.card" />
+        <componentStrategyUI
+                className="org.gamegineer.cards.internal.ui.strategies.ComponentStrategyUIExtensionFactory"
+                id="org.gamegineer.cards.componentStrategies.cardPile" />
+    </extension>
+    <extension
+            point="org.gamegineer.table.ui.componentSurfaceDesignUIs">
+        <componentSurfaceDesignUI
+                icon="icons/cardPiles/base.png"
+                id="org.gamegineer.cards.cardPileSurfaceDesigns.base"
+                name="%cardPileSurfaceDesign.base.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/back-blue.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.back.blue"
+                name="%cardSurfaceDesign.back.blue.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/back-red.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.back.red"
+                name="%cardSurfaceDesign.back.red.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/clubs-ace.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.clubs.ace"
+                name="%cardSurfaceDesign.clubs.ace.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/clubs-two.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.clubs.two"
+                name="%cardSurfaceDesign.clubs.two.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/clubs-three.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.clubs.three"
+                name="%cardSurfaceDesign.clubs.three.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/clubs-four.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.clubs.four"
+                name="%cardSurfaceDesign.clubs.four.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/clubs-five.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.clubs.five"
+                name="%cardSurfaceDesign.clubs.five.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/clubs-six.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.clubs.six"
+                name="%cardSurfaceDesign.clubs.six.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/clubs-seven.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.clubs.seven"
+                name="%cardSurfaceDesign.clubs.seven.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/clubs-eight.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.clubs.eight"
+                name="%cardSurfaceDesign.clubs.eight.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/clubs-nine.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.clubs.nine"
+                name="%cardSurfaceDesign.clubs.nine.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/clubs-ten.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.clubs.ten"
+                name="%cardSurfaceDesign.clubs.ten.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/clubs-jack.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.clubs.jack"
+                name="%cardSurfaceDesign.clubs.jack.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/clubs-queen.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.clubs.queen"
+                name="%cardSurfaceDesign.clubs.queen.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/clubs-king.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.clubs.king"
+                name="%cardSurfaceDesign.clubs.king.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/diamonds-ace.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.diamonds.ace"
+                name="%cardSurfaceDesign.diamonds.ace.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/diamonds-two.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.diamonds.two"
+                name="%cardSurfaceDesign.diamonds.two.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/diamonds-three.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.diamonds.three"
+                name="%cardSurfaceDesign.diamonds.three.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/diamonds-four.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.diamonds.four"
+                name="%cardSurfaceDesign.diamonds.four.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/diamonds-five.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.diamonds.five"
+                name="%cardSurfaceDesign.diamonds.five.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/diamonds-six.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.diamonds.six"
+                name="%cardSurfaceDesign.diamonds.six.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/diamonds-seven.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.diamonds.seven"
+                name="%cardSurfaceDesign.diamonds.seven.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/diamonds-eight.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.diamonds.eight"
+                name="%cardSurfaceDesign.diamonds.eight.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/diamonds-nine.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.diamonds.nine"
+                name="%cardSurfaceDesign.diamonds.nine.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/diamonds-ten.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.diamonds.ten"
+                name="%cardSurfaceDesign.diamonds.ten.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/diamonds-jack.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.diamonds.jack"
+                name="%cardSurfaceDesign.diamonds.jack.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/diamonds-queen.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.diamonds.queen"
+                name="%cardSurfaceDesign.diamonds.queen.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/diamonds-king.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.diamonds.king"
+                name="%cardSurfaceDesign.diamonds.king.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/hearts-ace.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.hearts.ace"
+                name="%cardSurfaceDesign.hearts.ace.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/hearts-two.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.hearts.two"
+                name="%cardSurfaceDesign.hearts.two.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/hearts-three.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.hearts.three"
+                name="%cardSurfaceDesign.hearts.three.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/hearts-four.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.hearts.four"
+                name="%cardSurfaceDesign.hearts.four.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/hearts-five.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.hearts.five"
+                name="%cardSurfaceDesign.hearts.five.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/hearts-six.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.hearts.six"
+                name="%cardSurfaceDesign.hearts.six.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/hearts-seven.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.hearts.seven"
+                name="%cardSurfaceDesign.hearts.seven.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/hearts-eight.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.hearts.eight"
+                name="%cardSurfaceDesign.hearts.eight.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/hearts-nine.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.hearts.nine"
+                name="%cardSurfaceDesign.hearts.nine.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/hearts-ten.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.hearts.ten"
+                name="%cardSurfaceDesign.hearts.ten.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/hearts-jack.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.hearts.jack"
+                name="%cardSurfaceDesign.hearts.jack.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/hearts-queen.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.hearts.queen"
+                name="%cardSurfaceDesign.hearts.queen.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/hearts-king.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.hearts.king"
+                name="%cardSurfaceDesign.hearts.king.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/spades-ace.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.spades.ace"
+                name="%cardSurfaceDesign.spades.ace.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/spades-two.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.spades.two"
+                name="%cardSurfaceDesign.spades.two.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/spades-three.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.spades.three"
+                name="%cardSurfaceDesign.spades.three.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/spades-four.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.spades.four"
+                name="%cardSurfaceDesign.spades.four.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/spades-five.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.spades.five"
+                name="%cardSurfaceDesign.spades.five.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/spades-six.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.spades.six"
+                name="%cardSurfaceDesign.spades.six.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/spades-seven.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.spades.seven"
+                name="%cardSurfaceDesign.spades.seven.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/spades-eight.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.spades.eight"
+                name="%cardSurfaceDesign.spades.eight.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/spades-nine.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.spades.nine"
+                name="%cardSurfaceDesign.spades.nine.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/spades-ten.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.spades.ten"
+                name="%cardSurfaceDesign.spades.ten.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/spades-jack.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.spades.jack"
+                name="%cardSurfaceDesign.spades.jack.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/spades-queen.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.spades.queen"
+                name="%cardSurfaceDesign.spades.queen.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/spades-king.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.spades.king"
+                name="%cardSurfaceDesign.spades.king.name" />
+        <componentSurfaceDesignUI
+                icon="icons/cards/special-joker.png"
+                id="org.gamegineer.cards.cardSurfaceDesigns.special.joker"
+                name="%cardSurfaceDesign.special.joker.name" />
+    </extension>
+
+</plugin>

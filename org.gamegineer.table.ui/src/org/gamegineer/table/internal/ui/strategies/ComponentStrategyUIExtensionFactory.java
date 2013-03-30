@@ -72,8 +72,6 @@ public final class ComponentStrategyUIExtensionFactory
     static
     {
         final Map<ComponentStrategyId, IComponentStrategyUI> componentStrategyUIs = new HashMap<ComponentStrategyId, IComponentStrategyUI>();
-        componentStrategyUIs.put( ComponentStrategyUIs.CARD.getId(), ComponentStrategyUIs.CARD );
-        componentStrategyUIs.put( ComponentStrategyUIs.CARD_PILE.getId(), ComponentStrategyUIs.CARD_PILE );
         componentStrategyUIs.put( ComponentStrategyUIs.NULL_COMPONENT.getId(), ComponentStrategyUIs.NULL_COMPONENT );
         componentStrategyUIs.put( ComponentStrategyUIs.NULL_CONTAINER.getId(), ComponentStrategyUIs.NULL_CONTAINER );
         componentStrategyUIs.put( ComponentStrategyUIs.TABLETOP.getId(), ComponentStrategyUIs.TABLETOP );

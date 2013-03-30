@@ -1,6 +1,6 @@
 /*
  * DefaultContainerStrategyUI.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.ui.strategies;
 
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.ComponentStrategyId;
+import org.gamegineer.table.ui.AbstractContainerStrategyUI;
 
 /**
  * A default container strategy user interface.
@@ -41,6 +42,9 @@ final class DefaultContainerStrategyUI
      * 
      * @param id
      *        The component strategy identifier; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code id} is {@code null}.
      */
     DefaultContainerStrategyUI(
         /* @NonNull */

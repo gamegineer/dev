@@ -1,6 +1,6 @@
 /*
- * CardPileStrategyUI.java
- * Copyright 2008-2012 Gamegineer.org
+ * DefaultContainerStrategyUITest.java
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,30 +16,44 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Sep 28, 2012 at 10:32:17 PM.
+ * Created on Mar 29, 2013 at 10:30:47 PM.
  */
 
 package org.gamegineer.table.internal.ui.strategies;
 
-import net.jcip.annotations.Immutable;
-import org.gamegineer.cards.core.CardsComponentStrategyIds;
+import org.junit.Test;
 
 /**
- * A component strategy user interface that represents a card pile.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.ui.strategies.DefaultContainerStrategyUI}
+ * class.
  */
-@Immutable
-public final class CardPileStrategyUI
-    extends AbstractContainerStrategyUI
+public final class DefaultContainerStrategyUITest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardPileStrategyUI} class.
+     * Initializes a new instance of the {@code DefaultContainerStrategyUITest}
+     * class.
      */
-    public CardPileStrategyUI()
+    public DefaultContainerStrategyUITest()
     {
-        super( CardsComponentStrategyIds.CARD_PILE );
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /**
+     * Ensures the {@link DefaultContainerStrategyUI#DefaultContainerStrategyUI}
+     * constructor throws an exception when passed a {@code null} identifier.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_Id_Null()
+    {
+        new DefaultContainerStrategyUI( null );
     }
 }

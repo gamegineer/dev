@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.ui.strategies;
 
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.ComponentStrategies;
+import org.gamegineer.table.ui.AbstractComponentStrategyUI;
 
 /**
  * A null component strategy user interface.

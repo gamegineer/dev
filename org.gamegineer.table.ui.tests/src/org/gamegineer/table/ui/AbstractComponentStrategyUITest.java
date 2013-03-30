@@ -1,6 +1,6 @@
 /*
- * CardPrototypeFactoryAsComponentPrototypeFactoryTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * AbstractComponentStrategyUITest.java
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,33 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 24, 2012 at 8:11:26 PM.
+ * Created on Mar 29, 2013 at 10:21:24 PM.
  */
 
-package org.gamegineer.table.internal.ui.prototypes;
+package org.gamegineer.table.ui;
 
-import org.gamegineer.table.ui.prototype.AbstractComponentPrototypeFactoryTestCase;
-import org.gamegineer.table.ui.prototype.IComponentPrototypeFactory;
+import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.prototypes.CardPrototypeFactory}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.ui.prototype.IComponentPrototypeFactory}
- * interface.
+ * {@link org.gamegineer.table.ui.AbstractComponentStrategyUI} class.
  */
-public final class CardPrototypeFactoryAsComponentPrototypeFactoryTest
-    extends AbstractComponentPrototypeFactoryTestCase
+public final class AbstractComponentStrategyUITest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code CardPrototypeFactoryAsComponentPrototypeFactoryTest} class.
+     * Initializes a new instance of the {@code AbstractComponentStrategyUITest}
+     * class.
      */
-    public CardPrototypeFactoryAsComponentPrototypeFactoryTest()
+    public AbstractComponentStrategyUITest()
     {
     }
 
@@ -51,12 +46,17 @@ public final class CardPrototypeFactoryAsComponentPrototypeFactoryTest
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.ui.prototype.AbstractComponentPrototypeFactoryTestCase#createComponentPrototypeFactory()
+    /**
+     * Ensures the
+     * {@link AbstractComponentStrategyUI#AbstractComponentStrategyUI}
+     * constructor throws an exception when passed a {@code null} identifier.
      */
-    @Override
-    protected IComponentPrototypeFactory createComponentPrototypeFactory()
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_Id_Null()
     {
-        return new CardPrototypeFactory();
+        new AbstractComponentStrategyUI( null )
+        {
+            // no overrides
+        };
     }
 }

@@ -1,6 +1,6 @@
 /*
  * TabletopStrategyUI.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.ui.strategies;
 
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.ComponentStrategyIds;
+import org.gamegineer.table.ui.AbstractContainerStrategyUI;
 
 /**
  * A component strategy user interface that represents a tabletop.
@@ -49,7 +50,7 @@ public final class TabletopStrategyUI
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.ui.strategies.AbstractContainerStrategyUI#isFocusable()
+     * @see org.gamegineer.table.ui.AbstractContainerStrategyUI#isFocusable()
      */
     @Override
     public boolean isFocusable()
