@@ -52,21 +52,4 @@ public abstract class AbstractContainerStrategyUI
     {
         super( id );
     }
-
-
-    // ======================================================================
-    // Methods
-    // ======================================================================
-
-    /**
-     * This implementation returns {@code true}. Subclasses may override and are
-     * not required to call the superclass implementation.
-     * 
-     * @see org.gamegineer.table.ui.AbstractComponentStrategyUI#isFocusable()
-     */
-    @Override
-    public boolean isFocusable()
-    {
-        return true;
-    }
 }
