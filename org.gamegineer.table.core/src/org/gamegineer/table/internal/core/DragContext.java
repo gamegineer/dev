@@ -176,11 +176,15 @@ final class DragContext
             preDragComponentStates.add( new PreDragComponentState( dragComponent ) );
         }
 
+        int index = 0;
         final Container mobileContainer = new Container( table.getTableEnvironment(), ComponentStrategies.NULL_CONTAINER );
         for( final IComponent dragComponent : dragComponents )
         {
             dragComponent.getContainer().removeComponent( dragComponent );
             mobileContainer.addComponent( dragComponent );
+
+            final PreDragComponentState preDragComponentState = preDragComponentStates.get( index++ );
+            preDragComponentState.initialize();
         }
         table.getTabletop().addComponent( mobileContainer );
 
@@ -439,6 +443,15 @@ final class DragContext
         // ==================================================================
         // Methods
         // ==================================================================
+
+        /**
+         * Initializes the component state at the start of the drag-and-drop
+         * operation.
+         */
+        void initialize()
+        {
+            component_.setOrigin( origin_ );
+        }
 
         /**
          * Reverts the state of the component to its state before beginning the

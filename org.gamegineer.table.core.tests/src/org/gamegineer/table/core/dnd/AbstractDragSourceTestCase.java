@@ -22,11 +22,13 @@
 package org.gamegineer.table.core.dnd;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import java.awt.Point;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import org.easymock.EasyMock;
 import org.gamegineer.table.core.ComponentOrientation;
@@ -34,9 +36,11 @@ import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentStrategy;
+import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TestComponentStrategies;
 import org.gamegineer.table.core.TestComponents;
+import org.gamegineer.table.core.TestContainerLayouts;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -157,6 +161,18 @@ public abstract class AbstractDragSourceTestCase
     }
 
     /**
+     * Creates a new container with unique attributes using the fixture table
+     * environment.
+     * 
+     * @return A new container; never {@code null}.
+     */
+    /* @NonNull */
+    private IContainer createUniqueContainer()
+    {
+        return TestComponents.createUniqueContainer( table_.getTableEnvironment() );
+    }
+
+    /**
      * Gets the table associated with the fixture.
      * 
      * @return The table associated with the fixture; never {@code null}.
@@ -236,6 +252,54 @@ public abstract class AbstractDragSourceTestCase
     public void testBeginDrag_Location_Null()
     {
         dragSource_.beginDrag( null, EasyMock.createMock( IComponent.class ) );
+    }
+
+    /**
+     * Ensures the {@link IDragSource#beginDrag} method preserves the location
+     * of each component to be dragged when their original container uses a
+     * dynamic layout.
+     */
+    @Test
+    public void testBeginDrag_PreservesOriginalComponentLocationsWhenContainerUsesDynamicLayout()
+    {
+        final IContainer container = createUniqueContainer();
+        container.setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
+        final IComponent component1 = createUniqueComponent( new IDragStrategyFactory()
+        {
+            @Override
+            public IDragStrategy createDragStrategy(
+                final IComponent component )
+            {
+                return new IDragStrategy()
+                {
+                    @Override
+                    public boolean canDrop(
+                        @SuppressWarnings( "unused" )
+                        final IContainer dropContainer )
+                    {
+                        return true;
+                    }
+
+                    @Override
+                    public List<IComponent> getDragComponents()
+                    {
+                        return component.getContainer().getComponents();
+                    }
+                };
+            }
+        } );
+        container.addComponent( component1 );
+        final Point originalComponentLocation1 = component1.getLocation();
+        final IComponent component2 = createUniqueComponent();
+        container.addComponent( component2 );
+        final Point originalComponentLocation2 = component2.getLocation();
+        assertFalse( originalComponentLocation1.equals( originalComponentLocation2 ) );
+        table_.getTabletop().addComponent( container );
+
+        assertNotNull( dragSource_.beginDrag( new Point( 0, 0 ), component1 ) );
+
+        assertEquals( originalComponentLocation1, component1.getLocation() );
+        assertEquals( originalComponentLocation2, component2.getLocation() );
     }
 
     /**
