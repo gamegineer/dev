@@ -41,14 +41,6 @@ final class NlsMessages
     // Fields
     // ======================================================================
 
-    // --- AboutDialog ------------------------------------------------------
-
-    /** The About dialog message. */
-    public static String AboutDialog_message;
-
-    /** The About dialog title. */
-    public static String AboutDialog_title;
-
     // --- CancelTableNetworkControlRequestAction ---------------------------
 
     /** The cancel table network control request action mnemonic. */
@@ -398,32 +390,6 @@ final class NlsMessages
     // ======================================================================
     // Methods
     // ======================================================================
-
-    // --- AboutDialog ------------------------------------------------------
-
-    /**
-     * Gets the formatted message for the About dialog message.
-     * 
-     * @return The formatted message for the About dialog message; never
-     *         {@code null}.
-     */
-    /* @NonNull */
-    static String AboutDialog_message()
-    {
-        return bind( AboutDialog_message, Branding.getName(), Branding.getVersion() );
-    }
-
-    /**
-     * Gets the formatted message for the About dialog title.
-     * 
-     * @return The formatted message for the About dialog title; never
-     *         {@code null}.
-     */
-    /* @NonNull */
-    static String AboutDialog_title()
-    {
-        return bind( AboutDialog_title, Branding.getName() );
-    }
 
     // --- MainFrame --------------------------------------------------------
 

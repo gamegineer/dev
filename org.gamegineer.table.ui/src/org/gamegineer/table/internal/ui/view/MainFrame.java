@@ -1,6 +1,6 @@
 /*
  * MainFrame.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -45,6 +45,7 @@ import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.Branding;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
+import org.gamegineer.table.internal.ui.dialogs.about.AboutDialog;
 import org.gamegineer.table.internal.ui.model.FramePreferences;
 import org.gamegineer.table.internal.ui.model.IMainModelListener;
 import org.gamegineer.table.internal.ui.model.ITableModelListener;
@@ -177,15 +178,12 @@ public final class MainFrame
         actionMediator_.bindActionListener( Actions.getOpenAboutDialogAction(), new ActionListener()
         {
             @Override
+            @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
-                JOptionPane.showMessageDialog( //
-                    MainFrame.this, //
-                    NlsMessages.AboutDialog_message(), //
-                    NlsMessages.AboutDialog_title(), //
-                    JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE );
+                openAboutDialog();
             }
         } );
         actionMediator_.bindActionListener( Actions.getOpenNewTableAction(), new ActionListener()
@@ -409,6 +407,15 @@ public final class MainFrame
         {
             setExtendedState( state );
         }
+    }
+
+    /**
+     * Opens the About dialog.
+     */
+    private void openAboutDialog()
+    {
+        final AboutDialog dialog = new AboutDialog( JOptionPane.getFrameForComponent( this ) );
+        dialog.open();
     }
 
     /**

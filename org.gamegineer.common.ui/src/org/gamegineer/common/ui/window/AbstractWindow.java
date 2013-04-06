@@ -1,6 +1,6 @@
 /*
  * AbstractWindow.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -155,6 +155,18 @@ public abstract class AbstractWindow<T extends Window>
     }
 
     /**
+     * Invoked after the window content has been realized.
+     * 
+     * <p>
+     * This implementation does nothing.
+     * </p>
+     */
+    protected void contentRealized()
+    {
+        // do nothing
+    }
+
+    /**
      * Creates the window.
      */
     public final void create()
@@ -166,6 +178,7 @@ public abstract class AbstractWindow<T extends Window>
         contentCreated();
 
         shell_.pack();
+        contentRealized();
 
         initializeBounds();
     }
