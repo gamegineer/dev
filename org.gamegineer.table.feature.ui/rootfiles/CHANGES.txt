@@ -1,13 +1,18 @@
 Gamegineer
 Version 0.15.0
-XX XX XXXX
+10 April 2013
 
 Defects closed:
-    * [#69] Race condition in event delivery to views
-    * [#70] After deleting the focused card pile, card pile actions are still enabled
+    None
 
 Enhancements closed:
-    None
+    * [#73] Add support for setting focus to any focusable component under the mouse
+    * [#74] Add support for hot tracking focusable components
+    * [#75] Modify drag-and-drop mechanism to support any component
+    * [#76] Allow deletion of arbitrary components
+    * [#77] Allow flipping of arbitrary components
 
 Tasks closed:
-    None
+    * [#71] Upgrade to JDK 6 Update 37
+    * [#72] Use middle mouse button to pan table
+    * [#78] Add license notice to About dialog
