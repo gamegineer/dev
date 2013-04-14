@@ -1,6 +1,6 @@
 /*
  * TableNetworkConfiguration.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -76,8 +76,8 @@ public final class TableNetworkConfiguration
      *        {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code hostName}, {@code password}, {@localPlayerName}, or
-     *         {@code localTable} is {@code null},
+     *         If {@code hostName}, {@code password}, {@code localPlayerName},
+     *         or {@code localTable} is {@code null},
      */
     public TableNetworkConfiguration(
         /* @NonNull */
