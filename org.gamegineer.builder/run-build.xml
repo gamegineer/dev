@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     run-build.xml
-    Copyright 2008-2012 Gamegineer.org
+    Copyright 2008-2013 Gamegineer.org
     All rights reserved.
 
     This program is free software: you can redistribute it and/or modify
@@ -96,6 +96,9 @@
                     <include name="org.eclipse.equinox.launcher_*.jar" />
                 </fileset>
             </classpath>
+            <jvmarg value="-Dbasearch=${env.BUILD_ARCH}" />
+            <jvmarg value="-Dbaseos=${env.BUILD_OS}" />
+            <jvmarg value="-Dbasews=${env.BUILD_WS}" />
             <jvmarg value="-DbuildDirectory=${basedir}" />
             <jvmarg value="-DbuildVersion=${build.version}" />
             <jvmarg value="-DforceContextQualifier=${version.qualifier}" />

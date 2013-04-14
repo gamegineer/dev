@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     customTargets.xml
-    Copyright 2008-2012 Gamegineer.org
+    Copyright 2008-2013 Gamegineer.org
     All rights reserved.
 
     This program is free software: you can redistribute it and/or modify
@@ -256,7 +256,7 @@
         <mkdir dir="${buildDirectory}/${buildLabel}/test-workspace" />
 
         <!-- Unzip Eclipse SDK into workspace. -->
-        <unzip src="${env.ECLIPSE_HOME}/eclipse-SDK-${eclipseBuildId}-${baseos}.zip" dest="${buildDirectory}/${buildLabel}/test-workspace" overwrite="true" />
+        <unzip src="${env.ECLIPSE_HOME}/eclipse-SDK-${eclipseBuildId}-${baseos}-${basews}-${basearch}.zip" dest="${buildDirectory}/${buildLabel}/test-workspace" overwrite="true" />
 
         <!-- Copy target platform into workspace. -->
         <copy todir="${buildDirectory}/${buildLabel}/test-workspace/eclipse" overwrite="true">
