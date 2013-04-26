@@ -29,6 +29,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
@@ -709,6 +710,17 @@ final class Container
             final Rectangle oldBounds = getBounds();
 
             removedComponents.addAll( components_.subList( componentRangeStrategy.getLowerIndex(), componentRangeStrategy.getUpperIndex() ) );
+
+            // ensure events are fired in order from highest index to lowest index
+            for( final ListIterator<Component> iter = removedComponents.listIterator( removedComponents.size() ); iter.hasPrevious(); )
+            {
+                final Component component = iter.previous();
+                if( component instanceof Container )
+                {
+                    ((Container)component).removeAllComponents();
+                }
+            }
+
             components_.removeAll( removedComponents );
             for( final Component component : removedComponents )
             {
@@ -734,12 +746,10 @@ final class Container
                 public void run()
                 {
                     // ensure events are fired in order from highest index to lowest index
-                    final List<IComponent> reversedRemovedComponents = new ArrayList<IComponent>( removedComponents );
-                    Collections.reverse( reversedRemovedComponents );
                     int componentIndex = upperComponentIndex;
-                    for( final IComponent component : reversedRemovedComponents )
+                    for( final ListIterator<Component> iter = removedComponents.listIterator( removedComponents.size() ); iter.hasPrevious(); )
                     {
-                        fireComponentRemoved( component, componentIndex-- );
+                        fireComponentRemoved( iter.previous(), componentIndex-- );
                     }
 
                     if( containerBoundsChanged )
