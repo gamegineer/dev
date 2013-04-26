@@ -27,11 +27,11 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.concurrent.locks.ReentrantLock;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.util.IterableUtils;
 import org.gamegineer.table.core.ComponentStrategies;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
@@ -344,10 +344,8 @@ final class DragContext
         assert location != null;
         assert getLock().isHeldByCurrentThread();
 
-        final List<IComponent> components = table_.getComponents( location );
-        for( final ListIterator<IComponent> iterator = components.listIterator( components.size() ); iterator.hasPrevious(); )
+        for( final IComponent component : IterableUtils.reverse( table_.getComponents( location ) ) )
         {
-            final IComponent component = iterator.previous();
             if( component instanceof IContainer )
             {
                 return (IContainer)component;

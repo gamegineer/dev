@@ -29,13 +29,13 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.util.IterableUtils;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
@@ -712,9 +712,8 @@ final class Container
             removedComponents.addAll( components_.subList( componentRangeStrategy.getLowerIndex(), componentRangeStrategy.getUpperIndex() ) );
 
             // ensure events are fired in order from highest index to lowest index
-            for( final ListIterator<Component> iter = removedComponents.listIterator( removedComponents.size() ); iter.hasPrevious(); )
+            for( final Component component : IterableUtils.reverse( removedComponents ) )
             {
-                final Component component = iter.previous();
                 if( component instanceof Container )
                 {
                     ((Container)component).removeAllComponents();
@@ -747,9 +746,9 @@ final class Container
                 {
                     // ensure events are fired in order from highest index to lowest index
                     int componentIndex = upperComponentIndex;
-                    for( final ListIterator<Component> iter = removedComponents.listIterator( removedComponents.size() ); iter.hasPrevious(); )
+                    for( final Component component : IterableUtils.reverse( removedComponents ) )
                     {
-                        fireComponentRemoved( iter.previous(), componentIndex-- );
+                        fireComponentRemoved( component, componentIndex-- );
                     }
 
                     if( containerBoundsChanged )
