@@ -37,7 +37,6 @@ import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -1071,56 +1070,6 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         assertEquals( 0, eventCapture2.getValue().getComponentIndex() );
     }
 
-    // FIXME: #79
-    /**
-     * Ensures the {@link IContainer#removeAllComponents} method recursively
-     * removes all descendants of the removed components.
-     */
-    @Ignore
-    @Test
-    public void testRemoveAllComponents_NotEmpty_RecursivelyRemovesDescendants()
-    {
-        final IContainer container1 = createUniqueContainer();
-        final IComponent component11 = createUniqueComponent();
-        container1.addComponent( component11 );
-        final IComponent component12 = createUniqueComponent();
-        container1.addComponent( component12 );
-        final IContainer container2 = createUniqueContainer();
-        final IComponent component21 = createUniqueComponent();
-        container2.addComponent( component21 );
-        final IComponent component22 = createUniqueComponent();
-        container2.addComponent( component22 );
-        getContainer().addComponents( Arrays.<IComponent>asList( container1, container2 ) );
-        final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
-        final Capture<ContainerContentChangedEvent> eventCapture1 = new Capture<ContainerContentChangedEvent>();
-        listener.componentRemoved( EasyMock.capture( eventCapture1 ) );
-        final Capture<ContainerContentChangedEvent> eventCapture2 = new Capture<ContainerContentChangedEvent>();
-        listener.componentRemoved( EasyMock.capture( eventCapture2 ) );
-        final Capture<ContainerContentChangedEvent> eventCapture3 = new Capture<ContainerContentChangedEvent>();
-        listener.componentRemoved( EasyMock.capture( eventCapture3 ) );
-        final Capture<ContainerContentChangedEvent> eventCapture4 = new Capture<ContainerContentChangedEvent>();
-        listener.componentRemoved( EasyMock.capture( eventCapture4 ) );
-        mocksControl_.replay();
-        container1.addContainerListener( listener );
-        container2.addContainerListener( listener );
-
-        getContainer().removeAllComponents();
-
-        mocksControl_.verify();
-        assertSame( container2, eventCapture1.getValue().getContainer() );
-        assertSame( component22, eventCapture1.getValue().getComponent() );
-        assertEquals( 1, eventCapture1.getValue().getComponentIndex() );
-        assertSame( container2, eventCapture2.getValue().getContainer() );
-        assertSame( component21, eventCapture2.getValue().getComponent() );
-        assertEquals( 0, eventCapture2.getValue().getComponentIndex() );
-        assertSame( container1, eventCapture3.getValue().getContainer() );
-        assertSame( component12, eventCapture3.getValue().getComponent() );
-        assertEquals( 1, eventCapture3.getValue().getComponentIndex() );
-        assertSame( container1, eventCapture4.getValue().getContainer() );
-        assertSame( component11, eventCapture4.getValue().getComponent() );
-        assertEquals( 0, eventCapture4.getValue().getComponentIndex() );
-    }
-
     /**
      * Ensures the {@link IContainer#removeAllComponents} method removes all
      * components in the container when the container is not empty.
@@ -1237,40 +1186,6 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         assertEquals( 0, eventCapture.getValue().getComponentIndex() );
     }
 
-    // FIXME: #79
-    /**
-     * Ensures the {@link IContainer#removeComponent(IComponent)} method
-     * recursively removes all descendants of the removed component.
-     */
-    @Ignore
-    @Test
-    public void testRemoveComponent_RecursivelyRemovesDescendants()
-    {
-        final IContainer container = createUniqueContainer();
-        final IComponent component1 = createUniqueComponent();
-        container.addComponent( component1 );
-        final IComponent component2 = createUniqueComponent();
-        container.addComponent( component2 );
-        getContainer().addComponent( container );
-        final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
-        final Capture<ContainerContentChangedEvent> eventCapture1 = new Capture<ContainerContentChangedEvent>();
-        listener.componentRemoved( EasyMock.capture( eventCapture1 ) );
-        final Capture<ContainerContentChangedEvent> eventCapture2 = new Capture<ContainerContentChangedEvent>();
-        listener.componentRemoved( EasyMock.capture( eventCapture2 ) );
-        mocksControl_.replay();
-        container.addContainerListener( listener );
-
-        getContainer().removeComponent( container );
-
-        mocksControl_.verify();
-        assertSame( container, eventCapture1.getValue().getContainer() );
-        assertSame( component2, eventCapture1.getValue().getComponent() );
-        assertEquals( 1, eventCapture1.getValue().getComponentIndex() );
-        assertSame( container, eventCapture2.getValue().getContainer() );
-        assertSame( component1, eventCapture2.getValue().getComponent() );
-        assertEquals( 0, eventCapture2.getValue().getComponentIndex() );
-    }
-
     /**
      * Ensures the {@link IContainer#removeComponent(IComponent)} method removes
      * a component.
@@ -1380,40 +1295,6 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     public void testRemoveComponentAtIndex_Index_OutOfBounds_LessThanZero()
     {
         getContainer().removeComponent( -1 );
-    }
-
-    // FIXME: #79
-    /**
-     * Ensures the {@link IContainer#removeComponent(int)} method recursively
-     * removes all descendants of the removed component.
-     */
-    @Ignore
-    @Test
-    public void testRemoveComponentAtIndex_RecursivelyRemovesDescendants()
-    {
-        final IContainer container = createUniqueContainer();
-        final IComponent component1 = createUniqueComponent();
-        container.addComponent( component1 );
-        final IComponent component2 = createUniqueComponent();
-        container.addComponent( component2 );
-        getContainer().addComponent( container );
-        final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
-        final Capture<ContainerContentChangedEvent> eventCapture1 = new Capture<ContainerContentChangedEvent>();
-        listener.componentRemoved( EasyMock.capture( eventCapture1 ) );
-        final Capture<ContainerContentChangedEvent> eventCapture2 = new Capture<ContainerContentChangedEvent>();
-        listener.componentRemoved( EasyMock.capture( eventCapture2 ) );
-        mocksControl_.replay();
-        container.addContainerListener( listener );
-
-        getContainer().removeComponent( 0 );
-
-        mocksControl_.verify();
-        assertSame( container, eventCapture1.getValue().getContainer() );
-        assertSame( component2, eventCapture1.getValue().getComponent() );
-        assertEquals( 1, eventCapture1.getValue().getComponentIndex() );
-        assertSame( container, eventCapture2.getValue().getContainer() );
-        assertSame( component1, eventCapture2.getValue().getComponent() );
-        assertEquals( 0, eventCapture2.getValue().getComponentIndex() );
     }
 
     /**

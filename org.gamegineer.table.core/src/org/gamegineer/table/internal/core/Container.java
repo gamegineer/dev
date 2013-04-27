@@ -710,17 +710,6 @@ final class Container
             final Rectangle oldBounds = getBounds();
 
             removedComponents.addAll( components_.subList( componentRangeStrategy.getLowerIndex(), componentRangeStrategy.getUpperIndex() ) );
-
-            // FIXME: #79 - causes regression in drag-and-drop
-            //// ensure events are fired in order from highest index to lowest index
-            //for( final Component component : IterableUtils.reverse( removedComponents ) )
-            //{
-            //    if( component instanceof Container )
-            //    {
-            //        ((Container)component).removeAllComponents();
-            //    }
-            //}
-
             components_.removeAll( removedComponents );
             for( final Component component : removedComponents )
             {
