@@ -1,6 +1,6 @@
 /*
  * IComponentModelParent.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -44,6 +44,15 @@ interface IComponentModelParent
      */
     /* @NonNull */
     EvaluationContext getEvaluationContext();
+
+    /**
+     * Gets the parent of this component model parent.
+     * 
+     * @return The parent of this component model parent or {@code null} if this
+     *         component model parent has no parent.
+     */
+    /* @Nullable */
+    IComponentModelParent getParent();
 
     /**
      * Gets the table model associated with this component model parent.

@@ -1,6 +1,6 @@
 /*
  * ContainerModel.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -531,16 +531,17 @@ public final class ContainerModel
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
             final ComponentModel componentModel = getComponentModel( event.getComponentIndex() );
-            if( componentModel.isHovered() )
+
+            final TableModel tableModel = getTableModel();
+            assert tableModel != null;
+            final ComponentModel hoveredComponentModel = tableModel.getHoveredComponentModel();
+            if( (hoveredComponentModel != null) && hoveredComponentModel.isSameOrDescendantOf( componentModel ) )
             {
-                final TableModel tableModel = getTableModel();
-                assert tableModel != null;
                 tableModel.setHover( null );
             }
-            if( componentModel.isFocused() )
+            final ComponentModel focusedComponentModel = tableModel.getFocusedComponentModel();
+            if( (focusedComponentModel != null) && focusedComponentModel.isSameOrDescendantOf( componentModel ) )
             {
-                final TableModel tableModel = getTableModel();
-                assert tableModel != null;
                 tableModel.setFocus( null );
             }
 

@@ -1,6 +1,6 @@
 /*
  * ComponentModel.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -332,7 +332,7 @@ public class ComponentModel
      * @return The model parent or {@code null} if this model has no parent.
      */
     /* @Nullable */
-    final IComponentModelParent getParent()
+    public final IComponentModelParent getParent()
     {
         synchronized( getLock() )
         {
@@ -404,6 +404,40 @@ public class ComponentModel
         {
             return isHovered_;
         }
+    }
+
+    /**
+     * Indicates this component model is the same as or a descendant of the
+     * specified component model.
+     * 
+     * @param componentModel
+     *        The component model to test if it is the same as or an ancestor of
+     *        this component model; must not be {@code null}.
+     * 
+     * @return {@code true} if this component model is the same as or a
+     *         descendant of the specified component model; otherwise
+     *         {@code false}.
+     */
+    final boolean isSameOrDescendantOf(
+        /* @NonNull */
+        final ComponentModel componentModel )
+    {
+        assert componentModel != null;
+
+        if( this == componentModel )
+        {
+            return true;
+        }
+
+        for( IComponentModelParent ancestor = getParent(); ancestor != null; ancestor = ancestor.getParent() )
+        {
+            if( ancestor == componentModel )
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

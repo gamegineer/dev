@@ -667,6 +667,15 @@ public final class TableModel
         }
     }
 
+    /*
+     * @see org.gamegineer.table.internal.ui.model.IComponentModelParent#getParent()
+     */
+    @Override
+    public IComponentModelParent getParent()
+    {
+        return null;
+    }
+
     /**
      * Gets the table associated with this model.
      * 
