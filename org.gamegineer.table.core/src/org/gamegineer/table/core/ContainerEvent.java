@@ -1,6 +1,6 @@
 /*
  * ContainerEvent.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,6 +40,12 @@ public class ContainerEvent
     /** Serializable class version number. */
     private static final long serialVersionUID = -3356087700212900227L;
 
+    /**
+     * The path of the container that fired the event at the time the event was
+     * fired.
+     */
+    private final ComponentPath containerPath_;
+
 
     // ======================================================================
     // Constructors
@@ -50,6 +56,9 @@ public class ContainerEvent
      * 
      * @param source
      *        The container that fired the event; must not be {@code null}.
+     * @param containerPath
+     *        The path of the container that fired the event at the time the
+     *        event was fired; may be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code source} is {@code null}.
@@ -57,9 +66,13 @@ public class ContainerEvent
     public ContainerEvent(
         /* @NonNull */
         @SuppressWarnings( "hiding" )
-        final IContainer source )
+        final IContainer source,
+        /* @Nullable */
+        final ComponentPath containerPath )
     {
         super( source );
+
+        containerPath_ = containerPath;
     }
 
 
@@ -76,5 +89,18 @@ public class ContainerEvent
     public final IContainer getContainer()
     {
         return (IContainer)getSource();
+    }
+
+    /**
+     * Gets the path of the container that fired the event at the time the event
+     * was fired.
+     * 
+     * @return The path of the container that fired the event at the time the
+     *         event was fired; may be {@code null}.
+     */
+    /* @Nullable */
+    public final ComponentPath getContainerPath()
+    {
+        return containerPath_;
     }
 }

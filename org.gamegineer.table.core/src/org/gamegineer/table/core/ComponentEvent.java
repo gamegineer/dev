@@ -1,6 +1,6 @@
 /*
  * ComponentEvent.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,6 +40,12 @@ public class ComponentEvent
     /** Serializable class version number. */
     private static final long serialVersionUID = 2992004706733067598L;
 
+    /**
+     * The path of the component that fired the event at the time the event was
+     * fired.
+     */
+    private final ComponentPath componentPath_;
+
 
     // ======================================================================
     // Constructors
@@ -50,6 +56,9 @@ public class ComponentEvent
      * 
      * @param source
      *        The component that fired the event; must not be {@code null}.
+     * @param componentPath
+     *        The path of the component that fired the event at the time the
+     *        event was fired; may be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code source} is {@code null}.
@@ -57,9 +66,13 @@ public class ComponentEvent
     public ComponentEvent(
         /* @NonNull */
         @SuppressWarnings( "hiding" )
-        final IComponent source )
+        final IComponent source,
+        /* @Nullable */
+        final ComponentPath componentPath )
     {
         super( source );
+
+        componentPath_ = componentPath;
     }
 
 
@@ -76,5 +89,18 @@ public class ComponentEvent
     public final IComponent getComponent()
     {
         return (IComponent)getSource();
+    }
+
+    /**
+     * Gets the path of the component that fired the event at the time the event
+     * was fired.
+     * 
+     * @return The path of the component that fired the event at the time the
+     *         event was fired; may be {@code null}.
+     */
+    /* @Nullable */
+    public final ComponentPath getComponentPath()
+    {
+        return componentPath_;
     }
 }

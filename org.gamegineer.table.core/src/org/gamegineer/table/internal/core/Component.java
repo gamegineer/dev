@@ -192,12 +192,17 @@ class Component
 
     /**
      * Fires a component bounds changed event.
+     * 
+     * @param componentPath
+     *        The component path; may be {@code null}.
      */
-    final void fireComponentBoundsChanged()
+    final void fireComponentBoundsChanged(
+        /* @Nullable */
+        final ComponentPath componentPath )
     {
         assert !getLock().isHeldByCurrentThread();
 
-        final ComponentEvent event = new ComponentEvent( this );
+        final ComponentEvent event = new ComponentEvent( this, componentPath );
         for( final IComponentListener listener : componentListeners_ )
         {
             try
@@ -213,12 +218,17 @@ class Component
 
     /**
      * Fires a component orientation changed event.
+     * 
+     * @param componentPath
+     *        The component path; may be {@code null}.
      */
-    private void fireComponentOrientationChanged()
+    private void fireComponentOrientationChanged(
+        /* @Nullable */
+        final ComponentPath componentPath )
     {
         assert !getLock().isHeldByCurrentThread();
 
-        final ComponentEvent event = new ComponentEvent( this );
+        final ComponentEvent event = new ComponentEvent( this, componentPath );
         for( final IComponentListener listener : componentListeners_ )
         {
             try
@@ -234,12 +244,17 @@ class Component
 
     /**
      * Fires a component surface design changed event.
+     * 
+     * @param componentPath
+     *        The component path; may be {@code null}.
      */
-    private void fireComponentSurfaceDesignChanged()
+    private void fireComponentSurfaceDesignChanged(
+        /* @Nullable */
+        final ComponentPath componentPath )
     {
         assert !getLock().isHeldByCurrentThread();
 
-        final ComponentEvent event = new ComponentEvent( this );
+        final ComponentEvent event = new ComponentEvent( this, componentPath );
         for( final IComponentListener listener : componentListeners_ )
         {
             try
@@ -624,9 +639,12 @@ class Component
         assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
         assertArgumentLegal( isSupportedOrientation( orientation ), "orientation", NonNlsMessages.Component_orientation_illegal ); //$NON-NLS-1$
 
+        final ComponentPath componentPath;
+
         getLock().lock();
         try
         {
+            componentPath = getPath();
             orientation_ = orientation;
         }
         finally
@@ -640,7 +658,7 @@ class Component
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                fireComponentOrientationChanged();
+                fireComponentOrientationChanged( componentPath );
             }
         } );
     }
@@ -694,9 +712,12 @@ class Component
         assertArgumentLegal( isSupportedOrientation( orientation ), "orientation", NonNlsMessages.Component_orientation_illegal ); //$NON-NLS-1$
         assertArgumentNotNull( surfaceDesign, "surfaceDesign" ); //$NON-NLS-1$
 
+        final ComponentPath componentPath;
+
         getLock().lock();
         try
         {
+            componentPath = getPath();
             surfaceDesigns_.put( orientation, surfaceDesign );
         }
         finally
@@ -710,7 +731,7 @@ class Component
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                fireComponentSurfaceDesignChanged();
+                fireComponentSurfaceDesignChanged( componentPath );
             }
         } );
     }
@@ -786,6 +807,8 @@ class Component
         assert offset != null;
         assert getLock().isHeldByCurrentThread();
 
+        final ComponentPath componentPath = getPath();
+
         location_.translate( offset.width, offset.height );
         origin_.translate( offset.width, offset.height );
 
@@ -794,7 +817,7 @@ class Component
             @Override
             public void run()
             {
-                fireComponentBoundsChanged();
+                fireComponentBoundsChanged( componentPath );
             }
         } );
     }

@@ -199,6 +199,7 @@ final class Container
     {
         assert components != null;
 
+        final ComponentPath containerPath;
         final List<Component> addedComponents = new ArrayList<Component>();
         final int firstComponentIndex;
         final boolean containerBoundsChanged;
@@ -206,6 +207,7 @@ final class Container
         getLock().lock();
         try
         {
+            containerPath = getPath();
             final Rectangle oldBounds = getBounds();
             int index = (boxedIndex != null) ? boxedIndex.intValue() : components_.size();
             firstComponentIndex = index;
@@ -246,12 +248,12 @@ final class Container
                     int componentIndex = firstComponentIndex;
                     for( final IComponent component : addedComponents )
                     {
-                        fireComponentAdded( component, componentIndex++ );
+                        fireComponentAdded( containerPath, component, componentIndex++ );
                     }
 
                     if( containerBoundsChanged )
                     {
-                        fireComponentBoundsChanged();
+                        fireComponentBoundsChanged( containerPath );
                     }
                 }
             } );
@@ -272,12 +274,16 @@ final class Container
     /**
      * Fires a component added event.
      * 
+     * @param containerPath
+     *        The container path; may be {@code null}.
      * @param component
      *        The added component; must not be {@code null}.
      * @param componentIndex
      *        The index of the added component; must not be negative.
      */
     private void fireComponentAdded(
+        /* @Nullable */
+        final ComponentPath containerPath,
         /* @NonNull */
         final IComponent component,
         final int componentIndex )
@@ -286,7 +292,7 @@ final class Container
         assert componentIndex >= 0;
         assert !getLock().isHeldByCurrentThread();
 
-        final ContainerContentChangedEvent event = new ContainerContentChangedEvent( this, component, componentIndex );
+        final ContainerContentChangedEvent event = new ContainerContentChangedEvent( this, containerPath, component, componentIndex );
         for( final IContainerListener listener : containerListeners_ )
         {
             try
@@ -303,12 +309,16 @@ final class Container
     /**
      * Fires a component removed event.
      * 
+     * @param containerPath
+     *        The container path; may be {@code null}.
      * @param component
      *        The removed component; must not be {@code null}.
      * @param componentIndex
      *        The index of the removed component; must not be negative.
      */
     private void fireComponentRemoved(
+        /* @Nullable */
+        final ComponentPath containerPath,
         /* @NonNull */
         final IComponent component,
         final int componentIndex )
@@ -317,7 +327,7 @@ final class Container
         assert componentIndex >= 0;
         assert !getLock().isHeldByCurrentThread();
 
-        final ContainerContentChangedEvent event = new ContainerContentChangedEvent( this, component, componentIndex );
+        final ContainerContentChangedEvent event = new ContainerContentChangedEvent( this, containerPath, component, componentIndex );
         for( final IContainerListener listener : containerListeners_ )
         {
             try
@@ -333,12 +343,17 @@ final class Container
 
     /**
      * Fires a container layout changed event.
+     * 
+     * @param containerPath
+     *        The container path; may be {@code null}.
      */
-    private void fireContainerLayoutChanged()
+    private void fireContainerLayoutChanged(
+        /* @Nullable */
+        final ComponentPath containerPath )
     {
         assert !getLock().isHeldByCurrentThread();
 
-        final ContainerEvent event = new ContainerEvent( this );
+        final ContainerEvent event = new ContainerEvent( this, containerPath );
         for( final IContainerListener listener : containerListeners_ )
         {
             try
@@ -699,6 +714,7 @@ final class Container
     {
         assert componentRangeStrategy != null;
 
+        final ComponentPath containerPath;
         final List<Component> removedComponents = new ArrayList<Component>();
         final int upperComponentIndex;
         final boolean containerBoundsChanged;
@@ -706,6 +722,7 @@ final class Container
         getLock().lock();
         try
         {
+            containerPath = getPath();
             upperComponentIndex = componentRangeStrategy.getUpperIndex() - 1;
             final Rectangle oldBounds = getBounds();
 
@@ -738,12 +755,12 @@ final class Container
                     int componentIndex = upperComponentIndex;
                     for( final Component component : IterableUtils.reverse( removedComponents ) )
                     {
-                        fireComponentRemoved( component, componentIndex-- );
+                        fireComponentRemoved( containerPath, component, componentIndex-- );
                     }
 
                     if( containerBoundsChanged )
                     {
-                        fireComponentBoundsChanged();
+                        fireComponentBoundsChanged( containerPath );
                     }
                 }
             } );
@@ -800,11 +817,13 @@ final class Container
     {
         assertArgumentNotNull( layout, "layout" ); //$NON-NLS-1$
 
+        final ComponentPath containerPath;
         final boolean containerBoundsChanged;
 
         getLock().lock();
         try
         {
+            containerPath = getPath();
             layout_ = layout;
 
             if( components_.isEmpty() )
@@ -832,11 +851,11 @@ final class Container
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                fireContainerLayoutChanged();
+                fireContainerLayoutChanged( containerPath );
 
                 if( containerBoundsChanged )
                 {
-                    fireComponentBoundsChanged();
+                    fireComponentBoundsChanged( containerPath );
                 }
             }
         } );

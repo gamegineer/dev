@@ -1,5 +1,5 @@
 /*
- * ComponentEventTest.java
+ * ContainerEventTest.java
  * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Mar 27, 2012 at 8:57:23 PM.
+ * Created on May 3, 2013 at 8:36:21 PM.
  */
 
 package org.gamegineer.table.core;
@@ -28,17 +28,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.core.ComponentEvent}
+ * A fixture for testing the {@link org.gamegineer.table.core.ContainerEvent}
  * class.
  */
-public final class ComponentEventTest
+public final class ContainerEventTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The component event under test in the fixture. */
-    private ComponentEvent event_;
+    /** The container event under test in the fixture. */
+    private ContainerEvent event_;
 
 
     // ======================================================================
@@ -46,9 +46,9 @@ public final class ComponentEventTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ComponentEventTest} class.
+     * Initializes a new instance of the {@code ContainerEventTest} class.
      */
-    public ComponentEventTest()
+    public ContainerEventTest()
     {
     }
 
@@ -67,36 +67,36 @@ public final class ComponentEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new ComponentEvent( EasyMock.createMock( IComponent.class ), new ComponentPath( null, 0 ) );
+        event_ = new ContainerEvent( EasyMock.createMock( IContainer.class ), new ComponentPath( null, 0 ) );
     }
 
     /**
-     * Ensures the {@link ComponentEvent#ComponentEvent} constructor throws an
+     * Ensures the {@link ContainerEvent#ContainerEvent} constructor throws an
      * exception when passed a {@code null} source.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_Source_Null()
     {
-        new ComponentEvent( null, new ComponentPath( null, 0 ) );
+        new ContainerEvent( null, new ComponentPath( null, 0 ) );
     }
 
     /**
-     * Ensures the {@link ComponentEvent#getComponent} method does not return
+     * Ensures the {@link ContainerEvent#getContainer} method does not return
      * {@code null}.
      */
     @Test
-    public void testGetComponent_ReturnValue_NonNull()
+    public void testGetContainer_ReturnValue_NonNull()
     {
-        assertNotNull( event_.getComponent() );
+        assertNotNull( event_.getContainer() );
     }
 
     /**
-     * Ensures the {@link ComponentEvent#getSource} method returns the same
-     * instance as the {@link ComponentEvent#getComponent} method.
+     * Ensures the {@link ContainerEvent#getSource} method returns the same
+     * instance as the {@link ContainerEvent#getContainer} method.
      */
     @Test
-    public void testGetSource_ReturnValue_SameComponent()
+    public void testGetSource_ReturnValue_SameContainer()
     {
-        assertSame( event_.getComponent(), event_.getSource() );
+        assertSame( event_.getContainer(), event_.getSource() );
     }
 }

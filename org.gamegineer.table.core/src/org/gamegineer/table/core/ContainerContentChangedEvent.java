@@ -1,6 +1,6 @@
 /*
  * ContainerContentChangedEvent.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -45,7 +45,10 @@ public class ContainerContentChangedEvent
     /** The component associated with the event. */
     private final IComponent component_;
 
-    /** The index of the component associated with the event. */
+    /**
+     * The index of the component associated with the event at the time the
+     * event was fired.
+     */
     private final int componentIndex_;
 
 
@@ -59,10 +62,14 @@ public class ContainerContentChangedEvent
      * 
      * @param source
      *        The container that fired the event; must not be {@code null}.
+     * @param containerPath
+     *        The path of the container that fired the event at the time the
+     *        event was fired; may be {@code null}.
      * @param component
      *        The component associated with the event; must not be {@code null}.
      * @param componentIndex
-     *        The index of the component associated with the event.
+     *        The index of the component associated with the event at the time
+     *        the event was fired.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code source} is {@code null} or if {@code componentIndex} is
@@ -75,10 +82,12 @@ public class ContainerContentChangedEvent
         @SuppressWarnings( "hiding" )
         final IContainer source,
         /* @NonNull */
+        final ComponentPath containerPath,
+        /* @NonNull */
         final IComponent component,
         final int componentIndex )
     {
-        super( source );
+        super( source, containerPath );
 
         assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
         assertArgumentLegal( componentIndex >= 0, "componentIndex", NonNlsMessages.ContainerContentChangedEvent_ctor_componentIndex_negative ); //$NON-NLS-1$
@@ -104,9 +113,11 @@ public class ContainerContentChangedEvent
     }
 
     /**
-     * Gets the index of the component associated with the event.
+     * Gets the index of the component associated with the event at the time the
+     * event was fired.
      * 
-     * @return The index of the component associated with the event.
+     * @return The index of the component associated with the event at the time
+     *         the event was fired.
      */
     public final int getComponentIndex()
     {

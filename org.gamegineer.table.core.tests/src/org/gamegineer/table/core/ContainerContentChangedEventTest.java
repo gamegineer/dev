@@ -67,7 +67,7 @@ public final class ContainerContentChangedEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new ContainerContentChangedEvent( EasyMock.createMock( IContainer.class ), EasyMock.createMock( IComponent.class ), 0 );
+        event_ = new ContainerContentChangedEvent( EasyMock.createMock( IContainer.class ), new ComponentPath( null, 0 ), EasyMock.createMock( IComponent.class ), 0 );
     }
 
     /**
@@ -78,7 +78,7 @@ public final class ContainerContentChangedEventTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_Component_Null()
     {
-        new ContainerContentChangedEvent( EasyMock.createMock( IContainer.class ), null, 0 );
+        new ContainerContentChangedEvent( EasyMock.createMock( IContainer.class ), new ComponentPath( null, 0 ), null, 0 );
     }
 
     /**
@@ -90,7 +90,7 @@ public final class ContainerContentChangedEventTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_ComponentIndex_Illegal_Negative()
     {
-        new ContainerContentChangedEvent( EasyMock.createMock( IContainer.class ), EasyMock.createMock( IComponent.class ), -1 );
+        new ContainerContentChangedEvent( EasyMock.createMock( IContainer.class ), new ComponentPath( null, 0 ), EasyMock.createMock( IComponent.class ), -1 );
     }
 
     /**
@@ -101,7 +101,7 @@ public final class ContainerContentChangedEventTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_Source_Null()
     {
-        new ContainerContentChangedEvent( null, EasyMock.createMock( IComponent.class ), 0 );
+        new ContainerContentChangedEvent( null, new ComponentPath( null, 0 ), EasyMock.createMock( IComponent.class ), 0 );
     }
 
     /**

@@ -359,13 +359,12 @@ final class LocalNetworkTable
                 // "jumpy" because multiple IComponent.setLocation() calls will be made
                 // for the same component that may be a few pixels off.
 
-                final IComponent component = event.getComponent();
-                if( component instanceof IContainer )
+                if( event.getComponent() instanceof IContainer )
                 {
-                    componentPath = component.getPath();
+                    componentPath = event.getComponentPath();
                     if( componentPath != null )
                     {
-                        componentIncrement.setLocation( component.getLocation() );
+                        componentIncrement.setLocation( event.getComponent().getLocation() );
                     }
                 }
                 else
@@ -405,11 +404,10 @@ final class LocalNetworkTable
             getTableEnvironmentLock().lock();
             try
             {
-                final IComponent component = event.getComponent();
-                componentPath = component.getPath();
+                componentPath = event.getComponentPath();
                 if( componentPath != null )
                 {
-                    componentIncrement.setOrientation( component.getOrientation() );
+                    componentIncrement.setOrientation( event.getComponent().getOrientation() );
                 }
             }
             finally
@@ -444,11 +442,10 @@ final class LocalNetworkTable
             getTableEnvironmentLock().lock();
             try
             {
-                final IComponent component = event.getComponent();
-                componentPath = component.getPath();
+                componentPath = event.getComponentPath();
                 if( componentPath != null )
                 {
-                    final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = component.getSurfaceDesigns();
+                    final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = event.getComponent().getSurfaceDesigns();
                     final Map<ComponentOrientation, ComponentSurfaceDesignId> surfaceDesignIds = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesignId>( surfaceDesigns.size() );
                     for( final Map.Entry<ComponentOrientation, ComponentSurfaceDesign> entry : surfaceDesigns.entrySet() )
                     {
@@ -615,8 +612,7 @@ final class LocalNetworkTable
                     return;
                 }
 
-                final IContainer container = event.getContainer();
-                containerPath = container.getPath();
+                containerPath = event.getContainerPath();
                 if( containerPath != null )
                 {
                     containerIncrement.setAddedComponentIndex( event.getComponentIndex() );
@@ -660,8 +656,7 @@ final class LocalNetworkTable
                     return;
                 }
 
-                final IContainer container = event.getContainer();
-                containerPath = container.getPath();
+                containerPath = event.getContainerPath();
                 if( containerPath != null )
                 {
                     containerIncrement.setRemovedComponentIndex( event.getComponentIndex() );
@@ -700,11 +695,10 @@ final class LocalNetworkTable
             getTableEnvironmentLock().lock();
             try
             {
-                final IContainer container = event.getContainer();
-                containerPath = container.getPath();
+                containerPath = event.getContainerPath();
                 if( containerPath != null )
                 {
-                    containerIncrement.setLayoutId( container.getLayout().getId() );
+                    containerIncrement.setLayoutId( event.getContainer().getLayout().getId() );
                 }
             }
             finally

@@ -1,6 +1,6 @@
 /*
  * ComponentAsComponentTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.core;
 
 import java.lang.reflect.Method;
 import org.gamegineer.table.core.AbstractComponentTestCase;
+import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.TestComponentStrategies;
 
 /**
@@ -76,11 +77,12 @@ public final class ComponentAsComponentTest
     protected void fireComponentBoundsChanged(
         final Component component )
     {
-        component.fireComponentBoundsChanged();
+        component.fireComponentBoundsChanged( component.getPath() );
     }
 
     /**
-     * Fires the event associated with the specified {@link Component} method.
+     * Fires the event associated with the specified {@link Component} method
+     * that accepts a {@link ComponentPath}.
      * 
      * @param component
      *        The component; must not be {@code null}.
@@ -88,7 +90,7 @@ public final class ComponentAsComponentTest
      *        The name of the method associated with the event; must not be
      *        {@code null}.
      */
-    private static void fireComponentEvent(
+    private static void fireComponentEventWithComponentPath(
         /* @NonNull */
         final Component component,
         /* @NonNull */
@@ -99,9 +101,9 @@ public final class ComponentAsComponentTest
 
         try
         {
-            final Method method = Component.class.getDeclaredMethod( methodName );
+            final Method method = Component.class.getDeclaredMethod( methodName, ComponentPath.class );
             method.setAccessible( true );
-            method.invoke( component );
+            method.invoke( component, component.getPath() );
         }
         catch( final Exception e )
         {
@@ -116,7 +118,7 @@ public final class ComponentAsComponentTest
     protected void fireComponentOrientationChanged(
         final Component component )
     {
-        fireComponentEvent( component, "fireComponentOrientationChanged" ); //$NON-NLS-1$
+        fireComponentEventWithComponentPath( component, "fireComponentOrientationChanged" ); //$NON-NLS-1$
     }
 
     /*
@@ -126,6 +128,6 @@ public final class ComponentAsComponentTest
     protected void fireComponentSurfaceDesignChanged(
         final Component component )
     {
-        fireComponentEvent( component, "fireComponentSurfaceDesignChanged" ); //$NON-NLS-1$
+        fireComponentEventWithComponentPath( component, "fireComponentSurfaceDesignChanged" ); //$NON-NLS-1$
     }
 }
