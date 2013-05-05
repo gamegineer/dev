@@ -37,6 +37,7 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.IterableUtils;
 import org.gamegineer.common.core.util.memento.MementoException;
+import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ContainerEvent;
@@ -199,18 +200,14 @@ final class Container
     {
         assert components != null;
 
-        final ComponentPath containerPath;
-        final List<Component> addedComponents = new ArrayList<Component>();
-        final int firstComponentIndex;
-        final boolean containerBoundsChanged;
+        final List<ContainerContentChangedEvent> componentAddedEvents = new ArrayList<ContainerContentChangedEvent>();
+        final ComponentEvent componentBoundsChangedEvent;
 
         getLock().lock();
         try
         {
-            containerPath = getPath();
             final Rectangle oldBounds = getBounds();
             int index = (boxedIndex != null) ? boxedIndex.intValue() : components_.size();
-            firstComponentIndex = index;
 
             for( final IComponent component : components )
             {
@@ -223,21 +220,22 @@ final class Container
                 assertArgumentLegal( typedComponent.getTableEnvironment() == getTableEnvironment(), "components", NonNlsMessages.Container_addComponents_components_containsComponentCreatedByDifferentTableEnvironment ); //$NON-NLS-1$
 
                 typedComponent.setParent( this );
-                components_.add( index++, typedComponent );
-                addedComponents.add( typedComponent );
+                components_.add( index, typedComponent );
+                componentAddedEvents.add( createContainerContentChangedEvent( typedComponent, index ) );
+                ++index;
             }
 
             layout_.layout( this );
 
             final Rectangle newBounds = getBounds();
-            containerBoundsChanged = !newBounds.equals( oldBounds );
+            componentBoundsChangedEvent = newBounds.equals( oldBounds ) ? null : createComponentEvent();
         }
         finally
         {
             getLock().unlock();
         }
 
-        if( !addedComponents.isEmpty() || containerBoundsChanged )
+        if( !componentAddedEvents.isEmpty() || (componentBoundsChangedEvent != null) )
         {
             addEventNotification( new Runnable()
             {
@@ -245,15 +243,14 @@ final class Container
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
-                    int componentIndex = firstComponentIndex;
-                    for( final IComponent component : addedComponents )
+                    for( final ContainerContentChangedEvent componentAddedEvent : componentAddedEvents )
                     {
-                        fireComponentAdded( containerPath, component, componentIndex++ );
+                        fireComponentAdded( componentAddedEvent );
                     }
 
-                    if( containerBoundsChanged )
+                    if( componentBoundsChangedEvent != null )
                     {
-                        fireComponentBoundsChanged( containerPath );
+                        fireComponentBoundsChanged( componentBoundsChangedEvent );
                     }
                 }
             } );
@@ -272,27 +269,57 @@ final class Container
     }
 
     /**
-     * Fires a component added event.
+     * Creates a container content changed event for this container.
      * 
-     * @param containerPath
-     *        The container path; may be {@code null}.
      * @param component
-     *        The added component; must not be {@code null}.
+     *        The component associated with the event; must not be {@code null}.
      * @param componentIndex
-     *        The index of the added component; must not be negative.
+     *        The index of the component associated with the event; must not be
+     *        negative.
+     * 
+     * @return A new container content changed event; never {@code null}.
      */
-    private void fireComponentAdded(
-        /* @Nullable */
-        final ComponentPath containerPath,
+    @GuardedBy( "getLock()" )
+    /* @NonNull */
+    private ContainerContentChangedEvent createContainerContentChangedEvent(
         /* @NonNull */
-        final IComponent component,
+        final Component component,
         final int componentIndex )
     {
         assert component != null;
         assert componentIndex >= 0;
+        assert getLock().isHeldByCurrentThread();
+
+        return new ContainerContentChangedEvent( this, getPath(), component, componentIndex );
+    }
+
+    /**
+     * Creates a container event for this container.
+     * 
+     * @return A new container event; never {@code null}.
+     */
+    @GuardedBy( "getLock()" )
+    /* @NonNull */
+    private ContainerEvent createContainerEvent()
+    {
+        assert getLock().isHeldByCurrentThread();
+
+        return new ContainerEvent( this, getPath() );
+    }
+
+    /**
+     * Fires the specified component added event.
+     * 
+     * @param event
+     *        The event; must not be {@code null}.
+     */
+    private void fireComponentAdded(
+        /* @NonNull */
+        final ContainerContentChangedEvent event )
+    {
+        assert event != null;
         assert !getLock().isHeldByCurrentThread();
 
-        final ContainerContentChangedEvent event = new ContainerContentChangedEvent( this, containerPath, component, componentIndex );
         for( final IContainerListener listener : containerListeners_ )
         {
             try
@@ -307,27 +334,18 @@ final class Container
     }
 
     /**
-     * Fires a component removed event.
+     * Fires the specified component removed event.
      * 
-     * @param containerPath
-     *        The container path; may be {@code null}.
-     * @param component
-     *        The removed component; must not be {@code null}.
-     * @param componentIndex
-     *        The index of the removed component; must not be negative.
+     * @param event
+     *        The event; must not be {@code null}.
      */
     private void fireComponentRemoved(
-        /* @Nullable */
-        final ComponentPath containerPath,
         /* @NonNull */
-        final IComponent component,
-        final int componentIndex )
+        final ContainerContentChangedEvent event )
     {
-        assert component != null;
-        assert componentIndex >= 0;
+        assert event != null;
         assert !getLock().isHeldByCurrentThread();
 
-        final ContainerContentChangedEvent event = new ContainerContentChangedEvent( this, containerPath, component, componentIndex );
         for( final IContainerListener listener : containerListeners_ )
         {
             try
@@ -342,18 +360,18 @@ final class Container
     }
 
     /**
-     * Fires a container layout changed event.
+     * Fires the specified container layout changed event.
      * 
-     * @param containerPath
-     *        The container path; may be {@code null}.
+     * @param event
+     *        The event; must not be {@code null}.
      */
     private void fireContainerLayoutChanged(
-        /* @Nullable */
-        final ComponentPath containerPath )
+        /* @NonNull */
+        final ContainerEvent event )
     {
+        assert event != null;
         assert !getLock().isHeldByCurrentThread();
 
-        final ContainerEvent event = new ContainerEvent( this, containerPath );
         for( final IContainerListener listener : containerListeners_ )
         {
             try
@@ -717,36 +735,35 @@ final class Container
     {
         assert componentRangeStrategy != null;
 
-        final ComponentPath containerPath;
         final List<Component> removedComponents = new ArrayList<Component>();
-        final int upperComponentIndex;
-        final boolean containerBoundsChanged;
+        final List<ContainerContentChangedEvent> componentRemovedEvents = new ArrayList<ContainerContentChangedEvent>();
+        final ComponentEvent componentBoundsChangedEvent;
 
         getLock().lock();
         try
         {
-            containerPath = getPath();
-            upperComponentIndex = componentRangeStrategy.getUpperIndex() - 1;
             final Rectangle oldBounds = getBounds();
 
             removedComponents.addAll( components_.subList( componentRangeStrategy.getLowerIndex(), componentRangeStrategy.getUpperIndex() ) );
             components_.removeAll( removedComponents );
+            int index = componentRangeStrategy.getLowerIndex();
             for( final Component component : removedComponents )
             {
                 component.setParent( null );
+                componentRemovedEvents.add( createContainerContentChangedEvent( component, index++ ) );
             }
 
             layout_.layout( this );
 
             final Rectangle newBounds = getBounds();
-            containerBoundsChanged = !newBounds.equals( oldBounds );
+            componentBoundsChangedEvent = newBounds.equals( oldBounds ) ? null : createComponentEvent();
         }
         finally
         {
             getLock().unlock();
         }
 
-        if( !removedComponents.isEmpty() || containerBoundsChanged )
+        if( !componentRemovedEvents.isEmpty() || (componentBoundsChangedEvent != null) )
         {
             addEventNotification( new Runnable()
             {
@@ -755,15 +772,14 @@ final class Container
                 public void run()
                 {
                     // ensure events are fired in order from highest index to lowest index
-                    int componentIndex = upperComponentIndex;
-                    for( final Component component : IterableUtils.reverse( removedComponents ) )
+                    for( final ContainerContentChangedEvent componentRemovedEvent : IterableUtils.reverse( componentRemovedEvents ) )
                     {
-                        fireComponentRemoved( containerPath, component, componentIndex-- );
+                        fireComponentRemoved( componentRemovedEvent );
                     }
 
-                    if( containerBoundsChanged )
+                    if( componentBoundsChangedEvent != null )
                     {
-                        fireComponentBoundsChanged( containerPath );
+                        fireComponentBoundsChanged( componentBoundsChangedEvent );
                     }
                 }
             } );
@@ -820,18 +836,18 @@ final class Container
     {
         assertArgumentNotNull( layout, "layout" ); //$NON-NLS-1$
 
-        final ComponentPath containerPath;
-        final boolean containerBoundsChanged;
+        final ContainerEvent containerLayoutChangedEvent;
+        final ComponentEvent componentBoundsChangedEvent;
 
         getLock().lock();
         try
         {
-            containerPath = getPath();
             layout_ = layout;
+            containerLayoutChangedEvent = createContainerEvent();
 
             if( components_.isEmpty() )
             {
-                containerBoundsChanged = false;
+                componentBoundsChangedEvent = null;
             }
             else
             {
@@ -840,7 +856,7 @@ final class Container
                 layout_.layout( this );
 
                 final Rectangle newBounds = getBounds();
-                containerBoundsChanged = !newBounds.equals( oldBounds );
+                componentBoundsChangedEvent = newBounds.equals( oldBounds ) ? null : createComponentEvent();
             }
         }
         finally
@@ -854,11 +870,11 @@ final class Container
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                fireContainerLayoutChanged( containerPath );
+                fireContainerLayoutChanged( containerLayoutChangedEvent );
 
-                if( containerBoundsChanged )
+                if( componentBoundsChangedEvent != null )
                 {
-                    fireComponentBoundsChanged( containerPath );
+                    fireComponentBoundsChanged( componentBoundsChangedEvent );
                 }
             }
         } );

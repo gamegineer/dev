@@ -169,6 +169,20 @@ class Component
         tableEnvironment_.addEventNotification( notification );
     }
 
+    /**
+     * Creates a component event for this component.
+     * 
+     * @return A new component event; never {@code null}.
+     */
+    @GuardedBy( "getLock()" )
+    /* @NonNull */
+    final ComponentEvent createComponentEvent()
+    {
+        assert getLock().isHeldByCurrentThread();
+
+        return new ComponentEvent( this, getPath() );
+    }
+
     /*
      * @see org.gamegineer.common.core.util.memento.IMementoOriginator#createMemento()
      */
@@ -191,18 +205,18 @@ class Component
     }
 
     /**
-     * Fires a component bounds changed event.
+     * Fires the specified component bounds changed event.
      * 
-     * @param componentPath
-     *        The component path; may be {@code null}.
+     * @param event
+     *        The event; must not be {@code null}.
      */
     final void fireComponentBoundsChanged(
-        /* @Nullable */
-        final ComponentPath componentPath )
+        /* @NonNull */
+        final ComponentEvent event )
     {
+        assert event != null;
         assert !getLock().isHeldByCurrentThread();
 
-        final ComponentEvent event = new ComponentEvent( this, componentPath );
         for( final IComponentListener listener : componentListeners_ )
         {
             try
@@ -217,18 +231,18 @@ class Component
     }
 
     /**
-     * Fires a component orientation changed event.
+     * Fires the specified component orientation changed event.
      * 
-     * @param componentPath
-     *        The component path; may be {@code null}.
+     * @param event
+     *        The event; must not be {@code null}.
      */
     private void fireComponentOrientationChanged(
-        /* @Nullable */
-        final ComponentPath componentPath )
+        /* @NonNull */
+        final ComponentEvent event )
     {
+        assert event != null;
         assert !getLock().isHeldByCurrentThread();
 
-        final ComponentEvent event = new ComponentEvent( this, componentPath );
         for( final IComponentListener listener : componentListeners_ )
         {
             try
@@ -243,18 +257,18 @@ class Component
     }
 
     /**
-     * Fires a component surface design changed event.
+     * Fires the specified component surface design changed event.
      * 
-     * @param componentPath
-     *        The component path; may be {@code null}.
+     * @param event
+     *        The event; must not be {@code null}.
      */
     private void fireComponentSurfaceDesignChanged(
-        /* @Nullable */
-        final ComponentPath componentPath )
+        /* @NonNull */
+        final ComponentEvent event )
     {
+        assert event != null;
         assert !getLock().isHeldByCurrentThread();
 
-        final ComponentEvent event = new ComponentEvent( this, componentPath );
         for( final IComponentListener listener : componentListeners_ )
         {
             try
@@ -639,13 +653,13 @@ class Component
         assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
         assertArgumentLegal( isSupportedOrientation( orientation ), "orientation", NonNlsMessages.Component_orientation_illegal ); //$NON-NLS-1$
 
-        final ComponentPath componentPath;
+        final ComponentEvent componentOrientationChangedEvent;
 
         getLock().lock();
         try
         {
-            componentPath = getPath();
             orientation_ = orientation;
+            componentOrientationChangedEvent = createComponentEvent();
         }
         finally
         {
@@ -658,7 +672,7 @@ class Component
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                fireComponentOrientationChanged( componentPath );
+                fireComponentOrientationChanged( componentOrientationChangedEvent );
             }
         } );
     }
@@ -712,13 +726,13 @@ class Component
         assertArgumentLegal( isSupportedOrientation( orientation ), "orientation", NonNlsMessages.Component_orientation_illegal ); //$NON-NLS-1$
         assertArgumentNotNull( surfaceDesign, "surfaceDesign" ); //$NON-NLS-1$
 
-        final ComponentPath componentPath;
+        final ComponentEvent componentSurfaceDesignChangedEvent;
 
         getLock().lock();
         try
         {
-            componentPath = getPath();
             surfaceDesigns_.put( orientation, surfaceDesign );
+            componentSurfaceDesignChangedEvent = createComponentEvent();
         }
         finally
         {
@@ -731,7 +745,7 @@ class Component
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                fireComponentSurfaceDesignChanged( componentPath );
+                fireComponentSurfaceDesignChanged( componentSurfaceDesignChangedEvent );
             }
         } );
     }
@@ -807,17 +821,16 @@ class Component
         assert offset != null;
         assert getLock().isHeldByCurrentThread();
 
-        final ComponentPath componentPath = getPath();
-
         location_.translate( offset.width, offset.height );
         origin_.translate( offset.width, offset.height );
+        final ComponentEvent componentBoundsChangedEvent = createComponentEvent();
 
         addEventNotification( new Runnable()
         {
             @Override
             public void run()
             {
-                fireComponentBoundsChanged( componentPath );
+                fireComponentBoundsChanged( componentBoundsChangedEvent );
             }
         } );
     }

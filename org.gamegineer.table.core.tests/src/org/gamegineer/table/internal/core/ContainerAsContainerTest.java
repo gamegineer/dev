@@ -24,7 +24,9 @@ package org.gamegineer.table.internal.core;
 import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.gamegineer.table.core.AbstractContainerTestCase;
-import org.gamegineer.table.core.ComponentPath;
+import org.gamegineer.table.core.ComponentEvent;
+import org.gamegineer.table.core.ContainerContentChangedEvent;
+import org.gamegineer.table.core.ContainerEvent;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.TestComponentStrategies;
 
@@ -79,7 +81,7 @@ public final class ContainerAsContainerTest
     protected void fireComponentAdded(
         final Container container )
     {
-        fireContainerEventWithComponentPathAndComponentAndInteger( container, "fireComponentAdded" ); //$NON-NLS-1$
+        fireContainerContentChangedEvent( container, "fireComponentAdded" ); //$NON-NLS-1$
     }
 
     /*
@@ -89,12 +91,12 @@ public final class ContainerAsContainerTest
     protected void fireComponentBoundsChanged(
         final Container component )
     {
-        component.fireComponentBoundsChanged( component.getPath() );
+        component.fireComponentBoundsChanged( new ComponentEvent( component, null ) );
     }
 
     /**
-     * Fires the event associated with the specified {@link Component} method
-     * that accepts a {@link ComponentPath}.
+     * Fires the component event associated with the specified {@link Component}
+     * method.
      * 
      * @param container
      *        The container; must not be {@code null}.
@@ -102,7 +104,7 @@ public final class ContainerAsContainerTest
      *        The name of the method associated with the event; must not be
      *        {@code null}.
      */
-    private static void fireComponentEventWithComponentPath(
+    private static void fireComponentEvent(
         /* @NonNull */
         final Container container,
         /* @NonNull */
@@ -113,9 +115,9 @@ public final class ContainerAsContainerTest
 
         try
         {
-            final Method method = Component.class.getDeclaredMethod( methodName, ComponentPath.class );
+            final Method method = Component.class.getDeclaredMethod( methodName, ComponentEvent.class );
             method.setAccessible( true );
-            method.invoke( container, container.getPath() );
+            method.invoke( container, new ComponentEvent( container, null ) );
         }
         catch( final Exception e )
         {
@@ -130,7 +132,7 @@ public final class ContainerAsContainerTest
     protected void fireComponentOrientationChanged(
         final Container component )
     {
-        fireComponentEventWithComponentPath( component, "fireComponentOrientationChanged" ); //$NON-NLS-1$
+        fireComponentEvent( component, "fireComponentOrientationChanged" ); //$NON-NLS-1$
     }
 
     /*
@@ -140,7 +142,7 @@ public final class ContainerAsContainerTest
     protected void fireComponentRemoved(
         final Container container )
     {
-        fireContainerEventWithComponentPathAndComponentAndInteger( container, "fireComponentRemoved" ); //$NON-NLS-1$
+        fireContainerContentChangedEvent( container, "fireComponentRemoved" ); //$NON-NLS-1$
     }
 
     /*
@@ -150,12 +152,12 @@ public final class ContainerAsContainerTest
     protected void fireComponentSurfaceDesignChanged(
         final Container component )
     {
-        fireComponentEventWithComponentPath( component, "fireComponentSurfaceDesignChanged" ); //$NON-NLS-1$
+        fireComponentEvent( component, "fireComponentSurfaceDesignChanged" ); //$NON-NLS-1$
     }
 
     /**
-     * Fires the event associated with the specified {@link Container} method
-     * that accepts a {@link ComponentPath}.
+     * Fires the container content changed event associated with the specified
+     * {@link Container} method.
      * 
      * @param container
      *        The container; must not be {@code null}.
@@ -163,7 +165,7 @@ public final class ContainerAsContainerTest
      *        The name of the method associated with the event; must not be
      *        {@code null}.
      */
-    private static void fireContainerEventWithComponentPath(
+    private static void fireContainerContentChangedEvent(
         /* @NonNull */
         final Container container,
         /* @NonNull */
@@ -174,9 +176,9 @@ public final class ContainerAsContainerTest
 
         try
         {
-            final Method method = Container.class.getDeclaredMethod( methodName, ComponentPath.class );
+            final Method method = Container.class.getDeclaredMethod( methodName, ContainerContentChangedEvent.class );
             method.setAccessible( true );
-            method.invoke( container, container.getPath() );
+            method.invoke( container, new ContainerContentChangedEvent( container, container.getPath(), EasyMock.createMock( IComponent.class ), 0 ) );
         }
         catch( final Exception e )
         {
@@ -185,9 +187,8 @@ public final class ContainerAsContainerTest
     }
 
     /**
-     * Fires the event associated with the specified {@link Container} method
-     * that accepts an {@link ComponentPath}, {@link IComponent}, and an
-     * integer.
+     * Fires the container event associated with the specified {@link Container}
+     * method.
      * 
      * @param container
      *        The container; must not be {@code null}.
@@ -195,7 +196,7 @@ public final class ContainerAsContainerTest
      *        The name of the method associated with the event; must not be
      *        {@code null}.
      */
-    private static void fireContainerEventWithComponentPathAndComponentAndInteger(
+    private static void fireContainerEvent(
         /* @NonNull */
         final Container container,
         /* @NonNull */
@@ -206,9 +207,9 @@ public final class ContainerAsContainerTest
 
         try
         {
-            final Method method = Container.class.getDeclaredMethod( methodName, ComponentPath.class, IComponent.class, Integer.TYPE );
+            final Method method = Container.class.getDeclaredMethod( methodName, ContainerEvent.class );
             method.setAccessible( true );
-            method.invoke( container, container.getPath(), EasyMock.createMock( IComponent.class ), Integer.valueOf( 0 ) );
+            method.invoke( container, new ContainerEvent( container, container.getPath() ) );
         }
         catch( final Exception e )
         {
@@ -223,6 +224,6 @@ public final class ContainerAsContainerTest
     protected void fireContainerLayoutChanged(
         final Container container )
     {
-        fireContainerEventWithComponentPath( container, "fireContainerLayoutChanged" ); //$NON-NLS-1$
+        fireContainerEvent( container, "fireContainerLayoutChanged" ); //$NON-NLS-1$
     }
 }
