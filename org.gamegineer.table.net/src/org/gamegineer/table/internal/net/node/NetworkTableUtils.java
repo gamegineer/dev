@@ -94,10 +94,13 @@ public final class NetworkTableUtils
         try
         {
             final IComponent component = table.getComponent( componentPath );
-            incrementComponentState( component, componentIncrement );
-            if( (component instanceof IContainer) && (componentIncrement instanceof ContainerIncrement) )
+            if( component != null )
             {
-                incrementContainerState( (IContainer)component, (ContainerIncrement)componentIncrement );
+                incrementComponentState( component, componentIncrement );
+                if( (component instanceof IContainer) && (componentIncrement instanceof ContainerIncrement) )
+                {
+                    incrementContainerState( (IContainer)component, (ContainerIncrement)componentIncrement );
+                }
             }
         }
         finally

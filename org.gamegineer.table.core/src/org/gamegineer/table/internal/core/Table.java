@@ -244,8 +244,11 @@ final class Table
 
         final List<ComponentPath> paths = path.toList();
         final ComponentPath tabletopPath = paths.get( 0 );
-        assertArgumentLegal( tabletopPath.getIndex() == 0, "path", NonNlsMessages.Table_getComponent_path_notExists ); //$NON-NLS-1$
-        if( paths.size() == 1 )
+        if( tabletopPath.getIndex() != 0 )
+        {
+            return null;
+        }
+        else if( paths.size() == 1 )
         {
             return tabletop_;
         }

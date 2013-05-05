@@ -45,15 +45,13 @@ public interface ITable
      * @param path
      *        The component path; must not be {@code null}.
      * 
-     * @return The component in this table at the specified path; never
-     *         {@code null}.
+     * @return The component in this table at the specified path or {@code null}
+     *         if no component exists at the specified path.
      * 
-     * @throws java.lang.IllegalArgumentException
-     *         If no component exists at the specified path.
      * @throws java.lang.NullPointerException
      *         If {@code path} is {@code null}.
      */
-    /* @NonNull */
+    /* @Nullable */
     public IComponent getComponent(
         /* @NonNull */
         ComponentPath path );

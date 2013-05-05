@@ -147,9 +147,6 @@ final class NonNlsMessages
     /** The component index is out of range. */
     public static String Container_getComponentFromIndex_index_outOfRange;
 
-    /** The component path does not exist in the container. */
-    public static String Container_getComponentFromPath_path_notExists;
-
     /** The component is not contained in the container. */
     public static String Container_removeComponent_component_notOwned;
 
@@ -196,9 +193,6 @@ final class NonNlsMessages
 
     /** A drag-and-drop operation is active. */
     public static String Table_beginDrag_dragActive;
-
-    /** The component path does not exist in the table. */
-    public static String Table_getComponent_path_notExists;
 
     // --- TableEnvironment -------------------------------------------------
 

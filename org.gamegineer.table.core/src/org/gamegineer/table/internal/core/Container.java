@@ -440,14 +440,11 @@ final class Container
      *        The collection of constituent component paths of the overall
      *        component path; must not be {@code null} and must not be empty.
      * 
-     * @return The component in this container at the specified path; never
-     *         {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If no component exists at the specified path.
+     * @return The component in this container at the specified path; or
+     *         {@code null} if no component exists at the specified path.
      */
     @GuardedBy( "getLock()" )
-    /* @NonNull */
+    /* @Nullable */
     Component getComponent(
         /* @NonNull */
         final List<ComponentPath> paths )
@@ -457,14 +454,20 @@ final class Container
         assert getLock().isHeldByCurrentThread();
 
         final ComponentPath path = paths.get( 0 );
-        final Component component = getComponent( path.getIndex() );
-        if( paths.size() == 1 )
+        if( path.getIndex() < components_.size() )
         {
-            return component;
+            final Component component = components_.get( path.getIndex() );
+            if( paths.size() == 1 )
+            {
+                return component;
+            }
+            else if( component instanceof Container )
+            {
+                return ((Container)component).getComponent( paths.subList( 1, paths.size() ) );
+            }
         }
 
-        assertArgumentLegal( component instanceof Container, "paths", NonNlsMessages.Container_getComponentFromPath_path_notExists ); //$NON-NLS-1$
-        return ((Container)component).getComponent( paths.subList( 1, paths.size() ) );
+        return null;
     }
 
     /*

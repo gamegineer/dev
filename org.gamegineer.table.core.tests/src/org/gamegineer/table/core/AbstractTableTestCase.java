@@ -245,13 +245,13 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
-     * Ensures the {@link ITable#getComponent(ComponentPath)} method throws an
-     * exception when passed a path that is absent.
+     * Ensures the {@link ITable#getComponent(ComponentPath)} method returns
+     * {@code null} when passed a path that is absent.
      */
-    @Test( expected = IllegalArgumentException.class )
+    @Test
     public void testGetComponentFromPath_Path_Absent()
     {
-        table_.getComponent( new ComponentPath( null, 1 ) );
+        assertNull( table_.getComponent( new ComponentPath( null, 1 ) ) );
     }
 
     /**
