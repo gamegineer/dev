@@ -1,6 +1,6 @@
 /*
  * AbstractComponentModelTestCase.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,8 +26,12 @@ import java.awt.Point;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.core.TestComponentSurfaceDesigns;
+import org.gamegineer.test.core.MocksSupport;
+import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 
 /**
  * A fixture for testing the
@@ -43,11 +47,21 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     // Fields
     // ======================================================================
 
+    /** The default test timeout. */
+    @Rule
+    public final Timeout DEFAULT_TIMEOUT = new Timeout( 1000 );
+
     /** The component model under test in the fixture. */
     private T componentModel_;
 
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
+
+    /** The mocks support for use in the fixture. */
+    private MocksSupport mocksSupport_;
+
+    /** The table model for use in the fixture. */
+    private TableModel tableModel_;
 
 
     // ======================================================================
@@ -68,15 +82,63 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     // ======================================================================
 
     /**
+     * Adds the specified component model listener to the fixture component
+     * model.
+     * 
+     * <p>
+     * This method ensures all pending table environment events have fired
+     * before adding the listener.
+     * </p>
+     * 
+     * @param listener
+     *        The component model listener; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code listener} is already a registered component model
+     *         listener.
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted.
+     * @throws java.lang.NullPointerException
+     *         If {@code listener} is {@code null}.
+     */
+    protected final void addComponentModelListener(
+        /* @NonNull */
+        final IComponentModelListener listener )
+        throws InterruptedException
+    {
+        awaitPendingTableEnvironmentEvents();
+        componentModel_.addComponentModelListener( listener );
+    }
+
+    /**
+     * Awaits all pending events from the fixture table environment.
+     * 
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted.
+     */
+    protected final void awaitPendingTableEnvironmentEvents()
+        throws InterruptedException
+    {
+        tableModel_.getTable().getTableEnvironment().awaitPendingEvents();
+    }
+
+    /**
      * Creates the component model to be tested.
+     * 
+     * @param tableModel
+     *        The table model; must not be {@code null}.
      * 
      * @return The component model to be tested; never {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
+     * @throws java.lang.NullPointerException
+     *         If {@code tableModel} is {@code null}.
      */
     /* @NonNull */
-    protected abstract T createComponentModel()
+    protected abstract T createComponentModel(
+        /* @NonNull */
+        final TableModel tableModel )
         throws Exception;
 
     /**
@@ -145,6 +207,26 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     }
 
     /**
+     * Gets the mocks support for use in the fixture.
+     * 
+     * @return The mocks support for use in the fixture; never {@code null}.
+     */
+    /* @NonNull */
+    protected final MocksSupport getMocksSupport()
+    {
+        assertNotNull( mocksSupport_ );
+        return mocksSupport_;
+    }
+
+    /**
+     * Switches the fixture mocks control from record mode to replay mode.
+     */
+    protected final void replayMocks()
+    {
+        mocksControl_.replay();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -155,27 +237,46 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        componentModel_ = createComponentModel();
+        mocksSupport_ = new MocksSupport();
+        tableModel_ = new TableModel();
+        componentModel_ = createComponentModel( tableModel_ );
         assertNotNull( componentModel_ );
-        componentModel_.initialize( new TableModel() );
+        componentModel_.initialize( tableModel_ );
+    }
+
+    /**
+     * Tears down the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @After
+    public void tearDown()
+        throws Exception
+    {
+        tableModel_.dispose();
     }
 
     /**
      * Ensures the {@link ComponentModel#addComponentModelListener} method adds
      * a listener that is absent from the component model listener collection.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testAddComponentModelListener_Listener_Absent()
+        throws Exception
     {
         final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
         listener.componentChanged( EasyMock.notNull( ComponentModelEvent.class ) );
-        mocksControl_.replay();
+        replayMocks();
 
         fireComponentChangedEvent();
-        componentModel_.addComponentModelListener( listener );
+        addComponentModelListener( listener );
         fireComponentChangedEvent();
 
-        mocksControl_.verify();
+        verifyMocks();
     }
 
     /**
@@ -205,167 +306,213 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     /**
      * Ensures a change to the underlying component bounds fires a component
      * bounds changed event and a component changed event.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testComponent_BoundsChanged_FiresComponentBoundsChangedEventAndComponentChangedEvent()
+        throws Exception
     {
         final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentModelEvent.class ) );
+        EasyMock.expectLastCall().andAnswer( mocksSupport_.asyncAnswer() );
         listener.componentChanged( EasyMock.notNull( ComponentModelEvent.class ) );
-        mocksControl_.replay();
-        componentModel_.addComponentModelListener( listener );
+        EasyMock.expectLastCall().andAnswer( mocksSupport_.asyncAnswer() );
+        replayMocks();
+
+        addComponentModelListener( listener );
 
         final Point location = componentModel_.getComponent().getLocation();
         location.translate( 1, 1 );
         componentModel_.getComponent().setLocation( location );
 
-        mocksControl_.verify();
+        verifyMocks();
     }
 
     /**
      * Ensures a change to the underlying component orientation fires a
      * component orientation changed event and a component changed event.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testComponent_OrientationChanged_FiresComponentOrientationChangedEventAndComponentChangedEvent()
+        throws Exception
     {
         final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
         listener.componentOrientationChanged( EasyMock.notNull( ComponentModelEvent.class ) );
+        EasyMock.expectLastCall().andAnswer( mocksSupport_.asyncAnswer() );
         listener.componentChanged( EasyMock.notNull( ComponentModelEvent.class ) );
-        mocksControl_.replay();
-        componentModel_.addComponentModelListener( listener );
+        EasyMock.expectLastCall().andAnswer( mocksSupport_.asyncAnswer() );
+        replayMocks();
+
+        addComponentModelListener( listener );
 
         componentModel_.getComponent().setOrientation( componentModel_.getComponent().getOrientation().inverse() );
 
-        mocksControl_.verify();
+        verifyMocks();
     }
 
     /**
      * Ensures a change to the underlying component surface design fires a
      * component surface design changed event and a component changed event.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testComponent_SurfaceDesignChanged_FiresComponentSurfaceDesignChangedEventAndComponentChangedEvent()
+        throws Exception
     {
         final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
         listener.componentSurfaceDesignChanged( EasyMock.notNull( ComponentModelEvent.class ) );
+        EasyMock.expectLastCall().andAnswer( mocksSupport_.asyncAnswer() );
         listener.componentChanged( EasyMock.notNull( ComponentModelEvent.class ) );
-        mocksControl_.replay();
-        componentModel_.addComponentModelListener( listener );
+        EasyMock.expectLastCall().andAnswer( mocksSupport_.asyncAnswer() );
+        replayMocks();
+
+        addComponentModelListener( listener );
 
         componentModel_.getComponent().setSurfaceDesign( componentModel_.getComponent().getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
 
-        mocksControl_.verify();
+        verifyMocks();
     }
 
     /**
      * Ensures the component bounds changed event catches any exception thrown
      * by the {@link IComponentModelListener#componentBoundsChanged} method of a
      * component model listener.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testComponentBoundsChanged_CatchesListenerException()
+        throws Exception
     {
         final IComponentModelListener listener1 = mocksControl_.createMock( IComponentModelListener.class );
         listener1.componentBoundsChanged( EasyMock.notNull( ComponentModelEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IComponentModelListener listener2 = mocksControl_.createMock( IComponentModelListener.class );
         listener2.componentBoundsChanged( EasyMock.notNull( ComponentModelEvent.class ) );
-        mocksControl_.replay();
-        componentModel_.addComponentModelListener( listener1 );
-        componentModel_.addComponentModelListener( listener2 );
+        replayMocks();
+
+        addComponentModelListener( listener1 );
+        addComponentModelListener( listener2 );
 
         fireComponentBoundsChangedEvent();
 
-        mocksControl_.verify();
+        verifyMocks();
     }
 
     /**
      * Ensures the component changed event catches any exception thrown by the
      * {@link IComponentModelListener#componentChanged} method of a component
      * model listener.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testComponentChanged_CatchesListenerException()
+        throws Exception
     {
         final IComponentModelListener listener1 = mocksControl_.createMock( IComponentModelListener.class );
         listener1.componentChanged( EasyMock.notNull( ComponentModelEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IComponentModelListener listener2 = mocksControl_.createMock( IComponentModelListener.class );
         listener2.componentChanged( EasyMock.notNull( ComponentModelEvent.class ) );
-        mocksControl_.replay();
-        componentModel_.addComponentModelListener( listener1 );
-        componentModel_.addComponentModelListener( listener2 );
+        replayMocks();
+
+        addComponentModelListener( listener1 );
+        addComponentModelListener( listener2 );
 
         fireComponentChangedEvent();
 
-        mocksControl_.verify();
+        verifyMocks();
     }
 
     /**
      * Ensures the component model focus changed event catches any exception
      * thrown by the {@link IComponentModelListener#componentModelFocusChanged}
      * method of a component model listener.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testComponentModelFocusChanged_CatchesListenerException()
+        throws Exception
     {
         final IComponentModelListener listener1 = mocksControl_.createMock( IComponentModelListener.class );
         listener1.componentModelFocusChanged( EasyMock.notNull( ComponentModelEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IComponentModelListener listener2 = mocksControl_.createMock( IComponentModelListener.class );
         listener2.componentModelFocusChanged( EasyMock.notNull( ComponentModelEvent.class ) );
-        mocksControl_.replay();
-        componentModel_.addComponentModelListener( listener1 );
-        componentModel_.addComponentModelListener( listener2 );
+        replayMocks();
+
+        addComponentModelListener( listener1 );
+        addComponentModelListener( listener2 );
 
         fireComponentModelFocusChangedEvent();
 
-        mocksControl_.verify();
+        verifyMocks();
     }
 
     /**
      * Ensures the component model hover changed event catches any exception
      * thrown by the {@link IComponentModelListener#componentModelHoverChanged}
      * method of a component model listener.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testComponentModelHoverChanged_CatchesListenerException()
+        throws Exception
     {
         final IComponentModelListener listener1 = mocksControl_.createMock( IComponentModelListener.class );
         listener1.componentModelHoverChanged( EasyMock.notNull( ComponentModelEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IComponentModelListener listener2 = mocksControl_.createMock( IComponentModelListener.class );
         listener2.componentModelHoverChanged( EasyMock.notNull( ComponentModelEvent.class ) );
-        mocksControl_.replay();
-        componentModel_.addComponentModelListener( listener1 );
-        componentModel_.addComponentModelListener( listener2 );
+        replayMocks();
+
+        addComponentModelListener( listener1 );
+        addComponentModelListener( listener2 );
 
         fireComponentModelHoverChangedEvent();
 
-        mocksControl_.verify();
+        verifyMocks();
     }
 
     /**
      * Ensures the component orientation changed event catches any exception
      * thrown by the {@link IComponentModelListener#componentOrientationChanged}
      * method of a component model listener.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testComponentOrientationChanged_CatchesListenerException()
+        throws Exception
     {
         final IComponentModelListener listener1 = mocksControl_.createMock( IComponentModelListener.class );
         listener1.componentOrientationChanged( EasyMock.notNull( ComponentModelEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IComponentModelListener listener2 = mocksControl_.createMock( IComponentModelListener.class );
         listener2.componentOrientationChanged( EasyMock.notNull( ComponentModelEvent.class ) );
-        mocksControl_.replay();
-        componentModel_.addComponentModelListener( listener1 );
-        componentModel_.addComponentModelListener( listener2 );
+        replayMocks();
+
+        addComponentModelListener( listener1 );
+        addComponentModelListener( listener2 );
 
         fireComponentOrientationChangedEvent();
 
-        mocksControl_.verify();
+        verifyMocks();
     }
 
     /**
@@ -373,22 +520,27 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
      * thrown by the
      * {@link IComponentModelListener#componentSurfaceDesignChanged} method of a
      * component model listener.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testComponentSurfaceDesignChanged_CatchesListenerException()
+        throws Exception
     {
         final IComponentModelListener listener1 = mocksControl_.createMock( IComponentModelListener.class );
         listener1.componentSurfaceDesignChanged( EasyMock.notNull( ComponentModelEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IComponentModelListener listener2 = mocksControl_.createMock( IComponentModelListener.class );
         listener2.componentSurfaceDesignChanged( EasyMock.notNull( ComponentModelEvent.class ) );
-        mocksControl_.replay();
-        componentModel_.addComponentModelListener( listener1 );
-        componentModel_.addComponentModelListener( listener2 );
+        replayMocks();
+
+        addComponentModelListener( listener1 );
+        addComponentModelListener( listener2 );
 
         fireComponentSurfaceDesignChangedEvent();
 
-        mocksControl_.verify();
+        verifyMocks();
     }
 
     /**
@@ -425,87 +577,130 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     /**
      * Ensures the {@link ComponentModel#removeComponentModelListener} removes a
      * listener that is present in the component model listener collection.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testRemoveComponentModelListener_Listener_Present()
+        throws Exception
     {
         final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
         listener.componentChanged( EasyMock.notNull( ComponentModelEvent.class ) );
-        mocksControl_.replay();
-        componentModel_.addComponentModelListener( listener );
+        replayMocks();
+
+        addComponentModelListener( listener );
 
         fireComponentChangedEvent();
         componentModel_.removeComponentModelListener( listener );
         fireComponentChangedEvent();
 
-        mocksControl_.verify();
+        verifyMocks();
     }
 
     /**
      * Ensures the {@link ComponentModel#setFocused} method fires a component
      * model focus changed event after the component model gained the focus.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testSetFocused_GainedFocus_FiresComponentModelFocusChangedEvent()
+        throws Exception
     {
         final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
         listener.componentModelFocusChanged( EasyMock.notNull( ComponentModelEvent.class ) );
-        mocksControl_.replay();
-        componentModel_.addComponentModelListener( listener );
+        replayMocks();
+
+        addComponentModelListener( listener );
 
         componentModel_.setFocused( true );
 
-        mocksControl_.verify();
+        verifyMocks();
     }
 
     /**
      * Ensures the {@link ComponentModel#setFocused} method fires a component
      * model focus changed event after the component model lost the focus.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testSetFocused_LostFocus_FiresComponentModelFocusChangedEvent()
+        throws Exception
     {
         final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
         listener.componentModelFocusChanged( EasyMock.notNull( ComponentModelEvent.class ) );
-        mocksControl_.replay();
-        componentModel_.addComponentModelListener( listener );
+        replayMocks();
+
+        addComponentModelListener( listener );
 
         componentModel_.setFocused( false );
 
-        mocksControl_.verify();
+        verifyMocks();
     }
 
     /**
      * Ensures the {@link ComponentModel#setHover} method fires a component
      * model hover changed event after the component model gained the hover.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testSetHover_GainedHover_FiresComponentModelHoverChangedEvent()
+        throws Exception
     {
         final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
         listener.componentModelHoverChanged( EasyMock.notNull( ComponentModelEvent.class ) );
-        mocksControl_.replay();
-        componentModel_.addComponentModelListener( listener );
+        replayMocks();
+
+        addComponentModelListener( listener );
 
         componentModel_.setHover( true );
 
-        mocksControl_.verify();
+        verifyMocks();
     }
 
     /**
      * Ensures the {@link ComponentModel#setHover} method fires a component
      * model hover changed event after the component model lost the hover.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testSetHover_LostHover_FiresComponentModelHoverChangedEvent()
+        throws Exception
     {
         final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
         listener.componentModelHoverChanged( EasyMock.notNull( ComponentModelEvent.class ) );
-        mocksControl_.replay();
-        componentModel_.addComponentModelListener( listener );
+        replayMocks();
+
+        addComponentModelListener( listener );
 
         componentModel_.setHover( false );
 
+        verifyMocks();
+    }
+
+    /**
+     * Verifies that all expectations were met in the fixture mocks control.
+     * 
+     * <p>
+     * This method waits for all asynchronous answers registered with the
+     * fixture mocks support to complete before verifying expectations.
+     * </p>
+     * 
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted.
+     */
+    protected final void verifyMocks()
+        throws InterruptedException
+    {
+        mocksSupport_.awaitAsyncAnswers();
         mocksControl_.verify();
     }
 }

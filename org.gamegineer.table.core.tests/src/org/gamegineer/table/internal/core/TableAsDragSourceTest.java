@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.core;
 
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.dnd.AbstractDragSourceTestCase;
+import org.junit.After;
 import org.junit.Before;
 
 /**
@@ -39,6 +40,9 @@ public final class TableAsDragSourceTest
 
     /** The table associated with the fixture. */
     private Table table_;
+
+    /** The table environment associated with the fixture. */
+    private TableEnvironment tableEnvironment_;
 
 
     // ======================================================================
@@ -74,8 +78,22 @@ public final class TableAsDragSourceTest
     public void setUp()
         throws Exception
     {
-        table_ = new Table( new TableEnvironment() );
+        tableEnvironment_ = new TableEnvironment();
+        table_ = new Table( tableEnvironment_ );
 
         super.setUp();
+    }
+
+    /**
+     * Tears down the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @After
+    public void tearDown()
+        throws Exception
+    {
+        tableEnvironment_.dispose();
     }
 }

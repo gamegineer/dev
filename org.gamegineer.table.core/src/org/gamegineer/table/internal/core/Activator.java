@@ -1,6 +1,6 @@
 /*
  * Activator.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
@@ -62,6 +63,10 @@ public final class Activator
     @GuardedBy( "lock_" )
     private ServiceTracker<IContainerLayoutRegistry, IContainerLayoutRegistry> containerLayoutRegistryTracker_;
 
+    /** The executor service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker<ExecutorService, ExecutorService> executorServiceTracker_;
+
     /** The instance lock. */
     private final Object lock_;
 
@@ -80,6 +85,7 @@ public final class Activator
         componentStrategyRegistryTracker_ = null;
         componentSurfaceDesignRegistryTracker_ = null;
         containerLayoutRegistryTracker_ = null;
+        executorServiceTracker_ = null;
     }
 
 
@@ -184,6 +190,36 @@ public final class Activator
         return instance;
     }
 
+    /**
+     * Gets the executor service.
+     * 
+     * @return The executor service; never {@code null}.
+     */
+    /* @NonNull */
+    public ExecutorService getExecutorService()
+    {
+        final ExecutorService executorService;
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( executorServiceTracker_ == null )
+            {
+                executorServiceTracker_ = new ServiceTracker<ExecutorService, ExecutorService>( bundleContext_, ExecutorService.class, null );
+                executorServiceTracker_.open();
+            }
+
+            executorService = executorServiceTracker_.getService();
+        }
+
+        if( executorService == null )
+        {
+            throw new AssertionError( "the executor service is not available" ); //$NON-NLS-1$
+        }
+
+        return executorService;
+    }
+
     /*
      * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
      */
@@ -234,6 +270,11 @@ public final class Activator
             {
                 containerLayoutRegistryTracker_.close();
                 containerLayoutRegistryTracker_ = null;
+            }
+            if( executorServiceTracker_ != null )
+            {
+                executorServiceTracker_.close();
+                executorServiceTracker_ = null;
             }
         }
     }

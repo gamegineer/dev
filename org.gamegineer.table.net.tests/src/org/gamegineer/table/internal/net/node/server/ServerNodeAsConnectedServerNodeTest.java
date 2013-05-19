@@ -1,6 +1,6 @@
 /*
  * ServerNodeAsConnectedServerNodeTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.node.server;
 
+import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.internal.net.TableNetworkConfigurations;
 import org.gamegineer.table.internal.net.TableNetworkControllers;
 import org.gamegineer.table.internal.net.node.AbstractNodeUtils;
@@ -54,15 +55,16 @@ public final class ServerNodeAsConnectedServerNodeTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.node.AbstractConnectedNodeTestCase#createConnectedNode()
+     * @see org.gamegineer.table.internal.net.node.AbstractConnectedNodeTestCase#createConnectedNode(org.gamegineer.table.core.ITable)
      */
     @Override
-    protected ServerNode createConnectedNode()
+    protected ServerNode createConnectedNode(
+        final ITable localTable )
         throws Exception
     {
         final ServerNode node = new ServerNode.Factory().createNode( TableNetworkControllers.createFakeTableNetworkController() );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
-        nodeLayerRunner.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
+        nodeLayerRunner.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration( localTable ) );
         return node;
     }
 

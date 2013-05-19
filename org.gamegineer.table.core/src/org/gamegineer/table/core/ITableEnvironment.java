@@ -1,6 +1,6 @@
 /*
  * ITableEnvironment.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -46,6 +46,16 @@ public interface ITableEnvironment
     // ======================================================================
     // Methods
     // ======================================================================
+
+    // TODO: move this method to an extension interface
+    /**
+     * Awaits all pending events.
+     * 
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted.
+     */
+    public void awaitPendingEvents()
+        throws InterruptedException;
 
     /**
      * Creates a new component from the specified memento.
@@ -106,6 +116,11 @@ public interface ITableEnvironment
      */
     /* @NonNull */
     public ITable createTable();
+
+    /**
+     * Disposes of the resources associated with the table environment.
+     */
+    public void dispose();
 
     /**
      * Gets the table environment lock.

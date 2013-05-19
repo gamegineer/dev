@@ -46,6 +46,7 @@ import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.ITableEnvironment;
 import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.prototype.IEvaluationContextProvider;
@@ -102,6 +103,9 @@ public final class TableModel
     /** The table associated with this model. */
     private final ITable table_;
 
+    /** The table environment associated with this model. */
+    private final ITableEnvironment tableEnvironment_;
+
     /** The table network associated with this model. */
     private final ITableNetwork tableNetwork_;
 
@@ -125,7 +129,8 @@ public final class TableModel
         listeners_ = new CopyOnWriteArrayList<ITableModelListener>();
         lock_ = new Object();
         originOffset_ = new Dimension( 0, 0 );
-        table_ = TableEnvironmentFactory.createTableEnvironment().createTable();
+        tableEnvironment_ = TableEnvironmentFactory.createTableEnvironment();
+        table_ = tableEnvironment_.createTable();
         tableNetwork_ = TableNetworkFactory.createTableNetwork();
         tabletopModel_ = new ContainerModel( table_.getTabletop() );
 
@@ -158,6 +163,14 @@ public final class TableModel
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.TableModel_addTableModelListener_listener_registered ); //$NON-NLS-1$
+    }
+
+    /**
+     * Disposes of the resources associated with the table model.
+     */
+    public void dispose()
+    {
+        tableEnvironment_.dispose();
     }
 
     /**

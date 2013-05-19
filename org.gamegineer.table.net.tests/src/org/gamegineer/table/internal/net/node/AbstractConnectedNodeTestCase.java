@@ -1,6 +1,6 @@
 /*
  * AbstractConnectedNodeTestCase.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,6 +28,10 @@ import static org.junit.Assert.assertTrue;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.common.core.security.SecureString;
+import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.ITableEnvironment;
+import org.gamegineer.table.core.TableEnvironmentFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -55,6 +59,9 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
 
     /** The node layer runner for use in the fixture. */
     private NodeLayerRunner nodeLayerRunner_;
+
+    /** The table environment for use in the fixture. */
+    private ITableEnvironment tableEnvironment_;
 
 
     // ======================================================================
@@ -95,14 +102,22 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
     /**
      * Creates the table network node to be tested in the connected state.
      * 
+     * @param localTable
+     *        The local table to attach to the table network; must not be
+     *        {@code null}.
+     * 
      * @return The table network node to be tested in the connected state; never
      *         {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
+     * @throws java.lang.NullPointerException
+     *         If {@code localTable} is {@code null}.
      */
     /* @NonNull */
-    protected abstract T createConnectedNode()
+    protected abstract T createConnectedNode(
+        /* @NonNull */
+        final ITable localTable )
         throws Exception;
 
     /**
@@ -181,10 +196,24 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
     public void setUp()
         throws Exception
     {
+        tableEnvironment_ = TableEnvironmentFactory.createTableEnvironment();
         niceMocksControl_ = EasyMock.createNiceControl();
-        node_ = createConnectedNode();
+        node_ = createConnectedNode( tableEnvironment_.createTable() );
         assertNotNull( node_ );
         nodeLayerRunner_ = createNodeLayerRunner( node_ );
+    }
+
+    /**
+     * Tears down the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @After
+    public void tearDown()
+        throws Exception
+    {
+        tableEnvironment_.dispose();
     }
 
     /**

@@ -25,6 +25,7 @@ import static org.junit.Assert.assertNotNull;
 import org.gamegineer.table.core.ITableEnvironment;
 import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.ui.TestComponents;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -97,6 +98,19 @@ public final class ContainerModelContentChangedEventTest
     {
         tableEnvironment_ = TableEnvironmentFactory.createTableEnvironment();
         event_ = new ContainerModelContentChangedEvent( createUniqueContainerModel(), createUniqueComponentModel(), 0 );
+    }
+
+    /**
+     * Tears down the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @After
+    public void tearDown()
+        throws Exception
+    {
+        tableEnvironment_.dispose();
     }
 
     /**

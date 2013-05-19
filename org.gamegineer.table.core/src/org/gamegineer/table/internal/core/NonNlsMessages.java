@@ -196,8 +196,11 @@ final class NonNlsMessages
 
     // --- TableEnvironment -------------------------------------------------
 
-    /** Failed to queue the event notification. */
-    public static String TableEnvironment_addEventNotification_queueFailed;
+    /** Failed to cancel the event notification task. */
+    public static String TableEnvironment_dispose_eventNotificationTask_cancelFailed;
+
+    /** An unexpected exception was thrown from the event notification. */
+    public static String TableEnvironment_processEventNotifications_unexpectedException;
 
 
     // ======================================================================

@@ -1,6 +1,6 @@
 /*
  * TableEnvironment.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,12 @@ package org.gamegineer.table.internal.core;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayDeque;
 import java.util.Queue;
+import java.util.concurrent.Future;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.IComponent;
@@ -45,18 +50,32 @@ public final class TableEnvironment
     // Fields
     // ======================================================================
 
-    /** Indicates an event notification is in progress on the current thread. */
-    private final ThreadLocal<Boolean> isEventNotificationInProgress_;
+    /** The event notification lock. */
+    private final Lock eventNotificationLock_;
+
+    /** The event notification task. */
+    private final Future<?> eventNotificationTask_;
 
     /** The table environment lock. */
-    private final TableEnvironmentLock lock_;
+    private final ReentrantLock lock_;
+
+    /** The collection of pending event notifications. */
+    @GuardedBy( "eventNotificationLock_" )
+    private final Queue<Runnable> pendingEventNotifications_;
 
     /**
-     * The collection of pending event notifications queued on the current
-     * thread to be executed the next time the table environment lock is
-     * released on this thread.
+     * The condition that signals the pending event notifications collection has
+     * transitioned from empty to not empty.
      */
-    private final ThreadLocal<Queue<Runnable>> pendingEventNotifications_;
+    @GuardedBy( "eventNotificationLock_" )
+    private final Condition pendingEventNotificationsNotEmptyCondition_;
+
+    /**
+     * The condition that signals the pending event notifications collection has
+     * transitioned from not empty to empty.
+     */
+    @GuardedBy( "eventNotificationLock_" )
+    private final Condition pendingEventNotificationsEmptyCondition_;
 
 
     // ======================================================================
@@ -68,23 +87,21 @@ public final class TableEnvironment
      */
     public TableEnvironment()
     {
-        isEventNotificationInProgress_ = new ThreadLocal<Boolean>()
+        eventNotificationLock_ = new ReentrantLock();
+        lock_ = new ReentrantLock();
+        pendingEventNotifications_ = new ArrayDeque<Runnable>();
+        pendingEventNotificationsNotEmptyCondition_ = eventNotificationLock_.newCondition();
+        pendingEventNotificationsEmptyCondition_ = eventNotificationLock_.newCondition();
+
+        eventNotificationTask_ = Activator.getDefault().getExecutorService().submit( new Runnable()
         {
             @Override
-            protected Boolean initialValue()
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
             {
-                return Boolean.FALSE;
+                processEventNotifications();
             }
-        };
-        lock_ = new TableEnvironmentLock();
-        pendingEventNotifications_ = new ThreadLocal<Queue<Runnable>>()
-        {
-            @Override
-            protected Queue<Runnable> initialValue()
-            {
-                return new ArrayDeque<Runnable>();
-            }
-        };
+        } );
     }
 
 
@@ -93,14 +110,7 @@ public final class TableEnvironment
     // ======================================================================
 
     /**
-     * Adds an event notification to be fired as soon as the table environment
-     * lock is not held by the current thread.
-     * 
-     * <p>
-     * If the current thread does not hold the table environment lock, the event
-     * notification will be fired immediately. Otherwise, it will be queued and
-     * fired as soon as this thread releases the table environment lock.
-     * </p>
+     * Adds an event notification to be fired asynchronously.
      * 
      * @param notification
      *        The event notification; must not be {@code null}.
@@ -111,28 +121,37 @@ public final class TableEnvironment
     {
         assert notification != null;
 
-        if( canFireEventNotifications() )
+        eventNotificationLock_.lock();
+        try
         {
-            notification.run();
+            pendingEventNotifications_.add( notification );
+            pendingEventNotificationsNotEmptyCondition_.signal();
         }
-        else
+        finally
         {
-            if( !pendingEventNotifications_.get().offer( notification ) )
-            {
-                Loggers.getDefaultLogger().warning( NonNlsMessages.TableEnvironment_addEventNotification_queueFailed );
-            }
+            eventNotificationLock_.unlock();
         }
     }
 
-    /**
-     * Indicates event notifications can be fired on the current thread.
-     * 
-     * @return {@code true} if event notifications can be fired on the current
-     *         thread; otherwise {@code false}.
+    /*
+     * @see org.gamegineer.table.core.ITableEnvironment#awaitPendingEvents()
      */
-    private boolean canFireEventNotifications()
+    @Override
+    public void awaitPendingEvents()
+        throws InterruptedException
     {
-        return !lock_.isHeldByCurrentThread() && !isEventNotificationInProgress_.get().booleanValue();
+        eventNotificationLock_.lock();
+        try
+        {
+            while( !pendingEventNotifications_.isEmpty() )
+            {
+                pendingEventNotificationsEmptyCondition_.await();
+            }
+        }
+        finally
+        {
+            eventNotificationLock_.unlock();
+        }
     }
 
     /*
@@ -181,26 +200,15 @@ public final class TableEnvironment
         return new Table( this );
     }
 
-    /**
-     * Fires all pending event notifications queued for the current thread.
+    /*
+     * @see org.gamegineer.table.core.ITableEnvironment#dispose()
      */
-    private void firePendingEventNotifications()
+    @Override
+    public void dispose()
     {
-        assert canFireEventNotifications();
-
-        isEventNotificationInProgress_.set( Boolean.TRUE );
-        try
+        if( !eventNotificationTask_.isDone() && !eventNotificationTask_.cancel( true ) )
         {
-            final Queue<Runnable> pendingEventNotifications = pendingEventNotifications_.get();
-            Runnable notification = null;
-            while( (notification = pendingEventNotifications.poll()) != null )
-            {
-                notification.run();
-            }
-        }
-        finally
-        {
-            isEventNotificationInProgress_.set( Boolean.FALSE );
+            Loggers.getDefaultLogger().warning( NonNlsMessages.TableEnvironment_dispose_eventNotificationTask_cancelFailed );
         }
     }
 
@@ -213,55 +221,60 @@ public final class TableEnvironment
         return lock_;
     }
 
-
-    // ======================================================================
-    // Nested Types
-    // ======================================================================
-
     /**
-     * A reentrant mutual exclusion lock for a table environment.
+     * Processes all pending event notifications until interrupted.
+     * 
+     * <p>
+     * This method is intended to be called from a dedicated thread.
+     * </p>
      */
-    @ThreadSafe
-    private final class TableEnvironmentLock
-        extends ReentrantLock
+    private void processEventNotifications()
     {
-        // ==================================================================
-        // Fields
-        // ==================================================================
-
-        /** Serializable class version number. */
-        private static final long serialVersionUID = 7505597870826416138L;
-
-
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code TableEnvironmentLock} class.
-         */
-        TableEnvironmentLock()
+        try
         {
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see java.util.concurrent.locks.ReentrantLock#unlock()
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void unlock()
-        {
-            super.unlock();
-
-            if( canFireEventNotifications() )
+            while( true )
             {
-                firePendingEventNotifications();
+                Runnable runnable = null;
+                eventNotificationLock_.lock();
+                try
+                {
+                    while( (runnable = pendingEventNotifications_.peek()) == null )
+                    {
+                        pendingEventNotificationsNotEmptyCondition_.await();
+                    }
+                }
+                finally
+                {
+                    eventNotificationLock_.unlock();
+                }
+
+                try
+                {
+                    runnable.run();
+                }
+                catch( final RuntimeException e )
+                {
+                    Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableEnvironment_processEventNotifications_unexpectedException, e );
+                }
+
+                eventNotificationLock_.lock();
+                try
+                {
+                    pendingEventNotifications_.remove();
+                    if( pendingEventNotifications_.isEmpty() )
+                    {
+                        pendingEventNotificationsEmptyCondition_.signal();
+                    }
+                }
+                finally
+                {
+                    eventNotificationLock_.unlock();
+                }
             }
+        }
+        catch( final InterruptedException e )
+        {
+            Thread.currentThread().interrupt();
         }
     }
 }

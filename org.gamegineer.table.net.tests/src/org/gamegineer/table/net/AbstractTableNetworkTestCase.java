@@ -1,6 +1,6 @@
 /*
  * AbstractTableNetworkTestCase.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,7 +27,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.gamegineer.table.core.ITableEnvironment;
 import org.gamegineer.table.core.TableEnvironmentFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,6 +45,9 @@ public abstract class AbstractTableNetworkTestCase
 
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
+
+    /** The table environment for use in the fixture. */
+    private ITableEnvironment tableEnvironment_;
 
     /** The table network under test in the fixture. */
     private ITableNetwork tableNetwork_;
@@ -124,13 +129,26 @@ public abstract class AbstractTableNetworkTestCase
         tableNetwork_ = createTableNetwork();
         assertNotNull( tableNetwork_ );
 
-        final TableNetworkConfigurationBuilder builder = new TableNetworkConfigurationBuilder();
+        tableEnvironment_ = TableEnvironmentFactory.createTableEnvironment();
+        final TableNetworkConfigurationBuilder builder = new TableNetworkConfigurationBuilder( tableEnvironment_.createTable() );
         tableNetworkConfiguration_ = builder //
             .setHostName( "hostName" ) //$NON-NLS-1$
             .setLocalPlayerName( "playerName" ) //$NON-NLS-1$
-            .setLocalTable( TableEnvironmentFactory.createTableEnvironment().createTable() ) //
             .setPort( TableNetworkConstants.DEFAULT_PORT ) //
             .toTableNetworkConfiguration();
+    }
+
+    /**
+     * Tears down the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @After
+    public void tearDown()
+        throws Exception
+    {
+        tableEnvironment_.dispose();
     }
 
     /**

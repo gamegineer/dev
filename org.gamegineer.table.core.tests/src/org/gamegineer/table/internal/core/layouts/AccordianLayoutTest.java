@@ -96,5 +96,7 @@ public final class AccordianLayoutTest
         assertEquals( new Point( originX, originY ), component1.getLocation() );
         assertEquals( new Point( originX + offsetX, originY + offsetY ), component2.getLocation() );
         assertEquals( new Point( originX + 2 * offsetX, originY + 2 * offsetY ), component3.getLocation() );
+
+        tableEnvironment.dispose();
     }
 }

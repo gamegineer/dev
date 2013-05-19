@@ -1,6 +1,6 @@
 /*
  * ServerNode.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,7 +32,6 @@ import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.Loggers;
@@ -333,7 +332,7 @@ public final class ServerNode
         final ITable masterTable;
         try
         {
-            masterTable = TableEnvironmentFactory.createTableEnvironment().createTable();
+            masterTable = table.getTableEnvironment().createTable();
             masterTable.setMemento( table.createMemento() );
         }
         catch( final MementoException e )

@@ -1,6 +1,6 @@
 /*
  * TableEnvironmentFactoryTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -54,6 +54,10 @@ public final class TableEnvironmentFactoryTest
     @Test
     public void testCreateTableEnvironment_ReturnValue_NonNull()
     {
-        assertNotNull( TableEnvironmentFactory.createTableEnvironment() );
+        final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment();
+
+        assertNotNull( tableEnvironment );
+
+        tableEnvironment.dispose();
     }
 }

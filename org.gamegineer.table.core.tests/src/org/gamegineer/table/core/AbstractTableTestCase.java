@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -177,6 +178,19 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
         assertNotNull( table_ );
 
         super.setUp();
+    }
+
+    /**
+     * Tears down the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @After
+    public void tearDown()
+        throws Exception
+    {
+        tableEnvironment_.dispose();
     }
 
     /**

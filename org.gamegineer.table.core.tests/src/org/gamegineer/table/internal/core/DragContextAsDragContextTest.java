@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.core;
 
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.dnd.AbstractDragContextTestCase;
+import org.junit.After;
 
 /**
  * A fixture for testing the
@@ -39,6 +40,9 @@ public final class DragContextAsDragContextTest
 
     /** The table associated with the fixture. */
     private Table table_;
+
+    /** The table environment associated with the fixture. */
+    private TableEnvironment tableEnvironment_;
 
 
     // ======================================================================
@@ -74,8 +78,22 @@ public final class DragContextAsDragContextTest
     public void setUp()
         throws Exception
     {
-        table_ = new Table( new TableEnvironment() );
+        tableEnvironment_ = new TableEnvironment();
+        table_ = new Table( tableEnvironment_ );
 
         super.setUp();
+    }
+
+    /**
+     * Tears down the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @After
+    public void tearDown()
+        throws Exception
+    {
+        tableEnvironment_.dispose();
     }
 }

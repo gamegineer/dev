@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.ui.model;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,6 +39,9 @@ public final class MainModelEventTest
 
     /** The main model event under test in the fixture. */
     private MainModelEvent event_;
+
+    /** The main model for use in the fixture. */
+    private MainModel mainModel_;
 
 
     // ======================================================================
@@ -66,7 +70,21 @@ public final class MainModelEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new MainModelEvent( new MainModel() );
+        mainModel_ = new MainModel();
+        event_ = new MainModelEvent( mainModel_ );
+    }
+
+    /**
+     * Tears down the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @After
+    public void tearDown()
+        throws Exception
+    {
+        mainModel_.dispose();
     }
 
     /**

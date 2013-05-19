@@ -102,5 +102,7 @@ public final class StackedLayoutTest
         assertEquals( new Point( originX + stackLevelOffsetX, originY + stackLevelOffsetY ), component3.getLocation() );
         assertEquals( new Point( originX + stackLevelOffsetX, originY + stackLevelOffsetY ), component4.getLocation() );
         assertEquals( new Point( originX + 2 * stackLevelOffsetX, originY + 2 * stackLevelOffsetY ), component5.getLocation() );
+
+        tableEnvironment.dispose();
     }
 }

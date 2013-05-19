@@ -23,8 +23,10 @@ package org.gamegineer.table.internal.ui.model;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
+import org.gamegineer.table.core.ITableEnvironment;
 import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.ui.TestComponents;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,6 +42,9 @@ public final class ContainerModelEventTest
 
     /** The container model event under test in the fixture. */
     private ContainerModelEvent event_;
+
+    /** The table environment for use in the fixture. */
+    private ITableEnvironment tableEnvironment_;
 
 
     // ======================================================================
@@ -68,7 +73,21 @@ public final class ContainerModelEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new ContainerModelEvent( new ContainerModel( TestComponents.createUniqueContainer( TableEnvironmentFactory.createTableEnvironment() ) ) );
+        tableEnvironment_ = TableEnvironmentFactory.createTableEnvironment();
+        event_ = new ContainerModelEvent( new ContainerModel( TestComponents.createUniqueContainer( tableEnvironment_ ) ) );
+    }
+
+    /**
+     * Tears down the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @After
+    public void tearDown()
+        throws Exception
+    {
+        tableEnvironment_.dispose();
     }
 
     /**

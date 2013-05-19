@@ -30,6 +30,8 @@ import java.util.Collections;
 import java.util.Map;
 import net.jcip.annotations.Immutable;
 import org.easymock.EasyMock;
+import org.gamegineer.table.core.ITableEnvironment;
+import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.TableNetworkConfigurations;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
@@ -38,6 +40,7 @@ import org.gamegineer.table.internal.net.transport.fake.FakeTransportLayerFactor
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.ITableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -56,6 +59,9 @@ public final class AbstractNodeTest
 
     /** The node layer runner for use in the fixture. */
     private NodeLayerRunner nodeLayerRunner_;
+
+    /** The table environment for use in the fixture. */
+    private ITableEnvironment tableEnvironment_;
 
 
     // ======================================================================
@@ -86,6 +92,20 @@ public final class AbstractNodeTest
     {
         node_ = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
         nodeLayerRunner_ = new NodeLayerRunner( node_ );
+        tableEnvironment_ = TableEnvironmentFactory.createTableEnvironment();
+    }
+
+    /**
+     * Tears down the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @After
+    public void tearDown()
+        throws Exception
+    {
+        tableEnvironment_.dispose();
     }
 
     /**
@@ -100,7 +120,7 @@ public final class AbstractNodeTest
     public void testConnect_AddsLocalTableProxy()
         throws Exception
     {
-        final ITableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
+        final ITableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration( tableEnvironment_.createTable() );
         final MockNode.Factory nodeFactory = new MockNode.Factory()
         {
             @Override
@@ -170,7 +190,7 @@ public final class AbstractNodeTest
     public void testDisconnect_RemovesLocalTableProxy()
         throws Exception
     {
-        final ITableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
+        final ITableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration( tableEnvironment_.createTable() );
         final MockNode.Factory nodeFactory = new MockNode.Factory()
         {
             @Override
