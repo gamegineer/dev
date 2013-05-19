@@ -1,6 +1,6 @@
 /*
  * TableTest.java
- * Copyright 2008-2013 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.core;
 
 import org.gamegineer.table.core.TestComponentStrategies;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -71,19 +70,6 @@ public final class TableTest
     {
         tableEnvironment_ = new TableEnvironment();
         table_ = new Table( tableEnvironment_ );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        tableEnvironment_.dispose();
     }
 
     /**

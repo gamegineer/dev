@@ -1,6 +1,6 @@
 /*
  * TableNetworkConfigurations.java
- * Copyright 2008-2013 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,10 +21,9 @@
 
 package org.gamegineer.table.internal.net;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
-import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.net.ITableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkConfigurationBuilder;
 import org.gamegineer.table.net.TableNetworkConstants;
@@ -55,29 +54,19 @@ public final class TableNetworkConfigurations
     /**
      * Creates a new default table network configuration.
      * 
-     * @param localTable
-     *        The local table to attach to the table network; must not be
-     *        {@code null}.
-     * 
      * @return A new default table network configuration; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code localTable} is {@code null}.
      */
     /* @NonNull */
-    public static ITableNetworkConfiguration createDefaultTableNetworkConfiguration(
-        /* @NonNull */
-        final ITable localTable )
+    public static ITableNetworkConfiguration createDefaultTableNetworkConfiguration()
     {
-        assertArgumentNotNull( localTable, "localTable" ); //$NON-NLS-1$
-
         final SecureString password = new SecureString( "password".toCharArray() ); //$NON-NLS-1$
         try
         {
-            final TableNetworkConfigurationBuilder builder = new TableNetworkConfigurationBuilder( localTable );
+            final TableNetworkConfigurationBuilder builder = new TableNetworkConfigurationBuilder();
             return builder //
                 .setHostName( "hostName" ) //$NON-NLS-1$
                 .setLocalPlayerName( "playerName" ) //$NON-NLS-1$
+                .setLocalTable( TableEnvironmentFactory.createTableEnvironment().createTable() ) //
                 .setPassword( password ) //
                 .setPort( TableNetworkConstants.DEFAULT_PORT ) //
                 .toTableNetworkConfiguration();

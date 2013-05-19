@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.ui.model;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,9 +38,6 @@ public final class TableModelEventTest
 
     /** The table model event under test in the fixture. */
     private TableModelEvent event_;
-
-    /** The table model for use in the fixture. */
-    private TableModel tableModel_;
 
 
     // ======================================================================
@@ -70,21 +66,7 @@ public final class TableModelEventTest
     public void setUp()
         throws Exception
     {
-        tableModel_ = new TableModel();
-        event_ = new TableModelEvent( tableModel_ );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        tableModel_.dispose();
+        event_ = new TableModelEvent( new TableModel() );
     }
 
     /**

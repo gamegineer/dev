@@ -1,6 +1,6 @@
 /*
  * ComponentModelAsComponentModelTest.java
- * Copyright 2008-2013 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.model;
 
+import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.ui.TestComponents;
 
 /**
@@ -48,12 +49,11 @@ public final class ComponentModelAsComponentModelTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.AbstractComponentModelTestCase#createComponentModel(org.gamegineer.table.internal.ui.model.TableModel)
+     * @see org.gamegineer.table.internal.ui.model.AbstractComponentModelTestCase#createComponentModel()
      */
     @Override
-    protected ComponentModel createComponentModel(
-        final TableModel tableModel )
+    protected ComponentModel createComponentModel()
     {
-        return new ComponentModel( TestComponents.createUniqueComponent( tableModel.getTable().getTableEnvironment() ) );
+        return new ComponentModel( TestComponents.createUniqueComponent( TableEnvironmentFactory.createTableEnvironment() ) );
     }
 }

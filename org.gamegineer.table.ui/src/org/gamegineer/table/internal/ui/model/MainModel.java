@@ -1,6 +1,6 @@
 /*
  * MainModel.java
- * Copyright 2008-2013 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -88,14 +88,6 @@ public final class MainModel
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.MainModel_addMainModelListener_listener_registered ); //$NON-NLS-1$
-    }
-
-    /**
-     * Disposes of the resources associated with the main model.
-     */
-    public void dispose()
-    {
-        tableModel_.dispose();
     }
 
     /**

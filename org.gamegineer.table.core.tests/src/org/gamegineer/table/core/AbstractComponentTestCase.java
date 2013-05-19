@@ -1,6 +1,6 @@
 /*
  * AbstractComponentTestCase.java
- * Copyright 2008-2013 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -37,16 +37,11 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Set;
 import org.easymock.EasyMock;
-import org.easymock.IAnswer;
 import org.easymock.IMocksControl;
 import org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
-import org.gamegineer.test.core.MocksSupport;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.Timeout;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
@@ -64,18 +59,11 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     // Fields
     // ======================================================================
 
-    /** The default test timeout. */
-    @Rule
-    public final Timeout DEFAULT_TIMEOUT = new Timeout( 1000 );
-
     /** The component under test in the fixture. */
     private ComponentType component_;
 
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
-
-    /** The mocks support for use in the fixture. */
-    private MocksSupport mocksSupport_;
 
     /** The table environment for use in the fixture. */
     private TableEnvironmentType tableEnvironment_;
@@ -99,37 +87,6 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     // ======================================================================
 
     /**
-     * Adds the specified component listener to the specified component.
-     * 
-     * <p>
-     * This method ensures all pending table environment events have fired
-     * before adding the listener.
-     * </p>
-     * 
-     * @param component
-     *        The component; must not be {@code null}.
-     * @param listener
-     *        The component listener; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code listener} is already a registered component listener.
-     * @throws java.lang.InterruptedException
-     *         If this thread is interrupted.
-     * @throws java.lang.NullPointerException
-     *         If {@code component} or {@code listener} is {@code null}.
-     */
-    protected final void addComponentListener(
-        /* @NonNull */
-        final IComponent component,
-        /* @NonNull */
-        final IComponentListener listener )
-        throws InterruptedException
-    {
-        awaitPendingTableEnvironmentEvents();
-        component.addComponentListener( listener );
-    }
-
-    /**
      * This implementation compares the expected and actual values according to
      * the specification of the
      * {@link org.gamegineer.table.core.Assert#assertComponentEquals} method.
@@ -145,18 +102,6 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
         final IComponent expectedComponent = (IComponent)expected;
         final IComponent actualComponent = (IComponent)actual;
         assertComponentEquals( expectedComponent, actualComponent );
-    }
-
-    /**
-     * Awaits all pending events from the fixture table environment.
-     * 
-     * @throws java.lang.InterruptedException
-     *         If this thread is interrupted.
-     */
-    protected final void awaitPendingTableEnvironmentEvents()
-        throws InterruptedException
-    {
-        tableEnvironment_.awaitPendingEvents();
     }
 
     /**
@@ -322,30 +267,6 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Gets the mocks control for use in the fixture.
-     * 
-     * @return The mocks control for use in the fixture; never {@code null}.
-     */
-    /* @NonNull */
-    protected final IMocksControl getMocksControl()
-    {
-        assertNotNull( mocksControl_ );
-        return mocksControl_;
-    }
-
-    /**
-     * Gets the mocks support for use in the fixture.
-     * 
-     * @return The mocks support for use in the fixture; never {@code null}.
-     */
-    /* @NonNull */
-    protected final MocksSupport getMocksSupport()
-    {
-        assertNotNull( mocksSupport_ );
-        return mocksSupport_;
-    }
-
-    /**
      * Gets the table environment for use in the fixture.
      * 
      * @return The table environment for use in the fixture; never {@code null}.
@@ -374,14 +295,6 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
         }
     }
 
-    /**
-     * Switches the fixture mocks control from record mode to replay mode.
-     */
-    protected final void replayMocks()
-    {
-        mocksControl_.replay();
-    }
-
     /*
      * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#setUp()
      */
@@ -391,26 +304,12 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        mocksSupport_ = new MocksSupport();
         tableEnvironment_ = createTableEnvironment();
         assertNotNull( tableEnvironment_ );
         component_ = createComponent( tableEnvironment_ );
         assertNotNull( component_ );
 
         super.setUp();
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        tableEnvironment_.dispose();
     }
 
     /**
@@ -441,105 +340,66 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      * Ensures the component bounds changed event catches any exception thrown
      * by the {@link IComponentListener#componentBoundsChanged} method of a
      * component listener.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testComponentBoundsChanged_CatchesListenerException()
-        throws Exception
     {
         final IComponentListener listener1 = mocksControl_.createMock( IComponentListener.class );
         listener1.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
-        EasyMock.expectLastCall().andAnswer( mocksSupport_.asyncAnswer( new IAnswer<Void>()
-        {
-            @Override
-            public Void answer()
-            {
-                throw new RuntimeException();
-            }
-        } ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IComponentListener listener2 = mocksControl_.createMock( IComponentListener.class );
         listener2.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
-        EasyMock.expectLastCall().andAnswer( mocksSupport_.asyncAnswer() );
-        replayMocks();
-
-        addComponentListener( component_, listener1 );
-        addComponentListener( component_, listener2 );
+        mocksControl_.replay();
+        component_.addComponentListener( listener1 );
+        component_.addComponentListener( listener2 );
 
         fireComponentBoundsChanged( component_ );
 
-        verifyMocks();
+        mocksControl_.verify();
     }
 
     /**
      * Ensures the component orientation changed event catches any exception
      * thrown by the {@link IComponentListener#componentOrientationChanged}
      * method of a component listener.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testComponentOrientationChanged_CatchesListenerException()
-        throws Exception
     {
         final IComponentListener listener1 = mocksControl_.createMock( IComponentListener.class );
         listener1.componentOrientationChanged( EasyMock.notNull( ComponentEvent.class ) );
-        EasyMock.expectLastCall().andAnswer( mocksSupport_.asyncAnswer( new IAnswer<Void>()
-        {
-            @Override
-            public Void answer()
-            {
-                throw new RuntimeException();
-            }
-        } ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IComponentListener listener2 = mocksControl_.createMock( IComponentListener.class );
         listener2.componentOrientationChanged( EasyMock.notNull( ComponentEvent.class ) );
-        EasyMock.expectLastCall().andAnswer( mocksSupport_.asyncAnswer() );
-        replayMocks();
-
-        addComponentListener( component_, listener1 );
-        addComponentListener( component_, listener2 );
+        mocksControl_.replay();
+        component_.addComponentListener( listener1 );
+        component_.addComponentListener( listener2 );
 
         fireComponentOrientationChanged( component_ );
 
-        verifyMocks();
+        mocksControl_.verify();
     }
 
     /**
      * Ensures the component surface designs changed event catches any exception
      * thrown by the {@link IComponentListener#componentSurfaceDesignChanged}
      * method of a component listener.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testComponentSurfaceDesignChanged_CatchesListenerException()
-        throws Exception
     {
         final IComponentListener listener1 = mocksControl_.createMock( IComponentListener.class );
         listener1.componentSurfaceDesignChanged( EasyMock.notNull( ComponentEvent.class ) );
-        EasyMock.expectLastCall().andAnswer( mocksSupport_.asyncAnswer( new IAnswer<Void>()
-        {
-            @Override
-            public Void answer()
-            {
-                throw new RuntimeException();
-            }
-        } ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IComponentListener listener2 = mocksControl_.createMock( IComponentListener.class );
         listener2.componentSurfaceDesignChanged( EasyMock.notNull( ComponentEvent.class ) );
-        EasyMock.expectLastCall().andAnswer( mocksSupport_.asyncAnswer() );
-        replayMocks();
-
-        addComponentListener( component_, listener1 );
-        addComponentListener( component_, listener2 );
+        mocksControl_.replay();
+        component_.addComponentListener( listener1 );
+        component_.addComponentListener( listener2 );
 
         fireComponentSurfaceDesignChanged( component_ );
 
-        verifyMocks();
+        mocksControl_.verify();
     }
 
     /**
@@ -975,51 +835,37 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     /**
      * Ensures the {@link IComponent#removeComponentListener} removes a listener
      * that is present in the component listener collection.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testRemoveComponentListener_Listener_Present()
-        throws Exception
     {
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentOrientationChanged( EasyMock.notNull( ComponentEvent.class ) );
-        EasyMock.expectLastCall().andAnswer( mocksSupport_.asyncAnswer() );
-        replayMocks();
-
-        addComponentListener( component_, listener );
+        mocksControl_.replay();
+        component_.addComponentListener( listener );
         fireComponentOrientationChanged( component_ );
 
-        mocksSupport_.awaitAsyncAnswers();
         component_.removeComponentListener( listener );
         fireComponentOrientationChanged( component_ );
 
-        awaitPendingTableEnvironmentEvents();
-        verifyMocks();
+        mocksControl_.verify();
     }
 
     /**
      * Ensures the {@link IComponent#setLocation} method fires a component
      * bounds changed event.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testSetLocation_FiresComponentBoundsChangedEvent()
-        throws Exception
     {
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
-        EasyMock.expectLastCall().andAnswer( mocksSupport_.asyncAnswer() );
-        replayMocks();
-
-        addComponentListener( component_, listener );
+        mocksControl_.replay();
+        component_.addComponentListener( listener );
 
         component_.setLocation( new Point( 1010, 2020 ) );
 
-        verifyMocks();
+        mocksControl_.verify();
     }
 
     /**
@@ -1051,24 +897,18 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     /**
      * Ensures the {@link IComponent#setOrientation} method fires a component
      * orientation changed event.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testSetOrientation_FiresComponentOrientationChangedEvent()
-        throws Exception
     {
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentOrientationChanged( EasyMock.notNull( ComponentEvent.class ) );
-        EasyMock.expectLastCall().andAnswer( mocksSupport_.asyncAnswer() );
-        replayMocks();
-
-        addComponentListener( component_, listener );
+        mocksControl_.replay();
+        component_.addComponentListener( listener );
 
         component_.setOrientation( component_.getOrientation().inverse() );
 
-        verifyMocks();
+        mocksControl_.verify();
     }
 
     /**
@@ -1094,24 +934,18 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     /**
      * Ensures the {@link IComponent#setOrigin} method fires a component bounds
      * changed event.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testSetOrigin_FiresComponentBoundsChangedEvent()
-        throws Exception
     {
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
-        EasyMock.expectLastCall().andAnswer( mocksSupport_.asyncAnswer() );
-        replayMocks();
-
-        addComponentListener( component_, listener );
+        mocksControl_.replay();
+        component_.addComponentListener( listener );
 
         component_.setOrigin( new Point( 1010, 2020 ) );
 
-        verifyMocks();
+        mocksControl_.verify();
     }
 
     /**
@@ -1143,24 +977,18 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     /**
      * Ensures the {@link IComponent#setSurfaceDesign} method fires a component
      * surface design changed event.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testSetSurfaceDesign_FiresComponentSurfaceDesignChangedEvent()
-        throws Exception
     {
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentSurfaceDesignChanged( EasyMock.notNull( ComponentEvent.class ) );
-        EasyMock.expectLastCall().andAnswer( mocksSupport_.asyncAnswer() );
-        replayMocks();
-
-        addComponentListener( component_, listener );
+        mocksControl_.replay();
+        component_.addComponentListener( listener );
 
         component_.setSurfaceDesign( component_.getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
 
-        verifyMocks();
+        mocksControl_.verify();
     }
 
     /**
@@ -1197,13 +1025,9 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      * Ensures the {@link IComponent#setSurfaceDesigns} method fires a component
      * surface design changed event for each entry in the surface designs
      * collection.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testSetSurfaceDesigns_FiresComponentSurfaceDesignChangedEvent()
-        throws Exception
     {
         final Collection<ComponentOrientation> orientations = component_.getSupportedOrientations();
         final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>( orientations.size() );
@@ -1213,14 +1037,13 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
         }
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentSurfaceDesignChanged( EasyMock.notNull( ComponentEvent.class ) );
-        EasyMock.expectLastCall().andAnswer( mocksSupport_.asyncAnswer( orientations.size() ) ).times( orientations.size() );
-        replayMocks();
-
-        addComponentListener( component_, listener );
+        EasyMock.expectLastCall().times( orientations.size() );
+        mocksControl_.replay();
+        component_.addComponentListener( listener );
 
         component_.setSurfaceDesigns( surfaceDesigns );
 
-        verifyMocks();
+        mocksControl_.verify();
     }
 
     /**
@@ -1263,23 +1086,5 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testSetSurfaceDesigns_SurfaceDesigns_Null()
     {
         component_.setSurfaceDesigns( null );
-    }
-
-    /**
-     * Verifies that all expectations were met in the fixture mocks control.
-     * 
-     * <p>
-     * This method waits for all asynchronous answers registered with the
-     * fixture mocks support to complete before verifying expectations.
-     * </p>
-     * 
-     * @throws java.lang.InterruptedException
-     *         If this thread is interrupted.
-     */
-    protected final void verifyMocks()
-        throws InterruptedException
-    {
-        mocksSupport_.awaitAsyncAnswers();
-        mocksControl_.verify();
     }
 }

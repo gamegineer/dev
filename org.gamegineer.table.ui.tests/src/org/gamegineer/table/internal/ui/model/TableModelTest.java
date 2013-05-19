@@ -41,12 +41,8 @@ import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.ui.IComponentStrategyUI;
 import org.gamegineer.table.ui.IContainerStrategyUI;
 import org.gamegineer.table.ui.TestComponents;
-import org.gamegineer.test.core.MocksSupport;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.Timeout;
 
 /**
  * A fixture for testing the
@@ -58,15 +54,8 @@ public final class TableModelTest
     // Fields
     // ======================================================================
 
-    /** The default test timeout. */
-    @Rule
-    public final Timeout DEFAULT_TIMEOUT = new Timeout( 1000 );
-
     /** The table model under test in the fixture. */
     private TableModel model_;
-
-    /** The mocks support for use in the fixture. */
-    private MocksSupport mocksSupport_;
 
     /** The nice mocks control for use in the fixture. */
     private IMocksControl niceMocksControl_;
@@ -87,45 +76,6 @@ public final class TableModelTest
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Adds the specified table model listener to the fixture table model.
-     * 
-     * <p>
-     * This method ensures all pending table environment events have fired
-     * before adding the listener.
-     * </p>
-     * 
-     * @param listener
-     *        The table model listener; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code listener} is already a registered table model listener.
-     * @throws java.lang.InterruptedException
-     *         If this thread is interrupted.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
-     */
-    private void addTableModelListener(
-        /* @NonNull */
-        final ITableModelListener listener )
-        throws InterruptedException
-    {
-        awaitPendingTableEnvironmentEvents();
-        model_.addTableModelListener( listener );
-    }
-
-    /**
-     * Awaits all pending events from the fixture table environment.
-     * 
-     * @throws java.lang.InterruptedException
-     *         If this thread is interrupted.
-     */
-    private void awaitPendingTableEnvironmentEvents()
-        throws InterruptedException
-    {
-        model_.getTable().getTableEnvironment().awaitPendingEvents();
-    }
 
     /**
      * Creates a temporary file.
@@ -320,14 +270,6 @@ public final class TableModelTest
     }
 
     /**
-     * Switches the fixture mocks control from record mode to replay mode.
-     */
-    private void replayMocks()
-    {
-        niceMocksControl_.replay();
-    }
-
-    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -338,43 +280,25 @@ public final class TableModelTest
         throws Exception
     {
         niceMocksControl_ = EasyMock.createNiceControl();
-        mocksSupport_ = new MocksSupport();
         model_ = new TableModel();
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        model_.dispose();
     }
 
     /**
      * Ensures the {@link TableModel#addTableModelListener} method adds a
      * listener that is absent from the table model listener collection.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testAddTableModelListener_Listener_Absent()
-        throws Exception
     {
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableChanged( EasyMock.notNull( TableModelEvent.class ) );
-        replayMocks();
+        niceMocksControl_.replay();
 
         fireTableChangedEvent();
-        addTableModelListener( listener );
+        model_.addTableModelListener( listener );
         fireTableChangedEvent();
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
@@ -404,51 +328,39 @@ public final class TableModelTest
     /**
      * Ensures a change to a container associated with a container model owned
      * by the table model fires a table model dirty flag changed event.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testContainerModel_ContainerChanged_FiresTableModelDirtyFlagChangedEvent()
-        throws Exception
     {
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableModelDirtyFlagChanged( EasyMock.notNull( TableModelEvent.class ) );
-        EasyMock.expectLastCall().andAnswer( mocksSupport_.asyncAnswer() );
-        replayMocks();
-
         final IComponent component = createUniqueContainer();
         model_.getTable().getTabletop().addComponent( component );
-        addTableModelListener( listener );
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableModelDirtyFlagChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
 
         component.setLocation( new Point( 1000, 1000 ) );
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
      * Ensures a change to a container associated with a container model owned
      * by the table model fires a table changed event.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testContainerModel_ContainerChanged_FiresTableChangedEvent()
-        throws Exception
     {
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableChanged( EasyMock.notNull( TableModelEvent.class ) );
-        EasyMock.expectLastCall().andAnswer( mocksSupport_.asyncAnswer() );
-        replayMocks();
-
         final IComponent component = createUniqueContainer();
         model_.getTable().getTabletop().addComponent( component );
-        addTableModelListener( listener );
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
 
         component.setLocation( new Point( 1000, 1000 ) );
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
@@ -474,13 +386,9 @@ public final class TableModelTest
     /**
      * Ensures the {@link TableModel#getComponentModel} method returns the
      * correct component model when passed a path that is present.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testGetComponentModel_Path_Present()
-        throws Exception
     {
         final IContainer expectedContainer = createUniqueContainer();
         model_.getTable().getTabletop().addComponent( expectedContainer );
@@ -488,7 +396,6 @@ public final class TableModelTest
         expectedContainer.addComponent( createUniqueComponent() );
         final IComponent expectedComponent = createUniqueComponent();
         expectedContainer.addComponent( expectedComponent );
-        awaitPendingTableEnvironmentEvents();
 
         final ComponentModel actualContainerModel = model_.getComponentModel( expectedContainer.getPath() );
         final ComponentModel actualComponentModel = model_.getComponentModel( expectedComponent.getPath() );
@@ -501,17 +408,12 @@ public final class TableModelTest
      * Ensures the {@link TableModel#getFocusableComponent} method returns the
      * expected component when a focusable component exists at the specified
      * location.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testGetFocusableComponent_Location_FocusableComponent()
-        throws Exception
     {
         final IComponent expectedComponent = createUniqueContainer();
         model_.getTable().getTabletop().addComponent( expectedComponent );
-        awaitPendingTableEnvironmentEvents();
 
         final IComponent actualComponent = model_.getFocusableComponent( new Point( 0, 0 ) );
 
@@ -545,13 +447,9 @@ public final class TableModelTest
      * {@link ComponentAxis#FOLLOWING} direction is specified and a focusable
      * component that follows the search vector origin component exists at the
      * specified location.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testGetFocusableComponentWithSearchVector_SearchVector_FollowingDirection_Location_FollowingFocusableComponent()
-        throws Exception
     {
         final IContainer parentContainer = createUniqueContainer();
         model_.getTable().getTabletop().addComponent( parentContainer );
@@ -560,7 +458,6 @@ public final class TableModelTest
         final IComponent childComponent = createUniqueComponent( ComponentFocusability.FOCUSABLE );
         container.addComponent( childComponent );
         final IComponent expectedComponent = childComponent;
-        awaitPendingTableEnvironmentEvents();
 
         final IComponent actualComponent = model_.getFocusableComponent( new Point( 0, 0 ), new ComponentVector( container, ComponentAxis.FOLLOWING ) );
 
@@ -573,13 +470,9 @@ public final class TableModelTest
      * returns the expected component when a search vector using the
      * {@link ComponentAxis#FOLLOWING} direction is specified and no other
      * focusable component exists at the specified location.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testGetFocusableComponentWithSearchVector_SearchVector_FollowingDirection_Location_NoOtherFocusableComponent()
-        throws Exception
     {
         final IContainer parentContainer = createUniqueContainer( ComponentFocusability.NOT_FOCUSABLE );
         model_.getTable().getTabletop().addComponent( parentContainer );
@@ -588,7 +481,6 @@ public final class TableModelTest
         final IComponent childComponent = createUniqueComponent();
         container.addComponent( childComponent );
         final IComponent expectedComponent = container;
-        awaitPendingTableEnvironmentEvents();
 
         final IComponent actualComponent = model_.getFocusableComponent( new Point( 0, 0 ), new ComponentVector( container, ComponentAxis.FOLLOWING ) );
 
@@ -602,13 +494,9 @@ public final class TableModelTest
      * {@link ComponentAxis#FOLLOWING} direction is specified and a focusable
      * component that precedes the search vector origin exists at the specified
      * location.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testGetFocusableComponentWithSearchVector_SearchVector_FollowingDirection_Location_PrecedingFocusableComponent()
-        throws Exception
     {
         final IContainer parentContainer = createUniqueContainer();
         model_.getTable().getTabletop().addComponent( parentContainer );
@@ -617,7 +505,6 @@ public final class TableModelTest
         final IComponent childComponent = createUniqueComponent();
         container.addComponent( childComponent );
         final IComponent expectedComponent = parentContainer;
-        awaitPendingTableEnvironmentEvents();
 
         final IComponent actualComponent = model_.getFocusableComponent( new Point( 0, 0 ), new ComponentVector( container, ComponentAxis.FOLLOWING ) );
 
@@ -629,20 +516,15 @@ public final class TableModelTest
      * {@link TableModel#getFocusableComponent(Point, ComponentVector)} method
      * returns the expected component when no search vector is specified and a
      * focusable component exists at the specified location.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testGetFocusableComponentWithSearchVector_SearchVector_Null_Location_FocusableComponent()
-        throws Exception
     {
         final IContainer container = createUniqueContainer();
         model_.getTable().getTabletop().addComponent( container );
         final IComponent childComponent = createUniqueComponent();
         container.addComponent( childComponent );
         final IComponent expectedComponent = container;
-        awaitPendingTableEnvironmentEvents();
 
         final IComponent actualComponent = model_.getFocusableComponent( new Point( 0, 0 ), null );
 
@@ -654,16 +536,11 @@ public final class TableModelTest
      * {@link TableModel#getFocusableComponent(Point, ComponentVector)} method
      * returns {@code null} when no search vector is specified and no component
      * exists at the specified location.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testGetFocusableComponentWithSearchVector_SearchVector_Null_Location_NoComponent()
-        throws Exception
     {
         model_.getTable().getTabletop().addComponent( createUniqueContainer() );
-        awaitPendingTableEnvironmentEvents();
 
         assertNull( model_.getFocusableComponent( new Point( Integer.MIN_VALUE, Integer.MIN_VALUE ), null ) );
     }
@@ -673,16 +550,11 @@ public final class TableModelTest
      * {@link TableModel#getFocusableComponent(Point, ComponentVector)} method
      * returns {@code null} when no search vector is specified and no focusable
      * component exists at the specified location.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testGetFocusableComponentWithSearchVector_SearchVector_Null_Location_NoFocusableComponent()
-        throws Exception
     {
         model_.getTable().getTabletop().addComponent( createUniqueComponent() );
-        awaitPendingTableEnvironmentEvents();
 
         assertNull( model_.getFocusableComponent( new Point( 0, 0 ), null ) );
     }
@@ -694,13 +566,9 @@ public final class TableModelTest
      * {@link ComponentAxis#PRECEDING} direction is specified and a focusable
      * component that follows the search vector origin component exists at the
      * specified location.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testGetFocusableComponentWithSearchVector_SearchVector_PrecedingDirection_Location_FollowingFocusableComponent()
-        throws Exception
     {
         final IContainer parentContainer = createUniqueContainer( ComponentFocusability.NOT_FOCUSABLE );
         model_.getTable().getTabletop().addComponent( parentContainer );
@@ -709,7 +577,6 @@ public final class TableModelTest
         final IComponent childComponent = createUniqueComponent( ComponentFocusability.FOCUSABLE );
         container.addComponent( childComponent );
         final IComponent expectedComponent = childComponent;
-        awaitPendingTableEnvironmentEvents();
 
         final IComponent actualComponent = model_.getFocusableComponent( new Point( 0, 0 ), new ComponentVector( container, ComponentAxis.PRECEDING ) );
 
@@ -722,13 +589,9 @@ public final class TableModelTest
      * returns the expected component when a search vector using the
      * {@link ComponentAxis#PRECEDING} direction is specified and no other
      * focusable component exists at the specified location.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testGetFocusableComponentWithSearchVector_SearchVector_PrecedingDirection_Location_NoOtherFocusableComponent()
-        throws Exception
     {
         final IContainer parentContainer = createUniqueContainer( ComponentFocusability.NOT_FOCUSABLE );
         model_.getTable().getTabletop().addComponent( parentContainer );
@@ -737,7 +600,6 @@ public final class TableModelTest
         final IComponent childComponent = createUniqueComponent();
         container.addComponent( childComponent );
         final IComponent expectedComponent = container;
-        awaitPendingTableEnvironmentEvents();
 
         final IComponent actualComponent = model_.getFocusableComponent( new Point( 0, 0 ), new ComponentVector( container, ComponentAxis.PRECEDING ) );
 
@@ -751,13 +613,9 @@ public final class TableModelTest
      * {@link ComponentAxis#PRECEDING} direction is specified and a focusable
      * component that precedes the search vector origin exists at the specified
      * location.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testGetFocusableComponentWithSearchVector_SearchVector_PrecedingDirection_Location_PrecedingFocusableComponent()
-        throws Exception
     {
         final IContainer parentContainer = createUniqueContainer();
         model_.getTable().getTabletop().addComponent( parentContainer );
@@ -766,7 +624,6 @@ public final class TableModelTest
         final IComponent childComponent = createUniqueComponent();
         container.addComponent( childComponent );
         final IComponent expectedComponent = parentContainer;
-        awaitPendingTableEnvironmentEvents();
 
         final IComponent actualComponent = model_.getFocusableComponent( new Point( 0, 0 ), new ComponentVector( container, ComponentAxis.PRECEDING ) );
 
@@ -861,133 +718,103 @@ public final class TableModelTest
 
     /**
      * Ensures the {@link TableModel#open()} method fires a table changed event.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testOpen_FiresTableChangedEvent()
-        throws Exception
     {
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableChanged( EasyMock.notNull( TableModelEvent.class ) );
-        replayMocks();
-
-        addTableModelListener( listener );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
 
         model_.open();
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
      * Ensures the {@link TableModel#open()} method fires a table model dirty
      * flag changed event.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testOpen_FiresTableModelDirtyFlagChangedEvent()
-        throws Exception
     {
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableModelDirtyFlagChanged( EasyMock.notNull( TableModelEvent.class ) );
-        replayMocks();
-
-        addTableModelListener( listener );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
 
         model_.open();
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
      * Ensures the {@link TableModel#open()} method fires a table model file
      * changed event.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testOpen_FiresTableModelFileChangedEvent()
-        throws Exception
     {
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableModelFileChanged( EasyMock.notNull( TableModelEvent.class ) );
-        replayMocks();
-
-        addTableModelListener( listener );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
 
         model_.open();
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
      * Ensures the {@link TableModel#open()} method fires a table model focus
      * changed event.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testOpen_FiresTableModelFocusChangedEvent()
-        throws Exception
     {
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableModelFocusChanged( EasyMock.notNull( TableModelEvent.class ) );
-        replayMocks();
-
-        addTableModelListener( listener );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
 
         model_.open();
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
      * Ensures the {@link TableModel#open()} method fires a table model hover
      * changed event.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testOpen_FiresTableModelHoverChangedEvent()
-        throws Exception
     {
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableModelHoverChanged( EasyMock.notNull( TableModelEvent.class ) );
-        replayMocks();
-
-        addTableModelListener( listener );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
 
         model_.open();
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
      * Ensures the {@link TableModel#open()} method fires a table model origin
      * offset changed event.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testOpen_FiresTableModelOriginOffsetChangedEvent()
-        throws Exception
     {
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableModelOriginOffsetChanged( EasyMock.notNull( TableModelEvent.class ) );
-        replayMocks();
-
-        addTableModelListener( listener );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
 
         model_.open();
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
@@ -1001,17 +828,16 @@ public final class TableModelTest
     public void testOpenFromFile_FiresTableChangedEvent()
         throws Exception
     {
+        final File file = createTemporaryFile();
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableChanged( EasyMock.notNull( TableModelEvent.class ) );
-        replayMocks();
-
-        final File file = createTemporaryFile();
+        niceMocksControl_.replay();
         model_.save( file );
-        addTableModelListener( listener );
+        model_.addTableModelListener( listener );
 
         model_.open( file );
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
@@ -1025,17 +851,16 @@ public final class TableModelTest
     public void testOpenFromFile_FiresTableModelDirtyFlagChangedEvent()
         throws Exception
     {
+        final File file = createTemporaryFile();
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableModelDirtyFlagChanged( EasyMock.notNull( TableModelEvent.class ) );
-        replayMocks();
-
-        final File file = createTemporaryFile();
+        niceMocksControl_.replay();
         model_.save( file );
-        addTableModelListener( listener );
+        model_.addTableModelListener( listener );
 
         model_.open( file );
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
@@ -1049,17 +874,16 @@ public final class TableModelTest
     public void testOpenFromFile_FiresTableModelFileChangedEvent()
         throws Exception
     {
+        final File file = createTemporaryFile();
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableModelFileChanged( EasyMock.notNull( TableModelEvent.class ) );
-        replayMocks();
-
-        final File file = createTemporaryFile();
+        niceMocksControl_.replay();
         model_.save( file );
-        addTableModelListener( listener );
+        model_.addTableModelListener( listener );
 
         model_.open( file );
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
@@ -1073,17 +897,16 @@ public final class TableModelTest
     public void testOpenFromFile_FiresTableModelFocusChangedEvent()
         throws Exception
     {
+        final File file = createTemporaryFile();
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableModelFocusChanged( EasyMock.notNull( TableModelEvent.class ) );
-        replayMocks();
-
-        final File file = createTemporaryFile();
+        niceMocksControl_.replay();
         model_.save( file );
-        addTableModelListener( listener );
+        model_.addTableModelListener( listener );
 
         model_.open( file );
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
@@ -1097,17 +920,16 @@ public final class TableModelTest
     public void testOpenFromFile_FiresTableModelHoverChangedEvent()
         throws Exception
     {
+        final File file = createTemporaryFile();
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableModelHoverChanged( EasyMock.notNull( TableModelEvent.class ) );
-        replayMocks();
-
-        final File file = createTemporaryFile();
+        niceMocksControl_.replay();
         model_.save( file );
-        addTableModelListener( listener );
+        model_.addTableModelListener( listener );
 
         model_.open( file );
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
@@ -1121,74 +943,59 @@ public final class TableModelTest
     public void testOpenFromFile_FiresTableModelOriginOffsetChangedEvent()
         throws Exception
     {
+        final File file = createTemporaryFile();
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableModelOriginOffsetChanged( EasyMock.notNull( TableModelEvent.class ) );
-        replayMocks();
-
-        final File file = createTemporaryFile();
+        niceMocksControl_.replay();
         model_.save( file );
-        addTableModelListener( listener );
+        model_.addTableModelListener( listener );
 
         model_.open( file );
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
      * Ensures a table model focus changed event is fired if the component with
      * the focus is removed from the table.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testRemoveFocusedComponent_FiresTableModelFocusChangedEvent()
-        throws Exception
     {
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableModelFocusChanged( EasyMock.notNull( TableModelEvent.class ) );
-        EasyMock.expectLastCall().andAnswer( mocksSupport_.asyncAnswer() );
-        replayMocks();
-
         final IComponent component = createUniqueContainer();
         model_.getTable().getTabletop().addComponent( component );
-        awaitPendingTableEnvironmentEvents();
         model_.setFocus( component );
-        addTableModelListener( listener );
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableModelFocusChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
 
         assertEquals( component, model_.getFocusedComponent() );
         model_.getTable().getTabletop().removeComponent( component );
 
-        verifyMocks();
+        niceMocksControl_.verify();
         assertNull( model_.getFocusedComponent() );
     }
 
     /**
      * Ensures a table model hover changed event is fired if the component with
      * the hover is removed from the table.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testRemoveHoveredComponent_FiresTableModelHoverChangedEvent()
-        throws Exception
     {
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableModelHoverChanged( EasyMock.notNull( TableModelEvent.class ) );
-        EasyMock.expectLastCall().andAnswer( mocksSupport_.asyncAnswer() );
-        replayMocks();
-
         final IComponent component = createUniqueContainer();
         model_.getTable().getTabletop().addComponent( component );
-        awaitPendingTableEnvironmentEvents();
         model_.setHover( component );
-        addTableModelListener( listener );
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableModelHoverChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
 
         assertEquals( component, model_.getHoveredComponent() );
         model_.getTable().getTabletop().removeComponent( component );
 
-        verifyMocks();
+        niceMocksControl_.verify();
         assertNull( model_.getHoveredComponent() );
     }
 
@@ -1216,25 +1023,20 @@ public final class TableModelTest
     /**
      * Ensures the {@link TableModel#removeTableModelListener} removes a
      * listener that is present in the table model listener collection.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testRemoveTableModelListener_Listener_Present()
-        throws Exception
     {
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableChanged( EasyMock.notNull( TableModelEvent.class ) );
-        replayMocks();
-
-        addTableModelListener( listener );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
 
         fireTableChangedEvent();
         model_.removeTableModelListener( listener );
         fireTableChangedEvent();
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
@@ -1248,16 +1050,15 @@ public final class TableModelTest
     public void testSave_FiresTableModelDirtyFlagChangedEvent()
         throws Exception
     {
+        final File file = createTemporaryFile();
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableModelDirtyFlagChanged( EasyMock.notNull( TableModelEvent.class ) );
-        replayMocks();
-
-        final File file = createTemporaryFile();
-        addTableModelListener( listener );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
 
         model_.save( file );
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
@@ -1271,34 +1072,28 @@ public final class TableModelTest
     public void testSave_FiresTableModelFileChangedEvent()
         throws Exception
     {
+        final File file = createTemporaryFile();
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableModelFileChanged( EasyMock.notNull( TableModelEvent.class ) );
-        replayMocks();
-
-        final File file = createTemporaryFile();
-        addTableModelListener( listener );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
 
         model_.save( file );
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
      * Ensures the {@link TableModel#setFocus} method correctly changes the
      * focus.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testSetFocus()
-        throws Exception
     {
         final IContainer container1 = createUniqueContainer();
         model_.getTable().getTabletop().addComponent( container1 );
         final IContainer container2 = createUniqueContainer();
         model_.getTable().getTabletop().addComponent( container2 );
-        awaitPendingTableEnvironmentEvents();
 
         model_.setFocus( container1 );
         assertTrue( model_.getComponentModel( container1.getPath() ).isFocused() );
@@ -1321,43 +1116,33 @@ public final class TableModelTest
     /**
      * Ensures the {@link TableModel#setFocus} method fires a table model focus
      * changed event.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testSetFocus_FiresTableModelFocusChangedEvent()
-        throws Exception
     {
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableModelFocusChanged( EasyMock.notNull( TableModelEvent.class ) );
-        replayMocks();
-
         final IContainer container = createUniqueContainer();
         model_.getTable().getTabletop().addComponent( container );
-        addTableModelListener( listener );
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableModelFocusChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
 
         model_.setFocus( container );
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
      * Ensures the {@link TableModel#setHover} method correctly changes the
      * hover.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testSetHover()
-        throws Exception
     {
         final IContainer container1 = createUniqueContainer();
         model_.getTable().getTabletop().addComponent( container1 );
         final IContainer container2 = createUniqueContainer();
         model_.getTable().getTabletop().addComponent( container2 );
-        awaitPendingTableEnvironmentEvents();
 
         model_.setHover( container1 );
         assertTrue( model_.getComponentModel( container1.getPath() ).isHovered() );
@@ -1380,47 +1165,37 @@ public final class TableModelTest
     /**
      * Ensures the {@link TableModel#setHover} method fires a table model hover
      * changed event.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testSetHover_FiresTableModelHoverChangedEvent()
-        throws Exception
     {
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableModelHoverChanged( EasyMock.notNull( TableModelEvent.class ) );
-        replayMocks();
-
         final IContainer container = createUniqueContainer();
         model_.getTable().getTabletop().addComponent( container );
-        addTableModelListener( listener );
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableModelHoverChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
 
         model_.setHover( container );
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
      * Ensures the {@link TableModel#setOriginOffset} method fires a table model
      * origin offset changed event.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testSetOriginOffset_FiresTableModelOriginOffsetChangedEvent()
-        throws Exception
     {
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableModelOriginOffsetChanged( EasyMock.notNull( TableModelEvent.class ) );
-        replayMocks();
-
-        addTableModelListener( listener );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
 
         model_.setOriginOffset( new Dimension( 100, 200 ) );
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
@@ -1436,78 +1211,62 @@ public final class TableModelTest
     /**
      * Ensures a change to the underlying table state fires a table changed
      * event.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testTable_StateChanged_FiresTableChangedEvent()
-        throws Exception
     {
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableChanged( EasyMock.notNull( TableModelEvent.class ) );
-        EasyMock.expectLastCall().andAnswer( mocksSupport_.asyncAnswer() );
-        replayMocks();
-
-        addTableModelListener( listener );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
 
         model_.getTable().getTabletop().addComponent( createUniqueContainer() );
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
      * Ensures the table changed event catches any exception thrown by the
      * {@link ITableModelListener#tableChanged} method of a table model
      * listener.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testTableChanged_CatchesListenerException()
-        throws Exception
     {
         final ITableModelListener listener1 = niceMocksControl_.createMock( ITableModelListener.class );
         listener1.tableChanged( EasyMock.notNull( TableModelEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final ITableModelListener listener2 = niceMocksControl_.createMock( ITableModelListener.class );
         listener2.tableChanged( EasyMock.notNull( TableModelEvent.class ) );
-        replayMocks();
-
-        addTableModelListener( listener1 );
-        addTableModelListener( listener2 );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener1 );
+        model_.addTableModelListener( listener2 );
 
         fireTableChangedEvent();
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
      * Ensures the table model dirty flag changed event catches any exception
      * thrown by the {@link ITableModelListener#tableModelDirtyFlagChanged}
      * method of a table model listener.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testTableModelDirtyFlagChanged_CatchesListenerException()
-        throws Exception
     {
         final ITableModelListener listener1 = niceMocksControl_.createMock( ITableModelListener.class );
         listener1.tableModelDirtyFlagChanged( EasyMock.notNull( TableModelEvent.class ) );
         final ITableModelListener listener2 = niceMocksControl_.createMock( ITableModelListener.class );
         listener2.tableModelDirtyFlagChanged( EasyMock.notNull( TableModelEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        replayMocks();
-
-        addTableModelListener( listener1 );
-        addTableModelListener( listener2 );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener1 );
+        model_.addTableModelListener( listener2 );
 
         fireTableModelDirtyFlagChangedEvent();
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
@@ -1527,112 +1286,78 @@ public final class TableModelTest
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final ITableModelListener listener2 = niceMocksControl_.createMock( ITableModelListener.class );
         listener2.tableModelFileChanged( EasyMock.notNull( TableModelEvent.class ) );
-        replayMocks();
-
-        addTableModelListener( listener1 );
-        addTableModelListener( listener2 );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener1 );
+        model_.addTableModelListener( listener2 );
 
         fireTableModelFileChangedEvent();
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
      * Ensures the table model focus changed event catches any exception thrown
      * by the {@link ITableModelListener#tableModelFocusChanged} method of a
      * table model listener.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testTableModelFocusChanged_CatchesListenerException()
-        throws Exception
     {
         final ITableModelListener listener1 = niceMocksControl_.createMock( ITableModelListener.class );
         listener1.tableModelFocusChanged( EasyMock.notNull( TableModelEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final ITableModelListener listener2 = niceMocksControl_.createMock( ITableModelListener.class );
         listener2.tableModelFocusChanged( EasyMock.notNull( TableModelEvent.class ) );
-        replayMocks();
-
-        addTableModelListener( listener1 );
-        addTableModelListener( listener2 );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener1 );
+        model_.addTableModelListener( listener2 );
 
         fireTableModelFocusChangedEvent();
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
      * Ensures the table model hover changed event catches any exception thrown
      * by the {@link ITableModelListener#tableModelHoverChanged} method of a
      * table model listener.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testTableModelHoverChanged_CatchesListenerException()
-        throws Exception
     {
         final ITableModelListener listener1 = niceMocksControl_.createMock( ITableModelListener.class );
         listener1.tableModelHoverChanged( EasyMock.notNull( TableModelEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final ITableModelListener listener2 = niceMocksControl_.createMock( ITableModelListener.class );
         listener2.tableModelHoverChanged( EasyMock.notNull( TableModelEvent.class ) );
-        replayMocks();
-
-        addTableModelListener( listener1 );
-        addTableModelListener( listener2 );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener1 );
+        model_.addTableModelListener( listener2 );
 
         fireTableModelHoverChangedEvent();
 
-        verifyMocks();
+        niceMocksControl_.verify();
     }
 
     /**
      * Ensures the table model origin offset changed event catches any exception
      * thrown by the {@link ITableModelListener#tableModelOriginOffsetChanged}
      * method of a table model listener.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testTableModelOriginOffsetChanged_CatchesListenerException()
-        throws Exception
     {
         final ITableModelListener listener1 = niceMocksControl_.createMock( ITableModelListener.class );
         listener1.tableModelOriginOffsetChanged( EasyMock.notNull( TableModelEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final ITableModelListener listener2 = niceMocksControl_.createMock( ITableModelListener.class );
         listener2.tableModelOriginOffsetChanged( EasyMock.notNull( TableModelEvent.class ) );
-        replayMocks();
-
-        addTableModelListener( listener1 );
-        addTableModelListener( listener2 );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener1 );
+        model_.addTableModelListener( listener2 );
 
         fireTableModelOriginOffsetChangedEvent();
 
-        verifyMocks();
-    }
-
-    /**
-     * Verifies that all expectations were met in the fixture mocks control.
-     * 
-     * <p>
-     * This method waits for all asynchronous answers registered with the
-     * fixture mocks support to complete before verifying expectations.
-     * </p>
-     * 
-     * @throws java.lang.InterruptedException
-     *         If this thread is interrupted.
-     */
-    private void verifyMocks()
-        throws InterruptedException
-    {
-        mocksSupport_.awaitAsyncAnswers();
         niceMocksControl_.verify();
     }
 

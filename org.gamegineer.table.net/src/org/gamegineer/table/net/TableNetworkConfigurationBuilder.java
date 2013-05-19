@@ -1,6 +1,6 @@
 /*
  * TableNetworkConfigurationBuilder.java
- * Copyright 2008-2013 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,6 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.internal.net.TableNetworkConfiguration;
 
 /**
@@ -44,7 +45,7 @@ public final class TableNetworkConfigurationBuilder
     private String localPlayerName_;
 
     /** The local table to attach to the table network. */
-    private final ITable localTable_;
+    private ITable localTable_;
 
     /** The password used to authenticate connections to the table network. */
     private SecureString password_;
@@ -60,23 +61,12 @@ public final class TableNetworkConfigurationBuilder
     /**
      * Initializes a new instance of the
      * {@code TableNetworkConfigurationBuilder} class.
-     * 
-     * @param localTable
-     *        The local table to attach to the table network; must not be
-     *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code localTable} is {@code null}.
      */
-    public TableNetworkConfigurationBuilder(
-        /* @NonNull */
-        final ITable localTable )
+    public TableNetworkConfigurationBuilder()
     {
-        assertArgumentNotNull( localTable, "localTable" ); //$NON-NLS-1$
-
         hostName_ = "localhost"; //$NON-NLS-1$
         localPlayerName_ = "Player"; //$NON-NLS-1$
-        localTable_ = localTable;
+        localTable_ = TableEnvironmentFactory.createTableEnvironment().createTable();
         password_ = new SecureString();
         port_ = TableNetworkConstants.DEFAULT_PORT;
     }
@@ -128,6 +118,29 @@ public final class TableNetworkConfigurationBuilder
         assertArgumentNotNull( localPlayerName, "localPlayerName" ); //$NON-NLS-1$
 
         localPlayerName_ = localPlayerName;
+
+        return this;
+    }
+
+    /**
+     * Sets the local table to attach to the table network.
+     * 
+     * @param localTable
+     *        The local table; must not be {@code null}.
+     * 
+     * @return A reference to this builder; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code localTable} is {@code null}.
+     */
+    /* @NonNull */
+    public TableNetworkConfigurationBuilder setLocalTable(
+        /* @NonNull */
+        final ITable localTable )
+    {
+        assertArgumentNotNull( localTable, "localTable" ); //$NON-NLS-1$
+
+        localTable_ = localTable;
 
         return this;
     }

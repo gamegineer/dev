@@ -1,6 +1,6 @@
 /*
  * AbstractAbstractNodeAsNodeControllerTestCase.java
- * Copyright 2008-2013 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -170,17 +170,6 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
     }
 
     /**
-     * Creates a new table network configuration.
-     * 
-     * @return A new table network configuration; never {@code null}.
-     */
-    /* @NonNull */
-    private ITableNetworkConfiguration createTableNetworkConfiguration()
-    {
-        return TableNetworkConfigurations.createDefaultTableNetworkConfiguration( getTableEnvironment().createTable() );
-    }
-
-    /**
      * Ensures the connect operation does not invoke the {@code connected}
      * method when the transport layer fails to be opened.
      * 
@@ -197,7 +186,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
 
         try
         {
-            nodeLayerRunner.connect( createTableNetworkConfiguration() );
+            nodeLayerRunner.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
         }
         finally
         {
@@ -222,7 +211,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
 
         try
         {
-            nodeLayerRunner.connect( createTableNetworkConfiguration() );
+            nodeLayerRunner.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
         }
         finally
         {
@@ -247,7 +236,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
 
         try
         {
-            nodeLayerRunner.connect( createTableNetworkConfiguration() );
+            nodeLayerRunner.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
         }
         finally
         {
@@ -270,7 +259,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         node.setTransportLayer( createSuccessfulTransportLayer() );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
 
-        nodeLayerRunner.connect( createTableNetworkConfiguration() );
+        nodeLayerRunner.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
 
         assertEquals( 1, node.getConnectedCallCount() );
     }
@@ -290,7 +279,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         node.setTransportLayer( createSuccessfulTransportLayer() );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
 
-        nodeLayerRunner.connect( createTableNetworkConfiguration() );
+        nodeLayerRunner.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
 
         assertEquals( 1, node.getConnectingCallCount() );
     }
@@ -335,7 +324,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         final MockNode node = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
         node.setTransportLayer( createSuccessfulTransportLayer() );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
-        nodeLayerRunner.connect( createTableNetworkConfiguration() );
+        nodeLayerRunner.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
 
         nodeLayerRunner.disconnect();
 
@@ -357,7 +346,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         final MockNode node = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
         node.setTransportLayer( createSuccessfulTransportLayer() );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
-        nodeLayerRunner.connect( createTableNetworkConfiguration() );
+        nodeLayerRunner.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
 
         nodeLayerRunner.disconnect();
 

@@ -509,7 +509,6 @@ public final class MainFrame
         tableModelListener_ = null;
         model_.removeMainModelListener( mainModelListener_ );
         mainModelListener_ = null;
-        model_.dispose();
 
         stopActionUpdater();
         actionMediator_.unbindAll();
