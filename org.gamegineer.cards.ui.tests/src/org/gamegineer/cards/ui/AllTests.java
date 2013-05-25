@@ -21,16 +21,14 @@
 
 package org.gamegineer.cards.ui;
 
+import junit.framework.Test;
 import org.gamegineer.cards.internal.ui.Activator;
 import org.gamegineer.cards.internal.ui.TestsFragmentConstants;
-import org.gamegineer.test.core.AllFragmentTests;
-import org.junit.runner.RunWith;
-import org.osgi.framework.Bundle;
+import org.gamegineer.test.core.BundleSuiteBuilder;
 
 /**
  * Defines a test suite for running all tests in the fragment.
  */
-@RunWith( AllFragmentTests.class )
 public final class AllTests
 {
     // ======================================================================
@@ -50,24 +48,14 @@ public final class AllTests
     // ======================================================================
 
     /**
-     * Gets the fragment name.
+     * Creates a test suite consisting of all tests in the fragment.
      * 
-     * @return The fragment name; never {@code null}.
+     * @return A test suite consisting of all tests in the fragment; never
+     *         {@code null}.
      */
     /* @NonNull */
-    public static String getFragmentName()
+    public static Test suite()
     {
-        return TestsFragmentConstants.SYMBOLIC_NAME;
-    }
-
-    /**
-     * Gets the host bundle of the fragment.
-     * 
-     * @return The host bundle of the fragment; never {@code null}.
-     */
-    /* @NonNull */
-    public static Bundle getHostBundle()
-    {
-        return Activator.getDefault().getBundleContext().getBundle();
+        return BundleSuiteBuilder.suite( Activator.getDefault().getBundleContext().getBundle(), TestsFragmentConstants.SYMBOLIC_NAME );
     }
 }
