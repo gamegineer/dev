@@ -1,6 +1,6 @@
 /*
  * BundleSuiteBuilder.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -57,7 +57,7 @@ import org.xml.sax.InputSource;
  * </p>
  */
 @ThreadSafe
-public final class BundleSuiteBuilder
+final class BundleSuiteBuilder
 {
     // ======================================================================
     // Constructors
@@ -404,20 +404,15 @@ public final class BundleSuiteBuilder
      * @return A test suite containing all tests in the specified bundle; never
      *         {@code null}.
      * 
-     * @throws java.lang.NullPointerException
-     *         If {@code bundle} is {@code null}.
      * @throws java.lang.RuntimeException
      *         If an error occurs while building the test suite.
      */
     /* @NonNull */
-    public static Test suite(
+    static Test suite(
         /* @NonNull */
         final Bundle bundle )
     {
-        if( bundle == null )
-        {
-            throw new NullPointerException( "bundle" ); //$NON-NLS-1$
-        }
+        assert bundle != null;
 
         try
         {
@@ -444,26 +439,18 @@ public final class BundleSuiteBuilder
      * 
      * @throws java.lang.IllegalArgumentException
      *         If the bundle fragment does not exist in the host bundle.
-     * @throws java.lang.NullPointerException
-     *         If {@code hostBundle} or {@code fragmentName} is {@code null}.
      * @throws java.lang.RuntimeException
      *         If an error occurs while building the test suite.
      */
     /* @NonNull */
-    public static Test suite(
+    static Test suite(
         /* @NonNull */
         final Bundle hostBundle,
         /* @NonNull */
         final String fragmentName )
     {
-        if( hostBundle == null )
-        {
-            throw new NullPointerException( "hostBundle" ); //$NON-NLS-1$
-        }
-        if( fragmentName == null )
-        {
-            throw new NullPointerException( "fragmentName" ); //$NON-NLS-1$
-        }
+        assert hostBundle != null;
+        assert fragmentName != null;
 
         final Bundle fragmentBundle = TestCases.getFragment( hostBundle, fragmentName );
         if( fragmentBundle == null )

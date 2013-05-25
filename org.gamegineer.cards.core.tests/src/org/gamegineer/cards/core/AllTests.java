@@ -1,6 +1,6 @@
 /*
  * AllTests.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,14 +21,16 @@
 
 package org.gamegineer.cards.core;
 
-import junit.framework.Test;
 import org.gamegineer.cards.internal.core.Activator;
 import org.gamegineer.cards.internal.core.TestsFragmentConstants;
-import org.gamegineer.test.core.BundleSuiteBuilder;
+import org.gamegineer.test.core.AllFragmentTests;
+import org.junit.runner.RunWith;
+import org.osgi.framework.Bundle;
 
 /**
  * Defines a test suite for running all tests in the fragment.
  */
+@RunWith( AllFragmentTests.class )
 public final class AllTests
 {
     // ======================================================================
@@ -48,14 +50,24 @@ public final class AllTests
     // ======================================================================
 
     /**
-     * Creates a test suite consisting of all tests in the fragment.
+     * Gets the fragment name.
      * 
-     * @return A test suite consisting of all tests in the fragment; never
-     *         {@code null}.
+     * @return The fragment name; never {@code null}.
      */
     /* @NonNull */
-    public static Test suite()
+    public static String getFragmentName()
     {
-        return BundleSuiteBuilder.suite( Activator.getDefault().getBundleContext().getBundle(), TestsFragmentConstants.SYMBOLIC_NAME );
+        return TestsFragmentConstants.SYMBOLIC_NAME;
+    }
+
+    /**
+     * Gets the host bundle of the fragment.
+     * 
+     * @return The host bundle of the fragment; never {@code null}.
+     */
+    /* @NonNull */
+    public static Bundle getHostBundle()
+    {
+        return Activator.getDefault().getBundleContext().getBundle();
     }
 }
