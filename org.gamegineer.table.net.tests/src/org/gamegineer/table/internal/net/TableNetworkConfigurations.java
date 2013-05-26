@@ -1,6 +1,6 @@
 /*
  * TableNetworkConfigurations.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -62,11 +62,10 @@ public final class TableNetworkConfigurations
         final SecureString password = new SecureString( "password".toCharArray() ); //$NON-NLS-1$
         try
         {
-            final TableNetworkConfigurationBuilder builder = new TableNetworkConfigurationBuilder();
+            final TableNetworkConfigurationBuilder builder = new TableNetworkConfigurationBuilder( TableEnvironmentFactory.createTableEnvironment().createTable() );
             return builder //
                 .setHostName( "hostName" ) //$NON-NLS-1$
                 .setLocalPlayerName( "playerName" ) //$NON-NLS-1$
-                .setLocalTable( TableEnvironmentFactory.createTableEnvironment().createTable() ) //
                 .setPassword( password ) //
                 .setPort( TableNetworkConstants.DEFAULT_PORT ) //
                 .toTableNetworkConfiguration();

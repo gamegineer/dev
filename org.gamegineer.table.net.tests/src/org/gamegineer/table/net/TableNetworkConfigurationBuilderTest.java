@@ -1,6 +1,6 @@
 /*
  * TableNetworkConfigurationBuilderTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.net;
 
+import org.easymock.EasyMock;
+import org.gamegineer.table.core.ITable;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -65,7 +67,18 @@ public final class TableNetworkConfigurationBuilderTest
     public void setUp()
         throws Exception
     {
-        builder_ = new TableNetworkConfigurationBuilder();
+        builder_ = new TableNetworkConfigurationBuilder( EasyMock.createMock( ITable.class ) );
+    }
+
+    /**
+     * Ensures the
+     * {@link TableNetworkConfigurationBuilder#TableNetworkConfigurationBuilder}
+     * constructor throws an exception when passed a {@code null} local table.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_LocalTable_Null()
+    {
+        new TableNetworkConfigurationBuilder( null );
     }
 
     /**
@@ -86,16 +99,6 @@ public final class TableNetworkConfigurationBuilderTest
     public void testSetLocalPlayerName_LocalPlayerName_Null()
     {
         builder_.setLocalPlayerName( null );
-    }
-
-    /**
-     * Ensures the {@link TableNetworkConfigurationBuilder#setLocalTable} method
-     * throws an exception when passed a {@code null} local table.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetLocalTable_LocalTable_Null()
-    {
-        builder_.setLocalTable( null );
     }
 
     /**

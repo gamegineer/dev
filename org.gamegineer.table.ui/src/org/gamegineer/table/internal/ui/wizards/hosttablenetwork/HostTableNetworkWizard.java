@@ -1,6 +1,6 @@
 /*
  * HostTableNetworkWizard.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -67,8 +67,8 @@ public final class HostTableNetworkWizard
      * Initializes a new instance of the {@code HostTableNetworkWizard} class.
      * 
      * @param tableModel
-     *        The table model associated with the wizard; must not be {@code
-     *        null}.
+     *        The table model associated with the wizard; must not be
+     *        {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code tableModel} is {@code null}.
@@ -131,10 +131,9 @@ public final class HostTableNetworkWizard
     /* @NonNull */
     private ITableNetworkConfiguration getTableNetworkConfiguration()
     {
-        final TableNetworkConfigurationBuilder configurationBuilder = new TableNetworkConfigurationBuilder();
+        final TableNetworkConfigurationBuilder configurationBuilder = new TableNetworkConfigurationBuilder( tableModel_.getTable() );
         configurationBuilder.setHostName( "localhost" ); //$NON-NLS-1$
         configurationBuilder.setLocalPlayerName( model_.getPlayerName() );
-        configurationBuilder.setLocalTable( tableModel_.getTable() );
         configurationBuilder.setPassword( model_.getPassword() );
         configurationBuilder.setPort( model_.getPort() );
         return configurationBuilder.toTableNetworkConfiguration();
