@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.core;
 
-import static org.hamcrest.core.IsNot.not;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
