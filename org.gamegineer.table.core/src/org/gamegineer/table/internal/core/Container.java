@@ -200,12 +200,10 @@ final class Container
     {
         assert components != null;
 
-        final List<ContainerContentChangedEvent> componentAddedEvents = new ArrayList<ContainerContentChangedEvent>();
-        final ComponentEvent componentBoundsChangedEvent;
-
         getLock().lock();
         try
         {
+            final List<ContainerContentChangedEvent> componentAddedEvents = new ArrayList<ContainerContentChangedEvent>();
             final Rectangle oldBounds = getBounds();
             int index = (boxedIndex != null) ? boxedIndex.intValue() : components_.size();
 
@@ -228,32 +226,32 @@ final class Container
             layout_.layout( this );
 
             final Rectangle newBounds = getBounds();
-            componentBoundsChangedEvent = newBounds.equals( oldBounds ) ? null : createComponentEvent();
+            final ComponentEvent componentBoundsChangedEvent = newBounds.equals( oldBounds ) ? null : createComponentEvent();
+
+            if( !componentAddedEvents.isEmpty() || (componentBoundsChangedEvent != null) )
+            {
+                fireEventNotification( new Runnable()
+                {
+                    @Override
+                    @SuppressWarnings( "synthetic-access" )
+                    public void run()
+                    {
+                        for( final ContainerContentChangedEvent componentAddedEvent : componentAddedEvents )
+                        {
+                            fireComponentAdded( componentAddedEvent );
+                        }
+
+                        if( componentBoundsChangedEvent != null )
+                        {
+                            fireComponentBoundsChanged( componentBoundsChangedEvent );
+                        }
+                    }
+                } );
+            }
         }
         finally
         {
             getLock().unlock();
-        }
-
-        if( !componentAddedEvents.isEmpty() || (componentBoundsChangedEvent != null) )
-        {
-            addEventNotification( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    for( final ContainerContentChangedEvent componentAddedEvent : componentAddedEvents )
-                    {
-                        fireComponentAdded( componentAddedEvent );
-                    }
-
-                    if( componentBoundsChangedEvent != null )
-                    {
-                        fireComponentBoundsChanged( componentBoundsChangedEvent );
-                    }
-                }
-            } );
         }
     }
 
@@ -736,12 +734,11 @@ final class Container
         assert componentRangeStrategy != null;
 
         final List<Component> removedComponents = new ArrayList<Component>();
-        final List<ContainerContentChangedEvent> componentRemovedEvents = new ArrayList<ContainerContentChangedEvent>();
-        final ComponentEvent componentBoundsChangedEvent;
 
         getLock().lock();
         try
         {
+            final List<ContainerContentChangedEvent> componentRemovedEvents = new ArrayList<ContainerContentChangedEvent>();
             final Rectangle oldBounds = getBounds();
 
             removedComponents.addAll( components_.subList( componentRangeStrategy.getLowerIndex(), componentRangeStrategy.getUpperIndex() ) );
@@ -756,33 +753,33 @@ final class Container
             layout_.layout( this );
 
             final Rectangle newBounds = getBounds();
-            componentBoundsChangedEvent = newBounds.equals( oldBounds ) ? null : createComponentEvent();
+            final ComponentEvent componentBoundsChangedEvent = newBounds.equals( oldBounds ) ? null : createComponentEvent();
+
+            if( !componentRemovedEvents.isEmpty() || (componentBoundsChangedEvent != null) )
+            {
+                fireEventNotification( new Runnable()
+                {
+                    @Override
+                    @SuppressWarnings( "synthetic-access" )
+                    public void run()
+                    {
+                        // ensure events are fired in order from highest index to lowest index
+                        for( final ContainerContentChangedEvent componentRemovedEvent : IterableUtils.reverse( componentRemovedEvents ) )
+                        {
+                            fireComponentRemoved( componentRemovedEvent );
+                        }
+
+                        if( componentBoundsChangedEvent != null )
+                        {
+                            fireComponentBoundsChanged( componentBoundsChangedEvent );
+                        }
+                    }
+                } );
+            }
         }
         finally
         {
             getLock().unlock();
-        }
-
-        if( !componentRemovedEvents.isEmpty() || (componentBoundsChangedEvent != null) )
-        {
-            addEventNotification( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    // ensure events are fired in order from highest index to lowest index
-                    for( final ContainerContentChangedEvent componentRemovedEvent : IterableUtils.reverse( componentRemovedEvents ) )
-                    {
-                        fireComponentRemoved( componentRemovedEvent );
-                    }
-
-                    if( componentBoundsChangedEvent != null )
-                    {
-                        fireComponentBoundsChanged( componentBoundsChangedEvent );
-                    }
-                }
-            } );
         }
 
         return new ArrayList<IComponent>( removedComponents );
@@ -836,14 +833,12 @@ final class Container
     {
         assertArgumentNotNull( layout, "layout" ); //$NON-NLS-1$
 
-        final ContainerEvent containerLayoutChangedEvent;
-        final ComponentEvent componentBoundsChangedEvent;
-
         getLock().lock();
         try
         {
             layout_ = layout;
-            containerLayoutChangedEvent = createContainerEvent();
+            final ContainerEvent containerLayoutChangedEvent = createContainerEvent();
+            final ComponentEvent componentBoundsChangedEvent;
 
             if( components_.isEmpty() )
             {
@@ -858,26 +853,26 @@ final class Container
                 final Rectangle newBounds = getBounds();
                 componentBoundsChangedEvent = newBounds.equals( oldBounds ) ? null : createComponentEvent();
             }
+
+            fireEventNotification( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    fireContainerLayoutChanged( containerLayoutChangedEvent );
+
+                    if( componentBoundsChangedEvent != null )
+                    {
+                        fireComponentBoundsChanged( componentBoundsChangedEvent );
+                    }
+                }
+            } );
         }
         finally
         {
             getLock().unlock();
         }
-
-        addEventNotification( new Runnable()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                fireContainerLayoutChanged( containerLayoutChangedEvent );
-
-                if( componentBoundsChangedEvent != null )
-                {
-                    fireComponentBoundsChanged( componentBoundsChangedEvent );
-                }
-            }
-        } );
     }
 
     /**

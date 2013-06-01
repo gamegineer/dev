@@ -27,7 +27,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
@@ -35,6 +34,7 @@ import org.gamegineer.common.core.util.IterableUtils;
 import org.gamegineer.table.core.ComponentStrategies;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
+import org.gamegineer.table.core.ITableEnvironmentLock;
 import org.gamegineer.table.core.dnd.DefaultDragStrategyFactory;
 import org.gamegineer.table.core.dnd.IDragContext;
 import org.gamegineer.table.core.dnd.IDragStrategy;
@@ -361,7 +361,7 @@ final class DragContext
      * @return The table environment lock; never {@code null}.
      */
     /* @NonNull */
-    private ReentrantLock getLock()
+    private ITableEnvironmentLock getLock()
     {
         return table_.getTableEnvironment().getLock();
     }

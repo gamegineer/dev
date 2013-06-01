@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.core;
 
-import java.util.concurrent.locks.Lock;
 import org.gamegineer.common.core.util.memento.MementoException;
 
 /**
@@ -121,5 +120,5 @@ public interface ITableEnvironment
      * @return The table environment lock; never {@code null}.
      */
     /* @NonNull */
-    public Lock getLock();
+    public ITableEnvironmentLock getLock();
 }

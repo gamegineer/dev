@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.core;
 
 import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.dnd.AbstractDragSourceTestCase;
 import org.junit.Before;
 
@@ -74,7 +75,7 @@ public final class TableAsDragSourceTest
     public void setUp()
         throws Exception
     {
-        table_ = new Table( new TableEnvironment() );
+        table_ = new Table( new TableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
 
         super.setUp();
     }

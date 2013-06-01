@@ -1,6 +1,6 @@
 /*
  * ContainerTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,6 +26,7 @@ import static org.junit.Assert.assertNull;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.TestComponentStrategies;
 import org.gamegineer.table.core.TestComponentSurfaceDesigns;
 import org.junit.Before;
@@ -92,7 +93,7 @@ public final class ContainerTest
     public void setUp()
         throws Exception
     {
-        tableEnvironment_ = new TableEnvironment();
+        tableEnvironment_ = new TableEnvironment( new SingleThreadedTableEnvironmentContext() );
         container_ = new Container( tableEnvironment_, TestComponentStrategies.createUniqueContainerStrategy() );
     }
 

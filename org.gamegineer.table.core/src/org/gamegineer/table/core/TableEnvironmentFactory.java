@@ -1,6 +1,6 @@
 /*
  * TableEnvironmentFactory.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -49,11 +49,19 @@ public final class TableEnvironmentFactory
     /**
      * Creates a new table environment.
      * 
+     * @param context
+     *        The table environment context; must not be {@code null}.
+     * 
      * @return A new table environment; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code context} is {@code null}.
      */
     /* @NonNull */
-    public static ITableEnvironment createTableEnvironment()
+    public static ITableEnvironment createTableEnvironment(
+        /* @NonNull */
+        final ITableEnvironmentContext context )
     {
-        return new TableEnvironment();
+        return new TableEnvironment( context );
     }
 }

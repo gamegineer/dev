@@ -1,6 +1,6 @@
 /*
  * MainModelTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,6 +27,8 @@ import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
+import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.ui.TestComponents;
 import org.junit.Before;
 import org.junit.Test;
@@ -113,7 +115,7 @@ public final class MainModelTest
         throws Exception
     {
         niceMocksControl_ = EasyMock.createNiceControl();
-        model_ = new MainModel();
+        model_ = new MainModel( new TableModel( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ).createTable() ) );
     }
 
     /**
@@ -155,6 +157,16 @@ public final class MainModelTest
         model_.addMainModelListener( listener );
 
         model_.addMainModelListener( listener );
+    }
+
+    /**
+     * Ensures the {@link MainModel#MainModel} constructor throws an exception
+     * when passed a {@code null} table model.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_TableModel_Null()
+    {
+        new MainModel( null );
     }
 
     /**

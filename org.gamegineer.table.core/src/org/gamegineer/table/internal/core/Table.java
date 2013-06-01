@@ -31,7 +31,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.locks.ReentrantLock;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
@@ -39,6 +38,7 @@ import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.ITableEnvironmentLock;
 import org.gamegineer.table.core.dnd.IDragContext;
 import org.gamegineer.table.core.dnd.IDragSource;
 import org.gamegineer.table.internal.core.strategies.InternalComponentStrategies;
@@ -327,7 +327,7 @@ final class Table
      * @return The table environment lock; never {@code null}.
      */
     /* @NonNull */
-    private ReentrantLock getLock()
+    private ITableEnvironmentLock getLock()
     {
         return tableEnvironment_.getLock();
     }

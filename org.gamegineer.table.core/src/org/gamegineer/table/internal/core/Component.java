@@ -32,7 +32,6 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
@@ -46,6 +45,7 @@ import org.gamegineer.table.core.ComponentSurfaceDesignRegistry;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.IComponentStrategy;
+import org.gamegineer.table.core.ITableEnvironmentLock;
 import org.gamegineer.table.core.NoSuchComponentSurfaceDesignException;
 
 /**
@@ -153,20 +153,6 @@ class Component
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( componentListeners_.addIfAbsent( listener ), "listener", NonNlsMessages.Component_addComponentListener_listener_registered ); //$NON-NLS-1$
-    }
-
-    /**
-     * Adds an event notification to the table environment associated with the
-     * component.
-     * 
-     * @param notification
-     *        The event notification; must not be {@code null}.
-     */
-    final void addEventNotification(
-        /* @NonNull */
-        final Runnable notification )
-    {
-        tableEnvironment_.addEventNotification( notification );
     }
 
     /**
@@ -283,6 +269,23 @@ class Component
     }
 
     /**
+     * Fires the specified event notification.
+     * 
+     * @param eventNotification
+     *        The event notification; must not be {@code null}.
+     */
+    @GuardedBy( "getLock()" )
+    final void fireEventNotification(
+        /* @NonNull */
+        final Runnable eventNotification )
+    {
+        assert eventNotification != null;
+        assert getLock().isHeldByCurrentThread();
+
+        tableEnvironment_.fireEventNotification( eventNotification );
+    }
+
+    /**
      * This implementation defines the component bounds using the component
      * location and the size of the surface design in the current orientation.
      * Subclasses may override and are not required to call the superclass
@@ -336,7 +339,7 @@ class Component
      * @return The table environment lock; never {@code null}.
      */
     /* @NonNull */
-    final ReentrantLock getLock()
+    final ITableEnvironmentLock getLock()
     {
         return tableEnvironment_.getLock();
     }
@@ -660,21 +663,21 @@ class Component
         {
             orientation_ = orientation;
             componentOrientationChangedEvent = createComponentEvent();
+
+            fireEventNotification( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    fireComponentOrientationChanged( componentOrientationChangedEvent );
+                }
+            } );
         }
         finally
         {
             getLock().unlock();
         }
-
-        addEventNotification( new Runnable()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                fireComponentOrientationChanged( componentOrientationChangedEvent );
-            }
-        } );
     }
 
     /*
@@ -733,21 +736,21 @@ class Component
         {
             surfaceDesigns_.put( orientation, surfaceDesign );
             componentSurfaceDesignChangedEvent = createComponentEvent();
+
+            fireEventNotification( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    fireComponentSurfaceDesignChanged( componentSurfaceDesignChangedEvent );
+                }
+            } );
         }
         finally
         {
             getLock().unlock();
         }
-
-        addEventNotification( new Runnable()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                fireComponentSurfaceDesignChanged( componentSurfaceDesignChangedEvent );
-            }
-        } );
     }
 
     /**
@@ -825,7 +828,7 @@ class Component
         origin_.translate( offset.width, offset.height );
         final ComponentEvent componentBoundsChangedEvent = createComponentEvent();
 
-        addEventNotification( new Runnable()
+        fireEventNotification( new Runnable()
         {
             @Override
             public void run()

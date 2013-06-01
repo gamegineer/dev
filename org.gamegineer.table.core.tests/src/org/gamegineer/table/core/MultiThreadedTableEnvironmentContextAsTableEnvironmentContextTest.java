@@ -1,5 +1,5 @@
 /*
- * TableEnvironmentAsTableEnvironmentTest.java
+ * MultiThreadedTableEnvironmentContextAsTableEnvironmentContextTest.java
  * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
@@ -16,23 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 19, 2012 at 9:37:22 PM.
+ * Created on May 28, 2013 at 8:30:38 PM.
  */
 
-package org.gamegineer.table.internal.core;
-
-import org.gamegineer.table.core.AbstractTableEnvironmentTestCase;
-import org.gamegineer.table.core.ITableEnvironment;
-import org.gamegineer.table.core.ITableEnvironmentContext;
+package org.gamegineer.table.core;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.TableEnvironment} class to ensure
- * it does not violate the contract of the
- * {@link org.gamegineer.table.core.ITableEnvironment} interface.
+ * {@link org.gamegineer.table.core.MultiThreadedTableEnvironmentContext} class
+ * to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.core.ITableEnvironmentContext} interface.
  */
-public final class TableEnvironmentAsTableEnvironmentTest
-    extends AbstractTableEnvironmentTestCase
+public final class MultiThreadedTableEnvironmentContextAsTableEnvironmentContextTest
+    extends AbstractTableEnvironmentContextTestCase
 {
     // ======================================================================
     // Constructors
@@ -40,9 +36,10 @@ public final class TableEnvironmentAsTableEnvironmentTest
 
     /**
      * Initializes a new instance of the
-     * {@code TableEnvironmentAsTableEnvironmentTest} class.
+     * {@code MultiThreadedTableEnvironmentContextAsTableEnvironmentContextTest}
+     * class.
      */
-    public TableEnvironmentAsTableEnvironmentTest()
+    public MultiThreadedTableEnvironmentContextAsTableEnvironmentContextTest()
     {
     }
 
@@ -52,12 +49,11 @@ public final class TableEnvironmentAsTableEnvironmentTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractTableEnvironmentTestCase#createTableEnvironment(org.gamegineer.table.core.ITableEnvironmentContext)
+     * @see org.gamegineer.table.core.AbstractTableEnvironmentContextTestCase#createTableEnvironmentContext()
      */
     @Override
-    protected ITableEnvironment createTableEnvironment(
-        final ITableEnvironmentContext context )
+    protected ITableEnvironmentContext createTableEnvironmentContext()
     {
-        return new TableEnvironment( context );
+        return new MultiThreadedTableEnvironmentContext();
     }
 }

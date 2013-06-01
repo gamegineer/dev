@@ -1,6 +1,6 @@
 /*
  * AbstractComponentTestCase.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -160,7 +160,27 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      * @return The table environment for use in the fixture; never {@code null}.
      */
     /* @NonNull */
-    protected abstract TableEnvironmentType createTableEnvironment();
+    protected final TableEnvironmentType createTableEnvironment()
+    {
+        return createTableEnvironment( new SingleThreadedTableEnvironmentContext() );
+    }
+
+    /**
+     * Creates the table environment for use in the fixture using the specified
+     * context.
+     * 
+     * @param context
+     *        The table environment context; must not be {@code null}.
+     * 
+     * @return The table environment for use in the fixture; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code context} is {@code null}.
+     */
+    /* @NonNull */
+    protected abstract TableEnvironmentType createTableEnvironment(
+        /* @NonNull */
+        final ITableEnvironmentContext context );
 
     /**
      * Fires a component bounds changed event for the specified component.

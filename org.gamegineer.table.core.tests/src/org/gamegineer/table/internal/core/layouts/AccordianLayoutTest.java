@@ -27,6 +27,7 @@ import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITableEnvironment;
+import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.core.TestComponents;
 import org.junit.Test;
@@ -81,7 +82,7 @@ public final class AccordianLayoutTest
         final int originX = 20, originY = 30;
         final int offsetX = 2, offsetY = -3;
         final AccordianLayout layout = new AccordianLayout( DEFAULT_ID, offsetX, offsetY );
-        final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment();
+        final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() );
         final IContainer container = TestComponents.createUniqueContainer( tableEnvironment );
         container.setOrigin( new Point( originX, originY ) );
         final IComponent component1 = TestComponents.createUniqueComponent( tableEnvironment );

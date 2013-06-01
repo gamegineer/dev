@@ -1,6 +1,6 @@
 /*
  * TableTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
+import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.TestComponentStrategies;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,7 +69,7 @@ public final class TableTest
     public void setUp()
         throws Exception
     {
-        tableEnvironment_ = new TableEnvironment();
+        tableEnvironment_ = new TableEnvironment( new SingleThreadedTableEnvironmentContext() );
         table_ = new Table( tableEnvironment_ );
     }
 

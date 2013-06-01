@@ -125,7 +125,27 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
      * @return The table environment for use in the fixture; never {@code null}.
      */
     /* @NonNull */
-    protected abstract TableEnvironmentType createTableEnvironment();
+    protected final TableEnvironmentType createTableEnvironment()
+    {
+        return createTableEnvironment( new SingleThreadedTableEnvironmentContext() );
+    }
+
+    /**
+     * Creates the table environment for use in the fixture using the specified
+     * context.
+     * 
+     * @param context
+     *        The table environment context; must not be {@code null}.
+     * 
+     * @return The table environment for use in the fixture; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code context} is {@code null}.
+     */
+    /* @NonNull */
+    protected abstract TableEnvironmentType createTableEnvironment(
+        /* @NonNull */
+        final ITableEnvironmentContext context );
 
     /**
      * Creates a new component with unique attributes using the fixture table

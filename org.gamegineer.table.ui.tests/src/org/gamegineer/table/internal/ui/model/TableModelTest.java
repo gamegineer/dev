@@ -38,6 +38,8 @@ import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
+import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
+import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.ui.IComponentStrategyUI;
 import org.gamegineer.table.ui.IContainerStrategyUI;
 import org.gamegineer.table.ui.TestComponents;
@@ -280,7 +282,7 @@ public final class TableModelTest
         throws Exception
     {
         niceMocksControl_ = EasyMock.createNiceControl();
-        model_ = new TableModel();
+        model_ = new TableModel( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ).createTable() );
     }
 
     /**
@@ -323,6 +325,16 @@ public final class TableModelTest
         model_.addTableModelListener( listener );
 
         model_.addTableModelListener( listener );
+    }
+
+    /**
+     * Ensures the {@link TableModel#TableModel} constructor throws an exception
+     * when passed a {@code null} table.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_Table_Null()
+    {
+        new TableModel( null );
     }
 
     /**

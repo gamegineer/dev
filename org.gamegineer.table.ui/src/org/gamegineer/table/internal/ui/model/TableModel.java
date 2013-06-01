@@ -46,7 +46,6 @@ import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.prototype.IEvaluationContextProvider;
 import org.gamegineer.table.net.IPlayer;
@@ -114,10 +113,20 @@ public final class TableModel
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableModel}.
+     * Initializes a new instance of the {@code TableModel} class.
+     * 
+     * @param table
+     *        The table associated with this model; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code table} is {@code null}.
      */
-    public TableModel()
+    public TableModel(
+        /* @NonNull */
+        final ITable table )
     {
+        assertArgumentNotNull( table, "table" ); //$NON-NLS-1$
+
         file_ = null;
         focusedComponentModel_ = null;
         hoveredComponentModel_ = null;
@@ -125,7 +134,7 @@ public final class TableModel
         listeners_ = new CopyOnWriteArrayList<ITableModelListener>();
         lock_ = new Object();
         originOffset_ = new Dimension( 0, 0 );
-        table_ = TableEnvironmentFactory.createTableEnvironment().createTable();
+        table_ = table;
         tableNetwork_ = TableNetworkFactory.createTableNetwork();
         tabletopModel_ = new ContainerModel( table_.getTabletop() );
 

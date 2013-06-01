@@ -1,6 +1,6 @@
 /*
  * ContainerModelAsContainerModelTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.ui.model;
 
 import java.lang.reflect.Method;
+import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.ui.TestComponents;
 
@@ -55,7 +56,7 @@ public final class ContainerModelAsContainerModelTest
     @Override
     protected ContainerModel createComponentModel()
     {
-        return new ContainerModel( TestComponents.createUniqueContainer( TableEnvironmentFactory.createTableEnvironment() ) );
+        return new ContainerModel( TestComponents.createUniqueContainer( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) ) );
     }
 
     /*

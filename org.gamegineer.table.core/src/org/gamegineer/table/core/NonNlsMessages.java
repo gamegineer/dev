@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -92,6 +92,25 @@ final class NonNlsMessages
 
     /** The container layout identifier is not registered. */
     public static String ContainerLayoutRegistry_getContainerLayout_unknownContainerLayoutId;
+
+    // --- MultiThreadedTableEnvironmentContext -----------------------------
+
+    /** Failed to cancel the event notification task. */
+    public static String MultiThreadedTableEnvironmentContext_dispose_cancelFailed;
+
+    /**
+     * The table environment lock was not held when submitting an event
+     * notification.
+     */
+    public static String MultiThreadedTableEnvironmentContext_fireEventNotification_tableEnvironmentLockNotHeld;
+
+    // --- SingleThreadedTableEnvironmentContext ----------------------------
+
+    /**
+     * The table environment lock was not held when submitting an event
+     * notification.
+     */
+    public static String SingleThreadedTableEnvironmentContext_fireEventNotification_tableEnvironmentLockNotHeld;
 
 
     // ======================================================================

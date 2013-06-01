@@ -41,6 +41,8 @@ import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.common.ui.databinding.swing.SwingRealm;
 import org.gamegineer.common.ui.help.IHelpSystem;
+import org.gamegineer.table.core.MultiThreadedTableEnvironmentContext;
+import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.Branding;
 import org.gamegineer.table.internal.ui.Loggers;
@@ -52,6 +54,7 @@ import org.gamegineer.table.internal.ui.model.ITableModelListener;
 import org.gamegineer.table.internal.ui.model.MainModel;
 import org.gamegineer.table.internal.ui.model.MainModelEvent;
 import org.gamegineer.table.internal.ui.model.ModelException;
+import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.internal.ui.model.TableModelEvent;
 import org.gamegineer.table.internal.ui.util.OptionDialogs;
 import org.gamegineer.table.internal.ui.util.swing.JFileChooser;
@@ -91,6 +94,9 @@ public final class MainFrame
     /** The model. */
     private final MainModel model_;
 
+    /** The table environment context. */
+    private final MultiThreadedTableEnvironmentContext tableEnvironmentContext_;
+
     /** The table model listener for this view. */
     private ITableModelListener tableModelListener_;
 
@@ -108,10 +114,12 @@ public final class MainFrame
         actionUpdaterTaskFuture_ = null;
         isActionUpdateRequired_ = new AtomicBoolean( false );
         mainModelListener_ = null;
-        model_ = new MainModel();
+        tableModelListener_ = null;
+
+        tableEnvironmentContext_ = new MultiThreadedTableEnvironmentContext();
+        model_ = new MainModel( new TableModel( TableEnvironmentFactory.createTableEnvironment( tableEnvironmentContext_ ).createTable() ) );
         mainView_ = new MainView( model_ );
         menuBarView_ = new MenuBarView( model_ );
-        tableModelListener_ = null;
 
         initializeComponent();
 
@@ -303,6 +311,7 @@ public final class MainFrame
         }
 
         ViewUtils.disconnectTableNetwork( this, model_.getTableModel().getTableNetwork() );
+        tableEnvironmentContext_.dispose();
 
         stopActionUpdater();
 

@@ -1,6 +1,6 @@
 /*
  * TableEnvironmentFactoryTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.table.core;
 
 import static org.junit.Assert.assertNotNull;
+import org.easymock.EasyMock;
 import org.junit.Test;
 
 /**
@@ -49,11 +50,21 @@ public final class TableEnvironmentFactoryTest
 
     /**
      * Ensures the {@link TableEnvironmentFactory#createTableEnvironment} method
+     * throws an exception when passed a {@code null} context.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateTableEnvironment_Context_Null()
+    {
+        TableEnvironmentFactory.createTableEnvironment( null );
+    }
+
+    /**
+     * Ensures the {@link TableEnvironmentFactory#createTableEnvironment} method
      * does not return {@code null}.
      */
     @Test
     public void testCreateTableEnvironment_ReturnValue_NonNull()
     {
-        assertNotNull( TableEnvironmentFactory.createTableEnvironment() );
+        assertNotNull( TableEnvironmentFactory.createTableEnvironment( EasyMock.createMock( ITableEnvironmentContext.class ) ) );
     }
 }

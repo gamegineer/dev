@@ -37,7 +37,9 @@ import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
@@ -54,6 +56,10 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /** The timeout for all tests in the fixture. */
+    @Rule
+    public final Timeout TIMEOUT = new Timeout( 1000 );
 
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
@@ -294,7 +300,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * Ensures the {@link IContainer#addComponent(IComponent)} method changes
      * the container bounds.
      */
-    @Test( timeout = 1000 )
+    @Test
     public void testAddComponent_ChangesContainerBounds()
     {
         getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
@@ -419,7 +425,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * Ensures the {@link IContainer#addComponent(IComponent, int)} method
      * changes the container bounds.
      */
-    @Test( timeout = 1000 )
+    @Test
     public void testAddComponentAtIndex_ChangesContainerBounds()
     {
         getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
@@ -576,7 +582,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * Ensures the {@link IContainer#addComponents(List)} method changes the
      * container bounds.
      */
-    @Test( timeout = 1000 )
+    @Test
     public void testAddComponents_ChangesContainerBounds()
     {
         getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
@@ -720,7 +726,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * Ensures the {@link IContainer#addComponents(List, int)} method changes
      * the container bounds.
      */
-    @Test( timeout = 1000 )
+    @Test
     public void testAddComponentsAtIndex_ChangesContainerBounds()
     {
         getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
@@ -1020,7 +1026,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * Ensures the {@link IContainer#removeAllComponents} method changes the
      * container bounds when the container is not empty.
      */
-    @Test( timeout = 1000 )
+    @Test
     public void testRemoveAllComponents_NotEmpty_ChangesContainerBounds()
     {
         getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
@@ -1118,7 +1124,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * Ensures the {@link IContainer#removeComponent(IComponent)} method changes
      * the container bounds.
      */
-    @Test( timeout = 1000 )
+    @Test
     public void testRemoveComponent_ChangesContainerBounds()
     {
         getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
@@ -1228,7 +1234,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * Ensures the {@link IContainer#removeComponent(int)} method changes the
      * container bounds.
      */
-    @Test( timeout = 1000 )
+    @Test
     public void testRemoveComponentAtIndex_ChangesContainerBounds()
     {
         getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );

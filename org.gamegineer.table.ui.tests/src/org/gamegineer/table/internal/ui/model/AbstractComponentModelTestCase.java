@@ -1,6 +1,6 @@
 /*
  * AbstractComponentModelTestCase.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,6 +25,8 @@ import static org.junit.Assert.assertNotNull;
 import java.awt.Point;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
+import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.core.TestComponentSurfaceDesigns;
 import org.junit.Before;
 import org.junit.Test;
@@ -157,7 +159,7 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
         mocksControl_ = EasyMock.createControl();
         componentModel_ = createComponentModel();
         assertNotNull( componentModel_ );
-        componentModel_.initialize( new TableModel() );
+        componentModel_.initialize( new TableModel( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ).createTable() ) );
     }
 
     /**

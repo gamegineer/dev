@@ -1,6 +1,6 @@
 /*
  * AbstractTableEnvironmentTestCase.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -60,13 +60,20 @@ public abstract class AbstractTableEnvironmentTestCase
     /**
      * Creates the table environment to be tested.
      * 
+     * @param context
+     *        The table environment context; must not be {@code null}.
+     * 
      * @return The table environment to be tested; never {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
+     * @throws java.lang.NullPointerException
+     *         If {@code context} is {@code null}.
      */
     /* @NonNull */
-    protected abstract ITableEnvironment createTableEnvironment()
+    protected abstract ITableEnvironment createTableEnvironment(
+        /* @NonNull */
+        final ITableEnvironmentContext context )
         throws Exception;
 
     /**
@@ -79,7 +86,7 @@ public abstract class AbstractTableEnvironmentTestCase
     public void setUp()
         throws Exception
     {
-        tableEnvironment_ = createTableEnvironment();
+        tableEnvironment_ = createTableEnvironment( new SingleThreadedTableEnvironmentContext() );
         assertNotNull( tableEnvironment_ );
     }
 

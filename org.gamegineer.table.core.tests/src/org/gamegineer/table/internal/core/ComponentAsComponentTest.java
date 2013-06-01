@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.core;
 import java.lang.reflect.Method;
 import org.gamegineer.table.core.AbstractComponentTestCase;
 import org.gamegineer.table.core.ComponentEvent;
+import org.gamegineer.table.core.ITableEnvironmentContext;
 import org.gamegineer.table.core.TestComponentStrategies;
 
 /**
@@ -62,12 +63,13 @@ public final class ComponentAsComponentTest
     }
 
     /*
-     * @see org.gamegineer.table.core.AbstractComponentTestCase#createTableEnvironment()
+     * @see org.gamegineer.table.core.AbstractComponentTestCase#createTableEnvironment(org.gamegineer.table.core.ITableEnvironmentContext)
      */
     @Override
-    protected TableEnvironment createTableEnvironment()
+    protected TableEnvironment createTableEnvironment(
+        final ITableEnvironmentContext context )
     {
-        return new TableEnvironment();
+        return new TableEnvironment( context );
     }
 
     /*

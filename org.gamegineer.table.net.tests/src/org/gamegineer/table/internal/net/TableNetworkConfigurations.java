@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.net;
 
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
+import org.gamegineer.table.core.MultiThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.net.ITableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkConfigurationBuilder;
@@ -62,7 +63,9 @@ public final class TableNetworkConfigurations
         final SecureString password = new SecureString( "password".toCharArray() ); //$NON-NLS-1$
         try
         {
-            final TableNetworkConfigurationBuilder builder = new TableNetworkConfigurationBuilder( TableEnvironmentFactory.createTableEnvironment().createTable() );
+            // TODO: pass in local table to this method instead of creating one by default; some callers
+            // may use single-threaded context and some may use multi-threaded context
+            final TableNetworkConfigurationBuilder builder = new TableNetworkConfigurationBuilder( TableEnvironmentFactory.createTableEnvironment( new MultiThreadedTableEnvironmentContext() ).createTable() );
             return builder //
                 .setHostName( "hostName" ) //$NON-NLS-1$
                 .setLocalPlayerName( "playerName" ) //$NON-NLS-1$

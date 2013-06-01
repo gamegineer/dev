@@ -1,6 +1,6 @@
 /*
  * TableAsTableTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.core;
 
 import org.gamegineer.table.core.AbstractTableTestCase;
+import org.gamegineer.table.core.ITableEnvironmentContext;
 
 /**
  * A fixture for testing the {@link org.gamegineer.table.internal.core.Table}
@@ -58,11 +59,12 @@ public final class TableAsTableTest
     }
 
     /*
-     * @see org.gamegineer.table.core.AbstractTableTestCase#createTableEnvironment()
+     * @see org.gamegineer.table.core.AbstractTableTestCase#createTableEnvironment(org.gamegineer.table.core.ITableEnvironmentContext)
      */
     @Override
-    protected TableEnvironment createTableEnvironment()
+    protected TableEnvironment createTableEnvironment(
+        final ITableEnvironmentContext context )
     {
-        return new TableEnvironment();
+        return new TableEnvironment( context );
     }
 }

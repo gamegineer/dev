@@ -1,6 +1,6 @@
 /*
  * MainModel.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -56,12 +56,22 @@ public final class MainModel
 
     /**
      * Initializes a new instance of the {@code MainModel} class.
+     * 
+     * @param tableModel
+     *        The table model; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code tableModel} is {@code null}.
      */
-    public MainModel()
+    public MainModel(
+        /* @NonNull */
+        final TableModel tableModel )
     {
+        assertArgumentNotNull( tableModel, "tableModel" ); //$NON-NLS-1$
+
         listeners_ = new CopyOnWriteArrayList<IMainModelListener>();
         preferencesModel_ = new PreferencesModel();
-        tableModel_ = new TableModel();
+        tableModel_ = tableModel;
 
         tableModel_.addTableModelListener( new TableModelListener() );
     }
