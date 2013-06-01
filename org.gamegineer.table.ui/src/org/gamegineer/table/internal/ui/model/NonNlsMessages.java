@@ -136,6 +136,17 @@ final class NonNlsMessages
     /** The user preferences are not available. */
     public static String PreferencesModel_userPreferences_notAvailable;
 
+    // --- TableEnvironmentModel --------------------------------------------
+
+    /** The component was created by a different table environment. */
+    public static String TableEnvironmentModel_createComponentModel_componentCreatedByDifferentTableEnvironment;
+
+    /** The container was created by a different table environment. */
+    public static String TableEnvironmentModel_createContainerModel_containerCreatedByDifferentTableEnvironment;
+
+    /** The table was created by a different table environment. */
+    public static String TableEnvironmentModel_createTableModel_tableCreatedByDifferentTableEnvironment;
+
     // --- TableModel -------------------------------------------------------
 
     /** The table model listener is already registered. */

@@ -78,15 +78,20 @@ public final class ContainerModel
     /**
      * Initializes a new instance of the {@code ContainerModel} class.
      * 
+     * @param tableEnvironmentModel
+     *        The table environment model associated with this model; must not
+     *        be {@code null}.
      * @param container
      *        The container associated with this model; must not be {@code null}
      *        .
      */
     ContainerModel(
         /* @NonNull */
+        final TableEnvironmentModel tableEnvironmentModel,
+        /* @NonNull */
         final IContainer container )
     {
-        super( container );
+        super( tableEnvironmentModel, container );
 
         componentModelListener_ = new ComponentModelListener();
         componentModels_ = new ArrayList<ComponentModel>();
@@ -141,7 +146,7 @@ public final class ContainerModel
         assert componentIndex >= 0;
         assert Thread.holdsLock( getLock() );
 
-        final ComponentModel componentModel = ComponentModelFactory.createComponentModel( component );
+        final ComponentModel componentModel = getTableEnvironmentModel().createComponentModel( component );
         componentModel.initialize( this );
         componentModels_.add( componentIndex, componentModel );
 

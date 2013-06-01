@@ -115,7 +115,8 @@ public final class MainModelTest
         throws Exception
     {
         niceMocksControl_ = EasyMock.createNiceControl();
-        model_ = new MainModel( new TableModel( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ).createTable() ) );
+        final TableEnvironmentModel tableEnvironmentModel = new TableEnvironmentModel( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
+        model_ = new MainModel( new TableModel( tableEnvironmentModel, tableEnvironmentModel.getTableEnvironment().createTable() ) );
     }
 
     /**

@@ -51,6 +51,9 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
 
+    /** The table environment model for use in the fixture. */
+    private TableEnvironmentModel tableEnvironmentModel_;
+
 
     // ======================================================================
     // Constructors
@@ -72,13 +75,20 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     /**
      * Creates the component model to be tested.
      * 
+     * @param tableEnvironmentModel
+     *        The fixture table environment model; must not be {@code null}.
+     * 
      * @return The component model to be tested; never {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
+     * @throws java.lang.NullPointerException
+     *         If {@code tableEnvironmentModel} is {@code null}.
      */
     /* @NonNull */
-    protected abstract T createComponentModel()
+    protected abstract T createComponentModel(
+        /* @NonNull */
+        TableEnvironmentModel tableEnvironmentModel )
         throws Exception;
 
     /**
@@ -157,9 +167,10 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        componentModel_ = createComponentModel();
+        tableEnvironmentModel_ = new TableEnvironmentModel( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
+        componentModel_ = createComponentModel( tableEnvironmentModel_ );
         assertNotNull( componentModel_ );
-        componentModel_.initialize( new TableModel( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ).createTable() ) );
+        componentModel_.initialize( new TableModel( tableEnvironmentModel_, tableEnvironmentModel_.getTableEnvironment().createTable() ) );
     }
 
     /**

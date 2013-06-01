@@ -54,7 +54,7 @@ import org.gamegineer.table.internal.ui.model.ITableModelListener;
 import org.gamegineer.table.internal.ui.model.MainModel;
 import org.gamegineer.table.internal.ui.model.MainModelEvent;
 import org.gamegineer.table.internal.ui.model.ModelException;
-import org.gamegineer.table.internal.ui.model.TableModel;
+import org.gamegineer.table.internal.ui.model.TableEnvironmentModel;
 import org.gamegineer.table.internal.ui.model.TableModelEvent;
 import org.gamegineer.table.internal.ui.util.OptionDialogs;
 import org.gamegineer.table.internal.ui.util.swing.JFileChooser;
@@ -117,7 +117,8 @@ public final class MainFrame
         tableModelListener_ = null;
 
         tableEnvironmentContext_ = new MultiThreadedTableEnvironmentContext();
-        model_ = new MainModel( new TableModel( TableEnvironmentFactory.createTableEnvironment( tableEnvironmentContext_ ).createTable() ) );
+        final TableEnvironmentModel tableEnvironmentModel = new TableEnvironmentModel( TableEnvironmentFactory.createTableEnvironment( tableEnvironmentContext_ ) );
+        model_ = new MainModel( tableEnvironmentModel.createTableModel( tableEnvironmentModel.getTableEnvironment().createTable() ) );
         mainView_ = new MainView( model_ );
         menuBarView_ = new MenuBarView( model_ );
 
@@ -125,7 +126,6 @@ public final class MainFrame
 
         loadApplicationState();
     }
-
 
     // ======================================================================
     // Methods

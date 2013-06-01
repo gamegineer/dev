@@ -21,8 +21,6 @@
 
 package org.gamegineer.table.internal.ui.model;
 
-import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
-import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.ui.TestComponents;
 
 /**
@@ -50,11 +48,12 @@ public final class ComponentModelAsComponentModelTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.AbstractComponentModelTestCase#createComponentModel()
+     * @see org.gamegineer.table.internal.ui.model.AbstractComponentModelTestCase#createComponentModel(org.gamegineer.table.internal.ui.model.TableEnvironmentModel)
      */
     @Override
-    protected ComponentModel createComponentModel()
+    protected ComponentModel createComponentModel(
+        final TableEnvironmentModel tableEnvironmentModel )
     {
-        return new ComponentModel( TestComponents.createUniqueComponent( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) ) );
+        return new ComponentModel( tableEnvironmentModel, TestComponents.createUniqueComponent( tableEnvironmentModel.getTableEnvironment() ) );
     }
 }

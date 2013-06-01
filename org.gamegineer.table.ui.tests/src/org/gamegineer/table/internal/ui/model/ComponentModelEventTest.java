@@ -69,7 +69,8 @@ public final class ComponentModelEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new ComponentModelEvent( new ComponentModel( TestComponents.createUniqueComponent( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) ) ) );
+        final TableEnvironmentModel tableEnvironmentModel = new TableEnvironmentModel( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
+        event_ = new ComponentModelEvent( new ComponentModel( tableEnvironmentModel, TestComponents.createUniqueComponent( tableEnvironmentModel.getTableEnvironment() ) ) );
     }
 
     /**

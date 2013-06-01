@@ -71,12 +71,12 @@ public class ComponentModel
     /** The collection of component model listeners. */
     private final CopyOnWriteArrayList<IComponentModelListener> listeners_;
 
-    /** The instance lock. */
-    private final Object lock_;
-
     /** The model parent or {@code null} if this model has no parent. */
     @GuardedBy( "getLock()" )
     private IComponentModelParent parent_;
+
+    /** The table environment model associated with this model. */
+    private final TableEnvironmentModel tableEnvironmentModel_;
 
 
     // ======================================================================
@@ -86,15 +86,22 @@ public class ComponentModel
     /**
      * Initializes a new instance of the {@code ComponentModel} class.
      * 
+     * @param tableEnvironmentModel
+     *        The table environment model associated with this model; must not
+     *        be {@code null}.
      * @param component
      *        The component associated with this model; must not be {@code null}
      *        .
      */
     ComponentModel(
         /* @NonNull */
+        final TableEnvironmentModel tableEnvironmentModel,
+        /* @NonNull */
         final IComponent component )
     {
+        assert tableEnvironmentModel != null;
         assert component != null;
+        assert tableEnvironmentModel.getTableEnvironment().equals( component.getTableEnvironment() );
 
         component_ = component;
         componentListener_ = new ComponentListener();
@@ -102,8 +109,8 @@ public class ComponentModel
         isFocused_ = false;
         isHovered_ = false;
         listeners_ = new CopyOnWriteArrayList<IComponentModelListener>();
-        lock_ = new Object();
         parent_ = null;
+        tableEnvironmentModel_ = tableEnvironmentModel;
     }
 
 
@@ -136,7 +143,7 @@ public class ComponentModel
      */
     final void fireComponentBoundsChanged()
     {
-        assert !Thread.holdsLock( lock_ );
+        assert !Thread.holdsLock( getLock() );
 
         final ComponentModelEvent event = new ComponentModelEvent( this );
         for( final IComponentModelListener listener : listeners_ )
@@ -157,7 +164,7 @@ public class ComponentModel
      */
     final void fireComponentChanged()
     {
-        assert !Thread.holdsLock( lock_ );
+        assert !Thread.holdsLock( getLock() );
 
         final ComponentModelEvent event = new ComponentModelEvent( this );
         for( final IComponentModelListener listener : listeners_ )
@@ -178,7 +185,7 @@ public class ComponentModel
      */
     final void fireComponentModelFocusChanged()
     {
-        assert !Thread.holdsLock( lock_ );
+        assert !Thread.holdsLock( getLock() );
 
         final ComponentModelEvent event = new ComponentModelEvent( this );
         for( final IComponentModelListener listener : listeners_ )
@@ -199,7 +206,7 @@ public class ComponentModel
      */
     final void fireComponentModelHoverChanged()
     {
-        assert !Thread.holdsLock( lock_ );
+        assert !Thread.holdsLock( getLock() );
 
         final ComponentModelEvent event = new ComponentModelEvent( this );
         for( final IComponentModelListener listener : listeners_ )
@@ -220,7 +227,7 @@ public class ComponentModel
      */
     final void fireComponentOrientationChanged()
     {
-        assert !Thread.holdsLock( lock_ );
+        assert !Thread.holdsLock( getLock() );
 
         final ComponentModelEvent event = new ComponentModelEvent( this );
         for( final IComponentModelListener listener : listeners_ )
@@ -241,7 +248,7 @@ public class ComponentModel
      */
     final void fireComponentSurfaceDesignChanged()
     {
-        assert !Thread.holdsLock( lock_ );
+        assert !Thread.holdsLock( getLock() );
 
         final ComponentModelEvent event = new ComponentModelEvent( this );
         for( final IComponentModelListener listener : listeners_ )
@@ -316,14 +323,14 @@ public class ComponentModel
     }
 
     /**
-     * Gets the instance lock.
+     * Gets the table environment model lock.
      * 
-     * @return The instance lock; never {@code null}.
+     * @return The table environment model lock; never {@code null}.
      */
     /* @NonNull */
     final Object getLock()
     {
-        return lock_;
+        return tableEnvironmentModel_.getLock();
     }
 
     /**
@@ -338,6 +345,18 @@ public class ComponentModel
         {
             return parent_;
         }
+    }
+
+    /**
+     * Gets the table environment model associated with this model.
+     * 
+     * @return The table environment model associated with this model; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    public final TableEnvironmentModel getTableEnvironmentModel()
+    {
+        return tableEnvironmentModel_;
     }
 
     /**

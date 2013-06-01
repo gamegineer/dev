@@ -22,8 +22,6 @@
 package org.gamegineer.table.internal.ui.model;
 
 import java.lang.reflect.Method;
-import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
-import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.ui.TestComponents;
 
 /**
@@ -51,12 +49,13 @@ public final class ContainerModelAsContainerModelTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.AbstractComponentModelTestCase#createComponentModel()
+     * @see org.gamegineer.table.internal.ui.model.AbstractComponentModelTestCase#createComponentModel(org.gamegineer.table.internal.ui.model.TableEnvironmentModel)
      */
     @Override
-    protected ContainerModel createComponentModel()
+    protected ContainerModel createComponentModel(
+        final TableEnvironmentModel tableEnvironmentModel )
     {
-        return new ContainerModel( TestComponents.createUniqueContainer( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) ) );
+        return new ContainerModel( tableEnvironmentModel, TestComponents.createUniqueContainer( tableEnvironmentModel.getTableEnvironment() ) );
     }
 
     /*
@@ -143,7 +142,7 @@ public final class ContainerModelAsContainerModelTest
         {
             final Method method = ContainerModel.class.getDeclaredMethod( methodName, ComponentModel.class, Integer.TYPE );
             method.setAccessible( true );
-            method.invoke( containerModel, new ComponentModel( TestComponents.createUniqueComponent( containerModel.getComponent().getTableEnvironment() ) ), Integer.valueOf( 0 ) );
+            method.invoke( containerModel, new ComponentModel( containerModel.getTableEnvironmentModel(), TestComponents.createUniqueComponent( containerModel.getTableEnvironmentModel().getTableEnvironment() ) ), Integer.valueOf( 0 ) );
         }
         catch( final Exception e )
         {

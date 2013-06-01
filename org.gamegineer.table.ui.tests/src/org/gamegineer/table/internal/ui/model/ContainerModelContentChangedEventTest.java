@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.ui.model;
 
 import static org.junit.Assert.assertNotNull;
-import org.gamegineer.table.core.ITableEnvironment;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.TableEnvironmentFactory;
 import org.gamegineer.table.ui.TestComponents;
@@ -43,8 +42,8 @@ public final class ContainerModelContentChangedEventTest
     /** The container model content changed event under test in the fixture. */
     private ContainerModelContentChangedEvent event_;
 
-    /** The table environment for use in the fixture. */
-    private ITableEnvironment tableEnvironment_;
+    /** The table environment model for use in the fixture. */
+    private TableEnvironmentModel tableEnvironmentModel_;
 
 
     // ======================================================================
@@ -72,7 +71,7 @@ public final class ContainerModelContentChangedEventTest
     /* @NonNull */
     private ComponentModel createUniqueComponentModel()
     {
-        return new ComponentModel( TestComponents.createUniqueComponent( tableEnvironment_ ) );
+        return new ComponentModel( tableEnvironmentModel_, TestComponents.createUniqueComponent( tableEnvironmentModel_.getTableEnvironment() ) );
     }
 
     /**
@@ -83,7 +82,7 @@ public final class ContainerModelContentChangedEventTest
     /* @NonNull */
     private ContainerModel createUniqueContainerModel()
     {
-        return new ContainerModel( TestComponents.createUniqueContainer( tableEnvironment_ ) );
+        return new ContainerModel( tableEnvironmentModel_, TestComponents.createUniqueContainer( tableEnvironmentModel_.getTableEnvironment() ) );
     }
 
     /**
@@ -96,7 +95,7 @@ public final class ContainerModelContentChangedEventTest
     public void setUp()
         throws Exception
     {
-        tableEnvironment_ = TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() );
+        tableEnvironmentModel_ = new TableEnvironmentModel( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
         event_ = new ContainerModelContentChangedEvent( createUniqueContainerModel(), createUniqueComponentModel(), 0 );
     }
 

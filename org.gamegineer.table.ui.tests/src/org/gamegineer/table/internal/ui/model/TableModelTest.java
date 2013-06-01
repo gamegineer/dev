@@ -282,7 +282,8 @@ public final class TableModelTest
         throws Exception
     {
         niceMocksControl_ = EasyMock.createNiceControl();
-        model_ = new TableModel( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ).createTable() );
+        final TableEnvironmentModel tableEnvironmentModel = new TableEnvironmentModel( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
+        model_ = new TableModel( tableEnvironmentModel, tableEnvironmentModel.getTableEnvironment().createTable() );
     }
 
     /**
@@ -325,16 +326,6 @@ public final class TableModelTest
         model_.addTableModelListener( listener );
 
         model_.addTableModelListener( listener );
-    }
-
-    /**
-     * Ensures the {@link TableModel#TableModel} constructor throws an exception
-     * when passed a {@code null} table.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_Table_Null()
-    {
-        new TableModel( null );
     }
 
     /**

@@ -68,7 +68,8 @@ public final class TableModelEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new TableModelEvent( new TableModel( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ).createTable() ) );
+        final TableEnvironmentModel tableEnvironmentModel = new TableEnvironmentModel( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
+        event_ = new TableModelEvent( new TableModel( tableEnvironmentModel, tableEnvironmentModel.getTableEnvironment().createTable() ) );
     }
 
     /**

@@ -67,39 +67,39 @@ public final class TableModel
     // ======================================================================
 
     /** The file to which the model was last saved. */
-    @GuardedBy( "lock_" )
+    @GuardedBy( "getLock()" )
     private File file_;
 
     /**
      * The model associated with the focused component or {@code null} if no
      * component has the focus.
      */
-    @GuardedBy( "lock_" )
+    @GuardedBy( "getLock()" )
     private ComponentModel focusedComponentModel_;
 
     /**
      * The model associated with the hovered component or {@code null} if no
      * component has the hover.
      */
-    @GuardedBy( "lock_" )
+    @GuardedBy( "getLock()" )
     private ComponentModel hoveredComponentModel_;
 
     /** Indicates the table model is dirty. */
-    @GuardedBy( "lock_" )
+    @GuardedBy( "getLock()" )
     private boolean isDirty_;
 
     /** The collection of table model listeners. */
     private final CopyOnWriteArrayList<ITableModelListener> listeners_;
 
-    /** The instance lock. */
-    private final Object lock_;
-
     /** The offset of the table origin relative to the view origin. */
-    @GuardedBy( "lock_" )
+    @GuardedBy( "getLock()" )
     private final Dimension originOffset_;
 
     /** The table associated with this model. */
     private final ITable table_;
+
+    /** The table environment model associated with this model. */
+    private final TableEnvironmentModel tableEnvironmentModel_;
 
     /** The table network associated with this model. */
     private final ITableNetwork tableNetwork_;
@@ -115,28 +115,32 @@ public final class TableModel
     /**
      * Initializes a new instance of the {@code TableModel} class.
      * 
+     * @param tableEnvironmentModel
+     *        The table environment model associated with this model; must not
+     *        be {@code null}.
      * @param table
      *        The table associated with this model; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code table} is {@code null}.
      */
-    public TableModel(
+    TableModel(
+        /* @NonNull */
+        final TableEnvironmentModel tableEnvironmentModel,
         /* @NonNull */
         final ITable table )
     {
-        assertArgumentNotNull( table, "table" ); //$NON-NLS-1$
+        assert tableEnvironmentModel != null;
+        assert table != null;
+        assert tableEnvironmentModel.getTableEnvironment().equals( table.getTableEnvironment() );
 
         file_ = null;
         focusedComponentModel_ = null;
         hoveredComponentModel_ = null;
         isDirty_ = false;
         listeners_ = new CopyOnWriteArrayList<ITableModelListener>();
-        lock_ = new Object();
         originOffset_ = new Dimension( 0, 0 );
         table_ = table;
+        tableEnvironmentModel_ = tableEnvironmentModel;
         tableNetwork_ = TableNetworkFactory.createTableNetwork();
-        tabletopModel_ = new ContainerModel( table_.getTabletop() );
+        tabletopModel_ = new ContainerModel( tableEnvironmentModel, table_.getTabletop() );
 
         tableNetwork_.addTableNetworkListener( new TableNetworkListener() );
 
@@ -174,7 +178,7 @@ public final class TableModel
      */
     private void fireTableChanged()
     {
-        assert !Thread.holdsLock( lock_ );
+        assert !Thread.holdsLock( getLock() );
 
         final TableModelEvent event = new TableModelEvent( this );
         for( final ITableModelListener listener : listeners_ )
@@ -195,7 +199,7 @@ public final class TableModel
      */
     private void fireTableModelDirtyFlagChanged()
     {
-        assert !Thread.holdsLock( lock_ );
+        assert !Thread.holdsLock( getLock() );
 
         final TableModelEvent event = new TableModelEvent( this );
         for( final ITableModelListener listener : listeners_ )
@@ -216,7 +220,7 @@ public final class TableModel
      */
     private void fireTableModelFileChanged()
     {
-        assert !Thread.holdsLock( lock_ );
+        assert !Thread.holdsLock( getLock() );
 
         final TableModelEvent event = new TableModelEvent( this );
         for( final ITableModelListener listener : listeners_ )
@@ -237,7 +241,7 @@ public final class TableModel
      */
     private void fireTableModelFocusChanged()
     {
-        assert !Thread.holdsLock( lock_ );
+        assert !Thread.holdsLock( getLock() );
 
         final TableModelEvent event = new TableModelEvent( this );
         for( final ITableModelListener listener : listeners_ )
@@ -258,7 +262,7 @@ public final class TableModel
      */
     private void fireTableModelHoverChanged()
     {
-        assert !Thread.holdsLock( lock_ );
+        assert !Thread.holdsLock( getLock() );
 
         final TableModelEvent event = new TableModelEvent( this );
         for( final ITableModelListener listener : listeners_ )
@@ -279,7 +283,7 @@ public final class TableModel
      */
     private void fireTableModelOriginOffsetChanged()
     {
-        assert !Thread.holdsLock( lock_ );
+        assert !Thread.holdsLock( getLock() );
 
         final TableModelEvent event = new TableModelEvent( this );
         for( final ITableModelListener listener : listeners_ )
@@ -390,7 +394,7 @@ public final class TableModel
     /* @Nullable */
     public File getFile()
     {
-        synchronized( lock_ )
+        synchronized( getLock() )
         {
             return file_;
         }
@@ -448,7 +452,7 @@ public final class TableModel
     {
         assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
 
-        synchronized( lock_ )
+        synchronized( getLock() )
         {
             return getFocusableComponent( location, searchVector, IComponent.class );
         }
@@ -479,7 +483,7 @@ public final class TableModel
      *         location or {@code null} if no focusable component of the
      *         specified type is at that location.
      */
-    @GuardedBy( "lock_" )
+    @GuardedBy( "getLock()" )
     /* @Nullable */
     private <T extends IComponent> T getFocusableComponent(
         /* @NonNull */
@@ -491,7 +495,7 @@ public final class TableModel
     {
         assert location != null;
         assert type != null;
-        assert Thread.holdsLock( lock_ );
+        assert Thread.holdsLock( getLock() );
 
         T focusableComponent = null;
 
@@ -562,7 +566,7 @@ public final class TableModel
     {
         assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
 
-        synchronized( lock_ )
+        synchronized( getLock() )
         {
             return getFocusableComponent( location, null, IContainer.class );
         }
@@ -590,7 +594,7 @@ public final class TableModel
     /* @Nullable */
     public ComponentModel getFocusedComponentModel()
     {
-        synchronized( lock_ )
+        synchronized( getLock() )
         {
             return focusedComponentModel_;
         }
@@ -618,10 +622,21 @@ public final class TableModel
     /* @Nullable */
     public ComponentModel getHoveredComponentModel()
     {
-        synchronized( lock_ )
+        synchronized( getLock() )
         {
             return hoveredComponentModel_;
         }
+    }
+
+    /**
+     * Gets the table environment model lock.
+     * 
+     * @return The table environment model lock; never {@code null}.
+     */
+    /* @NonNull */
+    private Object getLock()
+    {
+        return tableEnvironmentModel_.getLock();
     }
 
     /**
@@ -670,7 +685,7 @@ public final class TableModel
     /* @NonNull */
     public Dimension getOriginOffset()
     {
-        synchronized( lock_ )
+        synchronized( getLock() )
         {
             return new Dimension( originOffset_ );
         }
@@ -735,7 +750,7 @@ public final class TableModel
      */
     public boolean isDirty()
     {
-        synchronized( lock_ )
+        synchronized( getLock() )
         {
             return isDirty_;
         }
@@ -768,7 +783,7 @@ public final class TableModel
     {
         table_.getTabletop().removeAllComponents();
 
-        synchronized( lock_ )
+        synchronized( getLock() )
         {
             file_ = null;
             focusedComponentModel_ = null;
@@ -804,7 +819,7 @@ public final class TableModel
 
         setTableMemento( table_, file );
 
-        synchronized( lock_ )
+        synchronized( getLock() )
         {
             file_ = file;
             focusedComponentModel_ = null;
@@ -900,7 +915,7 @@ public final class TableModel
     {
         assert file != null;
 
-        synchronized( lock_ )
+        synchronized( getLock() )
         {
             writeTableMemento( file, table_.createMemento() );
 
@@ -928,7 +943,7 @@ public final class TableModel
         final ComponentModel oldFocusedComponentModel;
         final ComponentModel newFocusedComponentModel;
 
-        synchronized( lock_ )
+        synchronized( getLock() )
         {
             if( componentModel != focusedComponentModel_ )
             {
@@ -974,7 +989,7 @@ public final class TableModel
         final ComponentModel oldHoveredComponentModel;
         final ComponentModel newHoveredComponentModel;
 
-        synchronized( lock_ )
+        synchronized( getLock() )
         {
             if( componentModel != hoveredComponentModel_ )
             {
@@ -1021,7 +1036,7 @@ public final class TableModel
     {
         assertArgumentNotNull( originOffset, "originOffset" ); //$NON-NLS-1$
 
-        synchronized( lock_ )
+        synchronized( getLock() )
         {
             originOffset_.setSize( originOffset );
         }
@@ -1141,7 +1156,7 @@ public final class TableModel
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            synchronized( lock_ )
+            synchronized( getLock() )
             {
                 isDirty_ = true;
             }

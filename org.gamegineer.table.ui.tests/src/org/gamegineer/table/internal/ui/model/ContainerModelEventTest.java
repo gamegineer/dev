@@ -69,7 +69,8 @@ public final class ContainerModelEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new ContainerModelEvent( new ContainerModel( TestComponents.createUniqueContainer( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) ) ) );
+        final TableEnvironmentModel tableEnvironmentModel = new TableEnvironmentModel( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
+        event_ = new ContainerModelEvent( new ContainerModel( tableEnvironmentModel, TestComponents.createUniqueContainer( tableEnvironmentModel.getTableEnvironment() ) ) );
     }
 
     /**
