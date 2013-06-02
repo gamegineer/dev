@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.ui.model;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
@@ -143,7 +144,7 @@ public class ComponentModel
      */
     final void fireComponentBoundsChanged()
     {
-        assert !Thread.holdsLock( getLock() );
+        assert !getLock().isHeldByCurrentThread();
 
         final ComponentModelEvent event = new ComponentModelEvent( this );
         for( final IComponentModelListener listener : listeners_ )
@@ -164,7 +165,7 @@ public class ComponentModel
      */
     final void fireComponentChanged()
     {
-        assert !Thread.holdsLock( getLock() );
+        assert !getLock().isHeldByCurrentThread();
 
         final ComponentModelEvent event = new ComponentModelEvent( this );
         for( final IComponentModelListener listener : listeners_ )
@@ -185,7 +186,7 @@ public class ComponentModel
      */
     final void fireComponentModelFocusChanged()
     {
-        assert !Thread.holdsLock( getLock() );
+        assert !getLock().isHeldByCurrentThread();
 
         final ComponentModelEvent event = new ComponentModelEvent( this );
         for( final IComponentModelListener listener : listeners_ )
@@ -206,7 +207,7 @@ public class ComponentModel
      */
     final void fireComponentModelHoverChanged()
     {
-        assert !Thread.holdsLock( getLock() );
+        assert !getLock().isHeldByCurrentThread();
 
         final ComponentModelEvent event = new ComponentModelEvent( this );
         for( final IComponentModelListener listener : listeners_ )
@@ -227,7 +228,7 @@ public class ComponentModel
      */
     final void fireComponentOrientationChanged()
     {
-        assert !Thread.holdsLock( getLock() );
+        assert !getLock().isHeldByCurrentThread();
 
         final ComponentModelEvent event = new ComponentModelEvent( this );
         for( final IComponentModelListener listener : listeners_ )
@@ -248,7 +249,7 @@ public class ComponentModel
      */
     final void fireComponentSurfaceDesignChanged()
     {
-        assert !Thread.holdsLock( getLock() );
+        assert !getLock().isHeldByCurrentThread();
 
         final ComponentModelEvent event = new ComponentModelEvent( this );
         for( final IComponentModelListener listener : listeners_ )
@@ -262,6 +263,21 @@ public class ComponentModel
                 Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ComponentModel_componentSurfaceDesignChanged_unexpectedException, e );
             }
         }
+    }
+
+    /**
+     * Fires the specified event notification.
+     * 
+     * @param eventNotification
+     *        The event notification; must not be {@code null}.
+     */
+    final void fireEventNotification(
+        /* @NonNull */
+        final Runnable eventNotification )
+    {
+        assert eventNotification != null;
+
+        tableEnvironmentModel_.fireEventNotification( eventNotification );
     }
 
     /**
@@ -328,7 +344,7 @@ public class ComponentModel
      * @return The table environment model lock; never {@code null}.
      */
     /* @NonNull */
-    final Object getLock()
+    final ReentrantLock getLock()
     {
         return tableEnvironmentModel_.getLock();
     }
@@ -341,9 +357,14 @@ public class ComponentModel
     /* @Nullable */
     public final IComponentModelParent getParent()
     {
-        synchronized( getLock() )
+        getLock().lock();
+        try
         {
             return parent_;
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -377,12 +398,17 @@ public class ComponentModel
     {
         assert parent != null;
 
-        synchronized( getLock() )
+        getLock().lock();
+        try
         {
             assert parent_ == null;
 
             parent_ = parent;
             component_.addComponentListener( componentListener_ );
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -405,9 +431,14 @@ public class ComponentModel
      */
     public final boolean isFocused()
     {
-        synchronized( getLock() )
+        getLock().lock();
+        try
         {
             return isFocused_;
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -419,9 +450,14 @@ public class ComponentModel
      */
     public final boolean isHovered()
     {
-        synchronized( getLock() )
+        getLock().lock();
+        try
         {
             return isHovered_;
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -488,12 +524,24 @@ public class ComponentModel
     final void setFocused(
         final boolean isFocused )
     {
-        synchronized( getLock() )
+        getLock().lock();
+        try
         {
             isFocused_ = isFocused;
         }
+        finally
+        {
+            getLock().unlock();
+        }
 
-        fireComponentModelFocusChanged();
+        fireEventNotification( new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                fireComponentModelFocusChanged();
+            }
+        } );
     }
 
     /**
@@ -506,12 +554,24 @@ public class ComponentModel
     final void setHover(
         final boolean isHovered )
     {
-        synchronized( getLock() )
+        getLock().lock();
+        try
         {
             isHovered_ = isHovered;
         }
+        finally
+        {
+            getLock().unlock();
+        }
 
-        fireComponentModelHoverChanged();
+        fireEventNotification( new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                fireComponentModelHoverChanged();
+            }
+        } );
     }
 
     /**
@@ -525,12 +585,17 @@ public class ComponentModel
      */
     void uninitialize()
     {
-        synchronized( getLock() )
+        getLock().lock();
+        try
         {
             assert parent_ != null;
 
             component_.removeComponentListener( componentListener_ );
             parent_ = null;
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -571,8 +636,15 @@ public class ComponentModel
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            fireComponentBoundsChanged();
-            fireComponentChanged();
+            fireEventNotification( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    fireComponentBoundsChanged();
+                    fireComponentChanged();
+                }
+            } );
         }
 
         /*
@@ -584,8 +656,15 @@ public class ComponentModel
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            fireComponentOrientationChanged();
-            fireComponentChanged();
+            fireEventNotification( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    fireComponentOrientationChanged();
+                    fireComponentChanged();
+                }
+            } );
         }
 
         /*
@@ -597,8 +676,15 @@ public class ComponentModel
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            fireComponentSurfaceDesignChanged();
-            fireComponentChanged();
+            fireEventNotification( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    fireComponentSurfaceDesignChanged();
+                    fireComponentChanged();
+                }
+            } );
         }
     }
 }

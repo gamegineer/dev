@@ -1,6 +1,6 @@
 /*
  * TableModelUtils.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -77,10 +77,15 @@ public final class TableModelUtils
         assertArgumentNotNull( containerModel, "containerModel" ); //$NON-NLS-1$
         assertArgumentNotNull( containerModelListener, "containerModelListener" ); //$NON-NLS-1$
 
-        synchronized( containerModel.getLock() )
+        containerModel.getLock().lock();
+        try
         {
             containerModel.addContainerModelListener( containerModelListener );
             return containerModel.getComponentModels();
+        }
+        finally
+        {
+            containerModel.getLock().unlock();
         }
     }
 }

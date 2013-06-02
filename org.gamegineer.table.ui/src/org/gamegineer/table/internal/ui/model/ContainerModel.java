@@ -144,7 +144,7 @@ public final class ContainerModel
     {
         assert component != null;
         assert componentIndex >= 0;
-        assert Thread.holdsLock( getLock() );
+        assert getLock().isHeldByCurrentThread();
 
         final ComponentModel componentModel = getTableEnvironmentModel().createComponentModel( component );
         componentModel.initialize( this );
@@ -171,7 +171,7 @@ public final class ContainerModel
         final int componentIndex )
     {
         assert componentIndex >= 0;
-        assert Thread.holdsLock( getLock() );
+        assert getLock().isHeldByCurrentThread();
 
         final ComponentModel componentModel = componentModels_.remove( componentIndex );
         componentModel.uninitialize();
@@ -198,7 +198,7 @@ public final class ContainerModel
     {
         assert componentModel != null;
         assert componentModelIndex >= 0;
-        assert !Thread.holdsLock( getLock() );
+        assert !getLock().isHeldByCurrentThread();
 
         final ContainerModelContentChangedEvent event = new ContainerModelContentChangedEvent( this, componentModel, componentModelIndex );
         for( final IContainerModelListener listener : listeners_ )
@@ -229,7 +229,7 @@ public final class ContainerModel
     {
         assert componentModel != null;
         assert componentModelIndex >= 0;
-        assert !Thread.holdsLock( getLock() );
+        assert !getLock().isHeldByCurrentThread();
 
         final ContainerModelContentChangedEvent event = new ContainerModelContentChangedEvent( this, componentModel, componentModelIndex );
         for( final IContainerModelListener listener : listeners_ )
@@ -250,7 +250,7 @@ public final class ContainerModel
      */
     private void fireContainerLayoutChanged()
     {
-        assert !Thread.holdsLock( getLock() );
+        assert !getLock().isHeldByCurrentThread();
 
         final ContainerModelEvent event = new ContainerModelEvent( this );
         for( final IContainerModelListener listener : listeners_ )
@@ -325,9 +325,14 @@ public final class ContainerModel
     {
         try
         {
-            synchronized( getLock() )
+            getLock().lock();
+            try
             {
                 return componentModels_.get( componentModelIndex );
+            }
+            finally
+            {
+                getLock().unlock();
             }
         }
         catch( final IndexOutOfBoundsException e )
@@ -347,9 +352,14 @@ public final class ContainerModel
     /* @NonNull */
     public List<ComponentModel> getComponentModels()
     {
-        synchronized( getLock() )
+        getLock().lock();
+        try
         {
             return new ArrayList<ComponentModel>( componentModels_ );
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -370,7 +380,8 @@ public final class ContainerModel
     void initialize(
         final IComponentModelParent parent )
     {
-        synchronized( getLock() )
+        getLock().lock();
+        try
         {
             super.initialize( parent );
 
@@ -380,6 +391,10 @@ public final class ContainerModel
             {
                 createComponentModel( component, componentIndex++ );
             }
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -408,11 +423,16 @@ public final class ContainerModel
     @Override
     void uninitialize()
     {
-        synchronized( getLock() )
+        getLock().lock();
+        try
         {
             getComponent().removeContainerListener( containerListener_ );
 
             super.uninitialize();
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -454,7 +474,14 @@ public final class ContainerModel
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            fireComponentChanged();
+            fireEventNotification( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    fireComponentChanged();
+                }
+            } );
         }
 
         /*
@@ -466,7 +493,14 @@ public final class ContainerModel
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            fireComponentModelFocusChanged();
+            fireEventNotification( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    fireComponentModelFocusChanged();
+                }
+            } );
         }
 
         /*
@@ -478,7 +512,14 @@ public final class ContainerModel
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            fireComponentModelHoverChanged();
+            fireEventNotification( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    fireComponentModelHoverChanged();
+                }
+            } );
         }
     }
 
@@ -486,6 +527,7 @@ public final class ContainerModel
      * A container listener for the container model.
      */
     @Immutable
+    @SuppressWarnings( "synthetic-access" )
     private final class ContainerListener
         extends org.gamegineer.table.core.ContainerListener
     {
@@ -509,27 +551,37 @@ public final class ContainerModel
          * @see org.gamegineer.table.core.ContainerListener#componentAdded(org.gamegineer.table.core.ContainerContentChangedEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void componentAdded(
             final ContainerContentChangedEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
             final ComponentModel componentModel;
-            synchronized( getLock() )
+            getLock().lock();
+            try
             {
                 componentModel = createComponentModel( event.getComponent(), event.getComponentIndex() );
             }
+            finally
+            {
+                getLock().unlock();
+            }
 
-            fireComponentModelAdded( componentModel, event.getComponentIndex() );
-            fireComponentChanged();
+            fireEventNotification( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    fireComponentModelAdded( componentModel, event.getComponentIndex() );
+                    fireComponentChanged();
+                }
+            } );
         }
 
         /*
          * @see org.gamegineer.table.core.ContainerListener#componentRemoved(org.gamegineer.table.core.ContainerContentChangedEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void componentRemoved(
             final ContainerContentChangedEvent event )
         {
@@ -550,27 +602,45 @@ public final class ContainerModel
                 tableModel.setFocus( null );
             }
 
-            synchronized( getLock() )
+            getLock().lock();
+            try
             {
                 deleteComponentModel( event.getComponentIndex() );
             }
+            finally
+            {
+                getLock().unlock();
+            }
 
-            fireComponentModelRemoved( componentModel, event.getComponentIndex() );
-            fireComponentChanged();
+            fireEventNotification( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    fireComponentModelRemoved( componentModel, event.getComponentIndex() );
+                    fireComponentChanged();
+                }
+            } );
         }
 
         /*
          * @see org.gamegineer.table.core.ContainerListener#containerLayoutChanged(org.gamegineer.table.core.ContainerEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void containerLayoutChanged(
             final ContainerEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            fireContainerLayoutChanged();
-            fireComponentChanged();
+            fireEventNotification( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    fireContainerLayoutChanged();
+                    fireComponentChanged();
+                }
+            } );
         }
     }
 

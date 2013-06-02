@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
@@ -174,11 +175,26 @@ public final class TableModel
     }
 
     /**
+     * Fires the specified event notification.
+     * 
+     * @param eventNotification
+     *        The event notification; must not be {@code null}.
+     */
+    private void fireEventNotification(
+        /* @NonNull */
+        final Runnable eventNotification )
+    {
+        assert eventNotification != null;
+
+        tableEnvironmentModel_.fireEventNotification( eventNotification );
+    }
+
+    /**
      * Fires a table changed event.
      */
     private void fireTableChanged()
     {
-        assert !Thread.holdsLock( getLock() );
+        assert !getLock().isHeldByCurrentThread();
 
         final TableModelEvent event = new TableModelEvent( this );
         for( final ITableModelListener listener : listeners_ )
@@ -199,7 +215,7 @@ public final class TableModel
      */
     private void fireTableModelDirtyFlagChanged()
     {
-        assert !Thread.holdsLock( getLock() );
+        assert !getLock().isHeldByCurrentThread();
 
         final TableModelEvent event = new TableModelEvent( this );
         for( final ITableModelListener listener : listeners_ )
@@ -220,7 +236,7 @@ public final class TableModel
      */
     private void fireTableModelFileChanged()
     {
-        assert !Thread.holdsLock( getLock() );
+        assert !getLock().isHeldByCurrentThread();
 
         final TableModelEvent event = new TableModelEvent( this );
         for( final ITableModelListener listener : listeners_ )
@@ -241,7 +257,7 @@ public final class TableModel
      */
     private void fireTableModelFocusChanged()
     {
-        assert !Thread.holdsLock( getLock() );
+        assert !getLock().isHeldByCurrentThread();
 
         final TableModelEvent event = new TableModelEvent( this );
         for( final ITableModelListener listener : listeners_ )
@@ -262,7 +278,7 @@ public final class TableModel
      */
     private void fireTableModelHoverChanged()
     {
-        assert !Thread.holdsLock( getLock() );
+        assert !getLock().isHeldByCurrentThread();
 
         final TableModelEvent event = new TableModelEvent( this );
         for( final ITableModelListener listener : listeners_ )
@@ -283,7 +299,7 @@ public final class TableModel
      */
     private void fireTableModelOriginOffsetChanged()
     {
-        assert !Thread.holdsLock( getLock() );
+        assert !getLock().isHeldByCurrentThread();
 
         final TableModelEvent event = new TableModelEvent( this );
         for( final ITableModelListener listener : listeners_ )
@@ -394,9 +410,14 @@ public final class TableModel
     /* @Nullable */
     public File getFile()
     {
-        synchronized( getLock() )
+        getLock().lock();
+        try
         {
             return file_;
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -452,9 +473,14 @@ public final class TableModel
     {
         assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
 
-        synchronized( getLock() )
+        getLock().lock();
+        try
         {
             return getFocusableComponent( location, searchVector, IComponent.class );
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -495,7 +521,7 @@ public final class TableModel
     {
         assert location != null;
         assert type != null;
-        assert Thread.holdsLock( getLock() );
+        assert getLock().isHeldByCurrentThread();
 
         T focusableComponent = null;
 
@@ -566,9 +592,14 @@ public final class TableModel
     {
         assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
 
-        synchronized( getLock() )
+        getLock().lock();
+        try
         {
             return getFocusableComponent( location, null, IContainer.class );
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -594,9 +625,14 @@ public final class TableModel
     /* @Nullable */
     public ComponentModel getFocusedComponentModel()
     {
-        synchronized( getLock() )
+        getLock().lock();
+        try
         {
             return focusedComponentModel_;
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -622,9 +658,14 @@ public final class TableModel
     /* @Nullable */
     public ComponentModel getHoveredComponentModel()
     {
-        synchronized( getLock() )
+        getLock().lock();
+        try
         {
             return hoveredComponentModel_;
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -634,7 +675,7 @@ public final class TableModel
      * @return The table environment model lock; never {@code null}.
      */
     /* @NonNull */
-    private Object getLock()
+    private ReentrantLock getLock()
     {
         return tableEnvironmentModel_.getLock();
     }
@@ -685,9 +726,14 @@ public final class TableModel
     /* @NonNull */
     public Dimension getOriginOffset()
     {
-        synchronized( getLock() )
+        getLock().lock();
+        try
         {
             return new Dimension( originOffset_ );
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -750,9 +796,14 @@ public final class TableModel
      */
     public boolean isDirty()
     {
-        synchronized( getLock() )
+        getLock().lock();
+        try
         {
             return isDirty_;
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -783,7 +834,8 @@ public final class TableModel
     {
         table_.getTabletop().removeAllComponents();
 
-        synchronized( getLock() )
+        getLock().lock();
+        try
         {
             file_ = null;
             focusedComponentModel_ = null;
@@ -791,13 +843,25 @@ public final class TableModel
             isDirty_ = false;
             originOffset_.setSize( new Dimension( 0, 0 ) );
         }
+        finally
+        {
+            getLock().unlock();
+        }
 
-        fireTableChanged();
-        fireTableModelFileChanged();
-        fireTableModelFocusChanged();
-        fireTableModelHoverChanged();
-        fireTableModelOriginOffsetChanged();
-        fireTableModelDirtyFlagChanged();
+        fireEventNotification( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                fireTableChanged();
+                fireTableModelFileChanged();
+                fireTableModelFocusChanged();
+                fireTableModelHoverChanged();
+                fireTableModelOriginOffsetChanged();
+                fireTableModelDirtyFlagChanged();
+            }
+        } );
     }
 
     /**
@@ -819,7 +883,8 @@ public final class TableModel
 
         setTableMemento( table_, file );
 
-        synchronized( getLock() )
+        getLock().lock();
+        try
         {
             file_ = file;
             focusedComponentModel_ = null;
@@ -827,13 +892,25 @@ public final class TableModel
             isDirty_ = false;
             originOffset_.setSize( new Dimension( 0, 0 ) );
         }
+        finally
+        {
+            getLock().unlock();
+        }
 
-        fireTableChanged();
-        fireTableModelFileChanged();
-        fireTableModelFocusChanged();
-        fireTableModelHoverChanged();
-        fireTableModelOriginOffsetChanged();
-        fireTableModelDirtyFlagChanged();
+        fireEventNotification( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                fireTableChanged();
+                fireTableModelFileChanged();
+                fireTableModelFocusChanged();
+                fireTableModelHoverChanged();
+                fireTableModelOriginOffsetChanged();
+                fireTableModelDirtyFlagChanged();
+            }
+        } );
     }
 
     /**
@@ -915,16 +992,29 @@ public final class TableModel
     {
         assert file != null;
 
-        synchronized( getLock() )
+        getLock().lock();
+        try
         {
             writeTableMemento( file, table_.createMemento() );
 
             file_ = file;
             isDirty_ = false;
         }
+        finally
+        {
+            getLock().unlock();
+        }
 
-        fireTableModelFileChanged();
-        fireTableModelDirtyFlagChanged();
+        fireEventNotification( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                fireTableModelFileChanged();
+                fireTableModelDirtyFlagChanged();
+            }
+        } );
     }
 
     /**
@@ -943,7 +1033,8 @@ public final class TableModel
         final ComponentModel oldFocusedComponentModel;
         final ComponentModel newFocusedComponentModel;
 
-        synchronized( getLock() )
+        getLock().lock();
+        try
         {
             if( componentModel != focusedComponentModel_ )
             {
@@ -958,6 +1049,10 @@ public final class TableModel
                 oldFocusedComponentModel = null;
                 newFocusedComponentModel = null;
             }
+        }
+        finally
+        {
+            getLock().unlock();
         }
 
         if( componentFocusChanged )
@@ -989,7 +1084,8 @@ public final class TableModel
         final ComponentModel oldHoveredComponentModel;
         final ComponentModel newHoveredComponentModel;
 
-        synchronized( getLock() )
+        getLock().lock();
+        try
         {
             if( componentModel != hoveredComponentModel_ )
             {
@@ -1004,6 +1100,10 @@ public final class TableModel
                 oldHoveredComponentModel = null;
                 newHoveredComponentModel = null;
             }
+        }
+        finally
+        {
+            getLock().unlock();
         }
 
         if( componentHoverChanged )
@@ -1036,12 +1136,25 @@ public final class TableModel
     {
         assertArgumentNotNull( originOffset, "originOffset" ); //$NON-NLS-1$
 
-        synchronized( getLock() )
+        getLock().lock();
+        try
         {
             originOffset_.setSize( originOffset );
         }
+        finally
+        {
+            getLock().unlock();
+        }
 
-        fireTableModelOriginOffsetChanged();
+        fireEventNotification( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                fireTableModelOriginOffsetChanged();
+            }
+        } );
     }
 
     /**
@@ -1126,6 +1239,7 @@ public final class TableModel
      * A component model listener for the table model.
      */
     @Immutable
+    @SuppressWarnings( "synthetic-access" )
     private final class ComponentModelListener
         extends org.gamegineer.table.internal.ui.model.ComponentModelListener
     {
@@ -1150,45 +1264,68 @@ public final class TableModel
          * @see org.gamegineer.table.internal.ui.model.ComponentModelListener#componentChanged(org.gamegineer.table.internal.ui.model.ComponentModelEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void componentChanged(
             final ComponentModelEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            synchronized( getLock() )
+            getLock().lock();
+            try
             {
                 isDirty_ = true;
             }
+            finally
+            {
+                getLock().unlock();
+            }
 
-            fireTableChanged();
-            fireTableModelDirtyFlagChanged();
+            fireEventNotification( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    fireTableChanged();
+                    fireTableModelDirtyFlagChanged();
+                }
+            } );
         }
 
         /*
          * @see org.gamegineer.table.internal.ui.model.ComponentModelListener#componentModelFocusChanged(org.gamegineer.table.internal.ui.model.ComponentModelEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void componentModelFocusChanged(
             final ComponentModelEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            fireTableModelFocusChanged();
+            fireEventNotification( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    fireTableModelFocusChanged();
+                }
+            } );
         }
 
         /*
          * @see org.gamegineer.table.internal.ui.model.ComponentModelListener#componentModelHoverChanged(org.gamegineer.table.internal.ui.model.ComponentModelEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void componentModelHoverChanged(
             final ComponentModelEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            fireTableModelHoverChanged();
+            fireEventNotification( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    fireTableModelHoverChanged();
+                }
+            } );
         }
     }
 
@@ -1216,6 +1353,7 @@ public final class TableModel
      * A table network listener for the table model.
      */
     @Immutable
+    @SuppressWarnings( "synthetic-access" )
     private final class TableNetworkListener
         extends org.gamegineer.table.net.TableNetworkListener
     {
@@ -1239,39 +1377,57 @@ public final class TableModel
          * @see org.gamegineer.table.net.TableNetworkListener#tableNetworkConnected(org.gamegineer.table.net.TableNetworkEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void tableNetworkConnected(
             final TableNetworkEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            fireTableChanged();
+            fireEventNotification( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    fireTableChanged();
+                }
+            } );
         }
 
         /*
          * @see org.gamegineer.table.net.TableNetworkListener#tableNetworkDisconnected(org.gamegineer.table.net.TableNetworkDisconnectedEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void tableNetworkDisconnected(
             final TableNetworkDisconnectedEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            fireTableChanged();
+            fireEventNotification( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    fireTableChanged();
+                }
+            } );
         }
 
         /*
          * @see org.gamegineer.table.net.TableNetworkListener#tableNetworkPlayersUpdated(org.gamegineer.table.net.TableNetworkEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void tableNetworkPlayersUpdated(
             final TableNetworkEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            fireTableChanged();
+            fireEventNotification( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    fireTableChanged();
+                }
+            } );
         }
     }
 }

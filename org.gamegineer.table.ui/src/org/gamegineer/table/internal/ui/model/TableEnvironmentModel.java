@@ -23,6 +23,9 @@ package org.gamegineer.table.internal.ui.model;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.concurrent.locks.ReentrantLock;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
@@ -39,8 +42,18 @@ public final class TableEnvironmentModel
     // Fields
     // ======================================================================
 
+    /**
+     * The collection of pending event notifications queued on the current
+     * thread to be executed the next time the table environment model lock is
+     * released on this thread.
+     */
+    private final ThreadLocal<Queue<Runnable>> eventNotifications_;
+
+    /** Indicates an event notification is in progress on the current thread. */
+    private final ThreadLocal<Boolean> isEventNotificationInProgress_;
+
     /** The table environment model lock. */
-    private final Object lock_;
+    private final ReentrantLock lock_;
 
     /** The table environment associated with this model. */
     private final ITableEnvironment tableEnvironment_;
@@ -66,7 +79,23 @@ public final class TableEnvironmentModel
     {
         assertArgumentNotNull( tableEnvironment, "tableEnvironment" ); //$NON-NLS-1$
 
-        lock_ = new Object();
+        eventNotifications_ = new ThreadLocal<Queue<Runnable>>()
+        {
+            @Override
+            protected Queue<Runnable> initialValue()
+            {
+                return new ArrayDeque<Runnable>();
+            }
+        };
+        isEventNotificationInProgress_ = new ThreadLocal<Boolean>()
+        {
+            @Override
+            protected Boolean initialValue()
+            {
+                return Boolean.FALSE;
+            }
+        };
+        lock_ = new TableEnvironmentModelLock();
         tableEnvironment_ = tableEnvironment;
     }
 
@@ -74,6 +103,17 @@ public final class TableEnvironmentModel
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Indicates event notifications can be fired on the current thread.
+     * 
+     * @return {@code true} if event notifications can be fired on the current
+     *         thread; otherwise {@code false}.
+     */
+    private boolean canFireEventNotifications()
+    {
+        return !lock_.isHeldByCurrentThread() && !isEventNotificationInProgress_.get().booleanValue();
+    }
 
     /**
      * Creates a new component model for the specified component.
@@ -158,12 +198,65 @@ public final class TableEnvironmentModel
     }
 
     /**
+     * Fires the specified event notification as the table environment model
+     * lock is not held by the current thread.
+     * 
+     * <p>
+     * If the current thread does not hold the table environment model lock, the
+     * event notification will be fired immediately. Otherwise, it will be
+     * queued and fired as soon as this thread releases the table environment
+     * model lock.
+     * </p>
+     * 
+     * @param eventNotification
+     *        The event notification; must not be {@code null}.
+     */
+    void fireEventNotification(
+        /* @NonNull */
+        final Runnable eventNotification )
+    {
+        assert eventNotification != null;
+
+        if( canFireEventNotifications() )
+        {
+            eventNotification.run();
+        }
+        else
+        {
+            eventNotifications_.get().add( eventNotification );
+        }
+    }
+
+    /**
+     * Fires all pending event notifications queued for the current thread.
+     */
+    private void fireEventNotifications()
+    {
+        assert canFireEventNotifications();
+
+        isEventNotificationInProgress_.set( Boolean.TRUE );
+        try
+        {
+            final Queue<Runnable> eventNotifications = eventNotifications_.get();
+            Runnable eventNotification = null;
+            while( (eventNotification = eventNotifications.poll()) != null )
+            {
+                eventNotification.run();
+            }
+        }
+        finally
+        {
+            isEventNotificationInProgress_.set( Boolean.FALSE );
+        }
+    }
+
+    /**
      * Gets the table environment model lock.
      * 
      * @return The table environment model lock; never {@code null}.
      */
     /* @NonNull */
-    public Object getLock()
+    public ReentrantLock getLock()
     {
         return lock_;
     }
@@ -178,5 +271,58 @@ public final class TableEnvironmentModel
     public ITableEnvironment getTableEnvironment()
     {
         return tableEnvironment_;
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * A reentrant mutual exclusion lock for a table environment model.
+     */
+    @ThreadSafe
+    private final class TableEnvironmentModelLock
+        extends ReentrantLock
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** Serializable class version number. */
+        private static final long serialVersionUID = 3334953782815390513L;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code TableEnvironmentModelLock}
+         * class.
+         */
+        TableEnvironmentModelLock()
+        {
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see java.util.concurrent.locks.ReentrantLock#unlock()
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void unlock()
+        {
+            super.unlock();
+
+            if( canFireEventNotifications() )
+            {
+                fireEventNotifications();
+            }
+        }
     }
 }
