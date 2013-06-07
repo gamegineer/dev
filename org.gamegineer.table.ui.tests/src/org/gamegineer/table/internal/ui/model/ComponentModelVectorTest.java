@@ -1,5 +1,5 @@
 /*
- * ComponentVectorTest.java
+ * ComponentModelVectorTest.java
  * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
@@ -16,29 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 16, 2013 at 8:45:24 PM.
+ * Created on Jun 4, 2013 at 8:16:37 PM.
  */
 
 package org.gamegineer.table.internal.ui.model;
 
-import org.easymock.EasyMock;
-import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
+import org.gamegineer.table.core.TableEnvironmentFactory;
+import org.gamegineer.table.ui.TestComponents;
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.ComponentVector} class.
+ * {@link org.gamegineer.table.internal.ui.model.ComponentModelVector} class.
  */
-public final class ComponentVectorTest
+public final class ComponentModelVectorTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ComponentVectorTest} class.
+     * Initializes a new instance of the {@code ComponentModelVectorTest} class.
      */
-    public ComponentVectorTest()
+    public ComponentModelVectorTest()
     {
     }
 
@@ -48,22 +49,24 @@ public final class ComponentVectorTest
     // ======================================================================
 
     /**
-     * Ensures the {@link ComponentVector#ComponentVector} constructor throws an
-     * exception when passed a {@code null} direction.
+     * Ensures the {@link ComponentModelVector#ComponentModelVector} constructor
+     * throws an exception when passed a {@code null} direction.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_Direction_Null()
     {
-        new ComponentVector( EasyMock.createMock( IComponent.class ), null );
+        final TableEnvironmentModel tableEnvironmentModel = new TableEnvironmentModel( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
+
+        new ComponentModelVector( tableEnvironmentModel.createComponentModel( TestComponents.createUniqueComponent( tableEnvironmentModel.getTableEnvironment() ) ), null );
     }
 
     /**
-     * Ensures the {@link ComponentVector#ComponentVector} constructor throws an
-     * exception when passed a {@code null} origin.
+     * Ensures the {@link ComponentModelVector#ComponentModelVector} constructor
+     * throws an exception when passed a {@code null} origin.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_Origin_Null()
     {
-        new ComponentVector( null, ComponentAxis.PRECEDING );
+        new ComponentModelVector( null, ComponentAxis.PRECEDING );
     }
 }

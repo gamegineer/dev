@@ -23,6 +23,8 @@ package org.gamegineer.table.internal.ui.model;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.awt.Point;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
@@ -378,6 +380,44 @@ public class ComponentModel
     public final TableEnvironmentModel getTableEnvironmentModel()
     {
         return tableEnvironmentModel_;
+    }
+
+    /**
+     * Hit tests this component model against the specified location.
+     * 
+     * <p>
+     * This implementation adds this component model to the specified collection
+     * if it occupies the specified location. Subclasses may override and must
+     * call the superclass implementation.
+     * </p>
+     * 
+     * @param location
+     *        The location in table coordinates; must not be {@code null}.
+     * @param componentModels
+     *        The collection that receives the component models that occupy the
+     *        specified location; must not be {@code null}.
+     * 
+     * @return {@code true} if this component model occupies the specified
+     *         location; otherwise {@code false}.
+     */
+    @GuardedBy( "getLock()" )
+    boolean hitTest(
+        /* @NonNull */
+        final Point location,
+        /* @NonNull */
+        final List<ComponentModel> componentModels )
+    {
+        assert location != null;
+        assert componentModels != null;
+        assert getLock().isHeldByCurrentThread();
+
+        if( component_.getBounds().contains( location ) )
+        {
+            componentModels.add( this );
+            return true;
+        }
+
+        return false;
     }
 
     /**

@@ -75,7 +75,7 @@ import org.gamegineer.table.internal.ui.action.ActionMediator;
 import org.gamegineer.table.internal.ui.dialogs.selectremoteplayer.SelectRemotePlayerDialog;
 import org.gamegineer.table.internal.ui.model.ComponentAxis;
 import org.gamegineer.table.internal.ui.model.ComponentModel;
-import org.gamegineer.table.internal.ui.model.ComponentVector;
+import org.gamegineer.table.internal.ui.model.ComponentModelVector;
 import org.gamegineer.table.internal.ui.model.ContainerModel;
 import org.gamegineer.table.internal.ui.model.ITableModelListener;
 import org.gamegineer.table.internal.ui.model.TableModel;
@@ -1220,24 +1220,24 @@ final class TableView
         }
 
         /**
-         * Creates a search vector from the focused component based on the
+         * Creates a search vector from the focused component model based on the
          * specified event state.
          * 
          * @param event
          *        The input event; may be {@code null} if no input event is
          *        available.
          * 
-         * @return A search vector from the focused component or {@code null} if
-         *         no component has the focus.
+         * @return A search vector from the focused component model or
+         *         {@code null} if no component model has the focus.
          */
         /* @Nullable */
         @SuppressWarnings( "synthetic-access" )
-        protected final ComponentVector createSearchVectorFromFocusedComponent(
+        protected final ComponentModelVector createSearchVectorFromFocusedComponentModel(
             /* @Nullable */
             final InputEvent event )
         {
-            final IComponent focusedComponent = model_.getFocusedComponent();
-            if( focusedComponent == null )
+            final ComponentModel focusedComponentModel = model_.getFocusedComponentModel();
+            if( focusedComponentModel == null )
             {
                 return null;
             }
@@ -1259,7 +1259,7 @@ final class TableView
                 searchAxis = ComponentAxis.PRECEDING;
             }
 
-            return new ComponentVector( focusedComponent, searchAxis );
+            return new ComponentModelVector( focusedComponentModel, searchAxis );
         }
 
         /**
@@ -1441,7 +1441,7 @@ final class TableView
             }
             else if( SwingUtilities.isLeftMouseButton( event ) )
             {
-                if( model_.getFocusedComponent() != null )
+                if( model_.getFocusedComponentModel() != null )
                 {
                     setInputHandler( DragPrimedInputHandler.class, event );
                 }
@@ -1480,9 +1480,9 @@ final class TableView
             /* @Nullable */
             final InputEvent event )
         {
-            final IComponent component = model_.getFocusableComponent( getMouseLocation( event ) );
+            final ComponentModel componentModel = model_.getFocusableComponentModel( getMouseLocation( event ) );
             final Cursor newCursor;
-            if( component != null )
+            if( componentModel != null )
             {
                 newCursor = model_.isEditable() ? Cursors.getDefaultCursor() : Cursors.getInvalidCursor();
             }
@@ -1513,14 +1513,14 @@ final class TableView
             if( SwingUtilities.isLeftMouseButton( event ) || SwingUtilities.isRightMouseButton( event ) )
             {
                 final Point mouseLocation = getMouseLocation( event );
-                final IComponent focusedComponent = model_.getFocusedComponent();
-                if( (focusedComponent != null) && focusedComponent.getBounds().contains( mouseLocation ) )
+                final ComponentModel focusedComponentModel = model_.getFocusedComponentModel();
+                if( (focusedComponentModel != null) && focusedComponentModel.getComponent().getBounds().contains( mouseLocation ) )
                 {
                     updateFocusOnMouseReleased_ = SwingUtilities.isLeftMouseButton( event );
                 }
                 else
                 {
-                    model_.setFocus( model_.getFocusableComponent( mouseLocation ) );
+                    model_.setFocus( model_.getFocusableComponentModel( mouseLocation ) );
                 }
             }
         }
@@ -1537,7 +1537,7 @@ final class TableView
             /* @Nullable */
             final InputEvent event )
         {
-            model_.setHover( model_.getFocusableComponent( getMouseLocation( event ), createSearchVectorFromFocusedComponent( event ) ) );
+            model_.setHover( model_.getFocusableComponentModel( getMouseLocation( event ), createSearchVectorFromFocusedComponentModel( event ) ) );
         }
     }
 
@@ -1635,7 +1635,7 @@ final class TableView
             final Point location = getMouseLocation( event );
             if( canBeginDrag( location ) )
             {
-                if( model_.getFocusableComponent( location ) != null )
+                if( model_.getFocusableComponentModel( location ) != null )
                 {
                     if( model_.isEditable() )
                     {
@@ -1689,7 +1689,7 @@ final class TableView
 
             if( SwingUtilities.isLeftMouseButton( event ) )
             {
-                model_.setFocus( model_.getFocusableComponent( getMouseLocation( event ), createSearchVectorFromFocusedComponent( event ) ) );
+                model_.setFocus( model_.getFocusableComponentModel( getMouseLocation( event ), createSearchVectorFromFocusedComponentModel( event ) ) );
             }
         }
     }
@@ -1735,13 +1735,13 @@ final class TableView
         void activate(
             final InputEvent event )
         {
-            final IComponent focusedComponent = model_.getFocusedComponent();
-            if( focusedComponent != null )
+            final ComponentModel focusedComponentModel = model_.getFocusedComponentModel();
+            if( focusedComponentModel != null )
             {
                 final IDragSource dragSource = model_.getTable().getExtension( IDragSource.class );
                 if( dragSource != null )
                 {
-                    dragContext_ = dragSource.beginDrag( getMouseLocation( event ), focusedComponent );
+                    dragContext_ = dragSource.beginDrag( getMouseLocation( event ), focusedComponentModel.getComponent() );
                     if( dragContext_ == null )
                     {
                         setInputHandler( DefaultInputHandler.class, null );

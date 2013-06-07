@@ -1,5 +1,5 @@
 /*
- * ComponentVector.java
+ * ComponentModelVector.java
  * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
@@ -16,20 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 16, 2013 at 8:12:41 PM.
+ * Created on Jun 4, 2013 at 8:13:26 PM.
  */
 
 package org.gamegineer.table.internal.ui.model;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.core.IComponent;
 
 /**
- * A direction relative to a specific component.
+ * A direction relative to a specific component model.
  */
 @Immutable
-public final class ComponentVector
+public final class ComponentModelVector
 {
     // ======================================================================
     // Fields
@@ -38,8 +37,8 @@ public final class ComponentVector
     /** The component axis along which the vector is directed. */
     private final ComponentAxis direction_;
 
-    /** The component that represents the vector origin. */
-    private final IComponent origin_;
+    /** The component model that represents the vector origin. */
+    private final ComponentModel origin_;
 
 
     // ======================================================================
@@ -47,10 +46,10 @@ public final class ComponentVector
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ComponentVector} class.
+     * Initializes a new instance of the {@code ComponentModelVector} class.
      * 
      * @param origin
-     *        The component that represents the vector origin; must not be
+     *        The component model that represents the vector origin; must not be
      *        {@code null}.
      * @param direction
      *        The component axis along which the vector is directed; must not be
@@ -59,9 +58,9 @@ public final class ComponentVector
      * @throws java.lang.NullPointerException
      *         If {@code origin} or {@code axis} is {@code null}.
      */
-    public ComponentVector(
+    public ComponentModelVector(
         /* @NonNull */
-        final IComponent origin,
+        final ComponentModel origin,
         /* @NonNull */
         final ComponentAxis direction )
     {
@@ -90,13 +89,13 @@ public final class ComponentVector
     }
 
     /**
-     * Gets the component that represents the vector origin.
+     * Gets the component model that represents the vector origin.
      * 
-     * @return The component that represents the vector origin; never
+     * @return The component model that represents the vector origin; never
      *         {@code null}.
      */
     /* @NonNull */
-    public IComponent getOrigin()
+    public ComponentModel getOrigin()
     {
         return origin_;
     }

@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.ui.model;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -371,6 +372,31 @@ public final class ContainerModel
     {
         final IComponentModelParent parent = getParent();
         return (parent != null) ? parent.getTableModel() : null;
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ComponentModel#hitTest(java.awt.Point, java.util.List)
+     */
+    @Override
+    boolean hitTest(
+        final Point location,
+        final List<ComponentModel> componentModels )
+    {
+        assert location != null;
+        assert componentModels != null;
+        assert getLock().isHeldByCurrentThread();
+
+        if( super.hitTest( location, componentModels ) )
+        {
+            for( final ComponentModel componentModel : componentModels_ )
+            {
+                componentModel.hitTest( location, componentModels );
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     /*

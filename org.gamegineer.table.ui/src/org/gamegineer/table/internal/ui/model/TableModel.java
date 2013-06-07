@@ -31,6 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -44,8 +45,6 @@ import org.eclipse.core.expressions.EvaluationContext;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.common.persistence.serializable.ObjectStreams;
 import org.gamegineer.table.core.ComponentPath;
-import org.gamegineer.table.core.IComponent;
-import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.prototype.IEvaluationContextProvider;
@@ -66,6 +65,21 @@ public final class TableModel
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /**
+     * The component model comparator that orders component models by their
+     * paths.
+     */
+    private static final Comparator<ComponentModel> COMPONENT_MODEL_COMPARATOR = new Comparator<ComponentModel>()
+    {
+        @Override
+        public int compare(
+            final ComponentModel componentModel1,
+            final ComponentModel componentModel2 )
+        {
+            return componentModel1.getComponent().getPath().compareTo( componentModel2.getComponent().getPath() );
+        }
+    };
 
     /** The file to which the model was last saved. */
     @GuardedBy( "getLock()" )
@@ -348,43 +362,48 @@ public final class TableModel
     }
 
     /**
-     * Gets the component model in this table model associated with the
-     * specified component.
+     * Gets the component models in this table model at the specified location.
      * 
-     * @param component
-     *        The component; may be {@code null}.
+     * <p>
+     * Note that the returned component models may have been moved by the time
+     * this method returns to the caller. Therefore, callers should not cache
+     * the results of this method for an extended period of time.
+     * </p>
      * 
-     * @return The component model in this table model associated with the
-     *         specified component or {@code null} if {@code component} is
-     *         {@code null} or {@code component} is not associated with a table.
+     * @param location
+     *        The location in table coordinates; must not be {@code null}.
      * 
-     * @throws java.lang.IllegalArgumentException
-     *         If no component model is associated with the specified component.
+     * @return The collection of component models in this table model at the
+     *         specified location; never {@code null}. The component models are
+     *         returned in order from the bottom-most component model to the
+     *         top-most component model; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code location} is {@code null}.
      */
-    /* @Nullable */
-    private ComponentModel getComponentModel(
-        /* @Nullable */
-        final IComponent component )
+    /* @NonNull */
+    public List<ComponentModel> getComponentModels(
+        /* @NonNull */
+        final Point location )
     {
-        if( component == null )
+        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
+
+        final List<ComponentModel> componentModels = new ArrayList<ComponentModel>();
+
+        getLock().lock();
+        try
         {
-            return null;
+            if( tabletopModel_.hitTest( location, componentModels ) )
+            {
+                Collections.sort( componentModels, COMPONENT_MODEL_COMPARATOR );
+            }
+        }
+        finally
+        {
+            getLock().unlock();
         }
 
-        final ComponentPath componentPath = component.getPath();
-        if( componentPath == null )
-        {
-            return null;
-        }
-
-        final ComponentModel componentModel = getComponentModel( componentPath );
-        if( componentModel == null )
-        {
-            return null;
-        }
-
-        assertArgumentLegal( component == componentModel.getComponent(), "component", NonNlsMessages.TableModel_getComponentModel_component_notExists ); //$NON-NLS-1$
-        return componentModel;
+        return componentModels;
     }
 
     /*
@@ -395,8 +414,8 @@ public final class TableModel
     {
         final EvaluationContext evaluationContext = new EvaluationContext( null, EvaluationContext.UNDEFINED_VARIABLE );
 
-        final IComponent focusedComponent = getFocusedComponent();
-        evaluationContext.addVariable( EvaluationContextVariables.FOCUSED_COMPONENT, (focusedComponent != null) ? focusedComponent : EvaluationContext.UNDEFINED_VARIABLE );
+        final ComponentModel focusedComponentModel = getFocusedComponentModel();
+        evaluationContext.addVariable( EvaluationContextVariables.FOCUSED_COMPONENT, (focusedComponentModel != null) ? focusedComponentModel.getComponent() : EvaluationContext.UNDEFINED_VARIABLE );
 
         return evaluationContext;
     }
@@ -422,205 +441,110 @@ public final class TableModel
     }
 
     /**
-     * Gets the top-most focusable component at the specified location.
+     * Gets the top-most focusable component model at the specified location.
      * 
      * @param location
      *        The location in table coordinates; must not be {@code null}.
      * 
-     * @return The top-most focusable component at the specified location or
-     *         {@code null} if no focusable component is at that location.
+     * @return The top-most focusable component model at the specified location
+     *         or {@code null} if no focusable component model is at that
+     *         location.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code location} is {@code null}.
      */
     /* @Nullable */
-    public IComponent getFocusableComponent(
+    public ComponentModel getFocusableComponentModel(
         /* @NonNull */
         final Point location )
     {
-        return getFocusableComponent( location, null );
+        return getFocusableComponentModel( location, null );
     }
 
     /**
-     * Gets the focusable component at the specified location along the
+     * Gets the focusable component model at the specified location along the
      * specified vector.
      * 
      * <p>
      * This method starts the search from the origin of the specified vector and
      * works its way along the specified axis until it finds a focusable
-     * component. If no focusable component is found when the end of the axis is
-     * reached, the search wraps around to the end of the opposite axis.
+     * component model. If no focusable component model is found when the end of
+     * the axis is reached, the search wraps around to the end of the opposite
+     * axis.
      * </p>
      * 
      * @param location
      *        The location in table coordinates; must not be {@code null}.
      * @param searchVector
      *        The vector along which the search will proceed or {@code null} to
-     *        return the top-most focusable component.
+     *        return the top-most focusable component model.
      * 
-     * @return The focusable component at the specified location or {@code null}
-     *         if no focusable component is at that location.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code location} is {@code null}.
-     */
-    /* @Nullable */
-    public IComponent getFocusableComponent(
-        /* @NonNull */
-        final Point location,
-        /* @Nullable */
-        final ComponentVector searchVector )
-    {
-        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
-
-        getLock().lock();
-        try
-        {
-            return getFocusableComponent( location, searchVector, IComponent.class );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-    }
-
-    /**
-     * Gets the focusable component of the specified type at the specified
-     * location along the specified vector.
-     * 
-     * <p>
-     * The contract of this method is identical to
-     * {@link #getFocusableComponent(Point, ComponentVector)} with the addition
-     * it will only return a focusable component of the specified type.
-     * </p>
-     * 
-     * @param <T>
-     *        The component type.
-     * 
-     * @param location
-     *        The location in table coordinates; must not be {@code null}.
-     * @param searchVector
-     *        The vector along which the search will proceed or {@code null} to
-     *        return the top-most focusable component of the specified type.
-     * @param type
-     *        The type of the component; must not be {@code null}.
-     * 
-     * @return The focusable component of the specified type at the specified
-     *         location or {@code null} if no focusable component of the
-     *         specified type is at that location.
-     */
-    @GuardedBy( "getLock()" )
-    /* @Nullable */
-    private <T extends IComponent> T getFocusableComponent(
-        /* @NonNull */
-        final Point location,
-        /* @Nullable */
-        final ComponentVector searchVector,
-        /* @NonNull */
-        final Class<T> type )
-    {
-        assert location != null;
-        assert type != null;
-        assert getLock().isHeldByCurrentThread();
-
-        T focusableComponent = null;
-
-        final List<IComponent> components = table_.getComponents( location );
-        if( !components.isEmpty() )
-        {
-            final IComponent searchOrigin;
-            final ComponentAxis searchDirection;
-            if( (searchVector != null) && searchVector.getOrigin().getBounds().contains( location ) )
-            {
-                searchOrigin = searchVector.getOrigin();
-                searchDirection = searchVector.getDirection();
-            }
-            else
-            {
-                searchOrigin = components.get( 0 );
-                searchDirection = ComponentAxis.PRECEDING;
-            }
-
-            final int originIndex = Collections.binarySearch( //
-                components, //
-                searchOrigin, //
-                new Comparator<IComponent>()
-                {
-                    @Override
-                    public int compare(
-                        final IComponent o1,
-                        final IComponent o2 )
-                    {
-                        return o1.getPath().compareTo( o2.getPath() );
-                    }
-                } );
-            if( originIndex >= 0 )
-            {
-                int index = originIndex;
-                do
-                {
-                    index = getNextSearchIndex( components, index, searchDirection );
-                    final ComponentModel componentModel = getComponentModel( components.get( index ) );
-                    if( (componentModel != null) && componentModel.isFocusable() && type.isInstance( componentModel.getComponent() ) )
-                    {
-                        focusableComponent = type.cast( componentModel.getComponent() );
-                    }
-
-                } while( (focusableComponent == null) && (index != originIndex) );
-            }
-        }
-
-        return focusableComponent;
-    }
-
-    /**
-     * Gets the top-most focusable container at the specified location.
-     * 
-     * @param location
-     *        The location in table coordinates; must not be {@code null}.
-     * 
-     * @return The top-most focusable container at the specified location or
-     *         {@code null} if no focusable container is at that location.
+     * @return The focusable component model at the specified location or
+     *         {@code null} if no focusable component model is at that location.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code location} is {@code null}.
      */
     /* @Nullable */
-    public IContainer getFocusableContainer(
+    public ComponentModel getFocusableComponentModel(
         /* @NonNull */
-        final Point location )
+        final Point location,
+        /* @Nullable */
+        final ComponentModelVector searchVector )
     {
         assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
+
+        ComponentModel focusableComponentModel = null;
 
         getLock().lock();
         try
         {
-            return getFocusableComponent( location, null, IContainer.class );
+            final List<ComponentModel> componentModels = getComponentModels( location );
+            if( !componentModels.isEmpty() )
+            {
+                final ComponentModel searchOrigin;
+                final ComponentAxis searchDirection;
+                if( (searchVector != null) && searchVector.getOrigin().getComponent().getBounds().contains( location ) )
+                {
+                    searchOrigin = searchVector.getOrigin();
+                    searchDirection = searchVector.getDirection();
+                }
+                else
+                {
+                    searchOrigin = componentModels.get( 0 );
+                    searchDirection = ComponentAxis.PRECEDING;
+                }
+
+                final int originIndex = Collections.binarySearch( componentModels, searchOrigin, COMPONENT_MODEL_COMPARATOR );
+                if( originIndex >= 0 )
+                {
+                    int index = originIndex;
+                    do
+                    {
+                        index = getNextSearchIndex( componentModels, index, searchDirection );
+                        final ComponentModel componentModel = componentModels.get( index );
+                        if( (componentModel != null) && componentModel.isFocusable() )
+                        {
+                            focusableComponentModel = componentModel;
+                        }
+
+                    } while( (focusableComponentModel == null) && (index != originIndex) );
+                }
+            }
         }
         finally
         {
             getLock().unlock();
         }
+
+        return focusableComponentModel;
     }
 
     /**
-     * Gets the focused component.
+     * Gets the focused component model.
      * 
-     * @return The focused component or {@code null} if no component has the
-     *         focus.
-     */
-    /* @Nullable */
-    public IComponent getFocusedComponent()
-    {
-        final ComponentModel focusedComponentModel = getFocusedComponentModel();
-        return (focusedComponentModel != null) ? focusedComponentModel.getComponent() : null;
-    }
-
-    /**
-     * Gets the model associated with the focused component.
-     * 
-     * @return The model associated with the focused component or {@code null}
-     *         if no component has the focus.
+     * @return The focused component model or {@code null} if no component model
+     *         has the focus.
      */
     /* @Nullable */
     public ComponentModel getFocusedComponentModel()
@@ -637,23 +561,10 @@ public final class TableModel
     }
 
     /**
-     * Gets the hovered component.
+     * Gets hovered component model.
      * 
-     * @return The hovered component or {@code null} if no component has the
-     *         hover.
-     */
-    /* @Nullable */
-    public IComponent getHoveredComponent()
-    {
-        final ComponentModel hoveredComponentModel = getHoveredComponentModel();
-        return (hoveredComponentModel != null) ? hoveredComponentModel.getComponent() : null;
-    }
-
-    /**
-     * Gets the model associated with the hovered component.
-     * 
-     * @return The model associated with the hovered component or {@code null}
-     *         if no component has the hover.
+     * @return The hovered component model or {@code null} if no component model
+     *         has the hover.
      */
     /* @Nullable */
     public ComponentModel getHoveredComponentModel()
@@ -683,9 +594,9 @@ public final class TableModel
     /**
      * Gets the next search index for the specified search criteria.
      * 
-     * @param components
-     *        The list of components being searched in ascending z-order order;
-     *        must not be {@code null}.
+     * @param componentModels
+     *        The list of component models being searched in ascending z-order
+     *        order; must not be {@code null}.
      * @param index
      *        The current search index.
      * @param searchAxis
@@ -695,21 +606,21 @@ public final class TableModel
      */
     private static int getNextSearchIndex(
         /* @NonNull */
-        final List<IComponent> components,
+        final List<ComponentModel> componentModels,
         final int index,
         /* @NonNull */
         final ComponentAxis searchAxis )
     {
-        assert components != null;
+        assert componentModels != null;
         assert searchAxis != null;
 
         switch( searchAxis )
         {
             case PRECEDING:
-                return (index > 0) ? (index - 1) : (components.size() - 1);
+                return (index > 0) ? (index - 1) : (componentModels.size() - 1);
 
             case FOLLOWING:
-                return (index < (components.size() - 1)) ? (index + 1) : 0;
+                return (index < (componentModels.size() - 1)) ? (index + 1) : 0;
 
             default:
                 throw new AssertionError( "unsupported component axis: " + searchAxis ); //$NON-NLS-1$
@@ -1018,18 +929,17 @@ public final class TableModel
     }
 
     /**
-     * Sets the focus to the specified component.
+     * Sets the focus to the specified component model.
      * 
-     * @param component
-     *        The component to receive the focus or {@code null} if no component
-     *        should have the focus.
+     * @param componentModel
+     *        The component model to receive the focus or {@code null} if no
+     *        component model should have the focus.
      */
     public void setFocus(
         /* @Nullable */
-        final IComponent component )
+        final ComponentModel componentModel )
     {
-        final ComponentModel componentModel = getComponentModel( component );
-        final boolean componentFocusChanged;
+        final boolean componentModelFocusChanged;
         final ComponentModel oldFocusedComponentModel;
         final ComponentModel newFocusedComponentModel;
 
@@ -1038,14 +948,14 @@ public final class TableModel
         {
             if( componentModel != focusedComponentModel_ )
             {
-                componentFocusChanged = true;
+                componentModelFocusChanged = true;
                 oldFocusedComponentModel = focusedComponentModel_;
                 newFocusedComponentModel = componentModel;
                 focusedComponentModel_ = componentModel;
             }
             else
             {
-                componentFocusChanged = false;
+                componentModelFocusChanged = false;
                 oldFocusedComponentModel = null;
                 newFocusedComponentModel = null;
             }
@@ -1055,7 +965,7 @@ public final class TableModel
             getLock().unlock();
         }
 
-        if( componentFocusChanged )
+        if( componentModelFocusChanged )
         {
             if( oldFocusedComponentModel != null )
             {
@@ -1069,18 +979,17 @@ public final class TableModel
     }
 
     /**
-     * Sets the hover to the specified component.
+     * Sets the hover to the specified component model.
      * 
-     * @param component
-     *        The component to receive the hover or {@code null} if no component
-     *        should have the hover.
+     * @param componentModel
+     *        The component model to receive the hover or {@code null} if no
+     *        component model should have the hover.
      */
     public void setHover(
         /* @Nullable */
-        final IComponent component )
+        final ComponentModel componentModel )
     {
-        final ComponentModel componentModel = getComponentModel( component );
-        final boolean componentHoverChanged;
+        final boolean componentModelHoverChanged;
         final ComponentModel oldHoveredComponentModel;
         final ComponentModel newHoveredComponentModel;
 
@@ -1089,14 +998,14 @@ public final class TableModel
         {
             if( componentModel != hoveredComponentModel_ )
             {
-                componentHoverChanged = true;
+                componentModelHoverChanged = true;
                 oldHoveredComponentModel = hoveredComponentModel_;
                 newHoveredComponentModel = componentModel;
                 hoveredComponentModel_ = componentModel;
             }
             else
             {
-                componentHoverChanged = false;
+                componentModelHoverChanged = false;
                 oldHoveredComponentModel = null;
                 newHoveredComponentModel = null;
             }
@@ -1106,7 +1015,7 @@ public final class TableModel
             getLock().unlock();
         }
 
-        if( componentHoverChanged )
+        if( componentModelHoverChanged )
         {
             if( oldHoveredComponentModel != null )
             {

@@ -152,14 +152,8 @@ final class NonNlsMessages
     /** The table model listener is already registered. */
     public static String TableModel_addTableModelListener_listener_registered;
 
-    /** The component does not exist in the table. */
-    public static String TableModel_getComponentModel_component_notExists;
-
     /** The component path does not exist in the table. */
     public static String TableModel_getComponentModel_path_notExists;
-
-    /** The component strategy user interface does not exist. */
-    public static String TableModel_getFocusableComponent_componentStrategyUI_notExists;
 
     /** An error occurred while reading the table memento. */
     public static String TableModel_readTableMemento_error;
