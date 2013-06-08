@@ -25,7 +25,8 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayDeque;
 import java.util.Queue;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
@@ -53,7 +54,7 @@ public final class TableEnvironmentModel
     private final ThreadLocal<Boolean> isEventNotificationInProgress_;
 
     /** The table environment model lock. */
-    private final ReentrantLock lock_;
+    private final ITableEnvironmentModelLock lock_;
 
     /** The table environment associated with this model. */
     private final ITableEnvironment tableEnvironment_;
@@ -256,7 +257,7 @@ public final class TableEnvironmentModel
      * @return The table environment model lock; never {@code null}.
      */
     /* @NonNull */
-    public ReentrantLock getLock()
+    public ITableEnvironmentModelLock getLock()
     {
         return lock_;
     }
@@ -281,18 +282,11 @@ public final class TableEnvironmentModel
     /**
      * A reentrant mutual exclusion lock for a table environment model.
      */
+    @SuppressWarnings( "synthetic-access" )
     @ThreadSafe
     private final class TableEnvironmentModelLock
-        extends ReentrantLock
+        implements ITableEnvironmentModelLock
     {
-        // ==================================================================
-        // Fields
-        // ==================================================================
-
-        /** Serializable class version number. */
-        private static final long serialVersionUID = 3334953782815390513L;
-
-
         // ==================================================================
         // Constructors
         // ==================================================================
@@ -311,13 +305,70 @@ public final class TableEnvironmentModel
         // ==================================================================
 
         /*
+         * @see org.gamegineer.table.internal.ui.model.ITableEnvironmentModelLock#isHeldByCurrentThread()
+         */
+        @Override
+        public boolean isHeldByCurrentThread()
+        {
+            return tableEnvironment_.getLock().isHeldByCurrentThread();
+        }
+
+        /*
+         * @see java.util.concurrent.locks.ReentrantLock#lock()
+         */
+        @Override
+        public void lock()
+        {
+            tableEnvironment_.getLock().lock();
+        }
+
+        /*
+         * @see java.util.concurrent.locks.Lock#lockInterruptibly()
+         */
+        @Override
+        public void lockInterruptibly()
+            throws InterruptedException
+        {
+            tableEnvironment_.getLock().lockInterruptibly();
+        }
+
+        /*
+         * @see java.util.concurrent.locks.Lock#newCondition()
+         */
+        @Override
+        public Condition newCondition()
+        {
+            return tableEnvironment_.getLock().newCondition();
+        }
+
+        /*
+         * @see java.util.concurrent.locks.Lock#tryLock()
+         */
+        @Override
+        public boolean tryLock()
+        {
+            return tableEnvironment_.getLock().tryLock();
+        }
+
+        /*
+         * @see java.util.concurrent.locks.Lock#tryLock(long, java.util.concurrent.TimeUnit)
+         */
+        @Override
+        public boolean tryLock(
+            final long time,
+            final TimeUnit unit )
+            throws InterruptedException
+        {
+            return tableEnvironment_.getLock().tryLock( time, unit );
+        }
+
+        /*
          * @see java.util.concurrent.locks.ReentrantLock#unlock()
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void unlock()
         {
-            super.unlock();
+            tableEnvironment_.getLock().unlock();
 
             if( canFireEventNotifications() )
             {

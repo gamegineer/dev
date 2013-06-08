@@ -36,7 +36,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
@@ -77,6 +76,8 @@ public final class TableModel
             final ComponentModel componentModel1,
             final ComponentModel componentModel2 )
         {
+            assert componentModel1.getLock().isHeldByCurrentThread();
+
             return componentModel1.getComponent().getPath().compareTo( componentModel2.getComponent().getPath() );
         }
     };
@@ -358,7 +359,15 @@ public final class TableModel
             return tabletopModel_;
         }
 
-        return tabletopModel_.getComponentModel( paths.subList( 1, paths.size() ) );
+        getLock().lock();
+        try
+        {
+            return tabletopModel_.getComponentModel( paths.subList( 1, paths.size() ) );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
     }
 
     /**
@@ -586,7 +595,7 @@ public final class TableModel
      * @return The table environment model lock; never {@code null}.
      */
     /* @NonNull */
-    private ReentrantLock getLock()
+    private ITableEnvironmentModelLock getLock()
     {
         return tableEnvironmentModel_.getLock();
     }
@@ -743,11 +752,11 @@ public final class TableModel
      */
     void open()
     {
-        table_.getTabletop().removeAllComponents();
-
         getLock().lock();
         try
         {
+            table_.getTabletop().removeAllComponents();
+
             file_ = null;
             focusedComponentModel_ = null;
             hoveredComponentModel_ = null;
@@ -792,11 +801,11 @@ public final class TableModel
     {
         assert file != null;
 
-        setTableMemento( table_, file );
-
         getLock().lock();
         try
         {
+            setTableMemento( table_, file );
+
             file_ = file;
             focusedComponentModel_ = null;
             hoveredComponentModel_ = null;
@@ -940,12 +949,12 @@ public final class TableModel
         final ComponentModel componentModel )
     {
         final boolean componentModelFocusChanged;
-        final ComponentModel oldFocusedComponentModel;
-        final ComponentModel newFocusedComponentModel;
 
         getLock().lock();
         try
         {
+            final ComponentModel oldFocusedComponentModel;
+            final ComponentModel newFocusedComponentModel;
             if( componentModel != focusedComponentModel_ )
             {
                 componentModelFocusChanged = true;
@@ -959,6 +968,18 @@ public final class TableModel
                 oldFocusedComponentModel = null;
                 newFocusedComponentModel = null;
             }
+
+            if( componentModelFocusChanged )
+            {
+                if( oldFocusedComponentModel != null )
+                {
+                    oldFocusedComponentModel.setFocused( false );
+                }
+                if( newFocusedComponentModel != null )
+                {
+                    newFocusedComponentModel.setFocused( true );
+                }
+            }
         }
         finally
         {
@@ -967,14 +988,15 @@ public final class TableModel
 
         if( componentModelFocusChanged )
         {
-            if( oldFocusedComponentModel != null )
+            fireEventNotification( new Runnable()
             {
-                oldFocusedComponentModel.setFocused( false );
-            }
-            if( newFocusedComponentModel != null )
-            {
-                newFocusedComponentModel.setFocused( true );
-            }
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    fireTableModelFocusChanged();
+                }
+            } );
         }
     }
 
@@ -990,12 +1012,12 @@ public final class TableModel
         final ComponentModel componentModel )
     {
         final boolean componentModelHoverChanged;
-        final ComponentModel oldHoveredComponentModel;
-        final ComponentModel newHoveredComponentModel;
 
         getLock().lock();
         try
         {
+            final ComponentModel oldHoveredComponentModel;
+            final ComponentModel newHoveredComponentModel;
             if( componentModel != hoveredComponentModel_ )
             {
                 componentModelHoverChanged = true;
@@ -1009,6 +1031,18 @@ public final class TableModel
                 oldHoveredComponentModel = null;
                 newHoveredComponentModel = null;
             }
+
+            if( componentModelHoverChanged )
+            {
+                if( oldHoveredComponentModel != null )
+                {
+                    oldHoveredComponentModel.setHover( false );
+                }
+                if( newHoveredComponentModel != null )
+                {
+                    newHoveredComponentModel.setHover( true );
+                }
+            }
         }
         finally
         {
@@ -1017,14 +1051,15 @@ public final class TableModel
 
         if( componentModelHoverChanged )
         {
-            if( oldHoveredComponentModel != null )
+            fireEventNotification( new Runnable()
             {
-                oldHoveredComponentModel.setHover( false );
-            }
-            if( newHoveredComponentModel != null )
-            {
-                newHoveredComponentModel.setHover( true );
-            }
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    fireTableModelHoverChanged();
+                }
+            } );
         }
     }
 

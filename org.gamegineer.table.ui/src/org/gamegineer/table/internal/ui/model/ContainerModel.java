@@ -289,6 +289,7 @@ public final class ContainerModel
      * @throws java.lang.IllegalArgumentException
      *         If no component model exists at the specified path.
      */
+    @GuardedBy( "getLock()" )
     /* @NonNull */
     ComponentModel getComponentModel(
         /* @NonNull */
@@ -296,6 +297,7 @@ public final class ContainerModel
     {
         assert paths != null;
         assert !paths.isEmpty();
+        assert getLock().isHeldByCurrentThread();
 
         final ComponentPath path = paths.get( 0 );
         final ComponentModel componentModel = getComponentModel( path.getIndex() );
@@ -320,21 +322,16 @@ public final class ContainerModel
      *         If {@code componentModelIndex} is not a legal component model
      *         index.
      */
+    @GuardedBy( "getLock()" )
     /* @NonNull */
     private ComponentModel getComponentModel(
         final int componentModelIndex )
     {
+        assert getLock().isHeldByCurrentThread();
+
         try
         {
-            getLock().lock();
-            try
-            {
-                return componentModels_.get( componentModelIndex );
-            }
-            finally
-            {
-                getLock().unlock();
-            }
+            return componentModels_.get( componentModelIndex );
         }
         catch( final IndexOutOfBoundsException e )
         {
@@ -613,24 +610,26 @@ public final class ContainerModel
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            final ComponentModel componentModel = getComponentModel( event.getComponentIndex() );
-
-            final TableModel tableModel = getTableModel();
-            assert tableModel != null;
-            final ComponentModel hoveredComponentModel = tableModel.getHoveredComponentModel();
-            if( (hoveredComponentModel != null) && hoveredComponentModel.isSameOrDescendantOf( componentModel ) )
-            {
-                tableModel.setHover( null );
-            }
-            final ComponentModel focusedComponentModel = tableModel.getFocusedComponentModel();
-            if( (focusedComponentModel != null) && focusedComponentModel.isSameOrDescendantOf( componentModel ) )
-            {
-                tableModel.setFocus( null );
-            }
+            final ComponentModel componentModel;
 
             getLock().lock();
             try
             {
+                componentModel = getComponentModel( event.getComponentIndex() );
+
+                final TableModel tableModel = getTableModel();
+                assert tableModel != null;
+                final ComponentModel hoveredComponentModel = tableModel.getHoveredComponentModel();
+                if( (hoveredComponentModel != null) && hoveredComponentModel.isSameOrDescendantOf( componentModel ) )
+                {
+                    tableModel.setHover( null );
+                }
+                final ComponentModel focusedComponentModel = tableModel.getFocusedComponentModel();
+                if( (focusedComponentModel != null) && focusedComponentModel.isSameOrDescendantOf( componentModel ) )
+                {
+                    tableModel.setFocus( null );
+                }
+
                 deleteComponentModel( event.getComponentIndex() );
             }
             finally

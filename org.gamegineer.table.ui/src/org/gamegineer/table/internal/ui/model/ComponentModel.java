@@ -26,7 +26,6 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Point;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
@@ -346,7 +345,7 @@ public class ComponentModel
      * @return The table environment model lock; never {@code null}.
      */
     /* @NonNull */
-    final ReentrantLock getLock()
+    final ITableEnvironmentModelLock getLock()
     {
         return tableEnvironmentModel_.getLock();
     }
@@ -513,11 +512,13 @@ public class ComponentModel
      *         descendant of the specified component model; otherwise
      *         {@code false}.
      */
+    @GuardedBy( "getLock()" )
     final boolean isSameOrDescendantOf(
         /* @NonNull */
         final ComponentModel componentModel )
     {
         assert componentModel != null;
+        assert getLock().isHeldByCurrentThread();
 
         if( this == componentModel )
         {
