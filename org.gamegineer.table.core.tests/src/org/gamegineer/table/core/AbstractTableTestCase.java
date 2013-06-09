@@ -200,96 +200,31 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
-     * Ensures the {@link ITable#getComponent(Point)} method returns
-     * {@code null} when a component is absent at the specified location.
+     * Ensures the {@link ITable#getComponent} method returns {@code null} when
+     * passed a path that is absent.
      */
     @Test
-    public void testGetComponentFromLocation_Location_ComponentAbsent()
-    {
-        assertNull( table_.getComponent( new Point( Integer.MIN_VALUE, Integer.MIN_VALUE ) ) );
-    }
-
-    /**
-     * Ensures the {@link ITable#getComponent(Point)} method returns the
-     * top-most component when multiple components are present at the specified
-     * location.
-     */
-    @Test
-    public void testGetComponentFromLocation_Location_ComponentPresent_MultipleComponents()
-    {
-        final Point location = new Point( 7, 42 );
-        final IContainer container1 = createUniqueContainer();
-        container1.setLocation( location );
-        table_.getTabletop().addComponent( container1 );
-        final IComponent component1 = createUniqueComponent();
-        component1.setLocation( location );
-        container1.addComponent( component1 );
-        final IContainer container2 = createUniqueContainer();
-        container2.setLocation( location );
-        table_.getTabletop().addComponent( container2 );
-        final IComponent expectedComponent = createUniqueComponent();
-        expectedComponent.setLocation( location );
-        container2.addComponent( expectedComponent );
-
-        final IComponent actualComponent = table_.getComponent( location );
-
-        assertSame( expectedComponent, actualComponent );
-    }
-
-    /**
-     * Ensures the {@link ITable#getComponent(Point)} method returns the
-     * appropriate component when a single component is present at the specified
-     * location.
-     */
-    @Test
-    public void testGetComponentFromLocation_Location_ComponentPresent_SingleComponent()
-    {
-        final Point location = new Point( 7, 42 );
-        final IComponent expectedComponent = createUniqueComponent();
-        expectedComponent.setLocation( location );
-        table_.getTabletop().addComponent( expectedComponent );
-
-        final IComponent actualComponent = table_.getComponent( location );
-
-        assertSame( expectedComponent, actualComponent );
-    }
-
-    /**
-     * Ensures the {@link ITable#getComponent(Point)} method throws an exception
-     * when passed a {@code null} location.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetComponentFromLocation_Location_Null()
-    {
-        table_.getComponent( (Point)null );
-    }
-
-    /**
-     * Ensures the {@link ITable#getComponent(ComponentPath)} method returns
-     * {@code null} when passed a path that is absent.
-     */
-    @Test
-    public void testGetComponentFromPath_Path_Absent()
+    public void testGetComponent_Path_Absent()
     {
         assertNull( table_.getComponent( new ComponentPath( null, 1 ) ) );
     }
 
     /**
-     * Ensures the {@link ITable#getComponent(ComponentPath)} method throws an
-     * exception when passed a {@code null} path.
+     * Ensures the {@link ITable#getComponent} method throws an exception when
+     * passed a {@code null} path.
      */
     @Test( expected = NullPointerException.class )
-    public void testGetComponentFromPath_Path_Null()
+    public void testGetComponent_Path_Null()
     {
         table_.getComponent( (ComponentPath)null );
     }
 
     /**
-     * Ensures the {@link ITable#getComponent(ComponentPath)} method returns the
-     * correct component when passed a path that is present.
+     * Ensures the {@link ITable#getComponent} method returns the correct
+     * component when passed a path that is present.
      */
     @Test
-    public void testGetComponentFromPath_Path_Present()
+    public void testGetComponent_Path_Present()
     {
         final IContainer expectedTabletop = table_.getTabletop();
         final IContainer expectedContainer = createUniqueContainer();

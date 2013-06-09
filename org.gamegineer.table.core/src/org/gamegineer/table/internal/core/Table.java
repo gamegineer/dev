@@ -269,19 +269,6 @@ final class Table
     }
 
     /*
-     * @see org.gamegineer.table.core.ITable#getComponent(java.awt.Point)
-     */
-    @Override
-    public IComponent getComponent(
-        final Point location )
-    {
-        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
-
-        final List<IComponent> components = getComponents( location );
-        return components.isEmpty() ? null : components.get( components.size() - 1 );
-    }
-
-    /*
      * @see org.gamegineer.table.core.ITable#getComponents(java.awt.Point)
      */
     @Override
