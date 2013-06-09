@@ -257,6 +257,7 @@ public final class MainModel
      * A table model listener for the main model.
      */
     @Immutable
+    @SuppressWarnings( "synthetic-access" )
     private final class TableModelListener
         extends org.gamegineer.table.internal.ui.model.TableModelListener
     {
@@ -280,7 +281,6 @@ public final class MainModel
          * @see org.gamegineer.table.internal.ui.model.TableModelListener#tableChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void tableChanged(
             final TableModelEvent event )
         {
@@ -293,7 +293,6 @@ public final class MainModel
          * @see org.gamegineer.table.internal.ui.model.TableModelListener#tableModelDirtyFlagChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void tableModelDirtyFlagChanged(
             final TableModelEvent event )
         {
@@ -306,7 +305,6 @@ public final class MainModel
          * @see org.gamegineer.table.internal.ui.model.TableModelListener#tableModelFileChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void tableModelFileChanged(
             final TableModelEvent event )
         {
@@ -319,7 +317,6 @@ public final class MainModel
          * @see org.gamegineer.table.internal.ui.model.TableModelListener#tableModelFocusChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void tableModelFocusChanged(
             final TableModelEvent event )
         {
