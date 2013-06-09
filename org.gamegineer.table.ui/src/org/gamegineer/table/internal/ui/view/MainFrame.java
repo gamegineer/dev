@@ -668,6 +668,7 @@ public final class MainFrame
      * A main model listener for the main frame.
      */
     @Immutable
+    @SuppressWarnings( "synthetic-access" )
     private final class MainModelListener
         extends org.gamegineer.table.internal.ui.model.MainModelListener
     {
@@ -691,7 +692,6 @@ public final class MainFrame
          * @see org.gamegineer.table.internal.ui.model.MainModelListener#mainModelStateChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void mainModelStateChanged(
             final MainModelEvent event )
         {
@@ -705,6 +705,7 @@ public final class MainFrame
      * A table model listener for the main frame.
      */
     @Immutable
+    @SuppressWarnings( "synthetic-access" )
     private final class TableModelListener
         extends org.gamegineer.table.internal.ui.model.TableModelListener
     {
@@ -736,7 +737,6 @@ public final class MainFrame
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override
-                @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
                     updateTitle();

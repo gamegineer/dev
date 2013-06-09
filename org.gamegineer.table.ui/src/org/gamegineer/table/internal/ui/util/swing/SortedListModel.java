@@ -1,6 +1,6 @@
 /*
  * SortedListModel.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -191,10 +191,10 @@ public final class SortedListModel
      */
     private void registerListeners()
     {
-        unsortedListModel_.addListDataListener( new ListDataListener()
+        @SuppressWarnings( "synthetic-access" )
+        final ListDataListener listDataListener = new ListDataListener()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void contentsChanged(
                 final ListDataEvent event )
             {
@@ -202,7 +202,6 @@ public final class SortedListModel
             }
 
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void intervalAdded(
                 final ListDataEvent event )
             {
@@ -210,13 +209,13 @@ public final class SortedListModel
             }
 
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void intervalRemoved(
                 final ListDataEvent event )
             {
                 unsortedIntervalRemoved( event );
             }
-        } );
+        };
+        unsortedListModel_.addListDataListener( listDataListener );
     }
 
     /**

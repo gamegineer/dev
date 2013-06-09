@@ -521,6 +521,7 @@ public final class ServerNode
      * synchronized, in addition to all tables connected to the node.
      */
     @Immutable
+    @SuppressWarnings( "synthetic-access" )
     private final class ServerTableManager
         extends TableManager
     {
@@ -544,7 +545,6 @@ public final class ServerNode
          * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#incrementComponentState(org.gamegineer.table.internal.net.node.INetworkTable, org.gamegineer.table.core.ComponentPath, org.gamegineer.table.internal.net.node.ComponentIncrement)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void incrementComponentState(
             final INetworkTable sourceTable,
             final ComponentPath componentPath,
@@ -565,7 +565,6 @@ public final class ServerNode
          * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#setTableState(org.gamegineer.table.internal.net.node.INetworkTable, java.lang.Object)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void setTableState(
             final INetworkTable sourceTable,
             final Object tableMemento )
@@ -586,7 +585,6 @@ public final class ServerNode
          * @return {@code true} if the requesting player is the network table
          *         editor; otherwise {@code false}.
          */
-        @SuppressWarnings( "synthetic-access" )
         private boolean verifyRequestingPlayerIsEditor()
         {
             final String requestingPlayerName = ThreadPlayer.getPlayerName();

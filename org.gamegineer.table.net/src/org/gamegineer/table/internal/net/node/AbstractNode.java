@@ -1,6 +1,6 @@
 /*
  * AbstractNode.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -1438,6 +1438,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * originator of the request.
      */
     @Immutable
+    @SuppressWarnings( "synthetic-access" )
     protected class TableManager
         implements ITableManager
     {
@@ -1470,7 +1471,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          *      org.gamegineer.table.internal.net.node.ComponentIncrement)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void incrementComponentState(
             final INetworkTable sourceTable,
             final ComponentPath componentPath,
@@ -1502,7 +1502,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          *      java.lang.Object)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void setTableState(
             final INetworkTable sourceTable,
             final Object tableMemento )

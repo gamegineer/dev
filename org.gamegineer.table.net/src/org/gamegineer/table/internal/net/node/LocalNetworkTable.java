@@ -305,6 +305,7 @@ final class LocalNetworkTable
      * A component listener for the local table adapter.
      */
     @Immutable
+    @SuppressWarnings( "synthetic-access" )
     private final class ComponentListener
         implements IComponentListener
     {
@@ -328,7 +329,6 @@ final class LocalNetworkTable
          * @see org.gamegineer.table.core.IComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void componentBoundsChanged(
             final ComponentEvent event )
         {
@@ -387,7 +387,6 @@ final class LocalNetworkTable
          * @see org.gamegineer.table.core.IComponentListener#componentOrientationChanged(org.gamegineer.table.core.ComponentEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void componentOrientationChanged(
             final ComponentEvent event )
         {
@@ -425,7 +424,6 @@ final class LocalNetworkTable
          * @see org.gamegineer.table.core.IComponentListener#componentSurfaceDesignChanged(org.gamegineer.table.core.ComponentEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void componentSurfaceDesignChanged(
             final ComponentEvent event )
         {
@@ -472,6 +470,7 @@ final class LocalNetworkTable
      * methods are called on the associated node layer thread.
      */
     @Immutable
+    @SuppressWarnings( "synthetic-access" )
     private class ComponentListenerProxy
         implements IComponentListener
     {
@@ -512,7 +511,6 @@ final class LocalNetworkTable
          * @see org.gamegineer.table.core.IComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void componentBoundsChanged(
             final ComponentEvent event )
         {
@@ -530,7 +528,6 @@ final class LocalNetworkTable
          * @see org.gamegineer.table.core.IComponentListener#componentOrientationChanged(org.gamegineer.table.core.ComponentEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void componentOrientationChanged(
             final ComponentEvent event )
         {
@@ -548,7 +545,6 @@ final class LocalNetworkTable
          * @see org.gamegineer.table.core.IComponentListener#componentSurfaceDesignChanged(org.gamegineer.table.core.ComponentEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void componentSurfaceDesignChanged(
             final ComponentEvent event )
         {
@@ -567,6 +563,7 @@ final class LocalNetworkTable
      * A container listener for the local table adapter.
      */
     @Immutable
+    @SuppressWarnings( "synthetic-access" )
     private final class ContainerListener
         implements IContainerListener
     {
@@ -590,9 +587,7 @@ final class LocalNetworkTable
          * @see org.gamegineer.table.core.IContainerListener#componentAdded(org.gamegineer.table.core.ContainerContentChangedEvent)
          */
         @Override
-        @SuppressWarnings( {
-            "boxing", "synthetic-access"
-        } )
+        @SuppressWarnings( "boxing" )
         public void componentAdded(
             final ContainerContentChangedEvent event )
         {
@@ -634,9 +629,7 @@ final class LocalNetworkTable
          * @see org.gamegineer.table.core.IContainerListener#componentRemoved(org.gamegineer.table.core.ContainerContentChangedEvent)
          */
         @Override
-        @SuppressWarnings( {
-            "boxing", "synthetic-access"
-        } )
+        @SuppressWarnings( "boxing" )
         public void componentRemoved(
             final ContainerContentChangedEvent event )
         {
@@ -678,7 +671,6 @@ final class LocalNetworkTable
          * @see org.gamegineer.table.core.IContainerListener#containerLayoutChanged(org.gamegineer.table.core.ContainerEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void containerLayoutChanged(
             final ContainerEvent event )
         {
@@ -718,6 +710,7 @@ final class LocalNetworkTable
      * methods are called on the associated node layer thread.
      */
     @Immutable
+    @SuppressWarnings( "synthetic-access" )
     private final class ContainerListenerProxy
         implements IContainerListener
     {
@@ -758,7 +751,6 @@ final class LocalNetworkTable
          * @see org.gamegineer.table.core.IContainerListener#componentAdded(org.gamegineer.table.core.ContainerContentChangedEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void componentAdded(
             final ContainerContentChangedEvent event )
         {
@@ -776,7 +768,6 @@ final class LocalNetworkTable
          * @see org.gamegineer.table.core.IContainerListener#componentRemoved(org.gamegineer.table.core.ContainerContentChangedEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void componentRemoved(
             final ContainerContentChangedEvent event )
         {
@@ -794,7 +785,6 @@ final class LocalNetworkTable
          * @see org.gamegineer.table.core.IContainerListener#containerLayoutChanged(org.gamegineer.table.core.ContainerEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void containerLayoutChanged(
             final ContainerEvent event )
         {

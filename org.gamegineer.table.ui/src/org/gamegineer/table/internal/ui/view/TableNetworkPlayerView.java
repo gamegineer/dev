@@ -1,6 +1,6 @@
 /*
  * TableNetworkPlayerView.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -268,6 +268,7 @@ final class TableNetworkPlayerView
      * A table network listener for the table network player view.
      */
     @Immutable
+    @SuppressWarnings( "synthetic-access" )
     private final class TableNetworkListener
         extends org.gamegineer.table.net.TableNetworkListener
     {
@@ -299,7 +300,6 @@ final class TableNetworkPlayerView
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override
-                @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
                     refreshPlayerList( event.getTableNetwork().getPlayers() );
@@ -319,7 +319,6 @@ final class TableNetworkPlayerView
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override
-                @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
                     refreshPlayerList( Collections.<IPlayer>emptyList() );
@@ -339,7 +338,6 @@ final class TableNetworkPlayerView
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override
-                @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
                     refreshPlayerList( event.getTableNetwork().getPlayers() );
