@@ -157,6 +157,19 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     }
 
     /**
+     * Gets the table environment model for use in the fixture.
+     * 
+     * @return The table environment model for use in the fixture; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    protected final TableEnvironmentModel getTableEnvironmentModel()
+    {
+        assertNotNull( tableEnvironmentModel_ );
+        return tableEnvironmentModel_;
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -170,7 +183,8 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
         tableEnvironmentModel_ = new TableEnvironmentModel( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
         componentModel_ = createComponentModel( tableEnvironmentModel_ );
         assertNotNull( componentModel_ );
-        componentModel_.initialize( new TableModel( tableEnvironmentModel_, tableEnvironmentModel_.getTableEnvironment().createTable() ) );
+        final TableModel tableModel = new TableModel( tableEnvironmentModel_, tableEnvironmentModel_.getTableEnvironment().createTable() );
+        componentModel_.initialize( tableModel.getTabletopModel() );
     }
 
     /**
@@ -466,7 +480,15 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
         mocksControl_.replay();
         componentModel_.addComponentModelListener( listener );
 
-        componentModel_.setFocused( true );
+        componentModel_.getLock().lock();
+        try
+        {
+            componentModel_.setFocused( true );
+        }
+        finally
+        {
+            componentModel_.getLock().unlock();
+        }
 
         mocksControl_.verify();
     }
@@ -483,7 +505,15 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
         mocksControl_.replay();
         componentModel_.addComponentModelListener( listener );
 
-        componentModel_.setFocused( false );
+        componentModel_.getLock().lock();
+        try
+        {
+            componentModel_.setFocused( false );
+        }
+        finally
+        {
+            componentModel_.getLock().unlock();
+        }
 
         mocksControl_.verify();
     }
@@ -500,7 +530,15 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
         mocksControl_.replay();
         componentModel_.addComponentModelListener( listener );
 
-        componentModel_.setHover( true );
+        componentModel_.getLock().lock();
+        try
+        {
+            componentModel_.setHover( true );
+        }
+        finally
+        {
+            componentModel_.getLock().unlock();
+        }
 
         mocksControl_.verify();
     }
@@ -517,7 +555,15 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
         mocksControl_.replay();
         componentModel_.addComponentModelListener( listener );
 
-        componentModel_.setHover( false );
+        componentModel_.getLock().lock();
+        try
+        {
+            componentModel_.setHover( false );
+        }
+        finally
+        {
+            componentModel_.getLock().unlock();
+        }
 
         mocksControl_.verify();
     }

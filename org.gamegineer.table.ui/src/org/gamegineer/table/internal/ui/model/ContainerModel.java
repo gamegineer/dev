@@ -268,6 +268,28 @@ public final class ContainerModel
     }
 
     /*
+     * @see org.gamegineer.table.internal.ui.model.IComponentModelParent#getChildPath(org.gamegineer.table.internal.ui.model.ComponentModel)
+     */
+    @Override
+    public ComponentPath getChildPath(
+        final ComponentModel componentModel )
+    {
+        assert componentModel != null;
+        assert getLock().isHeldByCurrentThread();
+
+        final ComponentPath path = getPath();
+        if( path == null )
+        {
+            return null;
+        }
+
+        final int index = componentModels_.indexOf( componentModel );
+        assert index != -1;
+
+        return new ComponentPath( path, index );
+    }
+
+    /*
      * @see org.gamegineer.table.internal.ui.model.ComponentModel#getComponent()
      */
     @Override

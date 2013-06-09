@@ -373,6 +373,16 @@ public final class TableModelTest
     }
 
     /**
+     * Ensures the {@link TableModel#getChildPath} method throws an exception
+     * when passed a component model that is not the tabletop model.
+     */
+    @Test( expected = AssertionError.class )
+    public void testGetChildPath_ComponentModel_NotTabletopModel()
+    {
+        tableModel_.getChildPath( new ComponentModel( tableEnvironmentModel_, TestComponents.createUniqueComponent( tableEnvironmentModel_.getTableEnvironment() ) ) );
+    }
+
+    /**
      * Ensures the {@link TableModel#getComponentModel} method throws an
      * exception when passed a path that is absent.
      */

@@ -78,9 +78,12 @@ public final class TableModel
         {
             assert componentModel1.getLock().isHeldByCurrentThread();
 
-            return componentModel1.getComponent().getPath().compareTo( componentModel2.getComponent().getPath() );
+            return componentModel1.getPath().compareTo( componentModel2.getPath() );
         }
     };
+
+    /** The path to the tabletop component model. */
+    private static final ComponentPath TABLETOP_MODEL_PATH = new ComponentPath( null, 0 );
 
     /** The file to which the model was last saved. */
     @GuardedBy( "getLock()" )
@@ -328,6 +331,19 @@ public final class TableModel
                 Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableModel_tableModelOriginOffsetChanged_unexpectedException, e );
             }
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.IComponentModelParent#getChildPath(org.gamegineer.table.internal.ui.model.ComponentModel)
+     */
+    @Override
+    public ComponentPath getChildPath(
+        final ComponentModel componentModel )
+    {
+        assert componentModel != null;
+
+        assert componentModel == tabletopModel_;
+        return TABLETOP_MODEL_PATH;
     }
 
     /**

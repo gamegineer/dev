@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.ui.model;
 
 import org.eclipse.core.expressions.EvaluationContext;
+import org.gamegineer.table.core.ComponentPath;
 
 /**
  * A component model parent.
@@ -31,6 +32,22 @@ interface IComponentModelParent
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the path to the specified child component model from its associated
+     * table model.
+     * 
+     * @param componentModel
+     *        The child component model; must not be {@code null}.
+     * 
+     * @return The path to the specified child component model from its
+     *         associated table model or {@code null} if this component model
+     *         parent is not associated with a table model.
+     */
+    /* @NonNull */
+    ComponentPath getChildPath(
+        /* @NonNull */
+        ComponentModel componentModel );
 
     /**
      * Gets an evaluation context.

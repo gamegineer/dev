@@ -1,6 +1,6 @@
 /*
  * AbstractContainerModelTestCase.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,9 +21,14 @@
 
 package org.gamegineer.table.internal.ui.model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.IContainer;
+import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TestContainerLayouts;
 import org.gamegineer.table.ui.TestComponents;
 import org.junit.Before;
@@ -60,6 +65,30 @@ public abstract class AbstractContainerModelTestCase
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Creates a new component with unique attributes using the fixture table
+     * environment.
+     * 
+     * @return A new component; never {@code null}.
+     */
+    /* @NonNull */
+    private IComponent createUniqueComponent()
+    {
+        return TestComponents.createUniqueComponent( getTableEnvironmentModel().getTableEnvironment() );
+    }
+
+    /**
+     * Creates a new container with unique attributes using the fixture table
+     * environment.
+     * 
+     * @return A new container; never {@code null}.
+     */
+    /* @NonNull */
+    private IContainer createUniqueContainer()
+    {
+        return TestComponents.createUniqueContainer( getTableEnvironmentModel().getTableEnvironment() );
+    }
 
     /**
      * Fires a component model added event for the fixture container model.
@@ -338,6 +367,102 @@ public abstract class AbstractContainerModelTestCase
         fireContainerLayoutChangedEvent();
 
         niceMocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@link ContainerModel#getChildPath} method throws an
+     * exception when passed a component model that is absent from the component
+     * model collection and the container model is associated with a table
+     * model.
+     */
+    @Test( expected = AssertionError.class )
+    public void testGetChildPath_ComponentModel_Absent_AssociatedTableModel()
+    {
+        final ITable table = getTableEnvironmentModel().getTableEnvironment().createTable();
+        final TableModel tableModel = getTableEnvironmentModel().createTableModel( table );
+        final IContainer container = createUniqueContainer();
+        table.getTabletop().addComponent( container );
+        final ContainerModel containerModel = (ContainerModel)tableModel.getComponentModel( container.getPath() );
+
+        getTableEnvironmentModel().getLock().lock();
+        try
+        {
+            containerModel.getChildPath( new ComponentModel( getTableEnvironmentModel(), createUniqueComponent() ) );
+        }
+        finally
+        {
+            getTableEnvironmentModel().getLock().unlock();
+        }
+    }
+
+    /**
+     * Ensures the {@link ContainerModel#getChildPath} method returns the
+     * correct value when passed a component model present in the component
+     * model collection and the container model is associated with a table
+     * model.
+     */
+    @Test
+    public void testGetChildPath_ComponentModel_Present_AssociatedTableModel()
+    {
+        final ITable table = getTableEnvironmentModel().getTableEnvironment().createTable();
+        final TableModel tableModel = getTableEnvironmentModel().createTableModel( table );
+        final IContainer container = createUniqueContainer();
+        table.getTabletop().addComponent( container );
+        final ContainerModel containerModel = (ContainerModel)tableModel.getComponentModel( container.getPath() );
+        final IComponent component = createUniqueComponent();
+        container.addComponent( createUniqueComponent() );
+        container.addComponent( component );
+        container.addComponent( createUniqueComponent() );
+        final ComponentModel componentModel = tableModel.getComponentModel( component.getPath() );
+
+        final ComponentPath actualValue;
+        getTableEnvironmentModel().getLock().lock();
+        try
+        {
+            actualValue = containerModel.getChildPath( componentModel );
+        }
+        finally
+        {
+            getTableEnvironmentModel().getLock().unlock();
+        }
+
+        assertEquals( new ComponentPath( new ComponentPath( new ComponentPath( null, 0 ), 0 ), 1 ), actualValue );
+    }
+
+    /**
+     * Ensures the {@link ContainerModel#getChildPath} method returns
+     * {@code null} when the container model is not associated with a table
+     * model.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testGetChildPath_ContainerModel_NoAssociatedTableModel()
+        throws Exception
+    {
+        final ITable table = getTableEnvironmentModel().getTableEnvironment().createTable();
+        final TableModel tableModel = getTableEnvironmentModel().createTableModel( table );
+        final IContainer container = createUniqueContainer();
+        table.getTabletop().addComponent( container );
+        final ContainerModel containerModel = (ContainerModel)tableModel.getComponentModel( container.getPath() );
+        final IComponent component = createUniqueComponent();
+        container.addComponent( component );
+        final ComponentModel componentModel = tableModel.getComponentModel( component.getPath() );
+        table.getTabletop().removeComponent( container ); // remove from table model
+
+        final ComponentPath actualValue;
+        getTableEnvironmentModel().getLock().lock();
+        try
+        {
+            actualValue = containerModel.getChildPath( componentModel );
+        }
+        finally
+        {
+            getTableEnvironmentModel().getLock().unlock();
+        }
+
+        assertNull( actualValue );
     }
 
     /**

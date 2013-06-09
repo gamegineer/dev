@@ -32,6 +32,7 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.expressions.EvaluationContext;
 import org.gamegineer.table.core.ComponentEvent;
+import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.IComponentStrategy;
@@ -370,6 +371,27 @@ public class ComponentModel
     }
 
     /**
+     * Gets the path to this component model from its associated table model.
+     * 
+     * @return The path to this component model from its associated table model
+     *         or {@code null} if the component model is not associated with a
+     *         table model.
+     */
+    /* @Nullable */
+    public final ComponentPath getPath()
+    {
+        getLock().lock();
+        try
+        {
+            return (parent_ != null) ? parent_.getChildPath( this ) : null;
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+    }
+
+    /**
      * Gets the table environment model associated with this model.
      * 
      * @return The table environment model associated with this model; never
@@ -562,18 +584,13 @@ public class ComponentModel
      *        {@code true} if the associated component has the focus; otherwise
      *        {@code false}.
      */
+    @GuardedBy( "getLock()" )
     final void setFocused(
         final boolean isFocused )
     {
-        getLock().lock();
-        try
-        {
-            isFocused_ = isFocused;
-        }
-        finally
-        {
-            getLock().unlock();
-        }
+        assert getLock().isHeldByCurrentThread();
+
+        isFocused_ = isFocused;
 
         fireEventNotification( new Runnable()
         {
@@ -592,18 +609,13 @@ public class ComponentModel
      *        {@code true} if the associated component has the hover; otherwise
      *        {@code false}.
      */
+    @GuardedBy( "getLock()" )
     final void setHover(
         final boolean isHovered )
     {
-        getLock().lock();
-        try
-        {
-            isHovered_ = isHovered;
-        }
-        finally
-        {
-            getLock().unlock();
-        }
+        assert getLock().isHeldByCurrentThread();
+
+        isHovered_ = isHovered;
 
         fireEventNotification( new Runnable()
         {
