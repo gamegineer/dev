@@ -260,6 +260,7 @@ final class ContainerView
      * A container model listener for the container view.
      */
     @Immutable
+    @SuppressWarnings( "synthetic-access" )
     private final class ContainerModelListener
         extends org.gamegineer.table.internal.ui.model.ContainerModelListener
     {
@@ -292,7 +293,6 @@ final class ContainerView
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override
-                @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
                     ContainerView.this.componentModelAdded( event.getComponentModel(), event.getComponentModelIndex() );
@@ -312,7 +312,6 @@ final class ContainerView
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override
-                @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
                     ContainerView.this.componentModelRemoved( event.getComponentModelIndex() );
@@ -332,7 +331,6 @@ final class ContainerView
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override
-                @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
                     ContainerView.this.containerLayoutChanged();

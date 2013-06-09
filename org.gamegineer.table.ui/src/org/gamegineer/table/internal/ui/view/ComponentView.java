@@ -323,6 +323,7 @@ class ComponentView
      * A component model listener for the component view.
      */
     @Immutable
+    @SuppressWarnings( "synthetic-access" )
     private final class ComponentModelListener
         extends org.gamegineer.table.internal.ui.model.ComponentModelListener
     {
@@ -355,7 +356,6 @@ class ComponentView
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override
-                @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
                     ComponentView.this.componentBoundsChanged();
@@ -375,7 +375,6 @@ class ComponentView
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override
-                @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
                     ComponentView.this.componentModelFocusChanged();
@@ -395,7 +394,6 @@ class ComponentView
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override
-                @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
                     ComponentView.this.componentModelHoverChanged();
@@ -415,7 +413,6 @@ class ComponentView
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override
-                @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
                     ComponentView.this.componentOrientationChanged();
@@ -435,7 +432,6 @@ class ComponentView
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override
-                @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
                     ComponentView.this.componentSurfaceDesignChanged();

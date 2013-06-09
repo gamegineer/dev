@@ -681,10 +681,10 @@ final class TableView
     /* @NonNull */
     private KeyListener createKeyListener()
     {
-        return new KeyAdapter()
+        @SuppressWarnings( "synthetic-access" )
+        final KeyListener keyListener = new KeyAdapter()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void keyPressed(
                 final KeyEvent event )
             {
@@ -692,7 +692,6 @@ final class TableView
             }
 
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void keyReleased(
                 final KeyEvent event )
             {
@@ -705,13 +704,13 @@ final class TableView
             }
 
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void keyTyped(
                 final KeyEvent event )
             {
                 inputHandler_.keyTyped( event );
             }
         };
+        return keyListener;
     }
 
     /**
@@ -722,10 +721,10 @@ final class TableView
     /* @NonNull */
     private MouseInputListener createMouseInputListener()
     {
-        return new MouseInputAdapter()
+        @SuppressWarnings( "synthetic-access" )
+        final MouseInputListener mouseInputListener = new MouseInputAdapter()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void mouseDragged(
                 final MouseEvent event )
             {
@@ -733,7 +732,6 @@ final class TableView
             }
 
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void mouseMoved(
                 final MouseEvent event )
             {
@@ -741,7 +739,6 @@ final class TableView
             }
 
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void mousePressed(
                 final MouseEvent event )
             {
@@ -749,13 +746,13 @@ final class TableView
             }
 
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void mouseReleased(
                 final MouseEvent event )
             {
                 inputHandler_.mouseReleased( event );
             }
         };
+        return mouseInputListener;
     }
 
     /**
@@ -1190,6 +1187,7 @@ final class TableView
      * </p>
      */
     @Immutable
+    @SuppressWarnings( "synthetic-access" )
     private abstract class AbstractInputHandler
         extends MouseInputAdapter
         implements KeyListener
@@ -1242,7 +1240,6 @@ final class TableView
          *         {@code null} if no component model has the focus.
          */
         /* @Nullable */
-        @SuppressWarnings( "synthetic-access" )
         protected final ComponentModelVector createSearchVectorFromFocusedComponentModel(
             /* @Nullable */
             final InputEvent event )
@@ -1299,7 +1296,6 @@ final class TableView
          * @return The mouse location in table coordinates; never {@code null}.
          */
         /* @NonNull */
-        @SuppressWarnings( "synthetic-access" )
         protected final Point getMouseLocation(
             /* @Nullable */
             final InputEvent event )
@@ -1362,7 +1358,6 @@ final class TableView
          * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void mouseReleased(
             @SuppressWarnings( "unused" )
             final MouseEvent event )
@@ -1375,6 +1370,7 @@ final class TableView
      * The default input handler.
      */
     @Immutable
+    @SuppressWarnings( "synthetic-access" )
     private final class DefaultInputHandler
         extends AbstractInputHandler
     {
@@ -1440,7 +1436,6 @@ final class TableView
          * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void mousePressed(
             final MouseEvent event )
         {
@@ -1467,7 +1462,6 @@ final class TableView
          * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void mouseReleased(
             final MouseEvent event )
         {
@@ -1486,7 +1480,6 @@ final class TableView
          *        The input event; may be {@code null} if no input event is
          *        available.
          */
-        @SuppressWarnings( "synthetic-access" )
         private void updateCursor(
             /* @Nullable */
             final InputEvent event )
@@ -1514,7 +1507,6 @@ final class TableView
          * @param event
          *        The mouse event; must not be {@code null}.
          */
-        @SuppressWarnings( "synthetic-access" )
         private void updateFocus(
             /* @NonNull */
             final MouseEvent event )
@@ -1543,7 +1535,6 @@ final class TableView
          *        The input event; may be {@code null} if no input event is
          *        available.
          */
-        @SuppressWarnings( "synthetic-access" )
         private void updateHover(
             /* @Nullable */
             final InputEvent event )
@@ -1565,6 +1556,7 @@ final class TableView
      * not yet begun.
      */
     @NotThreadSafe
+    @SuppressWarnings( "synthetic-access" )
     private final class DragPrimedInputHandler
         extends AbstractInputHandler
     {
@@ -1647,7 +1639,6 @@ final class TableView
          * @see java.awt.event.MouseAdapter#mouseDragged(java.awt.event.MouseEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void mouseDragged(
             final MouseEvent event )
         {
@@ -1676,7 +1667,6 @@ final class TableView
          * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void mouseReleased(
             final MouseEvent event )
         {
@@ -1699,7 +1689,6 @@ final class TableView
          * @param event
          *        The mouse event; must not be {@code null}.
          */
-        @SuppressWarnings( "synthetic-access" )
         private void updateFocus(
             /* @NonNull */
             final MouseEvent event )
@@ -1725,6 +1714,7 @@ final class TableView
      * The input handler that is active when a component is being dragged.
      */
     @NotThreadSafe
+    @SuppressWarnings( "synthetic-access" )
     private final class DraggingComponentInputHandler
         extends AbstractInputHandler
     {
@@ -1758,7 +1748,6 @@ final class TableView
          * @see org.gamegineer.table.internal.ui.view.TableView.AbstractInputHandler#activate(java.awt.event.InputEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         void activate(
             final InputEvent event )
         {
@@ -1811,7 +1800,6 @@ final class TableView
          * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void mouseReleased(
             final MouseEvent event )
         {
@@ -1831,6 +1819,7 @@ final class TableView
      * The input handler that is active when the table is being panned.
      */
     @NotThreadSafe
+    @SuppressWarnings( "synthetic-access" )
     private final class PanningTableInputHandler
         extends AbstractInputHandler
     {
@@ -1871,7 +1860,6 @@ final class TableView
          * @see org.gamegineer.table.internal.ui.view.TableView.AbstractInputHandler#activate(java.awt.event.InputEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         void activate(
             final InputEvent event )
         {
@@ -1897,7 +1885,6 @@ final class TableView
          * @see java.awt.event.MouseAdapter#mouseDragged(java.awt.event.MouseEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void mouseDragged(
             final MouseEvent event )
         {
@@ -1911,7 +1898,6 @@ final class TableView
          * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void mouseReleased(
             final MouseEvent event )
         {
@@ -1928,6 +1914,7 @@ final class TableView
      * The input handler that is active when a popup menu is visible.
      */
     @Immutable
+    @SuppressWarnings( "synthetic-access" )
     private final class PopupMenuInputHandler
         extends AbstractInputHandler
         implements PopupMenuListener
@@ -1953,7 +1940,6 @@ final class TableView
          * @see org.gamegineer.table.internal.ui.view.TableView.AbstractInputHandler#activate(java.awt.event.InputEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         void activate(
             final InputEvent event )
         {
@@ -1974,7 +1960,6 @@ final class TableView
          *         {@code null}.
          */
         /* @NonNull */
-        @SuppressWarnings( "synthetic-access" )
         private JPopupMenu getPopupMenu(
             /* @NonNull */
             final Point location )
@@ -1999,7 +1984,6 @@ final class TableView
          * @see javax.swing.event.PopupMenuListener#popupMenuCanceled(javax.swing.event.PopupMenuEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void popupMenuCanceled(
             @SuppressWarnings( "unused" )
             final PopupMenuEvent event )
@@ -2011,7 +1995,6 @@ final class TableView
          * @see javax.swing.event.PopupMenuListener#popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void popupMenuWillBecomeInvisible(
             @SuppressWarnings( "unused" )
             final PopupMenuEvent event )
@@ -2035,6 +2018,7 @@ final class TableView
      * A table model listener for the table view.
      */
     @Immutable
+    @SuppressWarnings( "synthetic-access" )
     private final class TableModelListener
         extends org.gamegineer.table.internal.ui.model.TableModelListener
     {
@@ -2066,7 +2050,6 @@ final class TableView
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override
-                @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
                     TableView.this.tableModelOriginOffsetChanged();
