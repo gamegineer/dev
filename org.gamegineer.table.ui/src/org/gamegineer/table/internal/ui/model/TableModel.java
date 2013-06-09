@@ -41,6 +41,7 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.expressions.EvaluationContext;
+import org.gamegineer.common.core.util.ComparableUtils;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.common.persistence.serializable.ObjectStreams;
 import org.gamegineer.table.core.ComponentPath;
@@ -78,7 +79,7 @@ public final class TableModel
         {
             assert componentModel1.getLock().isHeldByCurrentThread();
 
-            return componentModel1.getPath().compareTo( componentModel2.getPath() );
+            return ComparableUtils.compareTo( componentModel1.getPath(), componentModel2.getPath() );
         }
     };
 
