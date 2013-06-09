@@ -887,6 +887,17 @@ final class TableView
     }
 
     /**
+     * Gets the table environment model lock.
+     * 
+     * @return The table environment model lock; never {@code null}.
+     */
+    /* @NonNull */
+    private Lock getTableEnvironmentModelLock()
+    {
+        return model_.getTableEnvironmentModel().getLock();
+    }
+
+    /**
      * Gives control of the table network to another player.
      */
     private void giveTableNetworkControl()
@@ -1537,7 +1548,15 @@ final class TableView
             /* @Nullable */
             final InputEvent event )
         {
-            model_.setHover( model_.getFocusableComponentModel( getMouseLocation( event ), createSearchVectorFromFocusedComponentModel( event ) ) );
+            getTableEnvironmentModelLock().lock();
+            try
+            {
+                model_.setHover( model_.getFocusableComponentModel( getMouseLocation( event ), createSearchVectorFromFocusedComponentModel( event ) ) );
+            }
+            finally
+            {
+                getTableEnvironmentModelLock().unlock();
+            }
         }
     }
 
@@ -1689,7 +1708,15 @@ final class TableView
 
             if( SwingUtilities.isLeftMouseButton( event ) )
             {
-                model_.setFocus( model_.getFocusableComponentModel( getMouseLocation( event ), createSearchVectorFromFocusedComponentModel( event ) ) );
+                getTableEnvironmentModelLock().lock();
+                try
+                {
+                    model_.setFocus( model_.getFocusableComponentModel( getMouseLocation( event ), createSearchVectorFromFocusedComponentModel( event ) ) );
+                }
+                finally
+                {
+                    getTableEnvironmentModelLock().unlock();
+                }
             }
         }
     }

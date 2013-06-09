@@ -41,7 +41,6 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.expressions.EvaluationContext;
-import org.gamegineer.common.core.util.ComparableUtils;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.common.persistence.serializable.ObjectStreams;
 import org.gamegineer.table.core.ComponentPath;
@@ -78,8 +77,10 @@ public final class TableModel
             final ComponentModel componentModel2 )
         {
             assert componentModel1.getLock().isHeldByCurrentThread();
+            assert componentModel1.getPath() != null;
+            assert componentModel2.getPath() != null;
 
-            return ComparableUtils.compareTo( componentModel1.getPath(), componentModel2.getPath() );
+            return componentModel1.getPath().compareTo( componentModel2.getPath() );
         }
     };
 
@@ -530,7 +531,9 @@ public final class TableModel
             {
                 final ComponentModel searchOrigin;
                 final ComponentAxis searchDirection;
-                if( (searchVector != null) && searchVector.getOrigin().getComponent().getBounds().contains( location ) )
+                if( (searchVector != null) //
+                    && (searchVector.getOrigin().getPath() != null) //
+                    && searchVector.getOrigin().getComponent().getBounds().contains( location ) )
                 {
                     searchOrigin = searchVector.getOrigin();
                     searchDirection = searchVector.getDirection();
@@ -692,6 +695,18 @@ public final class TableModel
     public ITable getTable()
     {
         return table_;
+    }
+
+    /**
+     * Gets the table environment model associated with this model.
+     * 
+     * @return The table environment model associated with this model; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    public TableEnvironmentModel getTableEnvironmentModel()
+    {
+        return tableEnvironmentModel_;
     }
 
     /*

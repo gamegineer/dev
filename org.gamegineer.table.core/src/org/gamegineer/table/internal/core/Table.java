@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.util.ComparableUtils;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.IComponent;
@@ -64,8 +63,10 @@ final class Table
             final IComponent component2 )
         {
             assert component1.getTableEnvironment().getLock().isHeldByCurrentThread();
+            assert component1.getPath() != null;
+            assert component2.getPath() != null;
 
-            return ComparableUtils.compareTo( component1.getPath(), component2.getPath() );
+            return component1.getPath().compareTo( component2.getPath() );
         }
     };
 
