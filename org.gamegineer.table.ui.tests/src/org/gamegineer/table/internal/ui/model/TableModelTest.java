@@ -383,13 +383,21 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@link TableModel#getComponentModel} method throws an
-     * exception when passed a path that is absent.
+     * Ensures the {@link TableModel#getComponentModel} method returns
+     * {@code null} when passed a path that is absent.
      */
-    @Test( expected = IllegalArgumentException.class )
+    @Test
     public void testGetComponentModel_Path_Absent()
     {
-        tableModel_.getComponentModel( new ComponentPath( null, 1 ) );
+        final IContainer container = createUniqueContainer();
+        tableModel_.getTable().getTabletop().addComponent( container );
+        container.addComponent( createUniqueComponent() );
+        container.addComponent( createUniqueComponent() );
+        container.addComponent( createUniqueComponent() );
+
+        assertNull( tableModel_.getComponentModel( new ComponentPath( null, 1 ) ) );
+        assertNull( tableModel_.getComponentModel( new ComponentPath( new ComponentPath( null, 0 ), 1 ) ) );
+        assertNull( tableModel_.getComponentModel( new ComponentPath( new ComponentPath( new ComponentPath( null, 0 ), 0 ), 3 ) ) );
     }
 
     /**

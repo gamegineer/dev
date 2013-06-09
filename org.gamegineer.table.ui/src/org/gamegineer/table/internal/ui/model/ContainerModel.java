@@ -305,14 +305,12 @@ public final class ContainerModel
      *        The collection of constituent component paths of the overall
      *        component path; must not be {@code null} and must not be empty.
      * 
-     * @return The component model in this container model at the specified
-     *         path; never {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If no component model exists at the specified path.
+     * @return The component model in this container model at the specified path
+     *         or {@code null} if no component model exists at the specified
+     *         path.
      */
     @GuardedBy( "getLock()" )
-    /* @NonNull */
+    /* @Nullable */
     ComponentModel getComponentModel(
         /* @NonNull */
         final List<ComponentPath> paths )
@@ -323,13 +321,19 @@ public final class ContainerModel
 
         final ComponentPath path = paths.get( 0 );
         final ComponentModel componentModel = getComponentModel( path.getIndex() );
-        if( paths.size() == 1 )
+        if( componentModel != null )
         {
-            return componentModel;
+            if( paths.size() == 1 )
+            {
+                return componentModel;
+            }
+            else if( componentModel instanceof ContainerModel )
+            {
+                return ((ContainerModel)componentModel).getComponentModel( paths.subList( 1, paths.size() ) );
+            }
         }
 
-        assertArgumentLegal( componentModel instanceof ContainerModel, "paths", NonNlsMessages.ContainerModel_getComponentModel_path_notExists ); //$NON-NLS-1$
-        return ((ContainerModel)componentModel).getComponentModel( paths.subList( 1, paths.size() ) );
+        return null;
     }
 
     /**
@@ -338,27 +342,18 @@ public final class ContainerModel
      * @param componentModelIndex
      *        The component model index.
      * 
-     * @return The component model at the specified index; never {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code componentModelIndex} is not a legal component model
-     *         index.
+     * @return The component model at the specified index or {@code null} if the
+     *         specified index is not a legal component model index.
      */
     @GuardedBy( "getLock()" )
-    /* @NonNull */
+    /* @Nullable */
     private ComponentModel getComponentModel(
         final int componentModelIndex )
     {
+        assert componentModelIndex >= 0;
         assert getLock().isHeldByCurrentThread();
 
-        try
-        {
-            return componentModels_.get( componentModelIndex );
-        }
-        catch( final IndexOutOfBoundsException e )
-        {
-            throw new IllegalArgumentException( e );
-        }
+        return (componentModelIndex < componentModels_.size()) ? componentModels_.get( componentModelIndex ) : null;
     }
 
     /**
@@ -602,6 +597,7 @@ public final class ContainerModel
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
             final ComponentModel componentModel;
+
             getLock().lock();
             try
             {
@@ -638,21 +634,23 @@ public final class ContainerModel
             try
             {
                 componentModel = getComponentModel( event.getComponentIndex() );
-
-                final TableModel tableModel = getTableModel();
-                assert tableModel != null;
-                final ComponentModel hoveredComponentModel = tableModel.getHoveredComponentModel();
-                if( (hoveredComponentModel != null) && hoveredComponentModel.isSameOrDescendantOf( componentModel ) )
+                if( componentModel != null )
                 {
-                    tableModel.setHover( null );
-                }
-                final ComponentModel focusedComponentModel = tableModel.getFocusedComponentModel();
-                if( (focusedComponentModel != null) && focusedComponentModel.isSameOrDescendantOf( componentModel ) )
-                {
-                    tableModel.setFocus( null );
-                }
+                    final TableModel tableModel = getTableModel();
+                    assert tableModel != null;
+                    final ComponentModel hoveredComponentModel = tableModel.getHoveredComponentModel();
+                    if( (hoveredComponentModel != null) && hoveredComponentModel.isSameOrDescendantOf( componentModel ) )
+                    {
+                        tableModel.setHover( null );
+                    }
+                    final ComponentModel focusedComponentModel = tableModel.getFocusedComponentModel();
+                    if( (focusedComponentModel != null) && focusedComponentModel.isSameOrDescendantOf( componentModel ) )
+                    {
+                        tableModel.setFocus( null );
+                    }
 
-                deleteComponentModel( event.getComponentIndex() );
+                    deleteComponentModel( event.getComponentIndex() );
+                }
             }
             finally
             {
@@ -664,7 +662,11 @@ public final class ContainerModel
                 @Override
                 public void run()
                 {
-                    fireComponentModelRemoved( componentModel, event.getComponentIndex() );
+                    if( componentModel != null )
+                    {
+                        fireComponentModelRemoved( componentModel, event.getComponentIndex() );
+                    }
+
                     fireComponentChanged();
                 }
             } );

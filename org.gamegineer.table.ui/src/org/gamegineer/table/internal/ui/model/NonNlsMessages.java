@@ -106,9 +106,6 @@ final class NonNlsMessages
      */
     public static String ContainerModel_containerLayoutChanged_unexpectedException;
 
-    /** The component path does not exist in the container. */
-    public static String ContainerModel_getComponentModel_path_notExists;
-
     /** The container model listener is not registered. */
     public static String ContainerModel_removeContainerModelListener_listener_notRegistered;
 
@@ -151,9 +148,6 @@ final class NonNlsMessages
 
     /** The table model listener is already registered. */
     public static String TableModel_addTableModelListener_listener_registered;
-
-    /** The component path does not exist in the table. */
-    public static String TableModel_getComponentModel_path_notExists;
 
     /** An error occurred while reading the table memento. */
     public static String TableModel_readTableMemento_error;

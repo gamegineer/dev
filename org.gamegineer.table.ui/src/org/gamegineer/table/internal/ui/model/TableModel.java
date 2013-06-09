@@ -354,15 +354,13 @@ public final class TableModel
      * @param path
      *        The component path; must not be {@code null}.
      * 
-     * @return The component model in this table model at the specified path;
-     *         never {@code null}.
+     * @return The component model in this table model at the specified path or
+     *         {@code null} if no component model exists at the specified path.
      * 
-     * @throws java.lang.IllegalArgumentException
-     *         If no component model exists at the specified path.
      * @throws java.lang.NullPointerException
      *         If {@code path} is {@code null}.
      */
-    /* @NonNull */
+    /* @Nullable */
     public ComponentModel getComponentModel(
         /* @NonNull */
         final ComponentPath path )
@@ -371,8 +369,11 @@ public final class TableModel
 
         final List<ComponentPath> paths = path.toList();
         final ComponentPath tabletopPath = paths.get( 0 );
-        assertArgumentLegal( tabletopPath.getIndex() == 0, "path", NonNlsMessages.TableModel_getComponentModel_path_notExists ); //$NON-NLS-1$
-        if( paths.size() == 1 )
+        if( tabletopPath.getIndex() != 0 )
+        {
+            return null;
+        }
+        else if( paths.size() == 1 )
         {
             return tabletopModel_;
         }
