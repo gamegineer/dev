@@ -121,7 +121,7 @@ public final class ContainerModelAsContainerModelTest
 
     /**
      * Fires the event associated with the specified {@link ContainerModel}
-     * method that accepts a {@link ComponentModel} and an integer.
+     * method that accepts a {@link ComponentModel} and a primitive integer.
      * 
      * @param containerModel
      *        The container model; must not be {@code null}.
@@ -140,7 +140,7 @@ public final class ContainerModelAsContainerModelTest
 
         try
         {
-            final Method method = ContainerModel.class.getDeclaredMethod( methodName, ComponentModel.class, Integer.TYPE );
+            final Method method = ContainerModel.class.getDeclaredMethod( methodName, ComponentModel.class, int.class );
             method.setAccessible( true );
             method.invoke( containerModel, new ComponentModel( containerModel.getTableEnvironmentModel(), TestComponents.createUniqueComponent( containerModel.getTableEnvironmentModel().getTableEnvironment() ) ), Integer.valueOf( 0 ) );
         }

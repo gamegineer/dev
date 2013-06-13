@@ -1,6 +1,6 @@
 /*
  * StringToPrimitiveIntegerConverter.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -37,12 +37,12 @@ public final class StringToPrimitiveIntegerConverter
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * StringToPrimitiveIntegerConverter} class.
+     * Initializes a new instance of the
+     * {@code StringToPrimitiveIntegerConverter} class.
      */
     public StringToPrimitiveIntegerConverter()
     {
-        super( String.class, Integer.TYPE );
+        super( String.class, int.class );
     }
 
 
