@@ -38,7 +38,6 @@ import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerListener;
 import org.gamegineer.table.internal.ui.Loggers;
-import org.gamegineer.table.internal.ui.util.TableUtils;
 
 /**
  * The container model.
@@ -425,9 +424,10 @@ public final class ContainerModel
         {
             super.initialize( parent );
 
-            final List<IComponent> components = TableUtils.addContainerListenerAndGetComponents( getComponent(), containerListener_ );
+            getComponent().addContainerListener( containerListener_ );
+
             int componentIndex = 0;
-            for( final IComponent component : components )
+            for( final IComponent component : getComponent().getComponents() )
             {
                 createComponentModel( component, componentIndex++ );
             }
