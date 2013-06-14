@@ -195,9 +195,10 @@ final class TableView
         {
             final List<IComponent> components = componentPrototypeFactory.createComponentPrototype( model_.getTable().getTableEnvironment() );
 
-            final IComponent focusedComponent = getFocusedComponent();
-            if( focusedComponent != null )
+            final ComponentModel focusedComponentModel = getFocusedComponentModel();
+            if( focusedComponentModel != null )
             {
+                final IComponent focusedComponent = focusedComponentModel.getComponent();
                 if( focusedComponent instanceof IContainer )
                 {
                     ((IContainer)focusedComponent).addComponents( components );
@@ -419,7 +420,7 @@ final class TableView
                 @SuppressWarnings( "unused" )
                 final Action obj )
             {
-                if( getFocusedComponent() == null )
+                if( getFocusedComponentModel() == null )
                 {
                     return false;
                 }
@@ -435,7 +436,7 @@ final class TableView
                 @SuppressWarnings( "unused" )
                 final Action obj )
             {
-                if( getFocusedContainer() == null )
+                if( getFocusedContainerModel() == null )
                 {
                     return false;
                 }
@@ -451,20 +452,28 @@ final class TableView
                 @SuppressWarnings( "unused" )
                 final Action obj )
             {
-                final IContainer container;
-                final IComponent component = getFocusedComponent();
-                if( component != null )
+                getTableEnvironmentModelLock().lock();
+                try
                 {
-                    container = (component instanceof IContainer) ? (IContainer)component : null;
-                }
-                else
-                {
-                    container = model_.getTable().getTabletop();
-                }
+                    final IContainer container;
+                    final ComponentModel componentModel = getFocusedComponentModel();
+                    if( componentModel != null )
+                    {
+                        container = (componentModel instanceof ContainerModel) ? ((ContainerModel)componentModel).getComponent() : null;
+                    }
+                    else
+                    {
+                        container = model_.getTable().getTabletop();
+                    }
 
-                if( (container == null) || (container.getComponentCount() == 0) )
+                    if( (container == null) || (container.getComponentCount() == 0) )
+                    {
+                        return false;
+                    }
+                }
+                finally
                 {
-                    return false;
+                    getTableEnvironmentModelLock().unlock();
                 }
 
                 return model_.isEditable();
@@ -559,13 +568,21 @@ final class TableView
             public boolean evaluate(
                 final Action obj )
             {
-                final IContainer container = getFocusedContainer();
-                if( container == null )
+                getTableEnvironmentModelLock().lock();
+                try
                 {
-                    return false;
-                }
+                    final ContainerModel containerModel = getFocusedContainerModel();
+                    if( containerModel == null )
+                    {
+                        return false;
+                    }
 
-                return container.getLayout().getId().equals( ContainerLayoutId.fromString( (String)obj.getValue( Action.ACTION_COMMAND_KEY ) ) );
+                    return containerModel.getComponent().getLayout().getId().equals( ContainerLayoutId.fromString( (String)obj.getValue( Action.ACTION_COMMAND_KEY ) ) );
+                }
+                finally
+                {
+                    getTableEnvironmentModelLock().unlock();
+                }
             }
 
         };
@@ -792,29 +809,16 @@ final class TableView
         getTableEnvironmentModelLock().lock();
         try
         {
-            final IComponent component = getFocusedComponent();
-            if( component != null )
+            final ComponentModel componentModel = getFocusedComponentModel();
+            if( componentModel != null )
             {
-                component.setOrientation( component.getOrientation().inverse() );
+                componentModel.getComponent().setOrientation( componentModel.getComponent().getOrientation().inverse() );
             }
         }
         finally
         {
             getTableEnvironmentModelLock().unlock();
         }
-    }
-
-    /**
-     * Gets the focused component.
-     * 
-     * @return The focused component or {@code null} if no component has the
-     *         focus.
-     */
-    /* @Nullable */
-    private IComponent getFocusedComponent()
-    {
-        final ComponentModel componentModel = getFocusedComponentModel();
-        return (componentModel != null) ? componentModel.getComponent() : null;
     }
 
     /**
@@ -827,19 +831,6 @@ final class TableView
     private ComponentModel getFocusedComponentModel()
     {
         return model_.getFocusedComponentModel();
-    }
-
-    /**
-     * Gets the focused container.
-     * 
-     * @return The focused container or {@code null} if no container has the
-     *         focus.
-     */
-    /* @Nullable */
-    private IContainer getFocusedContainer()
-    {
-        final ContainerModel containerModel = getFocusedContainerModel();
-        return (containerModel != null) ? containerModel.getComponent() : null;
     }
 
     /**
@@ -1012,10 +1003,10 @@ final class TableView
         try
         {
             final IContainer container;
-            final IComponent component = getFocusedComponent();
-            if( component != null )
+            final ComponentModel componentModel = getFocusedComponentModel();
+            if( componentModel != null )
             {
-                container = (component instanceof IContainer) ? (IContainer)component : null;
+                container = (componentModel instanceof ContainerModel) ? ((ContainerModel)componentModel).getComponent() : null;
             }
             else
             {
@@ -1041,13 +1032,13 @@ final class TableView
         getTableEnvironmentModelLock().lock();
         try
         {
-            final IComponent component = getFocusedComponent();
-            if( component != null )
+            final ComponentModel componentModel = getFocusedComponentModel();
+            if( componentModel != null )
             {
-                final IContainer container = component.getContainer();
+                final IContainer container = componentModel.getComponent().getContainer();
                 if( container != null )
                 {
-                    container.removeComponent( component );
+                    container.removeComponent( componentModel.getComponent() );
                 }
             }
         }
@@ -1124,12 +1115,12 @@ final class TableView
         getTableEnvironmentModelLock().lock();
         try
         {
-            final IContainer container = getFocusedContainer();
-            if( container != null )
+            final ContainerModel containerModel = getFocusedContainerModel();
+            if( containerModel != null )
             {
                 try
                 {
-                    container.setLayout( ContainerLayoutRegistry.getContainerLayout( layoutId ) );
+                    containerModel.getComponent().setLayout( ContainerLayoutRegistry.getContainerLayout( layoutId ) );
                 }
                 catch( final NoSuchContainerLayoutException e )
                 {
