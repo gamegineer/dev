@@ -455,18 +455,8 @@ final class TableView
                 getTableEnvironmentModelLock().lock();
                 try
                 {
-                    final IContainer container;
-                    final ComponentModel componentModel = getFocusedComponentModel();
-                    if( componentModel != null )
-                    {
-                        container = (componentModel instanceof ContainerModel) ? ((ContainerModel)componentModel).getComponent() : null;
-                    }
-                    else
-                    {
-                        container = model_.getTable().getTabletop();
-                    }
-
-                    if( (container == null) || (container.getComponentCount() == 0) )
+                    final ContainerModel containerModel = getFocusedContainerModelOrTabletopModel();
+                    if( (containerModel == null) || (containerModel.getComponent().getComponentCount() == 0) )
                     {
                         return false;
                     }
@@ -842,8 +832,32 @@ final class TableView
     /* @Nullable */
     private ContainerModel getFocusedContainerModel()
     {
-        final ComponentModel componentModel = model_.getFocusedComponentModel();
+        final ComponentModel componentModel = getFocusedComponentModel();
         return (componentModel instanceof ContainerModel) ? (ContainerModel)componentModel : null;
+    }
+
+    /**
+     * Gets the model associated with the focused container or the tabletop
+     * model if no component has the focus.
+     * 
+     * @return The model associated with the focused container; the tabletop
+     *         model if no component has the focus; or {@code null} if a
+     *         non-container component has the focus.
+     */
+    /* @Nullable */
+    private ContainerModel getFocusedContainerModelOrTabletopModel()
+    {
+        final ComponentModel componentModel = getFocusedComponentModel();
+        if( componentModel == null )
+        {
+            return model_.getTabletopModel();
+        }
+        else if( componentModel instanceof ContainerModel )
+        {
+            return (ContainerModel)componentModel;
+        }
+
+        return null;
     }
 
     /**
@@ -1002,20 +1016,10 @@ final class TableView
         getTableEnvironmentModelLock().lock();
         try
         {
-            final IContainer container;
-            final ComponentModel componentModel = getFocusedComponentModel();
-            if( componentModel != null )
+            final ContainerModel containerModel = getFocusedContainerModelOrTabletopModel();
+            if( containerModel != null )
             {
-                container = (componentModel instanceof ContainerModel) ? ((ContainerModel)componentModel).getComponent() : null;
-            }
-            else
-            {
-                container = model_.getTable().getTabletop();
-            }
-
-            if( container != null )
-            {
-                container.removeAllComponents();
+                containerModel.getComponent().removeAllComponents();
             }
         }
         finally
