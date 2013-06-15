@@ -35,7 +35,6 @@ import org.gamegineer.table.internal.ui.model.ContainerModel;
 import org.gamegineer.table.internal.ui.model.ContainerModelContentChangedEvent;
 import org.gamegineer.table.internal.ui.model.ContainerModelEvent;
 import org.gamegineer.table.internal.ui.model.IContainerModelListener;
-import org.gamegineer.table.internal.ui.model.TableModelUtils;
 
 /**
  * A view of a container.
@@ -200,7 +199,18 @@ final class ContainerView
 
         containerModelListener_ = new ContainerModelListener();
 
-        final List<ComponentModel> componentModels = TableModelUtils.addContainerModelListenerAndGetComponentModels( getComponentModel(), containerModelListener_ );
+        final List<ComponentModel> componentModels;
+        getTableEnvironmentModelLock().lock();
+        try
+        {
+            getComponentModel().addContainerModelListener( containerModelListener_ );
+            componentModels = getComponentModel().getComponentModels();
+        }
+        finally
+        {
+            getTableEnvironmentModelLock().unlock();
+        }
+
         int componentModelIndex = 0;
         for( final ComponentModel componentModel : componentModels )
         {

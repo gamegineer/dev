@@ -44,7 +44,6 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.locks.Lock;
 import java.util.logging.Level;
 import javax.swing.Action;
 import javax.swing.JOptionPane;
@@ -77,6 +76,7 @@ import org.gamegineer.table.internal.ui.model.ComponentAxis;
 import org.gamegineer.table.internal.ui.model.ComponentModel;
 import org.gamegineer.table.internal.ui.model.ComponentModelVector;
 import org.gamegineer.table.internal.ui.model.ContainerModel;
+import org.gamegineer.table.internal.ui.model.ITableEnvironmentModelLock;
 import org.gamegineer.table.internal.ui.model.ITableModelListener;
 import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.internal.ui.model.TableModelEvent;
@@ -880,7 +880,7 @@ final class TableView
      * @return The table environment model lock; never {@code null}.
      */
     /* @NonNull */
-    private Lock getTableEnvironmentModelLock()
+    private ITableEnvironmentModelLock getTableEnvironmentModelLock()
     {
         return model_.getTableEnvironmentModel().getLock();
     }
@@ -1513,14 +1513,22 @@ final class TableView
             if( SwingUtilities.isLeftMouseButton( event ) || SwingUtilities.isRightMouseButton( event ) )
             {
                 final Point mouseLocation = getMouseLocation( event );
-                final ComponentModel focusedComponentModel = model_.getFocusedComponentModel();
-                if( (focusedComponentModel != null) && focusedComponentModel.getComponent().getBounds().contains( mouseLocation ) )
+                getTableEnvironmentModelLock().lock();
+                try
                 {
-                    updateFocusOnMouseReleased_ = SwingUtilities.isLeftMouseButton( event );
+                    final ComponentModel focusedComponentModel = model_.getFocusedComponentModel();
+                    if( (focusedComponentModel != null) && focusedComponentModel.getComponent().getBounds().contains( mouseLocation ) )
+                    {
+                        updateFocusOnMouseReleased_ = SwingUtilities.isLeftMouseButton( event );
+                    }
+                    else
+                    {
+                        model_.setFocus( model_.getFocusableComponentModel( mouseLocation ) );
+                    }
                 }
-                else
+                finally
                 {
-                    model_.setFocus( model_.getFocusableComponentModel( mouseLocation ) );
+                    getTableEnvironmentModelLock().unlock();
                 }
             }
         }
@@ -1748,27 +1756,35 @@ final class TableView
         void activate(
             final InputEvent event )
         {
-            final ComponentModel focusedComponentModel = model_.getFocusedComponentModel();
-            if( focusedComponentModel != null )
+            getTableEnvironmentModelLock().lock();
+            try
             {
-                final IDragSource dragSource = model_.getTable().getExtension( IDragSource.class );
-                if( dragSource != null )
+                final ComponentModel focusedComponentModel = model_.getFocusedComponentModel();
+                if( focusedComponentModel != null )
                 {
-                    dragContext_ = dragSource.beginDrag( getMouseLocation( event ), focusedComponentModel.getComponent() );
-                    if( dragContext_ == null )
+                    final IDragSource dragSource = model_.getTable().getExtension( IDragSource.class );
+                    if( dragSource != null )
                     {
+                        dragContext_ = dragSource.beginDrag( getMouseLocation( event ), focusedComponentModel.getComponent() );
+                        if( dragContext_ == null )
+                        {
+                            setInputHandler( DefaultInputHandler.class, null );
+                        }
+                    }
+                    else
+                    {
+                        Loggers.getDefaultLogger().severe( NonNlsMessages.TableView_draggingComponent_dragSourceNotAvailable );
                         setInputHandler( DefaultInputHandler.class, null );
                     }
                 }
                 else
                 {
-                    Loggers.getDefaultLogger().severe( NonNlsMessages.TableView_draggingComponent_dragSourceNotAvailable );
                     setInputHandler( DefaultInputHandler.class, null );
                 }
             }
-            else
+            finally
             {
-                setInputHandler( DefaultInputHandler.class, null );
+                getTableEnvironmentModelLock().unlock();
             }
         }
 

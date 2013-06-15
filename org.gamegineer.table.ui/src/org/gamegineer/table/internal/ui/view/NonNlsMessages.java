@@ -40,7 +40,7 @@ final class NonNlsMessages
     // --- ComponentView ----------------------------------------------------
 
     /** The component surface design user interface is not available. */
-    public static String ComponentView_getActiveComponentSurfaceDesignUI_notAvailable;
+    public static String ComponentView_getComponentSurfaceDesignUI_notAvailable;
 
     // --- Cursors ----------------------------------------------------------
 
@@ -121,11 +121,11 @@ final class NonNlsMessages
      *         user interface is not available; never {@code null}.
      */
     /* @NonNull */
-    static String ComponentView_getActiveComponentSurfaceDesignUI_notAvailable(
+    static String ComponentView_getComponentSurfaceDesignUI_notAvailable(
         /* @NonNull */
         final ComponentSurfaceDesignId componentSurfaceDesignId )
     {
-        return bind( ComponentView_getActiveComponentSurfaceDesignUI_notAvailable, componentSurfaceDesignId );
+        return bind( ComponentView_getComponentSurfaceDesignUI_notAvailable, componentSurfaceDesignId );
     }
 
     // --- MainFrame --------------------------------------------------------

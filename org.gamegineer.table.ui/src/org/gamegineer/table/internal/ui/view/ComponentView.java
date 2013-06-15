@@ -35,6 +35,7 @@ import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.model.ComponentModel;
 import org.gamegineer.table.internal.ui.model.ComponentModelEvent;
 import org.gamegineer.table.internal.ui.model.IComponentModelListener;
+import org.gamegineer.table.internal.ui.model.ITableEnvironmentModelLock;
 import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
 import org.gamegineer.table.ui.ComponentSurfaceDesignUIRegistry;
 import org.gamegineer.table.ui.NoSuchComponentSurfaceDesignUIException;
@@ -151,28 +152,6 @@ class ComponentView
     }
 
     /**
-     * Gets the active component surface design user interface.
-     * 
-     * @return The active component surface design user interface; never
-     *         {@code null}.
-     */
-    /* @NonNull */
-    private ComponentSurfaceDesignUI getActiveComponentSurfaceDesignUI()
-    {
-        final ComponentSurfaceDesign componentSurfaceDesign = componentModel_.getComponent().getSurfaceDesign( componentModel_.getComponent().getOrientation() );
-        try
-        {
-            return ComponentSurfaceDesignUIRegistry.getComponentSurfaceDesignUI( componentSurfaceDesign.getId() );
-        }
-        catch( final NoSuchComponentSurfaceDesignUIException e )
-        {
-            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ComponentView_getActiveComponentSurfaceDesignUI_notAvailable( componentSurfaceDesign.getId() ), e );
-        }
-
-        return ViewUtils.createDefaultComponentSurfaceDesignUI( componentSurfaceDesign );
-    }
-
-    /**
      * Gets the model associated with this view.
      * 
      * <p>
@@ -185,6 +164,45 @@ class ComponentView
     ComponentModel getComponentModel()
     {
         return componentModel_;
+    }
+
+    /**
+     * Gets the user interface for the specified component surface design.
+     * 
+     * @param componentSurfaceDesign
+     *        The component surface design; must not be {@code null}.
+     * 
+     * @return The user interface for the active component surface design; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    private static ComponentSurfaceDesignUI getComponentSurfaceDesignUI(
+        /* @NonNull */
+        final ComponentSurfaceDesign componentSurfaceDesign )
+    {
+        assert componentSurfaceDesign != null;
+
+        try
+        {
+            return ComponentSurfaceDesignUIRegistry.getComponentSurfaceDesignUI( componentSurfaceDesign.getId() );
+        }
+        catch( final NoSuchComponentSurfaceDesignUIException e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ComponentView_getComponentSurfaceDesignUI_notAvailable( componentSurfaceDesign.getId() ), e );
+        }
+
+        return ViewUtils.createDefaultComponentSurfaceDesignUI( componentSurfaceDesign );
+    }
+
+    /**
+     * Gets the table environment model lock.
+     * 
+     * @return The table environment model lock; never {@code null}.
+     */
+    /* @NonNull */
+    final ITableEnvironmentModelLock getTableEnvironmentModelLock()
+    {
+        return componentModel_.getTableEnvironmentModel().getLock();
     }
 
     /**
@@ -264,11 +282,24 @@ class ComponentView
         assert g != null;
         assert isInitialized();
 
-        final Rectangle bounds = componentModel_.getComponent().getBounds();
+        final Rectangle bounds;
+        final ComponentSurfaceDesign componentSurfaceDesign;
+        final boolean isHovered;
+        getTableEnvironmentModelLock().lock();
+        try
+        {
+            bounds = componentModel_.getComponent().getBounds();
+            componentSurfaceDesign = componentModel_.getComponent().getSurfaceDesign( componentModel_.getComponent().getOrientation() );
+            isHovered = componentModel_.isHovered();
+        }
+        finally
+        {
+            getTableEnvironmentModelLock().unlock();
+        }
 
-        getActiveComponentSurfaceDesignUI().getIcon().paintIcon( component, g, bounds.x, bounds.y );
+        getComponentSurfaceDesignUI( componentSurfaceDesign ).getIcon().paintIcon( component, g, bounds.x, bounds.y );
 
-        if( componentModel_.isHovered() )
+        if( isHovered )
         {
             // TODO: mask rectangle with the non-transparent pixels in the active surface image
             // so we don't paint over pixels that should be fully transparent
