@@ -1,6 +1,6 @@
 /*
  * NodeLayer.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -174,7 +174,19 @@ final class NodeLayer
     @Override
     public boolean isNodeLayerThread()
     {
-        return Thread.currentThread() == nodeLayerThreadRef_.get();
+        return isNodeLayerThread( Thread.currentThread() );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.node.INodeLayer#isNodeLayerThread(java.lang.Thread)
+     */
+    @Override
+    public boolean isNodeLayerThread(
+        final Thread thread )
+    {
+        assertArgumentNotNull( thread, "thread" ); //$NON-NLS-1$
+
+        return thread == nodeLayerThreadRef_.get();
     }
 
     /*

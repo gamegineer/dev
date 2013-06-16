@@ -1,6 +1,6 @@
 /*
  * INodeLayer.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -91,6 +91,22 @@ public interface INodeLayer
      *         otherwise {@code false}.
      */
     public boolean isNodeLayerThread();
+
+    /**
+     * Indicates the specified thread is the node layer thread.
+     * 
+     * @param thread
+     *        The thread; must not be {@code null}.
+     * 
+     * @return {@code true} if the specified thread is the node layer thread;
+     *         otherwise {@code false}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code thread} is {@code null}.
+     */
+    public boolean isNodeLayerThread(
+        /* @NonNull */
+        Thread thread );
 
     /**
      * Synchronously executes the specified task on the node layer thread.

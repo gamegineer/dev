@@ -46,6 +46,9 @@ public class ComponentEvent
      */
     private final ComponentPath componentPath_;
 
+    /** The thread on which the event originated. */
+    private final Thread thread_;
+
 
     // ======================================================================
     // Constructors
@@ -73,6 +76,7 @@ public class ComponentEvent
         super( source );
 
         componentPath_ = componentPath;
+        thread_ = Thread.currentThread();
     }
 
 
@@ -102,5 +106,16 @@ public class ComponentEvent
     public final ComponentPath getComponentPath()
     {
         return componentPath_;
+    }
+
+    /**
+     * Gets the thread on which the event originated.
+     * 
+     * @return The thread on which the event originated; never {@code null}.
+     */
+    /* @NonNull */
+    public final Thread getThread()
+    {
+        return thread_;
     }
 }

@@ -63,9 +63,6 @@ final class LocalNetworkTable
     /** The local container listener. */
     private final IContainerListener containerListener_;
 
-    /** Indicates events fired by the local table should be ignored. */
-    private boolean ignoreEvents_;
-
     /** The node layer. */
     private final INodeLayer nodeLayer_;
 
@@ -106,7 +103,6 @@ final class LocalNetworkTable
 
         componentListener_ = new ComponentListenerProxy( new ComponentListener() );
         containerListener_ = new ContainerListenerProxy( new ContainerListener() );
-        ignoreEvents_ = false;
         nodeLayer_ = nodeLayer;
         table_ = table;
         tableManager_ = tableManager;
@@ -182,10 +178,7 @@ final class LocalNetworkTable
         assertArgumentNotNull( componentIncrement, "componentIncrement" ); //$NON-NLS-1$
         assert nodeLayer_.isNodeLayerThread();
 
-        final boolean oldIgnoreEvents = ignoreEvents_;
-        ignoreEvents_ = true;
         NetworkTableUtils.incrementComponentState( table_, componentPath, componentIncrement );
-        ignoreEvents_ = oldIgnoreEvents;
     }
 
     /**
@@ -243,10 +236,7 @@ final class LocalNetworkTable
         assertArgumentNotNull( tableMemento, "tableMemento" ); //$NON-NLS-1$
         assert nodeLayer_.isNodeLayerThread();
 
-        final boolean oldIgnoreEvents = ignoreEvents_;
-        ignoreEvents_ = true;
         NetworkTableUtils.setTableState( table_, tableMemento );
-        ignoreEvents_ = oldIgnoreEvents;
     }
 
     /**
@@ -335,7 +325,7 @@ final class LocalNetworkTable
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
             assert nodeLayer_.isNodeLayerThread();
 
-            if( ignoreEvents_ )
+            if( ignoreEvent( event ) )
             {
                 return;
             }
@@ -393,7 +383,7 @@ final class LocalNetworkTable
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
             assert nodeLayer_.isNodeLayerThread();
 
-            if( ignoreEvents_ )
+            if( ignoreEvent( event ) )
             {
                 return;
             }
@@ -430,7 +420,7 @@ final class LocalNetworkTable
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
             assert nodeLayer_.isNodeLayerThread();
 
-            if( ignoreEvents_ )
+            if( ignoreEvent( event ) )
             {
                 return;
             }
@@ -462,6 +452,25 @@ final class LocalNetworkTable
             {
                 tableManager_.incrementComponentState( LocalNetworkTable.this, componentPath, componentIncrement );
             }
+        }
+
+        /**
+         * Indicates the specified component event should be ignored because it
+         * was originated by the node layer.
+         * 
+         * @param event
+         *        The component event; must not be {@code null}.
+         * 
+         * @return {@code true} if the specified component event should be
+         *         ignored; otherwise {@code false}.
+         */
+        private boolean ignoreEvent(
+            /* @NonNull */
+            final ComponentEvent event )
+        {
+            assert event != null;
+
+            return nodeLayer_.isNodeLayerThread( event.getThread() );
         }
     }
 
@@ -602,7 +611,7 @@ final class LocalNetworkTable
                 final IComponent component = event.getComponent();
                 addComponentListeners( component );
 
-                if( ignoreEvents_ )
+                if( ignoreEvent( event ) )
                 {
                     return;
                 }
@@ -644,7 +653,7 @@ final class LocalNetworkTable
                 final IComponent component = event.getComponent();
                 removeComponentListeners( component );
 
-                if( ignoreEvents_ )
+                if( ignoreEvent( event ) )
                 {
                     return;
                 }
@@ -677,7 +686,7 @@ final class LocalNetworkTable
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
             assert nodeLayer_.isNodeLayerThread();
 
-            if( ignoreEvents_ )
+            if( ignoreEvent( event ) )
             {
                 return;
             }
@@ -702,6 +711,25 @@ final class LocalNetworkTable
             {
                 tableManager_.incrementComponentState( LocalNetworkTable.this, containerPath, containerIncrement );
             }
+        }
+
+        /**
+         * Indicates the specified container event should be ignored because it
+         * was originated by the node layer.
+         * 
+         * @param event
+         *        The container event; must not be {@code null}.
+         * 
+         * @return {@code true} if the specified container event should be
+         *         ignored; otherwise {@code false}.
+         */
+        private boolean ignoreEvent(
+            /* @NonNull */
+            final ContainerEvent event )
+        {
+            assert event != null;
+
+            return nodeLayer_.isNodeLayerThread( event.getThread() );
         }
     }
 

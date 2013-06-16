@@ -46,6 +46,9 @@ public class ContainerEvent
      */
     private final ComponentPath containerPath_;
 
+    /** The thread on which the event originated. */
+    private final Thread thread_;
+
 
     // ======================================================================
     // Constructors
@@ -73,6 +76,7 @@ public class ContainerEvent
         super( source );
 
         containerPath_ = containerPath;
+        thread_ = Thread.currentThread();
     }
 
 
@@ -102,5 +106,16 @@ public class ContainerEvent
     public final ComponentPath getContainerPath()
     {
         return containerPath_;
+    }
+
+    /**
+     * Gets the thread on which the event originated.
+     * 
+     * @return The thread on which the event originated; never {@code null}.
+     */
+    /* @NonNull */
+    public final Thread getThread()
+    {
+        return thread_;
     }
 }
