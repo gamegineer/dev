@@ -48,6 +48,9 @@ final class Actions
      */
     private static final String CANCEL_TABLE_NETWORK_CONTROL_REQUEST_ID = "cancelTableNetworkControlRequestAction"; //$NON-NLS-1$
 
+    /** The identifier of the action used to debug trace the table. */
+    private static final String DEBUG_TRACE_TABLE_ACTION_ID = "debugTraceTableAction"; //$NON-NLS-1$
+
     /** The identifier of the action used to disconnect a table network. */
     private static final String DISCONNECT_TABLE_NETWORK_ACTION_ID = "disconnectTableNetworkAction"; //$NON-NLS-1$
 
@@ -183,6 +186,14 @@ final class Actions
             {
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.CancelTableNetworkControlRequestAction_mnemonic ).getKeyCode() );
                 putValue( NAME, NlsMessages.CancelTableNetworkControlRequestAction_text );
+            }
+        } );
+        actions.put( DEBUG_TRACE_TABLE_ACTION_ID, new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( NlsMessages.DebugTraceTableAction_accelerator ) );
             }
         } );
         actions.put( DISCONNECT_TABLE_NETWORK_ACTION_ID, new BasicAction()
@@ -395,6 +406,33 @@ final class Actions
     }
 
     /**
+     * Gets the identifier of the specified action.
+     * 
+     * @param action
+     *        The action; must not be {@code null}.
+     * 
+     * @return The identifier of the specified action or {@code null} if the
+     *         action does not exist.
+     */
+    /* @Nullable */
+    static String getActionId(
+        /* @NonNull */
+        final BasicAction action )
+    {
+        assert action != null;
+
+        for( final Map.Entry<String, BasicAction> entry : actions_.entrySet() )
+        {
+            if( action.equals( entry.getValue() ) )
+            {
+                return entry.getKey();
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Gets the add component action.
      * 
      * @return The add component action; never {@code null}.
@@ -415,6 +453,17 @@ final class Actions
     static BasicAction getCancelTableNetworkControlRequestAction()
     {
         return actions_.get( CANCEL_TABLE_NETWORK_CONTROL_REQUEST_ID );
+    }
+
+    /**
+     * Gets the debug trace table action.
+     * 
+     * @return The debug trace table action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getDebugTraceTableAction()
+    {
+        return actions_.get( DEBUG_TRACE_TABLE_ACTION_ID );
     }
 
     /**

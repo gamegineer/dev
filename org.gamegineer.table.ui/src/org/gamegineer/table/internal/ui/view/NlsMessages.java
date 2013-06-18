@@ -71,6 +71,11 @@ final class NlsMessages
     /** The Layout menu text. */
     public static String ContainerPopupMenu_layout_text;
 
+    // --- DebugTraceTableAction --------------------------------------------
+
+    /** The debug trace table action accelerator. */
+    public static String DebugTraceTableAction_accelerator;
+
     // --- DisconnectTableNetworkAction -------------------------------------
 
     /** The disconnect table network action mnemonic. */

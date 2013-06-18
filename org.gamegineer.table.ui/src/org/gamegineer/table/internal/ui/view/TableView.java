@@ -46,9 +46,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
@@ -71,6 +74,7 @@ import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.BundleImages;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
+import org.gamegineer.table.internal.ui.action.BasicAction;
 import org.gamegineer.table.internal.ui.dialogs.selectremoteplayer.SelectRemotePlayerDialog;
 import org.gamegineer.table.internal.ui.model.ComponentAxis;
 import org.gamegineer.table.internal.ui.model.ComponentModel;
@@ -81,6 +85,7 @@ import org.gamegineer.table.internal.ui.model.ITableModelListener;
 import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.internal.ui.model.TableModelEvent;
 import org.gamegineer.table.internal.ui.prototype.ComponentPrototypeUtils;
+import org.gamegineer.table.internal.ui.util.DebugUtils;
 import org.gamegineer.table.internal.ui.wizards.hosttablenetwork.HostTableNetworkWizard;
 import org.gamegineer.table.internal.ui.wizards.jointablenetwork.JoinTableNetworkWizard;
 import org.gamegineer.table.net.IPlayer;
@@ -272,6 +277,13 @@ final class TableView
      */
     private void bindActions()
     {
+        final InputMap inputMap = getInputMap();
+        final ActionMap actionMap = getActionMap();
+        final BasicAction debugTraceTableAction = Actions.getDebugTraceTableAction();
+        final String debugTraceTableActionId = Actions.getActionId( debugTraceTableAction );
+        inputMap.put( (KeyStroke)debugTraceTableAction.getValue( Action.ACCELERATOR_KEY ), debugTraceTableActionId );
+        actionMap.put( debugTraceTableActionId, debugTraceTableAction );
+
         final ActionListener setContainerLayoutActionListener = new ActionListener()
         {
             @Override
@@ -305,6 +317,17 @@ final class TableView
                 final ActionEvent event )
             {
                 cancelTableNetworkControlRequest();
+            }
+        } );
+        actionMediator_.bindActionListener( Actions.getDebugTraceTableAction(), new ActionListener()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent event )
+            {
+                debugTraceTable();
             }
         } );
         actionMediator_.bindActionListener( Actions.getDisconnectTableNetworkAction(), new ActionListener()
@@ -781,6 +804,14 @@ final class TableView
             tabletopView_.uninitialize();
             tabletopView_ = null;
         }
+    }
+
+    /**
+     * Dumps the content of the table using the debug trace facility.
+     */
+    private void debugTraceTable()
+    {
+        DebugUtils.trace( model_.getTable() );
     }
 
     /**
