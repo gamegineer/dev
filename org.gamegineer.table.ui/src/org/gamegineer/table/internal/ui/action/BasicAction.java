@@ -1,6 +1,6 @@
 /*
  * BasicAction.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,6 +28,7 @@ import java.awt.event.ActionListener;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.KeyStroke;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
 
@@ -42,6 +43,9 @@ public class BasicAction
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /** The key used for storing the action identifier. */
+    public static final String ID_KEY = "IdKey"; //$NON-NLS-1$
 
     /** Serializable class version number. */
     private static final long serialVersionUID = 4533526026382678240L;
@@ -62,12 +66,24 @@ public class BasicAction
 
     /**
      * Initializes a new instance of the {@code BasicAction} class.
+     * 
+     * @param id
+     *        The action identifier; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code id} is {@code null}.
      */
-    public BasicAction()
+    public BasicAction(
+        /* @NonNull */
+        final Object id )
     {
+        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
+
         actionListeners_ = new CopyOnWriteArrayList<ActionListener>();
         shouldEnablePredicates_ = new CopyOnWriteArrayList<IPredicate<Action>>();
         shouldSelectPredicates_ = new CopyOnWriteArrayList<IPredicate<Action>>();
+
+        putValue( ID_KEY, id );
     }
 
 
@@ -99,7 +115,7 @@ public class BasicAction
      * @throws java.lang.NullPointerException
      *         If {@code listener} is {@code null}.
      */
-    public void addActionListener(
+    public final void addActionListener(
         /* @NonNull */
         final ActionListener listener )
     {
@@ -119,7 +135,7 @@ public class BasicAction
      * @throws java.lang.NullPointerException
      *         If {@code predicate} is {@code null}.
      */
-    public void addShouldEnablePredicate(
+    public final void addShouldEnablePredicate(
         /* @NonNull */
         final IPredicate<Action> predicate )
     {
@@ -139,12 +155,35 @@ public class BasicAction
      * @throws java.lang.NullPointerException
      *         If {@code predicate} is {@code null}.
      */
-    public void addShouldSelectPredicate(
+    public final void addShouldSelectPredicate(
         /* @NonNull */
         final IPredicate<Action> predicate )
     {
         assertArgumentNotNull( predicate, "predicate" ); //$NON-NLS-1$
         assertArgumentLegal( shouldSelectPredicates_.addIfAbsent( predicate ), "predicate", NonNlsMessages.BasicAction_addShouldSelectPredicate_predicate_registered ); //$NON-NLS-1$
+    }
+
+    /**
+     * Gets the action accelerator.
+     * 
+     * @return The action accelerator or {@code null} if no accelerator is
+     *         defined.
+     */
+    /* @Nullable */
+    public final KeyStroke getAccelerator()
+    {
+        return (KeyStroke)getValue( ACCELERATOR_KEY );
+    }
+
+    /**
+     * Gets the action identifier.
+     * 
+     * @return The action identifier; never {@code null}.
+     */
+    /* @NonNull */
+    public final Object getId()
+    {
+        return getValue( ID_KEY );
     }
 
     /**
@@ -158,7 +197,7 @@ public class BasicAction
      * @throws java.lang.NullPointerException
      *         If {@code listener} is {@code null}.
      */
-    public void removeActionListener(
+    public final void removeActionListener(
         /* @NonNull */
         final ActionListener listener )
     {
@@ -177,7 +216,7 @@ public class BasicAction
      * @throws java.lang.NullPointerException
      *         If {@code predicate} is {@code null}.
      */
-    public void removeShouldEnablePredicate(
+    public final void removeShouldEnablePredicate(
         /* @NonNull */
         final IPredicate<Action> predicate )
     {
@@ -196,7 +235,7 @@ public class BasicAction
      * @throws java.lang.NullPointerException
      *         If {@code predicate} is {@code null}.
      */
-    public void removeShouldSelectPredicate(
+    public final void removeShouldSelectPredicate(
         /* @NonNull */
         final IPredicate<Action> predicate )
     {
@@ -246,7 +285,7 @@ public class BasicAction
      * Updates the state of this action.
      */
     @SuppressWarnings( "boxing" )
-    public void update()
+    public final void update()
     {
         setEnabled( shouldEnable() );
         putValue( SELECTED_KEY, shouldSelect() );

@@ -46,12 +46,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import javax.swing.Action;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
@@ -273,16 +270,27 @@ final class TableView
     }
 
     /**
+     * Binds the accelerator key for the specified action.
+     * 
+     * @param action
+     *        The action; must not be {@code null}.
+     */
+    private void bindActionInput(
+        /* @NonNull */
+        final BasicAction action )
+    {
+        assert action != null;
+
+        getInputMap().put( action.getAccelerator(), action.getId() );
+        getActionMap().put( action.getId(), action );
+    }
+
+    /**
      * Binds the action attachments for this component.
      */
     private void bindActions()
     {
-        final InputMap inputMap = getInputMap();
-        final ActionMap actionMap = getActionMap();
-        final BasicAction debugTraceTableAction = Actions.getDebugTraceTableAction();
-        final String debugTraceTableActionId = Actions.getActionId( debugTraceTableAction );
-        inputMap.put( (KeyStroke)debugTraceTableAction.getValue( Action.ACCELERATOR_KEY ), debugTraceTableActionId );
-        actionMap.put( debugTraceTableActionId, debugTraceTableAction );
+        bindActionInput( Actions.getDebugTraceTableAction() );
 
         final ActionListener setContainerLayoutActionListener = new ActionListener()
         {

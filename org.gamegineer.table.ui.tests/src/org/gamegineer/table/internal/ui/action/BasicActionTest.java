@@ -1,6 +1,6 @@
 /*
  * BasicActionTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -85,7 +85,7 @@ public final class BasicActionTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        action_ = new BasicAction();
+        action_ = new BasicAction( "id" ); //$NON-NLS-1$
     }
 
     /**
@@ -211,6 +211,16 @@ public final class BasicActionTest
         action_.addShouldSelectPredicate( predicate );
 
         action_.addShouldSelectPredicate( predicate );
+    }
+
+    /**
+     * Ensures the {@link BasicAction#BasicAction} constructor throws an
+     * exception when passed a {@code null} identifier.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_Id_Null()
+    {
+        new BasicAction( null );
     }
 
     /**
