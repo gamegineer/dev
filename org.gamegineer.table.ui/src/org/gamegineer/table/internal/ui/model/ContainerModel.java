@@ -174,12 +174,20 @@ public final class ContainerModel
         assert getLock().isHeldByCurrentThread();
 
         final ComponentModel componentModel = componentModels_.remove( componentIndex );
+        final ContainerModel containerModel = (componentModel instanceof ContainerModel) ? (ContainerModel)componentModel : null;
+        if( containerModel != null )
+        {
+            for( int childComponentIndex = containerModel.getComponentModelCount() - 1; childComponentIndex >= 0; --childComponentIndex )
+            {
+                containerModel.deleteComponentModel( childComponentIndex );
+            }
+        }
         componentModel.uninitialize();
 
         componentModel.removeComponentModelListener( componentModelListener_ );
-        if( componentModel instanceof ContainerModel )
+        if( containerModel != null )
         {
-            ((ContainerModel)componentModel).removeContainerModelListener( containerModelListener_ );
+            containerModel.removeContainerModelListener( containerModelListener_ );
         }
     }
 
@@ -353,6 +361,24 @@ public final class ContainerModel
         assert getLock().isHeldByCurrentThread();
 
         return (componentModelIndex < componentModels_.size()) ? componentModels_.get( componentModelIndex ) : null;
+    }
+
+    /**
+     * Gets the count of component models in this container model.
+     * 
+     * @return The count of component models in this container model.
+     */
+    public int getComponentModelCount()
+    {
+        getLock().lock();
+        try
+        {
+            return componentModels_.size();
+        }
+        finally
+        {
+            getLock().unlock();
+        }
     }
 
     /**

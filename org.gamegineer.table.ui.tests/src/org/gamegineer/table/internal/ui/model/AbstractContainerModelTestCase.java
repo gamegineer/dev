@@ -466,6 +466,22 @@ public abstract class AbstractContainerModelTestCase
     }
 
     /**
+     * Ensures the {@link ContainerModel#getComponentModelCount} method returns
+     * the correct value.
+     */
+    @Test
+    public void testGetComponentModelCount()
+    {
+        getContainerModel().getComponent().addComponent( createUniqueComponent() );
+        getContainerModel().getComponent().addComponent( createUniqueComponent() );
+        getContainerModel().getComponent().addComponent( createUniqueComponent() );
+
+        final int actualValue = getContainerModel().getComponentModelCount();
+
+        assertEquals( 3, actualValue );
+    }
+
+    /**
      * Ensures the {@link ContainerModel#removeContainerModelListener} method
      * throws an exception when passed a listener that is absent from the
      * container model listener collection.
