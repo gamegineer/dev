@@ -30,6 +30,9 @@ import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.internal.ui.Debug;
+import org.gamegineer.table.internal.ui.model.ComponentModel;
+import org.gamegineer.table.internal.ui.model.ContainerModel;
+import org.gamegineer.table.internal.ui.model.TableModel;
 
 /**
  * A collection of useful methods for debugging.
@@ -70,6 +73,26 @@ public final class DebugUtils
 
         final TableTracer tableTracer = new TableTracer();
         tableTracer.trace( table );
+    }
+
+    /**
+     * Traces the structure of the specified table model.
+     * 
+     * @param tableModel
+     *        The table model; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code tableModel} is {@code null}.
+     */
+    public static void trace(
+        /* @NonNull */
+        final TableModel tableModel )
+    {
+        assertArgumentNotNull( tableModel, "tableModel" ); //$NON-NLS-1$
+
+        final TableModelTracer tableModelTracer = new TableModelTracer();
+        tableModelTracer.trace( tableModel );
+
     }
 
 
@@ -197,6 +220,133 @@ public final class DebugUtils
                 for( final IComponent childComponent : ((IContainer)component).getComponents() )
                 {
                     trace( childComponent );
+                }
+
+                --indentLevel_;
+            }
+        }
+    }
+
+    /**
+     * Traces the structure of a table model.
+     */
+    @NotThreadSafe
+    private static final class TableModelTracer
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The string used to indent a trace. */
+        private static final String INDENT = "  "; //$NON-NLS-1$
+
+        /** The current indent level. */
+        private int indentLevel_;
+
+        /** The string builder. */
+        private final StringBuilder stringBuilder_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code TableModelTracer} class.
+         */
+        TableModelTracer()
+        {
+            indentLevel_ = 0;
+            stringBuilder_ = new StringBuilder();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /**
+         * Formats the specified component model.
+         * 
+         * @param componentModel
+         *        The component model; must not be {@code null}.
+         * 
+         * @return The formatted component model; never {@code null}.
+         */
+        /* @NonNull */
+        private String format(
+            /* @NonNull */
+            final ComponentModel componentModel )
+        {
+            assert componentModel != null;
+
+            stringBuilder_.setLength( 0 );
+
+            for( int index = 0; index < indentLevel_; ++index )
+            {
+                stringBuilder_.append( INDENT );
+            }
+
+            final List<ComponentPath> componentPaths = componentModel.getPath().toList();
+            for( int index = 0, size = componentPaths.size(); index < size; ++index )
+            {
+                stringBuilder_.append( componentPaths.get( index ).getIndex() );
+                if( index < (size - 1) )
+                {
+                    stringBuilder_.append( '.' );
+                }
+            }
+
+            stringBuilder_.append( " : " ); //$NON-NLS-1$
+            stringBuilder_.append( componentModel.getComponent().getSurfaceDesign( componentModel.getComponent().getOrientation() ).getId() );
+
+            return stringBuilder_.toString();
+        }
+
+        /**
+         * Traces the structure of the specified table model.
+         * 
+         * @param tableModel
+         *        The table model; must not be {@code null}.
+         */
+        void trace(
+            /* @NonNull */
+            final TableModel tableModel )
+        {
+            assert tableModel != null;
+
+            tableModel.getTableEnvironmentModel().getLock().lock();
+            try
+            {
+                trace( tableModel.getTabletopModel() );
+            }
+            finally
+            {
+                tableModel.getTableEnvironmentModel().getLock().unlock();
+            }
+        }
+
+        /**
+         * Traces the structure of the specified component model.
+         * 
+         * @param componentModel
+         *        The component model; must not be {@code null}.
+         */
+        private void trace(
+            /* @NonNull */
+            final ComponentModel componentModel )
+        {
+            assert componentModel != null;
+
+            Debug.getDefault().trace( Debug.OPTION_DEFAULT, format( componentModel ) );
+
+            if( componentModel instanceof ContainerModel )
+            {
+                ++indentLevel_;
+
+                for( final ComponentModel childComponentModel : ((ContainerModel)componentModel).getComponentModels() )
+                {
+                    trace( childComponentModel );
                 }
 
                 --indentLevel_;

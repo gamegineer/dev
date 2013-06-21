@@ -76,6 +76,11 @@ final class NlsMessages
     /** The debug trace table action accelerator. */
     public static String DebugTraceTableAction_accelerator;
 
+    // --- DebugTraceTableModelAction ---------------------------------------
+
+    /** The debug trace table model action accelerator. */
+    public static String DebugTraceTableModelAction_accelerator;
+
     // --- DisconnectTableNetworkAction -------------------------------------
 
     /** The disconnect table network action mnemonic. */

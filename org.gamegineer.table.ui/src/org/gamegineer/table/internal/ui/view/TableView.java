@@ -291,6 +291,7 @@ final class TableView
     private void bindActions()
     {
         bindActionInput( Actions.getDebugTraceTableAction() );
+        bindActionInput( Actions.getDebugTraceTableModelAction() );
 
         final ActionListener setContainerLayoutActionListener = new ActionListener()
         {
@@ -336,6 +337,17 @@ final class TableView
                 final ActionEvent event )
             {
                 debugTraceTable();
+            }
+        } );
+        actionMediator_.bindActionListener( Actions.getDebugTraceTableModelAction(), new ActionListener()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent event )
+            {
+                debugTraceTableModel();
             }
         } );
         actionMediator_.bindActionListener( Actions.getDisconnectTableNetworkAction(), new ActionListener()
@@ -820,6 +832,14 @@ final class TableView
     private void debugTraceTable()
     {
         DebugUtils.trace( model_.getTable() );
+    }
+
+    /**
+     * Dumps the content of the table model using the debug trace facility.
+     */
+    private void debugTraceTableModel()
+    {
+        DebugUtils.trace( model_ );
     }
 
     /**

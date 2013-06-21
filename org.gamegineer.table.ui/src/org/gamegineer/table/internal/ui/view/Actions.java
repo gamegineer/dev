@@ -53,6 +53,9 @@ final class Actions
     /** The identifier of the action used to debug trace the table. */
     private static final Object DEBUG_TRACE_TABLE_ACTION_ID = "debugTraceTableAction"; //$NON-NLS-1$
 
+    /** The identifier of the action used to debug trace the table model. */
+    private static final Object DEBUG_TRACE_TABLE_MODEL_ACTION_ID = "debugTraceTableModelAction"; //$NON-NLS-1$
+
     /** The identifier of the action used to disconnect a table network. */
     private static final Object DISCONNECT_TABLE_NETWORK_ACTION_ID = "disconnectTableNetworkAction"; //$NON-NLS-1$
 
@@ -199,6 +202,14 @@ final class Actions
 
             {
                 putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( NlsMessages.DebugTraceTableAction_accelerator ) );
+            }
+        } );
+        actions.add( new BasicAction( DEBUG_TRACE_TABLE_MODEL_ACTION_ID )
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( NlsMessages.DebugTraceTableModelAction_accelerator ) );
             }
         } );
         actions.add( new BasicAction( DISCONNECT_TABLE_NETWORK_ACTION_ID )
@@ -448,6 +459,17 @@ final class Actions
     static BasicAction getDebugTraceTableAction()
     {
         return actions_.get( DEBUG_TRACE_TABLE_ACTION_ID );
+    }
+
+    /**
+     * Gets the debug trace table model action.
+     * 
+     * @return The debug trace table model action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getDebugTraceTableModelAction()
+    {
+        return actions_.get( DEBUG_TRACE_TABLE_MODEL_ACTION_ID );
     }
 
     /**
