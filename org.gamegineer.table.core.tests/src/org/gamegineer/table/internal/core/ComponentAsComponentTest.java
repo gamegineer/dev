@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.core;
 
 import java.lang.reflect.Method;
 import org.gamegineer.table.core.AbstractComponentTestCase;
-import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ITableEnvironmentContext;
 import org.gamegineer.table.core.TestComponentStrategies;
 
@@ -79,7 +78,15 @@ public final class ComponentAsComponentTest
     protected void fireComponentBoundsChanged(
         final Component component )
     {
-        component.fireComponentBoundsChanged( new ComponentEvent( component, null ) );
+        component.getLock().lock();
+        try
+        {
+            component.fireComponentBoundsChanged();
+        }
+        finally
+        {
+            component.getLock().unlock();
+        }
     }
 
     /**
@@ -103,9 +110,18 @@ public final class ComponentAsComponentTest
 
         try
         {
-            final Method method = Component.class.getDeclaredMethod( methodName, ComponentEvent.class );
+            final Method method = Component.class.getDeclaredMethod( methodName );
             method.setAccessible( true );
-            method.invoke( component, new ComponentEvent( component, null ) );
+
+            component.getLock().lock();
+            try
+            {
+                method.invoke( component );
+            }
+            finally
+            {
+                component.getLock().unlock();
+            }
         }
         catch( final Exception e )
         {

@@ -29,6 +29,7 @@ import java.awt.Rectangle;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.IdentityHashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -75,6 +76,7 @@ class Component
     private static final String SURFACE_DESIGN_IDS_MEMENTO_ATTRIBUTE_NAME = "component.surfaceDesignIds"; //$NON-NLS-1$
 
     /** The collection of component listeners. */
+    @GuardedBy( "getLock()" )
     private final CopyOnWriteArrayList<IComponentListener> componentListeners_;
 
     /** The component location in table coordinates. */
@@ -152,7 +154,16 @@ class Component
         final IComponentListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( componentListeners_.addIfAbsent( listener ), "listener", NonNlsMessages.Component_addComponentListener_listener_registered ); //$NON-NLS-1$
+
+        getLock().lock();
+        try
+        {
+            assertArgumentLegal( componentListeners_.addIfAbsent( listener ), "listener", NonNlsMessages.Component_addComponentListener_listener_registered ); //$NON-NLS-1$
+        }
+        finally
+        {
+            getLock().unlock();
+        }
     }
 
     /**
@@ -162,7 +173,7 @@ class Component
      */
     @GuardedBy( "getLock()" )
     /* @NonNull */
-    final ComponentEvent createComponentEvent()
+    private ComponentEvent createComponentEvent()
     {
         assert getLock().isHeldByCurrentThread();
 
@@ -191,81 +202,93 @@ class Component
     }
 
     /**
-     * Fires the specified component bounds changed event.
-     * 
-     * @param event
-     *        The event; must not be {@code null}.
+     * Fires a component bounds changed event.
      */
-    final void fireComponentBoundsChanged(
-        /* @NonNull */
-        final ComponentEvent event )
+    @GuardedBy( "getLock()" )
+    final void fireComponentBoundsChanged()
     {
-        assert event != null;
-        assert !getLock().isHeldByCurrentThread();
+        assert getLock().isHeldByCurrentThread();
 
-        for( final IComponentListener listener : componentListeners_ )
+        final ComponentEvent event = createComponentEvent();
+        final Iterator<IComponentListener> iterator = componentListeners_.iterator();
+        fireEventNotification( new Runnable()
         {
-            try
+            @Override
+            public void run()
             {
-                listener.componentBoundsChanged( event );
+                while( iterator.hasNext() )
+                {
+                    try
+                    {
+                        iterator.next().componentBoundsChanged( event );
+                    }
+                    catch( final RuntimeException e )
+                    {
+                        Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Component_componentBoundsChanged_unexpectedException, e );
+                    }
+                }
             }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Component_componentBoundsChanged_unexpectedException, e );
-            }
-        }
+        } );
     }
 
     /**
-     * Fires the specified component orientation changed event.
-     * 
-     * @param event
-     *        The event; must not be {@code null}.
+     * Fires a component orientation changed event.
      */
-    private void fireComponentOrientationChanged(
-        /* @NonNull */
-        final ComponentEvent event )
+    @GuardedBy( "getLock()" )
+    private void fireComponentOrientationChanged()
     {
-        assert event != null;
-        assert !getLock().isHeldByCurrentThread();
+        assert getLock().isHeldByCurrentThread();
 
-        for( final IComponentListener listener : componentListeners_ )
+        final ComponentEvent event = createComponentEvent();
+        final Iterator<IComponentListener> iterator = componentListeners_.iterator();
+        fireEventNotification( new Runnable()
         {
-            try
+            @Override
+            public void run()
             {
-                listener.componentOrientationChanged( event );
+                while( iterator.hasNext() )
+                {
+                    try
+                    {
+                        iterator.next().componentOrientationChanged( event );
+                    }
+                    catch( final RuntimeException e )
+                    {
+                        Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Component_componentOrientationChanged_unexpectedException, e );
+                    }
+                }
             }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Component_componentOrientationChanged_unexpectedException, e );
-            }
-        }
+        } );
     }
 
     /**
-     * Fires the specified component surface design changed event.
-     * 
-     * @param event
-     *        The event; must not be {@code null}.
+     * Fires a component surface design changed event.
      */
-    private void fireComponentSurfaceDesignChanged(
-        /* @NonNull */
-        final ComponentEvent event )
+    @GuardedBy( "getLock()" )
+    private void fireComponentSurfaceDesignChanged()
     {
-        assert event != null;
-        assert !getLock().isHeldByCurrentThread();
+        assert getLock().isHeldByCurrentThread();
 
-        for( final IComponentListener listener : componentListeners_ )
+        final ComponentEvent event = createComponentEvent();
+        final Iterator<IComponentListener> iterator = componentListeners_.iterator();
+        fireEventNotification( new Runnable()
         {
-            try
+            @Override
+            public void run()
             {
-                listener.componentSurfaceDesignChanged( event );
+                while( iterator.hasNext() )
+                {
+                    try
+                    {
+                        iterator.next().componentSurfaceDesignChanged( event );
+                    }
+                    catch( final RuntimeException e )
+                    {
+                        Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Component_componentSurfaceDesignChanged_unexpectedException, e );
+                    }
+                }
             }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Component_componentSurfaceDesignChanged_unexpectedException, e );
-            }
-        }
+        } );
     }
 
     /**
@@ -602,7 +625,16 @@ class Component
         final IComponentListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( componentListeners_.remove( listener ), "listener", NonNlsMessages.Component_removeComponentListener_listener_notRegistered ); //$NON-NLS-1$
+
+        getLock().lock();
+        try
+        {
+            assertArgumentLegal( componentListeners_.remove( listener ), "listener", NonNlsMessages.Component_removeComponentListener_listener_notRegistered ); //$NON-NLS-1$
+        }
+        finally
+        {
+            getLock().unlock();
+        }
     }
 
     /*
@@ -656,23 +688,11 @@ class Component
         assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
         assertArgumentLegal( isSupportedOrientation( orientation ), "orientation", NonNlsMessages.Component_orientation_illegal ); //$NON-NLS-1$
 
-        final ComponentEvent componentOrientationChangedEvent;
-
         getLock().lock();
         try
         {
             orientation_ = orientation;
-            componentOrientationChangedEvent = createComponentEvent();
-
-            fireEventNotification( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    fireComponentOrientationChanged( componentOrientationChangedEvent );
-                }
-            } );
+            fireComponentOrientationChanged();
         }
         finally
         {
@@ -729,23 +749,11 @@ class Component
         assertArgumentLegal( isSupportedOrientation( orientation ), "orientation", NonNlsMessages.Component_orientation_illegal ); //$NON-NLS-1$
         assertArgumentNotNull( surfaceDesign, "surfaceDesign" ); //$NON-NLS-1$
 
-        final ComponentEvent componentSurfaceDesignChangedEvent;
-
         getLock().lock();
         try
         {
             surfaceDesigns_.put( orientation, surfaceDesign );
-            componentSurfaceDesignChangedEvent = createComponentEvent();
-
-            fireEventNotification( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    fireComponentSurfaceDesignChanged( componentSurfaceDesignChangedEvent );
-                }
-            } );
+            fireComponentSurfaceDesignChanged();
         }
         finally
         {
@@ -826,16 +834,7 @@ class Component
 
         location_.translate( offset.width, offset.height );
         origin_.translate( offset.width, offset.height );
-        final ComponentEvent componentBoundsChangedEvent = createComponentEvent();
-
-        fireEventNotification( new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                fireComponentBoundsChanged( componentBoundsChangedEvent );
-            }
-        } );
+        fireComponentBoundsChanged();
     }
 
     /**

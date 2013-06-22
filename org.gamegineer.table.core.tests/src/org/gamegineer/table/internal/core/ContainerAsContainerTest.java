@@ -22,12 +22,8 @@
 package org.gamegineer.table.internal.core;
 
 import java.lang.reflect.Method;
-import org.easymock.EasyMock;
 import org.gamegineer.table.core.AbstractContainerTestCase;
-import org.gamegineer.table.core.ComponentEvent;
-import org.gamegineer.table.core.ContainerContentChangedEvent;
-import org.gamegineer.table.core.ContainerEvent;
-import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.ComponentStrategies;
 import org.gamegineer.table.core.ITableEnvironmentContext;
 import org.gamegineer.table.core.TestComponentStrategies;
 
@@ -93,7 +89,15 @@ public final class ContainerAsContainerTest
     protected void fireComponentBoundsChanged(
         final Container component )
     {
-        component.fireComponentBoundsChanged( new ComponentEvent( component, null ) );
+        component.getLock().lock();
+        try
+        {
+            component.fireComponentBoundsChanged();
+        }
+        finally
+        {
+            component.getLock().unlock();
+        }
     }
 
     /**
@@ -117,9 +121,18 @@ public final class ContainerAsContainerTest
 
         try
         {
-            final Method method = Component.class.getDeclaredMethod( methodName, ComponentEvent.class );
+            final Method method = Component.class.getDeclaredMethod( methodName );
             method.setAccessible( true );
-            method.invoke( container, new ComponentEvent( container, null ) );
+
+            container.getLock().lock();
+            try
+            {
+                method.invoke( container );
+            }
+            finally
+            {
+                container.getLock().unlock();
+            }
         }
         catch( final Exception e )
         {
@@ -178,9 +191,18 @@ public final class ContainerAsContainerTest
 
         try
         {
-            final Method method = Container.class.getDeclaredMethod( methodName, ContainerContentChangedEvent.class );
+            final Method method = Container.class.getDeclaredMethod( methodName, Component.class, int.class );
             method.setAccessible( true );
-            method.invoke( container, new ContainerContentChangedEvent( container, container.getPath(), EasyMock.createMock( IComponent.class ), 0 ) );
+
+            container.getLock().lock();
+            try
+            {
+                method.invoke( container, new Component( container.getTableEnvironment(), ComponentStrategies.NULL_COMPONENT ), Integer.valueOf( 0 ) );
+            }
+            finally
+            {
+                container.getLock().unlock();
+            }
         }
         catch( final Exception e )
         {
@@ -209,9 +231,18 @@ public final class ContainerAsContainerTest
 
         try
         {
-            final Method method = Container.class.getDeclaredMethod( methodName, ContainerEvent.class );
+            final Method method = Container.class.getDeclaredMethod( methodName );
             method.setAccessible( true );
-            method.invoke( container, new ContainerEvent( container, container.getPath() ) );
+
+            container.getLock().lock();
+            try
+            {
+                method.invoke( container );
+            }
+            finally
+            {
+                container.getLock().unlock();
+            }
         }
         catch( final Exception e )
         {
