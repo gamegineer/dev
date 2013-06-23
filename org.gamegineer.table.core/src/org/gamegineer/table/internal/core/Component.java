@@ -568,6 +568,27 @@ class Component
     }
 
     /**
+     * Increments the revision number of the table associated with this
+     * component.
+     * 
+     * <p>
+     * This method does nothing if this component is not associated with a
+     * table.
+     * </p>
+     */
+    @GuardedBy( "getLock()" )
+    final void incrementTableRevisionNumber()
+    {
+        assert getLock().isHeldByCurrentThread();
+
+        final Table table = getTable();
+        if( table != null )
+        {
+            table.incrementRevisionNumber();
+        }
+    }
+
+    /**
      * Indicates the specified component orientation is supported.
      * 
      * @param orientation
@@ -692,6 +713,7 @@ class Component
         try
         {
             orientation_ = orientation;
+            incrementTableRevisionNumber();
             fireComponentOrientationChanged();
         }
         finally
@@ -753,6 +775,7 @@ class Component
         try
         {
             surfaceDesigns_.put( orientation, surfaceDesign );
+            incrementTableRevisionNumber();
             fireComponentSurfaceDesignChanged();
         }
         finally
@@ -834,6 +857,7 @@ class Component
 
         location_.translate( offset.width, offset.height );
         origin_.translate( offset.width, offset.height );
+        incrementTableRevisionNumber();
         fireComponentBoundsChanged();
     }
 

@@ -149,6 +149,9 @@ final class NonNlsMessages
     /** The table model listener is already registered. */
     public static String TableModel_addTableModelListener_listener_registered;
 
+    /** The version control extension is not available. */
+    public static String TableModel_getTableRevisionNumber_versionControlNotAvailable;
+
     /** An error occurred while reading the table memento. */
     public static String TableModel_readTableMemento_error;
 

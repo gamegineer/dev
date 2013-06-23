@@ -230,6 +230,11 @@ final class Container
             final Rectangle newBounds = getBounds();
             final boolean containerBoundsChanged = !newBounds.equals( oldBounds );
 
+            if( containerBoundsChanged || !addedComponents.isEmpty() )
+            {
+                incrementTableRevisionNumber();
+            }
+
             int componentIndex = firstComponentIndex;
             for( final Component component : addedComponents )
             {
@@ -785,6 +790,11 @@ final class Container
             final Rectangle newBounds = getBounds();
             final boolean containerBoundsChanged = !newBounds.equals( oldBounds );
 
+            if( containerBoundsChanged || !removedComponents.isEmpty() )
+            {
+                incrementTableRevisionNumber();
+            }
+
             // ensure events are fired in order from highest index to lowest index
             int componentIndex = componentRangeStrategy.getUpperIndex();
             for( final Component component : IterableUtils.reverse( removedComponents ) )
@@ -882,6 +892,7 @@ final class Container
                 containerBoundsChanged = !newBounds.equals( oldBounds );
             }
 
+            incrementTableRevisionNumber();
             fireContainerLayoutChanged();
             if( containerBoundsChanged )
             {

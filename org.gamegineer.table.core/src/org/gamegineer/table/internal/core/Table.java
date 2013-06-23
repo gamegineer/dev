@@ -41,6 +41,7 @@ import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableEnvironmentLock;
 import org.gamegineer.table.core.dnd.IDragContext;
 import org.gamegineer.table.core.dnd.IDragSource;
+import org.gamegineer.table.core.version.IVersionControl;
 import org.gamegineer.table.internal.core.strategies.InternalComponentStrategies;
 
 /**
@@ -48,7 +49,7 @@ import org.gamegineer.table.internal.core.strategies.InternalComponentStrategies
  */
 @ThreadSafe
 final class Table
-    implements IComponentParent, IDragSource, ITable
+    implements IComponentParent, IDragSource, ITable, IVersionControl
 {
     // ======================================================================
     // Fields
@@ -83,6 +84,10 @@ final class Table
     @GuardedBy( "getLock()" )
     private IDragContext dragContext_;
 
+    /** The table revision number. */
+    @GuardedBy( "getLock()" )
+    private long revisionNumber_;
+
     /** The table environment. */
     private final TableEnvironment tableEnvironment_;
 
@@ -107,6 +112,7 @@ final class Table
         assert tableEnvironment != null;
 
         dragContext_ = null;
+        revisionNumber_ = 0L;
         tableEnvironment_ = tableEnvironment;
         tabletop_ = new Container( tableEnvironment, InternalComponentStrategies.TABLETOP );
 
@@ -324,6 +330,23 @@ final class Table
     }
 
     /*
+     * @see org.gamegineer.table.core.version.IVersionControl#getRevisionNumber()
+     */
+    @Override
+    public long getRevisionNumber()
+    {
+        getLock().lock();
+        try
+        {
+            return revisionNumber_;
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.internal.core.IComponentParent#getTable()
      */
     @Override
@@ -348,6 +371,17 @@ final class Table
     public IContainer getTabletop()
     {
         return tabletop_;
+    }
+
+    /**
+     * Increments the table revision number.
+     */
+    @GuardedBy( "getLock()" )
+    void incrementRevisionNumber()
+    {
+        assert getLock().isHeldByCurrentThread();
+
+        ++revisionNumber_;
     }
 
     /**

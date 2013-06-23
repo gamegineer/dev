@@ -45,6 +45,7 @@ import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.common.persistence.serializable.ObjectStreams;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.version.IVersionControl;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.prototype.IEvaluationContextProvider;
 import org.gamegineer.table.net.IPlayer;
@@ -87,6 +88,10 @@ public final class TableModel
     /** The path to the tabletop component model. */
     private static final ComponentPath TABLETOP_MODEL_PATH = new ComponentPath( null, 0 );
 
+    /** The table revision number at which the table model was last committed. */
+    @GuardedBy( "getLock()" )
+    private long committedTableRevisionNumber_;
+
     /** The file to which the model was last saved. */
     @GuardedBy( "getLock()" )
     private File file_;
@@ -104,10 +109,6 @@ public final class TableModel
      */
     @GuardedBy( "getLock()" )
     private ComponentModel hoveredComponentModel_;
-
-    /** Indicates the table model is dirty. */
-    @GuardedBy( "getLock()" )
-    private boolean isDirty_;
 
     /** The collection of table model listeners. */
     private final CopyOnWriteArrayList<ITableModelListener> listeners_;
@@ -155,7 +156,6 @@ public final class TableModel
         file_ = null;
         focusedComponentModel_ = null;
         hoveredComponentModel_ = null;
-        isDirty_ = false;
         listeners_ = new CopyOnWriteArrayList<ITableModelListener>();
         originOffset_ = new Dimension( 0, 0 );
         table_ = table;
@@ -168,6 +168,8 @@ public final class TableModel
         tabletopModel_.initialize( this );
         tabletopModel_.addComponentModelListener( new ComponentModelListener() );
         tabletopModel_.addContainerModelListener( new ContainerModelListener() );
+
+        committedTableRevisionNumber_ = getTableRevisionNumber();
     }
 
 
@@ -731,6 +733,23 @@ public final class TableModel
     }
 
     /**
+     * Gets the current table revision number.
+     * 
+     * @return The current table revision number.
+     */
+    private long getTableRevisionNumber()
+    {
+        final IVersionControl versionControl = table_.getExtension( IVersionControl.class );
+        if( versionControl == null )
+        {
+            Loggers.getDefaultLogger().severe( NonNlsMessages.TableModel_getTableRevisionNumber_versionControlNotAvailable );
+            return -1L;
+        }
+
+        return versionControl.getRevisionNumber();
+    }
+
+    /**
      * Gets the tabletop model.
      * 
      * @return The tabletop model; never {@code null}.
@@ -752,7 +771,7 @@ public final class TableModel
         getLock().lock();
         try
         {
-            return isDirty_;
+            return committedTableRevisionNumber_ != getTableRevisionNumber();
         }
         finally
         {
@@ -790,10 +809,10 @@ public final class TableModel
         {
             table_.getTabletop().removeAllComponents();
 
+            committedTableRevisionNumber_ = getTableRevisionNumber();
             file_ = null;
             focusedComponentModel_ = null;
             hoveredComponentModel_ = null;
-            isDirty_ = false;
             originOffset_.setSize( new Dimension( 0, 0 ) );
         }
         finally
@@ -839,10 +858,10 @@ public final class TableModel
         {
             setTableMemento( table_, file );
 
+            committedTableRevisionNumber_ = getTableRevisionNumber();
             file_ = file;
             focusedComponentModel_ = null;
             hoveredComponentModel_ = null;
-            isDirty_ = false;
             originOffset_.setSize( new Dimension( 0, 0 ) );
         }
         finally
@@ -950,8 +969,8 @@ public final class TableModel
         {
             writeTableMemento( file, table_.createMemento() );
 
+            committedTableRevisionNumber_ = getTableRevisionNumber();
             file_ = file;
-            isDirty_ = false;
         }
         finally
         {
@@ -1245,16 +1264,6 @@ public final class TableModel
             final ComponentModelEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            getLock().lock();
-            try
-            {
-                isDirty_ = true;
-            }
-            finally
-            {
-                getLock().unlock();
-            }
 
             fireEventNotification( new Runnable()
             {
