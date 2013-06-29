@@ -41,6 +41,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +61,7 @@ import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.common.ui.window.WindowConstants;
 import org.gamegineer.common.ui.wizard.IWizard;
 import org.gamegineer.common.ui.wizard.WizardDialog;
+import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.ContainerLayoutRegistry;
 import org.gamegineer.table.core.IComponent;
@@ -67,7 +69,8 @@ import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.NoSuchContainerLayoutException;
 import org.gamegineer.table.core.dnd.IDragContext;
 import org.gamegineer.table.core.dnd.IDragSource;
-import org.gamegineer.table.core.dnd.PassiveDragStrategyFactory;
+import org.gamegineer.table.core.dnd.IDragStrategy;
+import org.gamegineer.table.core.dnd.IDragStrategyFactory;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.BundleImages;
 import org.gamegineer.table.internal.ui.Loggers;
@@ -1790,6 +1793,9 @@ final class TableView
         /** The drag context. */
         private IDragContext dragContext_;
 
+        /** The drag strategy. */
+        private DragStrategy dragStrategy_;
+
 
         // ==================================================================
         // Constructors
@@ -1802,6 +1808,7 @@ final class TableView
         DraggingComponentInputHandler()
         {
             dragContext_ = null;
+            dragStrategy_ = null;
         }
 
 
@@ -1825,8 +1832,7 @@ final class TableView
                     final IDragSource dragSource = model_.getTable().getExtension( IDragSource.class );
                     if( dragSource != null )
                     {
-                        // TODO: create a custom drag strategy factory to control drag strategy based on keyboard modifier state
-                        dragContext_ = dragSource.beginDrag( getMouseLocation( event ), focusedComponentModel.getComponent(), PassiveDragStrategyFactory.INSTANCE );
+                        dragContext_ = dragSource.beginDrag( getMouseLocation( event ), focusedComponentModel.getComponent(), new DragStrategyFactory( event ) );
                         if( dragContext_ == null )
                         {
                             setInputHandler( DefaultInputHandler.class, null );
@@ -1856,6 +1862,33 @@ final class TableView
         void deactivate()
         {
             dragContext_ = null;
+            dragStrategy_ = null;
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractInputHandler#keyPressed(java.awt.event.KeyEvent)
+         */
+        @Override
+        public void keyPressed(
+            final KeyEvent event )
+        {
+            if( dragStrategy_ != null )
+            {
+                dragStrategy_.setInputEvent( event );
+            }
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractInputHandler#keyReleased(java.awt.event.KeyEvent)
+         */
+        @Override
+        public void keyReleased(
+            final KeyEvent event )
+        {
+            if( dragStrategy_ != null )
+            {
+                dragStrategy_.setInputEvent( event );
+            }
         }
 
         /*
@@ -1886,6 +1919,183 @@ final class TableView
             }
 
             super.mouseReleased( event );
+        }
+
+        /**
+         * The drag strategy used the {@link DraggingComponentInputHandler}
+         * input handler is active.
+         */
+        @NotThreadSafe
+        private final class DragStrategy
+            implements IDragStrategy
+        {
+            // ==============================================================
+            // Fields
+            // ==============================================================
+
+            /** The component from which the drag-and-drop operation will begin. */
+            private final IComponent dragComponent;
+
+            /** The current input event. */
+            private InputEvent inputEvent_;
+
+            /** The successor drag strategy. */
+            private final IDragStrategy successorDragStrategy_;
+
+
+            // ==============================================================
+            // Constructors
+            // ==============================================================
+
+            /**
+             * Initializes a new instance of the {@code DragStrategy} class.
+             * 
+             * @param component
+             *        The component from which the drag-and-drop operation will
+             *        begin; must not be {@code null}.
+             * @param successorDragStrategy
+             *        The successor drag strategy to which requests are
+             *        forwarded if they cannot be handled; must not be
+             *        {@code null}.
+             * @param inputEvent
+             *        The input event used to initialize the drag strategy; must
+             *        not be {@code null}.
+             */
+            DragStrategy(
+                /* @NonNull */
+                final IComponent component,
+                /* @NonNull */
+                final IDragStrategy successorDragStrategy,
+                /* @NonNull */
+                final InputEvent inputEvent )
+            {
+                assert component != null;
+                assert successorDragStrategy != null;
+                assert inputEvent != null;
+
+                dragComponent = component;
+                inputEvent_ = inputEvent;
+                successorDragStrategy_ = successorDragStrategy;
+            }
+
+
+            // ==============================================================
+            // Methods
+            // ==============================================================
+
+            /*
+             * @see org.gamegineer.table.core.dnd.IDragStrategy#canDrop(org.gamegineer.table.core.IContainer)
+             */
+            @Override
+            public boolean canDrop(
+                final IContainer dropContainer )
+            {
+                // TODO: #86
+
+                return successorDragStrategy_.canDrop( dropContainer );
+            }
+
+            /*
+             * @see org.gamegineer.table.core.dnd.IDragStrategy#getDragComponents()
+             */
+            @Override
+            public List<IComponent> getDragComponents()
+            {
+                if( inputEvent_.isControlDown() )
+                {
+                    return Collections.singletonList( dragComponent );
+                }
+                else if( inputEvent_.isAltDown() )
+                {
+                    final IContainer container = dragComponent.getContainer();
+                    assert container != null;
+                    final List<IComponent> components = container.getComponents();
+                    final ComponentPath componentPath = dragComponent.getPath();
+                    assert componentPath != null;
+                    final int fromIndex = inputEvent_.isShiftDown() ? 0 : componentPath.getIndex();
+                    final int toIndex = inputEvent_.isShiftDown() ? componentPath.getIndex() + 1 : components.size();
+                    return components.subList( fromIndex, toIndex );
+                }
+
+                return successorDragStrategy_.getDragComponents();
+            }
+
+            /**
+             * Sets the input event associated with the drag strategy.
+             * 
+             * @param inputEvent
+             *        The input event; must not be {@code null}.
+             */
+            void setInputEvent(
+                /* @NonNull */
+                final InputEvent inputEvent )
+            {
+                assert inputEvent != null;
+
+                inputEvent_ = inputEvent;
+            }
+        }
+
+        /**
+         * Implementation of {@link IDragStrategyFactory} for creating instances
+         * of {@link DragStrategy}.
+         */
+        @Immutable
+        private final class DragStrategyFactory
+            implements IDragStrategyFactory
+        {
+            // ==============================================================
+            // Fields
+            // ==============================================================
+
+            /**
+             * The input event used to initialize a drag strategy created by
+             * this factory.
+             */
+            private final InputEvent inputEvent_;
+
+
+            // ==============================================================
+            // Constructors
+            // ==============================================================
+
+            /**
+             * Initializes a new instance of the {@code DragStrategyFactory}
+             * class.
+             * 
+             * @param inputEvent
+             *        The input event used to initialize a drag strategy created
+             *        by this factory; must not be {@code null}.
+             */
+            DragStrategyFactory(
+                /* @NonNull */
+                final InputEvent inputEvent )
+            {
+                assert inputEvent != null;
+
+                inputEvent_ = inputEvent;
+            }
+
+
+            // ==============================================================
+            // Methods
+            // ==============================================================
+
+            /*
+             * @see org.gamegineer.table.core.dnd.IDragStrategyFactory#createDragStrategy(org.gamegineer.table.core.IComponent, org.gamegineer.table.core.dnd.IDragStrategy)
+             */
+            @Override
+            public IDragStrategy createDragStrategy(
+                final IComponent component,
+                final IDragStrategy successorDragStrategy )
+            {
+                assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
+                assertArgumentNotNull( successorDragStrategy, "successorDragStrategy" ); //$NON-NLS-1$
+
+                assert dragStrategy_ == null;
+                dragStrategy_ = new DragStrategy( component, successorDragStrategy, inputEvent_ );
+                return dragStrategy_;
+            }
         }
     }
 
