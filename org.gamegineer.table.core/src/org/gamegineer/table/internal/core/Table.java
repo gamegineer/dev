@@ -41,6 +41,7 @@ import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableEnvironmentLock;
 import org.gamegineer.table.core.dnd.IDragContext;
 import org.gamegineer.table.core.dnd.IDragSource;
+import org.gamegineer.table.core.dnd.IDragStrategyFactory;
 import org.gamegineer.table.core.version.IVersionControl;
 import org.gamegineer.table.internal.core.strategies.InternalComponentStrategies;
 
@@ -133,15 +134,17 @@ final class Table
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.dnd.IDragSource#beginDrag(java.awt.Point, org.gamegineer.table.core.IComponent)
+     * @see org.gamegineer.table.core.dnd.IDragSource#beginDrag(java.awt.Point, org.gamegineer.table.core.IComponent, org.gamegineer.table.core.dnd.IDragStrategyFactory)
      */
     @Override
     public IDragContext beginDrag(
         final Point location,
-        final IComponent component )
+        final IComponent component,
+        final IDragStrategyFactory dragStrategyFactory )
     {
         assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
         assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
+        assertArgumentNotNull( dragStrategyFactory, "dragStrategyFactory" ); //$NON-NLS-1$
 
         getLock().lock();
         try
@@ -150,7 +153,7 @@ final class Table
             assertArgumentLegal( component.getTable() == this, "component", NonNlsMessages.Table_beginDrag_component_notExists ); //$NON-NLS-1$
             assertStateLegal( !isDragActive(), NonNlsMessages.Table_beginDrag_dragActive );
 
-            dragContext_ = DragContext.beginDrag( this, location, (Component)component );
+            dragContext_ = DragContext.beginDrag( this, location, (Component)component, dragStrategyFactory );
             return dragContext_;
         }
         finally

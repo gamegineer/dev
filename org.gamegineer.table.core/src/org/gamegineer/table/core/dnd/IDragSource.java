@@ -46,6 +46,9 @@ public interface IDragSource
      * @param component
      *        The component from which the drag-and-drop operation will begin;
      *        must not be {@code null}.
+     * @param dragStrategyFactory
+     *        A factory for creating the drag strategy for the drag-and-drop
+     *        operation; must not be {@code null}.
      * 
      * @return A context defining the new drag-and-drop operation or
      *         {@code null} if a drag-and-drop operation is not possible for the
@@ -59,12 +62,15 @@ public interface IDragSource
      *         If there is an active drag-and-drop operation in the associated
      *         table.
      * @throws java.lang.NullPointerException
-     *         If {@code location} or {@code component} is {@code null}.
+     *         If {@code location}, {@code component}, or
+     *         {@code dragStrategyFactory} is {@code null}.
      */
     /* @Nullable */
     public IDragContext beginDrag(
         /* @NonNull */
         Point location,
         /* @NonNull */
-        IComponent component );
+        IComponent component,
+        /* @NonNull */
+        IDragStrategyFactory dragStrategyFactory );
 }

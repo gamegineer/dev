@@ -1,5 +1,5 @@
 /*
- * NullDragStrategyFactory.java
+ * PassiveDragStrategyFactory.java
  * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Mar 16, 2013 at 9:46:20 PM.
+ * Created on Jun 27, 2013 at 11:39:31 PM.
  */
 
 package org.gamegineer.table.core.dnd;
@@ -27,10 +27,10 @@ import org.gamegineer.table.core.IComponent;
 
 /**
  * Implementation of {@link IDragStrategyFactory} for creating instances of
- * {@link NullDragStrategy}.
+ * {@link PassiveDragStrategy}.
  */
 @Immutable
-public final class NullDragStrategyFactory
+public final class PassiveDragStrategyFactory
     implements IDragStrategyFactory
 {
     // ======================================================================
@@ -38,7 +38,7 @@ public final class NullDragStrategyFactory
     // ======================================================================
 
     /** The singleton instance of this class. */
-    public static final NullDragStrategyFactory INSTANCE = new NullDragStrategyFactory();
+    public static final PassiveDragStrategyFactory INSTANCE = new PassiveDragStrategyFactory();
 
 
     // ======================================================================
@@ -46,9 +46,10 @@ public final class NullDragStrategyFactory
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code NullDragStrategyFactory} class.
+     * Initializes a new instance of the {@code PassiveDragStrategyFactory}
+     * class.
      */
-    private NullDragStrategyFactory()
+    private PassiveDragStrategyFactory()
     {
     }
 
@@ -66,8 +67,7 @@ public final class NullDragStrategyFactory
         final IDragStrategy successorDragStrategy )
     {
         assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
-        assertArgumentNotNull( successorDragStrategy, "successorDragStrategy" ); //$NON-NLS-1$
 
-        return NullDragStrategy.INSTANCE;
+        return new PassiveDragStrategy( successorDragStrategy );
     }
 }

@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.core.dnd;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.IComponent;
 
@@ -58,12 +59,15 @@ public final class DefaultDragStrategyFactory
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.dnd.IDragStrategyFactory#createDragStrategy(org.gamegineer.table.core.IComponent)
+     * @see org.gamegineer.table.core.dnd.IDragStrategyFactory#createDragStrategy(org.gamegineer.table.core.IComponent, org.gamegineer.table.core.dnd.IDragStrategy)
      */
     @Override
     public IDragStrategy createDragStrategy(
-        final IComponent component )
+        final IComponent component,
+        final IDragStrategy successorDragStrategy )
     {
+        assertArgumentNotNull( successorDragStrategy, "successorDragStrategy" ); //$NON-NLS-1$
+
         return new DefaultDragStrategy( component );
     }
 }

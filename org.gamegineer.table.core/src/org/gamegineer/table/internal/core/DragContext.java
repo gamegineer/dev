@@ -39,6 +39,7 @@ import org.gamegineer.table.core.dnd.DefaultDragStrategyFactory;
 import org.gamegineer.table.core.dnd.IDragContext;
 import org.gamegineer.table.core.dnd.IDragStrategy;
 import org.gamegineer.table.core.dnd.IDragStrategyFactory;
+import org.gamegineer.table.core.dnd.NullDragStrategy;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.dnd.IDragContext}.
@@ -143,6 +144,9 @@ final class DragContext
      *        {@code null}.
      * @param component
      *        The component to be dragged; must not be {@code null}.
+     * @param dragStrategyFactory
+     *        A factory for creating the drag strategy for the drag-and-drop
+     *        operation; must not be {@code null}.
      * 
      * @return A new instance of the {@code DragContext} class or {@code null}
      *         if a drag-and-drop operation is not possible for the specified
@@ -156,14 +160,17 @@ final class DragContext
         /* @NonNull */
         final Point location,
         /* @NonNull */
-        final Component component )
+        final Component component,
+        /* @NonNull */
+        final IDragStrategyFactory dragStrategyFactory )
     {
         assert table != null;
         assert location != null;
         assert component != null;
+        assert dragStrategyFactory != null;
         assert table.getTableEnvironment().getLock().isHeldByCurrentThread();
 
-        final IDragStrategy dragStrategy = getDragStrategy( component );
+        final IDragStrategy dragStrategy = dragStrategyFactory.createDragStrategy( component, getDefaultDragStrategy( component ) );
         final List<IComponent> dragComponents = dragStrategy.getDragComponents();
         if( dragComponents.isEmpty() )
         {
@@ -302,16 +309,16 @@ final class DragContext
     }
 
     /**
-     * Gets the drag strategy for the specified component.
+     * Gets the default drag strategy for the specified component.
      * 
      * @param component
      *        The component; must not be {@code null}.
      * 
-     * @return The drag strategy for the specified component; never {@code null}
-     *         .
+     * @return The default drag strategy for the specified component; never
+     *         {@code null}.
      */
     /* @NonNull */
-    private static IDragStrategy getDragStrategy(
+    private static IDragStrategy getDefaultDragStrategy(
         /* @NonNull */
         final IComponent component )
     {
@@ -323,7 +330,7 @@ final class DragContext
             dragStrategyFactory = DefaultDragStrategyFactory.INSTANCE;
         }
 
-        return dragStrategyFactory.createDragStrategy( component );
+        return dragStrategyFactory.createDragStrategy( component, NullDragStrategy.INSTANCE );
     }
 
     /**

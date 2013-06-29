@@ -67,6 +67,7 @@ import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.NoSuchContainerLayoutException;
 import org.gamegineer.table.core.dnd.IDragContext;
 import org.gamegineer.table.core.dnd.IDragSource;
+import org.gamegineer.table.core.dnd.PassiveDragStrategyFactory;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.BundleImages;
 import org.gamegineer.table.internal.ui.Loggers;
@@ -1824,7 +1825,8 @@ final class TableView
                     final IDragSource dragSource = model_.getTable().getExtension( IDragSource.class );
                     if( dragSource != null )
                     {
-                        dragContext_ = dragSource.beginDrag( getMouseLocation( event ), focusedComponentModel.getComponent() );
+                        // TODO: create a custom drag strategy factory to control drag strategy based on keyboard modifier state
+                        dragContext_ = dragSource.beginDrag( getMouseLocation( event ), focusedComponentModel.getComponent(), PassiveDragStrategyFactory.INSTANCE );
                         if( dragContext_ == null )
                         {
                             setInputHandler( DefaultInputHandler.class, null );

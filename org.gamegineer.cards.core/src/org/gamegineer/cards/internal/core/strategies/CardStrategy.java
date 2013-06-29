@@ -32,6 +32,7 @@ import org.gamegineer.cards.core.CardSurfaceDesignIds;
 import org.gamegineer.cards.core.CardsComponentStrategyIds;
 import org.gamegineer.table.core.AbstractComponentStrategy;
 import org.gamegineer.table.core.ComponentOrientation;
+import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
@@ -49,9 +50,6 @@ final class CardStrategy
     // ======================================================================
     // Fields
     // ======================================================================
-
-    /** The card drag strategy factory. */
-    private static final IDragStrategyFactory DRAG_STRATEGY_FACTORY = createDragStrategyFactory();
 
     /** The collection of supported card orientations. */
     private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( CardOrientation.values( CardOrientation.class ) ) );
@@ -73,50 +71,6 @@ final class CardStrategy
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Creates a drag strategy factory appropriate for cards.
-     * 
-     * @return A new drag strategy factory; never {@code null}.
-     */
-    /* @NonNull */
-    private static IDragStrategyFactory createDragStrategyFactory()
-    {
-        return new IDragStrategyFactory()
-        {
-            @Override
-            public IDragStrategy createDragStrategy(
-                final IComponent component )
-            {
-                assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
-
-                final IContainer container = component.getContainer();
-                if( (container != null) && CardsComponentStrategyIds.CARD_PILE.equals( container.getStrategy().getId() ) )
-                {
-                    return new IDragStrategy()
-                    {
-                        @Override
-                        public boolean canDrop(
-                            final IContainer dropContainer )
-                        {
-                            assertArgumentNotNull( dropContainer, "dropContainer" ); //$NON-NLS-1$
-
-                            return CardsComponentStrategyIds.CARD_PILE.equals( dropContainer.getStrategy().getId() );
-                        }
-
-                        @Override
-                        public List<IComponent> getDragComponents()
-                        {
-                            final List<IComponent> components = container.getComponents();
-                            return components.subList( component.getPath().getIndex(), components.size() );
-                        }
-                    };
-                }
-
-                return new DefaultDragStrategy( component );
-            }
-        };
-    }
 
     /*
      * @see org.gamegineer.table.core.IComponentStrategy#getDefaultOrientation()
@@ -147,7 +101,7 @@ final class CardStrategy
 
         if( type == IDragStrategyFactory.class )
         {
-            return type.cast( DRAG_STRATEGY_FACTORY );
+            return type.cast( DragStrategyFactory.INSTANCE );
         }
 
         return super.getExtension( type );
@@ -160,5 +114,145 @@ final class CardStrategy
     public Collection<ComponentOrientation> getSupportedOrientations()
     {
         return SUPPORTED_ORIENTATIONS;
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * The drag strategy for a card.
+     */
+    @Immutable
+    static final class DragStrategy
+        implements IDragStrategy
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The component from which the drag-and-drop operation will begin. */
+        private final IComponent component_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code DragStrategy} class.
+         * 
+         * @param component
+         *        The component from which the drag-and-drop operation will
+         *        begin; must not be {@code null}.
+         */
+        DragStrategy(
+            /* @NonNull */
+            final IComponent component )
+        {
+            assert component != null;
+
+            component_ = component;
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.core.dnd.IDragStrategy#canDrop(org.gamegineer.table.core.IContainer)
+         */
+        @Override
+        public boolean canDrop(
+            final IContainer dropContainer )
+        {
+            assertArgumentNotNull( dropContainer, "dropContainer" ); //$NON-NLS-1$
+
+            return CardsComponentStrategyIds.CARD_PILE.equals( dropContainer.getStrategy().getId() );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.dnd.IDragStrategy#getDragComponents()
+         */
+        @Override
+        public List<IComponent> getDragComponents()
+        {
+            final IContainer container = component_.getContainer();
+            assert container != null;
+            final List<IComponent> components = container.getComponents();
+            final ComponentPath componentPath = component_.getPath();
+            assert componentPath != null;
+            return components.subList( componentPath.getIndex(), components.size() );
+        }
+    }
+
+    /**
+     * A factory for creating instances of {@link DragStrategy}.
+     */
+    @Immutable
+    static final class DragStrategyFactory
+        implements IDragStrategyFactory
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The singleton instance of this class. */
+        static final DragStrategyFactory INSTANCE = new DragStrategyFactory();
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code DragStrategyFactory} class.
+         */
+        private DragStrategyFactory()
+        {
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.core.dnd.IDragStrategyFactory#createDragStrategy(org.gamegineer.table.core.IComponent, org.gamegineer.table.core.dnd.IDragStrategy)
+         */
+        @Override
+        public IDragStrategy createDragStrategy(
+            final IComponent component,
+            final IDragStrategy successorDragStrategy )
+        {
+            assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
+            assertArgumentNotNull( successorDragStrategy, "successorDragStrategy" ); //$NON-NLS-1$
+
+            return isContainedWithinCardPile( component ) //
+                ? new DragStrategy( component ) //
+                : new DefaultDragStrategy( component );
+        }
+
+        /**
+         * Indicates the specified component (card) is contained within a card
+         * pile.
+         * 
+         * @param component
+         *        The component (card); must not be {@code null}.
+         * 
+         * @return {@code true} if the specified component (card) is contained
+         *         within a card pile; otherwise {@code false}.
+         */
+        private static boolean isContainedWithinCardPile(
+            /* @NonNull */
+            final IComponent component )
+        {
+            assert component != null;
+
+            final IContainer container = component.getContainer();
+            return (container != null) && CardsComponentStrategyIds.CARD_PILE.equals( container.getStrategy().getId() );
+        }
     }
 }

@@ -27,20 +27,14 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.core.ComponentOrientation;
-import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.IComponent;
-import org.gamegineer.table.core.IComponentStrategy;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.core.TestComponentStrategies;
 import org.gamegineer.table.core.TestComponents;
 import org.junit.Before;
 import org.junit.Test;
@@ -107,38 +101,27 @@ public abstract class AbstractDragContextTestCase
     // ======================================================================
 
     /**
-     * Creates a new component with unique attributes using the fixture table
-     * environment.
+     * Creates a new drag strategy factory that creates drag strategies which do
+     * the following:
      * 
-     * @return A new component; never {@code null}.
+     * <ul>
+     * <li>Allow the dragged components to be dropped on any container.</li>
+     * <li>Initiates the drag operation with the target component and the
+     * sibling immediately above it, if present.</li>
+     * </ul>
+     * 
+     * @return A new drag strategy factory; never {@code null}.
      */
     /* @NonNull */
-    private IComponent createUniqueComponent()
+    private IDragStrategyFactory createFixtureDragStrategyFactory()
     {
-        return createUniqueComponent( 0, 0 );
-    }
-
-    /**
-     * Creates a new component with unique attributes using the fixture table
-     * environment with the specified origin and a custom drag strategy factory.
-     * 
-     * @param x
-     *        The x-coordinate of the container origin.
-     * @param y
-     *        The y-coordinate of the container origin.
-     * 
-     * @return A new component; never {@code null}.
-     */
-    /* @NonNull */
-    private IComponent createUniqueComponent(
-        final int x,
-        final int y )
-    {
-        final IDragStrategyFactory dragStrategyFactory = new IDragStrategyFactory()
+        return new IDragStrategyFactory()
         {
             @Override
             public IDragStrategy createDragStrategy(
-                final IComponent component )
+                final IComponent component,
+                @SuppressWarnings( "unused" )
+                final IDragStrategy successorDragStrategy )
             {
                 return new IDragStrategy()
                 {
@@ -162,104 +145,40 @@ public abstract class AbstractDragContextTestCase
                 };
             }
         };
-        return createUniqueComponent( x, y, dragStrategyFactory );
     }
 
     /**
      * Creates a new component with unique attributes using the fixture table
-     * environment with the specified origin and drag strategy factory.
+     * environment.
+     * 
+     * @return A new component; never {@code null}.
+     */
+    /* @NonNull */
+    private IComponent createUniqueComponent()
+    {
+        return createUniqueComponent( 0, 0 );
+    }
+
+    /**
+     * Creates a new component with unique attributes using the fixture table
+     * environment and the specified origin.
      * 
      * @param x
-     *        The x-coordinate of the container origin.
+     *        The x-coordinate of the component origin.
      * @param y
-     *        The y-coordinate of the container origin.
-     * @param dragStrategyFactory
-     *        The drag strategy factory; must not be {@code null}.
+     *        The y-coordinate of the component origin.
      * 
      * @return A new component; never {@code null}.
      */
     /* @NonNull */
     private IComponent createUniqueComponent(
         final int x,
-        final int y,
-        /* @NonNull */
-        final IDragStrategyFactory dragStrategyFactory )
+        final int y )
     {
-        assert dragStrategyFactory != null;
-
-        final IComponent component = TestComponents.createUniqueComponent( table_.getTableEnvironment(), createUniqueComponentStrategy( dragStrategyFactory ) );
+        final IComponent component = TestComponents.createUniqueComponent( table_.getTableEnvironment() );
         component.setOrigin( new Point( x, y ) );
         component.setSurfaceDesign( component.getOrientation(), DEFAULT_SURFACE_DESIGN );
         return component;
-    }
-
-    /**
-     * Creates a new component strategy with unique attributes that uses the
-     * specified drag strategy factory.
-     * 
-     * @param dragStrategyFactory
-     *        The drag strategy factory; must not be {@code null}.
-     * 
-     * @return A new component strategy; never {@code null}.
-     */
-    /* @NonNull */
-    private static IComponentStrategy createUniqueComponentStrategy(
-        /* @NonNull */
-        final IDragStrategyFactory dragStrategyFactory )
-    {
-        assert dragStrategyFactory != null;
-
-        final IComponentStrategy delegate = TestComponentStrategies.createUniqueComponentStrategy();
-        return new IComponentStrategy()
-        {
-            @Override
-            public Point getDefaultLocation()
-            {
-                return delegate.getDefaultLocation();
-            }
-
-            @Override
-            public ComponentOrientation getDefaultOrientation()
-            {
-                return delegate.getDefaultOrientation();
-            }
-
-            @Override
-            public Point getDefaultOrigin()
-            {
-                return delegate.getDefaultOrigin();
-            }
-
-            @Override
-            public Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns()
-            {
-                return delegate.getDefaultSurfaceDesigns();
-            }
-
-            @Override
-            public <T> T getExtension(
-                final Class<T> type )
-            {
-                if( type == IDragStrategyFactory.class )
-                {
-                    return type.cast( dragStrategyFactory );
-                }
-
-                return delegate.getExtension( type );
-            }
-
-            @Override
-            public ComponentStrategyId getId()
-            {
-                return delegate.getId();
-            }
-
-            @Override
-            public Collection<ComponentOrientation> getSupportedOrientations()
-            {
-                return delegate.getSupportedOrientations();
-            }
-        };
     }
 
     /**
@@ -327,7 +246,7 @@ public abstract class AbstractDragContextTestCase
 
         beginDragLocation_ = new Point( 0, 0 );
 
-        dragContext_ = dragSource_.beginDrag( beginDragLocation_, dragComponent1 );
+        dragContext_ = dragSource_.beginDrag( beginDragLocation_, dragComponent1, createFixtureDragStrategyFactory() );
         assertNotNull( dragContext_ );
         mobileContainer_ = dragComponent1.getContainer();
     }
@@ -360,7 +279,7 @@ public abstract class AbstractDragContextTestCase
 
         dragContext_.cancel();
 
-        assertNotNull( dragSource_.beginDrag( new Point( 0, 0 ), component ) );
+        assertNotNull( dragSource_.beginDrag( new Point( 0, 0 ), component, PassiveDragStrategyFactory.INSTANCE ) );
     }
 
     /**
@@ -495,7 +414,9 @@ public abstract class AbstractDragContextTestCase
         {
             @Override
             public IDragStrategy createDragStrategy(
-                final IComponent component )
+                final IComponent component,
+                @SuppressWarnings( "unused" )
+                final IDragStrategy successorDragStrategy )
             {
                 return new IDragStrategy()
                 {
@@ -515,11 +436,11 @@ public abstract class AbstractDragContextTestCase
                 };
             }
         };
-        final IComponent component = createUniqueComponent( 1000, 1000, dragStrategyFactory );
+        final IComponent component = createUniqueComponent( 1000, 1000 );
         table_.getTabletop().addComponent( component );
         final PreDragComponentState preDragComponentState = new PreDragComponentState( component );
 
-        dragContext_ = dragSource_.beginDrag( component.getLocation(), component );
+        dragContext_ = dragSource_.beginDrag( component.getLocation(), component, dragStrategyFactory );
         dragContext_.drop( new Point( 0, 0 ) );
 
         assertEquals( preDragComponentState.container, component.getContainer() );
@@ -539,7 +460,7 @@ public abstract class AbstractDragContextTestCase
 
         dragContext_.drop( new Point( 0, 0 ) );
 
-        assertNotNull( dragSource_.beginDrag( new Point( 0, 0 ), component ) );
+        assertNotNull( dragSource_.beginDrag( new Point( 0, 0 ), component, PassiveDragStrategyFactory.INSTANCE ) );
     }
 
     /**

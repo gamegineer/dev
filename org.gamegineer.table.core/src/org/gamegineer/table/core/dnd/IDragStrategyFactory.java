@@ -39,14 +39,20 @@ public interface IDragStrategyFactory
      * @param component
      *        The component from which the drag-and-drop operation will begin;
      *        must not be {@code null}.
+     * @param successorDragStrategy
+     *        The successor drag strategy to which requests are forwarded if
+     *        they cannot be handled; must not be {@code null}.
      * 
      * @return A new drag strategy; never {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code component} is {@code null}.
+     *         If {@code component} or {@code successorDragStrategy} is
+     *         {@code null}.
      */
     /* @NonNull */
     public IDragStrategy createDragStrategy(
         /* @NonNull */
-        IComponent component );
+        IComponent component,
+        /* @NonNull */
+        IDragStrategy successorDragStrategy );
 }

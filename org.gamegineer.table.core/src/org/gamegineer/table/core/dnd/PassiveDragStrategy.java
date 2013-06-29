@@ -1,5 +1,5 @@
 /*
- * NullDragStrategyFactory.java
+ * PassiveDragStrategy.java
  * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
@@ -16,29 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Mar 16, 2013 at 9:46:20 PM.
+ * Created on Jun 27, 2013 at 11:39:23 PM.
  */
 
 package org.gamegineer.table.core.dnd;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.List;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.IContainer;
 
 /**
- * Implementation of {@link IDragStrategyFactory} for creating instances of
- * {@link NullDragStrategy}.
+ * Implementation of {@link IDragStrategy} that only delegates all operations to
+ * its successor drag strategy.
  */
 @Immutable
-public final class NullDragStrategyFactory
-    implements IDragStrategyFactory
+public final class PassiveDragStrategy
+    implements IDragStrategy
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The singleton instance of this class. */
-    public static final NullDragStrategyFactory INSTANCE = new NullDragStrategyFactory();
+    /** The successor drag strategy. */
+    private final IDragStrategy successorDragStrategy_;
 
 
     // ======================================================================
@@ -46,10 +48,21 @@ public final class NullDragStrategyFactory
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code NullDragStrategyFactory} class.
+     * Initializes a new instance of the {@code PassiveDragStrategy} class.
+     * 
+     * @param successorDragStrategy
+     *        The successor drag strategy; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code successorDragStrategy} is {@code null}.
      */
-    private NullDragStrategyFactory()
+    public PassiveDragStrategy(
+        /* @NonNull */
+        final IDragStrategy successorDragStrategy )
     {
+        assertArgumentNotNull( successorDragStrategy, "successorDragStrategy" ); //$NON-NLS-1$
+
+        successorDragStrategy_ = successorDragStrategy;
     }
 
 
@@ -58,16 +71,21 @@ public final class NullDragStrategyFactory
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.dnd.IDragStrategyFactory#createDragStrategy(org.gamegineer.table.core.IComponent, org.gamegineer.table.core.dnd.IDragStrategy)
+     * @see org.gamegineer.table.core.dnd.IDragStrategy#canDrop(org.gamegineer.table.core.IContainer)
      */
     @Override
-    public IDragStrategy createDragStrategy(
-        final IComponent component,
-        final IDragStrategy successorDragStrategy )
+    public boolean canDrop(
+        final IContainer dropContainer )
     {
-        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
-        assertArgumentNotNull( successorDragStrategy, "successorDragStrategy" ); //$NON-NLS-1$
+        return successorDragStrategy_.canDrop( dropContainer );
+    }
 
-        return NullDragStrategy.INSTANCE;
+    /*
+     * @see org.gamegineer.table.core.dnd.IDragStrategy#getDragComponents()
+     */
+    @Override
+    public List<IComponent> getDragComponents()
+    {
+        return successorDragStrategy_.getDragComponents();
     }
 }

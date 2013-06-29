@@ -22,6 +22,8 @@
 package org.gamegineer.table.core.dnd;
 
 import static org.junit.Assert.assertNotNull;
+import org.easymock.EasyMock;
+import org.gamegineer.table.core.IComponent;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -89,6 +91,16 @@ public abstract class AbstractDragStrategyFactoryTestCase
     @Test( expected = NullPointerException.class )
     public void testCreateDragStrategy_Component_Null()
     {
-        dragStrategyFactory_.createDragStrategy( null );
+        dragStrategyFactory_.createDragStrategy( null, EasyMock.createMock( IDragStrategy.class ) );
+    }
+
+    /**
+     * Ensures the {@link IDragStrategyFactory#createDragStrategy} method throws
+     * an exception when passed a {@code null} successor drag strategy.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateDragStrategy_SuccessorDragStrategy_Null()
+    {
+        dragStrategyFactory_.createDragStrategy( EasyMock.createMock( IComponent.class ), null );
     }
 }
