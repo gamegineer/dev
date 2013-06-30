@@ -40,8 +40,8 @@ public final class DefaultDragStrategy
     // Fields
     // ======================================================================
 
-    /** The drag component. */
-    private final IComponent dragComponent_;
+    /** The component from which the drag-and-drop operation will begin. */
+    private final IComponent component_;
 
 
     // ======================================================================
@@ -51,19 +51,20 @@ public final class DefaultDragStrategy
     /**
      * Initializes a new instance of the {@code DefaultDragStrategy} class.
      * 
-     * @param dragComponent
-     *        The drag component; must not be {@code null}.
+     * @param component
+     *        The component from which the drag-and-drop operation will begin;
+     *        must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code dragComponent} is {@code null}.
+     *         If {@code component} is {@code null}.
      */
     public DefaultDragStrategy(
         /* @NonNull */
-        final IComponent dragComponent )
+        final IComponent component )
     {
-        assertArgumentNotNull( dragComponent, "dragComponent" ); //$NON-NLS-1$
+        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
 
-        dragComponent_ = dragComponent;
+        component_ = component;
     }
 
 
@@ -89,6 +90,6 @@ public final class DefaultDragStrategy
     @Override
     public List<IComponent> getDragComponents()
     {
-        return Collections.singletonList( dragComponent_ );
+        return Collections.singletonList( component_ );
     }
 }
