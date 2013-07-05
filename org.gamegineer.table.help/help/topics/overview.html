@@ -24,6 +24,56 @@
 			Components can be moved by left-clicking (thus giving them the input focus) and dragging them.  To move a deeply nested component, it may be first necessary to repeatedly left-click the mouse, as described above, in order to cycle the input focus to the desired component.  Dragging a container will also drag all of its child components.  Dragging certain components may also drag other components along with it (e.g. dragging a card will drag all cards above it in the container).  Most components can be dropped on any other container, including the tabletop itself.  However, some components restrict the type of container on which they can be dropped.  If a component cannot be dropped at the current location, it will be returned to its original container.
 		</p>
 		<p>
+			You can override the default drag-and-drop behavior by using the keyboard.  Press one of the key combinations below before beginning to drag a component to obtain the specified behavior:
+		</p>
+		<table>
+			<thead>
+				<tr>
+					<th>Key Combination</th>
+					<th>Behavior</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>CTRL</td>
+					<td>
+						Only drags the focused component.
+					</td>
+				</tr>
+				<tr>
+					<td>ALT</td>
+					<td>
+						Drags the focused component and all its siblings with a higher z-order.
+					</td>
+				</tr>
+				<tr>
+					<td>SHIFT+ALT</td>
+					<td>
+						Drags the focused component and all its siblings with a lower z-order.
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p>
+			Press one of the key combinations below before dropping the components being dragged to obtain the specified behavior:
+		</p>
+		<table>
+			<thead>
+				<tr>
+					<th>Key Combination</th>
+					<th>Behavior</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>CTRL</td>
+					<td>
+						Always drops the dragged components on the container under the mouse.
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p>
 			The entire table can be panned by middle-clicking the mouse and dragging.  The <b>Reset Table Origin</b> command will reset the table origin to the window origin.
 		</p>
 		<p>
