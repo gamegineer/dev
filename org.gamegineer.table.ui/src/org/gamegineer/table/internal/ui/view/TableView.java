@@ -1990,7 +1990,10 @@ final class TableView
             public boolean canDrop(
                 final IContainer dropContainer )
             {
-                // TODO: #86
+                if( inputEvent_.isControlDown() )
+                {
+                    return true;
+                }
 
                 return successorDragStrategy_.canDrop( dropContainer );
             }
