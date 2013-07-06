@@ -1,18 +1,15 @@
 Gamegineer
 Version 0.16.0
-XX XX XXXX
+6 July 2013
 
 Defects closed:
-    None
+    * [#79] Hover rectangle still displayed after deleting ancestor of hovered component
+    * [#80] Race condition in network layer
+    * [#82] org.gamegineer.table.internal.ui.model locks are too fine
 
 Enhancements closed:
-    * [#73] Add support for setting focus to any focusable component under the mouse
-    * [#74] Add support for hot tracking focusable components
-    * [#75] Modify drag-and-drop mechanism to support any component
-    * [#76] Allow deletion of arbitrary components
-    * [#77] Allow flipping of arbitrary components
+    * [#81] Allow user to override default collection of components to be dragged
+    * [#86] Allow user to override default drop strategy
 
 Tasks closed:
-    * [#71] Upgrade to JDK 6 Update 37
-    * [#72] Use middle mouse button to pan table
-    * [#78] Add license notice to About dialog
+    None
