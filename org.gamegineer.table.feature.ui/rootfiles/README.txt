@@ -1,6 +1,6 @@
 Gamegineer
-Version 0.16.0
-6 July 2013
+Version 0.17.0
+XX XX XXXX
 
 Copyright 2008-2013 Gamegineer contributors and others. 
 All rights reserved. 
