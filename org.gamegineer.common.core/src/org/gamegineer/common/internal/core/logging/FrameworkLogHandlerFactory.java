@@ -1,6 +1,6 @@
 /*
  * FrameworkLogHandlerFactory.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -57,7 +57,7 @@ public final class FrameworkLogHandlerFactory
     {
         super( FrameworkLogHandler.class );
 
-        frameworkLog_ = new AtomicReference<FrameworkLog>( null );
+        frameworkLog_ = new AtomicReference<>( null );
     }
 
 

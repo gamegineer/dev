@@ -1,6 +1,6 @@
 /*
  * ImageRegistry.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -73,7 +73,7 @@ public final class ImageRegistry
      */
     ImageRegistry()
     {
-        images_ = new HashMap<String, Image>();
+        images_ = new HashMap<>();
         lock_ = new Object();
     }
 

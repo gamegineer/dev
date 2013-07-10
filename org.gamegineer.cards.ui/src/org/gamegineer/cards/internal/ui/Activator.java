@@ -40,7 +40,7 @@ public final class Activator
     // ======================================================================
 
     /** The singleton instance of the bundle activator. */
-    private static final AtomicReference<Activator> instance_ = new AtomicReference<Activator>();
+    private static final AtomicReference<Activator> instance_ = new AtomicReference<>();
 
     /** The bundle context. */
     @GuardedBy( "lock_" )

@@ -1,6 +1,6 @@
 /*
  * Activator.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -44,7 +44,7 @@ public final class Activator
     // ======================================================================
 
     /** The singleton instance of the bundle activator. */
-    private static final AtomicReference<Activator> instance_ = new AtomicReference<Activator>();
+    private static final AtomicReference<Activator> instance_ = new AtomicReference<>();
 
     /** The adapter manager service tracker. */
     @GuardedBy( "lock_" )
@@ -102,7 +102,7 @@ public final class Activator
 
             if( adapterManagerTracker_ == null )
             {
-                adapterManagerTracker_ = new ServiceTracker<IAdapterManager, IAdapterManager>( bundleContext_, IAdapterManager.class, null );
+                adapterManagerTracker_ = new ServiceTracker<>( bundleContext_, IAdapterManager.class, null );
                 adapterManagerTracker_.open();
             }
 
@@ -140,7 +140,7 @@ public final class Activator
 
             if( debugOptionsTracker_ == null )
             {
-                debugOptionsTracker_ = new ServiceTracker<DebugOptions, DebugOptions>( bundleContext_, DebugOptions.class, null );
+                debugOptionsTracker_ = new ServiceTracker<>( bundleContext_, DebugOptions.class, null );
                 debugOptionsTracker_.open();
             }
 
@@ -176,7 +176,7 @@ public final class Activator
 
             if( loggingServiceTracker_ == null )
             {
-                loggingServiceTracker_ = new ServiceTracker<ILoggingService, ILoggingService>( bundleContext_, ILoggingService.class, null );
+                loggingServiceTracker_ = new ServiceTracker<>( bundleContext_, ILoggingService.class, null );
                 loggingServiceTracker_.open();
             }
 

@@ -74,7 +74,7 @@ final class ComponentPrototypeMenuBuilder
         assert menuItemAction != null;
 
         menuItemAction_ = menuItemAction;
-        menuItemCollections_ = new HashMap<String, Collection<JMenuItem>>();
+        menuItemCollections_ = new HashMap<>();
         rootMenuDescriptor_ = new MenuDescriptor( null );
     }
 
@@ -99,7 +99,7 @@ final class ComponentPrototypeMenuBuilder
         Collection<JMenuItem> menuItems = menuItemCollections_.get( componentPrototype.getCategoryId() );
         if( menuItems == null )
         {
-            menuItems = new ArrayList<JMenuItem>();
+            menuItems = new ArrayList<>();
             menuItemCollections_.put( componentPrototype.getCategoryId(), menuItems );
         }
 
@@ -166,7 +166,7 @@ final class ComponentPrototypeMenuBuilder
         final JMenu menu = menuDescriptor.getMenu();
         if( menu == null )
         {
-            final Collection<String> ids = new ArrayList<String>();
+            final Collection<String> ids = new ArrayList<>();
             collectAllComponentPrototypeCategoryIds( menuDescriptor, ids );
             Loggers.getDefaultLogger().warning( NonNlsMessages.ComponentPrototypeMenuBuilder_buildMenu_orphanedCategories( ids ) );
             return false;
@@ -279,7 +279,7 @@ final class ComponentPrototypeMenuBuilder
             /* @Nullable */
             final String id )
         {
-            childMenuDescriptors_ = new LinkedHashMap<String, MenuDescriptor>();
+            childMenuDescriptors_ = new LinkedHashMap<>();
             id_ = id;
             menu_ = null;
         }

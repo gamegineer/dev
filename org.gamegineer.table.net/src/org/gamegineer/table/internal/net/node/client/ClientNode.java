@@ -1,6 +1,6 @@
 /*
  * ClientNode.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -118,7 +118,7 @@ public final class ClientNode
         handshakeCondition_ = handshakeLock_.newCondition();
         handshakeError_ = null;
         isHandshakeComplete_ = false;
-        players_ = new HashMap<String, IPlayer>();
+        players_ = new HashMap<>();
         tableManager_ = new ClientTableManager();
     }
 
@@ -293,7 +293,7 @@ public final class ClientNode
     {
         assert isNodeLayerThread();
 
-        return new ArrayList<IPlayer>( players_.values() );
+        return new ArrayList<>( players_.values() );
     }
 
     /**

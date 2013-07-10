@@ -227,7 +227,7 @@ public final class AbstractRemoteNodeTest
         throws Exception
     {
         final IServiceContext serviceContext = mocksControl_.createMock( IServiceContext.class );
-        final Capture<IMessage> messageCapture = new Capture<IMessage>();
+        final Capture<IMessage> messageCapture = new Capture<>();
         serviceContext.sendMessage( EasyMock.capture( messageCapture ) );
         final FakeMessage message = new FakeMessage();
         message.setId( IMessage.MINIMUM_ID );
@@ -256,7 +256,7 @@ public final class AbstractRemoteNodeTest
         throws Exception
     {
         final IServiceContext serviceContext = mocksControl_.createMock( IServiceContext.class );
-        final Capture<IMessage> messageCapture = new Capture<IMessage>();
+        final Capture<IMessage> messageCapture = new Capture<>();
         serviceContext.sendMessage( EasyMock.capture( messageCapture ) );
         final FakeMessage message = new FakeMessage();
         message.setId( IMessage.MINIMUM_ID );
@@ -281,7 +281,7 @@ public final class AbstractRemoteNodeTest
     public void testMessageReceived_MessageEnvelope_UnknownMessage()
     {
         final IServiceContext serviceContext = mocksControl_.createMock( IServiceContext.class );
-        final Capture<IMessage> messageCapture = new Capture<IMessage>();
+        final Capture<IMessage> messageCapture = new Capture<>();
         serviceContext.sendMessage( EasyMock.capture( messageCapture ) );
         final MessageEnvelope.HeaderBuilder headerBuilder = new MessageEnvelope.HeaderBuilder();
         final MessageEnvelope messageEnvelope = MessageEnvelope.fromByteArray( //

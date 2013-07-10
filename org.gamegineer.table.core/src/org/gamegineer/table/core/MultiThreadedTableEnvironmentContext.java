@@ -66,7 +66,7 @@ public final class MultiThreadedTableEnvironmentContext
      */
     public MultiThreadedTableEnvironmentContext()
     {
-        eventNotifications_ = new LinkedBlockingQueue<Runnable>();
+        eventNotifications_ = new LinkedBlockingQueue<>();
         lock_ = new TableEnvironmentLock();
 
         eventNotificationTaskFuture_ = Activator.getDefault().getExecutorService().submit( createEventNotificationTask() );

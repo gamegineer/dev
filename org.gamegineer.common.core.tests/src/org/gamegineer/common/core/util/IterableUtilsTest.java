@@ -61,7 +61,7 @@ public final class IterableUtilsTest
         final Object element1 = new Object();
         final Object element2 = new Object();
         final Object element3 = new Object();
-        final List<Object> list = new ArrayList<Object>( Arrays.asList( element1, element2, element3 ) );
+        final List<Object> list = new ArrayList<>( Arrays.asList( element1, element2, element3 ) );
 
         final Iterator<Object> iterator = IterableUtils.reverse( list ).iterator();
 
@@ -82,7 +82,7 @@ public final class IterableUtilsTest
         final Object element1 = new Object();
         final Object element2 = new Object();
         final Object element3 = new Object();
-        final List<Object> list = new ArrayList<Object>( Arrays.asList( element1, element2, element3 ) );
+        final List<Object> list = new ArrayList<>( Arrays.asList( element1, element2, element3 ) );
 
         final Iterator<Object> iterator = IterableUtils.reverse( list ).iterator();
         iterator.next();

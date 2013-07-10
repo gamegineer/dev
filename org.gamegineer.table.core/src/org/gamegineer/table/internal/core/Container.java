@@ -111,8 +111,8 @@ final class Container
     {
         super( tableEnvironment, strategy );
 
-        components_ = new ArrayList<Component>();
-        containerListeners_ = new CopyOnWriteArrayList<IContainerListener>();
+        components_ = new ArrayList<>();
+        containerListeners_ = new CopyOnWriteArrayList<>();
         layout_ = strategy.getDefaultLayout();
     }
 
@@ -204,7 +204,7 @@ final class Container
         getLock().lock();
         try
         {
-            final List<Component> addedComponents = new ArrayList<Component>();
+            final List<Component> addedComponents = new ArrayList<>();
             final Rectangle oldBounds = getBounds();
             int index = (boxedIndex != null) ? boxedIndex.intValue() : components_.size();
             final int firstComponentIndex = index;
@@ -554,7 +554,7 @@ final class Container
     {
         assert getLock().isHeldByCurrentThread();
 
-        final List<Object> componentMementos = new ArrayList<Object>( components_.size() );
+        final List<Object> componentMementos = new ArrayList<>( components_.size() );
         for( final Component component : components_ )
         {
             componentMementos.add( component.createMemento() );
@@ -771,7 +771,7 @@ final class Container
     {
         assert componentRangeStrategy != null;
 
-        final List<Component> removedComponents = new ArrayList<Component>();
+        final List<Component> removedComponents = new ArrayList<>();
 
         getLock().lock();
         try

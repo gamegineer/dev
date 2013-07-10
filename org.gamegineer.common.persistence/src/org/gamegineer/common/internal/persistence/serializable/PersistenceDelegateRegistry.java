@@ -1,6 +1,6 @@
 /*
  * PersistenceDelegateRegistry.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -83,8 +83,8 @@ public final class PersistenceDelegateRegistry
     public PersistenceDelegateRegistry()
     {
         lock_ = new Object();
-        persistenceDelegateProxyRegistrations_ = new HashMap<ServiceReference<IPersistenceDelegate>, PersistenceDelegateProxyRegistration>();
-        persistenceDelegates_ = new HashMap<String, IPersistenceDelegate>();
+        persistenceDelegateProxyRegistrations_ = new HashMap<>();
+        persistenceDelegates_ = new HashMap<>();
     }
 
 
@@ -118,7 +118,7 @@ public final class PersistenceDelegateRegistry
         }
         else if( propertyValue instanceof String[] )
         {
-            return new HashSet<String>( Arrays.asList( (String[])propertyValue ) );
+            return new HashSet<>( Arrays.asList( (String[])propertyValue ) );
         }
 
         Loggers.getDefaultLogger().warning( NonNlsMessages.PersistenceDelegateRegistry_getDelegatorTypeNames_noDelegators( persistenceDelegateReference ) );
@@ -160,7 +160,7 @@ public final class PersistenceDelegateRegistry
     {
         synchronized( lock_ )
         {
-            return new HashSet<String>( persistenceDelegates_.keySet() );
+            return new HashSet<>( persistenceDelegates_.keySet() );
         }
     }
 
@@ -211,7 +211,7 @@ public final class PersistenceDelegateRegistry
         synchronized( lock_ )
         {
             final PersistenceDelegateProxy persistenceDelegateProxy = new PersistenceDelegateProxy( persistenceDelegateReference );
-            final Set<String> typeNames = new HashSet<String>();
+            final Set<String> typeNames = new HashSet<>();
             for( final String typeName : getDelegatorTypeNames( persistenceDelegateReference ) )
             {
                 try
@@ -398,7 +398,7 @@ public final class PersistenceDelegateRegistry
             assert typeNames != null;
             assert persistenceDelegateProxy != null;
 
-            this.typeNames = Collections.unmodifiableSet( new HashSet<String>( typeNames ) );
+            this.typeNames = Collections.unmodifiableSet( new HashSet<>( typeNames ) );
             this.persistenceDelegateProxy = persistenceDelegateProxy;
         }
     }

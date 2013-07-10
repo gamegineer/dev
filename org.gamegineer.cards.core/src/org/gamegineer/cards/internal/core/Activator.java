@@ -1,6 +1,6 @@
 /*
  * Activator.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,7 +40,7 @@ public final class Activator
     // ======================================================================
 
     /** The singleton instance of the bundle activator. */
-    private static final AtomicReference<Activator> instance_ = new AtomicReference<Activator>();
+    private static final AtomicReference<Activator> instance_ = new AtomicReference<>();
 
     /** The bundle context. */
     @GuardedBy( "lock_" )

@@ -1,6 +1,6 @@
 /*
  * FileHistoryPreferences.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -111,7 +111,7 @@ public final class FileHistoryPreferences
     {
         synchronized( lock_ )
         {
-            return new ArrayList<File>( files_.values() );
+            return new ArrayList<>( files_.values() );
         }
     }
 

@@ -177,7 +177,7 @@ final class Actions
     @SuppressWarnings( "boxing" )
     private static Map<Object, BasicAction> createActions()
     {
-        final Collection<BasicAction> actions = new ArrayList<BasicAction>();
+        final Collection<BasicAction> actions = new ArrayList<>();
 
         actions.add( new BasicAction( ADD_COMPONENT_ACTION_ID )
         {
@@ -418,7 +418,7 @@ final class Actions
             }
         } );
 
-        final Map<Object, BasicAction> actionMap = new HashMap<Object, BasicAction>( actions.size() );
+        final Map<Object, BasicAction> actionMap = new HashMap<>( actions.size() );
         for( final BasicAction action : actions )
         {
             actionMap.put( action.getId(), action );

@@ -201,7 +201,7 @@ public final class DeckPrototypeFactory
             CardSurfaceDesignIds.FACE_SPADES_KING
         };
 
-        final List<IComponent> cards = new ArrayList<IComponent>( standardFaceDesignIds.length + 2 );
+        final List<IComponent> cards = new ArrayList<>( standardFaceDesignIds.length + 2 );
 
         for( final ComponentSurfaceDesignId faceDesignId : standardFaceDesignIds )
         {

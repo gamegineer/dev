@@ -1,6 +1,6 @@
 /*
  * AbstractNodeControllerTestCase.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -333,7 +333,7 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
             public void run()
             {
                 final Collection<IPlayer> players = nodeController_.getPlayers();
-                final Collection<IPlayer> expectedValue = new ArrayList<IPlayer>( players );
+                final Collection<IPlayer> expectedValue = new ArrayList<>( players );
 
                 players.add( EasyMock.createMock( IPlayer.class ) );
                 final Collection<IPlayer> actualValue = nodeController_.getPlayers();

@@ -141,7 +141,7 @@ public final class NetworkTableUtils
         {
             try
             {
-                final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>( componentIncrement.getSurfaceDesignIds().size() );
+                final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<>( componentIncrement.getSurfaceDesignIds().size() );
                 for( final Map.Entry<ComponentOrientation, ComponentSurfaceDesignId> entry : componentIncrement.getSurfaceDesignIds().entrySet() )
                 {
                     surfaceDesigns.put( entry.getKey(), ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( entry.getValue() ) );

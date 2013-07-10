@@ -1,6 +1,6 @@
 /*
  * BrandingUIUtils.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -127,7 +127,7 @@ public final class BrandingUIUtils
             return Collections.emptyList();
         }
 
-        final List<Image> windowImages = new ArrayList<Image>();
+        final List<Image> windowImages = new ArrayList<>();
         for( final String windowImagePath : windowImagePaths.split( "," ) ) //$NON-NLS-1$
         {
             final Image windowImage = getImage( brandingBundle, windowImagePath );

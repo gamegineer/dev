@@ -1,6 +1,6 @@
 /*
  * HelpSystem.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -99,7 +99,7 @@ public final class HelpSystem
     public HelpSystem()
     {
         branding_ = null;
-        helpSetProviderProxies_ = new HashMap<ServiceReference<IHelpSetProvider>, HelpSetProviderProxy>();
+        helpSetProviderProxies_ = new HashMap<>();
         isShutdown_ = false;
         lock_ = new Object();
         masterHelpBroker_ = null;

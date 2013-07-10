@@ -1,6 +1,6 @@
 /*
  * PlayersMessage.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -103,7 +103,7 @@ public final class PlayersMessage
         assertArgumentNotNull( localPlayerName, "localPlayerName" ); //$NON-NLS-1$
 
         assert playerNames_.size() == playerRoles_.size();
-        final Collection<IPlayer> players = new ArrayList<IPlayer>( playerNames_.size() );
+        final Collection<IPlayer> players = new ArrayList<>( playerNames_.size() );
         for( int index = 0, size = playerNames_.size(); index < size; ++index )
         {
             final String playerName = playerNames_.get( index );
@@ -138,8 +138,8 @@ public final class PlayersMessage
     {
         assertArgumentNotNull( players, "players" ); //$NON-NLS-1$
 
-        playerNames_ = new ArrayList<String>( players.size() );
-        playerRoles_ = new ArrayList<Set<PlayerRole>>( players.size() );
+        playerNames_ = new ArrayList<>( players.size() );
+        playerRoles_ = new ArrayList<>( players.size() );
         for( final IPlayer player : players )
         {
             final Set<PlayerRole> playerRoles = player.getRoles();

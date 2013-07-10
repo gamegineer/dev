@@ -1,6 +1,6 @@
 /*
  * MementoUtilsTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -85,7 +85,7 @@ public final class MementoUtilsTest
     public void setUp()
         throws Exception
     {
-        memento_ = new HashMap<String, Object>();
+        memento_ = new HashMap<>();
         memento_.put( NULL_ATTRIBUTE_NAME, null );
         memento_.put( PRESENT_ATTRIBUTE_NAME, PRESENT_ATTRIBUTE_VALUE );
     }

@@ -1,6 +1,6 @@
 /*
  * ComponentStrategyIdAsEquatableTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -65,7 +65,7 @@ public final class ComponentStrategyIdAsEquatableTest
     @Override
     protected Collection<ComponentStrategyId> createUnequalInstances()
     {
-        final Collection<ComponentStrategyId> others = new ArrayList<ComponentStrategyId>();
+        final Collection<ComponentStrategyId> others = new ArrayList<>();
         others.add( ComponentStrategyId.fromString( "otherId" ) ); //$NON-NLS-1$
         return others;
     }

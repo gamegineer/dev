@@ -55,7 +55,7 @@ public final class TableAdvisorTest
     @Test
     public void testConstructor_AppArgs_DeepCopy()
     {
-        final List<String> appArgs = new ArrayList<String>();
+        final List<String> appArgs = new ArrayList<>();
         final TableAdvisor tableAdvisor = new TableAdvisor( appArgs );
 
         appArgs.add( "arg" ); //$NON-NLS-1$

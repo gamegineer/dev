@@ -36,11 +36,14 @@ import net.jcip.annotations.NotThreadSafe;
  * A decorator for the {@link ListModel} interface that ensures its elements are
  * sorted.
  * 
+ * @param <E>
+ *        The type of the model elements.
+ * 
  * @author John O'Conner
  */
 @NotThreadSafe
-public final class SortedListModel
-    extends AbstractListModel
+public final class SortedListModel<E>
+    extends AbstractListModel<E>
 {
     // ======================================================================
     // Fields
@@ -49,27 +52,14 @@ public final class SortedListModel
     /** Serializable class version number. */
     private static final long serialVersionUID = 4725390083082651280L;
 
-    /** The default comparator used to sort elements by their natural order. */
-    private static final Comparator<?> DEFAULT_COMPARATOR = new Comparator<Object>()
-    {
-        @Override
-        @SuppressWarnings( "unchecked" )
-        public int compare(
-            final Object o1,
-            final Object o2 )
-        {
-            return ((Comparable<Object>)o1).compareTo( o2 );
-        }
-    };
-
     /** The comparator used to sort the list model. */
-    private final Comparator<?> comparator_;
+    private final Comparator<E> comparator_;
 
     /** The collection of sorted list model entries. */
     private final List<Entry> sortedEntries_;
 
     /** The unsorted list model. */
-    private final ListModel unsortedListModel_;
+    private final ListModel<E> unsortedListModel_;
 
 
     // ======================================================================
@@ -88,7 +78,7 @@ public final class SortedListModel
      */
     public SortedListModel(
         /* @NonNull */
-        final ListModel listModel )
+        final ListModel<E> listModel )
     {
         this( listModel, null );
     }
@@ -108,14 +98,14 @@ public final class SortedListModel
      */
     public SortedListModel(
         /* @NonNull */
-        final ListModel listModel,
+        final ListModel<E> listModel,
         /* @Nullable */
-        final Comparator<?> comparator )
+        final Comparator<E> comparator )
     {
         assertArgumentNotNull( listModel, "listModel" ); //$NON-NLS-1$
 
-        comparator_ = (comparator != null) ? comparator : DEFAULT_COMPARATOR;
-        sortedEntries_ = new ArrayList<Entry>( listModel.getSize() );
+        comparator_ = (comparator != null) ? comparator : createDefaultComparator();
+        sortedEntries_ = new ArrayList<>( listModel.getSize() );
         unsortedListModel_ = listModel;
 
         registerListeners();
@@ -127,11 +117,34 @@ public final class SortedListModel
     // Methods
     // ======================================================================
 
+    /**
+     * Creates a default comparator used to sort elements by their natural
+     * order.
+     * 
+     * @return A default comparator; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "static-method" )
+    private Comparator<E> createDefaultComparator()
+    {
+        return new Comparator<E>()
+        {
+            @Override
+            @SuppressWarnings( "unchecked" )
+            public int compare(
+                final E o1,
+                final E o2 )
+            {
+                return ((Comparable<E>)o1).compareTo( o2 );
+            }
+        };
+    }
+
     /*
      * @see javax.swing.ListModel#getElementAt(int)
      */
     @Override
-    public Object getElementAt(
+    public E getElementAt(
         final int index )
     {
         final int unsortedIndex = toUnsortedListModelIndex( index );

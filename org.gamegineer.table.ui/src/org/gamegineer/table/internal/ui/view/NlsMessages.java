@@ -535,7 +535,7 @@ final class NlsMessages
         final StringBuilder sb = new StringBuilder();
         sb.append( player.getName() );
 
-        final List<PlayerRole> annotatedRoles = new ArrayList<PlayerRole>( 2 );
+        final List<PlayerRole> annotatedRoles = new ArrayList<>( 2 );
         if( player.hasRole( PlayerRole.EDITOR ) )
         {
             annotatedRoles.add( PlayerRole.EDITOR );

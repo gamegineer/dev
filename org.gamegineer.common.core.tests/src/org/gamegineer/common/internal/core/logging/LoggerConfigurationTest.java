@@ -96,7 +96,7 @@ public final class LoggerConfigurationTest
     public void setUp()
         throws Exception
     {
-        properties_ = new HashMap<String, String>();
+        properties_ = new HashMap<>();
 
         // Logger with all properties configured
         properties_.put( "logger.default.filter", String.format( "%1$s.%2$s", FILTER_CLASS_NAME, FILTER_INSTANCE_NAME ) ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -137,7 +137,7 @@ public final class LoggerConfigurationTest
     {
         final String loggerName = "logger.default"; //$NON-NLS-1$
         final String propertyName = String.format( "%1$s.%2$s", loggerName, LoggingServiceConstants.PROPERTY_LOGGER_LEVEL ); //$NON-NLS-1$
-        final Map<String, String> properties = new HashMap<String, String>();
+        final Map<String, String> properties = new HashMap<>();
         properties.put( propertyName, Level.SEVERE.getName() );
 
         final LoggerConfiguration config = new LoggerConfiguration( loggerName, properties );

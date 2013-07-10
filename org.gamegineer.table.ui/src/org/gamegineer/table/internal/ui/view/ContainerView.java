@@ -73,7 +73,7 @@ final class ContainerView
     {
         super( containerModel );
 
-        componentViews_ = new ArrayList<ComponentView>();
+        componentViews_ = new ArrayList<>();
         containerModelListener_ = null;
     }
 

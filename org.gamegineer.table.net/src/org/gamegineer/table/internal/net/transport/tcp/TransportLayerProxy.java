@@ -1,6 +1,6 @@
 /*
  * TransportLayerProxy.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -96,7 +96,7 @@ final class TransportLayerProxy
         catch( final RejectedExecutionException e )
         {
             // Silently ignore request when transport layer is closed
-            return new SynchronousFuture<Void>();
+            return new SynchronousFuture<>();
         }
 
         return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
@@ -154,7 +154,7 @@ final class TransportLayerProxy
         }
         catch( final RejectedExecutionException e )
         {
-            return new SynchronousFuture<Void>( new IllegalStateException( NonNlsMessages.TransportLayerProxy_beginOpen_transportLayerClosed, e ) );
+            return new SynchronousFuture<>( new IllegalStateException( NonNlsMessages.TransportLayerProxy_beginOpen_transportLayerClosed, e ) );
         }
 
         return Activator.getDefault().getExecutorService().submit( new Callable<Void>()

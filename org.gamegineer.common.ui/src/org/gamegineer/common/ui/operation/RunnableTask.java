@@ -1,6 +1,6 @@
 /*
  * RunnableTask.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -116,7 +116,7 @@ public abstract class RunnableTask<T, V>
         final boolean isCancellable,
         final boolean isInterruptible )
     {
-        description_ = new AtomicReference<String>( "" ); //$NON-NLS-1$
+        description_ = new AtomicReference<>( "" ); //$NON-NLS-1$
         isCancellable_ = isCancellable;
         isInterruptible_ = isInterruptible;
         isProgressIndeterminate_ = new AtomicBoolean( false );
@@ -151,8 +151,8 @@ public abstract class RunnableTask<T, V>
     /**
      * Indicates the task is interruptible.
      * 
-     * @return {@code true} if the task is interruptible; otherwise {@code
-     *         false}.
+     * @return {@code true} if the task is interruptible; otherwise
+     *         {@code false}.
      */
     public final boolean isInterruptible()
     {

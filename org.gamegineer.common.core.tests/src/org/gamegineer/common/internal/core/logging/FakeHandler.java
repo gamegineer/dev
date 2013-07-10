@@ -1,6 +1,6 @@
 /*
  * FakeHandler.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -98,7 +98,7 @@ public final class FakeHandler
         {
             // no overrides
         };
-        final Dictionary<String, Object> properties = new Hashtable<String, Object>();
+        final Dictionary<String, Object> properties = new Hashtable<>();
         properties.put( ComponentConstants.COMPONENT_FACTORY, FakeHandler.class.getName() );
         return Activator.getDefault().getBundleContext().registerService( ComponentFactory.class, componentFactory, properties );
     }
@@ -123,7 +123,7 @@ public final class FakeHandler
                 throw new ComponentException( "failed to create FakeHandler" ); //$NON-NLS-1$
             }
         };
-        final Dictionary<String, Object> properties = new Hashtable<String, Object>();
+        final Dictionary<String, Object> properties = new Hashtable<>();
         properties.put( ComponentConstants.COMPONENT_FACTORY, FakeHandler.class.getName() );
         return Activator.getDefault().getBundleContext().registerService( ComponentFactory.class, componentFactory, properties );
     }

@@ -331,7 +331,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         getContainer().addComponent( createUniqueComponent() );
         final IComponent component = createUniqueComponent();
         final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
-        final Capture<ContainerContentChangedEvent> eventCapture = new Capture<ContainerContentChangedEvent>();
+        final Capture<ContainerContentChangedEvent> eventCapture = new Capture<>();
         listener.componentAdded( EasyMock.capture( eventCapture ) );
         mocksControl_.replay();
         getContainer().addContainerListener( listener );
@@ -456,7 +456,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         getContainer().addComponent( createUniqueComponent() );
         final IComponent component = createUniqueComponent();
         final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
-        final Capture<ContainerContentChangedEvent> eventCapture = new Capture<ContainerContentChangedEvent>();
+        final Capture<ContainerContentChangedEvent> eventCapture = new Capture<>();
         listener.componentAdded( EasyMock.capture( eventCapture ) );
         mocksControl_.replay();
         getContainer().addContainerListener( listener );
@@ -614,9 +614,9 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         final IComponent component1 = createUniqueComponent();
         final IComponent component2 = createUniqueComponent();
         final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
-        final Capture<ContainerContentChangedEvent> eventCapture1 = new Capture<ContainerContentChangedEvent>();
+        final Capture<ContainerContentChangedEvent> eventCapture1 = new Capture<>();
         listener.componentAdded( EasyMock.capture( eventCapture1 ) );
-        final Capture<ContainerContentChangedEvent> eventCapture2 = new Capture<ContainerContentChangedEvent>();
+        final Capture<ContainerContentChangedEvent> eventCapture2 = new Capture<>();
         listener.componentAdded( EasyMock.capture( eventCapture2 ) );
         mocksControl_.replay();
         getContainer().addContainerListener( listener );
@@ -758,9 +758,9 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         final IComponent component1 = createUniqueComponent();
         final IComponent component2 = createUniqueComponent();
         final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
-        final Capture<ContainerContentChangedEvent> eventCapture1 = new Capture<ContainerContentChangedEvent>();
+        final Capture<ContainerContentChangedEvent> eventCapture1 = new Capture<>();
         listener.componentAdded( EasyMock.capture( eventCapture1 ) );
-        final Capture<ContainerContentChangedEvent> eventCapture2 = new Capture<ContainerContentChangedEvent>();
+        final Capture<ContainerContentChangedEvent> eventCapture2 = new Capture<>();
         listener.componentAdded( EasyMock.capture( eventCapture2 ) );
         mocksControl_.replay();
         getContainer().addContainerListener( listener );
@@ -1058,9 +1058,9 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         final List<IComponent> components = Arrays.asList( createUniqueComponent(), createUniqueComponent() );
         getContainer().addComponents( components );
         final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
-        final Capture<ContainerContentChangedEvent> eventCapture1 = new Capture<ContainerContentChangedEvent>();
+        final Capture<ContainerContentChangedEvent> eventCapture1 = new Capture<>();
         listener.componentRemoved( EasyMock.capture( eventCapture1 ) );
-        final Capture<ContainerContentChangedEvent> eventCapture2 = new Capture<ContainerContentChangedEvent>();
+        final Capture<ContainerContentChangedEvent> eventCapture2 = new Capture<>();
         listener.componentRemoved( EasyMock.capture( eventCapture2 ) );
         mocksControl_.replay();
         getContainer().addContainerListener( listener );
@@ -1083,7 +1083,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test
     public void testRemoveAllComponents_NotEmpty_RemovesAllComponents()
     {
-        final List<IComponent> expectedComponents = new ArrayList<IComponent>();
+        final List<IComponent> expectedComponents = new ArrayList<>();
         expectedComponents.add( createUniqueComponent() );
         expectedComponents.add( createUniqueComponent() );
         expectedComponents.add( createUniqueComponent() );
@@ -1179,7 +1179,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         final IComponent component = createUniqueComponent();
         getContainer().addComponent( component );
         final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
-        final Capture<ContainerContentChangedEvent> eventCapture = new Capture<ContainerContentChangedEvent>();
+        final Capture<ContainerContentChangedEvent> eventCapture = new Capture<>();
         listener.componentRemoved( EasyMock.capture( eventCapture ) );
         mocksControl_.replay();
         getContainer().addContainerListener( listener );
@@ -1268,7 +1268,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         final IComponent component = createUniqueComponent();
         getContainer().addComponent( component );
         final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
-        final Capture<ContainerContentChangedEvent> eventCapture = new Capture<ContainerContentChangedEvent>();
+        final Capture<ContainerContentChangedEvent> eventCapture = new Capture<>();
         listener.componentRemoved( EasyMock.capture( eventCapture ) );
         mocksControl_.replay();
         getContainer().addContainerListener( listener );

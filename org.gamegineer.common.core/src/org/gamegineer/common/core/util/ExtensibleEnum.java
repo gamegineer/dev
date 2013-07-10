@@ -1,6 +1,6 @@
 /*
  * ExtensibleEnum.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -248,7 +248,7 @@ public abstract class ExtensibleEnum
     {
         assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
 
-        final Collection<T> values = new ArrayList<T>();
+        final Collection<T> values = new ArrayList<>();
 
         for( final Field field : type.getDeclaredFields() )
         {

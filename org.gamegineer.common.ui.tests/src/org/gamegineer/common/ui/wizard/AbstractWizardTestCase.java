@@ -1,6 +1,6 @@
 /*
  * AbstractWizardTestCase.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -123,7 +123,7 @@ public abstract class AbstractWizardTestCase
     public void testGetPages_ReturnValue_Copy()
     {
         final Collection<IWizardPage> pages = wizard_.getPages();
-        final Collection<IWizardPage> expectedPages = new ArrayList<IWizardPage>( pages );
+        final Collection<IWizardPage> expectedPages = new ArrayList<>( pages );
         pages.add( EasyMock.createMock( IWizardPage.class ) );
 
         final Collection<IWizardPage> actualPages = wizard_.getPages();

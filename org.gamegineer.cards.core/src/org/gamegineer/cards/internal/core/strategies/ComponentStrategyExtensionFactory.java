@@ -1,6 +1,6 @@
 /*
  * ComponentStrategyExtensionFactory.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -68,7 +68,7 @@ public final class ComponentStrategyExtensionFactory
      */
     static
     {
-        final Map<ComponentStrategyId, IComponentStrategy> componentStrategies = new HashMap<ComponentStrategyId, IComponentStrategy>();
+        final Map<ComponentStrategyId, IComponentStrategy> componentStrategies = new HashMap<>();
         componentStrategies.put( InternalComponentStrategies.CARD.getId(), InternalComponentStrategies.CARD );
         componentStrategies.put( InternalComponentStrategies.CARD_PILE.getId(), InternalComponentStrategies.CARD_PILE );
         COMPONENT_STRATEGIES = Collections.unmodifiableMap( componentStrategies );

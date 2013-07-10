@@ -104,7 +104,7 @@ public final class ServerNode
         super( nodeLayer, tableNetworkController );
 
         masterTable_ = null;
-        players_ = new HashMap<String, Player>();
+        players_ = new HashMap<>();
         tableManager_ = new ServerTableManager();
     }
 

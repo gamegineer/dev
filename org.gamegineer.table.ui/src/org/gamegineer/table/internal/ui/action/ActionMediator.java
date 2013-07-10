@@ -1,6 +1,6 @@
 /*
  * ActionMediator.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -66,9 +66,9 @@ public final class ActionMediator
      */
     public ActionMediator()
     {
-        actionListeners_ = new IdentityHashMap<BasicAction, ActionListener>();
-        shouldEnablePredicates_ = new IdentityHashMap<BasicAction, IPredicate<Action>>();
-        shouldSelectPredicates_ = new IdentityHashMap<BasicAction, IPredicate<Action>>();
+        actionListeners_ = new IdentityHashMap<>();
+        shouldEnablePredicates_ = new IdentityHashMap<>();
+        shouldSelectPredicates_ = new IdentityHashMap<>();
     }
 
 

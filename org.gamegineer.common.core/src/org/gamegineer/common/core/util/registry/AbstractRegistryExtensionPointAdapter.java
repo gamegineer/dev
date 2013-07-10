@@ -1,6 +1,6 @@
 /*
  * AbstractRegistryExtensionPointAdapter.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -86,7 +86,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
     {
         extensionRegistry_ = null;
         lock_ = new Object();
-        objectRegistrations_ = new ArrayList<ObjectRegistration<ObjectType>>();
+        objectRegistrations_ = new ArrayList<>();
         objectRegistry_ = null;
     }
 
@@ -219,7 +219,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
     {
         assert configurationElement != null;
 
-        return new ObjectRegistration<ObjectType>( configurationElement.getDeclaringExtension(), createObject( configurationElement ) );
+        return new ObjectRegistration<>( configurationElement.getDeclaringExtension(), createObject( configurationElement ) );
     }
 
     /**

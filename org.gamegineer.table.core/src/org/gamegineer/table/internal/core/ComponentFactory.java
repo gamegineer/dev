@@ -1,6 +1,6 @@
 /*
  * ComponentFactory.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -161,7 +161,7 @@ final class ComponentFactory
     {
         assert component != null;
 
-        final Map<String, Object> memento = new HashMap<String, Object>();
+        final Map<String, Object> memento = new HashMap<>();
         memento.put( CLASS_NAME_MEMENTO_ATTRIBUTE_NAME, component.getClass().getName() );
         memento.put( STRATEGY_ID_MEMENTO_ATTRIBUTE_NAME, component.getStrategy().getId() );
         return memento;

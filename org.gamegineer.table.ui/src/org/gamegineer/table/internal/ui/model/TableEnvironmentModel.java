@@ -85,7 +85,7 @@ public final class TableEnvironmentModel
             @Override
             protected Queue<Runnable> initialValue()
             {
-                return new ArrayDeque<Runnable>();
+                return new ArrayDeque<>();
             }
         };
         isEventNotificationInProgress_ = new ThreadLocal<Boolean>()

@@ -1,6 +1,6 @@
 /*
  * PassiveTransportLayer.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -58,7 +58,7 @@ final class PassiveTransportLayer
     @Override
     public Future<Void> beginClose()
     {
-        return new SynchronousFuture<Void>();
+        return new SynchronousFuture<>();
     }
 
     /*
@@ -72,7 +72,7 @@ final class PassiveTransportLayer
     {
         assertArgumentNotNull( hostName, "hostName" ); //$NON-NLS-1$
 
-        return new SynchronousFuture<Void>();
+        return new SynchronousFuture<>();
     }
 
     /*

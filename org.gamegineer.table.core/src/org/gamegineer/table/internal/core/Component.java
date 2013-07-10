@@ -131,7 +131,7 @@ class Component
         assert tableEnvironment != null;
         assert strategy != null;
 
-        componentListeners_ = new CopyOnWriteArrayList<IComponentListener>();
+        componentListeners_ = new CopyOnWriteArrayList<>();
         location_ = strategy.getDefaultLocation();
         orientation_ = strategy.getDefaultOrientation();
         origin_ = strategy.getDefaultOrigin();
@@ -475,7 +475,7 @@ class Component
         getLock().lock();
         try
         {
-            return new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>( surfaceDesigns_ );
+            return new IdentityHashMap<>( surfaceDesigns_ );
         }
         finally
         {
@@ -494,7 +494,7 @@ class Component
     {
         assert getLock().isHeldByCurrentThread();
 
-        final Map<ComponentOrientation, ComponentSurfaceDesignId> surfaceDesignIds = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesignId>( surfaceDesigns_.size() );
+        final Map<ComponentOrientation, ComponentSurfaceDesignId> surfaceDesignIds = new IdentityHashMap<>( surfaceDesigns_.size() );
         for( final Map.Entry<ComponentOrientation, ComponentSurfaceDesign> entry : surfaceDesigns_.entrySet() )
         {
             surfaceDesignIds.put( entry.getKey(), entry.getValue().getId() );
@@ -805,7 +805,7 @@ class Component
 
         try
         {
-            final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>( surfaceDesignIds.size() );
+            final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<>( surfaceDesignIds.size() );
             for( final Map.Entry<ComponentOrientation, ComponentSurfaceDesignId> entry : surfaceDesignIds.entrySet() )
             {
                 surfaceDesigns.put( entry.getKey(), ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( entry.getValue() ) );

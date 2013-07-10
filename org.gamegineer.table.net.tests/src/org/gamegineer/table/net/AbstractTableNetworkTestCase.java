@@ -207,7 +207,7 @@ public abstract class AbstractTableNetworkTestCase
     public void testGetPlayers_ReturnValue_Copy()
     {
         final Collection<IPlayer> players = tableNetwork_.getPlayers();
-        final Collection<IPlayer> expectedValue = new ArrayList<IPlayer>( players );
+        final Collection<IPlayer> expectedValue = new ArrayList<>( players );
 
         players.add( EasyMock.createMock( IPlayer.class ) );
         final Collection<IPlayer> actualValue = tableNetwork_.getPlayers();

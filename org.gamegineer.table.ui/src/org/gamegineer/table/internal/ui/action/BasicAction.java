@@ -79,9 +79,9 @@ public class BasicAction
     {
         assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
 
-        actionListeners_ = new CopyOnWriteArrayList<ActionListener>();
-        shouldEnablePredicates_ = new CopyOnWriteArrayList<IPredicate<Action>>();
-        shouldSelectPredicates_ = new CopyOnWriteArrayList<IPredicate<Action>>();
+        actionListeners_ = new CopyOnWriteArrayList<>();
+        shouldEnablePredicates_ = new CopyOnWriteArrayList<>();
+        shouldSelectPredicates_ = new CopyOnWriteArrayList<>();
 
         putValue( ID_KEY, id );
     }

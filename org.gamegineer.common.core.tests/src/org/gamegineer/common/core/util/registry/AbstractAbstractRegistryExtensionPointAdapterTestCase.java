@@ -1,6 +1,6 @@
 /*
  * AbstractAbstractRegistryExtensionPointAdapterTestCase.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -175,7 +175,7 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Obje
             configurationElement
         } );
         final IRegistry<ObjectIdType, ObjectType> objectRegistry = mocksControl_.createMock( IRegistry.class );
-        final Capture<ObjectType> objectCapture = new Capture<ObjectType>();
+        final Capture<ObjectType> objectCapture = new Capture<>();
         objectRegistry.registerObject( EasyMock.capture( objectCapture ) );
         mocksControl_.replay();
         registryExtensionPointAdapter_.bindObjectRegistry( objectRegistry );
@@ -284,7 +284,7 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Obje
         } ).anyTimes();
         final IRegistry<ObjectIdType, ObjectType> objectRegistry = mocksControl_.createMock( IRegistry.class );
         objectRegistry.registerObject( EasyMock.<ObjectType>notNull() );
-        final Capture<ObjectType> objectCapture = new Capture<ObjectType>();
+        final Capture<ObjectType> objectCapture = new Capture<>();
         objectRegistry.unregisterObject( EasyMock.capture( objectCapture ) );
         mocksControl_.replay();
         registryExtensionPointAdapter_.bindObjectRegistry( objectRegistry );

@@ -1,6 +1,6 @@
 /*
  * BundleImages.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -111,7 +111,7 @@ public final class BundleImages
         assert bundleContext != null;
 
         bundleContext_ = bundleContext;
-        images_ = new HashMap<String, BufferedImage>();
+        images_ = new HashMap<>();
         lock_ = new Object();
     }
 

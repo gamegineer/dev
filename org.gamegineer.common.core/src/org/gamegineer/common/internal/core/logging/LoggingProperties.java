@@ -1,6 +1,6 @@
 /*
  * LoggingProperties.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -79,7 +79,7 @@ final class LoggingProperties
         assert name != null;
 
         // Build a list of all possible ancestor names from nearest to furthest ancestor
-        final List<String> ancestorNames = new ArrayList<String>();
+        final List<String> ancestorNames = new ArrayList<>();
         String parentName = name;
         int index = parentName.lastIndexOf( '.' );
         while( index != -1 )
@@ -205,7 +205,7 @@ final class LoggingProperties
     {
         assert properties != null;
 
-        final Map<String, String> map = new HashMap<String, String>( properties.size() );
+        final Map<String, String> map = new HashMap<>( properties.size() );
         for( final String name : properties.stringPropertyNames() )
         {
             map.put( name, properties.getProperty( name ) );

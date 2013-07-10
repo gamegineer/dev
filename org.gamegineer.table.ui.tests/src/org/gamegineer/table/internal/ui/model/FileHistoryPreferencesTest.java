@@ -1,6 +1,6 @@
 /*
  * FileHistoryPreferencesTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -80,7 +80,7 @@ public final class FileHistoryPreferencesTest
     public void testGetFiles_ReturnValue_Copy()
     {
         final List<File> files = fileHistoryPreferences_.getFiles();
-        final List<File> expectedFiles = new ArrayList<File>( files );
+        final List<File> expectedFiles = new ArrayList<>( files );
         files.add( new File( "path" ) ); //$NON-NLS-1$
 
         final List<File> actualFiles = fileHistoryPreferences_.getFiles();

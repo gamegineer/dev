@@ -1,6 +1,6 @@
 /*
  * ListSingleSelectionValueProperty.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -74,7 +74,7 @@ final class ListSingleSelectionValueProperty
     protected Object doGetValue(
         final Object source )
     {
-        return ((JList)source).getSelectedValue();
+        return ((JList<?>)source).getSelectedValue();
     }
 
     /*
@@ -85,7 +85,7 @@ final class ListSingleSelectionValueProperty
         final Object source,
         final Object value )
     {
-        ((JList)source).setSelectedValue( value, true );
+        ((JList<?>)source).setSelectedValue( value, true );
     }
 
     /*
@@ -115,7 +115,7 @@ final class ListSingleSelectionValueProperty
         // ==================================================================
 
         /** The list associated with this listener. */
-        private JList source_;
+        private JList<?> source_;
 
 
         // ==================================================================
@@ -157,7 +157,7 @@ final class ListSingleSelectionValueProperty
         {
             assert source_ == null;
 
-            source_ = (JList)source;
+            source_ = (JList<?>)source;
             source_.addListSelectionListener( this );
         }
 

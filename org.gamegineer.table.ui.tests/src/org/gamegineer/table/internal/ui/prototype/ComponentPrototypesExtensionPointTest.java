@@ -1,6 +1,6 @@
 /*
  * ComponentPrototypesExtensionPointTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -430,7 +430,7 @@ public final class ComponentPrototypesExtensionPointTest
         final int expectedMnemonic = KeyStroke.getKeyStroke( encodedExpectedMnemonic ).getKeyCode();
         final String expectedName = "name"; //$NON-NLS-1$
         final List<String> parentPath = Arrays.asList( "ancestor1Id", "ancestor2Id", "ancestor3Id" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        final List<String> expectedPath = new ArrayList<String>( parentPath );
+        final List<String> expectedPath = new ArrayList<>( parentPath );
         expectedPath.add( expectedId );
         final IConfigurationElement configurationElement = createComponentPrototypeCategoryConfigurationElement( expectedId, encodedExpectedMnemonic, expectedName, encodeCategoryPath( parentPath ) );
         mocksControl_.replay();

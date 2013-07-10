@@ -1,6 +1,6 @@
 /*
  * DispatcherTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -146,7 +146,7 @@ public final class DispatcherTest
     public void testClose_ClosesRegisteredEventHandlers()
         throws Exception
     {
-        final AtomicReference<AbstractEventHandler> eventHandlerRef = new AtomicReference<AbstractEventHandler>();
+        final AtomicReference<AbstractEventHandler> eventHandlerRef = new AtomicReference<>();
         transportLayerRunner_.run( new Callable<Void>()
         {
             @Override

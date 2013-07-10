@@ -777,7 +777,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testGetSurfaceDesigns_ReturnValue_Copy()
     {
         final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = component_.getSurfaceDesigns();
-        final Map<ComponentOrientation, ComponentSurfaceDesign> expectedSurfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>( surfaceDesigns );
+        final Map<ComponentOrientation, ComponentSurfaceDesign> expectedSurfaceDesigns = new IdentityHashMap<>( surfaceDesigns );
 
         surfaceDesigns.put( createIllegalOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
 
@@ -791,7 +791,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testGetSurfaceDesigns_ReturnValue_Keys_SupportedOrientations()
     {
-        final Set<ComponentOrientation> expectedValue = new HashSet<ComponentOrientation>( component_.getSupportedOrientations() );
+        final Set<ComponentOrientation> expectedValue = new HashSet<>( component_.getSupportedOrientations() );
 
         final Set<ComponentOrientation> actualValue = component_.getSurfaceDesigns().keySet();
 
@@ -1050,7 +1050,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testSetSurfaceDesigns_FiresComponentSurfaceDesignChangedEvent()
     {
         final Collection<ComponentOrientation> orientations = component_.getSupportedOrientations();
-        final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>( orientations.size() );
+        final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<>( orientations.size() );
         for( final ComponentOrientation orientation : orientations )
         {
             surfaceDesigns.put( orientation, TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );

@@ -1,6 +1,6 @@
 /*
  * InputQueue.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -63,8 +63,8 @@ final class InputQueue
      * Initializes a new instance of the {@code InputQueue} class.
      * 
      * @param bufferPool
-     *        The buffer pool associated with the queue; must not be {@code
-     *        null}.
+     *        The buffer pool associated with the queue; must not be
+     *        {@code null}.
      */
     InputQueue(
         /* @NonNull */
@@ -73,7 +73,7 @@ final class InputQueue
         assert bufferPool != null;
 
         bufferPool_ = bufferPool;
-        bufferQueue_ = new LinkedList<ByteBuffer>();
+        bufferQueue_ = new LinkedList<>();
     }
 
 

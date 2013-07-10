@@ -1,6 +1,6 @@
 /*
  * Model.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -118,11 +118,11 @@ final class Model
      * @return The collection of remote players; never {@code null}.
      */
     /* @NonNull */
-    ListModel getRemotePlayers()
+    ListModel<IPlayer> getRemotePlayers()
     {
         final ITableNetwork tableNetwork = tableModel_.getTableNetwork();
         final IPlayer localPlayer = tableNetwork.getLocalPlayer();
-        final DefaultListModel remotePlayers = new DefaultListModel();
+        final DefaultListModel<IPlayer> remotePlayers = new DefaultListModel<>();
         for( final IPlayer player : tableNetwork.getPlayers() )
         {
             if( player != localPlayer )
@@ -131,7 +131,7 @@ final class Model
             }
         }
 
-        return new SortedListModel( remotePlayers, Comparators.PLAYER_BY_NAME );
+        return new SortedListModel<>( remotePlayers, Comparators.PLAYER_BY_NAME );
     }
 
     /**

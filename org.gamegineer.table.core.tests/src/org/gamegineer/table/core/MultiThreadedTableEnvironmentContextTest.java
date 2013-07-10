@@ -106,7 +106,7 @@ public final class MultiThreadedTableEnvironmentContextTest
         throws Exception
     {
         final Thread testThread = Thread.currentThread();
-        final AtomicReference<Thread> eventNotificationThreadReference = new AtomicReference<Thread>();
+        final AtomicReference<Thread> eventNotificationThreadReference = new AtomicReference<>();
         final CountDownLatch countDownLatch = new CountDownLatch( 1 );
         final Runnable eventNotification = mocksControl_.createMock( Runnable.class );
         eventNotification.run();

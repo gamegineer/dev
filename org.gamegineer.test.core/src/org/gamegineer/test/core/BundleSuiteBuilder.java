@@ -1,6 +1,6 @@
 /*
  * BundleSuiteBuilder.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -98,7 +98,7 @@ public final class BundleSuiteBuilder
             return Collections.singletonList( "." ); //$NON-NLS-1$
         }
 
-        final Collection<String> classpathEntries = new ArrayList<String>();
+        final Collection<String> classpathEntries = new ArrayList<>();
         for( final String classpathEntry : classpath.split( "\\s*,\\s*" ) ) //$NON-NLS-1$
         {
             classpathEntries.add( classpathEntry );
@@ -136,7 +136,7 @@ public final class BundleSuiteBuilder
             return Collections.emptyList();
         }
 
-        final Collection<String> classpathEntries = new ArrayList<String>();
+        final Collection<String> classpathEntries = new ArrayList<>();
         final InputStream is = url.openStream();
         try
         {
@@ -208,7 +208,7 @@ public final class BundleSuiteBuilder
     {
         assert bundle != null;
 
-        final Collection<String> classNames = new ArrayList<String>();
+        final Collection<String> classNames = new ArrayList<>();
 
         // First assume the test is being run from the IDE and use the bundle's project information
         // to determine the classpath on which to search for test classes.
@@ -301,7 +301,7 @@ public final class BundleSuiteBuilder
         }
 
         final JarInputStream is = new JarInputStream( url.openStream() );
-        final Collection<String> classNames = new ArrayList<String>();
+        final Collection<String> classNames = new ArrayList<>();
         final Pattern CLASS_NAME_PATTERN = Pattern.compile( "^(.*Test)\\.class$" ); //$NON-NLS-1$
         try
         {
@@ -346,7 +346,7 @@ public final class BundleSuiteBuilder
         assert path != null;
         assert path.charAt( 0 ) != '/';
 
-        final Collection<String> classNames = new ArrayList<String>();
+        final Collection<String> classNames = new ArrayList<>();
         final Pattern CLASS_NAME_PATTERN = Pattern.compile( String.format( "^/%1$s/(.+)\\.class$", path ) ); //$NON-NLS-1$
         final String FILE_PATTERN = "*Test.class"; //$NON-NLS-1$
         final Enumeration<?> entries = bundle.findEntries( path, FILE_PATTERN, true );

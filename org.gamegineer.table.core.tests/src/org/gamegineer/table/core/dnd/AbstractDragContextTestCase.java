@@ -235,7 +235,7 @@ public abstract class AbstractDragContextTestCase
         sourceContainer.addComponent( createUniqueComponent( 15, 0 ) );
         table_.getTabletop().addComponent( sourceContainer );
 
-        preDragComponentStates_ = new ArrayList<PreDragComponentState>();
+        preDragComponentStates_ = new ArrayList<>();
         preDragComponentStates_.add( new PreDragComponentState( dragComponent1 ) );
         preDragComponentStates_.add( new PreDragComponentState( dragComponent2 ) );
 

@@ -3,7 +3,7 @@ Bundle-ClassPath: lib/jcip-annotations.jar
 Bundle-Localization: plugin
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-SymbolicName: net.jcip.annotations
 Bundle-Vendor: %bundleVendor
 Bundle-Version: 1.0.0

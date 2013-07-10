@@ -67,7 +67,7 @@ final class TableNetworkPlayerView
     private final TableModel model_;
 
     /** The player list model. */
-    private final DefaultListModel playerListModel_;
+    private final DefaultListModel<IPlayer> playerListModel_;
 
     /** The table network listener for this view. */
     private ITableNetworkListener tableNetworkListener_;
@@ -90,7 +90,7 @@ final class TableNetworkPlayerView
         assert model != null;
 
         model_ = model;
-        playerListModel_ = new DefaultListModel();
+        playerListModel_ = new DefaultListModel<>();
         tableNetworkListener_ = null;
 
         initializeComponent();
@@ -129,8 +129,8 @@ final class TableNetworkPlayerView
         playersLabel.setBorder( BorderFactory.createEmptyBorder( 0, 0, pixelConverter.convertWidthInDlusToPixels( 3 ), 0 ) );
         add( playersLabel, BorderLayout.NORTH );
 
-        final JList playerList = new JList();
-        playerList.setModel( new SortedListModel( playerListModel_, Comparators.PLAYER_BY_NAME ) );
+        final JList<IPlayer> playerList = new JList<>();
+        playerList.setModel( new SortedListModel<>( playerListModel_, Comparators.PLAYER_BY_NAME ) );
         playerList.setCellRenderer( new PlayerListCellRenderer() );
         final JScrollPane scrollPane = new JScrollPane( playerList );
         add( scrollPane, BorderLayout.CENTER );
@@ -223,7 +223,7 @@ final class TableNetworkPlayerView
          */
         @Override
         public Component getListCellRendererComponent(
-            final JList list,
+            final JList<?> list,
             final Object value,
             final int index,
             final boolean isSelected,

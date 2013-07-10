@@ -69,7 +69,7 @@ public final class MainModel
     {
         assertArgumentNotNull( tableModel, "tableModel" ); //$NON-NLS-1$
 
-        listeners_ = new CopyOnWriteArrayList<IMainModelListener>();
+        listeners_ = new CopyOnWriteArrayList<>();
         preferencesModel_ = new PreferencesModel();
         tableModel_ = tableModel;
 

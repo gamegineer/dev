@@ -1,6 +1,6 @@
 /*
  * ByteBufferUtils.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -64,7 +64,7 @@ final class ByteBufferUtils
     {
         assert buffers != null;
 
-        final Collection<ByteBuffer> duplicateBuffers = new ArrayList<ByteBuffer>( buffers.size() );
+        final Collection<ByteBuffer> duplicateBuffers = new ArrayList<>( buffers.size() );
         for( final ByteBuffer buffer : buffers )
         {
             duplicateBuffers.add( buffer.duplicate() );

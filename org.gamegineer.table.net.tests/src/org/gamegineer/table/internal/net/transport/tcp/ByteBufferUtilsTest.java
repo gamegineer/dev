@@ -1,6 +1,6 @@
 /*
  * ByteBufferUtilsTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -98,7 +98,7 @@ public final class ByteBufferUtilsTest
     public void setUp()
         throws Exception
     {
-        buffers_ = new ArrayList<ByteBuffer>();
+        buffers_ = new ArrayList<>();
         buffers_.add( ByteBuffer.wrap( new byte[] {
             0x00, 0x01, 0x02, 0x03
         } ) );

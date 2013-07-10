@@ -45,7 +45,7 @@ public final class Activator
     // ======================================================================
 
     /** The singleton instance of the bundle activator. */
-    private static final AtomicReference<Activator> instance_ = new AtomicReference<Activator>();
+    private static final AtomicReference<Activator> instance_ = new AtomicReference<>();
 
     /** The bundle context. */
     @GuardedBy( "lock_" )
@@ -123,7 +123,7 @@ public final class Activator
 
             if( componentStrategyRegistryTracker_ == null )
             {
-                componentStrategyRegistryTracker_ = new ServiceTracker<IComponentStrategyRegistry, IComponentStrategyRegistry>( bundleContext_, IComponentStrategyRegistry.class, null );
+                componentStrategyRegistryTracker_ = new ServiceTracker<>( bundleContext_, IComponentStrategyRegistry.class, null );
                 componentStrategyRegistryTracker_.open();
             }
 
@@ -146,7 +146,7 @@ public final class Activator
 
             if( componentSurfaceDesignRegistryTracker_ == null )
             {
-                componentSurfaceDesignRegistryTracker_ = new ServiceTracker<IComponentSurfaceDesignRegistry, IComponentSurfaceDesignRegistry>( bundleContext_, IComponentSurfaceDesignRegistry.class, null );
+                componentSurfaceDesignRegistryTracker_ = new ServiceTracker<>( bundleContext_, IComponentSurfaceDesignRegistry.class, null );
                 componentSurfaceDesignRegistryTracker_.open();
             }
 
@@ -169,7 +169,7 @@ public final class Activator
 
             if( containerLayoutRegistryTracker_ == null )
             {
-                containerLayoutRegistryTracker_ = new ServiceTracker<IContainerLayoutRegistry, IContainerLayoutRegistry>( bundleContext_, IContainerLayoutRegistry.class, null );
+                containerLayoutRegistryTracker_ = new ServiceTracker<>( bundleContext_, IContainerLayoutRegistry.class, null );
                 containerLayoutRegistryTracker_.open();
             }
 
@@ -205,7 +205,7 @@ public final class Activator
 
             if( executorServiceTracker_ == null )
             {
-                executorServiceTracker_ = new ServiceTracker<ExecutorService, ExecutorService>( bundleContext_, ExecutorService.class, null );
+                executorServiceTracker_ = new ServiceTracker<>( bundleContext_, ExecutorService.class, null );
                 executorServiceTracker_.open();
             }
 

@@ -1,6 +1,6 @@
 /*
  * FakePersistenceDelegateRegistry.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -56,7 +56,7 @@ public final class FakePersistenceDelegateRegistry
      */
     public FakePersistenceDelegateRegistry()
     {
-        persistenceDelegates_ = new ConcurrentHashMap<String, IPersistenceDelegate>();
+        persistenceDelegates_ = new ConcurrentHashMap<>();
     }
 
 
@@ -94,7 +94,7 @@ public final class FakePersistenceDelegateRegistry
     @Override
     public Set<String> getTypeNames()
     {
-        return new HashSet<String>( persistenceDelegates_.keySet() );
+        return new HashSet<>( persistenceDelegates_.keySet() );
     }
 
     /*

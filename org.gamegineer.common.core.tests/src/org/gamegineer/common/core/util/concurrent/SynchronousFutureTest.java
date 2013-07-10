@@ -1,6 +1,6 @@
 /*
  * SynchronousFutureTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -56,7 +56,7 @@ public final class SynchronousFutureTest
     @Test( expected = NullPointerException.class )
     public void testConstructorFromException_Exception_Null()
     {
-        new SynchronousFuture<Object>( (Throwable)null );
+        new SynchronousFuture<>( (Throwable)null );
     }
 
     /**
@@ -71,7 +71,7 @@ public final class SynchronousFutureTest
         throws Exception
     {
         final Throwable expectedValue = new Exception();
-        final Future<Object> future = new SynchronousFuture<Object>( expectedValue );
+        final Future<Object> future = new SynchronousFuture<>( expectedValue );
 
         try
         {
@@ -96,7 +96,7 @@ public final class SynchronousFutureTest
         throws Exception
     {
         final Object expectedValue = new Object();
-        final Future<Object> future = new SynchronousFuture<Object>( expectedValue );
+        final Future<Object> future = new SynchronousFuture<>( expectedValue );
 
         final Object actualValue = future.get();
 

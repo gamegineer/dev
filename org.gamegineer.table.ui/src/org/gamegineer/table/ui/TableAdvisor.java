@@ -1,6 +1,6 @@
 /*
  * TableAdvisor.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -65,7 +65,7 @@ public final class TableAdvisor
         assertArgumentNotNull( appArgs, "appArgs" ); //$NON-NLS-1$
         assertArgumentLegal( !appArgs.contains( null ), "appArgs", NonNlsMessages.TableAdvisor_ctor_appArgs_containsNullElement ); //$NON-NLS-1$
 
-        appArgs_ = Collections.unmodifiableList( new ArrayList<String>( appArgs ) );
+        appArgs_ = Collections.unmodifiableList( new ArrayList<>( appArgs ) );
     }
 
 

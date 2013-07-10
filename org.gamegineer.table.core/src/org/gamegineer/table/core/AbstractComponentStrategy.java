@@ -135,7 +135,7 @@ public abstract class AbstractComponentStrategy
     {
         final Collection<ComponentOrientation> orientations = getSupportedOrientations();
         final ComponentSurfaceDesign defaultSurfaceDesign = getDefaultSurfaceDesign();
-        final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesign>( orientations.size() );
+        final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<>( orientations.size() );
         for( final ComponentOrientation orientation : orientations )
         {
             surfaceDesigns.put( orientation, defaultSurfaceDesign );

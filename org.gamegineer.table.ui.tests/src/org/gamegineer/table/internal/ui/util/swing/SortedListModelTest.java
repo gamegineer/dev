@@ -1,6 +1,6 @@
 /*
  * SortedListModelTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -35,11 +35,6 @@ import org.junit.Test;
 public final class SortedListModelTest
 {
     // ======================================================================
-    // Fields
-    // ======================================================================
-
-
-    // ======================================================================
     // Constructors
     // ======================================================================
 
@@ -63,7 +58,7 @@ public final class SortedListModelTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_ListModel_Null()
     {
-        new SortedListModel( null );
+        new SortedListModel<>( null );
     }
 
     /**
@@ -74,7 +69,7 @@ public final class SortedListModelTest
     @Test( expected = NullPointerException.class )
     public void testConstructorFromComparator_ListModel_Null()
     {
-        new SortedListModel( null, Collator.getInstance() );
+        new SortedListModel<>( null, Collator.getInstance() );
     }
 
     /**
@@ -90,12 +85,12 @@ public final class SortedListModelTest
             new FakeElement( 1 ), //
             new FakeElement( 0 )
         };
-        final DefaultListModel unsortedListModel = new DefaultListModel();
+        final DefaultListModel<FakeElement> unsortedListModel = new DefaultListModel<>();
         for( final FakeElement element : elements )
         {
             unsortedListModel.addElement( element );
         }
-        final SortedListModel sortedListModel = new SortedListModel( unsortedListModel, new Comparator<FakeElement>()
+        final SortedListModel<FakeElement> sortedListModel = new SortedListModel<>( unsortedListModel, new Comparator<FakeElement>()
         {
             @Override
             public int compare(
@@ -125,12 +120,12 @@ public final class SortedListModelTest
             "element1", //$NON-NLS-1$
             "element0" //$NON-NLS-1$
         };
-        final DefaultListModel unsortedListModel = new DefaultListModel();
+        final DefaultListModel<String> unsortedListModel = new DefaultListModel<>();
         for( final String element : elements )
         {
             unsortedListModel.addElement( element );
         }
-        final SortedListModel sortedListModel = new SortedListModel( unsortedListModel );
+        final SortedListModel<String> sortedListModel = new SortedListModel<>( unsortedListModel );
 
         assertEquals( elements[ 3 ], sortedListModel.getElementAt( 0 ) );
         assertEquals( elements[ 2 ], sortedListModel.getElementAt( 1 ) );

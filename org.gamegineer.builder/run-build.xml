@@ -103,7 +103,7 @@
             <jvmarg value="-DbuildVersion=${build.version}" />
             <jvmarg value="-DforceContextQualifier=${version.qualifier}" />
             <jvmarg value="-Djava-help-home=${java-help-home}" />
-            <jvmarg value="-DJavaSE-1.6=${env.JAVA_HOME}/jre/lib/rt.jar:${env.JAVA_HOME}/jre/lib/jce.jar" />
+            <jvmarg value="-DJavaSE-1.7=${env.JAVA_HOME}/jre/lib/rt.jar:${env.JAVA_HOME}/jre/lib/jce.jar" />
             <arg value="-application" />
             <arg value="org.eclipse.ant.core.antRunner" />
             <arg value="-buildfile" />

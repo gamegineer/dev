@@ -59,7 +59,7 @@ final class NodeLayer
     NodeLayer()
     {
         executorService_ = createExecutorService();
-        nodeLayerThreadRef_ = new AtomicReference<Thread>( null );
+        nodeLayerThreadRef_ = new AtomicReference<>( null );
     }
 
 

@@ -132,7 +132,7 @@ public final class ComponentStrategies
         @Override
         public final Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns()
         {
-            final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new HashMap<ComponentOrientation, ComponentSurfaceDesign>();
+            final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new HashMap<>();
             surfaceDesigns.put( NullOrientation.DEFAULT, ComponentSurfaceDesigns.NULL );
             return surfaceDesigns;
         }

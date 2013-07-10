@@ -1,6 +1,6 @@
 /*
  * ComponentPrototypeCategory.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -122,7 +122,7 @@ final class ComponentPrototypeCategory
         assert parentPath != null;
         assert id != null;
 
-        final List<String> path = new ArrayList<String>( parentPath.size() + 1 );
+        final List<String> path = new ArrayList<>( parentPath.size() + 1 );
         path.addAll( parentPath );
         path.add( id );
         return Collections.unmodifiableList( path );

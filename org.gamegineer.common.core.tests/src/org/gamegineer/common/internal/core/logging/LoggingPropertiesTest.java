@@ -1,6 +1,6 @@
 /*
  * LoggingPropertiesTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -73,7 +73,7 @@ public final class LoggingPropertiesTest
     public void setUp()
         throws Exception
     {
-        properties_ = new HashMap<String, String>();
+        properties_ = new HashMap<>();
         properties_.put( Object.class.getName() + ".a.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
         properties_.put( "a.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
         properties_.put( "a.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$

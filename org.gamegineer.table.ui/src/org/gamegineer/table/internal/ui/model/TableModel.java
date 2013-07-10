@@ -156,7 +156,7 @@ public final class TableModel
         file_ = null;
         focusedComponentModel_ = null;
         hoveredComponentModel_ = null;
-        listeners_ = new CopyOnWriteArrayList<ITableModelListener>();
+        listeners_ = new CopyOnWriteArrayList<>();
         originOffset_ = new Dimension( 0, 0 );
         table_ = table;
         tableEnvironmentModel_ = tableEnvironmentModel;
@@ -418,7 +418,7 @@ public final class TableModel
     {
         assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
 
-        final List<ComponentModel> componentModels = new ArrayList<ComponentModel>();
+        final List<ComponentModel> componentModels = new ArrayList<>();
 
         getLock().lock();
         try

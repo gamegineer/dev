@@ -170,7 +170,7 @@ public final class ComponentPath
     /* @NonNull */
     public List<ComponentPath> toList()
     {
-        final List<ComponentPath> componentPaths = new ArrayList<ComponentPath>();
+        final List<ComponentPath> componentPaths = new ArrayList<>();
 
         ComponentPath componentPath = this;
         while( componentPath != null )

@@ -94,10 +94,10 @@ public final class ContainerModel
         super( tableEnvironmentModel, container );
 
         componentModelListener_ = new ComponentModelListener();
-        componentModels_ = new ArrayList<ComponentModel>();
+        componentModels_ = new ArrayList<>();
         containerListener_ = new ContainerListener();
         containerModelListener_ = new ContainerModelListener();
-        listeners_ = new CopyOnWriteArrayList<IContainerModelListener>();
+        listeners_ = new CopyOnWriteArrayList<>();
     }
 
 
@@ -395,7 +395,7 @@ public final class ContainerModel
         getLock().lock();
         try
         {
-            return new ArrayList<ComponentModel>( componentModels_ );
+            return new ArrayList<>( componentModels_ );
         }
         finally
         {

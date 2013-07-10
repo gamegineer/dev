@@ -1,6 +1,6 @@
 /*
  * FileHistoryMenuItemGroupContentProvider.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,9 +28,9 @@ import java.util.Collections;
 import java.util.List;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.ui.model.MainModel;
-import org.gamegineer.table.internal.ui.util.swing.TextUtils;
 import org.gamegineer.table.internal.ui.util.swing.JMenuItemGroup.IContentProvider;
 import org.gamegineer.table.internal.ui.util.swing.JMenuItemGroup.MenuItemDescriptor;
+import org.gamegineer.table.internal.ui.util.swing.TextUtils;
 
 /**
  * A content provider for the file history menu item group.
@@ -55,8 +55,8 @@ final class FileHistoryMenuItemGroupContentProvider
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * FileHistoryMenuItemGroupContentProvider} class.
+     * Initializes a new instance of the
+     * {@code FileHistoryMenuItemGroupContentProvider} class.
      * 
      * @param mainModel
      *        The main model; must not be {@code null}.
@@ -84,13 +84,13 @@ final class FileHistoryMenuItemGroupContentProvider
         final List<File> files = mainModel_.getPreferencesModel().getFileHistoryPreferences().getFiles();
         Collections.reverse( files );
 
-        final List<String> fileNames = new ArrayList<String>();
+        final List<String> fileNames = new ArrayList<>();
         for( final File file : files )
         {
             fileNames.add( file.getName() );
         }
 
-        final Collection<MenuItemDescriptor> menuItemDescriptors = new ArrayList<MenuItemDescriptor>();
+        final Collection<MenuItemDescriptor> menuItemDescriptors = new ArrayList<>();
         for( int index = 0, size = files.size(); index < size; ++index )
         {
             final String path = files.get( index ).getAbsolutePath();

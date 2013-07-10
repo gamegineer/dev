@@ -1,6 +1,6 @@
 /*
  * FakeSelectorProvider.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.transport.tcp;
 
 import java.io.IOException;
+import java.net.ProtocolFamily;
 import java.nio.channels.DatagramChannel;
 import java.nio.channels.Pipe;
 import java.nio.channels.ServerSocketChannel;
@@ -59,6 +60,18 @@ class FakeSelectorProvider
     @Override
     @SuppressWarnings( "unused" )
     public DatagramChannel openDatagramChannel()
+        throws IOException
+    {
+        return null;
+    }
+
+    /*
+     * @see java.nio.channels.spi.SelectorProvider#openDatagramChannel(java.net.ProtocolFamily)
+     */
+    @Override
+    @SuppressWarnings( "unused" )
+    public DatagramChannel openDatagramChannel(
+        final ProtocolFamily family )
         throws IOException
     {
         return null;

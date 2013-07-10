@@ -1,6 +1,6 @@
 /*
  * AbstractLoggingComponentFactory.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -233,7 +233,7 @@ public abstract class AbstractLoggingComponentFactory<T>
 
         try
         {
-            final Dictionary<String, Object> componentProperties = new Hashtable<String, Object>();
+            final Dictionary<String, Object> componentProperties = new Hashtable<>();
             componentProperties.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_TYPE_NAME, typeName );
             componentProperties.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_INSTANCE_NAME, instanceName );
             if( properties != null )

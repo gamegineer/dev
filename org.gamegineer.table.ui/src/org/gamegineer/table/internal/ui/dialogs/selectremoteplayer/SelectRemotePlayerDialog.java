@@ -1,6 +1,6 @@
 /*
  * SelectRemotePlayerDialog.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -71,7 +71,7 @@ public final class SelectRemotePlayerDialog
     private final Model model_;
 
     /** The player list component. */
-    private JList playerList_;
+    private JList<IPlayer> playerList_;
 
 
     // ======================================================================
@@ -84,8 +84,8 @@ public final class SelectRemotePlayerDialog
      * @param parentShell
      *        The parent shell or {@code null} to create a top-level shell.
      * @param tableModel
-     *        The table model associated with the dialog; must not be {@code
-     *        null}.
+     *        The table model associated with the dialog; must not be
+     *        {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code tableModel} is {@code null}.
@@ -164,7 +164,7 @@ public final class SelectRemotePlayerDialog
         remotePlayersLabel.setBorder( BorderFactory.createEmptyBorder( 0, 0, pixelConverter.convertWidthInDlusToPixels( 3 ), 0 ) );
         remotePlayersLabel.setDisplayedMnemonic( KeyStroke.getKeyStroke( NlsMessages.SelectRemotePlayerDialog_remotePlayersLabel_mnemonic ).getKeyCode() );
         container.add( remotePlayersLabel, BorderLayout.NORTH );
-        playerList_ = new JList();
+        playerList_ = new JList<>();
         playerList_.setCellRenderer( new PlayerListCellRenderer() );
         final JScrollPane scrollPane = new JScrollPane( playerList_ );
         container.add( scrollPane, BorderLayout.CENTER );
@@ -262,7 +262,7 @@ public final class SelectRemotePlayerDialog
          */
         @Override
         public Component getListCellRendererComponent(
-            final JList list,
+            final JList<?> list,
             final Object value,
             final int index,
             final boolean isSelected,

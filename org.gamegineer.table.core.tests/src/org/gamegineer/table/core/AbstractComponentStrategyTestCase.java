@@ -195,7 +195,7 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     public void testGetDefaultSurfaceDesigns_ReturnValue_Copy()
     {
         final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = componentStrategy_.getDefaultSurfaceDesigns();
-        final Map<ComponentOrientation, ComponentSurfaceDesign> expectedSurfaceDesigns = new HashMap<ComponentOrientation, ComponentSurfaceDesign>( surfaceDesigns );
+        final Map<ComponentOrientation, ComponentSurfaceDesign> expectedSurfaceDesigns = new HashMap<>( surfaceDesigns );
 
         surfaceDesigns.put( createIllegalOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
 
@@ -210,7 +210,7 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     @Test
     public void testGetDefaultSurfaceDesigns_ReturnValue_Keys_SupportedOrientations()
     {
-        final Set<ComponentOrientation> expectedValue = new HashSet<ComponentOrientation>( componentStrategy_.getSupportedOrientations() );
+        final Set<ComponentOrientation> expectedValue = new HashSet<>( componentStrategy_.getSupportedOrientations() );
 
         final Set<ComponentOrientation> actualValue = componentStrategy_.getDefaultSurfaceDesigns().keySet();
 

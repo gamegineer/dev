@@ -1,6 +1,6 @@
 /*
  * AbstractTransportLayer.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -172,7 +172,7 @@ abstract class AbstractTransportLayer
         {
             executorService_.shutdown();
             state_ = State.CLOSED;
-            return new SynchronousFuture<Void>();
+            return new SynchronousFuture<>();
         }
 
         close();
@@ -234,7 +234,7 @@ abstract class AbstractTransportLayer
 
         if( state_ != State.PRISTINE )
         {
-            return new SynchronousFuture<Void>( new IllegalStateException( NonNlsMessages.AbstractTransportLayer_state_notPristine ) );
+            return new SynchronousFuture<>( new IllegalStateException( NonNlsMessages.AbstractTransportLayer_state_notPristine ) );
         }
 
         state_ = State.OPEN;

@@ -1,6 +1,6 @@
 /*
  * FakeSocketChannel.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,9 +24,11 @@ package org.gamegineer.table.internal.net.transport.tcp;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.net.SocketOption;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.SelectorProvider;
+import java.util.Set;
 import net.jcip.annotations.NotThreadSafe;
 
 /**
@@ -68,6 +70,18 @@ class FakeSocketChannel
     // ======================================================================
 
     /*
+     * @see java.nio.channels.SocketChannel#bind(java.net.SocketAddress)
+     */
+    @Override
+    @SuppressWarnings( "unused" )
+    public SocketChannel bind(
+        final SocketAddress local )
+        throws IOException
+    {
+        return null;
+    }
+
+    /*
      * @see java.nio.channels.SocketChannel#connect(java.net.SocketAddress)
      */
     @Override
@@ -88,6 +102,40 @@ class FakeSocketChannel
         throws IOException
     {
         return false;
+    }
+
+    /*
+     * @see java.nio.channels.NetworkChannel#getLocalAddress()
+     */
+    @Override
+    @SuppressWarnings( "unused" )
+    public SocketAddress getLocalAddress()
+        throws IOException
+    {
+        return null;
+    }
+
+    /*
+     * @see java.nio.channels.SocketChannel#getRemoteAddress()
+     */
+    @Override
+    @SuppressWarnings( "unused" )
+    public SocketAddress getRemoteAddress()
+        throws IOException
+    {
+        return null;
+    }
+
+    /*
+     * @see java.nio.channels.NetworkChannel#getOption(java.net.SocketOption)
+     */
+    @Override
+    @SuppressWarnings( "unused" )
+    public <T> T getOption(
+        final SocketOption<T> name )
+        throws IOException
+    {
+        return null;
     }
 
     /*
@@ -158,10 +206,54 @@ class FakeSocketChannel
     }
 
     /*
+     * @see java.nio.channels.SocketChannel#setOption(java.net.SocketOption, java.lang.Object)
+     */
+    @Override
+    @SuppressWarnings( "unused" )
+    public <T> SocketChannel setOption(
+        final SocketOption<T> name,
+        final T value )
+        throws IOException
+    {
+        return null;
+    }
+
+    /*
+     * @see java.nio.channels.SocketChannel#shutdownInput()
+     */
+    @Override
+    @SuppressWarnings( "unused" )
+    public SocketChannel shutdownInput()
+        throws IOException
+    {
+        return null;
+    }
+
+    /*
+     * @see java.nio.channels.SocketChannel#shutdownOutput()
+     */
+    @Override
+    @SuppressWarnings( "unused" )
+    public SocketChannel shutdownOutput()
+        throws IOException
+    {
+        return null;
+    }
+
+    /*
      * @see java.nio.channels.SocketChannel#socket()
      */
     @Override
     public Socket socket()
+    {
+        return null;
+    }
+
+    /*
+     * @see java.nio.channels.NetworkChannel#supportedOptions()
+     */
+    @Override
+    public Set<SocketOption<?>> supportedOptions()
     {
         return null;
     }

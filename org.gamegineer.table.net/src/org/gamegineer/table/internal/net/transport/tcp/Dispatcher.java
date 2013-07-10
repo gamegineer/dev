@@ -1,6 +1,6 @@
 /*
  * Dispatcher.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -125,11 +125,11 @@ final class Dispatcher
         bufferPool_ = new ByteBufferPool( 4096 );
         eventDispatchTaskFuture_ = null;
         eventHandlerShutdownTimeout_ = 10000L;
-        eventHandlers_ = new ArrayList<AbstractEventHandler>();
+        eventHandlers_ = new ArrayList<>();
         selector_ = null;
         selectorGuard_ = new ReentrantReadWriteLock();
         state_ = State.PRISTINE;
-        statusChangeQueue_ = new LinkedList<AbstractEventHandler>();
+        statusChangeQueue_ = new LinkedList<>();
         transportLayer_ = transportLayer;
     }
 
@@ -165,7 +165,7 @@ final class Dispatcher
         if( state_ != State.OPEN )
         {
             state_ = State.CLOSED;
-            return new SynchronousFuture<Void>();
+            return new SynchronousFuture<>();
         }
 
         final Closer closer = new Closer();
@@ -691,7 +691,7 @@ final class Dispatcher
         {
             assert isTransportLayerThread();
 
-            final Collection<AbstractEventHandler> eventHandlers = new ArrayList<AbstractEventHandler>( eventHandlers_ );
+            final Collection<AbstractEventHandler> eventHandlers = new ArrayList<>( eventHandlers_ );
             for( final AbstractEventHandler eventHandler : eventHandlers )
             {
                 Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Closing orphaned event handler '%s'", eventHandler ) ); //$NON-NLS-1$

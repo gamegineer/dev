@@ -1,6 +1,6 @@
 /*
  * FakeFilter.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -128,7 +128,7 @@ public final class FakeFilter
                 }
             }
         };
-        final Dictionary<String, Object> properties = new Hashtable<String, Object>();
+        final Dictionary<String, Object> properties = new Hashtable<>();
         properties.put( ComponentConstants.COMPONENT_FACTORY, FakeFilter.class.getName() );
         return Activator.getDefault().getBundleContext().registerService( ComponentFactory.class, componentFactory, properties );
     }

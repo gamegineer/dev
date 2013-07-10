@@ -1,6 +1,6 @@
 /*
  * TableNetwork.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -97,8 +97,8 @@ public final class TableNetwork
      * @param nodeFactory
      *        The table network node factory; must not be {@code null}.
      * @param transportLayerFactory
-     *        The table network transport layer factory; must not be {@code
-     *        null}.
+     *        The table network transport layer factory; must not be
+     *        {@code null}.
      */
     TableNetwork(
         /* @NonNull */
@@ -109,9 +109,9 @@ public final class TableNetwork
         assert nodeFactory != null;
         assert transportLayerFactory != null;
 
-        connectionStateRef_ = new AtomicReference<ConnectionState>( ConnectionState.DISCONNECTED );
-        listeners_ = new CopyOnWriteArrayList<ITableNetworkListener>();
-        nodeControllerRef_ = new AtomicReference<INodeController>( null );
+        connectionStateRef_ = new AtomicReference<>( ConnectionState.DISCONNECTED );
+        listeners_ = new CopyOnWriteArrayList<>();
+        nodeControllerRef_ = new AtomicReference<>( null );
         nodeFactory_ = nodeFactory;
         transportLayerFactory_ = transportLayerFactory;
     }
@@ -329,7 +329,7 @@ public final class TableNetwork
             return nodeController.getPlayers();
         }
 
-        return new ArrayList<IPlayer>();
+        return new ArrayList<>();
     }
 
     /*

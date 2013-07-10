@@ -1,6 +1,6 @@
 /*
  * AbstractRegistry.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -59,7 +59,7 @@ public abstract class AbstractRegistry<ObjectIdType, ObjectType>
      */
     protected AbstractRegistry()
     {
-        objects_ = new ConcurrentHashMap<ObjectIdType, ObjectType>();
+        objects_ = new ConcurrentHashMap<>();
     }
 
 
@@ -101,7 +101,7 @@ public abstract class AbstractRegistry<ObjectIdType, ObjectType>
     @Override
     public final Collection<ObjectType> getObjects()
     {
-        return new ArrayList<ObjectType>( objects_.values() );
+        return new ArrayList<>( objects_.values() );
     }
 
     /*

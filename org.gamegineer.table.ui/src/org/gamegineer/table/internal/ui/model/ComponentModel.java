@@ -111,7 +111,7 @@ public class ComponentModel
         componentStrategyUI_ = getComponentStrategyUI( component.getStrategy() );
         isFocused_ = false;
         isHovered_ = false;
-        listeners_ = new CopyOnWriteArrayList<IComponentModelListener>();
+        listeners_ = new CopyOnWriteArrayList<>();
         parent_ = null;
         tableEnvironmentModel_ = tableEnvironmentModel;
     }

@@ -1,6 +1,6 @@
 /*
  * AbstractRemoteNode.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -135,14 +135,14 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
         assert nodeLayer.isNodeLayerThread();
 
         closeError_ = null;
-        correlatedMessageHandlers_ = new HashMap<Integer, IMessageHandler>();
+        correlatedMessageHandlers_ = new HashMap<>();
         localNode_ = node;
         nextId_ = getInitialMessageId();
         nodeLayer_ = nodeLayer;
         playerName_ = null;
         serviceContext_ = null;
         table_ = new RemoteNetworkTable( this );
-        uncorrelatedMessageHandlers_ = new IdentityHashMap<Class<? extends IMessage>, IMessageHandler>();
+        uncorrelatedMessageHandlers_ = new IdentityHashMap<>();
 
         registerUncorrelatedMessageHandler( ComponentIncrementMessage.class, ComponentIncrementMessageHandler.INSTANCE );
         registerUncorrelatedMessageHandler( ErrorMessage.class, ErrorMessageHandler.INSTANCE );

@@ -1,6 +1,6 @@
 /*
  * BeginAuthenticationResponseMessageHandlerTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -118,7 +118,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         EasyMock.expect( remoteNodeController.getChallenge() ).andReturn( challenge ).anyTimes();
         EasyMock.expect( remoteNodeController.getSalt() ).andReturn( salt ).anyTimes();
         EasyMock.expect( localNode.isPlayerConnected( playerName ) ).andReturn( false );
-        final Capture<IMessage> messageCapture = new Capture<IMessage>();
+        final Capture<IMessage> messageCapture = new Capture<>();
         remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) );
         remoteNodeController.bind( playerName );
         mocksControl_.replay();
@@ -163,7 +163,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
         EasyMock.expect( remoteNodeController.getChallenge() ).andReturn( challenge ).anyTimes();
         EasyMock.expect( remoteNodeController.getSalt() ).andReturn( salt ).anyTimes();
-        final Capture<IMessage> messageCapture = new Capture<IMessage>();
+        final Capture<IMessage> messageCapture = new Capture<>();
         remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) );
         remoteNodeController.close( TableNetworkError.AUTHENTICATION_FAILED );
         mocksControl_.replay();
@@ -210,7 +210,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         EasyMock.expect( remoteNodeController.getChallenge() ).andReturn( challenge ).anyTimes();
         EasyMock.expect( remoteNodeController.getSalt() ).andReturn( salt ).anyTimes();
         EasyMock.expect( localNode.isPlayerConnected( playerName ) ).andReturn( true );
-        final Capture<IMessage> messageCapture = new Capture<IMessage>();
+        final Capture<IMessage> messageCapture = new Capture<>();
         remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) );
         remoteNodeController.close( TableNetworkError.DUPLICATE_PLAYER_NAME );
         mocksControl_.replay();

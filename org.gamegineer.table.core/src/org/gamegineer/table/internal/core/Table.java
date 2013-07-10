@@ -168,7 +168,7 @@ final class Table
     @Override
     public Object createMemento()
     {
-        final Map<String, Object> memento = new HashMap<String, Object>();
+        final Map<String, Object> memento = new HashMap<>();
 
         getLock().lock();
         try
@@ -286,7 +286,7 @@ final class Table
     {
         assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
 
-        final List<IComponent> components = new ArrayList<IComponent>();
+        final List<IComponent> components = new ArrayList<>();
 
         getLock().lock();
         try

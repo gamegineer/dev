@@ -177,7 +177,7 @@ final class DragContext
             return null;
         }
 
-        final List<PreDragComponentState> preDragComponentStates = new ArrayList<PreDragComponentState>( dragComponents.size() );
+        final List<PreDragComponentState> preDragComponentStates = new ArrayList<>( dragComponents.size() );
         for( final IComponent dragComponent : dragComponents )
         {
             preDragComponentStates.add( new PreDragComponentState( dragComponent ) );

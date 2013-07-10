@@ -1,6 +1,6 @@
 /*
  * AbstractWizard.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -68,7 +68,7 @@ public abstract class AbstractWizard
         container_ = null;
         needsPreviousAndBackButtons_ = false;
         needsProgressMonitor_ = false;
-        pages_ = new ArrayList<IWizardPage>();
+        pages_ = new ArrayList<>();
         title_ = null;
     }
 
@@ -243,7 +243,7 @@ public abstract class AbstractWizard
     @Override
     public final Collection<IWizardPage> getPages()
     {
-        return new ArrayList<IWizardPage>( pages_ );
+        return new ArrayList<>( pages_ );
     }
 
     /**

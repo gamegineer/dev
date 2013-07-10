@@ -140,9 +140,9 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         localPlayerName_ = null;
         nodeLayer_ = nodeLayer;
         password_ = null;
-        remoteNodes_ = new HashMap<String, RemoteNodeType>();
+        remoteNodes_ = new HashMap<>();
         tableNetworkController_ = tableNetworkController;
-        tables_ = new HashMap<String, INetworkTable>();
+        tables_ = new HashMap<>();
         transportLayer_ = null;
     }
 
@@ -587,7 +587,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     {
         assert isNodeLayerThread();
 
-        return new ArrayList<RemoteNodeType>( remoteNodes_.values() );
+        return new ArrayList<>( remoteNodes_.values() );
     }
 
     /**
@@ -628,7 +628,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     /* @NonNull */
     private Collection<INetworkTable> getTables()
     {
-        return new ArrayList<INetworkTable>( tables_.values() );
+        return new ArrayList<>( tables_.values() );
     }
 
     /**

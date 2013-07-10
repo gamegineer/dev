@@ -1,6 +1,6 @@
 /*
  * SwingRealm.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -107,7 +107,7 @@ public final class SwingRealm
     /* @Nullable */
     public static SwingRealm getSystemRealm()
     {
-        final AtomicReference<SwingRealm> systemRealm = new AtomicReference<SwingRealm>();
+        final AtomicReference<SwingRealm> systemRealm = new AtomicReference<>();
         execSystem( new Runnable()
         {
             @Override

@@ -1,6 +1,6 @@
 /*
  * LoggerConfiguration.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -73,7 +73,7 @@ final class LoggerConfiguration
         assert properties != null;
 
         name_ = name;
-        properties_ = new HashMap<String, String>( properties );
+        properties_ = new HashMap<>( properties );
     }
 
 
@@ -127,7 +127,7 @@ final class LoggerConfiguration
     /* @NonNull */
     List<Handler> getHandlers()
     {
-        final List<Handler> handlers = new ArrayList<Handler>();
+        final List<Handler> handlers = new ArrayList<>();
         final String value = LoggingProperties.getProperty( properties_, name_, LoggingServiceConstants.PROPERTY_LOGGER_HANDLERS );
         if( value != null )
         {

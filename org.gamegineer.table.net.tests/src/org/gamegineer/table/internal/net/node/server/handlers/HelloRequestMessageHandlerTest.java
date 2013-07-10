@@ -1,6 +1,6 @@
 /*
  * HelloRequestMessageHandlerTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -96,7 +96,7 @@ public final class HelloRequestMessageHandlerTest
     public void testHandleMessage_HelloRequestMessage_SupportedProtocolVersion()
     {
         final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
-        final Capture<IMessage> messageCapture = new Capture<IMessage>( CaptureType.ALL );
+        final Capture<IMessage> messageCapture = new Capture<>( CaptureType.ALL );
         remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) );
         remoteNodeController.setChallenge( EasyMock.notNull( byte[].class ) );
         remoteNodeController.setSalt( EasyMock.notNull( byte[].class ) );
@@ -127,7 +127,7 @@ public final class HelloRequestMessageHandlerTest
     public void testHandleMessage_HelloRequestMessage_UnsupportedProtocolVersion()
     {
         final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
-        final Capture<IMessage> messageCapture = new Capture<IMessage>();
+        final Capture<IMessage> messageCapture = new Capture<>();
         remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) );
         remoteNodeController.close( TableNetworkError.UNSUPPORTED_PROTOCOL_VERSION );
         mocksControl_.replay();

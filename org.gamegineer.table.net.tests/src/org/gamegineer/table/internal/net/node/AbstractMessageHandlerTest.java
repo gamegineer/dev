@@ -131,7 +131,7 @@ public final class AbstractMessageHandlerTest
     public void testHandleMessage_Message_Unsupported()
     {
         final IRemoteNodeController<?> remoteNodeController = mocksControl_.createMock( IRemoteNodeController.class );
-        final Capture<IMessage> messageCapture = new Capture<IMessage>();
+        final Capture<IMessage> messageCapture = new Capture<>();
         remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) );
         final IMessage message = mocksControl_.createMock( IMessage.class );
         EasyMock.expect( message.getId() ).andReturn( IMessage.MINIMUM_ID ).anyTimes();

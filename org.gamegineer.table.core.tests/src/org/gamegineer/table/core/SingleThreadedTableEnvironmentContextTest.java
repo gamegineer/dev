@@ -120,7 +120,7 @@ public final class SingleThreadedTableEnvironmentContextTest
     @Test
     public void testTableEnvironmentLock_Unlock_Unlocked_DoesNotFirePendingEventNotifications_EventNotificationsInProgress()
     {
-        final List<Integer> eventNotificationCallHistory = new ArrayList<Integer>();
+        final List<Integer> eventNotificationCallHistory = new ArrayList<>();
         final Runnable eventNotification1 = new Runnable()
         {
             @Override

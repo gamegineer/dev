@@ -1,6 +1,6 @@
 /*
  * ByteBufferPool.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -66,7 +66,7 @@ final class ByteBufferPool
         assert byteBufferCapacity > 0;
 
         byteBufferCapacity_ = byteBufferCapacity;
-        byteBuffers_ = new ArrayDeque<ByteBuffer>();
+        byteBuffers_ = new ArrayDeque<>();
         capacity_ = Math.max( 1, MAX_MEMORY_USAGE / byteBufferCapacity );
     }
 

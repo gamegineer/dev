@@ -1,6 +1,6 @@
 /*
  * NodeControllerProxy.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -102,7 +102,7 @@ final class NodeControllerProxy
         }
         catch( final RejectedExecutionException e )
         {
-            return new SynchronousFuture<Void>( new TableNetworkException( TableNetworkError.ILLEGAL_CONNECTION_STATE ) );
+            return new SynchronousFuture<>( new TableNetworkException( TableNetworkError.ILLEGAL_CONNECTION_STATE ) );
         }
 
         return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
@@ -158,7 +158,7 @@ final class NodeControllerProxy
         catch( final RejectedExecutionException e )
         {
             // Silently ignore request when node layer is disconnected
-            return new SynchronousFuture<Void>();
+            return new SynchronousFuture<>();
         }
 
         return Activator.getDefault().getExecutorService().submit( new Callable<Void>()

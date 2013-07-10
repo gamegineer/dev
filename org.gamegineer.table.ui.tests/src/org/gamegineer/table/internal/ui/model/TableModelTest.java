@@ -491,7 +491,7 @@ public final class TableModelTest
             component2, //
             component5 );
 
-        final List<IComponent> actualComponents = new ArrayList<IComponent>();
+        final List<IComponent> actualComponents = new ArrayList<>();
         for( final ComponentModel componentModel : tableModel_.getComponentModels( location1 ) )
         {
             actualComponents.add( componentModel.getComponent() );
@@ -516,7 +516,7 @@ public final class TableModelTest
             tableModel_.getTable().getTabletop(), //
             component );
 
-        final List<IComponent> actualComponents = new ArrayList<IComponent>();
+        final List<IComponent> actualComponents = new ArrayList<>();
         for( final ComponentModel componentModel : tableModel_.getComponentModels( location ) )
         {
             actualComponents.add( componentModel.getComponent() );

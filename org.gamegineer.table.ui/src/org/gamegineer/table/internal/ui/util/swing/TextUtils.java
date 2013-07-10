@@ -1,6 +1,6 @@
 /*
  * TextUtils.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -97,7 +97,7 @@ public final class TextUtils
         }
 
         final StringBuilder sb = new StringBuilder( path );
-        final List<String> pathComponents = new ArrayList<String>( Arrays.asList( path.split( Pattern.quote( File.separator ) ) ) );
+        final List<String> pathComponents = new ArrayList<>( Arrays.asList( path.split( Pattern.quote( File.separator ) ) ) );
         while( pathComponents.size() > 2 )
         {
             sb.setLength( 0 );

@@ -56,7 +56,7 @@ public final class ComponentPathAsComparableTest
     @Override
     protected Collection<ComponentPath> createGreaterThanInstances()
     {
-        final Collection<ComponentPath> others = new ArrayList<ComponentPath>();
+        final Collection<ComponentPath> others = new ArrayList<>();
         others.add( new ComponentPath( new ComponentPath( new ComponentPath( null, 1 ), 1 ), 0 ) );
         others.add( new ComponentPath( new ComponentPath( null, 1 ), 2 ) );
         others.add( new ComponentPath( new ComponentPath( null, 2 ), 1 ) );
@@ -69,7 +69,7 @@ public final class ComponentPathAsComparableTest
     @Override
     protected Collection<ComponentPath> createLessThanInstances()
     {
-        final Collection<ComponentPath> others = new ArrayList<ComponentPath>();
+        final Collection<ComponentPath> others = new ArrayList<>();
         others.add( new ComponentPath( null, 1 ) );
         others.add( new ComponentPath( new ComponentPath( null, 1 ), 0 ) );
         others.add( new ComponentPath( new ComponentPath( null, 0 ), 1 ) );
@@ -91,7 +91,7 @@ public final class ComponentPathAsComparableTest
     @Override
     protected Collection<ComponentPath> createUnequalInstances()
     {
-        final Collection<ComponentPath> others = new ArrayList<ComponentPath>();
+        final Collection<ComponentPath> others = new ArrayList<>();
         others.add( new ComponentPath( null, 1 ) );
         others.add( new ComponentPath( new ComponentPath( null, 0 ), 1 ) );
         others.add( new ComponentPath( new ComponentPath( null, 1 ), 0 ) );

@@ -1,6 +1,6 @@
 /*
  * ComponentEnableState.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -87,7 +87,7 @@ public final class ComponentEnableState
     {
         assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
 
-        final Collection<Component> components = new ArrayList<Component>();
+        final Collection<Component> components = new ArrayList<>();
         disable( component, components );
 
         return new ComponentEnableState( components );

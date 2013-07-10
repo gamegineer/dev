@@ -1,6 +1,6 @@
 /*
  * BeginAuthenticationRequestMessageHandlerTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -105,7 +105,7 @@ public final class BeginAuthenticationRequestMessageHandlerTest
         EasyMock.expect( localNode.getPassword() ).andReturn( new SecureString( password ) );
         final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
         EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
-        final Capture<IMessage> messageCapture = new Capture<IMessage>();
+        final Capture<IMessage> messageCapture = new Capture<>();
         remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.notNull( IMessageHandler.class ) );
         mocksControl_.replay();
 

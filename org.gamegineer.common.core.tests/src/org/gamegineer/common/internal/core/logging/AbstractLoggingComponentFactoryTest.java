@@ -79,7 +79,7 @@ public final class AbstractLoggingComponentFactoryTest
     public void setUp()
         throws Exception
     {
-        componentProperties_ = new Hashtable<String, Object>();
+        componentProperties_ = new Hashtable<>();
         componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_TYPE_NAME, Object.class.getName() );
         componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_INSTANCE_NAME, "instanceName" ); //$NON-NLS-1$
         componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_LOGGING_PROPERTIES, Collections.<String, String>emptyMap() );

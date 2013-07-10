@@ -1,6 +1,6 @@
 /*
  * ContainerLayoutExtensionFactory.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -68,7 +68,7 @@ public final class ContainerLayoutExtensionFactory
      */
     static
     {
-        final Map<ContainerLayoutId, IContainerLayout> containerLayouts = new HashMap<ContainerLayoutId, IContainerLayout>();
+        final Map<ContainerLayoutId, IContainerLayout> containerLayouts = new HashMap<>();
         containerLayouts.put( InternalContainerLayouts.ABSOLUTE.getId(), InternalContainerLayouts.ABSOLUTE );
         containerLayouts.put( InternalContainerLayouts.ACCORDIAN_DOWN.getId(), InternalContainerLayouts.ACCORDIAN_DOWN );
         containerLayouts.put( InternalContainerLayouts.ACCORDIAN_LEFT.getId(), InternalContainerLayouts.ACCORDIAN_LEFT );

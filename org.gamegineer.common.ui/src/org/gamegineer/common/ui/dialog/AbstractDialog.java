@@ -1,6 +1,6 @@
 /*
  * AbstractDialog.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -96,7 +96,7 @@ public abstract class AbstractDialog
         super( parentShell );
 
         buttonBar_ = null;
-        buttons_ = new LinkedHashMap<String, JButton>();
+        buttons_ = new LinkedHashMap<>();
         dialogArea_ = null;
         pixelConverter_ = null;
         title_ = null;
@@ -117,8 +117,8 @@ public abstract class AbstractDialog
      * </p>
      * 
      * @param id
-     *        The identifier of the button that was pressed; must not be {@code
-     *        null}.
+     *        The identifier of the button that was pressed; must not be
+     *        {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code id} is {@code null}.

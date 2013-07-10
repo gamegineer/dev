@@ -1,6 +1,6 @@
 /*
  * Activator.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -51,7 +51,7 @@ public final class Activator
     // ======================================================================
 
     /** The singleton instance of the bundle activator. */
-    private static final AtomicReference<Activator> instance_ = new AtomicReference<Activator>();
+    private static final AtomicReference<Activator> instance_ = new AtomicReference<>();
 
     /** The application branding service tracker. */
     @GuardedBy( "lock_" )
@@ -134,7 +134,7 @@ public final class Activator
 
             if( brandingTracker_ == null )
             {
-                brandingTracker_ = new ServiceTracker<IBranding, IBranding>( bundleContext_, IBranding.class, null );
+                brandingTracker_ = new ServiceTracker<>( bundleContext_, IBranding.class, null );
                 brandingTracker_.open();
             }
 
@@ -194,7 +194,7 @@ public final class Activator
 
             if( componentStrategyUIRegistryTracker_ == null )
             {
-                componentStrategyUIRegistryTracker_ = new ServiceTracker<IComponentStrategyUIRegistry, IComponentStrategyUIRegistry>( bundleContext_, IComponentStrategyUIRegistry.class, null );
+                componentStrategyUIRegistryTracker_ = new ServiceTracker<>( bundleContext_, IComponentStrategyUIRegistry.class, null );
                 componentStrategyUIRegistryTracker_.open();
             }
 
@@ -218,7 +218,7 @@ public final class Activator
 
             if( componentSurfaceDesignUIRegistryTracker_ == null )
             {
-                componentSurfaceDesignUIRegistryTracker_ = new ServiceTracker<IComponentSurfaceDesignUIRegistry, IComponentSurfaceDesignUIRegistry>( bundleContext_, IComponentSurfaceDesignUIRegistry.class, null );
+                componentSurfaceDesignUIRegistryTracker_ = new ServiceTracker<>( bundleContext_, IComponentSurfaceDesignUIRegistry.class, null );
                 componentSurfaceDesignUIRegistryTracker_.open();
             }
 
@@ -254,7 +254,7 @@ public final class Activator
 
             if( executorServiceTracker_ == null )
             {
-                executorServiceTracker_ = new ServiceTracker<ExecutorService, ExecutorService>( bundleContext_, ExecutorService.class, null );
+                executorServiceTracker_ = new ServiceTracker<>( bundleContext_, ExecutorService.class, null );
                 executorServiceTracker_.open();
             }
 
@@ -283,7 +283,7 @@ public final class Activator
 
             if( extensionRegistryTracker_ == null )
             {
-                extensionRegistryTracker_ = new ServiceTracker<IExtensionRegistry, IExtensionRegistry>( bundleContext_, IExtensionRegistry.class, null );
+                extensionRegistryTracker_ = new ServiceTracker<>( bundleContext_, IExtensionRegistry.class, null );
                 extensionRegistryTracker_.open();
             }
 
@@ -306,7 +306,7 @@ public final class Activator
 
             if( helpSystemTracker_ == null )
             {
-                helpSystemTracker_ = new ServiceTracker<IHelpSystem, IHelpSystem>( bundleContext_, IHelpSystem.class, null );
+                helpSystemTracker_ = new ServiceTracker<>( bundleContext_, IHelpSystem.class, null );
                 helpSystemTracker_.open();
             }
 
@@ -329,7 +329,7 @@ public final class Activator
 
             if( preferencesServiceTracker_ == null )
             {
-                preferencesServiceTracker_ = new ServiceTracker<PreferencesService, PreferencesService>( bundleContext_, PreferencesService.class, null );
+                preferencesServiceTracker_ = new ServiceTracker<>( bundleContext_, PreferencesService.class, null );
                 preferencesServiceTracker_.open();
             }
 

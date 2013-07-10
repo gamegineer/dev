@@ -64,7 +64,7 @@ public final class SingleThreadedTableEnvironmentContext
      */
     public SingleThreadedTableEnvironmentContext()
     {
-        eventNotifications_ = new ArrayDeque<Runnable>();
+        eventNotifications_ = new ArrayDeque<>();
         isEventNotificationInProgress_ = false;
         lock_ = new TableEnvironmentLock();
         thread_ = Thread.currentThread();

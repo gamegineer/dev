@@ -1,6 +1,6 @@
 /*
  * ContainerLayoutIdAsEquatableTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -64,7 +64,7 @@ public final class ContainerLayoutIdAsEquatableTest
     @Override
     protected Collection<ContainerLayoutId> createUnequalInstances()
     {
-        final Collection<ContainerLayoutId> others = new ArrayList<ContainerLayoutId>();
+        final Collection<ContainerLayoutId> others = new ArrayList<>();
         others.add( ContainerLayoutId.fromString( "otherId" ) ); //$NON-NLS-1$
         return others;
     }

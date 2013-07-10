@@ -434,7 +434,7 @@ final class LocalNetworkTable
                 if( componentPath != null )
                 {
                     final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = event.getComponent().getSurfaceDesigns();
-                    final Map<ComponentOrientation, ComponentSurfaceDesignId> surfaceDesignIds = new IdentityHashMap<ComponentOrientation, ComponentSurfaceDesignId>( surfaceDesigns.size() );
+                    final Map<ComponentOrientation, ComponentSurfaceDesignId> surfaceDesignIds = new IdentityHashMap<>( surfaceDesigns.size() );
                     for( final Map.Entry<ComponentOrientation, ComponentSurfaceDesign> entry : surfaceDesigns.entrySet() )
                     {
                         surfaceDesignIds.put( entry.getKey(), entry.getValue().getId() );

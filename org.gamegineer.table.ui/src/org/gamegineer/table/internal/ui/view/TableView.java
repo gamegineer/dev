@@ -715,7 +715,7 @@ final class TableView
     /* @NonNull */
     private Map<Class<? extends AbstractInputHandler>, AbstractInputHandler> createInputHandlers()
     {
-        final Map<Class<? extends AbstractInputHandler>, AbstractInputHandler> inputHandlers = new HashMap<Class<? extends AbstractInputHandler>, AbstractInputHandler>();
+        final Map<Class<? extends AbstractInputHandler>, AbstractInputHandler> inputHandlers = new HashMap<>();
         inputHandlers.put( DefaultInputHandler.class, new DefaultInputHandler() );
         inputHandlers.put( DragPrimedInputHandler.class, new DragPrimedInputHandler() );
         inputHandlers.put( DraggingComponentInputHandler.class, new DraggingComponentInputHandler() );

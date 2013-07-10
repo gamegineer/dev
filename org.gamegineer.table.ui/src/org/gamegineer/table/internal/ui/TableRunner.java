@@ -1,6 +1,6 @@
 /*
  * TableRunner.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -100,8 +100,8 @@ public final class TableRunner
 
         advisor_ = advisor;
         frame_ = null;
-        resultRef_ = new AtomicReference<TableResult>( TableResult.OK );
-        stateRef_ = new AtomicReference<State>( State.PRISTINE );
+        resultRef_ = new AtomicReference<>( TableResult.OK );
+        stateRef_ = new AtomicReference<>( State.PRISTINE );
         stopLatch_ = new CountDownLatch( 1 );
     }
 
