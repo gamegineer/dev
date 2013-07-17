@@ -29,6 +29,7 @@
             <property name="plugin-name" value="${plugin-name}" />
             <property name="classname" value="org.gamegineer.table.ui.AllTests" />
             <property name="vmargs" value="-ea" />
+            <property name="extraVMargs" value="" />
         </ant>
     </target>
 
