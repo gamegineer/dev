@@ -21,8 +21,6 @@
 -->
 <project name="customTargets.template" default="noDefault">
 
-    <property environment="env" />
-
     <!-- ===================================================================== -->
     <!-- Run a given ${target} on all elements being built. -->
     <!-- Add on <ant> task for each top level element being built. -->
@@ -188,14 +186,14 @@
                 dir="${buildDirectory}/plugins/org.gamegineer.common.ui/help"
                 failonerror="true"
                 fork="true"
-                jar="${java-help-home}/bin/jhindexer.jar">
+                jar="${gamegineer-java-help-home}/bin/jhindexer.jar">
             <arg value="topics" />
         </java>
         <java
                 dir="${buildDirectory}/plugins/org.gamegineer.table.help/help"
                 failonerror="true"
                 fork="true"
-                jar="${java-help-home}/bin/jhindexer.jar">
+                jar="${gamegineer-java-help-home}/bin/jhindexer.jar">
             <arg value="topics" />
         </java>
     </target>
@@ -216,7 +214,7 @@
                 noindex="false"
                 nonavbar="false"
                 notree="false"
-                source="1.6"
+                source="1.7"
                 splitindex="true"
                 use="true"
                 version="true"
@@ -230,9 +228,9 @@
                 </fileset>
             </classpath>
             <link
-                    href="http://docs.oracle.com/javase/6/docs/api/"
+                    href="http://docs.oracle.com/javase/7/docs/api/"
                     offline="true"
-                    packagelistURL="http://docs.oracle.com/javase/6/docs/api/" />
+                    packagelistURL="http://docs.oracle.com/javase/7/docs/api/" />
             <sourcepath>
                 <dirset dir="${buildDirectory}">
                     <include name="plugins/**/src" />
@@ -256,7 +254,7 @@
         <mkdir dir="${buildDirectory}/${buildLabel}/test-workspace" />
 
         <!-- Unzip Eclipse SDK into workspace. -->
-        <unzip src="${env.ECLIPSE_HOME}/eclipse-SDK-${eclipseBuildId}-${baseos}-${basews}-${basearch}.zip" dest="${buildDirectory}/${buildLabel}/test-workspace" overwrite="true" />
+        <unzip src="${gamegineer-eclipse-home}/eclipse-SDK-${eclipseBuildId}-${baseos}-${basews}-${basearch}.zip" dest="${buildDirectory}/${buildLabel}/test-workspace" overwrite="true" />
 
         <!-- Copy target platform into workspace. -->
         <copy todir="${buildDirectory}/${buildLabel}/test-workspace/eclipse" overwrite="true">
@@ -264,7 +262,7 @@
         </copy>
 
         <!-- Install Eclipse Test Framework into workspace. -->
-        <unzip src="${env.ECLIPSE_TEST_FRAMEWORK_HOME}/eclipse-test-framework-${eclipseBuildId}.zip" dest="${buildDirectory}/${buildLabel}/test-workspace/eclipse-test-framework" overwrite="true" />
+        <unzip src="${gamegineer-eclipse-test-framework-home}/eclipse-test-framework-${eclipseBuildId}.zip" dest="${buildDirectory}/${buildLabel}/test-workspace/eclipse-test-framework" overwrite="true" />
         <makeurl file="${buildDirectory}/${buildLabel}/test-workspace/eclipse-test-framework" property="p2.repo" validate="false" />
         <ant antfile="genericTargets.xml" dir="${eclipse.pdebuild.scripts}" target="runDirector">
             <property name="p2.director.extraArgs" value="-tag AddETF" />

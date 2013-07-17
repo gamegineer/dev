@@ -26,10 +26,13 @@
 
     <!-- Set up references to external tools -->
     <property name="ant-contrib-home" value="${env.ANT_CONTRIB_LATEST_HOME}" />
+    <property name="gamegineer-eclipse-home" value="${env.ECLIPSE_3_7_2_HOME}" />
+    <property name="gamegineer-eclipse-test-framework-home" value="${env.ECLIPSE_TEST_FRAMEWORK_3_7_2_HOME}" />
+    <property name="gamegineer-java-help-home" value="${basedir}/tools/javahelp-2.0.5" />
 
     <!-- Set up references to PDE Build scripts -->
     <path id="eclipse.pdebuild.scripts.path">
-        <dirset dir="${env.ECLIPSE_HOME}/plugins">
+        <dirset dir="${gamegineer-eclipse-home}/plugins">
             <include name="org.eclipse.pde.build_*/scripts" />
         </dirset>
     </path>
@@ -92,7 +95,7 @@
                 fork="true"
                 maxmemory="256m">
             <classpath>
-                <fileset dir="${env.ECLIPSE_HOME}/plugins">
+                <fileset dir="${gamegineer-eclipse-home}/plugins">
                     <include name="org.eclipse.equinox.launcher_*.jar" />
                 </fileset>
             </classpath>
@@ -102,8 +105,10 @@
             <jvmarg value="-DbuildDirectory=${basedir}" />
             <jvmarg value="-DbuildVersion=${build.version}" />
             <jvmarg value="-DforceContextQualifier=${version.qualifier}" />
-            <jvmarg value="-Djava-help-home=${java-help-home}" />
-            <jvmarg value="-DJavaSE-1.7=${env.JAVA_HOME}/jre/lib/rt.jar:${env.JAVA_HOME}/jre/lib/jce.jar" />
+            <jvmarg value="-Dgamegineer-eclipse-home=${gamegineer-eclipse-home}" />
+            <jvmarg value="-Dgamegineer-eclipse-test-framework-home=${gamegineer-eclipse-test-framework-home}" />
+            <jvmarg value="-Dgamegineer-java-help-home=${gamegineer-java-help-home}" />
+            <jvmarg value="-DJavaSE-1.7=${java.home}/lib/rt.jar:${java.home}/lib/jce.jar" />
             <arg value="-application" />
             <arg value="org.eclipse.ant.core.antRunner" />
             <arg value="-buildfile" />
