@@ -1,0 +1,20 @@
+<settings
+		xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd"
+		xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<profiles>
+		<profile>
+			<id>g8r-local</id>
+			<properties>
+				<g8r-ci-authority>localhost:9088</g8r-ci-authority>
+				<g8r-repository-authority>localhost:9089</g8r-repository-authority>
+			</properties>
+		</profile>
+	</profiles>
+
+	<activeProfiles>
+		<activeProfile>g8r-local</activeProfile>
+	</activeProfiles>
+
+</settings>
