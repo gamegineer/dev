@@ -68,6 +68,7 @@
 	</distributionManagement>
 
 	<properties>
+		<build-helper-maven-plugin-version>1.8</build-helper-maven-plugin-version>
 		<g8r-ci-authority>build.g8r.local:8080</g8r-ci-authority>
 		<g8r-repository-authority>build.g8r.local:8081</g8r-repository-authority>
 		<tycho-version>0.18.0</tycho-version>
@@ -77,8 +78,23 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>${build-helper-maven-plugin-version}</version>
+				</plugin>
+				<plugin>
 					<groupId>org.eclipse.tycho</groupId>
 					<artifactId>tycho-maven-plugin</artifactId>
+					<version>${tycho-version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-p2-repository-plugin</artifactId>
+					<version>${tycho-version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho.extras</groupId>
+					<artifactId>tycho-p2-extras-plugin</artifactId>
 					<version>${tycho-version}</version>
 				</plugin>
 			</plugins>
