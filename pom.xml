@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+		xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.gamegineer</groupId>
+	<artifactId>gamegineer</artifactId>
+	<version>0.17.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>org.gamegineer Parent</name>
+	<url>http://gamegineer.org/</url>
+	<inceptionYear>2008</inceptionYear>
+	<organization>
+		<name>Gamegineer.org</name>
+		<url>http://gamegineer.org/</url>
+	</organization>
+	<licenses>
+		<license>
+			<name>GNU General Public License, Version 3</name>
+			<url>http://www.gnu.org/licenses/gpl.html</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>s_soloff</id>
+			<name>Steven Soloff</name>
+			<email>s_soloff@users.sourceforge.net</email>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>US/Eastern</timezone>
+		</developer>
+	</developers>
+
+	<scm>
+		<developerConnection>https://svn.code.sf.net/p/gamegineer/code/</developerConnection>
+		<tag>HEAD</tag>
+		<url>http://svn.code.sf.net/p/gamegineer/code/</url>
+	</scm>
+	<issueManagement>
+		<system>Trac</system>
+		<url>http://sourceforge.net/apps/trac/gamegineer/wiki/</url>
+	</issueManagement>
+	<ciManagement>
+		<system>CruiseControl</system>
+		<url>http://${g8r-ci-authority}/dashboard/</url>
+	</ciManagement>
+	<distributionManagement>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>g8r-releases</id>
+			<name>Gamegineer Releases Repository</name>
+			<url>http://${g8r-repository-authority}/nexus/content/repositories/releases/</url>
+			<layout>default</layout>
+		</repository>
+		<snapshotRepository>
+			<uniqueVersion>true</uniqueVersion>
+			<id>g8r-snapshots</id>
+			<name>Gamegineer Snapshots Repository</name>
+			<url>http://${g8r-repository-authority}/nexus/content/repositories/snapshots/</url>
+			<layout>default</layout>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<properties>
+		<g8r-ci-authority>build.g8r.local:8080</g8r-ci-authority>
+		<g8r-repository-authority>build.g8r.local:8081</g8r-repository-authority>
+		<tycho-version>0.18.0</tycho-version>
+	</properties>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-maven-plugin</artifactId>
+					<version>${tycho-version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<extensions>true</extensions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
