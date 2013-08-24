@@ -97,6 +97,11 @@ public final class ComponentPath
     public int compareTo(
         final ComponentPath other )
     {
+        if( other == null )
+        {
+            return +1;
+        }
+
         final int parentPathCompareResult = ComparableUtils.compareTo( parentPath_, other.parentPath_ );
         if( parentPathCompareResult != 0 )
         {
