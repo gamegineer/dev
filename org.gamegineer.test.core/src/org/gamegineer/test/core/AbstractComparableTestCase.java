@@ -155,18 +155,18 @@ public abstract class AbstractComparableTestCase<T extends Comparable<T>>
     }
 
     /**
-     * Ensures the {@link Comparable#compareTo} method correctly indicates
-     * {@code null} is less than the reference instance.
+     * Ensures the {@link Comparable#compareTo} method throws an exception when
+     * passed a {@code null} instance.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Test
-    public void testCompareTo_LessThan_Null()
+    @Test( expected = NullPointerException.class )
+    public void testCompareTo_Other_Null()
         throws Exception
     {
         final T reference = createReferenceInstance();
 
-        assertTrue( String.format( "expected <%s> to be greater than null", reference ), reference.compareTo( null ) > 0 ); //$NON-NLS-1$
+        reference.compareTo( null );
     }
 }

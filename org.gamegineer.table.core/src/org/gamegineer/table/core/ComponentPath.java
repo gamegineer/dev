@@ -22,6 +22,7 @@
 package org.gamegineer.table.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -97,10 +98,7 @@ public final class ComponentPath
     public int compareTo(
         final ComponentPath other )
     {
-        if( other == null )
-        {
-            return +1;
-        }
+        assertArgumentNotNull( other, "other" ); //$NON-NLS-1$
 
         final int parentPathCompareResult = ComparableUtils.compareTo( parentPath_, other.parentPath_ );
         if( parentPathCompareResult != 0 )
