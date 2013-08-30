@@ -8,8 +8,9 @@
 
 	<parent>
 		<groupId>org.gamegineer</groupId>
-		<artifactId>target-platform</artifactId>
+		<artifactId>org.gamegineer.target-platform</artifactId>
 		<version>0.17.0-SNAPSHOT</version>
+		<relativePath>../org.gamegineer.target-platform</relativePath>
 	</parent>
 
 	<artifactId>org.gamegineer.target-platform.repository</artifactId>
