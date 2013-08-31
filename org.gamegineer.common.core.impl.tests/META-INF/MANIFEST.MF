@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-Localization: fragment-tests
+Bundle-ManifestVersion: 2
+Bundle-Name: %bundleName
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-SymbolicName: org.gamegineer.common.core.impl.tests
+Bundle-Vendor: %bundleVendor
+Bundle-Version: 0.17.0.qualifier
+Fragment-Host: org.gamegineer.common.core.impl;bundle-version="0.17.0"
+Import-Package: junit.framework;version="4.8.2",
+ org.gamegineer.test.core;version="[0.17.0,0.18.0)",
+ org.junit;version="4.8.2"

@@ -22,6 +22,7 @@ org.gamegineer.cards.core,%version.%qualifier,plugins/org.gamegineer.cards.core_
 org.gamegineer.cards.persistence,%version.%qualifier,plugins/org.gamegineer.cards.persistence_%version.%qualifier.jar,4,false
 org.gamegineer.cards.ui,%version.%qualifier,plugins/org.gamegineer.cards.ui_%version.%qualifier.jar,4,false
 org.gamegineer.common.core,%version.%qualifier,plugins/org.gamegineer.common.core_%version.%qualifier.jar,4,false
+org.gamegineer.common.core.impl,%version.%qualifier,plugins/org.gamegineer.common.core.impl_%version.%qualifier.jar,4,false
 org.gamegineer.common.persistence,%version.%qualifier,plugins/org.gamegineer.common.persistence_%version.%qualifier.jar,4,false
 org.gamegineer.common.ui,%version.%qualifier,plugins/org.gamegineer.common.ui_%version.%qualifier.jar,4,false
 org.gamegineer.table.core,%version.%qualifier,plugins/org.gamegineer.table.core_%version.%qualifier.jar,4,false

@@ -18,6 +18,9 @@
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/org.gamegineer.cards.ui,org.gamegineer.cards.ui"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/org.gamegineer.cards.ui.tests,org.gamegineer.cards.ui.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/org.gamegineer.common.core,org.gamegineer.common.core"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/org.gamegineer.common.core.impl,org.gamegineer.common.core.impl"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/org.gamegineer.common.core.impl.tests,org.gamegineer.common.core.impl.tests"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/org.gamegineer.common.core.test,org.gamegineer.common.core.test"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/org.gamegineer.common.core.tests,org.gamegineer.common.core.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/org.gamegineer.common.feature.base,org.gamegineer.common.feature.base"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/org.gamegineer.common.feature.base.tests,org.gamegineer.common.feature.base.tests"/>

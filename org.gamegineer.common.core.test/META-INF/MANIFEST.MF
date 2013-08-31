@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-Localization: plugin
+Bundle-ManifestVersion: 2
+Bundle-Name: %bundleName
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-SymbolicName: org.gamegineer.common.core.test
+Bundle-Vendor: %bundleVendor
+Bundle-Version: 0.17.0.qualifier
+Import-Package: junit.framework;version="4.8.2",
+ org.gamegineer.test.core;version="[0.17.0,0.18.0)",
+ org.junit;version="4.8.2"
