@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component
+		activate="activate"
+		deactivate="deactivate"
+		name="org.gamegineer.common.core.impl.util.concurrent.executorService"
+		xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+	<implementation
+			class="org.gamegineer.common.internal.core.impl.util.concurrent.ExecutorService" />
+	<service>
+		<provide
+				interface="java.util.concurrent.ExecutorService" />
+	</service>
+</scr:component>
