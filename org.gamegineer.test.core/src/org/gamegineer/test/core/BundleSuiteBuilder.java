@@ -137,8 +137,7 @@ public final class BundleSuiteBuilder
         }
 
         final Collection<String> classpathEntries = new ArrayList<>();
-        final InputStream is = url.openStream();
-        try
+        try( final InputStream is = url.openStream() )
         {
             final InputSource inputSource = new InputSource( is );
             final XPath xpath = XPathFactory.newInstance().newXPath();
@@ -172,10 +171,6 @@ public final class BundleSuiteBuilder
                     }
                 }
             }
-        }
-        finally
-        {
-            is.close();
         }
 
         normalizeClasspathEntries( classpathEntries );
@@ -300,10 +295,9 @@ public final class BundleSuiteBuilder
             return Collections.emptyList();
         }
 
-        final JarInputStream is = new JarInputStream( url.openStream() );
         final Collection<String> classNames = new ArrayList<>();
         final Pattern CLASS_NAME_PATTERN = Pattern.compile( "^(.*Test)\\.class$" ); //$NON-NLS-1$
-        try
+        try( final JarInputStream is = new JarInputStream( url.openStream() ) )
         {
             JarEntry entry = null;
             while( (entry = is.getNextJarEntry()) != null )
@@ -314,10 +308,6 @@ public final class BundleSuiteBuilder
                     classNames.add( matcher.group( 1 ).replace( '/', '.' ) );
                 }
             }
-        }
-        finally
-        {
-            is.close();
         }
 
         return Collections.unmodifiableCollection( classNames );

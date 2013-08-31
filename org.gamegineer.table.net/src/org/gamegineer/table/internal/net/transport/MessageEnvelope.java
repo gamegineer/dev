@@ -1,6 +1,6 @@
 /*
  * MessageEnvelope.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -138,14 +138,9 @@ public final class MessageEnvelope
         }
 
         // write body
-        final ObjectOutputStream objectStream = ObjectStreams.createPlatformObjectOutputStream( byteStream );
-        try
+        try( final ObjectOutputStream objectStream = ObjectStreams.createPlatformObjectOutputStream( byteStream ) )
         {
             objectStream.writeObject( message );
-        }
-        finally
-        {
-            objectStream.close();
         }
 
         // write header
@@ -176,8 +171,8 @@ public final class MessageEnvelope
     /**
      * Gets the message contained in the message envelope body.
      * 
-     * @return The message contained in the message envelope body; never {@code
-     *         null}.
+     * @return The message contained in the message envelope body; never
+     *         {@code null}.
      * 
      * @throws java.io.IOException
      *         If the message cannot be deserialized from the message envelope
@@ -189,23 +184,18 @@ public final class MessageEnvelope
     public IMessage getMessage()
         throws IOException, ClassNotFoundException
     {
-        final ObjectInputStream stream = ObjectStreams.createPlatformObjectInputStream( new ByteArrayInputStream( bytes_, Header.LENGTH, bytes_.length - Header.LENGTH ) );
-        try
+        try( final ObjectInputStream stream = ObjectStreams.createPlatformObjectInputStream( new ByteArrayInputStream( bytes_, Header.LENGTH, bytes_.length - Header.LENGTH ) ) )
         {
             return (IMessage)stream.readObject();
-        }
-        finally
-        {
-            stream.close();
         }
     }
 
     /**
      * Gets a byte array representing the message envelope.
      * 
-     * @return A byte array representing the message envelope; never {@code
-     *         null}. The returned array is not a copy and must not be modified
-     *         by the caller.
+     * @return A byte array representing the message envelope; never
+     *         {@code null}. The returned array is not a copy and must not be
+     *         modified by the caller.
      */
     /* @NonNull */
     public byte[] toByteArray()

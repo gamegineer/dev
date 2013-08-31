@@ -906,17 +906,9 @@ public final class TableModel
     {
         assert file != null;
 
-        try
+        try( final ObjectInputStream inputStream = ObjectStreams.createPlatformObjectInputStream( new FileInputStream( file ) ) )
         {
-            final ObjectInputStream inputStream = ObjectStreams.createPlatformObjectInputStream( new FileInputStream( file ) );
-            try
-            {
-                return inputStream.readObject();
-            }
-            finally
-            {
-                inputStream.close();
-            }
+            return inputStream.readObject();
         }
         catch( final ClassNotFoundException e )
         {
@@ -1208,17 +1200,9 @@ public final class TableModel
         assert file != null;
         assert memento != null;
 
-        try
+        try( final ObjectOutputStream outputStream = ObjectStreams.createPlatformObjectOutputStream( new FileOutputStream( file ) ) )
         {
-            final ObjectOutputStream outputStream = ObjectStreams.createPlatformObjectOutputStream( new FileOutputStream( file ) );
-            try
-            {
-                outputStream.writeObject( memento );
-            }
-            finally
-            {
-                outputStream.close();
-            }
+            outputStream.writeObject( memento );
         }
         catch( final IOException e )
         {
