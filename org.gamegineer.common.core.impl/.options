@@ -2,3 +2,6 @@
 
 # Reports default bundle activity.
 org.gamegineer.common.core.impl/debug=false
+
+# Reports logging package activity.
+org.gamegineer.common.core.impl/debug/logging=false

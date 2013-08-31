@@ -40,6 +40,9 @@ public final class Debug
     /** The name of the top-level debug option. */
     public static final String OPTION_DEFAULT = "/debug"; //$NON-NLS-1$
 
+    /** The name of the logging package debug option. */
+    public static final String OPTION_LOGGING = OPTION_DEFAULT + "/logging"; //$NON-NLS-1$
+
 
     // ======================================================================
     // Constructors

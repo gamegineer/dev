@@ -1,6 +1,6 @@
 /*
- * DefaultFormatterFactory.java
- * Copyright 2008-2011 Gamegineer.org
+ * BundleConstants.java
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,32 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jun 4, 2010 at 11:03:27 PM.
+ * Created on Aug 30, 2013 at 10:00:20 PM.
  */
 
-package org.gamegineer.common.internal.core.logging;
+package org.gamegineer.common.internal.core.test;
 
-import java.util.logging.Formatter;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * A component factory for creating instances of
- * {@link java.util.logging.Formatter} whose concrete class is present on the
- * bundle classpath.
+ * Defines useful constants for use by the bundle.
  */
 @ThreadSafe
-public final class DefaultFormatterFactory
-    extends AbstractLoggingComponentFactory<Formatter>
+public final class BundleConstants
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The symbolic name of the bundle. */
+    public static final String SYMBOLIC_NAME = "org.gamegineer.common.core.test"; //$NON-NLS-1$
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code DefaultFormatterFactory} class.
+     * Initializes a new instance of the {@code BundleConstants} class.
      */
-    public DefaultFormatterFactory()
+    private BundleConstants()
     {
-        super( Formatter.class );
     }
 }
