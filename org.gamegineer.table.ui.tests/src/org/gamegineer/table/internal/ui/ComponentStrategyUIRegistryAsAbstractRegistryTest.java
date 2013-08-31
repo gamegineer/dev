@@ -1,6 +1,6 @@
 /*
  * ComponentStrategyUIRegistryAsAbstractRegistryTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,7 @@
 
 package org.gamegineer.table.internal.ui;
 
-import org.gamegineer.common.core.util.registry.AbstractAbstractRegistryTestCase;
-import org.gamegineer.common.core.util.registry.AbstractRegistry;
+import org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryTestCase;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.ui.IComponentStrategyUI;
 
@@ -33,7 +32,7 @@ import org.gamegineer.table.ui.IComponentStrategyUI;
  * {@link org.gamegineer.common.core.util.registry.AbstractRegistry} class.
  */
 public final class ComponentStrategyUIRegistryAsAbstractRegistryTest
-    extends AbstractAbstractRegistryTestCase<ComponentStrategyId, IComponentStrategyUI>
+    extends AbstractAbstractRegistryTestCase<ComponentStrategyUIRegistry, ComponentStrategyId, IComponentStrategyUI>
 {
     // ======================================================================
     // Constructors
@@ -53,11 +52,22 @@ public final class ComponentStrategyUIRegistryAsAbstractRegistryTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractAbstractRegistryTestCase#createRegistry()
+     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryTestCase#createRegistry()
      */
     @Override
-    protected AbstractRegistry<ComponentStrategyId, IComponentStrategyUI> createRegistry()
+    protected ComponentStrategyUIRegistry createRegistry()
     {
         return new ComponentStrategyUIRegistry();
+    }
+
+    /*
+     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryTestCase#getObjectId(org.gamegineer.common.core.util.registry.AbstractRegistry, java.lang.Object)
+     */
+    @Override
+    protected ComponentStrategyId getObjectId(
+        final ComponentStrategyUIRegistry registry,
+        final IComponentStrategyUI object )
+    {
+        return registry.getObjectId( object );
     }
 }

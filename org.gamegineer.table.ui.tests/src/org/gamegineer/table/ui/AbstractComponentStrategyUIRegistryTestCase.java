@@ -1,6 +1,6 @@
 /*
  * AbstractComponentStrategyUIRegistryTestCase.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.ui;
 
-import org.gamegineer.common.core.util.registry.AbstractRegistryTestCase;
+import org.gamegineer.common.core.test.util.registry.AbstractRegistryTestCase;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.TestComponentStrategies;
 
@@ -50,7 +50,7 @@ public abstract class AbstractComponentStrategyUIRegistryTestCase
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractRegistryTestCase#cloneObject(java.lang.Object)
+     * @see org.gamegineer.common.core.test.util.registry.AbstractRegistryTestCase#cloneObject(java.lang.Object)
      */
     @Override
     protected IComponentStrategyUI cloneObject(
@@ -60,7 +60,7 @@ public abstract class AbstractComponentStrategyUIRegistryTestCase
     }
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractRegistryTestCase#createUniqueObject()
+     * @see org.gamegineer.common.core.test.util.registry.AbstractRegistryTestCase#createUniqueObject()
      */
     @Override
     protected IComponentStrategyUI createUniqueObject()
@@ -69,7 +69,7 @@ public abstract class AbstractComponentStrategyUIRegistryTestCase
     }
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractRegistryTestCase#getObjectId(java.lang.Object)
+     * @see org.gamegineer.common.core.test.util.registry.AbstractRegistryTestCase#getObjectId(java.lang.Object)
      */
     @Override
     protected ComponentStrategyId getObjectId(

@@ -197,7 +197,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /*
-     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#initializeMementoOriginator(org.gamegineer.common.core.util.memento.IMementoOriginator)
+     * @see org.gamegineer.table.core.AbstractComponentTestCase#initializeMementoOriginator(org.gamegineer.common.core.util.memento.IMementoOriginator)
      */
     @Override
     protected void initializeMementoOriginator(

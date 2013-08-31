@@ -30,8 +30,7 @@ import org.easymock.IMocksControl;
 import org.eclipse.core.runtime.ContributorFactoryOSGi;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IContributor;
-import org.gamegineer.common.core.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase;
-import org.gamegineer.common.core.util.registry.AbstractRegistryExtensionPointAdapter;
+import org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.internal.ui.util.swing.IconProxy;
 import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
@@ -42,7 +41,7 @@ import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
  * class.
  */
 public final class ComponentSurfaceDesignUIRegistryExtensionPointAdapterTest
-    extends AbstractAbstractRegistryExtensionPointAdapterTestCase<ComponentSurfaceDesignId, ComponentSurfaceDesignUI>
+    extends AbstractAbstractRegistryExtensionPointAdapterTestCase<ComponentSurfaceDesignUIRegistryExtensionPointAdapter, ComponentSurfaceDesignId, ComponentSurfaceDesignUI>
 {
     // ======================================================================
     // Constructors
@@ -62,7 +61,7 @@ public final class ComponentSurfaceDesignUIRegistryExtensionPointAdapterTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase#assertObjectEquals(java.lang.Object, java.lang.Object)
+     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase#assertObjectEquals(java.lang.Object, java.lang.Object)
      */
     @Override
     protected void assertObjectEquals(
@@ -86,7 +85,7 @@ public final class ComponentSurfaceDesignUIRegistryExtensionPointAdapterTest
     }
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase#configureConfigurationElement(org.eclipse.core.runtime.IConfigurationElement, org.easymock.IMocksControl)
+     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase#configureConfigurationElement(org.eclipse.core.runtime.IConfigurationElement, org.easymock.IMocksControl)
      */
     @Override
     protected ComponentSurfaceDesignUI configureConfigurationElement(
@@ -105,11 +104,32 @@ public final class ComponentSurfaceDesignUIRegistryExtensionPointAdapterTest
     }
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase#createRegistryExtensionPointAdapter()
+     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase#createObject(org.gamegineer.common.core.util.registry.AbstractRegistryExtensionPointAdapter, org.eclipse.core.runtime.IConfigurationElement)
      */
     @Override
-    protected AbstractRegistryExtensionPointAdapter<ComponentSurfaceDesignId, ComponentSurfaceDesignUI> createRegistryExtensionPointAdapter()
+    protected ComponentSurfaceDesignUI createObject(
+        final ComponentSurfaceDesignUIRegistryExtensionPointAdapter registryExtensionPointAdapter,
+        final IConfigurationElement configurationElement )
+    {
+        return registryExtensionPointAdapter.createObject( configurationElement );
+    }
+
+    /*
+     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase#createRegistryExtensionPointAdapter()
+     */
+    @Override
+    protected ComponentSurfaceDesignUIRegistryExtensionPointAdapter createRegistryExtensionPointAdapter()
     {
         return new ComponentSurfaceDesignUIRegistryExtensionPointAdapter();
+    }
+
+    /*
+     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase#getExtensionPointId(org.gamegineer.common.core.util.registry.AbstractRegistryExtensionPointAdapter)
+     */
+    @Override
+    protected String getExtensionPointId(
+        final ComponentSurfaceDesignUIRegistryExtensionPointAdapter registryExtensionPointAdapter )
+    {
+        return registryExtensionPointAdapter.getExtensionPointId();
     }
 }

@@ -1,6 +1,6 @@
 /*
  * ContainerLayoutRegistryAsContainerLayoutRegistryTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -53,7 +53,7 @@ public final class ContainerLayoutRegistryAsContainerLayoutRegistryTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractRegistryTestCase#createRegistry()
+     * @see org.gamegineer.common.core.test.util.registry.AbstractRegistryTestCase#createRegistry()
      */
     @Override
     protected IRegistry<ContainerLayoutId, IContainerLayout> createRegistry()

@@ -1,6 +1,6 @@
 /*
  * ContainerLayoutRegistryAsAbstractRegistryTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
-import org.gamegineer.common.core.util.registry.AbstractAbstractRegistryTestCase;
-import org.gamegineer.common.core.util.registry.AbstractRegistry;
+import org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryTestCase;
 import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.IContainerLayout;
 
@@ -33,7 +32,7 @@ import org.gamegineer.table.core.IContainerLayout;
  * {@link org.gamegineer.common.core.util.registry.AbstractRegistry} class.
  */
 public final class ContainerLayoutRegistryAsAbstractRegistryTest
-    extends AbstractAbstractRegistryTestCase<ContainerLayoutId, IContainerLayout>
+    extends AbstractAbstractRegistryTestCase<ContainerLayoutRegistry, ContainerLayoutId, IContainerLayout>
 {
     // ======================================================================
     // Constructors
@@ -53,11 +52,22 @@ public final class ContainerLayoutRegistryAsAbstractRegistryTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractAbstractRegistryTestCase#createRegistry()
+     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryTestCase#createRegistry()
      */
     @Override
-    protected AbstractRegistry<ContainerLayoutId, IContainerLayout> createRegistry()
+    protected ContainerLayoutRegistry createRegistry()
     {
         return new ContainerLayoutRegistry();
+    }
+
+    /*
+     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryTestCase#getObjectId(org.gamegineer.common.core.util.registry.AbstractRegistry, java.lang.Object)
+     */
+    @Override
+    protected ContainerLayoutId getObjectId(
+        final ContainerLayoutRegistry registry,
+        final IContainerLayout object )
+    {
+        return registry.getObjectId( object );
     }
 }

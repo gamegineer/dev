@@ -1,6 +1,6 @@
 /*
  * AbstractComponentSurfaceDesignRegistryTestCase.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.core;
 
-import org.gamegineer.common.core.util.registry.AbstractRegistryTestCase;
+import org.gamegineer.common.core.test.util.registry.AbstractRegistryTestCase;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
@@ -48,7 +48,7 @@ public abstract class AbstractComponentSurfaceDesignRegistryTestCase
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractRegistryTestCase#cloneObject(java.lang.Object)
+     * @see org.gamegineer.common.core.test.util.registry.AbstractRegistryTestCase#cloneObject(java.lang.Object)
      */
     @Override
     protected ComponentSurfaceDesign cloneObject(
@@ -58,7 +58,7 @@ public abstract class AbstractComponentSurfaceDesignRegistryTestCase
     }
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractRegistryTestCase#createUniqueObject()
+     * @see org.gamegineer.common.core.test.util.registry.AbstractRegistryTestCase#createUniqueObject()
      */
     @Override
     protected ComponentSurfaceDesign createUniqueObject()
@@ -67,7 +67,7 @@ public abstract class AbstractComponentSurfaceDesignRegistryTestCase
     }
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractRegistryTestCase#getObjectId(java.lang.Object)
+     * @see org.gamegineer.common.core.test.util.registry.AbstractRegistryTestCase#getObjectId(java.lang.Object)
      */
     @Override
     protected ComponentSurfaceDesignId getObjectId(

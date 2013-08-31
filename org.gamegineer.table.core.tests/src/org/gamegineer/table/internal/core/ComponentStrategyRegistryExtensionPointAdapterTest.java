@@ -1,6 +1,6 @@
 /*
  * ComponentStrategyRegistryExtensionPointAdapterTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,7 @@ package org.gamegineer.table.internal.core;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.gamegineer.common.core.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase;
-import org.gamegineer.common.core.util.registry.AbstractRegistryExtensionPointAdapter;
+import org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.IComponentStrategy;
 
@@ -35,7 +34,7 @@ import org.gamegineer.table.core.IComponentStrategy;
  * class.
  */
 public final class ComponentStrategyRegistryExtensionPointAdapterTest
-    extends AbstractAbstractRegistryExtensionPointAdapterTestCase<ComponentStrategyId, IComponentStrategy>
+    extends AbstractAbstractRegistryExtensionPointAdapterTestCase<ComponentStrategyRegistryExtensionPointAdapter, ComponentStrategyId, IComponentStrategy>
 {
     // ======================================================================
     // Constructors
@@ -55,7 +54,7 @@ public final class ComponentStrategyRegistryExtensionPointAdapterTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase#configureConfigurationElement(org.eclipse.core.runtime.IConfigurationElement, org.easymock.IMocksControl)
+     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase#configureConfigurationElement(org.eclipse.core.runtime.IConfigurationElement, org.easymock.IMocksControl)
      */
     @Override
     protected IComponentStrategy configureConfigurationElement(
@@ -70,11 +69,32 @@ public final class ComponentStrategyRegistryExtensionPointAdapterTest
     }
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase#createRegistryExtensionPointAdapter()
+     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase#createObject(org.gamegineer.common.core.util.registry.AbstractRegistryExtensionPointAdapter, org.eclipse.core.runtime.IConfigurationElement)
      */
     @Override
-    protected AbstractRegistryExtensionPointAdapter<ComponentStrategyId, IComponentStrategy> createRegistryExtensionPointAdapter()
+    protected IComponentStrategy createObject(
+        final ComponentStrategyRegistryExtensionPointAdapter registryExtensionPointAdapter,
+        final IConfigurationElement configurationElement )
+    {
+        return registryExtensionPointAdapter.createObject( configurationElement );
+    }
+
+    /*
+     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase#createRegistryExtensionPointAdapter()
+     */
+    @Override
+    protected ComponentStrategyRegistryExtensionPointAdapter createRegistryExtensionPointAdapter()
     {
         return new ComponentStrategyRegistryExtensionPointAdapter();
+    }
+
+    /*
+     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase#getExtensionPointId(org.gamegineer.common.core.util.registry.AbstractRegistryExtensionPointAdapter)
+     */
+    @Override
+    protected String getExtensionPointId(
+        final ComponentStrategyRegistryExtensionPointAdapter registryExtensionPointAdapter )
+    {
+        return registryExtensionPointAdapter.getExtensionPointId();
     }
 }

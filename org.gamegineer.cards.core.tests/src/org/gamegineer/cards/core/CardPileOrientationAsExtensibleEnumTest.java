@@ -1,6 +1,6 @@
 /*
  * CardPileOrientationAsExtensibleEnumTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.cards.core;
 
-import org.gamegineer.common.core.util.AbstractExtensibleEnumTestCase;
+import org.gamegineer.common.core.test.util.AbstractExtensibleEnumTestCase;
 import org.gamegineer.common.core.util.ExtensibleEnum;
 
 /**
@@ -51,7 +51,7 @@ public final class CardPileOrientationAsExtensibleEnumTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.util.AbstractExtensibleEnumTestCase#getType()
+     * @see org.gamegineer.common.core.test.util.AbstractExtensibleEnumTestCase#getType()
      */
     @Override
     protected Class<? extends ExtensibleEnum> getType()

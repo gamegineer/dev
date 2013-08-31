@@ -25,7 +25,6 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.osgi.service.debug.DebugOptions;
 import org.gamegineer.common.core.logging.ILoggingService;
 import org.osgi.framework.BundleActivator;
@@ -45,10 +44,6 @@ public final class Activator
 
     /** The singleton instance of the bundle activator. */
     private static final AtomicReference<Activator> instance_ = new AtomicReference<>();
-
-    /** The adapter manager service tracker. */
-    @GuardedBy( "lock_" )
-    private ServiceTracker<IAdapterManager, IAdapterManager> adapterManagerTracker_;
 
     /** The bundle context. */
     @GuardedBy( "lock_" )
@@ -76,7 +71,6 @@ public final class Activator
     public Activator()
     {
         lock_ = new Object();
-        adapterManagerTracker_ = null;
         bundleContext_ = null;
         debugOptionsTracker_ = null;
         loggingServiceTracker_ = null;
@@ -86,29 +80,6 @@ public final class Activator
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Gets the adapter manager service.
-     * 
-     * @return The adapter manager service or {@code null} if no adapter manager
-     *         service is available.
-     */
-    /* @Nullable */
-    public IAdapterManager getAdapterManager()
-    {
-        synchronized( lock_ )
-        {
-            assert bundleContext_ != null;
-
-            if( adapterManagerTracker_ == null )
-            {
-                adapterManagerTracker_ = new ServiceTracker<>( bundleContext_, IAdapterManager.class, null );
-                adapterManagerTracker_.open();
-            }
-
-            return adapterManagerTracker_.getService();
-        }
-    }
 
     /**
      * Gets the bundle context.
@@ -229,11 +200,6 @@ public final class Activator
             {
                 debugOptionsTracker_.close();
                 debugOptionsTracker_ = null;
-            }
-            if( adapterManagerTracker_ != null )
-            {
-                adapterManagerTracker_.close();
-                adapterManagerTracker_ = null;
             }
         }
     }

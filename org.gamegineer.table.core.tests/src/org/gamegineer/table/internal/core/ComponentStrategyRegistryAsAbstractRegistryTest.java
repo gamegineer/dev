@@ -1,6 +1,6 @@
 /*
  * ComponentStrategyRegistryAsAbstractRegistryTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
-import org.gamegineer.common.core.util.registry.AbstractAbstractRegistryTestCase;
-import org.gamegineer.common.core.util.registry.AbstractRegistry;
+import org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryTestCase;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.IComponentStrategy;
 
@@ -33,7 +32,7 @@ import org.gamegineer.table.core.IComponentStrategy;
  * {@link org.gamegineer.common.core.util.registry.AbstractRegistry} class.
  */
 public final class ComponentStrategyRegistryAsAbstractRegistryTest
-    extends AbstractAbstractRegistryTestCase<ComponentStrategyId, IComponentStrategy>
+    extends AbstractAbstractRegistryTestCase<ComponentStrategyRegistry, ComponentStrategyId, IComponentStrategy>
 {
     // ======================================================================
     // Constructors
@@ -53,11 +52,22 @@ public final class ComponentStrategyRegistryAsAbstractRegistryTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractAbstractRegistryTestCase#createRegistry()
+     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryTestCase#createRegistry()
      */
     @Override
-    protected AbstractRegistry<ComponentStrategyId, IComponentStrategy> createRegistry()
+    protected ComponentStrategyRegistry createRegistry()
     {
         return new ComponentStrategyRegistry();
+    }
+
+    /*
+     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryTestCase#getObjectId(org.gamegineer.common.core.util.registry.AbstractRegistry, java.lang.Object)
+     */
+    @Override
+    protected ComponentStrategyId getObjectId(
+        final ComponentStrategyRegistry registry,
+        final IComponentStrategy object )
+    {
+        return registry.getObjectId( object );
     }
 }

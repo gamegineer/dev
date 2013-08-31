@@ -1,6 +1,6 @@
 /*
  * ComponentSurfaceDesignRegistryAsAbstractRegistryTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
-import org.gamegineer.common.core.util.registry.AbstractAbstractRegistryTestCase;
-import org.gamegineer.common.core.util.registry.AbstractRegistry;
+import org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryTestCase;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 
@@ -33,7 +32,7 @@ import org.gamegineer.table.core.ComponentSurfaceDesignId;
  * {@link org.gamegineer.common.core.util.registry.AbstractRegistry} class.
  */
 public final class ComponentSurfaceDesignRegistryAsAbstractRegistryTest
-    extends AbstractAbstractRegistryTestCase<ComponentSurfaceDesignId, ComponentSurfaceDesign>
+    extends AbstractAbstractRegistryTestCase<ComponentSurfaceDesignRegistry, ComponentSurfaceDesignId, ComponentSurfaceDesign>
 {
     // ======================================================================
     // Constructors
@@ -53,11 +52,22 @@ public final class ComponentSurfaceDesignRegistryAsAbstractRegistryTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractAbstractRegistryTestCase#createRegistry()
+     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryTestCase#createRegistry()
      */
     @Override
-    protected AbstractRegistry<ComponentSurfaceDesignId, ComponentSurfaceDesign> createRegistry()
+    protected ComponentSurfaceDesignRegistry createRegistry()
     {
         return new ComponentSurfaceDesignRegistry();
+    }
+
+    /*
+     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryTestCase#getObjectId(org.gamegineer.common.core.util.registry.AbstractRegistry, java.lang.Object)
+     */
+    @Override
+    protected ComponentSurfaceDesignId getObjectId(
+        final ComponentSurfaceDesignRegistry registry,
+        final ComponentSurfaceDesign object )
+    {
+        return registry.getObjectId( object );
     }
 }

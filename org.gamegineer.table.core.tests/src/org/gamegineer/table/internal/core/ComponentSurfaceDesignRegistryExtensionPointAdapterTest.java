@@ -1,6 +1,6 @@
 /*
  * ComponentSurfaceDesignRegistryExtensionPointAdapterTest.java
- * Copyright 2008-2012 Gamegineer.org
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,8 +26,7 @@ import static org.junit.Assert.assertNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.gamegineer.common.core.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase;
-import org.gamegineer.common.core.util.registry.AbstractRegistryExtensionPointAdapter;
+import org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 
@@ -37,7 +36,7 @@ import org.gamegineer.table.core.ComponentSurfaceDesignId;
  * class.
  */
 public final class ComponentSurfaceDesignRegistryExtensionPointAdapterTest
-    extends AbstractAbstractRegistryExtensionPointAdapterTestCase<ComponentSurfaceDesignId, ComponentSurfaceDesign>
+    extends AbstractAbstractRegistryExtensionPointAdapterTestCase<ComponentSurfaceDesignRegistryExtensionPointAdapter, ComponentSurfaceDesignId, ComponentSurfaceDesign>
 {
     // ======================================================================
     // Constructors
@@ -57,7 +56,7 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapterTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase#assertObjectEquals(java.lang.Object, java.lang.Object)
+     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase#assertObjectEquals(java.lang.Object, java.lang.Object)
      */
     @Override
     protected void assertObjectEquals(
@@ -80,7 +79,7 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapterTest
     }
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase#configureConfigurationElement(org.eclipse.core.runtime.IConfigurationElement, org.easymock.IMocksControl)
+     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase#configureConfigurationElement(org.eclipse.core.runtime.IConfigurationElement, org.easymock.IMocksControl)
      */
     @Override
     protected ComponentSurfaceDesign configureConfigurationElement(
@@ -98,11 +97,32 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapterTest
     }
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase#createRegistryExtensionPointAdapter()
+     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase#createObject(org.gamegineer.common.core.util.registry.AbstractRegistryExtensionPointAdapter, org.eclipse.core.runtime.IConfigurationElement)
      */
     @Override
-    protected AbstractRegistryExtensionPointAdapter<ComponentSurfaceDesignId, ComponentSurfaceDesign> createRegistryExtensionPointAdapter()
+    protected ComponentSurfaceDesign createObject(
+        final ComponentSurfaceDesignRegistryExtensionPointAdapter registryExtensionPointAdapter,
+        final IConfigurationElement configurationElement )
+    {
+        return registryExtensionPointAdapter.createObject( configurationElement );
+    }
+
+    /*
+     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase#createRegistryExtensionPointAdapter()
+     */
+    @Override
+    protected ComponentSurfaceDesignRegistryExtensionPointAdapter createRegistryExtensionPointAdapter()
     {
         return new ComponentSurfaceDesignRegistryExtensionPointAdapter();
+    }
+
+    /*
+     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryExtensionPointAdapterTestCase#getExtensionPointId(org.gamegineer.common.core.util.registry.AbstractRegistryExtensionPointAdapter)
+     */
+    @Override
+    protected String getExtensionPointId(
+        final ComponentSurfaceDesignRegistryExtensionPointAdapter registryExtensionPointAdapter )
+    {
+        return registryExtensionPointAdapter.getExtensionPointId();
     }
 }

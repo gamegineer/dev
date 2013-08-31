@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.Set;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase;
+import org.gamegineer.common.core.test.util.memento.AbstractMementoOriginatorTestCase;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.junit.Before;
 import org.junit.Test;
@@ -91,7 +91,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      * the specification of the
      * {@link org.gamegineer.table.core.Assert#assertComponentEquals} method.
      * 
-     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#assertMementoOriginatorEquals(org.gamegineer.common.core.util.memento.IMementoOriginator,
+     * @see org.gamegineer.common.core.test.util.memento.AbstractMementoOriginatorTestCase#assertMementoOriginatorEquals(org.gamegineer.common.core.util.memento.IMementoOriginator,
      *      org.gamegineer.common.core.util.memento.IMementoOriginator)
      */
     @Override
@@ -145,7 +145,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /*
-     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#createMementoOriginator()
+     * @see org.gamegineer.common.core.test.util.memento.AbstractMementoOriginatorTestCase#createMementoOriginator()
      */
     @Override
     protected final IMementoOriginator createMementoOriginator()
@@ -299,7 +299,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /*
-     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#initializeMementoOriginator(org.gamegineer.common.core.util.memento.IMementoOriginator)
+     * @see org.gamegineer.common.core.test.util.memento.AbstractMementoOriginatorTestCase#initializeMementoOriginator(org.gamegineer.common.core.util.memento.IMementoOriginator)
      */
     @Override
     protected void initializeMementoOriginator(
@@ -316,7 +316,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /*
-     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#setUp()
+     * @see org.gamegineer.common.core.test.util.memento.AbstractMementoOriginatorTestCase#setUp()
      */
     @Before
     @Override
