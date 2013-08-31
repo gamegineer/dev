@@ -38,8 +38,8 @@ import java.util.Map;
 import java.util.Set;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.common.core.test.util.memento.AbstractMementoOriginatorTestCase;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
+import org.gamegineer.common.core.util.memento.test.AbstractMementoOriginatorTestCase;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -91,7 +91,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      * the specification of the
      * {@link org.gamegineer.table.core.Assert#assertComponentEquals} method.
      * 
-     * @see org.gamegineer.common.core.test.util.memento.AbstractMementoOriginatorTestCase#assertMementoOriginatorEquals(org.gamegineer.common.core.util.memento.IMementoOriginator,
+     * @see org.gamegineer.common.core.util.memento.test.AbstractMementoOriginatorTestCase#assertMementoOriginatorEquals(org.gamegineer.common.core.util.memento.IMementoOriginator,
      *      org.gamegineer.common.core.util.memento.IMementoOriginator)
      */
     @Override

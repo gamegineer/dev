@@ -21,8 +21,8 @@
 
 package org.gamegineer.cards.core;
 
-import org.gamegineer.common.core.test.util.AbstractExtensibleEnumTestCase;
 import org.gamegineer.common.core.util.ExtensibleEnum;
+import org.gamegineer.common.core.util.test.AbstractExtensibleEnumTestCase;
 
 /**
  * A fixture for testing the {@link org.gamegineer.cards.core.CardOrientation}

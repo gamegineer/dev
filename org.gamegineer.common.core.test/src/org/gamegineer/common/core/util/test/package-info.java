@@ -16,11 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 30, 2013 at 10:35:56 PM.
+ * Created on Aug 30, 2013 at 10:28:32 PM.
  */
 
 /**
  * Provides test cases for implementations of interfaces defined in the
- * {@code org.gamegineer.common.core.util.registry} package.
+ * {@code org.gamegineer.common.core.util} package.
  */
-package org.gamegineer.common.core.test.util.registry;
+package org.gamegineer.common.core.util.test;

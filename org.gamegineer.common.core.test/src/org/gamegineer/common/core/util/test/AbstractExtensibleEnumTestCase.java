@@ -19,7 +19,7 @@
  * Created on Apr 3, 2012 at 9:03:42 PM.
  */
 
-package org.gamegineer.common.core.test.util;
+package org.gamegineer.common.core.util.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;

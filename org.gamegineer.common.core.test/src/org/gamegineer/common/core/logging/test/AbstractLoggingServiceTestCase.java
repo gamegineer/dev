@@ -19,7 +19,7 @@
  * Created on May 14, 2008 at 10:59:39 PM.
  */
 
-package org.gamegineer.common.core.test.logging;
+package org.gamegineer.common.core.logging.test;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;

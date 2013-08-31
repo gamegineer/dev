@@ -16,11 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 30, 2013 at 9:40:10 PM.
+ * Created on Aug 30, 2013 at 10:34:15 PM.
  */
 
 /**
  * Provides test cases for implementations of interfaces defined in the
- * {@code org.gamegineer.common.core.logging} package.
+ * {@code org.gamegineer.common.core.util.memento} package.
  */
-package org.gamegineer.common.core.test.logging;
+package org.gamegineer.common.core.util.memento.test;

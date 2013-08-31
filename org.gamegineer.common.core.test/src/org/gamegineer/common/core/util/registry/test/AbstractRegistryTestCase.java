@@ -19,7 +19,7 @@
  * Created on Nov 15, 2012 at 10:46:52 PM.
  */
 
-package org.gamegineer.common.core.test.util.registry;
+package org.gamegineer.common.core.util.registry.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

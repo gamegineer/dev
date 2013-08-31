@@ -8,10 +8,10 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-SymbolicName: org.gamegineer.common.core.test
 Bundle-Vendor: %bundleVendor
 Bundle-Version: 0.17.0.qualifier
-Export-Package: org.gamegineer.common.core.test.logging;version="0.17.0",
- org.gamegineer.common.core.test.util;version="0.17.0",
- org.gamegineer.common.core.test.util.memento;version="0.17.0",
- org.gamegineer.common.core.test.util.registry;version="0.17.0"
+Export-Package: org.gamegineer.common.core.logging.test;version="0.17.0",
+ org.gamegineer.common.core.util.memento.test;version="0.17.0",
+ org.gamegineer.common.core.util.registry.test;version="0.17.0",
+ org.gamegineer.common.core.util.test;version="0.17.0"
 Import-Package: net.jcip.annotations;version="1.0.0",
  org.easymock;version="3.2.0",
  org.gamegineer.common.core.logging;version="[0.17.0,0.18.0)",

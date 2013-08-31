@@ -19,7 +19,7 @@
  * Created on Oct 23, 2009 at 10:42:46 PM.
  */
 
-package org.gamegineer.common.core.test.util;
+package org.gamegineer.common.core.util.test;
 
 import static org.junit.Assert.assertNotNull;
 import org.gamegineer.common.core.util.IPredicate;

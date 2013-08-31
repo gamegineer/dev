@@ -30,8 +30,8 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.List;
-import org.gamegineer.common.core.test.util.memento.AbstractMementoOriginatorTestCase;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
+import org.gamegineer.common.core.util.memento.test.AbstractMementoOriginatorTestCase;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -79,7 +79,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
      * the specification of the
      * {@link org.gamegineer.table.core.Assert#assertTableEquals} method.
      * 
-     * @see org.gamegineer.common.core.test.util.memento.AbstractMementoOriginatorTestCase#assertMementoOriginatorEquals(org.gamegineer.common.core.util.memento.IMementoOriginator,
+     * @see org.gamegineer.common.core.util.memento.test.AbstractMementoOriginatorTestCase#assertMementoOriginatorEquals(org.gamegineer.common.core.util.memento.IMementoOriginator,
      *      org.gamegineer.common.core.util.memento.IMementoOriginator)
      */
     @Override

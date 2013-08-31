@@ -22,7 +22,7 @@
 package org.gamegineer.common.internal.core.impl.logging;
 
 import org.gamegineer.common.core.logging.ILoggingService;
-import org.gamegineer.common.core.test.logging.AbstractLoggingServiceTestCase;
+import org.gamegineer.common.core.logging.test.AbstractLoggingServiceTestCase;
 
 /**
  * A fixture for testing the

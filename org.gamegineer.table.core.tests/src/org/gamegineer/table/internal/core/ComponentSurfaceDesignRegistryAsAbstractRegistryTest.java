@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
-import org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryTestCase;
+import org.gamegineer.common.core.util.registry.test.AbstractAbstractRegistryTestCase;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 

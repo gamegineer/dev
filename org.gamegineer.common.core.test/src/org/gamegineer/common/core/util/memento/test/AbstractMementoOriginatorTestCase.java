@@ -19,7 +19,7 @@
  * Created on Jun 6, 2011 at 8:01:30 PM.
  */
 
-package org.gamegineer.common.core.test.util.memento;
+package org.gamegineer.common.core.util.memento.test;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.junit.Assert.assertEquals;

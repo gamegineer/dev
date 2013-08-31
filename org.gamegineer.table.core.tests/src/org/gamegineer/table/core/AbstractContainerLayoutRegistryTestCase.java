@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.core;
 
-import org.gamegineer.common.core.test.util.registry.AbstractRegistryTestCase;
+import org.gamegineer.common.core.util.registry.test.AbstractRegistryTestCase;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
