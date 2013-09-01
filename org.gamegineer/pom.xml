@@ -74,6 +74,14 @@
 		<tycho-version>0.18.0</tycho-version>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>g8r-target-platform</id>
+			<url>http://${g8r-repository-authority}/nexus/content/unzip/public.unzip/org/gamegineer/org.gamegineer.target-platform.repository/0.17.0-SNAPSHOT/org.gamegineer.target-platform.repository-0.17.0-SNAPSHOT.zip-unzip</url>
+			<layout>p2</layout>
+		</repository>
+	</repositories>
+
 	<build>
 		<pluginManagement>
 			<plugins>

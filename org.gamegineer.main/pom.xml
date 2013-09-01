@@ -26,6 +26,8 @@
 		<module>../javax.help.source</module>
 		<module>../net.jcip.annotations</module>
 		<module>../net.jcip.annotations.source</module>
+		<module>../org.gamegineer.test.core</module>
+		<module>../org.gamegineer.test.feature.base</module>
 	</modules>
 
 </project>
