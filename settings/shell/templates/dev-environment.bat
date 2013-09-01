@@ -3,7 +3,7 @@
 REM =========================================================================
 REM
 REM dev-environment.bat
-REM Copyright 2008-2013 Gamegineer.org
+REM Copyright 2008-2013 Gamegineer contributors and others.
 REM All rights reserved.
 REM
 REM This is a sample development environment setup script required for a
