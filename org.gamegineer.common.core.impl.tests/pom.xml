@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+		xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.gamegineer</groupId>
+		<artifactId>org.gamegineer.main</artifactId>
+		<version>0.17.0-SNAPSHOT</version>
+		<relativePath>../org.gamegineer.main</relativePath>
+	</parent>
+
+	<artifactId>org.gamegineer.common.core.impl.tests</artifactId>
+	<packaging>eclipse-test-plugin</packaging>
+
+	<name>org.gamegineer.common.core.impl.tests Fragment</name>
+	<description>
+		Gamegineer common core implementation unit tests fragment.
+	</description>
+
+</project>

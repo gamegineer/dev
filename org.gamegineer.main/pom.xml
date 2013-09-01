@@ -26,6 +26,11 @@
 		<module>../javax.help.source</module>
 		<module>../net.jcip.annotations</module>
 		<module>../net.jcip.annotations.source</module>
+		<module>../org.gamegineer.common.core</module>
+		<module>../org.gamegineer.common.core.impl</module>
+		<module>../org.gamegineer.common.core.impl.tests</module>
+		<module>../org.gamegineer.common.core.test</module>
+		<module>../org.gamegineer.common.core.tests</module>
 		<module>../org.gamegineer.test.core</module>
 		<module>../org.gamegineer.test.feature.base</module>
 	</modules>
