@@ -1,6 +1,6 @@
 /*
  * ComponentPasswordProperty.java
- * Copyright 2008-2011 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.ui.databinding.swing;
 
+import java.awt.Component;
 import javax.swing.JPasswordField;
 import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.core.databinding.property.value.DelegatingValueProperty;
@@ -28,8 +29,7 @@ import org.eclipse.core.databinding.property.value.IValueProperty;
 import org.gamegineer.common.core.security.SecureString;
 
 /**
- * A value property for the password of an instance of
- * {@link java.awt.Component}.
+ * A value property for the password of an instance of {@link Component}.
  */
 @NotThreadSafe
 final class ComponentPasswordProperty

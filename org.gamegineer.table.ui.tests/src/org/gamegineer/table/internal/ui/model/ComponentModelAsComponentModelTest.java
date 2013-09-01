@@ -24,8 +24,7 @@ package org.gamegineer.table.internal.ui.model;
 import org.gamegineer.table.ui.TestComponents;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.ComponentModel} class.
+ * A fixture for testing the {@link ComponentModel} class.
  */
 public final class ComponentModelAsComponentModelTest
     extends AbstractComponentModelTestCase<ComponentModel>

@@ -26,10 +26,8 @@ import org.gamegineer.table.core.ITableEnvironment;
 import org.gamegineer.table.core.ITableEnvironmentContext;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.TableEnvironment} class to ensure
- * it does not violate the contract of the
- * {@link org.gamegineer.table.core.ITableEnvironment} interface.
+ * A fixture for testing the {@link TableEnvironment} class to ensure it does
+ * not violate the contract of the {@link ITableEnvironment} interface.
  */
 public final class TableEnvironmentAsTableEnvironmentTest
     extends AbstractTableEnvironmentTestCase

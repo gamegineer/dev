@@ -36,8 +36,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that extend the
- * {@link org.gamegineer.common.core.util.registry.AbstractRegistryExtensionPointAdapter}
- * class.
+ * {@link AbstractRegistryExtensionPointAdapter} class.
  * 
  * @param <RegistryExtensionPointAdapterType>
  *        The type of the registry extension point adapter.

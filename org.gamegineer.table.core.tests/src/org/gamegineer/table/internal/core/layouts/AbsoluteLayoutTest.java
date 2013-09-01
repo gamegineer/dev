@@ -24,8 +24,7 @@ package org.gamegineer.table.internal.core.layouts;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.layouts.AbsoluteLayout} class.
+ * A fixture for testing the {@link AbsoluteLayout} class.
  */
 public final class AbsoluteLayoutTest
 {

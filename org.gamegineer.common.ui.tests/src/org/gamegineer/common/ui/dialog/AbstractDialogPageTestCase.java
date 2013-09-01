@@ -1,6 +1,6 @@
 /*
  * AbstractDialogPageTestCase.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that extend the
- * {@link org.gamegineer.common.ui.dialog.IDialogPage} class.
+ * {@link IDialogPage} class.
  */
 public abstract class AbstractDialogPageTestCase
 {

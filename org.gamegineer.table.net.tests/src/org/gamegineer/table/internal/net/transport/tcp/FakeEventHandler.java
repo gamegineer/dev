@@ -1,6 +1,6 @@
 /*
  * FakeEventHandler.java
- * Copyright 2008-2011 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,8 +25,7 @@ import java.nio.channels.SelectableChannel;
 import net.jcip.annotations.NotThreadSafe;
 
 /**
- * Fake implementation of
- * {@link org.gamegineer.table.internal.net.transport.tcp.AbstractEventHandler}
+ * Fake implementation of {@link AbstractEventHandler}
  */
 @NotThreadSafe
 class FakeEventHandler

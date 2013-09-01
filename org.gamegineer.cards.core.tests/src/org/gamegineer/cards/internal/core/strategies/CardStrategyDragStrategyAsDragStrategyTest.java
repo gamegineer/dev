@@ -32,10 +32,8 @@ import org.gamegineer.table.core.dnd.AbstractDragStrategyTestCase;
 import org.gamegineer.table.core.dnd.IDragStrategy;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.cards.internal.core.strategies.CardStrategy.DragStrategy}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.dnd.IDragStrategy} interface.
+ * A fixture for testing the {@link CardStrategy.DragStrategy} class to ensure
+ * it does not violate the contract of the {@link IDragStrategy} interface.
  */
 public final class CardStrategyDragStrategyAsDragStrategyTest
     extends AbstractDragStrategyTestCase

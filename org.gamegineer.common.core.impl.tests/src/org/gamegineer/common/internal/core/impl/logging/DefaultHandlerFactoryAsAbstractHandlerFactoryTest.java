@@ -24,11 +24,8 @@ package org.gamegineer.common.internal.core.impl.logging;
 import java.util.logging.Handler;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.common.internal.core.impl.logging.DefaultHandlerFactory}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.common.internal.core.impl.logging.AbstractHandlerFactory}
- * class.
+ * A fixture for testing the {@link DefaultHandlerFactory} class to ensure it
+ * does not violate the contract of the {@link AbstractHandlerFactory} class.
  */
 public final class DefaultHandlerFactoryAsAbstractHandlerFactoryTest
     extends AbstractAbstractLoggingComponentFactoryTestCase<DefaultHandlerFactory, Handler>

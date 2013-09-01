@@ -1,6 +1,6 @@
 /*
  * AbstractMessageAsMessageTest.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,10 +22,8 @@
 package org.gamegineer.table.internal.net.transport;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.transport.AbstractMessage} class to
- * ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.transport.IMessage} interface.
+ * A fixture for testing the {@link AbstractMessage} class to ensure it does not
+ * violate the contract of the {@link IMessage} interface.
  */
 public final class AbstractMessageAsMessageTest
     extends AbstractMessageTestCase

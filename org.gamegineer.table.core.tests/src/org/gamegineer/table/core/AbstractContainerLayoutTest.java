@@ -25,8 +25,7 @@ import java.awt.Dimension;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.core.AbstractContainerLayout} class.
+ * A fixture for testing the {@link AbstractContainerLayout} class.
  */
 public final class AbstractContainerLayoutTest
 {

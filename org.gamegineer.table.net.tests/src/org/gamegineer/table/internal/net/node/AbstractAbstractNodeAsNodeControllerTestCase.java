@@ -40,8 +40,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.node.INodeController} interface via
- * extension of the {@link org.gamegineer.table.internal.net.node.AbstractNode}
+ * {@link INodeController} interface via extension of the {@link AbstractNode}
  * class.
  * 
  * @param <T>

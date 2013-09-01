@@ -25,7 +25,7 @@ import net.jcip.annotations.ThreadSafe;
 
 /**
  * A collection of useful methods for working with instances of
- * {@link java.lang.Comparable}.
+ * {@link Comparable}.
  */
 @ThreadSafe
 public final class ComparableUtils

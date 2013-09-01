@@ -46,7 +46,7 @@ import org.gamegineer.table.core.version.IVersionControl;
 import org.gamegineer.table.internal.core.strategies.InternalComponentStrategies;
 
 /**
- * Implementation of {@link org.gamegineer.table.core.ITable}.
+ * Implementation of {@link ITable}.
  */
 @ThreadSafe
 final class Table

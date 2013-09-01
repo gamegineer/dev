@@ -34,7 +34,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.net.ITableNetwork} interface.
+ * {@link ITableNetwork} interface.
  */
 public abstract class AbstractTableNetworkTestCase
 {

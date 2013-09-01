@@ -25,10 +25,8 @@ import org.gamegineer.common.core.util.ExtensibleEnum;
 import org.gamegineer.common.core.util.test.AbstractExtensibleEnumTestCase;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.cards.core.CardPileOrientation} class to ensure it does
- * not violate the contract of the
- * {@link org.gamegineer.common.core.util.ExtensibleEnum} class
+ * A fixture for testing the {@link CardPileOrientation} class to ensure it does
+ * not violate the contract of the {@link ExtensibleEnum} class
  */
 public final class CardPileOrientationAsExtensibleEnumTest
     extends AbstractExtensibleEnumTestCase

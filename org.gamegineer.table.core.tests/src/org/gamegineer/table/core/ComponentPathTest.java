@@ -27,8 +27,7 @@ import java.util.List;
 import org.junit.Test;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.core.ComponentPath}
- * class.
+ * A fixture for testing the {@link ComponentPath} class.
  */
 public final class ComponentPathTest
 {

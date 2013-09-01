@@ -24,9 +24,7 @@ package org.gamegineer.table.internal.ui.wizards.jointablenetwork;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.wizards.jointablenetwork.JoinTableNetworkWizard}
- * class.
+ * A fixture for testing the {@link JoinTableNetworkWizard} class.
  */
 public final class JoinTableNetworkWizardTest
 {

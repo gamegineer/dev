@@ -27,8 +27,7 @@ import org.gamegineer.table.ui.TestComponents;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.ComponentModelVector} class.
+ * A fixture for testing the {@link ComponentModelVector} class.
  */
 public final class ComponentModelVectorTest
 {

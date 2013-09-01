@@ -31,7 +31,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that extend the
- * {@link org.gamegineer.common.ui.wizard.IWizard} class.
+ * {@link IWizard} class.
  */
 public abstract class AbstractWizardTestCase
 {

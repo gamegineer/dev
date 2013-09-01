@@ -26,9 +26,7 @@ import org.easymock.EasyMock;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.common.persistence.serializable.ObjectOutputStream}
- * class.
+ * A fixture for testing the {@link ObjectOutputStream} class.
  */
 public final class ObjectOutputStreamTest
 {

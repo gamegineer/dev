@@ -38,9 +38,7 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentFactory;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.common.internal.core.impl.logging.LoggerConfiguration}
- * class.
+ * A fixture for testing the {@link LoggerConfiguration} class.
  */
 public final class LoggerConfigurationTest
 {

@@ -33,7 +33,7 @@ import org.osgi.service.component.ComponentConstants;
 import org.osgi.service.component.ComponentFactory;
 
 /**
- * Fake implementation of {@link java.util.logging.Filter}.
+ * Fake implementation of {@link Filter}.
  * 
  * <p>
  * This filter supports the following fake properties:

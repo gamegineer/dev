@@ -21,15 +21,15 @@
 
 package org.gamegineer.table.internal.ui;
 
+import org.gamegineer.common.core.util.registry.AbstractRegistry;
 import org.gamegineer.common.core.util.registry.test.AbstractAbstractRegistryTestCase;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.ComponentSurfaceDesignUIRegistry}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.common.core.util.registry.AbstractRegistry} class.
+ * A fixture for testing the {@link ComponentSurfaceDesignUIRegistry} class to
+ * ensure it does not violate the contract of the {@link AbstractRegistry}
+ * class.
  */
 public final class ComponentSurfaceDesignUIRegistryAsAbstractRegistryTest
     extends AbstractAbstractRegistryTestCase<ComponentSurfaceDesignUIRegistry, ComponentSurfaceDesignId, ComponentSurfaceDesignUI>

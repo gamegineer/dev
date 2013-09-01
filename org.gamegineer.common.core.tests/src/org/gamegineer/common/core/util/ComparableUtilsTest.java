@@ -26,8 +26,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.common.core.util.ComparableUtils} class.
+ * A fixture for testing the {@link ComparableUtils} class.
  */
 public final class ComparableUtilsTest
 {

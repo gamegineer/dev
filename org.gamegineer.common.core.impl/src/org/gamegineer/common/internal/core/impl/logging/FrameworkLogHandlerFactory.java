@@ -30,8 +30,7 @@ import org.gamegineer.common.core.logging.FrameworkLogHandler;
 import org.osgi.service.component.ComponentException;
 
 /**
- * A component factory for
- * {@link org.gamegineer.common.core.logging.FrameworkLogHandler}.
+ * A component factory for {@link FrameworkLogHandler}.
  */
 @ThreadSafe
 public final class FrameworkLogHandlerFactory

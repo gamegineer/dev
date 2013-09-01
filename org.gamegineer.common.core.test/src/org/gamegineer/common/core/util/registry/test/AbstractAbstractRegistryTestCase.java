@@ -28,7 +28,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that extend the
- * {@link org.gamegineer.common.core.util.registry.AbstractRegistry} class.
+ * {@link AbstractRegistry} class.
  * 
  * @param <RegistryType>
  *        The type of the registry.

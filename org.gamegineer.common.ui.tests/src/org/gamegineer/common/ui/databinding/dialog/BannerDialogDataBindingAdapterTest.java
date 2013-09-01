@@ -27,9 +27,7 @@ import org.gamegineer.common.ui.dialog.AbstractBannerDialog;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.common.ui.databinding.dialog.BannerDialogDataBindingAdapter}
- * class.
+ * A fixture for testing the {@link BannerDialogDataBindingAdapter} class.
  */
 public final class BannerDialogDataBindingAdapterTest
 {

@@ -33,8 +33,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.Container} class.
+ * A fixture for testing the {@link Container} class.
  */
 public final class ContainerTest
 {

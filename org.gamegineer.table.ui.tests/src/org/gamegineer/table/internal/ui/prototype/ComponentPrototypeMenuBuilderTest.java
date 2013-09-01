@@ -37,9 +37,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.prototype.ComponentPrototypeMenuBuilder}
- * class.
+ * A fixture for testing the {@link ComponentPrototypeMenuBuilder} class.
  */
 public final class ComponentPrototypeMenuBuilderTest
 {

@@ -1,6 +1,6 @@
 /*
  * AbstractDialogPage.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -34,8 +34,7 @@ import org.gamegineer.common.internal.ui.Debug;
 import org.gamegineer.common.ui.layout.PixelConverter;
 
 /**
- * Superclass for all implementations of
- * {@link org.gamegineer.common.ui.dialog.IDialogPage}.
+ * Superclass for all implementations of {@link IDialogPage}.
  */
 @NotThreadSafe
 public abstract class AbstractDialogPage
@@ -179,7 +178,7 @@ public abstract class AbstractDialogPage
      * 
      * <p>
      * The default implementation creates a panel with no margins and a layout
-     * manager of type {@link java.awt.BorderLayout}.
+     * manager of type {@link BorderLayout}.
      * </p>
      * 
      * @param parent

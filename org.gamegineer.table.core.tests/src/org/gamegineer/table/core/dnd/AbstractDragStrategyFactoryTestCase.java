@@ -29,7 +29,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.core.dnd.IDragStrategyFactory} interface.
+ * {@link IDragStrategyFactory} interface.
  */
 public abstract class AbstractDragStrategyFactoryTestCase
 {

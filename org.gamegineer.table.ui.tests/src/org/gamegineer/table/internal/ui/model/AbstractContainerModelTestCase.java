@@ -35,8 +35,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.ContainerModel} class.
+ * A fixture for testing the {@link ContainerModel} class.
  */
 public abstract class AbstractContainerModelTestCase
     extends AbstractComponentModelTestCase<ContainerModel>

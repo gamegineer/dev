@@ -33,8 +33,7 @@ import org.gamegineer.table.core.TestComponents;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.layouts.AccordianLayout} class.
+ * A fixture for testing the {@link AccordianLayout} class.
  */
 public final class AccordianLayoutTest
 {

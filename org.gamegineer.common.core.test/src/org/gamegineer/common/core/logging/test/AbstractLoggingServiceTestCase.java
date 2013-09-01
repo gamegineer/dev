@@ -31,7 +31,7 @@ import org.osgi.framework.Bundle;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.common.core.logging.ILoggingService} interface.
+ * {@link ILoggingService} interface.
  */
 public abstract class AbstractLoggingServiceTestCase
 {

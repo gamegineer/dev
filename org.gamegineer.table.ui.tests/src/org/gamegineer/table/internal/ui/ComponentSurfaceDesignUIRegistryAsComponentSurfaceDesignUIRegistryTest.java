@@ -25,12 +25,12 @@ import org.gamegineer.common.core.util.registry.IRegistry;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.ui.AbstractComponentSurfaceDesignUIRegistryTestCase;
 import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
+import org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.ComponentSurfaceDesignUIRegistry}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry} interface.
+ * A fixture for testing the {@link ComponentSurfaceDesignUIRegistry} class to
+ * ensure it does not violate the contract of the
+ * {@link IComponentSurfaceDesignUIRegistry} interface.
  */
 public final class ComponentSurfaceDesignUIRegistryAsComponentSurfaceDesignUIRegistryTest
     extends AbstractComponentSurfaceDesignUIRegistryTestCase

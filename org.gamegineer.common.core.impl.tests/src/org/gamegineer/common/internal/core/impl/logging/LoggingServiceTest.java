@@ -25,9 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.common.internal.core.impl.logging.LoggingService}
- * class.
+ * A fixture for testing the {@link LoggingService} class.
  */
 public final class LoggingServiceTest
 {

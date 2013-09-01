@@ -1,6 +1,6 @@
 /*
  * ObjectStreams.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -141,9 +141,7 @@ public final class ObjectStreams
     // ======================================================================
 
     /**
-     * Null implementation of
-     * {@link org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry}
-     * .
+     * Null implementation of {@link IPersistenceDelegateRegistry}.
      */
     @Immutable
     private static final class NullPersistenceDelegateRegistry

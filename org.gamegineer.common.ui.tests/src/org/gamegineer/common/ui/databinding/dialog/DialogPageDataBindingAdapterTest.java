@@ -28,9 +28,7 @@ import org.gamegineer.common.ui.dialog.IDialogPage;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.common.ui.databinding.dialog.DialogPageDataBindingAdapter}
- * class.
+ * A fixture for testing the {@link DialogPageDataBindingAdapter} class.
  */
 public final class DialogPageDataBindingAdapterTest
 {

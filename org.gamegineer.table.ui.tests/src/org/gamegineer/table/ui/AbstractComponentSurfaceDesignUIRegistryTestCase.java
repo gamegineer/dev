@@ -26,7 +26,7 @@ import org.gamegineer.table.core.ComponentSurfaceDesignId;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry} interface.
+ * {@link IComponentSurfaceDesignUIRegistry} interface.
  */
 public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
     extends AbstractRegistryTestCase<ComponentSurfaceDesignId, ComponentSurfaceDesignUI>

@@ -41,9 +41,7 @@ import org.gamegineer.common.persistence.serializable.PersistenceDelegateRegistr
 import org.osgi.framework.ServiceReference;
 
 /**
- * Implementation of
- * {@link org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry}
- * .
+ * Implementation of {@link IPersistenceDelegateRegistry}.
  */
 @ThreadSafe
 public final class PersistenceDelegateRegistry

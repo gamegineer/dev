@@ -28,8 +28,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.core.ComponentEvent}
- * class.
+ * A fixture for testing the {@link ComponentEvent} class.
  */
 public final class ComponentEventTest
 {

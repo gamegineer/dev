@@ -24,8 +24,7 @@ package org.gamegineer.common.ui.wizard;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.common.ui.wizard.WizardDialog} class.
+ * A fixture for testing the {@link WizardDialog} class.
  */
 public final class WizardDialogTest
 {

@@ -26,8 +26,7 @@ import java.util.Collection;
 import org.gamegineer.test.core.AbstractEquatableTestCase;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.core.ComponentStrategyId} class to ensure it does
+ * A fixture for testing the {@link ComponentStrategyId} class to ensure it does
  * not violate the contract of the equatable interface.
  */
 public final class ComponentStrategyIdAsEquatableTest

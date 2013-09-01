@@ -24,9 +24,7 @@ package org.gamegineer.table.internal.ui.wizards.hosttablenetwork;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.wizards.hosttablenetwork.HostTableNetworkWizard}
- * class.
+ * A fixture for testing the {@link HostTableNetworkWizard} class.
  */
 public final class HostTableNetworkWizardTest
 {

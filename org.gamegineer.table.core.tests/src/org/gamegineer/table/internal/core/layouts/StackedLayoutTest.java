@@ -33,8 +33,7 @@ import org.gamegineer.table.core.TestComponents;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.layouts.StackedLayout} class.
+ * A fixture for testing the {@link StackedLayout} class.
  */
 public final class StackedLayoutTest
 {

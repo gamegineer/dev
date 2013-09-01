@@ -25,8 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the {@link org.gamegineer.cards.internal.ui.Activator}
- * class.
+ * A fixture for testing the {@link Activator} class.
  */
 public final class ActivatorTest
 {

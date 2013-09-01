@@ -35,9 +35,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.prototype.ComponentPrototypesExtensionPoint}
- * class.
+ * A fixture for testing the {@link ComponentPrototypesExtensionPoint} class.
  */
 public final class ComponentPrototypesExtensionPointTest
 {

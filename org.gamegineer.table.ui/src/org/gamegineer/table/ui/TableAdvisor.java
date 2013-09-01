@@ -29,7 +29,7 @@ import java.util.List;
 import net.jcip.annotations.Immutable;
 
 /**
- * Implementation of {@link org.gamegineer.table.ui.ITableAdvisor}.
+ * Implementation of {@link ITableAdvisor}.
  */
 @Immutable
 public final class TableAdvisor

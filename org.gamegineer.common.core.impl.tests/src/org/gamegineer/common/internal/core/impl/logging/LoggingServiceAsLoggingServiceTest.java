@@ -25,10 +25,8 @@ import org.gamegineer.common.core.logging.ILoggingService;
 import org.gamegineer.common.core.logging.test.AbstractLoggingServiceTestCase;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.common.internal.core.impl.logging.LoggingService} class
- * to ensure it does not violate the contract of the
- * {@link org.gamegineer.common.core.logging.ILoggingService} interface.
+ * A fixture for testing the {@link LoggingService} class to ensure it does not
+ * violate the contract of the {@link ILoggingService} interface.
  */
 public final class LoggingServiceAsLoggingServiceTest
     extends AbstractLoggingServiceTestCase

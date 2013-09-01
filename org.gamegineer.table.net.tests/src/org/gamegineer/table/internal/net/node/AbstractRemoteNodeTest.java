@@ -35,8 +35,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.node.AbstractRemoteNode} class.
+ * A fixture for testing the {@link AbstractRemoteNode} class.
  */
 public final class AbstractRemoteNodeTest
 {

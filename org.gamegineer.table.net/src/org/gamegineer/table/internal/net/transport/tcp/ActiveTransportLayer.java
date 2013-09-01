@@ -1,6 +1,6 @@
 /*
  * ActiveTransportLayer.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,9 +28,7 @@ import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
 
 /**
- * Implementation of
- * {@link org.gamegineer.table.internal.net.transport.tcp.AbstractTransportLayer}
- * for active connections.
+ * Implementation of {@link AbstractTransportLayer} for active connections.
  */
 @NotThreadSafe
 final class ActiveTransportLayer

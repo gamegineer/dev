@@ -25,7 +25,7 @@ import org.gamegineer.common.core.util.registry.test.AbstractRegistryTestCase;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.core.IComponentStrategyRegistry} interface.
+ * {@link IComponentStrategyRegistry} interface.
  */
 public abstract class AbstractComponentStrategyRegistryTestCase
     extends AbstractRegistryTestCase<ComponentStrategyId, IComponentStrategy>

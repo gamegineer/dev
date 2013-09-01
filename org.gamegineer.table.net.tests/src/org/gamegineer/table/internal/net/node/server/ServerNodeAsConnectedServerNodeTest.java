@@ -1,6 +1,6 @@
 /*
  * ServerNodeAsConnectedServerNodeTest.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,11 +27,9 @@ import org.gamegineer.table.internal.net.node.AbstractNodeUtils;
 import org.gamegineer.table.internal.net.node.NodeLayerRunner;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.node.server.ServerNode} class to
- * ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.node.server.IServerNode} interface
- * while in the connected state.
+ * A fixture for testing the {@link ServerNode} class to ensure it does not
+ * violate the contract of the {@link IServerNode} interface while in the
+ * connected state.
  */
 public final class ServerNodeAsConnectedServerNodeTest
     extends AbstractConnectedServerNodeTestCase<ServerNode>

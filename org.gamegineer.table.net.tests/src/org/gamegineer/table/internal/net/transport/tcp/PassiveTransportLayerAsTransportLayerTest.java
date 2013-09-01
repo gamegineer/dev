@@ -1,6 +1,6 @@
 /*
  * PassiveTransportLayerAsTransportLayerTest.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,11 +27,8 @@ import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.transport.tcp.PassiveTransportLayer}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.transport.ITransportLayer}
- * interface.
+ * A fixture for testing the {@link PassiveTransportLayer} class to ensure it
+ * does not violate the contract of the {@link ITransportLayer} interface.
  */
 public final class PassiveTransportLayerAsTransportLayerTest
     extends AbstractTransportLayerTestCase

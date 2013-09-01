@@ -30,8 +30,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.core.SingleThreadedTableEnvironmentContext}
+ * A fixture for testing the {@link SingleThreadedTableEnvironmentContext}
  * class.
  */
 public final class SingleThreadedTableEnvironmentContextTest

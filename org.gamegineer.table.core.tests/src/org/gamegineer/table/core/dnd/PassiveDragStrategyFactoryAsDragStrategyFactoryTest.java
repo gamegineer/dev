@@ -22,10 +22,9 @@
 package org.gamegineer.table.core.dnd;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.core.dnd.PassiveDragStrategyFactory} class to
- * ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.dnd.IDragStrategyFactory} interface.
+ * A fixture for testing the {@link PassiveDragStrategyFactory} class to ensure
+ * it does not violate the contract of the {@link IDragStrategyFactory}
+ * interface.
  */
 public final class PassiveDragStrategyFactoryAsDragStrategyFactoryTest
     extends AbstractDragStrategyFactoryTestCase

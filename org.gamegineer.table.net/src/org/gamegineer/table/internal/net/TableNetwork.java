@@ -45,7 +45,7 @@ import org.gamegineer.table.net.TableNetworkEvent;
 import org.gamegineer.table.net.TableNetworkException;
 
 /**
- * Implementation of {@link org.gamegineer.table.net.ITableNetwork}.
+ * Implementation of {@link ITableNetwork}.
  */
 @ThreadSafe
 public final class TableNetwork

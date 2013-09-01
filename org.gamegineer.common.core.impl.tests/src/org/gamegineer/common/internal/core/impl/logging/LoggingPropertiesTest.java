@@ -34,9 +34,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.common.internal.core.impl.logging.LoggingProperties}
- * class.
+ * A fixture for testing the {@link LoggingProperties} class.
  */
 public final class LoggingPropertiesTest
 {

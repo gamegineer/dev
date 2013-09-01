@@ -24,8 +24,7 @@ package org.gamegineer.common.ui.dialog;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.common.ui.dialog.DialogMessage} class.
+ * A fixture for testing the {@link DialogMessage} class.
  */
 public final class DialogMessageTest
 {

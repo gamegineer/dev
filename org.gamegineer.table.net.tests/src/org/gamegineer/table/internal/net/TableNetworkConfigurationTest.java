@@ -28,8 +28,7 @@ import org.gamegineer.table.core.ITable;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.TableNetworkConfiguration} class.
+ * A fixture for testing the {@link TableNetworkConfiguration} class.
  */
 public final class TableNetworkConfigurationTest
 {

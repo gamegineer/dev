@@ -25,8 +25,7 @@ import java.lang.reflect.Method;
 import org.gamegineer.table.ui.TestComponents;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.ContainerModel} class.
+ * A fixture for testing the {@link ContainerModel} class.
  */
 public final class ContainerModelAsContainerModelTest
     extends AbstractContainerModelTestCase

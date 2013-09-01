@@ -24,12 +24,12 @@ package org.gamegineer.table.internal.core;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.dnd.AbstractDragSourceTestCase;
+import org.gamegineer.table.core.dnd.IDragSource;
 import org.junit.Before;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.internal.core.Table}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.dnd.IDragSource} interface.
+ * A fixture for testing the {@link Table} class to ensure it does not violate
+ * the contract of the {@link IDragSource} interface.
  */
 public final class TableAsDragSourceTest
     extends AbstractDragSourceTestCase

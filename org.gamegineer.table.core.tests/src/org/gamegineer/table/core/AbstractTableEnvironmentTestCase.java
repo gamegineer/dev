@@ -28,7 +28,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.core.ITableEnvironment} interface.
+ * {@link ITableEnvironment} interface.
  */
 public abstract class AbstractTableEnvironmentTestCase
 {

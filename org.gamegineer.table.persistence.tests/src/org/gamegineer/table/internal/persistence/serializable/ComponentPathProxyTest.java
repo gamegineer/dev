@@ -24,9 +24,7 @@ package org.gamegineer.table.internal.persistence.serializable;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.persistence.serializable.ComponentPathProxy}
- * class.
+ * A fixture for testing the {@link ComponentPathProxy} class.
  */
 public final class ComponentPathProxyTest
 {

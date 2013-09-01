@@ -22,12 +22,12 @@
 package org.gamegineer.table.internal.core;
 
 import org.gamegineer.table.core.AbstractTableTestCase;
+import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableEnvironmentContext;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.internal.core.Table}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.ITable} interface.
+ * A fixture for testing the {@link Table} class to ensure it does not violate
+ * the contract of the {@link ITable} interface.
  */
 public final class TableAsTableTest
     extends AbstractTableTestCase<TableEnvironment, Table>

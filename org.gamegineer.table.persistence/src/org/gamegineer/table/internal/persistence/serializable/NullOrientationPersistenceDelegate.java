@@ -23,10 +23,10 @@ package org.gamegineer.table.internal.persistence.serializable;
 
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
+import org.gamegineer.table.core.NullOrientation;
 
 /**
- * A persistence delegate for the
- * {@link org.gamegineer.table.core.NullOrientation} class.
+ * A persistence delegate for the {@link NullOrientation} class.
  */
 @Immutable
 public final class NullOrientationPersistenceDelegate

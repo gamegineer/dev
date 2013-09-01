@@ -31,8 +31,7 @@ import net.jcip.annotations.Immutable;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.common.core.util.ExtensibleEnum} class.
+ * A fixture for testing the {@link ExtensibleEnum} class.
  */
 public final class ExtensibleEnumTest
 {

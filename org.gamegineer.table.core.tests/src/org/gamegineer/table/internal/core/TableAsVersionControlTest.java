@@ -24,12 +24,12 @@ package org.gamegineer.table.internal.core;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.revision.AbstractVersionControlTestCase;
+import org.gamegineer.table.core.version.IVersionControl;
 import org.junit.Before;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.internal.core.Table}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.version.IVersionControl} interface.
+ * A fixture for testing the {@link Table} class to ensure it does not violate
+ * the contract of the {@link IVersionControl} interface.
  */
 public final class TableAsVersionControlTest
     extends AbstractVersionControlTestCase

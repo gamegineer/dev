@@ -1,6 +1,6 @@
 /*
  * AssertTest.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,8 +26,7 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 
 /**
- * A fixture for testing the {@link org.gamegineer.common.core.runtime.Assert}
- * class.
+ * A fixture for testing the {@link Assert} class.
  */
 public final class AssertTest
 {

@@ -24,9 +24,7 @@ package org.gamegineer.table.internal.persistence.serializable;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.persistence.serializable.ContainerLayoutIdProxy}
- * class.
+ * A fixture for testing the {@link ContainerLayoutIdProxy} class.
  */
 public final class ContainerLayoutIdProxyTest
 {

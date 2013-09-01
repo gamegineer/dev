@@ -1,6 +1,6 @@
 /*
  * DefaultComponentStrategyUIAsComponentStrategyUITest.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,12 +23,12 @@ package org.gamegineer.table.internal.ui.strategies;
 
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.ui.AbstractComponentStrategyUITestCase;
+import org.gamegineer.table.ui.IComponentStrategyUI;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.strategies.DefaultComponentStrategyUI}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.ui.IComponentStrategyUI} interface.
+ * A fixture for testing the {@link DefaultComponentStrategyUI} class to ensure
+ * it does not violate the contract of the {@link IComponentStrategyUI}
+ * interface.
  */
 public final class DefaultComponentStrategyUIAsComponentStrategyUITest
     extends AbstractComponentStrategyUITestCase<DefaultComponentStrategyUI>

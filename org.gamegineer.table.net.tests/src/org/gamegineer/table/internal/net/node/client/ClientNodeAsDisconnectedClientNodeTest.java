@@ -1,6 +1,6 @@
 /*
  * ClientNodeAsDisconnectedClientNodeTest.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,11 +25,9 @@ import org.gamegineer.table.internal.net.TableNetworkControllers;
 import org.gamegineer.table.internal.net.node.NodeLayerRunner;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.node.client.ClientNode} class to
- * ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.node.client.IClientNode} interface
- * while in the disconnected state.
+ * A fixture for testing the {@link ClientNode} class to ensure it does not
+ * violate the contract of the {@link IClientNode} interface while in the
+ * disconnected state.
  */
 public final class ClientNodeAsDisconnectedClientNodeTest
     extends AbstractDisconnectedClientNodeTestCase<ClientNode>

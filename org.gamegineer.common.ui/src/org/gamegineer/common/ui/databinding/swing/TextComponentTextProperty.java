@@ -1,6 +1,6 @@
 /*
  * TextComponentTextProperty.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ package org.gamegineer.common.ui.databinding.swing;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
@@ -34,7 +35,7 @@ import org.eclipse.core.databinding.property.value.SimpleValueProperty;
 
 /**
  * A value property for the text property of an instance of
- * {@link javax.swing.text.JTextComponent}.
+ * {@link JTextComponent}.
  */
 @Immutable
 final class TextComponentTextProperty
@@ -103,7 +104,7 @@ final class TextComponentTextProperty
     // ======================================================================
 
     /**
-     * A property listener for instances of {@link javax.swing.text.Document}.
+     * A property listener for instances of {@link Document}.
      */
     @NotThreadSafe
     private static final class DocumentPropertyListener

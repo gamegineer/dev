@@ -28,9 +28,7 @@ import org.gamegineer.common.core.util.concurrent.SynchronousFuture;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 
 /**
- * Fake implementation of
- * {@link org.gamegineer.table.internal.net.transport.ITransportLayer} for a
- * passive connection.
+ * Fake implementation of {@link ITransportLayer} for a passive connection.
  */
 @Immutable
 final class PassiveTransportLayer

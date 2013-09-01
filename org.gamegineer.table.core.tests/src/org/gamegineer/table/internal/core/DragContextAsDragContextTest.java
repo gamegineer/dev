@@ -24,12 +24,11 @@ package org.gamegineer.table.internal.core;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.dnd.AbstractDragContextTestCase;
+import org.gamegineer.table.core.dnd.IDragContext;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.DragContext} class to ensure it
- * does not violate the contract of the
- * {@link org.gamegineer.table.core.dnd.IDragContext} interface.
+ * A fixture for testing the {@link DragContext} class to ensure it does not
+ * violate the contract of the {@link IDragContext} interface.
  */
 public final class DragContextAsDragContextTest
     extends AbstractDragContextTestCase

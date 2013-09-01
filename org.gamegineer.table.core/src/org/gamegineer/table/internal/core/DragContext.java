@@ -42,7 +42,7 @@ import org.gamegineer.table.core.dnd.IDragStrategyFactory;
 import org.gamegineer.table.core.dnd.NullDragStrategy;
 
 /**
- * Implementation of {@link org.gamegineer.table.core.dnd.IDragContext}.
+ * Implementation of {@link IDragContext}.
  */
 @ThreadSafe
 final class DragContext

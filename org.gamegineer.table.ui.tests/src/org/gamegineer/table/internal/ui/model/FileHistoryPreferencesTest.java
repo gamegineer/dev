@@ -29,8 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.FileHistoryPreferences} class.
+ * A fixture for testing the {@link FileHistoryPreferences} class.
  */
 public final class FileHistoryPreferencesTest
 {

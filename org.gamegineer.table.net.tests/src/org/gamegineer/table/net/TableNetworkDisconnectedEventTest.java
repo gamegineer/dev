@@ -24,8 +24,7 @@ package org.gamegineer.table.net;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.net.TableNetworkDisconnectedEvent} class.
+ * A fixture for testing the {@link TableNetworkDisconnectedEvent} class.
  */
 public final class TableNetworkDisconnectedEventTest
 {

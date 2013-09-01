@@ -25,8 +25,8 @@ import net.jcip.annotations.Immutable;
 import org.eclipse.core.databinding.conversion.Converter;
 
 /**
- * A data binding converter from values of type {@link java.lang.String} to
- * values of type {@link java.lang.Integer#TYPE}.
+ * A data binding converter from values of type {@link String} to values of type
+ * {@link Integer#TYPE}.
  */
 @Immutable
 public final class StringToPrimitiveIntegerConverter

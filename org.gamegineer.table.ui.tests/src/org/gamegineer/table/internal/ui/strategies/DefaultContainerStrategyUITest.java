@@ -24,9 +24,7 @@ package org.gamegineer.table.internal.ui.strategies;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.strategies.DefaultContainerStrategyUI}
- * class.
+ * A fixture for testing the {@link DefaultContainerStrategyUI} class.
  */
 public final class DefaultContainerStrategyUITest
 {

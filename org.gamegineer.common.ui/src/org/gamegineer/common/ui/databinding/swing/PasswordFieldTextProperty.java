@@ -1,6 +1,6 @@
 /*
  * PasswordFieldTextProperty.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,6 +24,7 @@ package org.gamegineer.common.ui.databinding.swing;
 import javax.swing.JPasswordField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.Document;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.core.databinding.property.INativePropertyListener;
@@ -35,7 +36,7 @@ import org.gamegineer.common.core.security.SecureString;
 
 /**
  * A value property for the password property of an instance of
- * {@link javax.swing.JPasswordField}.
+ * {@link JPasswordField}.
  */
 @Immutable
 final class PasswordFieldTextProperty
@@ -104,7 +105,7 @@ final class PasswordFieldTextProperty
     // ======================================================================
 
     /**
-     * A property listener for instances of {@link javax.swing.text.Document}.
+     * A property listener for instances of {@link Document}.
      */
     @NotThreadSafe
     private static final class DocumentPropertyListener

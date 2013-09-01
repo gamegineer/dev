@@ -1,6 +1,6 @@
 /*
  * AbstractMessageHandler.java
- * Copyright 2008-2011 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -31,8 +31,7 @@ import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.net.TableNetworkError;
 
 /**
- * Superclass for all implementations of
- * {@link org.gamegineer.table.internal.net.node.IMessageHandler}.
+ * Superclass for all implementations of {@link IMessageHandler}.
  * 
  * @param <RemoteNodeControllerType>
  *        The type of the remote node control interface.

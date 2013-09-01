@@ -24,8 +24,7 @@ package org.gamegineer.table.core.dnd;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.core.dnd.PassiveDragStrategy} class.
+ * A fixture for testing the {@link PassiveDragStrategy} class.
  */
 public final class PassiveDragStrategyTest
 {

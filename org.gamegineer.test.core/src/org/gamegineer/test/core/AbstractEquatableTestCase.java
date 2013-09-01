@@ -36,8 +36,7 @@ import org.junit.Test;
  * 
  * <p>
  * An equatable class is any class that overrides both the default
- * implementations of {@link java.lang.Object#equals(Object)} and
- * {@link java.lang.Object#hashCode()}.
+ * implementations of {@link Object#equals} and {@link Object#hashCode}.
  * </p>
  * 
  * @param <T>

@@ -24,8 +24,7 @@ package org.gamegineer.common.core.runtime;
 import org.junit.Test;
 
 /**
- * A fixture for testing the {@link org.gamegineer.common.core.runtime.Debug}
- * class.
+ * A fixture for testing the {@link Debug} class.
  */
 public final class DebugTest
 {

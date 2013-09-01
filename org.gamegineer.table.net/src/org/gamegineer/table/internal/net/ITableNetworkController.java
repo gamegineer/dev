@@ -1,6 +1,6 @@
 /*
  * ITableNetworkController.java
- * Copyright 2008-2011 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net;
 
+import org.gamegineer.table.internal.net.node.INodeController;
 import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
 import org.gamegineer.table.net.TableNetworkError;
 
@@ -30,8 +31,7 @@ import org.gamegineer.table.net.TableNetworkError;
  * <p>
  * This interface provides operations that allow a table network node controller
  * to control the local table network. It is only intended for use by an
- * implementation of
- * {@link org.gamegineer.table.internal.net.node.INodeController}.
+ * implementation of {@link INodeController}.
  * </p>
  * 
  * @noextend This interface is not intended to be extended by clients.

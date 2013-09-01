@@ -51,7 +51,7 @@ import org.gamegineer.table.core.IContainerStrategy;
 import org.gamegineer.table.core.NoSuchContainerLayoutException;
 
 /**
- * Implementation of {@link org.gamegineer.table.core.IContainer}.
+ * Implementation of {@link IContainer}.
  */
 @ThreadSafe
 final class Container

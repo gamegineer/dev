@@ -1,6 +1,6 @@
 /*
  * ComponentProperties.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,9 @@
 
 package org.gamegineer.common.ui.databinding.swing;
 
+import javax.swing.JList;
+import javax.swing.JPasswordField;
+import javax.swing.text.JTextComponent;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.databinding.property.value.IValueProperty;
 
@@ -48,10 +51,10 @@ public final class ComponentProperties
 
     /**
      * Gets a value property for observing the password of a
-     * {@link javax.swing.JPasswordField}.
+     * {@link JPasswordField}.
      * 
      * @return A value property for observing the password of a
-     *         {@link javax.swing.JPasswordField}; never {@code null}.
+     *         {@link JPasswordField}; never {@code null}.
      */
     /* @NonNull */
     public static IValueProperty password()
@@ -61,10 +64,10 @@ public final class ComponentProperties
 
     /**
      * Gets a value property for observing the single selection value of a
-     * {@link javax.swing.JList}.
+     * {@link JList}.
      * 
-     * @return A value property for observing the password of a
-     *         {@link javax.swing.JList}; never {@code null}.
+     * @return A value property for observing the password of a {@link JList};
+     *         never {@code null}.
      */
     /* @NonNull */
     public static IValueProperty singleSelectionValue()
@@ -73,11 +76,10 @@ public final class ComponentProperties
     }
 
     /**
-     * Gets a value property for observing the text of a
-     * {@link javax.swing.text.JTextComponent}.
+     * Gets a value property for observing the text of a {@link JTextComponent}.
      * 
      * @return A value property for observing the text of a
-     *         {@link javax.swing.text.JTextComponent}; never {@code null}.
+     *         {@link JTextComponent}; never {@code null}.
      */
     /* @NonNull */
     public static IValueProperty text()

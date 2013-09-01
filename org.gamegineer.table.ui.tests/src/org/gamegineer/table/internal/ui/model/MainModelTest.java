@@ -34,8 +34,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.MainModel} class.
+ * A fixture for testing the {@link MainModel} class.
  */
 public final class MainModelTest
 {

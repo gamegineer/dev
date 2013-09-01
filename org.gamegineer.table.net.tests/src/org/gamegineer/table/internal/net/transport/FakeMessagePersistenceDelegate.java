@@ -1,6 +1,6 @@
 /*
  * FakeMessagePersistenceDelegate.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,8 +25,7 @@ import net.jcip.annotations.Immutable;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
 
 /**
- * A persistence delegate for the
- * {@link org.gamegineer.table.internal.net.transport.FakeMessage} class.
+ * A persistence delegate for the {@link FakeMessage} class.
  */
 @Immutable
 public final class FakeMessagePersistenceDelegate

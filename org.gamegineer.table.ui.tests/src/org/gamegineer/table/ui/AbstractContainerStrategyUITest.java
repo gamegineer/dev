@@ -24,8 +24,7 @@ package org.gamegineer.table.ui;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.ui.AbstractContainerStrategyUI} class.
+ * A fixture for testing the {@link AbstractContainerStrategyUI} class.
  */
 public final class AbstractContainerStrategyUITest
 {

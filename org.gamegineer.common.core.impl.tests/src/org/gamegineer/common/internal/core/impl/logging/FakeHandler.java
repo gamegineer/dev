@@ -33,7 +33,7 @@ import org.osgi.service.component.ComponentException;
 import org.osgi.service.component.ComponentFactory;
 
 /**
- * Fake implementation of {@link java.util.logging.Handler}.
+ * Fake implementation of {@link Handler}.
  */
 @NotThreadSafe
 public final class FakeHandler

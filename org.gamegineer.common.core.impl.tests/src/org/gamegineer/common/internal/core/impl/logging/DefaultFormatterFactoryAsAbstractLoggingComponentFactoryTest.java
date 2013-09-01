@@ -24,10 +24,8 @@ package org.gamegineer.common.internal.core.impl.logging;
 import java.util.logging.Formatter;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.common.internal.core.impl.logging.DefaultFormatterFactory}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.common.internal.core.impl.logging.AbstractLoggingComponentFactory}
+ * A fixture for testing the {@link DefaultFormatterFactory} class to ensure it
+ * does not violate the contract of the {@link AbstractLoggingComponentFactory}
  * class.
  */
 public final class DefaultFormatterFactoryAsAbstractLoggingComponentFactoryTest

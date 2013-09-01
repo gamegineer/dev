@@ -43,7 +43,7 @@ import org.junit.rules.Timeout;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.core.IContainer} interface.
+ * {@link IContainer} interface.
  * 
  * @param <TableEnvironmentType>
  *        The type of the table environment.

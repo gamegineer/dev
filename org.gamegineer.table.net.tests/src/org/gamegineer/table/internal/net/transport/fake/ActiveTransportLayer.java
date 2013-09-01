@@ -28,9 +28,7 @@ import org.gamegineer.common.core.util.concurrent.SynchronousFuture;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 
 /**
- * Fake implementation of
- * {@link org.gamegineer.table.internal.net.transport.ITransportLayer} for an
- * active connection.
+ * Fake implementation of {@link ITransportLayer} for an active connection.
  */
 @Immutable
 final class ActiveTransportLayer

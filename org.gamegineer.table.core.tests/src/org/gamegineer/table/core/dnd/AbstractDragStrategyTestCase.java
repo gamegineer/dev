@@ -27,7 +27,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.core.dnd.IDragStrategy} interface.
+ * {@link IDragStrategy} interface.
  */
 public abstract class AbstractDragStrategyTestCase
 {

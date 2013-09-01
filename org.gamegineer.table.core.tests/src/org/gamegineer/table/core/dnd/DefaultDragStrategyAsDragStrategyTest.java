@@ -25,10 +25,8 @@ import org.easymock.EasyMock;
 import org.gamegineer.table.core.IComponent;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.core.dnd.DefaultDragStrategy} class to ensure it
- * does not violate the contract of the
- * {@link org.gamegineer.table.core.dnd.IDragStrategy} interface.
+ * A fixture for testing the {@link DefaultDragStrategy} class to ensure it does
+ * not violate the contract of the {@link IDragStrategy} interface.
  */
 public final class DefaultDragStrategyAsDragStrategyTest
     extends AbstractDragStrategyTestCase

@@ -30,7 +30,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.common.core.util.memento.IMementoOriginator} interface.
+ * {@link IMementoOriginator} interface.
  */
 public abstract class AbstractMementoOriginatorTestCase
 {

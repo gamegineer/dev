@@ -22,10 +22,9 @@
 package org.gamegineer.table.core;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.core.MultiThreadedTableEnvironmentContext} class
+ * A fixture for testing the {@link MultiThreadedTableEnvironmentContext} class
  * to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.ITableEnvironmentContext} interface.
+ * {@link ITableEnvironmentContext} interface.
  */
 public final class MultiThreadedTableEnvironmentContextAsTableEnvironmentContextTest
     extends AbstractTableEnvironmentContextTestCase

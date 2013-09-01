@@ -30,8 +30,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.ContainerModelEvent} class.
+ * A fixture for testing the {@link ContainerModelEvent} class.
  */
 public final class ContainerModelEventTest
 {

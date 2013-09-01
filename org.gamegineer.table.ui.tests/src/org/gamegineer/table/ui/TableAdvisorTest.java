@@ -28,7 +28,7 @@ import java.util.List;
 import org.junit.Test;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.ui.TableAdvisor} class.
+ * A fixture for testing the {@link TableAdvisor} class.
  */
 public final class TableAdvisorTest
 {

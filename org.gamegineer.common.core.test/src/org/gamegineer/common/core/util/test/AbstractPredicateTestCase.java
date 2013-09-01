@@ -28,7 +28,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.common.core.util.IPredicate} interface.
+ * {@link IPredicate} interface.
  */
 public abstract class AbstractPredicateTestCase
 {

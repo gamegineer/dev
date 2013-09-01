@@ -39,9 +39,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.node.server.handlers.HelloRequestMessageHandler}
- * class.
+ * A fixture for testing the {@link HelloRequestMessageHandler} class.
  */
 public final class HelloRequestMessageHandlerTest
 {

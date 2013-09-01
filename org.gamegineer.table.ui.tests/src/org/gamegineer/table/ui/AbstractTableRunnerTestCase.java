@@ -1,6 +1,6 @@
 /*
  * AbstractTableRunnerTestCase.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -35,7 +35,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.ui.ITableRunner} interface.
+ * {@link ITableRunner} interface.
  */
 public abstract class AbstractTableRunnerTestCase
 {

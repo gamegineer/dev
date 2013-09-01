@@ -29,8 +29,7 @@ import net.jcip.annotations.Immutable;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.util.swing.SortedListModel} class.
+ * A fixture for testing the {@link SortedListModel} class.
  */
 public final class SortedListModelTest
 {

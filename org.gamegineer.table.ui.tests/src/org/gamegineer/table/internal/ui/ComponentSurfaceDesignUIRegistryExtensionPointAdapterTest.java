@@ -37,8 +37,7 @@ import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.ComponentSurfaceDesignUIRegistryExtensionPointAdapter}
- * class.
+ * {@link ComponentSurfaceDesignUIRegistryExtensionPointAdapter} class.
  */
 public final class ComponentSurfaceDesignUIRegistryExtensionPointAdapterTest
     extends AbstractAbstractRegistryExtensionPointAdapterTestCase<ComponentSurfaceDesignUIRegistryExtensionPointAdapter, ComponentSurfaceDesignId, ComponentSurfaceDesignUI>

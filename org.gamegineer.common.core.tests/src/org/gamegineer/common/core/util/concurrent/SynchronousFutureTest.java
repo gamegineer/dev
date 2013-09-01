@@ -28,8 +28,8 @@ import java.util.concurrent.Future;
 import org.junit.Test;
 
 /**
- * A fixture for testing the basic aspects of the
- * {@link org.gamegineer.common.core.util.concurrent.SynchronousFuture} class.
+ * A fixture for testing the basic aspects of the {@link SynchronousFuture}
+ * class.
  */
 public final class SynchronousFutureTest
 {

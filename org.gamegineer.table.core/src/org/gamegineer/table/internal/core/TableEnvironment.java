@@ -35,7 +35,7 @@ import org.gamegineer.table.core.ITableEnvironmentContext;
 import org.gamegineer.table.core.ITableEnvironmentLock;
 
 /**
- * Implementation of {@link org.gamegineer.table.core.ITableEnvironment}.
+ * Implementation of {@link ITableEnvironment}.
  */
 @ThreadSafe
 public final class TableEnvironment

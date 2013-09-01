@@ -22,12 +22,11 @@
 package org.gamegineer.cards.internal.ui.strategies;
 
 import org.gamegineer.table.ui.AbstractComponentStrategyUITestCase;
+import org.gamegineer.table.ui.IComponentStrategyUI;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.cards.internal.ui.strategies.CardStrategyUI} class to
- * ensure it does not violate the contract of the
- * {@link org.gamegineer.table.ui.IComponentStrategyUI} interface.
+ * A fixture for testing the {@link CardStrategyUI} class to ensure it does not
+ * violate the contract of the {@link IComponentStrategyUI} interface.
  */
 public final class CardStrategyUIAsComponentStrategyUITest
     extends AbstractComponentStrategyUITestCase<CardStrategyUI>

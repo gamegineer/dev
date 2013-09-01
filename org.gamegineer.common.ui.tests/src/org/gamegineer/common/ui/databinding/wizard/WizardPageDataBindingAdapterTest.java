@@ -28,9 +28,7 @@ import org.gamegineer.common.ui.wizard.IWizardPage;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.common.ui.databinding.wizard.WizardPageDataBindingAdapter}
- * class.
+ * A fixture for testing the {@link WizardPageDataBindingAdapter} class.
  */
 public final class WizardPageDataBindingAdapterTest
 {

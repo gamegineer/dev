@@ -37,7 +37,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.core.version.IVersionControl} interface.
+ * {@link IVersionControl} interface.
  */
 public abstract class AbstractVersionControlTestCase
 {

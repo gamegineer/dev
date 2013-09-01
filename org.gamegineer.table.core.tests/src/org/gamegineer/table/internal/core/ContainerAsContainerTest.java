@@ -24,14 +24,13 @@ package org.gamegineer.table.internal.core;
 import java.lang.reflect.Method;
 import org.gamegineer.table.core.AbstractContainerTestCase;
 import org.gamegineer.table.core.ComponentStrategies;
+import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITableEnvironmentContext;
 import org.gamegineer.table.core.TestComponentStrategies;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.Container} class to ensure it does
- * not violate the contract of the {@link org.gamegineer.table.core.IContainer}
- * interface.
+ * A fixture for testing the {@link Container} class to ensure it does not
+ * violate the contract of the {@link IContainer} interface.
  */
 public final class ContainerAsContainerTest
     extends AbstractContainerTestCase<TableEnvironment, Container>

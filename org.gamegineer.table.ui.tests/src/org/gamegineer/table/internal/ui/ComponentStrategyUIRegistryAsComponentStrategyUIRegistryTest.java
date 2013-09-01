@@ -25,12 +25,12 @@ import org.gamegineer.common.core.util.registry.IRegistry;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.ui.AbstractComponentStrategyUIRegistryTestCase;
 import org.gamegineer.table.ui.IComponentStrategyUI;
+import org.gamegineer.table.ui.IComponentStrategyUIRegistry;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.ComponentStrategyUIRegistry} class to
- * ensure it does not violate the contract of the
- * {@link org.gamegineer.table.ui.IComponentStrategyUIRegistry} interface.
+ * A fixture for testing the {@link ComponentStrategyUIRegistry} class to ensure
+ * it does not violate the contract of the {@link IComponentStrategyUIRegistry}
+ * interface.
  */
 public final class ComponentStrategyUIRegistryAsComponentStrategyUIRegistryTest
     extends AbstractComponentStrategyUIRegistryTestCase

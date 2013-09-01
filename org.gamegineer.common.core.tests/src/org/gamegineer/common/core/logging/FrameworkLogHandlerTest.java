@@ -24,8 +24,7 @@ package org.gamegineer.common.core.logging;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.common.core.logging.FrameworkLogHandler} class.
+ * A fixture for testing the {@link FrameworkLogHandler} class.
  */
 public final class FrameworkLogHandlerTest
 {

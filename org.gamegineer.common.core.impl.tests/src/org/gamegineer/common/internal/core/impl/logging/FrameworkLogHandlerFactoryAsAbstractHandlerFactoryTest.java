@@ -26,11 +26,8 @@ import org.eclipse.osgi.framework.log.FrameworkLog;
 import org.gamegineer.common.core.logging.FrameworkLogHandler;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.common.internal.core.impl.logging.FrameworkLogHandlerFactory}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.common.internal.core.impl.logging.AbstractHandlerFactory}
- * class.
+ * A fixture for testing the {@link FrameworkLogHandlerFactory} class to ensure
+ * it does not violate the contract of the {@link AbstractHandlerFactory} class.
  */
 public final class FrameworkLogHandlerFactoryAsAbstractHandlerFactoryTest
     extends AbstractAbstractHandlerFactoryTestCase<FrameworkLogHandlerFactory, FrameworkLogHandler>

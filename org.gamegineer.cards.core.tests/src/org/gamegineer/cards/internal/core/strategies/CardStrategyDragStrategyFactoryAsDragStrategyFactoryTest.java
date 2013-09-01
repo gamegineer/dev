@@ -25,10 +25,8 @@ import org.gamegineer.table.core.dnd.AbstractDragStrategyFactoryTestCase;
 import org.gamegineer.table.core.dnd.IDragStrategyFactory;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.cards.internal.core.strategies.CardStrategy.DragStrategyFactory}
- * ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.dnd.IDragStrategyFactory} interface.
+ * A fixture for testing the {@link CardStrategy.DragStrategyFactory} ensure it
+ * does not violate the contract of the {@link IDragStrategyFactory} interface.
  */
 public final class CardStrategyDragStrategyFactoryAsDragStrategyFactoryTest
     extends AbstractDragStrategyFactoryTestCase

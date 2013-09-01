@@ -30,8 +30,7 @@ import java.util.List;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.common.core.util.IterableUtils} class.
+ * A fixture for testing the {@link IterableUtils} class.
  */
 public final class IterableUtilsTest
 {

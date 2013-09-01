@@ -35,9 +35,7 @@ import org.osgi.service.component.ComponentException;
 import org.osgi.service.component.ComponentFactory;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.common.internal.core.impl.logging.AbstractLoggingComponentFactory}
- * class.
+ * A fixture for testing the {@link AbstractLoggingComponentFactory} class.
  */
 public final class AbstractLoggingComponentFactoryTest
 {

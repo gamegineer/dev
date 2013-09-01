@@ -436,7 +436,7 @@ public abstract class AbstractDialog
      * 
      * <p>
      * This implementation creates a panel with standard dialog margins and a
-     * layout manager of type {@link java.awt.BorderLayout}.
+     * layout manager of type {@link BorderLayout}.
      * </p>
      * 
      * @param parent

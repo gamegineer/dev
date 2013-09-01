@@ -26,7 +26,7 @@ import java.util.logging.LogRecord;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * Fake implementation of {@link java.util.logging.Formatter}.
+ * Fake implementation of {@link Formatter}.
  */
 @ThreadSafe
 public final class FakeFormatter

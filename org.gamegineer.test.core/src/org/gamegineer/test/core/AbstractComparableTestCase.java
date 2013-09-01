@@ -28,7 +28,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link java.lang.Comparable} interface.
+ * {@link Comparable} interface.
  * 
  * @param <T>
  *        The type of the comparable class.

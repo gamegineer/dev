@@ -26,8 +26,7 @@ import java.util.Collection;
 import org.gamegineer.test.core.AbstractEquatableTestCase;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.core.ComponentSurfaceDesignId} class to ensure it
+ * A fixture for testing the {@link ComponentSurfaceDesignId} class to ensure it
  * does not violate the contract of the equatable interface.
  */
 public final class ComponentSurfaceDesignIdAsEquatableTest

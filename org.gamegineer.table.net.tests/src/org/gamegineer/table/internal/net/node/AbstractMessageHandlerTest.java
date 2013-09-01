@@ -35,8 +35,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.node.AbstractMessageHandler} class.
+ * A fixture for testing the {@link AbstractMessageHandler} class.
  */
 public final class AbstractMessageHandlerTest
 {

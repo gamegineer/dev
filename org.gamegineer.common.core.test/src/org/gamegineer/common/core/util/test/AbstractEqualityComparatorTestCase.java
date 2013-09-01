@@ -34,7 +34,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.common.core.util.IEqualityComparator} interface.
+ * {@link IEqualityComparator} interface.
  * 
  * @param <T>
  *        The type of the comparable object.

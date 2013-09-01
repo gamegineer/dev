@@ -1,6 +1,6 @@
 /*
  * TaskUtilsTest.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,8 +25,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 /**
- * A fixture for testing the basic aspects of the
- * {@link org.gamegineer.common.core.util.concurrent.TaskUtils} class.
+ * A fixture for testing the basic aspects of the {@link TaskUtils} class.
  */
 public final class TaskUtilsTest
 {

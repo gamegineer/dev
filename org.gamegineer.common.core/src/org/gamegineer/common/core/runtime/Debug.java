@@ -1,6 +1,6 @@
 /*
  * Debug.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -247,8 +247,7 @@ public abstract class Debug
     // ======================================================================
 
     /**
-     * Null implementation of the
-     * {@link org.eclipse.osgi.service.debug.DebugTrace}.
+     * Null implementation of {@link DebugTrace}.
      */
     @Immutable
     private static final class NullDebugTrace

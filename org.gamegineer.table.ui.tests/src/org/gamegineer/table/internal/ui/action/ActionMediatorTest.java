@@ -31,8 +31,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.action.ActionMediator} class.
+ * A fixture for testing the {@link ActionMediator} class.
  */
 public final class ActionMediatorTest
 {

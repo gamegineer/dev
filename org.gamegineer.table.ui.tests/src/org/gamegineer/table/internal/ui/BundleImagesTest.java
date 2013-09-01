@@ -1,6 +1,6 @@
 /*
  * BundleImagesTest.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,8 +27,7 @@ import org.junit.Test;
 import org.osgi.framework.BundleContext;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.BundleImages} class.
+ * A fixture for testing the {@link BundleImages} class.
  */
 public final class BundleImagesTest
 {

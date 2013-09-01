@@ -27,8 +27,7 @@ import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.ui.ComponentSurfaceDesignUI} class.
+ * A fixture for testing the {@link ComponentSurfaceDesignUI} class.
  */
 public final class ComponentSurfaceDesignUITest
 {

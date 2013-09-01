@@ -25,8 +25,7 @@ import java.util.Collection;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.core.AbstractComponentStrategy} class.
+ * A fixture for testing the {@link AbstractComponentStrategy} class.
  */
 public final class AbstractComponentStrategyTest
 {

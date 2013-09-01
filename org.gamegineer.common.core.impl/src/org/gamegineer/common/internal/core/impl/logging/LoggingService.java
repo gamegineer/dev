@@ -37,7 +37,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 /**
- * Implementation of {@link org.gamegineer.common.core.logging.ILoggingService}.
+ * Implementation of {@link ILoggingService}.
  */
 @ThreadSafe
 public final class LoggingService

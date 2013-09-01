@@ -1,6 +1,6 @@
 /*
  * Converters.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -37,15 +37,14 @@ public final class Converters
     // ======================================================================
 
     /**
-     * A data binding converter from values of type
-     * {@link java.lang.Integer#TYPE} to values of type {@link java.lang.String}
-     * .
+     * A data binding converter from values of type {@link Integer#TYPE} to
+     * values of type {@link String}.
      */
     private static IConverter primitiveIntegerToStringConverter_ = null;
 
     /**
-     * A data binding converter from values of type {@link java.lang.String} to
-     * values of type {@link java.lang.Integer#TYPE}
+     * A data binding converter from values of type {@link String} to values of
+     * type {@link Integer#TYPE}
      */
     private static IConverter stringToPrimitiveIntegerConverter_ = null;
 
@@ -67,13 +66,11 @@ public final class Converters
     // ======================================================================
 
     /**
-     * Gets a data binding converter from values of type
-     * {@link java.lang.Integer#TYPE} to values of type {@link java.lang.String}
-     * .
+     * Gets a data binding converter from values of type {@link Integer#TYPE} to
+     * values of type {@link String}.
      * 
-     * @return A data binding converter from values of type
-     *         {@link java.lang.Integer#TYPE} to values of type
-     *         {@link java.lang.String}; never {@code null}.
+     * @return A data binding converter from values of type {@link Integer#TYPE}
+     *         to values of type {@link String}; never {@code null}.
      */
     /* @NonNull */
     public static IConverter getPrimitiveIntegerToStringConverter()
@@ -87,13 +84,11 @@ public final class Converters
     }
 
     /**
-     * Gets a data binding converter from values of type
-     * {@link java.lang.String} to values of type {@link java.lang.Integer#TYPE}
-     * .
+     * Gets a data binding converter from values of type {@link String} to
+     * values of type {@link Integer#TYPE}.
      * 
-     * @return A data binding converter from values of type
-     *         {@link java.lang.String} to values of type
-     *         {@link java.lang.Integer#TYPE}; never {@code null}.
+     * @return A data binding converter from values of type {@link String} to
+     *         values of type {@link Integer#TYPE}; never {@code null}.
      */
     /* @NonNull */
     public static IConverter getStringToPrimitiveIntegerConverter()
@@ -109,7 +104,7 @@ public final class Converters
     /**
      * Decorates the specified converter such that any exception thrown during
      * the conversion process will be replaced with an
-     * {@link java.lang.IllegalArgumentException} having the specified message.
+     * {@link IllegalArgumentException} having the specified message.
      * 
      * @param converter
      *        The converter to be decorated; must not be {@code null}.

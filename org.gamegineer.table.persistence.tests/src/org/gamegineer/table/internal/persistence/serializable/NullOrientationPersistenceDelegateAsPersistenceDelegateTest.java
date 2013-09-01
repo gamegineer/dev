@@ -27,10 +27,8 @@ import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegist
 import org.gamegineer.table.core.NullOrientation;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.persistence.serializable.NullOrientationPersistenceDelegate}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.common.persistence.serializable.IPersistenceDelegate}
+ * A fixture for testing the {@link NullOrientationPersistenceDelegate} class to
+ * ensure it does not violate the contract of the {@link IPersistenceDelegate}
  * interface.
  */
 public final class NullOrientationPersistenceDelegateAsPersistenceDelegateTest

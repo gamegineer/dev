@@ -1,6 +1,6 @@
 /*
  * FakeServiceContext.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,8 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 
 /**
- * Fake implementation of
- * {@link org.gamegineer.table.internal.net.transport.IServiceContext}.
+ * Fake implementation of {@link IServiceContext}.
  */
 @Immutable
 public class FakeServiceContext

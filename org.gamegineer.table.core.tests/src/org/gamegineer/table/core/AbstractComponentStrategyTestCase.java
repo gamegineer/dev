@@ -35,7 +35,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.core.IComponentStrategy} interface.
+ * {@link IComponentStrategy} interface.
  * 
  * @param <ComponentStrategyType>
  *        The type of the component strategy.

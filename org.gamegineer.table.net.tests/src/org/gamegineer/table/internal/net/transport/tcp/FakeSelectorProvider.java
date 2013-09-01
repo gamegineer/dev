@@ -32,7 +32,7 @@ import java.nio.channels.spi.SelectorProvider;
 import net.jcip.annotations.NotThreadSafe;
 
 /**
- * Fake implementation of {@link java.nio.channels.spi.SelectorProvider}.
+ * Fake implementation of {@link SelectorProvider}.
  */
 @NotThreadSafe
 class FakeSelectorProvider

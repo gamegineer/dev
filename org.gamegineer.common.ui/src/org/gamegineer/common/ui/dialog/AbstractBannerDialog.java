@@ -1,6 +1,6 @@
 /*
  * AbstractBannerDialog.java
- * Copyright 2008-2010 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -125,8 +125,8 @@ public abstract class AbstractBannerDialog
      * Creates the dialog banner component.
      * 
      * @param parent
-     *        The parent container for the dialog banner; must not be {@code
-     *        null}.
+     *        The parent container for the dialog banner; must not be
+     *        {@code null}.
      * 
      * @return The dialog banner component; never {@code null}.
      */
@@ -209,7 +209,7 @@ public abstract class AbstractBannerDialog
      * 
      * <p>
      * The default implementation creates a panel with standard dialog margins
-     * and a layout manager of type {@link java.awt.BorderLayout}.
+     * and a layout manager of type {@link BorderLayout}.
      * </p>
      * 
      * @param parent

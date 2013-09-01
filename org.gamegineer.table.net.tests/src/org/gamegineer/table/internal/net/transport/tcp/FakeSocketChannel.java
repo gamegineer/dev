@@ -32,7 +32,7 @@ import java.util.Set;
 import net.jcip.annotations.NotThreadSafe;
 
 /**
- * Fake implementation of {@link java.nio.channels.SocketChannel}.
+ * Fake implementation of {@link SocketChannel}.
  */
 @NotThreadSafe
 class FakeSocketChannel

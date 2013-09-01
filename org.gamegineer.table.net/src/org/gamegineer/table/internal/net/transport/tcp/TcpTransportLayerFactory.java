@@ -1,6 +1,6 @@
 /*
  * TcpTransportLayerFactory.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,9 +29,7 @@ import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
 import org.gamegineer.table.internal.net.transport.TransportException;
 
 /**
- * Implementation of
- * {@link org.gamegineer.table.internal.net.transport.ITransportLayerFactory}
- * for TCP connections.
+ * Implementation of {@link ITransportLayerFactory} for TCP connections.
  */
 @Immutable
 public final class TcpTransportLayerFactory

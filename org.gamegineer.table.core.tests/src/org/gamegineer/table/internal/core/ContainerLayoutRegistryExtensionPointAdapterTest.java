@@ -30,8 +30,7 @@ import org.gamegineer.table.core.IContainerLayout;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.ContainerLayoutRegistryExtensionPointAdapter}
- * class.
+ * {@link ContainerLayoutRegistryExtensionPointAdapter} class.
  */
 public final class ContainerLayoutRegistryExtensionPointAdapterTest
     extends AbstractAbstractRegistryExtensionPointAdapterTestCase<ContainerLayoutRegistryExtensionPointAdapter, ContainerLayoutId, IContainerLayout>

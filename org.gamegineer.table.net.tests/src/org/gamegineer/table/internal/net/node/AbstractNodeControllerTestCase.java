@@ -38,7 +38,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.node.INodeController} interface.
+ * {@link INodeController} interface.
  * 
  * @param <T>
  *        The type of the table network node controller.

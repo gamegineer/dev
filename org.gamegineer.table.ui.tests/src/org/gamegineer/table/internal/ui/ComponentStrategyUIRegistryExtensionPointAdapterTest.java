@@ -30,8 +30,7 @@ import org.gamegineer.table.ui.IComponentStrategyUI;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.ComponentStrategyUIRegistryExtensionPointAdapter}
- * class.
+ * {@link ComponentStrategyUIRegistryExtensionPointAdapter} class.
  */
 public final class ComponentStrategyUIRegistryExtensionPointAdapterTest
     extends AbstractAbstractRegistryExtensionPointAdapterTestCase<ComponentStrategyUIRegistryExtensionPointAdapter, ComponentStrategyId, IComponentStrategyUI>

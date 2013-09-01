@@ -25,12 +25,12 @@ import org.gamegineer.common.core.util.registry.IRegistry;
 import org.gamegineer.table.core.AbstractContainerLayoutRegistryTestCase;
 import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.IContainerLayout;
+import org.gamegineer.table.core.IContainerLayoutRegistry;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.ContainerLayoutRegistry} class to
- * ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.IContainerLayoutRegistry} interface.
+ * A fixture for testing the {@link ContainerLayoutRegistry} class to ensure it
+ * does not violate the contract of the {@link IContainerLayoutRegistry}
+ * interface.
  */
 public final class ContainerLayoutRegistryAsContainerLayoutRegistryTest
     extends AbstractContainerLayoutRegistryTestCase

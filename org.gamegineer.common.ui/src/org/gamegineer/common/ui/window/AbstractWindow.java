@@ -318,7 +318,7 @@ public abstract class AbstractWindow<T extends Window>
      * Gets the layout for the shell.
      * 
      * <p>
-     * This implementation returns an instance of {@link java.awt.BorderLayout}.
+     * This implementation returns an instance of {@link BorderLayout}.
      * </p>
      * 
      * @return The layout for the shell or {@code null} if no layout should be

@@ -25,9 +25,8 @@ import java.util.logging.Handler;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * A component factory for creating instances of
- * {@link java.util.logging.Handler} whose concrete class is present on the
- * bundle classpath.
+ * A component factory for creating instances of {@link Handler} whose concrete
+ * class is present on the bundle classpath.
  */
 @ThreadSafe
 public final class DefaultHandlerFactory

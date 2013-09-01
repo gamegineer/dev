@@ -29,8 +29,7 @@ import java.util.List;
 import net.jcip.annotations.NotThreadSafe;
 
 /**
- * Superclass for all implementations of
- * {@link org.gamegineer.common.ui.wizard.IWizard}.
+ * Superclass for all implementations of {@link IWizard}.
  */
 @NotThreadSafe
 public abstract class AbstractWizard

@@ -23,14 +23,13 @@ package org.gamegineer.table.internal.core;
 
 import java.lang.reflect.Method;
 import org.gamegineer.table.core.AbstractComponentTestCase;
+import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.ITableEnvironmentContext;
 import org.gamegineer.table.core.TestComponentStrategies;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.Component} class to ensure it does
- * not violate the contract of the {@link org.gamegineer.table.core.IComponent}
- * interface.
+ * A fixture for testing the {@link Component} class to ensure it does not
+ * violate the contract of the {@link IComponent} interface.
  */
 public final class ComponentAsComponentTest
     extends AbstractComponentTestCase<TableEnvironment, Component>

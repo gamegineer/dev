@@ -35,9 +35,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.transport.tcp.ByteBufferUtils}
- * class.
+ * A fixture for testing the {@link ByteBufferUtils} class.
  */
 public final class ByteBufferUtilsTest
 {

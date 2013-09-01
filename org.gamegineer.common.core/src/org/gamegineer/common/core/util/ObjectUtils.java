@@ -1,6 +1,6 @@
 /*
  * ObjectUtils.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,7 @@ package org.gamegineer.common.core.util;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * A collection of useful methods for working with instances of
- * {@link java.lang.Object}.
+ * A collection of useful methods for working with instances of {@link Object}.
  */
 @ThreadSafe
 public final class ObjectUtils

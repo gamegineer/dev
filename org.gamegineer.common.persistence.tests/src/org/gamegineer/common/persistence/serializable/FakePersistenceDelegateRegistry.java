@@ -30,9 +30,7 @@ import java.util.concurrent.ConcurrentMap;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * Fake implementation of
- * {@link org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry}
- * .
+ * Fake implementation of {@link IPersistenceDelegateRegistry}.
  */
 @ThreadSafe
 public final class FakePersistenceDelegateRegistry

@@ -26,8 +26,8 @@ import java.util.Collection;
 import org.gamegineer.test.core.AbstractEquatableTestCase;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.core.ContainerLayoutId}
- * class to ensure it does not violate the contract of the equatable interface.
+ * A fixture for testing the {@link ContainerLayoutId} class to ensure it does
+ * not violate the contract of the equatable interface.
  */
 public final class ContainerLayoutIdAsEquatableTest
     extends AbstractEquatableTestCase<ContainerLayoutId>

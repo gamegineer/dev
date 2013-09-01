@@ -1,6 +1,6 @@
 /*
  * DefaultNodeFactory.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,8 +28,7 @@ import org.gamegineer.table.internal.net.node.server.ServerNode;
 import org.gamegineer.table.net.TableNetworkException;
 
 /**
- * Default implementation of
- * {@link org.gamegineer.table.internal.net.node.INodeFactory}.
+ * Default implementation of {@link INodeFactory}.
  */
 @Immutable
 public final class DefaultNodeFactory

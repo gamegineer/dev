@@ -1,6 +1,6 @@
 /*
  * AbstractWizardPage.java
- * Copyright 2008-2010 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,8 +27,7 @@ import org.gamegineer.common.ui.dialog.AbstractDialogPage;
 import org.gamegineer.common.ui.dialog.DialogMessage;
 
 /**
- * Superclass for all implementations of
- * {@link org.gamegineer.common.ui.wizard.IWizardPage}.
+ * Superclass for all implementations of {@link IWizardPage}.
  */
 @NotThreadSafe
 public abstract class AbstractWizardPage
@@ -60,8 +59,8 @@ public abstract class AbstractWizardPage
      * Initializes a new instance of the {@code AbstractWizardPage} class.
      * 
      * @param name
-     *        The unique name of the page within the wizard; must not be {@code
-     *        null}.
+     *        The unique name of the page within the wizard; must not be
+     *        {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code name} is {@code null}.
@@ -95,9 +94,9 @@ public abstract class AbstractWizardPage
     /**
      * Gets the container hosting the wizard that hosts the page.
      * 
-     * @return The container hosting the wizard that hosts the page or {@code
-     *         null} if the page has not yet been added to a wizard or the
-     *         wizard has not yet been added to a container.
+     * @return The container hosting the wizard that hosts the page or
+     *         {@code null} if the page has not yet been added to a wizard or
+     *         the wizard has not yet been added to a container.
      */
     /* @Nullable */
     protected final IWizardContainer getContainer()

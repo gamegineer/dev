@@ -32,9 +32,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.ComponentModel} class and any
- * classes that extend it.
+ * A fixture for testing the {@link ComponentModel} class and any classes that
+ * extend it.
  * 
  * @param <T>
  *        The type of the component model.

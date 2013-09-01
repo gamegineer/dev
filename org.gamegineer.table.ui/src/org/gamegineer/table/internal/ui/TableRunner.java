@@ -47,9 +47,8 @@ import org.gamegineer.table.ui.ITableRunner;
 import org.gamegineer.table.ui.TableResult;
 
 /**
- * Implementation of {@link org.gamegineer.table.ui.ITableRunner} that executes
- * the {@link org.gamegineer.table.internal.ui.view.MainFrame} table user
- * interface.
+ * Implementation of {@link ITableRunner} that executes the {@link MainFrame}
+ * table user interface.
  */
 @ThreadSafe
 public final class TableRunner

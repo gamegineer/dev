@@ -26,8 +26,7 @@ import org.easymock.EasyMock;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.core.TableEnvironmentFactory} class.
+ * A fixture for testing the {@link TableEnvironmentFactory} class.
  */
 public final class TableEnvironmentFactoryTest
 {

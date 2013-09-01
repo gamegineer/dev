@@ -1,6 +1,6 @@
 /*
  * IconProxy.java
- * Copyright 2008-2010 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,7 +30,7 @@ import javax.swing.ImageIcon;
 import net.jcip.annotations.NotThreadSafe;
 
 /**
- * Implementation of {@link javax.swing.Icon} to support lazy loading.
+ * Implementation of {@link Icon} to support lazy loading.
  * 
  * <p>
  * Instances of this class should only be used from the Swing Event Dispatch

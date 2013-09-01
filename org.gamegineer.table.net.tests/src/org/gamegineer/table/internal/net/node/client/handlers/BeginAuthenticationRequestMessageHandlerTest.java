@@ -38,8 +38,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.node.client.handlers.BeginAuthenticationRequestMessageHandler}
+ * A fixture for testing the {@link BeginAuthenticationRequestMessageHandler}
  * class.
  */
 public final class BeginAuthenticationRequestMessageHandlerTest

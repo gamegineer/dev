@@ -26,9 +26,8 @@ import java.util.Collection;
 import org.gamegineer.test.core.AbstractEquatableTestCase;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.common.core.security.SecureString} class to ensure it
- * does not violate the contract of the equatable interface.
+ * A fixture for testing the {@link SecureString} class to ensure it does not
+ * violate the contract of the equatable interface.
  */
 public final class SecureStringAsEquatableTest
     extends AbstractEquatableTestCase<SecureString>

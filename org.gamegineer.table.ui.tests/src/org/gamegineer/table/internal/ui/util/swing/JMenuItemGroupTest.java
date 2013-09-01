@@ -27,8 +27,7 @@ import org.easymock.EasyMock;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.util.swing.JMenuItemGroup} class.
+ * A fixture for testing the {@link JMenuItemGroup} class.
  */
 public final class JMenuItemGroupTest
 {

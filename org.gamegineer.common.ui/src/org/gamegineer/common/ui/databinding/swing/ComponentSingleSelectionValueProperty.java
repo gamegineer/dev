@@ -1,6 +1,6 @@
 /*
  * ComponentSingleSelectionValueProperty.java
- * Copyright 2008-2011 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.ui.databinding.swing;
 
+import java.awt.Component;
 import javax.swing.JList;
 import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.core.databinding.property.value.DelegatingValueProperty;
@@ -28,7 +29,7 @@ import org.eclipse.core.databinding.property.value.IValueProperty;
 
 /**
  * A value property for the single selection value of an instance of
- * {@link java.awt.Component}.
+ * {@link Component}.
  */
 @NotThreadSafe
 final class ComponentSingleSelectionValueProperty
@@ -47,8 +48,8 @@ final class ComponentSingleSelectionValueProperty
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * ComponentSingleSelectionValueProperty} class.
+     * Initializes a new instance of the
+     * {@code ComponentSingleSelectionValueProperty} class.
      */
     ComponentSingleSelectionValueProperty()
     {

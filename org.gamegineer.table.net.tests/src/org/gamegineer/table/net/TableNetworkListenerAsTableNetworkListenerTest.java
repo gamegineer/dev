@@ -1,6 +1,6 @@
 /*
  * TableNetworkListenerAsTableNetworkListenerTest.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,10 +22,8 @@
 package org.gamegineer.table.net;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.net.TableNetworkListener} class to ensure it does
- * not violate the contract of the
- * {@link org.gamegineer.table.net.ITableNetworkListener} interface.
+ * A fixture for testing the {@link TableNetworkListener} class to ensure it
+ * does not violate the contract of the {@link ITableNetworkListener} interface.
  */
 public final class TableNetworkListenerAsTableNetworkListenerTest
     extends AbstractTableNetworkListenerTestCase

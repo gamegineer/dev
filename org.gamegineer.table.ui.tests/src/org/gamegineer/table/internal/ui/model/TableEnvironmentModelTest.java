@@ -29,8 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.TableEnvironmentModel} class.
+ * A fixture for testing the {@link TableEnvironmentModel} class.
  */
 public final class TableEnvironmentModelTest
 {

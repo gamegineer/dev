@@ -27,7 +27,7 @@ import java.util.Queue;
 import net.jcip.annotations.NotThreadSafe;
 
 /**
- * A pool for sharing instances of the {@link java.nio.ByteBuffer} class.
+ * A pool for sharing instances of the {@link ByteBuffer} class.
  */
 @NotThreadSafe
 final class ByteBufferPool

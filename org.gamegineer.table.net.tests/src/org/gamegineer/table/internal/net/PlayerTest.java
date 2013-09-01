@@ -31,8 +31,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.internal.net.Player}
- * class.
+ * A fixture for testing the {@link Player} class.
  */
 public final class PlayerTest
 {

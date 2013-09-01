@@ -26,9 +26,8 @@ import java.util.Collection;
 import org.gamegineer.test.core.AbstractComparableTestCase;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.core.ComponentPath}
- * class to ensure it does not violate the contract of the
- * {@link java.lang.Comparable} interface.
+ * A fixture for testing the {@link ComponentPath} class to ensure it does not
+ * violate the contract of the {@link Comparable} interface.
  */
 public final class ComponentPathAsComparableTest
     extends AbstractComparableTestCase<ComponentPath>

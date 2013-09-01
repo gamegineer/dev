@@ -33,7 +33,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.common.core.util.registry.IRegistry} interface.
+ * {@link IRegistry} interface.
  * 
  * @param <ObjectIdType>
  *        The type of object used to identify an object managed by the registry.

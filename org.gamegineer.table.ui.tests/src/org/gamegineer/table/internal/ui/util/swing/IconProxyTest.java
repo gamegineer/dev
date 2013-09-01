@@ -24,8 +24,7 @@ package org.gamegineer.table.internal.ui.util.swing;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.util.swing.IconProxy} class.
+ * A fixture for testing the {@link IconProxy} class.
  */
 public final class IconProxyTest
 {

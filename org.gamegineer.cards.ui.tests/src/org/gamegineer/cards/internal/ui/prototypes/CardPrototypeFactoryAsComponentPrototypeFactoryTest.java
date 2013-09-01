@@ -25,10 +25,8 @@ import org.gamegineer.table.ui.prototype.AbstractComponentPrototypeFactoryTestCa
 import org.gamegineer.table.ui.prototype.IComponentPrototypeFactory;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.cards.internal.ui.prototypes.CardPrototypeFactory}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.ui.prototype.IComponentPrototypeFactory}
+ * A fixture for testing the {@link CardPrototypeFactory} class to ensure it
+ * does not violate the contract of the {@link IComponentPrototypeFactory}
  * interface.
  */
 public final class CardPrototypeFactoryAsComponentPrototypeFactoryTest

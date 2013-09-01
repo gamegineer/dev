@@ -50,7 +50,7 @@ import org.gamegineer.table.core.ITableEnvironmentLock;
 import org.gamegineer.table.core.NoSuchComponentSurfaceDesignException;
 
 /**
- * Implementation of {@link org.gamegineer.table.core.IComponent}.
+ * Implementation of {@link IComponent}.
  */
 @ThreadSafe
 class Component

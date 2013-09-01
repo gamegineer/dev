@@ -50,8 +50,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.TableModel} class.
+ * A fixture for testing the {@link TableModel} class.
  */
 public final class TableModelTest
 {

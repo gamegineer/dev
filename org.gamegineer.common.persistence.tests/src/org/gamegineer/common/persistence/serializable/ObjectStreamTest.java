@@ -1,6 +1,6 @@
 /*
  * ObjectStreamTest.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -33,10 +33,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the interaction between the
- * {@link org.gamegineer.common.persistence.serializable.ObjectInputStream} and
- * {@link org.gamegineer.common.persistence.serializable.ObjectOutputStream}
- * classes.
+ * A fixture for testing the interaction between the {@link ObjectInputStream}
+ * and {@link ObjectOutputStream} classes.
  */
 public final class ObjectStreamTest
 {

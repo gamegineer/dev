@@ -34,7 +34,7 @@ import org.eclipse.core.databinding.property.value.SimpleValueProperty;
 
 /**
  * A value property for the single selection value property of an instance of
- * {@link javax.swing.JList}.
+ * {@link JList}.
  */
 @Immutable
 final class ListSingleSelectionValueProperty
@@ -103,7 +103,7 @@ final class ListSingleSelectionValueProperty
     // ======================================================================
 
     /**
-     * A property listener for instances of {@link javax.swing.JList}.
+     * A property listener for instances of {@link JList}.
      */
     @NotThreadSafe
     private static final class ListPropertyListener

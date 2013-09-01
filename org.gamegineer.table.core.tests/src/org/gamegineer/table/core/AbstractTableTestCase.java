@@ -37,7 +37,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.core.ITable} interface.
+ * {@link ITable} interface.
  * 
  * @param <TableEnvironmentType>
  *        The type of the table environment.
@@ -76,8 +76,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
 
     /**
      * This implementation compares the expected and actual values according to
-     * the specification of the
-     * {@link org.gamegineer.table.core.Assert#assertTableEquals} method.
+     * the specification of the {@link Assert#assertTableEquals} method.
      * 
      * @see org.gamegineer.common.core.util.memento.test.AbstractMementoOriginatorTestCase#assertMementoOriginatorEquals(org.gamegineer.common.core.util.memento.IMementoOriginator,
      *      org.gamegineer.common.core.util.memento.IMementoOriginator)

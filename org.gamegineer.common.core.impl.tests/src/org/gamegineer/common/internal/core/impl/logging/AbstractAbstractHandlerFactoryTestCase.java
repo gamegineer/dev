@@ -37,8 +37,7 @@ import org.osgi.service.component.ComponentFactory;
 
 /**
  * A fixture for testing the basic aspects of classes that extend the
- * {@link org.gamegineer.common.internal.core.impl.logging.AbstractHandlerFactory}
- * class.
+ * {@link AbstractHandlerFactory} class.
  * 
  * @param <F>
  *        The type of the handler factory under test.
