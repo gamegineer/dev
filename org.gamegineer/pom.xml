@@ -12,6 +12,9 @@
 	<packaging>pom</packaging>
 
 	<name>org.gamegineer Parent</name>
+	<description>
+		Top-level project to be inherited by all Gamegineer projects.
+	</description>
 	<url>http://gamegineer.org/</url>
 	<inceptionYear>2008</inceptionYear>
 	<organization>
