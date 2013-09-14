@@ -49,7 +49,7 @@ public final class CardPileOrientationAsExtensibleEnumTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.test.util.AbstractExtensibleEnumTestCase#getType()
+     * @see org.gamegineer.common.core.util.test.AbstractExtensibleEnumTestCase#getType()
      */
     @Override
     protected Class<? extends ExtensibleEnum> getType()

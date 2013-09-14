@@ -48,7 +48,7 @@ public abstract class AbstractContainerLayoutRegistryTestCase
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.test.util.registry.AbstractRegistryTestCase#cloneObject(java.lang.Object)
+     * @see org.gamegineer.common.core.util.registry.test.AbstractRegistryTestCase#cloneObject(java.lang.Object)
      */
     @Override
     protected final IContainerLayout cloneObject(
@@ -58,7 +58,7 @@ public abstract class AbstractContainerLayoutRegistryTestCase
     }
 
     /*
-     * @see org.gamegineer.common.core.test.util.registry.AbstractRegistryTestCase#createUniqueObject()
+     * @see org.gamegineer.common.core.util.registry.test.AbstractRegistryTestCase#createUniqueObject()
      */
     @Override
     protected final IContainerLayout createUniqueObject()
@@ -67,7 +67,7 @@ public abstract class AbstractContainerLayoutRegistryTestCase
     }
 
     /*
-     * @see org.gamegineer.common.core.test.util.registry.AbstractRegistryTestCase#getObjectId(java.lang.Object)
+     * @see org.gamegineer.common.core.util.registry.test.AbstractRegistryTestCase#getObjectId(java.lang.Object)
      */
     @Override
     protected final ContainerLayoutId getObjectId(

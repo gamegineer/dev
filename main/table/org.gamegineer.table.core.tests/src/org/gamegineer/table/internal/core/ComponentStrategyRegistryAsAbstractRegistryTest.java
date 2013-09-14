@@ -51,7 +51,7 @@ public final class ComponentStrategyRegistryAsAbstractRegistryTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryTestCase#createRegistry()
+     * @see org.gamegineer.common.core.util.registry.test.AbstractAbstractRegistryTestCase#createRegistry()
      */
     @Override
     protected ComponentStrategyRegistry createRegistry()
@@ -60,7 +60,7 @@ public final class ComponentStrategyRegistryAsAbstractRegistryTest
     }
 
     /*
-     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryTestCase#getObjectId(org.gamegineer.common.core.util.registry.AbstractRegistry, java.lang.Object)
+     * @see org.gamegineer.common.core.util.registry.test.AbstractAbstractRegistryTestCase#getObjectId(org.gamegineer.common.core.util.registry.AbstractRegistry, java.lang.Object)
      */
     @Override
     protected ComponentStrategyId getObjectId(

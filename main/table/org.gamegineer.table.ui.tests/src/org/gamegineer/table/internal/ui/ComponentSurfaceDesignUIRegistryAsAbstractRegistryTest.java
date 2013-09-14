@@ -52,7 +52,7 @@ public final class ComponentSurfaceDesignUIRegistryAsAbstractRegistryTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryTestCase#createRegistry()
+     * @see org.gamegineer.common.core.util.registry.test.AbstractAbstractRegistryTestCase#createRegistry()
      */
     @Override
     protected ComponentSurfaceDesignUIRegistry createRegistry()
@@ -61,7 +61,7 @@ public final class ComponentSurfaceDesignUIRegistryAsAbstractRegistryTest
     }
 
     /*
-     * @see org.gamegineer.common.core.test.util.registry.AbstractAbstractRegistryTestCase#getObjectId(org.gamegineer.common.core.util.registry.AbstractRegistry, java.lang.Object)
+     * @see org.gamegineer.common.core.util.registry.test.AbstractAbstractRegistryTestCase#getObjectId(org.gamegineer.common.core.util.registry.AbstractRegistry, java.lang.Object)
      */
     @Override
     protected ComponentSurfaceDesignId getObjectId(

@@ -92,7 +92,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /*
-     * @see org.gamegineer.common.core.test.util.memento.AbstractMementoOriginatorTestCase#createMementoOriginator()
+     * @see org.gamegineer.common.core.util.memento.test.AbstractMementoOriginatorTestCase#createMementoOriginator()
      */
     @Override
     protected final IMementoOriginator createMementoOriginator()
@@ -171,7 +171,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /*
-     * @see org.gamegineer.common.core.test.util.memento.AbstractMementoOriginatorTestCase#initializeMementoOriginator(org.gamegineer.common.core.util.memento.IMementoOriginator)
+     * @see org.gamegineer.common.core.util.memento.test.AbstractMementoOriginatorTestCase#initializeMementoOriginator(org.gamegineer.common.core.util.memento.IMementoOriginator)
      */
     @Override
     protected void initializeMementoOriginator(
@@ -183,7 +183,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /*
-     * @see org.gamegineer.common.core.test.util.memento.AbstractMementoOriginatorTestCase#setUp()
+     * @see org.gamegineer.common.core.util.memento.test.AbstractMementoOriginatorTestCase#setUp()
      */
     @Before
     @Override

@@ -49,7 +49,7 @@ public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.test.util.registry.AbstractRegistryTestCase#cloneObject(java.lang.Object)
+     * @see org.gamegineer.common.core.util.registry.test.AbstractRegistryTestCase#cloneObject(java.lang.Object)
      */
     @Override
     protected ComponentSurfaceDesignUI cloneObject(
@@ -59,7 +59,7 @@ public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
     }
 
     /*
-     * @see org.gamegineer.common.core.test.util.registry.AbstractRegistryTestCase#createUniqueObject()
+     * @see org.gamegineer.common.core.util.registry.test.AbstractRegistryTestCase#createUniqueObject()
      */
     @Override
     protected ComponentSurfaceDesignUI createUniqueObject()
@@ -68,7 +68,7 @@ public abstract class AbstractComponentSurfaceDesignUIRegistryTestCase
     }
 
     /*
-     * @see org.gamegineer.common.core.test.util.registry.AbstractRegistryTestCase#getObjectId(java.lang.Object)
+     * @see org.gamegineer.common.core.util.registry.test.AbstractRegistryTestCase#getObjectId(java.lang.Object)
      */
     @Override
     protected ComponentSurfaceDesignId getObjectId(

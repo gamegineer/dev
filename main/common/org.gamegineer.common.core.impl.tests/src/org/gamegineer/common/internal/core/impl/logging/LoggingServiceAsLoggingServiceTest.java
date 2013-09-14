@@ -49,7 +49,7 @@ public final class LoggingServiceAsLoggingServiceTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.test.logging.AbstractLoggingServiceTestCase#createLoggingService()
+     * @see org.gamegineer.common.core.logging.test.AbstractLoggingServiceTestCase#createLoggingService()
      */
     @Override
     protected ILoggingService createLoggingService()
