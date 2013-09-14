@@ -19,7 +19,7 @@
  * Created on Jul 2, 2010 at 9:27:30 PM.
  */
 
-package org.gamegineer.common.persistence.serializable;
+package org.gamegineer.common.persistence.serializable.test;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
@@ -28,6 +28,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
+import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
 
 /**
  * Fake implementation of {@link IPersistenceDelegateRegistry}.

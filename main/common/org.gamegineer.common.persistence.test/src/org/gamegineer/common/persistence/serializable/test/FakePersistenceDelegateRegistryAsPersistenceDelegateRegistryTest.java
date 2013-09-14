@@ -1,5 +1,5 @@
 /*
- * Debug.java
+ * FakePersistenceDelegateRegistryAsPersistenceDelegateRegistryTest.java
  * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
@@ -16,41 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jun 20, 2008 at 9:26:58 PM.
+ * Created on Jul 2, 2010 at 9:27:52 PM.
  */
 
-package org.gamegineer.common.internal.persistence;
+package org.gamegineer.common.persistence.serializable.test;
 
-import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
 
 /**
- * Debugging utilities for the bundle.
+ * A fixture for testing the {@link FakePersistenceDelegateRegistry} class to
+ * ensure it does not violate the contract of the
+ * {@link IPersistenceDelegateRegistry} interface.
  */
-@ThreadSafe
-public final class Debug
-    extends org.gamegineer.common.core.runtime.Debug
+public final class FakePersistenceDelegateRegistryAsPersistenceDelegateRegistryTest
+    extends AbstractPersistenceDelegateRegistryTestCase
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The singleton instance of the bundle debug utility. */
-    private static final Debug INSTANCE = new Debug();
-
-    /** The name of the top-level debug option. */
-    public static final String OPTION_DEFAULT = "/debug"; //$NON-NLS-1$
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code Debug} class.
+     * Initializes a new instance of the
+     * {@code FakePersistenceDelegateRegistryAsPersistenceDelegateRegistryTest}
+     * class.
      */
-    private Debug()
+    public FakePersistenceDelegateRegistryAsPersistenceDelegateRegistryTest()
     {
-        super( BundleConstants.SYMBOLIC_NAME );
     }
 
 
@@ -58,15 +49,12 @@ public final class Debug
     // Methods
     // ======================================================================
 
-    /**
-     * Gets the default instance of the bundle debug utility.
-     * 
-     * @return The default instance of the bundle debug utility; never
-     *         {@code null}.
+    /*
+     * @see org.gamegineer.common.persistence.serializable.test.AbstractPersistenceDelegateRegistryTestCase#createPersistenceDelegateRegistry()
      */
-    /* @NonNull */
-    public static Debug getDefault()
+    @Override
+    protected IPersistenceDelegateRegistry createPersistenceDelegateRegistry()
     {
-        return INSTANCE;
+        return new FakePersistenceDelegateRegistry();
     }
 }

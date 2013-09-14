@@ -21,9 +21,9 @@
 
 package org.gamegineer.table.internal.persistence.serializable;
 
-import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
+import org.gamegineer.common.persistence.serializable.test.AbstractPersistenceDelegateTestCase;
 import org.gamegineer.table.core.ComponentPath;
 
 /**
@@ -52,7 +52,7 @@ public final class ComponentPathPersistenceDelegateAsPersistenceDelegateTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#createPersistenceDelegate()
+     * @see org.gamegineer.common.persistence.serializable.test.AbstractPersistenceDelegateTestCase#createPersistenceDelegate()
      */
     @Override
     protected IPersistenceDelegate createPersistenceDelegate()
@@ -61,7 +61,7 @@ public final class ComponentPathPersistenceDelegateAsPersistenceDelegateTest
     }
 
     /*
-     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#createSubject()
+     * @see org.gamegineer.common.persistence.serializable.test.AbstractPersistenceDelegateTestCase#createSubject()
      */
     @Override
     protected Object createSubject()
@@ -70,7 +70,7 @@ public final class ComponentPathPersistenceDelegateAsPersistenceDelegateTest
     }
 
     /*
-     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#registerPersistenceDelegates(org.gamegineer.common.persistence.serializable.persistencedelegateregistry.IPersistenceDelegateRegistry)
+     * @see org.gamegineer.common.persistence.serializable.test.AbstractPersistenceDelegateTestCase#registerPersistenceDelegates(org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry)
      */
     @Override
     protected void registerPersistenceDelegates(

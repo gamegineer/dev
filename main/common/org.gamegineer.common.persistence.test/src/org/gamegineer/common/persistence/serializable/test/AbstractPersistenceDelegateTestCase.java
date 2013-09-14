@@ -19,7 +19,7 @@
  * Created on Jul 1, 2008 at 10:59:32 PM.
  */
 
-package org.gamegineer.common.persistence.serializable;
+package org.gamegineer.common.persistence.serializable.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -29,6 +29,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectStreamClass;
 import java.io.OutputStream;
+import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
+import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
+import org.gamegineer.common.persistence.serializable.ObjectInputStream;
+import org.gamegineer.common.persistence.serializable.ObjectOutputStream;
 import org.junit.Before;
 import org.junit.Test;
 

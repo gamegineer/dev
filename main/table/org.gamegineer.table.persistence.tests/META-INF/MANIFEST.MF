@@ -8,6 +8,7 @@ Bundle-Vendor: %bundleVendor
 Bundle-Version: 0.17.0.qualifier
 Fragment-Host: org.gamegineer.table.persistence;bundle-version="0.17.0"
 Import-Package: org.easymock;version="3.2.0",
+ org.gamegineer.common.persistence.serializable.test;version="[0.17.0,0.18.0)",
  org.gamegineer.test.core;version="[0.17.0,0.18.0)"
 Require-Bundle: org.eclipse.equinox.registry;bundle-version="3.5.101",
  org.junit;bundle-version="4.8.2"

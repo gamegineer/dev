@@ -60,7 +60,7 @@ public final class ObjectInputStreamTest
         throws Exception
     {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final ObjectOutputStream oos = new ObjectOutputStream( baos, new FakePersistenceDelegateRegistry() );
+        final ObjectOutputStream oos = new ObjectOutputStream( baos, EasyMock.createMock( IPersistenceDelegateRegistry.class ) );
         oos.writeObject( null );
         oos.close();
 

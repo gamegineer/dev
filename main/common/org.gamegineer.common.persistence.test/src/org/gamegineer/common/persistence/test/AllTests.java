@@ -1,6 +1,6 @@
 /*
- * FakePersistenceDelegateRegistryAsPersistenceDelegateRegistryTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * AllTests.java
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,29 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jul 2, 2010 at 9:27:52 PM.
+ * Created on Sep 13, 2013 at 10:55:57 PM.
  */
 
-package org.gamegineer.common.persistence.serializable;
+package org.gamegineer.common.persistence.test;
+
+import junit.framework.Test;
+import org.gamegineer.common.internal.persistence.test.Activator;
+import org.gamegineer.test.core.BundleSuiteBuilder;
 
 /**
- * A fixture for testing the {@link FakePersistenceDelegateRegistry} class to
- * ensure it does not violate the contract of the
- * {@link IPersistenceDelegateRegistry} interface.
+ * Defines a test suite for running all tests in the bundle.
  */
-public final class FakePersistenceDelegateRegistryAsPersistenceDelegateRegistryTest
-    extends AbstractPersistenceDelegateRegistryTestCase
+public final class AllTests
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code FakePersistenceDelegateRegistryAsPersistenceDelegateRegistryTest}
-     * class.
+     * Initializes a new instance of the {@code AllTests} class.
      */
-    public FakePersistenceDelegateRegistryAsPersistenceDelegateRegistryTest()
+    public AllTests()
     {
     }
 
@@ -47,12 +46,15 @@ public final class FakePersistenceDelegateRegistryAsPersistenceDelegateRegistryT
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.common.persistence.serializable.persistencedelegateregistry.AbstractPersistenceDelegateRegistryTestCase#createPersistenceDelegateRegistry()
+    /**
+     * Creates a test suite consisting of all tests in the bundle.
+     * 
+     * @return A test suite consisting of all tests in the bundle; never
+     *         {@code null}.
      */
-    @Override
-    protected IPersistenceDelegateRegistry createPersistenceDelegateRegistry()
+    /* @NonNull */
+    public static Test suite()
     {
-        return new FakePersistenceDelegateRegistry();
+        return BundleSuiteBuilder.suite( Activator.getDefault().getBundleContext().getBundle() );
     }
 }

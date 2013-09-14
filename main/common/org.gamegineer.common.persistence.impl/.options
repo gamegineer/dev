@@ -2,3 +2,6 @@
 
 # Reports default bundle activity.
 org.gamegineer.common.persistence.impl/debug=false
+
+# Reports Java object serialization framework package activity.
+org.gamegineer.common.persistence.impl/debug/serializable=false

@@ -29,6 +29,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
+import org.easymock.EasyMock;
+import org.easymock.IAnswer;
+import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -118,8 +121,23 @@ public final class ObjectStreamTest
     public void setUp()
         throws Exception
     {
-        persistenceDelegateRegistry_ = new FakePersistenceDelegateRegistry();
-        persistenceDelegateRegistry_.registerPersistenceDelegate( FakeNonSerializableClass.class, new FakeNonSerializableClassPersistenceDelegate() );
+        final IMocksControl mocksControl = EasyMock.createControl();
+        persistenceDelegateRegistry_ = mocksControl.createMock( IPersistenceDelegateRegistry.class );
+        EasyMock.expect( persistenceDelegateRegistry_.getPersistenceDelegate( EasyMock.<String>notNull() ) ).andAnswer( new IAnswer<IPersistenceDelegate>()
+        {
+            @Override
+            public IPersistenceDelegate answer()
+            {
+                final String typeName = (String)EasyMock.getCurrentArguments()[ 0 ];
+                if( typeName.equals( FakeNonSerializableClass.class.getName() ) )
+                {
+                    return new FakeNonSerializableClassPersistenceDelegate();
+                }
+
+                return null;
+            }
+        } ).anyTimes();
+        mocksControl.replay();
     }
 
     /**

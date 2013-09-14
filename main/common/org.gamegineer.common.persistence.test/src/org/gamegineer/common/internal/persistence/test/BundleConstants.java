@@ -1,6 +1,6 @@
 /*
- * FakePersistenceDelegate.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * BundleConstants.java
+ * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,28 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 1, 2010 at 9:31:25 PM.
+ * Created on Sep 13, 2013 at 10:54:48 PM.
  */
 
-package org.gamegineer.common.persistence.serializable;
+package org.gamegineer.common.internal.persistence.test;
 
-import net.jcip.annotations.Immutable;
+import net.jcip.annotations.ThreadSafe;
 
 /**
- * Fake implementation of {@link IPersistenceDelegate} .
+ * Defines useful constants for use by the bundle.
  */
-@Immutable
-public class FakePersistenceDelegate
-    extends AbstractPersistenceDelegate
+@ThreadSafe
+public final class BundleConstants
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The symbolic name of the bundle. */
+    public static final String SYMBOLIC_NAME = "org.gamegineer.common.persistence.test"; //$NON-NLS-1$
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code FakePersistenceDelegate} class.
+     * Initializes a new instance of the {@code BundleConstants} class.
      */
-    public FakePersistenceDelegate()
+    private BundleConstants()
     {
     }
 }

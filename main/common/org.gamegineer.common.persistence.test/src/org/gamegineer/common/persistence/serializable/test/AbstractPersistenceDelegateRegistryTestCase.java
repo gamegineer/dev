@@ -19,7 +19,7 @@
  * Created on Apr 30, 2010 at 12:05:25 AM.
  */
 
-package org.gamegineer.common.persistence.serializable;
+package org.gamegineer.common.persistence.serializable.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -27,6 +27,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import java.util.Set;
+import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
+import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
 import org.junit.Before;
 import org.junit.Test;
 

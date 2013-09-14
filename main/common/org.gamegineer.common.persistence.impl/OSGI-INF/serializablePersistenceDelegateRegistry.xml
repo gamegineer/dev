@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scr:component
-		name="org.gamegineer.common.persistence.serializable.persistenceDelegateRegistry"
+		name="org.gamegineer.common.persistence.impl.serializable.persistenceDelegateRegistry"
 		xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
 	<implementation
-			class="org.gamegineer.common.internal.persistence.serializable.PersistenceDelegateRegistry" />
+			class="org.gamegineer.common.internal.persistence.impl.serializable.PersistenceDelegateRegistry" />
 	<service>
 		<provide
 				interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry" />

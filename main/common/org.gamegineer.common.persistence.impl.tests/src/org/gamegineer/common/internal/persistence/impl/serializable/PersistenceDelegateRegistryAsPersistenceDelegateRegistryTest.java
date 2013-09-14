@@ -19,10 +19,10 @@
  * Created on May 1, 2010 at 10:20:11 PM.
  */
 
-package org.gamegineer.common.internal.persistence.serializable;
+package org.gamegineer.common.internal.persistence.impl.serializable;
 
-import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateRegistryTestCase;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
+import org.gamegineer.common.persistence.serializable.test.AbstractPersistenceDelegateRegistryTestCase;
 
 /**
  * A fixture for testing the {@link PersistenceDelegateRegistry} class to ensure
@@ -51,7 +51,7 @@ public final class PersistenceDelegateRegistryAsPersistenceDelegateRegistryTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.persistence.serializable.persistencedelegateregistry.AbstractPersistenceDelegateRegistryTestCase#createPersistenceDelegateRegistry()
+     * @see org.gamegineer.common.persistence.serializable.test.AbstractPersistenceDelegateRegistryTestCase#createPersistenceDelegateRegistry()
      */
     @Override
     protected IPersistenceDelegateRegistry createPersistenceDelegateRegistry()

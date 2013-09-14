@@ -19,7 +19,7 @@
  * Created on May 1, 2010 at 10:19:31 PM.
  */
 
-package org.gamegineer.common.internal.persistence.serializable;
+package org.gamegineer.common.internal.persistence.impl.serializable;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
@@ -33,8 +33,8 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.internal.persistence.Debug;
-import org.gamegineer.common.internal.persistence.Loggers;
+import org.gamegineer.common.internal.persistence.impl.Debug;
+import org.gamegineer.common.internal.persistence.impl.Loggers;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
 import org.gamegineer.common.persistence.serializable.PersistenceDelegateRegistryConstants;

@@ -1,6 +1,6 @@
 /*
  * package-info.java
- * Copyright 2008-2011 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,16 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 1, 2010 at 10:18:29 PM.
+ * Created on Sep 13, 2013 at 10:24:50 PM.
  */
 
 /**
- * Provides the implementation of classes that augment the Java object
- * serialization framework.
- * 
- * <p>
- * This package is only intended for use by members of the
- * {@code org.gamegineer.common} project.
- * </p>
+ * Provides test cases for implementations of interfaces defined in the
+ * {@code org.gamegineer.common.persistence.serializable} package.
  */
-package org.gamegineer.common.internal.persistence.serializable;
+package org.gamegineer.common.persistence.serializable.test;

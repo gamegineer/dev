@@ -19,7 +19,7 @@
  * Created on Jul 5, 2010 at 9:31:43 PM.
  */
 
-package org.gamegineer.common.internal.persistence.serializable;
+package org.gamegineer.common.internal.persistence.impl.serializable;
 
 import org.junit.Before;
 import org.junit.Test;

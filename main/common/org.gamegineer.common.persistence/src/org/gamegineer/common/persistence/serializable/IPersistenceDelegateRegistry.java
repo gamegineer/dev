@@ -1,6 +1,6 @@
 /*
  * IPersistenceDelegateRegistry.java
- * Copyright 2008-2011 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,8 +28,6 @@ import java.util.Set;
  * framework persistence delegates.
  * 
  * @noextend This interface is not intended to be extended by clients.
- * 
- * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface IPersistenceDelegateRegistry
 {
