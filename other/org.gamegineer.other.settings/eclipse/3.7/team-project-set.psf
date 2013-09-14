@@ -2,6 +2,11 @@
 <psf version="2.0">
 <provider id="org.tigris.subversion.subclipse.core.svnnature">
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/build/trunk,build"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/third-party/javax.help,javax.help"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/third-party/javax.help.source,javax.help.source"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/third-party/net.jcip.annotations,net.jcip.annotations"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/third-party/net.jcip.annotations.source,net.jcip.annotations.source"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/org.gamegineer.builder,org.gamegineer.builder"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/cards/org.gamegineer.cards.core,org.gamegineer.cards.core"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/cards/org.gamegineer.cards.core.tests,org.gamegineer.cards.core.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/cards/org.gamegineer.cards.feature.base,org.gamegineer.cards.feature.base"/>
@@ -22,9 +27,13 @@
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.feature.ui,org.gamegineer.common.feature.ui"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.feature.ui.tests,org.gamegineer.common.feature.ui.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.persistence,org.gamegineer.common.persistence"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.persistence.impl,org.gamegineer.common.persistence.impl"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.persistence.impl.tests,org.gamegineer.common.persistence.impl.tests"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.persistence.test,org.gamegineer.common.persistence.test"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.persistence.tests,org.gamegineer.common.persistence.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.ui,org.gamegineer.common.ui"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.ui.tests,org.gamegineer.common.ui.tests"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/other/org.gamegineer.other.settings,org.gamegineer.other.settings"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/table/org.gamegineer.table.core,org.gamegineer.table.core"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/table/org.gamegineer.table.core.tests,org.gamegineer.table.core.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/table/org.gamegineer.table.feature.base,org.gamegineer.table.feature.base"/>
@@ -43,12 +52,6 @@
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/table/org.gamegineer.table.ui.tests,org.gamegineer.table.ui.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/test/org.gamegineer.test.core,org.gamegineer.test.core"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/test/org.gamegineer.test.feature.base,org.gamegineer.test.feature.base"/>
-<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/third-party/javax.help,javax.help"/>
-<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/third-party/javax.help.source,javax.help.source"/>
-<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/third-party/net.jcip.annotations,net.jcip.annotations"/>
-<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/third-party/net.jcip.annotations.source,net.jcip.annotations.source"/>
-<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/org.gamegineer.builder,org.gamegineer.builder"/>
-<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/other/org.gamegineer.other.settings,org.gamegineer.other.settings"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/web/trunk,web"/>
 </provider>
 </psf>

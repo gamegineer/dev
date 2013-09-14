@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-Localization: plugin
+Bundle-ManifestVersion: 2
+Bundle-Name: %bundleName
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-SymbolicName: org.gamegineer.common.persistence.test
+Bundle-Vendor: %bundleVendor
+Bundle-Version: 0.17.0.qualifier

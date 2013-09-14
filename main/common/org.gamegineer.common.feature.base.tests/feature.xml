@@ -43,6 +43,19 @@
             unpack="true"
             fragment="true" />
     <plugin
+            id="org.gamegineer.common.persistence.impl.tests"
+            download-size="0"
+            install-size="0"
+            version="0.0.0"
+            unpack="true"
+            fragment="true" />
+    <plugin
+            id="org.gamegineer.common.persistence.test"
+            download-size="0"
+            install-size="0"
+            version="0.0.0"
+            unpack="false" />
+    <plugin
             id="org.gamegineer.common.persistence.tests"
             download-size="0"
             install-size="0"
