@@ -14,7 +14,7 @@
 	</parent>
 
 	<artifactId>org.gamegineer.common.persistence.test</artifactId>
-	<packaging>eclipse-plugin</packaging>
+	<packaging>eclipse-test-plugin</packaging>
 
 	<name>org.gamegineer.common.persistence.test Bundle</name>
 	<description>
