@@ -1,0 +1,11 @@
+(In the following procedure, "/" represents the root of the Gamegineer branch you are building.)
+
+Deploy the target platform p2 repository to Nexus:
+
+	cd /target-platform/org.gamegineer.target-platform
+	mvn clean deploy
+
+Build the Gamegineer product:
+
+	cd /main/org.gamegineer.main
+	mvn clean install
