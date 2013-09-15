@@ -290,7 +290,7 @@
             <property name="arch" value="${basearch}" />
             <property name="org.eclipse.test" value="${eclipseTestId}" />
             <property name="junit-stylesheet" value="${buildDirectory}/${buildLabel}/test-workspace/${archivePrefix}/plugins/org.eclipse.test_${eclipseTestId}/JUNIT.XSL" />
-            <fileset dir="${buildDirectory}/${buildLabel}/test-workspace/${archivePrefix}/plugins" includes="org.gamegineer.*.tests_*/test.xml" />
+            <fileset dir="${buildDirectory}/${buildLabel}/test-workspace/${archivePrefix}/plugins" includes="org.gamegineer.*/test.xml" />
         </subant>
 
         <!-- Fail the build if any unit test failed. -->
