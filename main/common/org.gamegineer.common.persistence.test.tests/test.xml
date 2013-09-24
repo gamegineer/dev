@@ -10,7 +10,7 @@
     <property name="library-file" refid="library-fileset" />
 
     <!-- The name of the plugin containing the unit tests. -->
-    <property name="plugin-name" value="org.gamegineer.common.persistence.test" />
+    <property name="plugin-name" value="org.gamegineer.common.persistence.test.tests" />
 
     <!-- This target holds all initialization code that needs to be done for -->
     <!-- all tests that are to be run. Initialization for individual tests -->

@@ -1,5 +1,5 @@
 /*
- * AllTests.java
+ * TestsFragmentConstants.java
  * Copyright 2008-2013 Gamegineer.org
  * All rights reserved.
  *
@@ -16,45 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Sep 13, 2013 at 10:55:57 PM.
+ * Created on Sep 23, 2013 at 7:59:31 PM.
  */
 
-package org.gamegineer.common.persistence.test;
+package org.gamegineer.common.internal.persistence.test;
 
-import junit.framework.Test;
-import org.gamegineer.common.internal.persistence.test.Activator;
-import org.gamegineer.test.core.BundleSuiteBuilder;
+import net.jcip.annotations.ThreadSafe;
 
 /**
- * Defines a test suite for running all tests in the bundle.
+ * Defines useful constants for use by the fragment.
  */
-public final class AllTests
+@ThreadSafe
+public final class TestsFragmentConstants
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The symbolic name of the fragment. */
+    public static final String SYMBOLIC_NAME = "org.gamegineer.common.persistence.test.tests"; //$NON-NLS-1$
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AllTests} class.
+     * Initializes a new instance of the {@code TestsFragmentConstants} class.
      */
-    public AllTests()
+    private TestsFragmentConstants()
     {
-    }
-
-
-    // ======================================================================
-    // Methods
-    // ======================================================================
-
-    /**
-     * Creates a test suite consisting of all tests in the bundle.
-     * 
-     * @return A test suite consisting of all tests in the bundle; never
-     *         {@code null}.
-     */
-    /* @NonNull */
-    public static Test suite()
-    {
-        return BundleSuiteBuilder.suite( Activator.getDefault().getBundleContext().getBundle() );
     }
 }

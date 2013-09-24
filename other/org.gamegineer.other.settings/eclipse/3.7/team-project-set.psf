@@ -30,6 +30,7 @@
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.persistence.impl,org.gamegineer.common.persistence.impl"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.persistence.impl.tests,org.gamegineer.common.persistence.impl.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.persistence.test,org.gamegineer.common.persistence.test"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.persistence.test.tests,org.gamegineer.common.persistence.test.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.persistence.tests,org.gamegineer.common.persistence.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.ui,org.gamegineer.common.ui"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.ui.tests,org.gamegineer.common.ui.tests"/>
