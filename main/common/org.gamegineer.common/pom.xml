@@ -31,6 +31,7 @@
 		<module>../org.gamegineer.common.persistence.impl</module>
 		<module>../org.gamegineer.common.persistence.impl.tests</module>
 		<module>../org.gamegineer.common.persistence.test</module>
+		<module>../org.gamegineer.common.persistence.test.tests</module>
 		<module>../org.gamegineer.common.persistence.tests</module>
 	</modules>
 
