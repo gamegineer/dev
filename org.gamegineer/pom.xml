@@ -74,6 +74,7 @@
 		<build-helper-maven-plugin-version>1.8</build-helper-maven-plugin-version>
 		<g8r-ci-authority>build.g8r.local:8080</g8r-ci-authority>
 		<g8r-repository-authority>build.g8r.local:8081</g8r-repository-authority>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<tycho-version>0.18.0</tycho-version>
 	</properties>
 
