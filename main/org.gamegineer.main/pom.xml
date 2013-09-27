@@ -27,4 +27,12 @@
 		<module>../third-party/org.gamegineer.third-party</module>
 	</modules>
 
+	<repositories>
+		<repository>
+			<id>g8r-target-platform</id>
+			<url>http://${g8r-repository-authority}/nexus/content/unzip/public.unzip/org/gamegineer/org.gamegineer.target-platform.repository/${g8r-version}/org.gamegineer.target-platform.repository-${g8r-version}.zip-unzip</url>
+			<layout>p2</layout>
+		</repository>
+	</repositories>
+
 </project>
