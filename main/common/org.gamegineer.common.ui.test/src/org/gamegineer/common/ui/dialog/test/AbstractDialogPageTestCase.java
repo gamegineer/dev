@@ -19,15 +19,17 @@
  * Created on Sep 23, 2010 at 10:33:44 PM.
  */
 
-package org.gamegineer.common.ui.dialog;
+package org.gamegineer.common.ui.dialog.test;
 
 import static org.junit.Assert.assertNotNull;
+import org.gamegineer.common.ui.dialog.AbstractDialogPage;
+import org.gamegineer.common.ui.dialog.IDialogPage;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the basic aspects of classes that extend the
- * {@link IDialogPage} class.
+ * A fixture for testing the basic aspects of classes that implement the
+ * {@link IDialogPage} interface.
  */
 public abstract class AbstractDialogPageTestCase
 {

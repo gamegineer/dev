@@ -22,7 +22,7 @@
 package org.gamegineer.common.ui.databinding.dialog;
 
 import org.eclipse.core.databinding.DataBindingContext;
-import org.gamegineer.common.ui.databinding.FakeRealm;
+import org.gamegineer.common.ui.databinding.test.FakeRealm;
 import org.gamegineer.common.ui.dialog.AbstractBannerDialog;
 import org.junit.Test;
 

@@ -21,6 +21,8 @@
 
 package org.gamegineer.common.ui.wizard;
 
+import org.gamegineer.common.ui.wizard.test.AbstractWizardTestCase;
+
 /**
  * A fixture for testing the {@link AbstractWizard} class to ensure it does not
  * violate the contract of the {@link IWizard} interface.

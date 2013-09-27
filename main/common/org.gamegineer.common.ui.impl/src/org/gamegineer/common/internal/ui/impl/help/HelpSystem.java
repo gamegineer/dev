@@ -19,7 +19,7 @@
  * Created on Jan 4, 2012 at 8:23:37 PM.
  */
 
-package org.gamegineer.common.internal.ui.help;
+package org.gamegineer.common.internal.ui.impl.help;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
@@ -43,8 +43,8 @@ import javax.swing.JFrame;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.app.IBranding;
-import org.gamegineer.common.internal.ui.Debug;
-import org.gamegineer.common.internal.ui.Loggers;
+import org.gamegineer.common.internal.ui.impl.Debug;
+import org.gamegineer.common.internal.ui.impl.Loggers;
 import org.gamegineer.common.ui.app.BrandingUIUtils;
 import org.gamegineer.common.ui.help.IHelpSetProvider;
 import org.gamegineer.common.ui.help.IHelpSystem;

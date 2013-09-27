@@ -21,6 +21,8 @@
 
 package org.gamegineer.common.ui.dialog;
 
+import org.gamegineer.common.ui.dialog.test.AbstractDialogPageTestCase;
+
 /**
  * A fixture for testing the {@link AbstractDialogPage} class to ensure it does
  * not violate the contract of the {@link IDialogPage} interface.
@@ -46,7 +48,7 @@ public final class AbstractDialogPageAsDialogPageTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.ui.dialog.AbstractDialogPageTestCase#createDialogPage()
+     * @see org.gamegineer.common.ui.dialog.test.AbstractDialogPageTestCase#createDialogPage()
      */
     @Override
     protected IDialogPage createDialogPage()

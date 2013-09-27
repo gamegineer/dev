@@ -23,7 +23,7 @@ package org.gamegineer.common.ui.databinding.dialog;
 
 import org.easymock.EasyMock;
 import org.eclipse.core.databinding.DataBindingContext;
-import org.gamegineer.common.ui.databinding.FakeRealm;
+import org.gamegineer.common.ui.databinding.test.FakeRealm;
 import org.gamegineer.common.ui.dialog.IDialogPage;
 import org.junit.Test;
 

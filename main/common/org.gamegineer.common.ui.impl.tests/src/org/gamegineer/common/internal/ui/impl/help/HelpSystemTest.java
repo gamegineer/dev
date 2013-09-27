@@ -1,5 +1,5 @@
 /*
- * AbstractHelpSystemTestCase.java
+ * HelpSystemTest.java
  * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
@@ -16,27 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 4, 2012 at 8:30:56 PM.
+ * Created on Jan 4, 2012 at 8:38:37 PM.
  */
 
-package org.gamegineer.common.ui.help;
+package org.gamegineer.common.internal.ui.impl.help;
 
-import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the basic aspects of classes that implement the
- * {@link IHelpSystem} interface.
+ * A fixture for testing the {@link HelpSystem} class.
  */
-public abstract class AbstractHelpSystemTestCase
+public final class HelpSystemTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** The help system under test in the fixture. */
-    private IHelpSystem helpSystem_;
+    private HelpSystem helpSystem_;
 
 
     // ======================================================================
@@ -44,10 +42,9 @@ public abstract class AbstractHelpSystemTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractHelpSystemTestCase}
-     * class.
+     * Initializes a new instance of the {@code HelpSystemTest} class.
      */
-    protected AbstractHelpSystemTestCase()
+    public HelpSystemTest()
     {
     }
 
@@ -55,18 +52,6 @@ public abstract class AbstractHelpSystemTestCase
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Creates the help system to be tested.
-     * 
-     * @return The help system to be tested; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    /* @NonNull */
-    protected abstract IHelpSystem createHelpSystem()
-        throws Exception;
 
     /**
      * Sets up the test fixture.
@@ -78,16 +63,26 @@ public abstract class AbstractHelpSystemTestCase
     public void setUp()
         throws Exception
     {
-        helpSystem_ = createHelpSystem();
-        assertNotNull( helpSystem_ );
+        helpSystem_ = new HelpSystem();
     }
 
     /**
-     * A dummy test until testable functionality is added to the interface.
+     * Ensures the {@link HelpSystem#registerHelpSetProvider} method throws an
+     * exception when passed a {@code null} help set provider reference.
      */
-    @Test
-    public void testDummy()
+    @Test( expected = NullPointerException.class )
+    public void testRegisterHelpSetProviderFromServiceReference_HelpSetProviderReference_Null()
     {
-        // do nothing
+        helpSystem_.registerHelpSetProvider( null );
+    }
+
+    /**
+     * Ensures the {@link HelpSystem#unregisterHelpSetProvider} method throws an
+     * exception when passed a {@code null} help set provider reference.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testUnregisterHelpSetProviderFromServiceReference_HelpSetProviderReference_Null()
+    {
+        helpSystem_.unregisterHelpSetProvider( null );
     }
 }

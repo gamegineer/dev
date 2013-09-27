@@ -2,10 +2,10 @@
 <scr:component
 		activate="activate"
 		deactivate="deactivate"
-		name="org.gamegineer.common.ui.help.helpSystem"
+		name="org.gamegineer.common.ui.impl.help.helpSystem"
 		xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
 	<implementation
-			class="org.gamegineer.common.internal.ui.help.HelpSystem" />
+			class="org.gamegineer.common.internal.ui.impl.help.HelpSystem" />
 	<service>
 		<provide
 				interface="org.gamegineer.common.ui.help.IHelpSystem" />

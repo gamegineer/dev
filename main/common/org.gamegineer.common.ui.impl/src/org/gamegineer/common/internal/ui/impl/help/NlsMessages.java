@@ -1,6 +1,6 @@
 /*
  * NlsMessages.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * Created on Jan 21, 2012 at 10:20:31 PM.
  */
 
-package org.gamegineer.common.internal.ui.help;
+package org.gamegineer.common.internal.ui.impl.help;
 
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;

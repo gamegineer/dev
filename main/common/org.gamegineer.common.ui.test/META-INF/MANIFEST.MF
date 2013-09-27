@@ -6,5 +6,15 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-SymbolicName: org.gamegineer.common.ui.test
 Bundle-Vendor: %bundleVendor
 Bundle-Version: 0.17.0.qualifier
-Import-Package: org.osgi.framework;version="1.6.0"
+Export-Package: org.gamegineer.common.ui.databinding.test;version="0.17.0",
+ org.gamegineer.common.ui.dialog.test;version="0.17.0",
+ org.gamegineer.common.ui.help.test;version="0.17.0",
+ org.gamegineer.common.ui.wizard.test;version="0.17.0"
+Import-Package: net.jcip.annotations;version="1.0.0",
+ org.easymock;version="3.2.0",
+ org.eclipse.core.databinding.observable;version="0.0.0",
+ org.gamegineer.common.ui.dialog;version="[0.17.0,0.18.0)",
+ org.gamegineer.common.ui.help;version="[0.17.0,0.18.0)",
+ org.gamegineer.common.ui.wizard;version="[0.17.0,0.18.0)",
+ org.osgi.framework;version="1.6.0"
 Require-Bundle: org.junit;bundle-version="4.8.2"

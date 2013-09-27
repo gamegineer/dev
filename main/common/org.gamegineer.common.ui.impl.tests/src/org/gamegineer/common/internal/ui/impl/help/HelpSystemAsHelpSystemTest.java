@@ -1,5 +1,5 @@
 /*
- * FakeRealm.java
+ * HelpSystemAsHelpSystemTest.java
  * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
@@ -16,29 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 16, 2010 at 9:37:58 PM.
+ * Created on Jan 4, 2012 at 8:33:37 PM.
  */
 
-package org.gamegineer.common.ui.databinding;
+package org.gamegineer.common.internal.ui.impl.help;
 
-import net.jcip.annotations.NotThreadSafe;
-import org.eclipse.core.databinding.observable.Realm;
+import org.gamegineer.common.ui.help.IHelpSystem;
+import org.gamegineer.common.ui.help.test.AbstractHelpSystemTestCase;
 
 /**
- * Fake implementation of {@link Realm}.
+ * A fixture for testing the {@link HelpSystem} class to ensure it does not
+ * violate the contract of the {@link IHelpSystem} interface.
  */
-@NotThreadSafe
-public class FakeRealm
-    extends Realm
+public final class HelpSystemAsHelpSystemTest
+    extends AbstractHelpSystemTestCase
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code FakeRealm} class.
+     * Initializes a new instance of the {@code HelpSystemAsHelpSystemTest}
+     * class.
      */
-    public FakeRealm()
+    public HelpSystemAsHelpSystemTest()
     {
     }
 
@@ -48,11 +49,11 @@ public class FakeRealm
     // ======================================================================
 
     /*
-     * @see org.eclipse.core.databinding.observable.Realm#isCurrent()
+     * @see org.gamegineer.common.ui.help.test.AbstractHelpSystemTestCase#createHelpSystem()
      */
     @Override
-    public boolean isCurrent()
+    protected IHelpSystem createHelpSystem()
     {
-        return this.equals( Realm.getDefault() );
+        return new HelpSystem();
     }
 }

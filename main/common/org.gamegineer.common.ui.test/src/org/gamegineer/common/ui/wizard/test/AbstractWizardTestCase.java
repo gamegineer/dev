@@ -19,19 +19,21 @@
  * Created on Sep 24, 2010 at 8:56:17 PM.
  */
 
-package org.gamegineer.common.ui.wizard;
+package org.gamegineer.common.ui.wizard.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.easymock.EasyMock;
+import org.gamegineer.common.ui.wizard.IWizard;
+import org.gamegineer.common.ui.wizard.IWizardPage;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the basic aspects of classes that extend the
- * {@link IWizard} class.
+ * A fixture for testing the basic aspects of classes that implement the
+ * {@link IWizard} interface.
  */
 public abstract class AbstractWizardTestCase
 {
