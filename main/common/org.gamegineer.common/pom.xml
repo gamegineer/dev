@@ -33,6 +33,11 @@
 		<module>../org.gamegineer.common.persistence.test</module>
 		<module>../org.gamegineer.common.persistence.test.tests</module>
 		<module>../org.gamegineer.common.persistence.tests</module>
+		<module>../org.gamegineer.common.ui</module>
+		<module>../org.gamegineer.common.ui.impl</module>
+		<module>../org.gamegineer.common.ui.impl.tests</module>
+		<module>../org.gamegineer.common.ui.test</module>
+		<module>../org.gamegineer.common.ui.tests</module>
 	</modules>
 
 </project>
