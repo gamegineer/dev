@@ -21,6 +21,7 @@
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.core.impl,org.gamegineer.common.core.impl"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.core.impl.tests,org.gamegineer.common.core.impl.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.core.test,org.gamegineer.common.core.test"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.core.test.tests,org.gamegineer.common.core.test.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.core.tests,org.gamegineer.common.core.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.feature.base,org.gamegineer.common.feature.base"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.feature.base.tests,org.gamegineer.common.feature.base.tests"/>
@@ -36,6 +37,7 @@
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.ui.impl,org.gamegineer.common.ui.impl"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.ui.impl.tests,org.gamegineer.common.ui.impl.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.ui.test,org.gamegineer.common.ui.test"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.ui.test.tests,org.gamegineer.common.ui.test.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.ui.tests,org.gamegineer.common.ui.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/other/org.gamegineer.other.settings,org.gamegineer.other.settings"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/table/org.gamegineer.table.core,org.gamegineer.table.core"/>

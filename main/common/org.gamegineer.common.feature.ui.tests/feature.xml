@@ -36,6 +36,13 @@
             version="0.0.0"
             unpack="false" />
     <plugin
+            id="org.gamegineer.common.ui.test.tests"
+            download-size="0"
+            install-size="0"
+            version="0.0.0"
+            unpack="true"
+            fragment="true" />
+    <plugin
             id="org.gamegineer.common.ui.tests"
             download-size="0"
             install-size="0"
