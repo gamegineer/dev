@@ -26,6 +26,7 @@
 		<module>../org.gamegineer.common.core.impl</module>
 		<module>../org.gamegineer.common.core.impl.tests</module>
 		<module>../org.gamegineer.common.core.test</module>
+		<module>../org.gamegineer.common.core.test.tests</module>
 		<module>../org.gamegineer.common.core.tests</module>
 		<module>../org.gamegineer.common.persistence</module>
 		<module>../org.gamegineer.common.persistence.impl</module>
@@ -37,6 +38,7 @@
 		<module>../org.gamegineer.common.ui.impl</module>
 		<module>../org.gamegineer.common.ui.impl.tests</module>
 		<module>../org.gamegineer.common.ui.test</module>
+		<module>../org.gamegineer.common.ui.test.tests</module>
 		<module>../org.gamegineer.common.ui.tests</module>
 	</modules>
 
