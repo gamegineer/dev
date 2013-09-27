@@ -18,7 +18,7 @@
 
 	<name>org.gamegineer.common.ui.impl.tests Fragment</name>
 	<description>
-		Gamegineer common UI implementation unit tests fragment.
+		This project defines the unit tests for the Gamegineer common domain model UI layer implementation.
 	</description>
 
 </project>

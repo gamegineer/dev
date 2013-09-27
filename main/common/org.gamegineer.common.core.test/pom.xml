@@ -18,7 +18,7 @@
 
 	<name>org.gamegineer.common.core.test Bundle</name>
 	<description>
-		Gamegineer common core test bundle.
+		This project defines the test framework for the Gamegineer common domain model.
 	</description>
 
 </project>

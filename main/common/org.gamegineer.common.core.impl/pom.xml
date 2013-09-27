@@ -18,7 +18,7 @@
 
 	<name>org.gamegineer.common.core.impl Bundle</name>
 	<description>
-		Gamegineer common core implementation bundle.
+		This project defines the implementation for the Gamegineer common domain model.
 	</description>
 
 </project>

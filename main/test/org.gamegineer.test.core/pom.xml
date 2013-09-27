@@ -18,7 +18,7 @@
 
 	<name>org.gamegineer.test.core Bundle</name>
 	<description>
-		Gamegineer test core bundle.
+		This project defines the Gamegineer test framework domain model.
 	</description>
 
 </project>

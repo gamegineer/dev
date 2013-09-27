@@ -18,7 +18,7 @@
 
 	<name>org.gamegineer.target-platform Repository</name>
 	<description>
-		Builds the Gamegineer target platform p2 repository.
+		This project is used to build the Gamegineer target platform p2 repository.
 	</description>
 
 	<build>

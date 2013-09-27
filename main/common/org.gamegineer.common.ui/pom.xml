@@ -18,7 +18,7 @@
 
 	<name>org.gamegineer.common.ui Bundle</name>
 	<description>
-		Gamegineer common UI bundle.
+		This project defines the UI layer for the Gamegineer common domain model.
 	</description>
 
 </project>

@@ -18,7 +18,7 @@
 
 	<name>org.gamegineer.test.feature.base Feature</name>
 	<description>
-		Gamegineer test feature.
+		This project defines the feature for the base Gamegineer test framework bundles.
 	</description>
 
 </project>

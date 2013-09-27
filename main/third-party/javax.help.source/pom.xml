@@ -19,7 +19,7 @@
 
 	<name>javax.help.source Bundle</name>
 	<description>
-		Produces an OSGi bundle for the javax.help library source code.
+		This project produces an OSGi bundle for the javax.help library source code.
 	</description>
 
 </project>

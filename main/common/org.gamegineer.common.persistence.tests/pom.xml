@@ -18,7 +18,7 @@
 
 	<name>org.gamegineer.common.persistence.tests Fragment</name>
 	<description>
-		Gamegineer common persistence unit tests fragment.
+		This project defines the unit tests for the Gamegineer common domain model persistence layer.
 	</description>
 
 </project>

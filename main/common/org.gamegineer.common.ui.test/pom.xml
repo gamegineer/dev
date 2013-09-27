@@ -18,7 +18,7 @@
 
 	<name>org.gamegineer.common.ui.test Bundle</name>
 	<description>
-		Gamegineer common UI test bundle.
+		This project defines the test framework for the Gamegineer common domain model UI layer.
 	</description>
 
 </project>

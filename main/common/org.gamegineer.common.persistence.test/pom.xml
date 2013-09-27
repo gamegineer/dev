@@ -18,7 +18,7 @@
 
 	<name>org.gamegineer.common.persistence.test Bundle</name>
 	<description>
-		Gamegineer common persistence test bundle.
+		This project defines the test framework for the Gamegineer common domain model persistence layer.
 	</description>
 
 </project>

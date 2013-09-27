@@ -19,7 +19,7 @@
 
 	<name>net.jcip.annotations Bundle</name>
 	<description>
-		Produces an OSGi bundle for the net.jcip.annotations library.
+		This project produces an OSGi bundle for the net.jcip.annotations library.
 	</description>
 
 </project>

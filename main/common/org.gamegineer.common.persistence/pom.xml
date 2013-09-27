@@ -18,7 +18,7 @@
 
 	<name>org.gamegineer.common.persistence Bundle</name>
 	<description>
-		Gamegineer common persistence bundle.
+		This project defines the persistence layer for the Gamegineer common domain model.
 	</description>
 
 </project>
