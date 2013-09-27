@@ -20,7 +20,7 @@
  */
 
 /**
- * Provides test cases for implementations of interfaces defined in the
+ * Provides test support for the
  * {@code org.gamegineer.common.core.logging} package.
  */
 package org.gamegineer.common.core.logging.test;
