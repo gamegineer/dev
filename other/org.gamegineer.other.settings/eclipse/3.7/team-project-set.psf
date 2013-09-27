@@ -33,6 +33,9 @@
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.persistence.test.tests,org.gamegineer.common.persistence.test.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.persistence.tests,org.gamegineer.common.persistence.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.ui,org.gamegineer.common.ui"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.ui.impl,org.gamegineer.common.ui.impl"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.ui.impl.tests,org.gamegineer.common.ui.impl.tests"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.ui.test,org.gamegineer.common.ui.test"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.ui.tests,org.gamegineer.common.ui.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/other/org.gamegineer.other.settings,org.gamegineer.other.settings"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/table/org.gamegineer.table.core,org.gamegineer.table.core"/>
