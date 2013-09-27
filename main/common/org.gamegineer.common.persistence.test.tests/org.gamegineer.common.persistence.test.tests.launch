@@ -16,7 +16,7 @@
 <booleanAttribute key="includeOptional" value="true"/>
 <stringAttribute key="location" value="${workspace_loc}/../junit-workspace"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/org.gamegineer.common.persistence.test/src/org/gamegineer/common/persistence/test/AllTests.java"/>
+<listEntry value="/org.gamegineer.common.persistence.test.tests/src/org/gamegineer/common/persistence/test/AllTests.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
