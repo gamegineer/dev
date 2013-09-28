@@ -28,6 +28,10 @@
 		<module>../org.gamegineer.common.core.test</module>
 		<module>../org.gamegineer.common.core.test.tests</module>
 		<module>../org.gamegineer.common.core.tests</module>
+		<module>../org.gamegineer.common.feature.base</module>
+		<module>../org.gamegineer.common.feature.base.tests</module>
+		<module>../org.gamegineer.common.feature.ui</module>
+		<module>../org.gamegineer.common.feature.ui.tests</module>
 		<module>../org.gamegineer.common.persistence</module>
 		<module>../org.gamegineer.common.persistence.impl</module>
 		<module>../org.gamegineer.common.persistence.impl.tests</module>
