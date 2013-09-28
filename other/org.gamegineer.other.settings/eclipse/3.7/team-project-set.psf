@@ -41,6 +41,10 @@
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/common/org.gamegineer.common.ui.tests,org.gamegineer.common.ui.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/other/org.gamegineer.other.settings,org.gamegineer.other.settings"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/table/org.gamegineer.table.core,org.gamegineer.table.core"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/table/org.gamegineer.table.core.impl,org.gamegineer.table.core.impl"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/table/org.gamegineer.table.core.impl.tests,org.gamegineer.table.core.impl.tests"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/table/org.gamegineer.table.core.test,org.gamegineer.table.core.test"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/table/org.gamegineer.table.core.test.tests,org.gamegineer.table.core.test.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/table/org.gamegineer.table.core.tests,org.gamegineer.table.core.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/table/org.gamegineer.table.feature.base,org.gamegineer.table.feature.base"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/table/org.gamegineer.table.feature.base.tests,org.gamegineer.table.feature.base.tests"/>

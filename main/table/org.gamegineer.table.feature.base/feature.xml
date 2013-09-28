@@ -28,6 +28,12 @@
             version="0.0.0"
             unpack="false" />
     <plugin
+            id="org.gamegineer.table.core.impl"
+            download-size="0"
+            install-size="0"
+            version="0.0.0"
+            unpack="false" />
+    <plugin
             id="org.gamegineer.table.net"
             download-size="0"
             install-size="0"
