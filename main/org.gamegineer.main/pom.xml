@@ -23,6 +23,7 @@
 
 	<modules>
 		<module>../common/org.gamegineer.common</module>
+		<module>../table/org.gamegineer.table</module>
 		<module>../test/org.gamegineer.test</module>
 		<module>../third-party/org.gamegineer.third-party</module>
 	</modules>
