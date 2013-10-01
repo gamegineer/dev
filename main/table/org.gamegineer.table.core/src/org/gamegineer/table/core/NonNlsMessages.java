@@ -35,6 +35,11 @@ final class NonNlsMessages
     // Fields
     // ======================================================================
 
+    // --- AbsoluteLayout ---------------------------------------------------
+
+    /** The component index is negative. */
+    public static String AbsoluteLayout_getComponentOffsetAt_index_negative;
+
     // --- AbstractComponentStrategy ----------------------------------------
 
     /** The default component surface design is not available. */

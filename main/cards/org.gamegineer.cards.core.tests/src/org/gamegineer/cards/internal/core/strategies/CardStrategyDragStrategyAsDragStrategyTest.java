@@ -26,10 +26,10 @@ import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableEnvironment;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
-import org.gamegineer.table.core.TableEnvironmentFactory;
-import org.gamegineer.table.core.TestComponents;
-import org.gamegineer.table.core.dnd.AbstractDragStrategyTestCase;
 import org.gamegineer.table.core.dnd.IDragStrategy;
+import org.gamegineer.table.core.dnd.test.AbstractDragStrategyTestCase;
+import org.gamegineer.table.core.impl.TableEnvironmentFactory;
+import org.gamegineer.table.core.test.TestComponents;
 
 /**
  * A fixture for testing the {@link CardStrategy.DragStrategy} class to ensure
@@ -56,7 +56,7 @@ public final class CardStrategyDragStrategyAsDragStrategyTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractDragStrategyTestCase#createDragStrategy()
+     * @see org.gamegineer.table.core.dnd.test.AbstractDragStrategyTestCase#createDragStrategy()
      */
     @Override
     protected IDragStrategy createDragStrategy()

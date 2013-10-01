@@ -21,8 +21,8 @@
 
 package org.gamegineer.cards.internal.core.strategies;
 
-import org.gamegineer.table.core.dnd.AbstractDragStrategyFactoryTestCase;
 import org.gamegineer.table.core.dnd.IDragStrategyFactory;
+import org.gamegineer.table.core.dnd.test.AbstractDragStrategyFactoryTestCase;
 
 /**
  * A fixture for testing the {@link CardStrategy.DragStrategyFactory} ensure it
@@ -49,7 +49,7 @@ public final class CardStrategyDragStrategyFactoryAsDragStrategyFactoryTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractDragStrategyFactoryTestCase#createDragStrategyFactory()
+     * @see org.gamegineer.table.core.dnd.test.AbstractDragStrategyFactoryTestCase#createDragStrategyFactory()
      */
     @Override
     protected IDragStrategyFactory createDragStrategyFactory()

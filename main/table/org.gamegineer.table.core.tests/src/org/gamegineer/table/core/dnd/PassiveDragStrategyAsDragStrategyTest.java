@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.core.dnd;
 
+import org.gamegineer.table.core.dnd.test.AbstractDragStrategyTestCase;
+
 /**
  * A fixture for testing the {@link PassiveDragStrategy} class to ensure it does
  * not violate the contract of the {@link IDragStrategy} interface.
@@ -46,7 +48,7 @@ public final class PassiveDragStrategyAsDragStrategyTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractDragStrategyTestCase#createDragStrategy()
+     * @see org.gamegineer.table.core.dnd.test.AbstractDragStrategyTestCase#createDragStrategy()
      */
     @Override
     protected IDragStrategy createDragStrategy()

@@ -21,8 +21,10 @@
 
 package org.gamegineer.cards.internal.core.strategies;
 
-import org.gamegineer.table.core.AbstractAbstractContainerStrategyTestCase;
 import org.gamegineer.table.core.AbstractContainerStrategy;
+import org.gamegineer.table.core.ComponentSurfaceDesignId;
+import org.gamegineer.table.core.ContainerLayoutId;
+import org.gamegineer.table.core.test.AbstractAbstractContainerStrategyTestCase;
 
 /**
  * A fixture for testing the {@link CardPileStrategy} class to ensure it does
@@ -49,11 +51,31 @@ public final class CardPileStrategyAsAbstractContainerStrategyTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractAbstractComponentStrategyTestCase#createComponentStrategy()
+     * @see org.gamegineer.table.core.test.AbstractAbstractComponentStrategyTestCase#createComponentStrategy()
      */
     @Override
     protected CardPileStrategy createComponentStrategy()
     {
         return new CardPileStrategy();
+    }
+
+    /*
+     * @see org.gamegineer.table.core.test.AbstractAbstractContainerStrategyTestCase#getDefaultLayoutId(org.gamegineer.table.core.AbstractContainerStrategy)
+     */
+    @Override
+    protected ContainerLayoutId getDefaultLayoutId(
+        final CardPileStrategy containerStrategy )
+    {
+        return containerStrategy.getDefaultLayoutId();
+    }
+
+    /*
+     * @see org.gamegineer.table.core.test.AbstractAbstractComponentStrategyTestCase#getDefaultSurfaceDesignId(org.gamegineer.table.core.AbstractComponentStrategy)
+     */
+    @Override
+    protected ComponentSurfaceDesignId getDefaultSurfaceDesignId(
+        final CardPileStrategy componentStrategy )
+    {
+        return componentStrategy.getDefaultSurfaceDesignId();
     }
 }

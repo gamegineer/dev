@@ -23,7 +23,7 @@ package org.gamegineer.table.internal.ui.model;
 
 import org.gamegineer.table.core.ITableEnvironment;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
-import org.gamegineer.table.core.TableEnvironmentFactory;
+import org.gamegineer.table.core.impl.TableEnvironmentFactory;
 import org.gamegineer.table.ui.TestComponents;
 import org.junit.Before;
 import org.junit.Test;

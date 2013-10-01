@@ -21,8 +21,9 @@
 
 package org.gamegineer.cards.internal.core.strategies;
 
-import org.gamegineer.table.core.AbstractAbstractComponentStrategyTestCase;
 import org.gamegineer.table.core.AbstractComponentStrategy;
+import org.gamegineer.table.core.ComponentSurfaceDesignId;
+import org.gamegineer.table.core.test.AbstractAbstractComponentStrategyTestCase;
 
 /**
  * A fixture for testing the {@link CardStrategy} class to ensure it does not
@@ -49,11 +50,21 @@ public final class CardStrategyAsAbstractComponentStrategyTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractAbstractComponentStrategyTestCase#createComponentStrategy()
+     * @see org.gamegineer.table.core.test.AbstractAbstractComponentStrategyTestCase#createComponentStrategy()
      */
     @Override
     protected CardStrategy createComponentStrategy()
     {
         return new CardStrategy();
+    }
+
+    /*
+     * @see org.gamegineer.table.core.test.AbstractAbstractComponentStrategyTestCase#getDefaultSurfaceDesignId(org.gamegineer.table.core.AbstractComponentStrategy)
+     */
+    @Override
+    protected ComponentSurfaceDesignId getDefaultSurfaceDesignId(
+        final CardStrategy componentStrategy )
+    {
+        return componentStrategy.getDefaultSurfaceDesignId();
     }
 }

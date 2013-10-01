@@ -23,7 +23,7 @@ package org.gamegineer.table.ui;
 
 import org.gamegineer.common.core.util.registry.test.AbstractRegistryTestCase;
 import org.gamegineer.table.core.ComponentStrategyId;
-import org.gamegineer.table.core.TestComponentStrategies;
+import org.gamegineer.table.core.test.TestComponentStrategies;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the

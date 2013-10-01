@@ -32,9 +32,9 @@ import org.gamegineer.table.core.ITableEnvironment;
  * 
  * <p>
  * The methods of this class should be used in lieu of the methods of
- * {@link org.gamegineer.table.core.TestComponents} because they ensure that a
- * corresponding user interface object is registered for each table domain
- * object created.
+ * {@link org.gamegineer.table.core.test.TestComponents} because they ensure
+ * that a corresponding user interface object is registered for each table
+ * domain object created.
  * </p>
  */
 @ThreadSafe
@@ -102,7 +102,7 @@ public final class TestComponents
         /* @NonNull */
         final IComponentStrategyUI componentStrategyUI )
     {
-        final IComponent component = org.gamegineer.table.core.TestComponents.createUniqueComponent( tableEnvironment );
+        final IComponent component = org.gamegineer.table.core.test.TestComponents.createUniqueComponent( tableEnvironment );
         @SuppressWarnings( "unused" )
         final IComponentStrategyUI decoratedComponentStrategyUI = TestComponentStrategyUIs.createComponentStrategyUI( component.getStrategy().getId(), componentStrategyUI );
         return component;
@@ -154,7 +154,7 @@ public final class TestComponents
         /* @NonNull */
         final IContainerStrategyUI containerStrategyUI )
     {
-        final IContainer container = org.gamegineer.table.core.TestComponents.createUniqueContainer( tableEnvironment );
+        final IContainer container = org.gamegineer.table.core.test.TestComponents.createUniqueContainer( tableEnvironment );
         @SuppressWarnings( "unused" )
         final IContainerStrategyUI decoratedContainerStrategyUI = TestComponentStrategyUIs.createContainerStrategyUI( container.getStrategy().getId(), containerStrategyUI );
         return container;

@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.core;
 
+import org.gamegineer.table.core.test.AbstractTableEnvironmentContextTestCase;
+
 /**
  * A fixture for testing the {@link SingleThreadedTableEnvironmentContext} class
  * to ensure it does not violate the contract of the
@@ -48,7 +50,7 @@ public final class SingleThreadedTableEnvironmentContextAsTableEnvironmentContex
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractTableEnvironmentContextTestCase#createTableEnvironmentContext()
+     * @see org.gamegineer.table.core.test.AbstractTableEnvironmentContextTestCase#createTableEnvironmentContext()
      */
     @Override
     protected ITableEnvironmentContext createTableEnvironmentContext()

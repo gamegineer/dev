@@ -24,7 +24,7 @@ package org.gamegineer.table.internal.ui.strategies;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import org.gamegineer.table.core.TestComponentStrategies;
+import org.gamegineer.table.core.test.TestComponentStrategies;
 import org.gamegineer.table.ui.IComponentStrategyUI;
 import org.gamegineer.table.ui.IContainerStrategyUI;
 import org.junit.Test;

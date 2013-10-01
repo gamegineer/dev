@@ -27,8 +27,6 @@ import java.awt.Point;
  * The context for a table drag-and-drop operation.
  * 
  * @noextend This interface is not intended to be extended by clients.
- * 
- * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface IDragContext
 {

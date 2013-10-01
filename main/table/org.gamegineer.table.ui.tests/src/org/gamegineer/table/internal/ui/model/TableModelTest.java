@@ -42,7 +42,7 @@ import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
-import org.gamegineer.table.core.TableEnvironmentFactory;
+import org.gamegineer.table.core.impl.TableEnvironmentFactory;
 import org.gamegineer.table.ui.IComponentStrategyUI;
 import org.gamegineer.table.ui.IContainerStrategyUI;
 import org.gamegineer.table.ui.TestComponents;

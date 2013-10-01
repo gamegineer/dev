@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.core;
 
+import org.gamegineer.table.core.test.AbstractComponentListenerTestCase;
+
 /**
  * A fixture for testing the {@link ComponentListener} class to ensure it does
  * not violate the contract of the {@link IComponentListener} interface.
@@ -46,7 +48,7 @@ public final class ComponentListenerAsComponentListenerTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractComponentListenerTestCase#createComponentListener()
+     * @see org.gamegineer.table.core.test.AbstractComponentListenerTestCase#createComponentListener()
      */
     @Override
     protected IComponentListener createComponentListener()

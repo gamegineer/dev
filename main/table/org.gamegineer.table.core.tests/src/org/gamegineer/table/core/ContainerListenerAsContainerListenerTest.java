@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.core;
 
+import org.gamegineer.table.core.test.AbstractContainerListenerTestCase;
+
 /**
  * A fixture for testing the {@link ContainerListener} class to ensure it does
  * not violate the contract of the {@link IContainerListener} interface.
@@ -46,7 +48,7 @@ public final class ContainerListenerAsContainerListenerTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractContainerListenerTestCase#createContainerListener()
+     * @see org.gamegineer.table.core.test.AbstractContainerListenerTestCase#createContainerListener()
      */
     @Override
     protected IContainerListener createContainerListener()

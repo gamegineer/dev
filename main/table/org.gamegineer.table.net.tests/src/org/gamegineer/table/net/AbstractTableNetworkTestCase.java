@@ -28,7 +28,7 @@ import java.util.Collection;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
-import org.gamegineer.table.core.TableEnvironmentFactory;
+import org.gamegineer.table.core.impl.TableEnvironmentFactory;
 import org.junit.Before;
 import org.junit.Test;
 

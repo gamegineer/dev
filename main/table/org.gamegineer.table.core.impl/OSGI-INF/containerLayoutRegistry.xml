@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component
+		name="org.gamegineer.table.core.impl.containerLayoutRegistry"
+		xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+	<implementation
+			class="org.gamegineer.table.internal.core.impl.ContainerLayoutRegistry" />
+	<service>
+		<provide
+				interface="org.gamegineer.table.core.IContainerLayoutRegistry" />
+	</service>
+</scr:component>

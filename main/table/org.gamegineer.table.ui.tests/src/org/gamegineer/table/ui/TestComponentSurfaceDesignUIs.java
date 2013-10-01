@@ -1,6 +1,6 @@
 /*
  * TestComponentSurfaceDesignUIs.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@ import javax.swing.Icon;
 import net.jcip.annotations.ThreadSafe;
 import org.easymock.EasyMock;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
-import org.gamegineer.table.core.TestComponentSurfaceDesigns;
+import org.gamegineer.table.core.test.TestComponentSurfaceDesigns;
 
 /**
  * A factory for creating various types of component surface design user

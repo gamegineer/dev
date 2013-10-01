@@ -23,6 +23,7 @@ package org.gamegineer.table.core.dnd;
 
 import org.easymock.EasyMock;
 import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.dnd.test.AbstractDragStrategyTestCase;
 
 /**
  * A fixture for testing the {@link DefaultDragStrategy} class to ensure it does
@@ -49,7 +50,7 @@ public final class DefaultDragStrategyAsDragStrategyTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractDragStrategyTestCase#createDragStrategy()
+     * @see org.gamegineer.table.core.dnd.test.AbstractDragStrategyTestCase#createDragStrategy()
      */
     @Override
     protected IDragStrategy createDragStrategy()

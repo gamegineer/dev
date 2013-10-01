@@ -27,8 +27,6 @@ import java.util.List;
  * A table component that can contain other table components.
  * 
  * @noextend This interface is not intended to be extended by clients.
- * 
- * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface IContainer
     extends IComponent

@@ -54,7 +54,7 @@ public final class ComponentStrategyUIRegistryAsComponentStrategyUIRegistryTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.test.util.registry.AbstractRegistryTestCase#createRegistry()
+     * @see org.gamegineer.common.core.util.registry.test.AbstractRegistryTestCase#createRegistry()
      */
     @Override
     protected IRegistry<ComponentStrategyId, IComponentStrategyUI> createRegistry()

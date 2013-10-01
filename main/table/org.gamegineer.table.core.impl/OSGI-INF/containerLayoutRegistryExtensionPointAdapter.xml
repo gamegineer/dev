@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component
+		activate="activate"
+		deactivate="deactivate"
+		name="org.gamegineer.table.core.impl.containerLayoutRegistryExtensionPointAdapter"
+		xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+	<implementation
+			class="org.gamegineer.table.internal.core.impl.ContainerLayoutRegistryExtensionPointAdapter" />
+	<reference
+			bind="bindExtensionRegistry"
+			cardinality="1..1"
+			interface="org.eclipse.core.runtime.IExtensionRegistry"
+			name="extensionRegistry"
+			policy="static"
+			unbind="unbindExtensionRegistry" />
+    <reference
+            bind="bindObjectRegistry"
+            cardinality="1..1"
+            interface="org.gamegineer.table.core.IContainerLayoutRegistry"
+            name="objectRegistry"
+            policy="static"
+            unbind="unbindObjectRegistry" />
+</scr:component>

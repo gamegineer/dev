@@ -26,8 +26,8 @@ import java.awt.Point;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
-import org.gamegineer.table.core.TableEnvironmentFactory;
-import org.gamegineer.table.core.TestComponentSurfaceDesigns;
+import org.gamegineer.table.core.impl.TableEnvironmentFactory;
+import org.gamegineer.table.core.test.TestComponentSurfaceDesigns;
 import org.junit.Before;
 import org.junit.Test;
 

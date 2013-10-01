@@ -21,8 +21,8 @@
 
 package org.gamegineer.cards.internal.core.strategies;
 
-import org.gamegineer.table.core.AbstractContainerStrategyTestCase;
 import org.gamegineer.table.core.IContainerStrategy;
+import org.gamegineer.table.core.test.AbstractContainerStrategyTestCase;
 
 /**
  * A fixture for testing the {@link CardPileStrategy} class to ensure it does
@@ -49,7 +49,7 @@ public final class CardPileStrategyAsContainerStrategyTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractComponentStrategyTestCase#createComponentStrategy()
+     * @see org.gamegineer.table.core.test.AbstractComponentStrategyTestCase#createComponentStrategy()
      */
     @Override
     protected CardPileStrategy createComponentStrategy()

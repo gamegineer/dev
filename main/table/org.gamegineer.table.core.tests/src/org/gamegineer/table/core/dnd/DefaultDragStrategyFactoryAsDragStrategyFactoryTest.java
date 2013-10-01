@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.core.dnd;
 
+import org.gamegineer.table.core.dnd.test.AbstractDragStrategyFactoryTestCase;
+
 /**
  * A fixture for testing the {@link DefaultDragStrategyFactory} class to ensure
  * it does not violate the contract of the {@link IDragStrategyFactory}
@@ -47,7 +49,7 @@ public final class DefaultDragStrategyFactoryAsDragStrategyFactoryTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractDragStrategyFactoryTestCase#createDragStrategyFactory()
+     * @see org.gamegineer.table.core.dnd.test.AbstractDragStrategyFactoryTestCase#createDragStrategyFactory()
      */
     @Override
     protected IDragStrategyFactory createDragStrategyFactory()

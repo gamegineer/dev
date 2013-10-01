@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+    <extension
+            point="org.gamegineer.table.core.componentStrategies">
+        <componentStrategy
+                className="org.gamegineer.table.internal.core.impl.strategies.ComponentStrategyExtensionFactory"
+                id="org.gamegineer.table.componentStrategies.tabletop" />
+    </extension>
+    <extension
+            point="org.gamegineer.table.core.componentSurfaceDesigns">
+        <componentSurfaceDesign
+                height="8"
+                id="org.gamegineer.table.tabletopSurfaceDesigns.default"
+                width="8" />
+    </extension>
+    <extension
+            point="org.gamegineer.table.core.containerLayouts">
+        <containerLayout
+                className="org.gamegineer.table.internal.core.impl.layouts.ContainerLayoutExtensionFactory"
+                id="org.gamegineer.table.containerLayouts.absolute" />
+        <containerLayout
+                className="org.gamegineer.table.internal.core.impl.layouts.ContainerLayoutExtensionFactory"
+                id="org.gamegineer.table.containerLayouts.accordianDown" />
+        <containerLayout
+                className="org.gamegineer.table.internal.core.impl.layouts.ContainerLayoutExtensionFactory"
+                id="org.gamegineer.table.containerLayouts.accordianLeft" />
+        <containerLayout
+                className="org.gamegineer.table.internal.core.impl.layouts.ContainerLayoutExtensionFactory"
+                id="org.gamegineer.table.containerLayouts.accordianRight" />
+        <containerLayout
+                className="org.gamegineer.table.internal.core.impl.layouts.ContainerLayoutExtensionFactory"
+                id="org.gamegineer.table.containerLayouts.accordianUp" />
+        <containerLayout
+                className="org.gamegineer.table.internal.core.impl.layouts.ContainerLayoutExtensionFactory"
+                id="org.gamegineer.table.containerLayouts.stacked" />
+    </extension>
+
+</plugin>

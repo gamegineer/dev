@@ -25,8 +25,6 @@ package org.gamegineer.table.core.version;
  * A table extension that provides version control operations.
  * 
  * @noextend This interface is not intended to be extended by clients.
- * 
- * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface IVersionControl
 {

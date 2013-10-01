@@ -1,6 +1,6 @@
 /*
  * ContainerLayouts.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,12 @@
 
 package org.gamegineer.table.core;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.awt.Dimension;
+import java.awt.Point;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.core.layouts.InternalContainerLayouts;
 
 /**
  * A collection of common container layouts.
@@ -38,7 +42,7 @@ public final class ContainerLayouts
      * A layout in which the container is laid out with all components at their
      * absolute position in table coordinates.
      */
-    public static final IContainerLayout ABSOLUTE = InternalContainerLayouts.ABSOLUTE;
+    public static final IContainerLayout ABSOLUTE = new AbsoluteLayout( ContainerLayoutIds.ABSOLUTE );
 
 
     // ======================================================================
@@ -50,5 +54,59 @@ public final class ContainerLayouts
      */
     private ContainerLayouts()
     {
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+    /**
+     * Implementation of {@link IContainerLayout} that lays out the components
+     * of a container at their absolute table coordinates.
+     */
+    @Immutable
+    private static final class AbsoluteLayout
+        extends AbstractContainerLayout
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code AbsoluteLayout} class.
+         * 
+         * @param id
+         *        The container layout identifier; must not be {@code null}.
+         * 
+         * @throws java.lang.NullPointerException
+         *         If {@code id} is {@code null}.
+         */
+        AbsoluteLayout(
+            /* @NonNull */
+            final ContainerLayoutId id )
+        {
+            super( id );
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.core.AbstractContainerLayout#getComponentOffsetAt(org.gamegineer.table.core.IContainer, int)
+         */
+        @Override
+        protected Dimension getComponentOffsetAt(
+            final IContainer container,
+            final int index )
+        {
+            assertArgumentNotNull( container, "container" ); //$NON-NLS-1$
+            assertArgumentLegal( index >= 0, "index", NonNlsMessages.AbsoluteLayout_getComponentOffsetAt_index_negative ); //$NON-NLS-1$
+
+            final Point containerOrigin = container.getOrigin();
+            final Point componentLocation = container.getComponent( index ).getLocation();
+            return new Dimension( componentLocation.x - containerOrigin.x, componentLocation.y - containerOrigin.y );
+        }
     }
 }

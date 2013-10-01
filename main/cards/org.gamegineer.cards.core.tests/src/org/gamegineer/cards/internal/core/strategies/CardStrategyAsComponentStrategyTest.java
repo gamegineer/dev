@@ -21,8 +21,8 @@
 
 package org.gamegineer.cards.internal.core.strategies;
 
-import org.gamegineer.table.core.AbstractComponentStrategyTestCase;
 import org.gamegineer.table.core.IComponentStrategy;
+import org.gamegineer.table.core.test.AbstractComponentStrategyTestCase;
 
 /**
  * A fixture for testing the {@link CardStrategy} class to ensure it does not
@@ -49,7 +49,7 @@ public final class CardStrategyAsComponentStrategyTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractComponentStrategyTestCase#createComponentStrategy()
+     * @see org.gamegineer.table.core.test.AbstractComponentStrategyTestCase#createComponentStrategy()
      */
     @Override
     protected CardStrategy createComponentStrategy()
