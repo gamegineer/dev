@@ -38,7 +38,7 @@ import org.gamegineer.table.core.ITableEnvironmentLock;
  * Implementation of {@link ITableEnvironment}.
  */
 @ThreadSafe
-public final class TableEnvironment
+final class TableEnvironment
     implements ITableEnvironment
 {
     // ======================================================================
@@ -58,15 +58,12 @@ public final class TableEnvironment
      * 
      * @param context
      *        The table environment context; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
      */
-    public TableEnvironment(
+    TableEnvironment(
         /* @NonNull */
         final ITableEnvironmentContext context )
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
+        assert context != null;
 
         context_ = context;
     }

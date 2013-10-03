@@ -32,8 +32,10 @@ import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.ITableEnvironment;
+import org.gamegineer.table.core.ITableEnvironmentFactory;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
-import org.gamegineer.table.core.impl.TableEnvironmentFactory;
+import org.gamegineer.table.internal.net.Activator;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.Loggers;
@@ -331,10 +333,16 @@ public final class ServerNode
     {
         assert table != null;
 
-        final ITable masterTable;
+        final ITableEnvironmentFactory tableEnvironmentFactory = Activator.getDefault().getTableEnvironmentFactory();
+        if( tableEnvironmentFactory == null )
+        {
+            throw new TableNetworkException( TableNetworkError.UNSPECIFIED_ERROR, NonNlsMessages.ServerNode_initializeMasterTable_tableEnvironmentFactoryNotAvailable );
+        }
+
+        final ITableEnvironment tableEnvironment = tableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() );
+        final ITable masterTable = tableEnvironment.createTable();
         try
         {
-            masterTable = TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ).createTable();
             masterTable.setMemento( table.createMemento() );
         }
         catch( final MementoException e )

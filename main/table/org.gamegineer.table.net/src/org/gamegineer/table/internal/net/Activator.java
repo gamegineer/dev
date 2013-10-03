@@ -26,6 +26,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.core.ITableEnvironmentFactory;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
@@ -55,6 +56,10 @@ public final class Activator
     /** The instance lock. */
     private final Object lock_;
 
+    /** The table environment factory service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker<ITableEnvironmentFactory, ITableEnvironmentFactory> tableEnvironmentFactoryTracker_;
+
 
     // ======================================================================
     // Constructors
@@ -68,6 +73,7 @@ public final class Activator
         lock_ = new Object();
         bundleContext_ = null;
         executorServiceTracker_ = null;
+        tableEnvironmentFactoryTracker_ = null;
     }
 
 
@@ -133,6 +139,28 @@ public final class Activator
         return executorService;
     }
 
+    /**
+     * Gets the table environment factory service.
+     * 
+     * @return The table environment factory service; never {@code null}.
+     */
+    /* @NonNull */
+    public ITableEnvironmentFactory getTableEnvironmentFactory()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( tableEnvironmentFactoryTracker_ == null )
+            {
+                tableEnvironmentFactoryTracker_ = new ServiceTracker<>( bundleContext_, ITableEnvironmentFactory.class, null );
+                tableEnvironmentFactoryTracker_.open();
+            }
+
+            return tableEnvironmentFactoryTracker_.getService();
+        }
+    }
+
     /*
      * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
      */
@@ -173,6 +201,11 @@ public final class Activator
             {
                 executorServiceTracker_.close();
                 executorServiceTracker_ = null;
+            }
+            if( tableEnvironmentFactoryTracker_ != null )
+            {
+                tableEnvironmentFactoryTracker_.close();
+                tableEnvironmentFactoryTracker_ = null;
             }
         }
     }

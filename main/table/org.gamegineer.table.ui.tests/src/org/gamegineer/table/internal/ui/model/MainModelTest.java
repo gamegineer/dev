@@ -28,7 +28,7 @@ import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
-import org.gamegineer.table.core.impl.TableEnvironmentFactory;
+import org.gamegineer.table.core.test.TestTableEnvironments;
 import org.gamegineer.table.ui.TestComponents;
 import org.junit.Before;
 import org.junit.Test;
@@ -114,7 +114,7 @@ public final class MainModelTest
         throws Exception
     {
         niceMocksControl_ = EasyMock.createNiceControl();
-        final TableEnvironmentModel tableEnvironmentModel = new TableEnvironmentModel( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
+        final TableEnvironmentModel tableEnvironmentModel = new TableEnvironmentModel( TestTableEnvironments.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
         model_ = new MainModel( new TableModel( tableEnvironmentModel, tableEnvironmentModel.getTableEnvironment().createTable() ) );
     }
 

@@ -1,5 +1,5 @@
 /*
- * TableEnvironmentFactory.java
+ * ITableEnvironmentFactory.java
  * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
@@ -16,34 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 6, 2009 at 11:05:05 PM.
+ * Created on Oct 1, 2013 at 8:15:41 PM.
  */
 
-package org.gamegineer.table.core.impl;
-
-import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.ITableEnvironment;
-import org.gamegineer.table.core.ITableEnvironmentContext;
-import org.gamegineer.table.internal.core.impl.TableEnvironment;
+package org.gamegineer.table.core;
 
 /**
  * A factory for creating table environments.
+ * 
+ * @noextend This interface is not intended to be extended by clients.
  */
-@ThreadSafe
-public final class TableEnvironmentFactory
+public interface ITableEnvironmentFactory
 {
-    // ======================================================================
-    // Constructors
-    // ======================================================================
-
-    /**
-     * Initializes a new instance of the {@code TableEnvironmentFactory} class.
-     */
-    private TableEnvironmentFactory()
-    {
-    }
-
-
     // ======================================================================
     // Methods
     // ======================================================================
@@ -60,10 +44,7 @@ public final class TableEnvironmentFactory
      *         If {@code context} is {@code null}.
      */
     /* @NonNull */
-    public static ITableEnvironment createTableEnvironment(
+    public ITableEnvironment createTableEnvironment(
         /* @NonNull */
-        final ITableEnvironmentContext context )
-    {
-        return new TableEnvironment( context );
-    }
+        ITableEnvironmentContext context );
 }

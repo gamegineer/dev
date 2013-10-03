@@ -28,6 +28,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.IComponentStrategyRegistry;
 import org.gamegineer.table.core.IComponentSurfaceDesignRegistry;
 import org.gamegineer.table.core.IContainerLayoutRegistry;
+import org.gamegineer.table.core.ITableEnvironmentFactory;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
@@ -65,6 +66,10 @@ public final class Activator
     /** The instance lock. */
     private final Object lock_;
 
+    /** The table environment factory service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker<ITableEnvironmentFactory, ITableEnvironmentFactory> tableEnvironmentFactoryTracker_;
+
 
     // ======================================================================
     // Constructors
@@ -80,6 +85,7 @@ public final class Activator
         componentStrategyRegistryTracker_ = null;
         componentSurfaceDesignRegistryTracker_ = null;
         containerLayoutRegistryTracker_ = null;
+        tableEnvironmentFactoryTracker_ = null;
     }
 
 
@@ -184,6 +190,28 @@ public final class Activator
         }
     }
 
+    /**
+     * Gets the table environment factory service.
+     * 
+     * @return The table environment factory service; never {@code null}.
+     */
+    /* @NonNull */
+    public ITableEnvironmentFactory getTableEnvironmentFactory()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( tableEnvironmentFactoryTracker_ == null )
+            {
+                tableEnvironmentFactoryTracker_ = new ServiceTracker<>( bundleContext_, ITableEnvironmentFactory.class, null );
+                tableEnvironmentFactoryTracker_.open();
+            }
+
+            return tableEnvironmentFactoryTracker_.getService();
+        }
+    }
+
     /*
      * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
      */
@@ -234,6 +262,11 @@ public final class Activator
             {
                 containerLayoutRegistryTracker_.close();
                 containerLayoutRegistryTracker_ = null;
+            }
+            if( tableEnvironmentFactoryTracker_ != null )
+            {
+                tableEnvironmentFactoryTracker_.close();
+                tableEnvironmentFactoryTracker_ = null;
             }
         }
     }

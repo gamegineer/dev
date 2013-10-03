@@ -42,7 +42,7 @@ import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
-import org.gamegineer.table.core.impl.TableEnvironmentFactory;
+import org.gamegineer.table.core.test.TestTableEnvironments;
 import org.gamegineer.table.ui.IComponentStrategyUI;
 import org.gamegineer.table.ui.IContainerStrategyUI;
 import org.gamegineer.table.ui.TestComponents;
@@ -287,7 +287,7 @@ public final class TableModelTest
         throws Exception
     {
         niceMocksControl_ = EasyMock.createNiceControl();
-        tableEnvironmentModel_ = new TableEnvironmentModel( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
+        tableEnvironmentModel_ = new TableEnvironmentModel( TestTableEnvironments.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
         tableModel_ = new TableModel( tableEnvironmentModel_, tableEnvironmentModel_.getTableEnvironment().createTable() );
     }
 

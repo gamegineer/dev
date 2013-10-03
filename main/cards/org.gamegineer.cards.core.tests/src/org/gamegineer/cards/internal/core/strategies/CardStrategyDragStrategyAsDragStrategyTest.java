@@ -28,8 +28,8 @@ import org.gamegineer.table.core.ITableEnvironment;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.dnd.IDragStrategy;
 import org.gamegineer.table.core.dnd.test.AbstractDragStrategyTestCase;
-import org.gamegineer.table.core.impl.TableEnvironmentFactory;
 import org.gamegineer.table.core.test.TestComponents;
+import org.gamegineer.table.core.test.TestTableEnvironments;
 
 /**
  * A fixture for testing the {@link CardStrategy.DragStrategy} class to ensure
@@ -61,7 +61,7 @@ public final class CardStrategyDragStrategyAsDragStrategyTest
     @Override
     protected IDragStrategy createDragStrategy()
     {
-        final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() );
+        final ITableEnvironment tableEnvironment = TestTableEnvironments.createTableEnvironment( new SingleThreadedTableEnvironmentContext() );
         final ITable table = tableEnvironment.createTable();
         final IContainer container = TestComponents.createUniqueContainer( tableEnvironment );
         table.getTabletop().addComponent( container );

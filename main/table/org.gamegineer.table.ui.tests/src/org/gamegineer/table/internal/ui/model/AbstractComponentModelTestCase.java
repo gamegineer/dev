@@ -26,8 +26,8 @@ import java.awt.Point;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
-import org.gamegineer.table.core.impl.TableEnvironmentFactory;
 import org.gamegineer.table.core.test.TestComponentSurfaceDesigns;
+import org.gamegineer.table.core.test.TestTableEnvironments;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -179,7 +179,7 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        tableEnvironmentModel_ = new TableEnvironmentModel( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
+        tableEnvironmentModel_ = new TableEnvironmentModel( TestTableEnvironments.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
         componentModel_ = createComponentModel( tableEnvironmentModel_ );
         assertNotNull( componentModel_ );
         final TableModel tableModel = new TableModel( tableEnvironmentModel_, tableEnvironmentModel_.getTableEnvironment().createTable() );

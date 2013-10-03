@@ -1,5 +1,5 @@
 /*
- * TableEnvironmentFactoryTest.java
+ * TableEnvironmentFactory.java
  * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
@@ -16,30 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 6, 2009 at 11:07:48 PM.
+ * Created on Oct 6, 2009 at 11:05:05 PM.
  */
 
-package org.gamegineer.table.core.impl;
+package org.gamegineer.table.internal.core.impl;
 
-import static org.junit.Assert.assertNotNull;
-import org.easymock.EasyMock;
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import net.jcip.annotations.Immutable;
+import org.gamegineer.table.core.ITableEnvironment;
 import org.gamegineer.table.core.ITableEnvironmentContext;
-import org.junit.Test;
+import org.gamegineer.table.core.ITableEnvironmentFactory;
 
 /**
- * A fixture for testing the {@link TableEnvironmentFactory} class.
+ * Implementation of {@link ITableEnvironmentFactory}.
  */
-public final class TableEnvironmentFactoryTest
+@Immutable
+public final class TableEnvironmentFactory
+    implements ITableEnvironmentFactory
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableEnvironmentFactoryTest}
-     * class.
+     * Initializes a new instance of the {@code TableEnvironmentFactory} class.
      */
-    public TableEnvironmentFactoryTest()
+    public TableEnvironmentFactory()
     {
     }
 
@@ -48,23 +50,15 @@ public final class TableEnvironmentFactoryTest
     // Methods
     // ======================================================================
 
-    /**
-     * Ensures the {@link TableEnvironmentFactory#createTableEnvironment} method
-     * throws an exception when passed a {@code null} context.
+    /*
+     * @see org.gamegineer.table.core.ITableEnvironmentFactory#createTableEnvironment(org.gamegineer.table.core.ITableEnvironmentContext)
      */
-    @Test( expected = NullPointerException.class )
-    public void testCreateTableEnvironment_Context_Null()
+    @Override
+    public ITableEnvironment createTableEnvironment(
+        final ITableEnvironmentContext context )
     {
-        TableEnvironmentFactory.createTableEnvironment( null );
-    }
+        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
-    /**
-     * Ensures the {@link TableEnvironmentFactory#createTableEnvironment} method
-     * does not return {@code null}.
-     */
-    @Test
-    public void testCreateTableEnvironment_ReturnValue_NonNull()
-    {
-        assertNotNull( TableEnvironmentFactory.createTableEnvironment( EasyMock.createMock( ITableEnvironmentContext.class ) ) );
+        return new TableEnvironment( context );
     }
 }

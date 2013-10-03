@@ -28,7 +28,7 @@ import java.util.Collection;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
-import org.gamegineer.table.core.impl.TableEnvironmentFactory;
+import org.gamegineer.table.core.test.TestTableEnvironments;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -125,7 +125,7 @@ public abstract class AbstractTableNetworkTestCase
         tableNetwork_ = createTableNetwork();
         assertNotNull( tableNetwork_ );
 
-        final TableNetworkConfigurationBuilder builder = new TableNetworkConfigurationBuilder( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ).createTable() );
+        final TableNetworkConfigurationBuilder builder = new TableNetworkConfigurationBuilder( TestTableEnvironments.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ).createTable() );
         tableNetworkConfiguration_ = builder //
             .setHostName( "hostName" ) //$NON-NLS-1$
             .setLocalPlayerName( "playerName" ) //$NON-NLS-1$

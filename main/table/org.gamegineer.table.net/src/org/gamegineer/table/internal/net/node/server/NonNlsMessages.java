@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -36,6 +36,9 @@ final class NonNlsMessages
     // ======================================================================
 
     // --- ServerNode -------------------------------------------------------
+
+    /** The table environment factory service is not available. */
+    public static String ServerNode_initializeMasterTable_tableEnvironmentFactoryNotAvailable;
 
     /**
      * An attempt was made to modify the network table by a player without the

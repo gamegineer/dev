@@ -30,6 +30,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.gamegineer.common.core.app.IBranding;
 import org.gamegineer.common.ui.help.IHelpSystem;
+import org.gamegineer.table.core.ITableEnvironmentFactory;
 import org.gamegineer.table.ui.IComponentStrategyUIRegistry;
 import org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry;
 import org.osgi.framework.BundleActivator;
@@ -92,6 +93,10 @@ public final class Activator
     @GuardedBy( "lock_" )
     private ServiceTracker<PreferencesService, PreferencesService> preferencesServiceTracker_;
 
+    /** The table environment factory service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker<ITableEnvironmentFactory, ITableEnvironmentFactory> tableEnvironmentFactoryTracker_;
+
 
     // ======================================================================
     // Constructors
@@ -112,6 +117,7 @@ public final class Activator
         extensionRegistryTracker_ = null;
         helpSystemTracker_ = null;
         preferencesServiceTracker_ = null;
+        tableEnvironmentFactoryTracker_ = null;
     }
 
 
@@ -338,6 +344,28 @@ public final class Activator
     }
 
     /**
+     * Gets the table environment factory service.
+     * 
+     * @return The table environment factory service; never {@code null}.
+     */
+    /* @NonNull */
+    public ITableEnvironmentFactory getTableEnvironmentFactory()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( tableEnvironmentFactoryTracker_ == null )
+            {
+                tableEnvironmentFactoryTracker_ = new ServiceTracker<>( bundleContext_, ITableEnvironmentFactory.class, null );
+                tableEnvironmentFactoryTracker_.open();
+            }
+
+            return tableEnvironmentFactoryTracker_.getService();
+        }
+    }
+
+    /**
      * Gets the root node from the user preferences for this bundle.
      * 
      * @return The root node from the user preferences for this bundle or
@@ -482,6 +510,11 @@ public final class Activator
             {
                 preferencesServiceTracker_.close();
                 preferencesServiceTracker_ = null;
+            }
+            if( tableEnvironmentFactoryTracker_ != null )
+            {
+                tableEnvironmentFactoryTracker_.close();
+                tableEnvironmentFactoryTracker_ = null;
             }
         }
     }

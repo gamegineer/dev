@@ -28,8 +28,8 @@ import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITableEnvironment;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
-import org.gamegineer.table.core.impl.TableEnvironmentFactory;
 import org.gamegineer.table.core.test.TestComponents;
+import org.gamegineer.table.core.test.TestTableEnvironments;
 import org.junit.Test;
 
 /**
@@ -81,7 +81,7 @@ public final class StackedLayoutTest
         final int originX = 20, originY = 30;
         final int stackLevelOffsetX = 2, stackLevelOffsetY = 3;
         final StackedLayout layout = new StackedLayout( DEFAULT_ID, 2, stackLevelOffsetX, stackLevelOffsetY );
-        final ITableEnvironment tableEnvironment = TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() );
+        final ITableEnvironment tableEnvironment = TestTableEnvironments.createTableEnvironment( new SingleThreadedTableEnvironmentContext() );
         final IContainer container = TestComponents.createUniqueContainer( tableEnvironment );
         container.setOrigin( new Point( originX, originY ) );
         final IComponent component1 = TestComponents.createUniqueComponent( tableEnvironment );

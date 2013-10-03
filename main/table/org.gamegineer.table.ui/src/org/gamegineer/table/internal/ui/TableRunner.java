@@ -41,6 +41,7 @@ import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.gamegineer.table.core.ITableEnvironmentFactory;
 import org.gamegineer.table.internal.ui.view.MainFrame;
 import org.gamegineer.table.ui.ITableAdvisor;
 import org.gamegineer.table.ui.ITableRunner;
@@ -203,6 +204,12 @@ public final class TableRunner
 
         try
         {
+            final ITableEnvironmentFactory tableEnvironmentFactory = Activator.getDefault().getTableEnvironmentFactory();
+            if( tableEnvironmentFactory == null )
+            {
+                throw new Exception( NonNlsMessages.TableRunner_openFrame_tableEnvironmentFactoryNotAvailable );
+            }
+
             final WindowListener windowListener = new WindowAdapter()
             {
                 @Override
@@ -215,7 +222,7 @@ public final class TableRunner
                     stop( TableResult.OK );
                 }
             };
-            frame_ = new MainFrame();
+            frame_ = new MainFrame( tableEnvironmentFactory );
             frame_.addWindowListener( windowListener );
             frame_.setDefaultCloseOperation( WindowConstants.DISPOSE_ON_CLOSE );
             frame_.setVisible( true );

@@ -41,8 +41,8 @@ import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.common.ui.databinding.swing.SwingRealm;
 import org.gamegineer.common.ui.help.IHelpSystem;
+import org.gamegineer.table.core.ITableEnvironmentFactory;
 import org.gamegineer.table.core.MultiThreadedTableEnvironmentContext;
-import org.gamegineer.table.core.impl.TableEnvironmentFactory;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.Branding;
 import org.gamegineer.table.internal.ui.Loggers;
@@ -107,9 +107,19 @@ public final class MainFrame
 
     /**
      * Initializes a new instance of the {@code MainFrame} class.
+     * 
+     * @param tableEnvironmentFactory
+     *        The table environment factory; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code tableEnvironmentFactory} is {@code null}.
      */
-    public MainFrame()
+    public MainFrame(
+        /* @NonNull */
+        final ITableEnvironmentFactory tableEnvironmentFactory )
     {
+        assertArgumentNotNull( tableEnvironmentFactory, "tableEnvironmentFactory" ); //$NON-NLS-1$
+
         actionMediator_ = new ActionMediator();
         actionUpdaterTaskFuture_ = null;
         isActionUpdateRequired_ = new AtomicBoolean( false );
@@ -117,7 +127,7 @@ public final class MainFrame
         tableModelListener_ = null;
 
         tableEnvironmentContext_ = new MultiThreadedTableEnvironmentContext();
-        final TableEnvironmentModel tableEnvironmentModel = new TableEnvironmentModel( TableEnvironmentFactory.createTableEnvironment( tableEnvironmentContext_ ) );
+        final TableEnvironmentModel tableEnvironmentModel = new TableEnvironmentModel( tableEnvironmentFactory.createTableEnvironment( tableEnvironmentContext_ ) );
         model_ = new MainModel( tableEnvironmentModel.createTableModel( tableEnvironmentModel.getTableEnvironment().createTable() ) );
         mainView_ = new MainView( model_ );
         menuBarView_ = new MenuBarView( model_ );
@@ -126,6 +136,7 @@ public final class MainFrame
 
         loadApplicationState();
     }
+
 
     // ======================================================================
     // Methods

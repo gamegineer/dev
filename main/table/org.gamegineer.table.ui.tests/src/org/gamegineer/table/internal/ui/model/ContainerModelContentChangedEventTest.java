@@ -23,7 +23,7 @@ package org.gamegineer.table.internal.ui.model;
 
 import static org.junit.Assert.assertNotNull;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
-import org.gamegineer.table.core.impl.TableEnvironmentFactory;
+import org.gamegineer.table.core.test.TestTableEnvironments;
 import org.gamegineer.table.ui.TestComponents;
 import org.junit.Before;
 import org.junit.Test;
@@ -93,7 +93,7 @@ public final class ContainerModelContentChangedEventTest
     public void setUp()
         throws Exception
     {
-        tableEnvironmentModel_ = new TableEnvironmentModel( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
+        tableEnvironmentModel_ = new TableEnvironmentModel( TestTableEnvironments.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
         event_ = new ContainerModelContentChangedEvent( createUniqueContainerModel(), createUniqueComponentModel(), 0 );
     }
 

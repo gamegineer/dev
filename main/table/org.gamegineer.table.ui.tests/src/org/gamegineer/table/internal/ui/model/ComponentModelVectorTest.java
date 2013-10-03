@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.ui.model;
 
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
-import org.gamegineer.table.core.impl.TableEnvironmentFactory;
+import org.gamegineer.table.core.test.TestTableEnvironments;
 import org.gamegineer.table.ui.TestComponents;
 import org.junit.Test;
 
@@ -54,7 +54,7 @@ public final class ComponentModelVectorTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_Direction_Null()
     {
-        final TableEnvironmentModel tableEnvironmentModel = new TableEnvironmentModel( TableEnvironmentFactory.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
+        final TableEnvironmentModel tableEnvironmentModel = new TableEnvironmentModel( TestTableEnvironments.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
 
         new ComponentModelVector( tableEnvironmentModel.createComponentModel( TestComponents.createUniqueComponent( tableEnvironmentModel.getTableEnvironment() ) ), null );
     }
