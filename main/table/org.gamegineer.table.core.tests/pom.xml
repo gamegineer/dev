@@ -36,6 +36,10 @@
 							<type>p2-installable-unit</type>
 							<artifactId>org.gamegineer.common.core.impl</artifactId>
 						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.gamegineer.table.core.impl</artifactId>
+						</dependency>
 					</dependencies>
 				</configuration>
 			</plugin>
