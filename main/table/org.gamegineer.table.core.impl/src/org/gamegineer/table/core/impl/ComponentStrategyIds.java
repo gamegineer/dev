@@ -25,8 +25,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ComponentStrategyId;
 
 /**
- * A collection of common component strategy identifiers used by the table
- * implementation.
+ * A collection of component strategy identifiers published by this bundle.
  */
 @ThreadSafe
 public final class ComponentStrategyIds

@@ -1,6 +1,6 @@
 /*
  * CardPileStrategy.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,7 +32,6 @@ import org.gamegineer.table.core.AbstractContainerStrategy;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ContainerLayoutId;
-import org.gamegineer.table.core.ContainerLayoutIds;
 
 /**
  * A component strategy that represents a card pile.
@@ -44,6 +43,9 @@ final class CardPileStrategy
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /** The default layout identifier. */
+    private static final ContainerLayoutId DEFAULT_CONTAINER_LAYOUT_ID = ContainerLayoutId.fromString( "org.gamegineer.table.containerLayouts.stacked" ); //$NON-NLS-1$
 
     /** The collection of supported card pile orientations. */
     private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( CardPileOrientation.values( CardPileOrientation.class ) ) );
@@ -72,7 +74,7 @@ final class CardPileStrategy
     @Override
     protected ContainerLayoutId getDefaultLayoutId()
     {
-        return ContainerLayoutIds.STACKED;
+        return DEFAULT_CONTAINER_LAYOUT_ID;
     }
 
     /*

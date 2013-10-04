@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.KeyStroke;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.ContainerLayoutIds;
+import org.gamegineer.table.core.impl.ContainerLayoutIds;
 import org.gamegineer.table.internal.ui.action.BasicAction;
 
 /**

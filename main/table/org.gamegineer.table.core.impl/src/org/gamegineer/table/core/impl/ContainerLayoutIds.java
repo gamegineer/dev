@@ -19,9 +19,10 @@
  * Created on Nov 30, 2012 at 10:24:59 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.core.impl;
 
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.core.ContainerLayoutId;
 
 /**
  * A collection of container layout identifiers published by this bundle.

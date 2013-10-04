@@ -22,8 +22,8 @@
 package org.gamegineer.table.internal.core.impl.layouts;
 
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.ContainerLayoutIds;
 import org.gamegineer.table.core.IContainerLayout;
+import org.gamegineer.table.core.impl.ContainerLayoutIds;
 
 /**
  * A collection of container layouts provided by this bundle.
