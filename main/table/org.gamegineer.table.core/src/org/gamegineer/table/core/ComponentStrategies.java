@@ -207,7 +207,7 @@ public final class ComponentStrategies
         @Override
         public IContainerLayout getDefaultLayout()
         {
-            return ContainerLayouts.ABSOLUTE;
+            return ContainerLayouts.NULL;
         }
 
         /*

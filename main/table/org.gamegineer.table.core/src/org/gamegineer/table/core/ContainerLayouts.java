@@ -38,11 +38,8 @@ public final class ContainerLayouts
     // Fields
     // ======================================================================
 
-    /**
-     * A layout in which the container is laid out with all components at their
-     * absolute position in table coordinates.
-     */
-    public static final IContainerLayout ABSOLUTE = new AbsoluteLayout( ContainerLayoutIds.ABSOLUTE );
+    /** The null container layout. */
+    public static final IContainerLayout NULL = new NullContainerLayout();
 
 
     // ======================================================================
@@ -60,32 +57,32 @@ public final class ContainerLayouts
     // ======================================================================
     // Nested Types
     // ======================================================================
+
     /**
-     * Implementation of {@link IContainerLayout} that lays out the components
-     * of a container at their absolute table coordinates.
+     * A null container layout.
      */
     @Immutable
-    private static final class AbsoluteLayout
+    static final class NullContainerLayout
         extends AbstractContainerLayout
     {
         // ==================================================================
         // Constructors
         // ==================================================================
 
+        /** The container layout identifier. */
+        private static final ContainerLayoutId ID = ContainerLayoutId.fromString( "org.gamegineer.table.containerLayouts.null" ); //$NON-NLS-1$
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
         /**
-         * Initializes a new instance of the {@code AbsoluteLayout} class.
-         * 
-         * @param id
-         *        The container layout identifier; must not be {@code null}.
-         * 
-         * @throws java.lang.NullPointerException
-         *         If {@code id} is {@code null}.
+         * Initializes a new instance of the {@code NullContainerLayout} class.
          */
-        AbsoluteLayout(
-            /* @NonNull */
-            final ContainerLayoutId id )
+        NullContainerLayout()
         {
-            super( id );
+            super( ID );
         }
 
 
@@ -102,7 +99,7 @@ public final class ContainerLayouts
             final int index )
         {
             assertArgumentNotNull( container, "container" ); //$NON-NLS-1$
-            assertArgumentLegal( index >= 0, "index", NonNlsMessages.AbsoluteLayout_getComponentOffsetAt_index_negative ); //$NON-NLS-1$
+            assertArgumentLegal( index >= 0, "index", NonNlsMessages.ContainerLayouts_NullContainerLayout_getComponentOffsetAt_index_negative ); //$NON-NLS-1$
 
             final Point containerOrigin = container.getOrigin();
             final Point componentLocation = container.getComponent( index ).getLocation();

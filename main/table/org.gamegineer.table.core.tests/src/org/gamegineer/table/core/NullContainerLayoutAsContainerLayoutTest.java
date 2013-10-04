@@ -1,5 +1,5 @@
 /*
- * ContainerLayoutRegistry.java
+ * NullContainerLayoutAsContainerLayoutTest.java
  * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
@@ -16,36 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 9, 2012 at 8:30:21 PM.
+ * Created on Oct 3, 2013 at 10:53:15 PM.
  */
 
-package org.gamegineer.table.internal.core.impl;
+package org.gamegineer.table.core;
 
-import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.util.registry.AbstractRegistry;
-import org.gamegineer.table.core.ContainerLayoutId;
-import org.gamegineer.table.core.ContainerLayouts;
-import org.gamegineer.table.core.IContainerLayout;
-import org.gamegineer.table.core.IContainerLayoutRegistry;
+import org.gamegineer.table.core.test.AbstractContainerLayoutTestCase;
 
 /**
- * Implementation of {@link IContainerLayoutRegistry}.
+ * A fixture for testing the {@link ContainerLayouts#NULL} singleton to ensure
+ * it does not violate the contract of the {@link IContainerLayout} interface.
  */
-@ThreadSafe
-public final class ContainerLayoutRegistry
-    extends AbstractRegistry<ContainerLayoutId, IContainerLayout>
-    implements IContainerLayoutRegistry
+public final class NullContainerLayoutAsContainerLayoutTest
+    extends AbstractContainerLayoutTestCase
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ContainerLayoutRegistry} class.
+     * Initializes a new instance of the
+     * {@code NullContainerLayoutAsContainerLayoutTest} class.
      */
-    public ContainerLayoutRegistry()
+    public NullContainerLayoutAsContainerLayoutTest()
     {
-        registerObject( ContainerLayouts.NULL );
     }
 
 
@@ -54,12 +48,11 @@ public final class ContainerLayoutRegistry
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.core.util.registry.AbstractRegistry#getObjectId(java.lang.Object)
+     * @see org.gamegineer.table.core.test.AbstractContainerLayoutTestCase#createContainerLayout()
      */
     @Override
-    protected ContainerLayoutId getObjectId(
-        final IContainerLayout object )
+    protected IContainerLayout createContainerLayout()
     {
-        return object.getId();
+        return ContainerLayouts.NULL;
     }
 }
