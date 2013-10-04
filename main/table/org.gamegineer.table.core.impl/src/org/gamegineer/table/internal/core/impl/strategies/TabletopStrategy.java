@@ -29,13 +29,13 @@ import java.util.Collections;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.AbstractContainerStrategy;
 import org.gamegineer.table.core.ComponentOrientation;
-import org.gamegineer.table.core.ComponentStrategyIds;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.ContainerLayoutIds;
 import org.gamegineer.table.core.TabletopOrientation;
 import org.gamegineer.table.core.dnd.IDragStrategyFactory;
 import org.gamegineer.table.core.dnd.NullDragStrategyFactory;
+import org.gamegineer.table.core.impl.ComponentStrategyIds;
 
 /**
  * A component strategy that represents a tabletop.

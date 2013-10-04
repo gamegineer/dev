@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.ui.strategies;
 
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.core.ComponentStrategyIds;
+import org.gamegineer.table.core.impl.ComponentStrategyIds;
 import org.gamegineer.table.ui.AbstractContainerStrategyUI;
 
 /**
