@@ -34,7 +34,6 @@ import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.ContainerLayoutIds;
 import org.gamegineer.table.core.TabletopOrientation;
-import org.gamegineer.table.core.TabletopSurfaceDesignIds;
 import org.gamegineer.table.core.dnd.IDragStrategyFactory;
 import org.gamegineer.table.core.dnd.NullDragStrategyFactory;
 
@@ -48,6 +47,9 @@ final class TabletopStrategy
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /** The default tabletop surface design identifier. */
+    private static final ComponentSurfaceDesignId DEFAULT_SURFACE_DESIGN_ID = ComponentSurfaceDesignId.fromString( "org.gamegineer.table.tabletopSurfaceDesigns.default" ); //$NON-NLS-1$
 
     /** The collection of supported tabletop orientations. */
     private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( TabletopOrientation.values( TabletopOrientation.class ) ) );
@@ -103,7 +105,7 @@ final class TabletopStrategy
     @Override
     protected ComponentSurfaceDesignId getDefaultSurfaceDesignId()
     {
-        return TabletopSurfaceDesignIds.DEFAULT;
+        return DEFAULT_SURFACE_DESIGN_ID;
     }
 
     /*
