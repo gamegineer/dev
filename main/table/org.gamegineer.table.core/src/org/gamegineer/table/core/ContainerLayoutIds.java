@@ -1,6 +1,6 @@
 /*
  * ContainerLayoutIds.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,9 +32,6 @@ public final class ContainerLayoutIds
     // ======================================================================
     // Fields
     // ======================================================================
-
-    /** The absolute container layout identifier. */
-    public static final ContainerLayoutId ABSOLUTE = ContainerLayoutId.fromString( "org.gamegineer.table.containerLayouts.absolute" ); //$NON-NLS-1$
 
     /** The accordian down container layout identifier. */
     public static final ContainerLayoutId ACCORDIAN_DOWN = ContainerLayoutId.fromString( "org.gamegineer.table.containerLayouts.accordianDown" ); //$NON-NLS-1$

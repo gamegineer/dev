@@ -69,7 +69,6 @@ public final class ContainerLayoutExtensionFactory
     static
     {
         final Map<ContainerLayoutId, IContainerLayout> containerLayouts = new HashMap<>();
-        containerLayouts.put( InternalContainerLayouts.ABSOLUTE.getId(), InternalContainerLayouts.ABSOLUTE );
         containerLayouts.put( InternalContainerLayouts.ACCORDIAN_DOWN.getId(), InternalContainerLayouts.ACCORDIAN_DOWN );
         containerLayouts.put( InternalContainerLayouts.ACCORDIAN_LEFT.getId(), InternalContainerLayouts.ACCORDIAN_LEFT );
         containerLayouts.put( InternalContainerLayouts.ACCORDIAN_RIGHT.getId(), InternalContainerLayouts.ACCORDIAN_RIGHT );

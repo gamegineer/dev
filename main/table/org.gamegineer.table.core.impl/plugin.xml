@@ -19,9 +19,6 @@
             point="org.gamegineer.table.core.containerLayouts">
         <containerLayout
                 className="org.gamegineer.table.internal.core.impl.layouts.ContainerLayoutExtensionFactory"
-                id="org.gamegineer.table.containerLayouts.absolute" />
-        <containerLayout
-                className="org.gamegineer.table.internal.core.impl.layouts.ContainerLayoutExtensionFactory"
                 id="org.gamegineer.table.containerLayouts.accordianDown" />
         <containerLayout
                 className="org.gamegineer.table.internal.core.impl.layouts.ContainerLayoutExtensionFactory"

@@ -31,7 +31,7 @@ import org.gamegineer.table.core.AbstractContainerStrategy;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ContainerLayoutId;
-import org.gamegineer.table.core.ContainerLayoutIds;
+import org.gamegineer.table.core.ContainerLayouts;
 import org.gamegineer.table.core.TabletopOrientation;
 import org.gamegineer.table.core.dnd.IDragStrategyFactory;
 import org.gamegineer.table.core.dnd.NullDragStrategyFactory;
@@ -78,7 +78,7 @@ final class TabletopStrategy
     @Override
     protected ContainerLayoutId getDefaultLayoutId()
     {
-        return ContainerLayoutIds.ABSOLUTE;
+        return ContainerLayouts.NULL.getId();
     }
 
     /*

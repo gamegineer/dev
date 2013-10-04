@@ -36,12 +36,6 @@ public final class InternalContainerLayouts
     // ======================================================================
 
     /**
-     * A layout in which the container is laid out with all components at their
-     * absolute position in table coordinates.
-     */
-    public static final IContainerLayout ABSOLUTE = new AbsoluteLayout( ContainerLayoutIds.ABSOLUTE );
-
-    /**
      * A layout in which the container is laid out as an accordian. Beginning
      * with the component at the bottom of the container, each successive
      * component is offset immediately below it.
