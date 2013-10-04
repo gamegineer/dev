@@ -68,7 +68,7 @@ public final class ComponentStrategies
      * A null component strategy.
      */
     @Immutable
-    private static class NullComponentStrategy
+    static class NullComponentStrategy
         implements IComponentStrategy
     {
         // ==================================================================
@@ -172,7 +172,7 @@ public final class ComponentStrategies
      * A null container strategy.
      */
     @Immutable
-    private static final class NullContainerStrategy
+    static final class NullContainerStrategy
         extends NullComponentStrategy
         implements IContainerStrategy
     {

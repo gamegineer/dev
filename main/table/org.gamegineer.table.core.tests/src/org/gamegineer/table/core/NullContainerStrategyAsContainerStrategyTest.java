@@ -24,12 +24,12 @@ package org.gamegineer.table.core;
 import org.gamegineer.table.core.test.AbstractContainerStrategyTestCase;
 
 /**
- * A fixture for testing the {@link ComponentStrategies#NULL_CONTAINER}
- * singleton to ensure it does not violate the contract of the
+ * A fixture for testing the {@link ComponentStrategies.NullContainerStrategy}
+ * class to ensure it does not violate the contract of the
  * {@link IContainerStrategy} interface.
  */
 public final class NullContainerStrategyAsContainerStrategyTest
-    extends AbstractContainerStrategyTestCase<IContainerStrategy>
+    extends AbstractContainerStrategyTestCase<ComponentStrategies.NullContainerStrategy>
 {
     // ======================================================================
     // Constructors
@@ -52,8 +52,8 @@ public final class NullContainerStrategyAsContainerStrategyTest
      * @see org.gamegineer.table.core.test.AbstractComponentStrategyTestCase#createComponentStrategy()
      */
     @Override
-    protected IContainerStrategy createComponentStrategy()
+    protected ComponentStrategies.NullContainerStrategy createComponentStrategy()
     {
-        return ComponentStrategies.NULL_CONTAINER;
+        return new ComponentStrategies.NullContainerStrategy();
     }
 }
