@@ -211,7 +211,7 @@ public final class ComponentStrategies
         }
 
         /*
-         * @see org.gamegineer.table.internal.core.NullComponentStrategy#getId()
+         * @see org.gamegineer.table.core.ComponentStrategies.NullComponentStrategy#getId()
          */
         @Override
         public ComponentStrategyId getId()
