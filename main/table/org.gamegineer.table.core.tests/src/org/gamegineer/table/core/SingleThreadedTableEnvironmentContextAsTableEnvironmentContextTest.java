@@ -29,7 +29,7 @@ import org.gamegineer.table.core.test.AbstractTableEnvironmentContextTestCase;
  * {@link ITableEnvironmentContext} interface.
  */
 public final class SingleThreadedTableEnvironmentContextAsTableEnvironmentContextTest
-    extends AbstractTableEnvironmentContextTestCase
+    extends AbstractTableEnvironmentContextTestCase<SingleThreadedTableEnvironmentContext>
 {
     // ======================================================================
     // Constructors
@@ -53,7 +53,7 @@ public final class SingleThreadedTableEnvironmentContextAsTableEnvironmentContex
      * @see org.gamegineer.table.core.test.AbstractTableEnvironmentContextTestCase#createTableEnvironmentContext()
      */
     @Override
-    protected ITableEnvironmentContext createTableEnvironmentContext()
+    protected SingleThreadedTableEnvironmentContext createTableEnvironmentContext()
     {
         return new SingleThreadedTableEnvironmentContext();
     }

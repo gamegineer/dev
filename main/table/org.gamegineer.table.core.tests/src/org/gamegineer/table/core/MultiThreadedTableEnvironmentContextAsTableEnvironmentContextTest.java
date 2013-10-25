@@ -22,6 +22,7 @@
 package org.gamegineer.table.core;
 
 import org.gamegineer.table.core.test.AbstractTableEnvironmentContextTestCase;
+import org.junit.After;
 
 /**
  * A fixture for testing the {@link MultiThreadedTableEnvironmentContext} class
@@ -29,7 +30,7 @@ import org.gamegineer.table.core.test.AbstractTableEnvironmentContextTestCase;
  * {@link ITableEnvironmentContext} interface.
  */
 public final class MultiThreadedTableEnvironmentContextAsTableEnvironmentContextTest
-    extends AbstractTableEnvironmentContextTestCase
+    extends AbstractTableEnvironmentContextTestCase<MultiThreadedTableEnvironmentContext>
 {
     // ======================================================================
     // Constructors
@@ -49,11 +50,24 @@ public final class MultiThreadedTableEnvironmentContextAsTableEnvironmentContext
     // Methods
     // ======================================================================
 
+    /**
+     * Tears down the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @After
+    public void tearDown()
+        throws Exception
+    {
+        getTableEnvironmentContext().dispose();
+    }
+
     /*
      * @see org.gamegineer.table.core.test.AbstractTableEnvironmentContextTestCase#createTableEnvironmentContext()
      */
     @Override
-    protected ITableEnvironmentContext createTableEnvironmentContext()
+    protected MultiThreadedTableEnvironmentContext createTableEnvironmentContext()
     {
         return new MultiThreadedTableEnvironmentContext();
     }

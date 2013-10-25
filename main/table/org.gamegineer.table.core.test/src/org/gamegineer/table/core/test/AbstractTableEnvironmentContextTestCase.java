@@ -30,15 +30,18 @@ import org.junit.Test;
 /**
  * A fixture for testing the basic aspects of classes that implement the
  * {@link ITableEnvironmentContext} interface.
+ * 
+ * @param <TableEnvironmentContextType>
+ *        The type of the table environment context.
  */
-public abstract class AbstractTableEnvironmentContextTestCase
+public abstract class AbstractTableEnvironmentContextTestCase<TableEnvironmentContextType extends ITableEnvironmentContext>
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** The table environment context under test in the fixture. */
-    private ITableEnvironmentContext tableEnvironmentContext_;
+    private TableEnvironmentContextType tableEnvironmentContext_;
 
 
     // ======================================================================
@@ -67,8 +70,21 @@ public abstract class AbstractTableEnvironmentContextTestCase
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract ITableEnvironmentContext createTableEnvironmentContext()
+    protected abstract TableEnvironmentContextType createTableEnvironmentContext()
         throws Exception;
+
+    /**
+     * Gets the table environment context under test in the fixture.
+     * 
+     * @return The table environment context under test in the fixture; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    protected final TableEnvironmentContextType getTableEnvironmentContext()
+    {
+        assertNotNull( tableEnvironmentContext_ );
+        return tableEnvironmentContext_;
+    }
 
     /**
      * Sets up the test fixture.
