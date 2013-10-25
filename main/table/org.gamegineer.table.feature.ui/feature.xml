@@ -22,28 +22,28 @@
     </requires>
 
     <plugin
+            download-size="0"
             id="javax.help"
-            download-size="0"
             install-size="0"
-            version="0.0.0"
-            unpack="true" />
+            unpack="true"
+            version="0.0.0" />
     <plugin
+            download-size="0"
             id="org.gamegineer.table.help.impl"
-            download-size="0"
             install-size="0"
-            version="0.0.0"
-            unpack="false" />
+            unpack="false"
+            version="0.0.0" />
     <plugin
+            download-size="0"
             id="org.gamegineer.table.product"
-            download-size="0"
             install-size="0"
-            version="0.0.0"
-            unpack="false" />
+            unpack="false"
+            version="0.0.0" />
     <plugin
-            id="org.gamegineer.table.ui"
             download-size="0"
+            id="org.gamegineer.table.ui"
             install-size="0"
-            version="0.0.0"
-            unpack="false" />
+            unpack="false"
+            version="0.0.0" />
 
 </feature>

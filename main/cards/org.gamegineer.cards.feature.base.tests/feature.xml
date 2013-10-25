@@ -23,18 +23,18 @@
     </requires>
 
     <plugin
+            download-size="0"
+            fragment="true"
             id="org.gamegineer.cards.core.tests"
-            download-size="0"
             install-size="0"
-            version="0.0.0"
             unpack="true"
-            fragment="true" />
+            version="0.0.0" />
     <plugin
-            id="org.gamegineer.cards.persistence.tests"
             download-size="0"
+            fragment="true"
+            id="org.gamegineer.cards.persistence.tests"
             install-size="0"
-            version="0.0.0"
             unpack="true"
-            fragment="true" />
+            version="0.0.0" />
 
 </feature>

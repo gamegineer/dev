@@ -18,10 +18,10 @@
     </license>
 
     <plugin
-            id="org.gamegineer.test.core"
             download-size="0"
+            id="org.gamegineer.test.core"
             install-size="0"
-            version="0.0.0"
-            unpack="false" />
+            unpack="false"
+            version="0.0.0" />
 
 </feature>

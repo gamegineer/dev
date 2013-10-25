@@ -23,45 +23,45 @@
     </requires>
 
     <plugin
+            download-size="0"
+            fragment="true"
             id="org.gamegineer.table.core.impl.tests"
-            download-size="0"
             install-size="0"
-            version="0.0.0"
             unpack="true"
-            fragment="true" />
+            version="0.0.0" />
     <plugin
+            download-size="0"
             id="org.gamegineer.table.core.test"
-            download-size="0"
             install-size="0"
-            version="0.0.0"
-            unpack="false" />
+            unpack="false"
+            version="0.0.0" />
     <plugin
+            download-size="0"
+            fragment="true"
             id="org.gamegineer.table.core.test.tests"
-            download-size="0"
             install-size="0"
-            version="0.0.0"
             unpack="true"
-            fragment="true" />
+            version="0.0.0" />
     <plugin
+            download-size="0"
+            fragment="true"
             id="org.gamegineer.table.core.tests"
-            download-size="0"
             install-size="0"
-            version="0.0.0"
             unpack="true"
-            fragment="true" />
+            version="0.0.0" />
     <plugin
+            download-size="0"
+            fragment="true"
             id="org.gamegineer.table.net.tests"
-            download-size="0"
             install-size="0"
-            version="0.0.0"
             unpack="true"
-            fragment="true" />
+            version="0.0.0" />
     <plugin
-            id="org.gamegineer.table.persistence.tests"
             download-size="0"
+            fragment="true"
+            id="org.gamegineer.table.persistence.tests"
             install-size="0"
-            version="0.0.0"
             unpack="true"
-            fragment="true" />
+            version="0.0.0" />
 
 </feature>

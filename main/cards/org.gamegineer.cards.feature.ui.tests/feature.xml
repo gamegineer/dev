@@ -23,11 +23,11 @@
     </requires>
 
     <plugin
-            id="org.gamegineer.cards.ui.tests"
             download-size="0"
+            fragment="true"
+            id="org.gamegineer.cards.ui.tests"
             install-size="0"
-            version="0.0.0"
             unpack="true"
-            fragment="true" />
+            version="0.0.0" />
 
 </feature>

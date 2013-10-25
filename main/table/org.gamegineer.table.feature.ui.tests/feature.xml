@@ -23,25 +23,25 @@
     </requires>
 
     <plugin
+            download-size="0"
+            fragment="true"
             id="org.gamegineer.table.help.impl.tests"
-            download-size="0"
             install-size="0"
-            version="0.0.0"
             unpack="true"
-            fragment="true" />
+            version="0.0.0" />
     <plugin
+            download-size="0"
+            fragment="true"
             id="org.gamegineer.table.product.tests"
-            download-size="0"
             install-size="0"
-            version="0.0.0"
             unpack="true"
-            fragment="true" />
+            version="0.0.0" />
     <plugin
-            id="org.gamegineer.table.ui.tests"
             download-size="0"
+            fragment="true"
+            id="org.gamegineer.table.ui.tests"
             install-size="0"
-            version="0.0.0"
             unpack="true"
-            fragment="true" />
+            version="0.0.0" />
 
 </feature>
