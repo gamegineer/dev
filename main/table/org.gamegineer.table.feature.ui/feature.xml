@@ -28,7 +28,7 @@
             version="0.0.0"
             unpack="true" />
     <plugin
-            id="org.gamegineer.table.help"
+            id="org.gamegineer.table.help.impl"
             download-size="0"
             install-size="0"
             version="0.0.0"
