@@ -30,6 +30,8 @@
 		<module>../org.gamegineer.table.core.tests</module>
 		<module>../org.gamegineer.table.help.impl</module>
 		<module>../org.gamegineer.table.help.impl.tests</module>
+		<module>../org.gamegineer.table.persistence</module>
+		<module>../org.gamegineer.table.persistence.tests</module>
 	</modules>
 
 </project>
