@@ -30,6 +30,12 @@
 		<module>../org.gamegineer.table.core.tests</module>
 		<module>../org.gamegineer.table.help.impl</module>
 		<module>../org.gamegineer.table.help.impl.tests</module>
+		<module>../org.gamegineer.table.net</module>
+		<module>../org.gamegineer.table.net.impl</module>
+		<module>../org.gamegineer.table.net.impl.tests</module>
+		<module>../org.gamegineer.table.net.test</module>
+		<module>../org.gamegineer.table.net.test.tests</module>
+		<module>../org.gamegineer.table.net.tests</module>
 		<module>../org.gamegineer.table.persistence</module>
 		<module>../org.gamegineer.table.persistence.tests</module>
 	</modules>

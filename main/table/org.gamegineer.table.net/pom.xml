@@ -13,12 +13,12 @@
 		<relativePath>../org.gamegineer.table</relativePath>
 	</parent>
 
-	<artifactId>org.gamegineer.table.net.test.tests</artifactId>
-	<packaging>eclipse-test-plugin</packaging>
+	<artifactId>org.gamegineer.table.net</artifactId>
+	<packaging>eclipse-plugin</packaging>
 
-	<name>org.gamegineer.table.net.test.tests Fragment</name>
+	<name>org.gamegineer.table.net Bundle</name>
 	<description>
-		This project defines the unit tests for the Gamegineer table domain model network layer test framework.
+		This project defines the network layer for the Gamegineer table domain model.
 	</description>
 
 </project>

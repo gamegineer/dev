@@ -18,7 +18,7 @@
 
 	<name>org.gamegineer.table.net.impl Bundle</name>
 	<description>
-		This project defines the implementation for the Gamegineer table network layer.
+		This project defines the implementation for the Gamegineer table domain model network layer.
 	</description>
 
 </project>

@@ -18,7 +18,7 @@
 
 	<name>org.gamegineer.table.net.impl.tests Fragment</name>
 	<description>
-		This project defines the unit tests for the Gamegineer table network layer implementation.
+		This project defines the unit tests for the Gamegineer table domain model network layer implementation.
 	</description>
 
 </project>

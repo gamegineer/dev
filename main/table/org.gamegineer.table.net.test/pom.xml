@@ -18,7 +18,7 @@
 
 	<name>org.gamegineer.table.net.test Bundle</name>
 	<description>
-		This project defines the test framework for the Gamegineer table network layer.
+		This project defines the test framework for the Gamegineer table domain model network layer.
 	</description>
 
 </project>
