@@ -76,7 +76,7 @@
 		<g8r-repository-authority>build.g8r.local:8081</g8r-repository-authority>
 		<g8r-version>0.17.0-SNAPSHOT</g8r-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<tycho-version>0.18.0</tycho-version>
+		<tycho-version>0.19.0</tycho-version>
 	</properties>
 
 	<build>
