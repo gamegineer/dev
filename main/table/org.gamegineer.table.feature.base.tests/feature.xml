@@ -52,6 +52,19 @@
     <plugin
             download-size="0"
             fragment="true"
+            id="org.gamegineer.table.net.impl.tests"
+            install-size="0"
+            unpack="true"
+            version="0.0.0" />
+    <plugin
+            download-size="0"
+            id="org.gamegineer.table.net.test"
+            install-size="0"
+            unpack="false"
+            version="0.0.0" />
+    <plugin
+            download-size="0"
+            fragment="true"
             id="org.gamegineer.table.net.tests"
             install-size="0"
             unpack="true"

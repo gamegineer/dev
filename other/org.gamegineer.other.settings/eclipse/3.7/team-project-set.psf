@@ -53,6 +53,10 @@
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/table/org.gamegineer.table.help.impl,org.gamegineer.table.help.impl"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/table/org.gamegineer.table.help.impl.tests,org.gamegineer.table.help.impl.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/table/org.gamegineer.table.net,org.gamegineer.table.net"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/table/org.gamegineer.table.net.impl,org.gamegineer.table.net.impl"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/table/org.gamegineer.table.net.impl.tests,org.gamegineer.table.net.impl.tests"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/table/org.gamegineer.table.net.test,org.gamegineer.table.net.test"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/table/org.gamegineer.table.net.test.tests,org.gamegineer.table.net.test.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/table/org.gamegineer.table.net.tests,org.gamegineer.table.net.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/table/org.gamegineer.table.persistence,org.gamegineer.table.persistence"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/table/org.gamegineer.table.persistence.tests,org.gamegineer.table.persistence.tests"/>

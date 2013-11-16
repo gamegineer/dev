@@ -31,6 +31,7 @@ org.gamegineer.table.core,%version.%qualifier,plugins/org.gamegineer.table.core_
 org.gamegineer.table.core.impl,%version.%qualifier,plugins/org.gamegineer.table.core.impl_%version.%qualifier.jar,4,false
 org.gamegineer.table.help.impl,%version.%qualifier,plugins/org.gamegineer.table.help.impl_%version.%qualifier.jar,4,false
 org.gamegineer.table.net,%version.%qualifier,plugins/org.gamegineer.table.net_%version.%qualifier.jar,4,false
+org.gamegineer.table.net.impl,%version.%qualifier,plugins/org.gamegineer.table.net.impl_%version.%qualifier.jar,4,false
 org.gamegineer.table.persistence,%version.%qualifier,plugins/org.gamegineer.table.persistence_%version.%qualifier.jar,4,false
 org.gamegineer.table.product,%version.%qualifier,plugins/org.gamegineer.table.product_%version.%qualifier.jar,4,false
 org.gamegineer.table.ui,%version.%qualifier,plugins/org.gamegineer.table.ui_%version.%qualifier.jar,4,false

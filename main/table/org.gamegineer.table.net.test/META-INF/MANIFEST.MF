@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: org.gamegineer.table.internal.net.test.Activator
+Bundle-Localization: plugin
+Bundle-ManifestVersion: 2
+Bundle-Name: %bundleName
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-SymbolicName: org.gamegineer.table.net.test
+Bundle-Vendor: %bundleVendor
+Bundle-Version: 0.17.0.qualifier
+Import-Package: net.jcip.annotations;version="1.0.0",
+ org.gamegineer.common.core.runtime;version="[0.17.0,0.18.0)",
+ org.osgi.framework;version="1.6.0"
+Require-Bundle: org.junit;bundle-version="4.8.2"
