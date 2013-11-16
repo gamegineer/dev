@@ -20,7 +20,7 @@
  */
 
 /**
- * Provides classes the support the table model implementation.
+ * Provides classes that support the table model implementation.
  * 
  * <p>
  * This package is only intended for use by members of the
