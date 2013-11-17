@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.net;
 
+import org.gamegineer.table.net.test.AbstractTableNetworkListenerTestCase;
+
 /**
  * A fixture for testing the {@link TableNetworkListener} class to ensure it
  * does not violate the contract of the {@link ITableNetworkListener} interface.
@@ -46,7 +48,7 @@ public final class TableNetworkListenerAsTableNetworkListenerTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.net.AbstractTableNetworkListenerTestCase#createTableNetworkListener()
+     * @see org.gamegineer.table.net.test.AbstractTableNetworkListenerTestCase#createTableNetworkListener()
      */
     @Override
     protected ITableNetworkListener createTableNetworkListener()

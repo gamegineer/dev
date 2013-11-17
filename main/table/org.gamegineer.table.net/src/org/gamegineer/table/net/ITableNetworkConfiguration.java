@@ -1,6 +1,6 @@
 /*
  * ITableNetworkConfiguration.java
- * Copyright 2008-2011 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,8 +28,6 @@ import org.gamegineer.table.core.ITable;
  * The configuration for a table network.
  * 
  * @noextend This interface is not intended to be extended by clients.
- * 
- * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface ITableNetworkConfiguration
 {
@@ -74,8 +72,8 @@ public interface ITableNetworkConfiguration
      * the table to be joined to the table network.
      * </p>
      * 
-     * @return The local table to attach to the table network; never {@code
-     *         null}.
+     * @return The local table to attach to the table network; never
+     *         {@code null}.
      */
     /* @NonNull */
     public ITable getLocalTable();

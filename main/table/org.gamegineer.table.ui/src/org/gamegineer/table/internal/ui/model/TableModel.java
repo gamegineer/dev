@@ -53,7 +53,7 @@ import org.gamegineer.table.net.ITableNetwork;
 import org.gamegineer.table.net.PlayerRole;
 import org.gamegineer.table.net.TableNetworkDisconnectedEvent;
 import org.gamegineer.table.net.TableNetworkEvent;
-import org.gamegineer.table.net.TableNetworkFactory;
+import org.gamegineer.table.net.impl.TableNetworkFactory;
 
 /**
  * The table model.

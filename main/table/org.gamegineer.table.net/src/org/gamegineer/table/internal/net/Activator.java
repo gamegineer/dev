@@ -22,14 +22,11 @@
 package org.gamegineer.table.internal.net;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.ITableEnvironmentFactory;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * The bundle activator for the org.gamegineer.table.net bundle.
@@ -49,16 +46,8 @@ public final class Activator
     @GuardedBy( "lock_" )
     private BundleContext bundleContext_;
 
-    /** The executor service tracker. */
-    @GuardedBy( "lock_" )
-    private ServiceTracker<ExecutorService, ExecutorService> executorServiceTracker_;
-
     /** The instance lock. */
     private final Object lock_;
-
-    /** The table environment factory service tracker. */
-    @GuardedBy( "lock_" )
-    private ServiceTracker<ITableEnvironmentFactory, ITableEnvironmentFactory> tableEnvironmentFactoryTracker_;
 
 
     // ======================================================================
@@ -72,8 +61,6 @@ public final class Activator
     {
         lock_ = new Object();
         bundleContext_ = null;
-        executorServiceTracker_ = null;
-        tableEnvironmentFactoryTracker_ = null;
     }
 
 
@@ -107,58 +94,6 @@ public final class Activator
         final Activator instance = instance_.get();
         assert instance != null;
         return instance;
-    }
-
-    /**
-     * Gets the executor service.
-     * 
-     * @return The executor service; never {@code null}.
-     */
-    /* @NonNull */
-    public ExecutorService getExecutorService()
-    {
-        final ExecutorService executorService;
-        synchronized( lock_ )
-        {
-            assert bundleContext_ != null;
-
-            if( executorServiceTracker_ == null )
-            {
-                executorServiceTracker_ = new ServiceTracker<>( bundleContext_, ExecutorService.class, null );
-                executorServiceTracker_.open();
-            }
-
-            executorService = executorServiceTracker_.getService();
-        }
-
-        if( executorService == null )
-        {
-            throw new AssertionError( "the executor service is not available" ); //$NON-NLS-1$
-        }
-
-        return executorService;
-    }
-
-    /**
-     * Gets the table environment factory service.
-     * 
-     * @return The table environment factory service; never {@code null}.
-     */
-    /* @NonNull */
-    public ITableEnvironmentFactory getTableEnvironmentFactory()
-    {
-        synchronized( lock_ )
-        {
-            assert bundleContext_ != null;
-
-            if( tableEnvironmentFactoryTracker_ == null )
-            {
-                tableEnvironmentFactoryTracker_ = new ServiceTracker<>( bundleContext_, ITableEnvironmentFactory.class, null );
-                tableEnvironmentFactoryTracker_.open();
-            }
-
-            return tableEnvironmentFactoryTracker_.getService();
-        }
     }
 
     /*
@@ -196,17 +131,6 @@ public final class Activator
         {
             assert bundleContext_ != null;
             bundleContext_ = null;
-
-            if( executorServiceTracker_ != null )
-            {
-                executorServiceTracker_.close();
-                executorServiceTracker_ = null;
-            }
-            if( tableEnvironmentFactoryTracker_ != null )
-            {
-                tableEnvironmentFactoryTracker_.close();
-                tableEnvironmentFactoryTracker_ = null;
-            }
         }
     }
 }

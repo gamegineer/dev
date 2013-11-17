@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<scr:component
+			name="org.gamegineer.table.net.impl.node.common.messages.messagesPersistenceDelegate"
+			xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+		<implementation
+				class="org.gamegineer.table.internal.net.impl.node.common.messages.MessagesPersistenceDelegate" />
+		<service>
+			<provide
+					interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegate" />
+		</service>
+		<property
+				name="delegators"
+				type="String">
+			org.gamegineer.table.internal.net.impl.node.ComponentIncrement
+			org.gamegineer.table.internal.net.impl.node.ContainerIncrement
+			org.gamegineer.table.internal.net.impl.node.common.messages.BeginAuthenticationRequestMessage
+			org.gamegineer.table.internal.net.impl.node.common.messages.BeginAuthenticationResponseMessage
+			org.gamegineer.table.internal.net.impl.node.common.messages.CancelControlRequestMessage
+			org.gamegineer.table.internal.net.impl.node.common.messages.ComponentIncrementMessage
+			org.gamegineer.table.internal.net.impl.node.common.messages.EchoRequestMessage
+			org.gamegineer.table.internal.net.impl.node.common.messages.EchoResponseMessage
+			org.gamegineer.table.internal.net.impl.node.common.messages.EndAuthenticationMessage
+			org.gamegineer.table.internal.net.impl.node.common.messages.ErrorMessage
+			org.gamegineer.table.internal.net.impl.node.common.messages.GiveControlMessage
+			org.gamegineer.table.internal.net.impl.node.common.messages.GoodbyeMessage
+			org.gamegineer.table.internal.net.impl.node.common.messages.HelloRequestMessage
+			org.gamegineer.table.internal.net.impl.node.common.messages.HelloResponseMessage
+			org.gamegineer.table.internal.net.impl.node.common.messages.PlayersMessage
+			org.gamegineer.table.internal.net.impl.node.common.messages.RequestControlMessage
+			org.gamegineer.table.internal.net.impl.node.common.messages.TableMessage
+			org.gamegineer.table.net.PlayerRole
+			org.gamegineer.table.net.TableNetworkError
+       </property>
+	</scr:component>
+</root>
