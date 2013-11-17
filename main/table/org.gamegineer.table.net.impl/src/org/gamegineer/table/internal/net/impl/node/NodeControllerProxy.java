@@ -35,7 +35,7 @@ import org.gamegineer.common.core.util.concurrent.TaskUtils;
 import org.gamegineer.table.internal.net.impl.Activator;
 import org.gamegineer.table.internal.net.impl.Loggers;
 import org.gamegineer.table.net.IPlayer;
-import org.gamegineer.table.net.ITableNetworkConfiguration;
+import org.gamegineer.table.net.TableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkError;
 import org.gamegineer.table.net.TableNetworkException;
 
@@ -81,11 +81,11 @@ final class NodeControllerProxy
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.impl.node.INodeController#beginConnect(org.gamegineer.table.net.ITableNetworkConfiguration)
+     * @see org.gamegineer.table.internal.net.impl.node.INodeController#beginConnect(org.gamegineer.table.net.TableNetworkConfiguration)
      */
     @Override
     public Future<Void> beginConnect(
-        final ITableNetworkConfiguration configuration )
+        final TableNetworkConfiguration configuration )
     {
         final Future<Future<Void>> beginConnectTaskFuture;
         try

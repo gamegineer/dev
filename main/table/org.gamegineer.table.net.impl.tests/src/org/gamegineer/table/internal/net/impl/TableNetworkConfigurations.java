@@ -25,7 +25,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.core.MultiThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.test.TestTableEnvironments;
-import org.gamegineer.table.net.ITableNetworkConfiguration;
+import org.gamegineer.table.net.TableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkConfigurationBuilder;
 import org.gamegineer.table.net.TableNetworkConstants;
 
@@ -58,7 +58,7 @@ public final class TableNetworkConfigurations
      * @return A new default table network configuration; never {@code null}.
      */
     /* @NonNull */
-    public static ITableNetworkConfiguration createDefaultTableNetworkConfiguration()
+    public static TableNetworkConfiguration createDefaultTableNetworkConfiguration()
     {
         final SecureString password = new SecureString( "password".toCharArray() ); //$NON-NLS-1$
         try

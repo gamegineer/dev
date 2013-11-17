@@ -25,7 +25,7 @@ import java.util.Collection;
 import java.util.concurrent.Future;
 import org.gamegineer.table.internal.net.impl.ITableNetworkController;
 import org.gamegineer.table.net.IPlayer;
-import org.gamegineer.table.net.ITableNetworkConfiguration;
+import org.gamegineer.table.net.TableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkException;
 
 /**
@@ -61,7 +61,7 @@ public interface INodeController
     /* @NonNull */
     public Future<Void> beginConnect(
         /* @NonNull */
-        ITableNetworkConfiguration configuration );
+        TableNetworkConfiguration configuration );
 
     /**
      * Begins an asynchronous operation to disconnect the table network node

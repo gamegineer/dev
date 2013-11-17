@@ -48,7 +48,7 @@ import org.gamegineer.table.internal.net.impl.transport.ITransportLayer;
 import org.gamegineer.table.internal.net.impl.transport.ITransportLayerContext;
 import org.gamegineer.table.internal.net.impl.transport.MessageEnvelope;
 import org.gamegineer.table.internal.net.impl.transport.TransportException;
-import org.gamegineer.table.net.ITableNetworkConfiguration;
+import org.gamegineer.table.net.TableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkError;
 import org.gamegineer.table.net.TableNetworkException;
 
@@ -165,11 +165,11 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.impl.node.INodeController#beginConnect(org.gamegineer.table.net.ITableNetworkConfiguration)
+     * @see org.gamegineer.table.internal.net.impl.node.INodeController#beginConnect(org.gamegineer.table.net.TableNetworkConfiguration)
      */
     @Override
     public final Future<Void> beginConnect(
-        final ITableNetworkConfiguration configuration )
+        final TableNetworkConfiguration configuration )
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
         assert isNodeLayerThread();
@@ -272,7 +272,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      */
     protected void connecting(
         /* @NonNull */
-        final ITableNetworkConfiguration configuration )
+        final TableNetworkConfiguration configuration )
         throws TableNetworkException
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
@@ -1063,7 +1063,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         // ==================================================================
 
         /** The table network configuration. */
-        private final ITableNetworkConfiguration configuration_;
+        private final TableNetworkConfiguration configuration_;
 
 
         // ==================================================================
@@ -1082,7 +1082,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          */
         Connecter(
             /* @NonNull */
-            final ITableNetworkConfiguration configuration )
+            final TableNetworkConfiguration configuration )
         {
             assert configuration != null;
             assert isNodeLayerThread();

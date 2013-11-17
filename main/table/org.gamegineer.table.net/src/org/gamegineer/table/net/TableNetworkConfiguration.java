@@ -19,20 +19,18 @@
  * Created on Nov 12, 2010 at 9:47:16 PM.
  */
 
-package org.gamegineer.table.internal.net;
+package org.gamegineer.table.net;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.net.ITableNetworkConfiguration;
 
 /**
- * Implementation of {@link ITableNetworkConfiguration}.
+ * The configuration for a table network.
  */
 @Immutable
 public final class TableNetworkConfiguration
-    implements ITableNetworkConfiguration
 {
     // ======================================================================
     // Fields
@@ -107,46 +105,88 @@ public final class TableNetworkConfiguration
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.net.ITableNetworkConfiguration#getHostName()
+    /**
+     * Gets the name of the table network host.
+     * 
+     * <p>
+     * When hosting a table network, the return value is the local name to which
+     * the table network will be bound. When joining a table network, the return
+     * value is the remote name of the table network host.
+     * </p>
+     * 
+     * @return The name of the table network host; never {@code null}.
      */
-    @Override
+    /* @NonNull */
     public String getHostName()
     {
         return hostName_;
     }
 
-    /*
-     * @see org.gamegineer.table.net.ITableNetworkConfiguration#getLocalPlayerName()
+    /**
+     * Gets the name of the local player.
+     * 
+     * <p>
+     * When hosting a table network, the return value is the name of the player
+     * hosting the table network. When joining a table network, the return value
+     * is the name of the player joining the table network.
+     * </p>
+     * 
+     * @return The name of the local player; never {@code null}.
      */
-    @Override
+    /* @NonNull */
     public String getLocalPlayerName()
     {
         return localPlayerName_;
     }
 
-    /*
-     * @see org.gamegineer.table.net.ITableNetworkConfiguration#getLocalTable()
+    /**
+     * Gets the local table to attach to the table network.
+     * 
+     * <p>
+     * When hosting a table network, the return value is the table to be hosted
+     * on the table network. When joining a table network, the return value is
+     * the table to be joined to the table network.
+     * </p>
+     * 
+     * @return The local table to attach to the table network; never
+     *         {@code null}.
      */
-    @Override
+    /* @NonNull */
     public ITable getLocalTable()
     {
         return localTable_;
     }
 
-    /*
-     * @see org.gamegineer.table.net.ITableNetworkConfiguration#getPassword()
+    /**
+     * Gets the password used to authenticate connections to the table network.
+     * 
+     * <p>
+     * When hosting a table network, the return value is the password each
+     * player must provide to connect to the table network. When joining a table
+     * network, the return value is the password provided by the player joining
+     * the table network.
+     * </p>
+     * 
+     * @return The password used to authenticate connections to the table
+     *         network; never {@code null}.
      */
-    @Override
+    /* @NonNull */
     public SecureString getPassword()
     {
         return new SecureString( password_ );
     }
 
-    /*
-     * @see org.gamegineer.table.net.ITableNetworkConfiguration#getPort()
+    /**
+     * Gets the port of the table network host.
+     * 
+     * <p>
+     * When hosting a table network, the return value is the local port to which
+     * the table network will be bound. When joining a table network, the return
+     * value is the remote port of the table network host.
+     * </p>
+     * 
+     * @return The port of the table network; never {@code null}.
      */
-    @Override
     public int getPort()
     {
         return port_;

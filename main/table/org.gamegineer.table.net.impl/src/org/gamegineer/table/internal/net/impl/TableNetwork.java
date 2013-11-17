@@ -37,8 +37,8 @@ import org.gamegineer.table.internal.net.impl.transport.ITransportLayerFactory;
 import org.gamegineer.table.internal.net.impl.transport.tcp.TcpTransportLayerFactory;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.ITableNetwork;
-import org.gamegineer.table.net.ITableNetworkConfiguration;
 import org.gamegineer.table.net.ITableNetworkListener;
+import org.gamegineer.table.net.TableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkDisconnectedEvent;
 import org.gamegineer.table.net.TableNetworkError;
 import org.gamegineer.table.net.TableNetworkEvent;
@@ -172,7 +172,7 @@ public final class TableNetwork
      */
     private void connect(
         /* @NonNull */
-        final ITableNetworkConfiguration configuration,
+        final TableNetworkConfiguration configuration,
         /* @NonNull */
         final INodeController nodeController )
         throws TableNetworkException, InterruptedException
@@ -366,11 +366,11 @@ public final class TableNetwork
     }
 
     /*
-     * @see org.gamegineer.table.net.ITableNetwork#host(org.gamegineer.table.net.ITableNetworkConfiguration)
+     * @see org.gamegineer.table.net.ITableNetwork#host(org.gamegineer.table.net.TableNetworkConfiguration)
      */
     @Override
     public void host(
-        final ITableNetworkConfiguration configuration )
+        final TableNetworkConfiguration configuration )
         throws TableNetworkException, InterruptedException
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
@@ -388,11 +388,11 @@ public final class TableNetwork
     }
 
     /*
-     * @see org.gamegineer.table.net.ITableNetwork#join(org.gamegineer.table.net.ITableNetworkConfiguration)
+     * @see org.gamegineer.table.net.ITableNetwork#join(org.gamegineer.table.net.TableNetworkConfiguration)
      */
     @Override
     public void join(
-        final ITableNetworkConfiguration configuration )
+        final TableNetworkConfiguration configuration )
         throws TableNetworkException, InterruptedException
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$

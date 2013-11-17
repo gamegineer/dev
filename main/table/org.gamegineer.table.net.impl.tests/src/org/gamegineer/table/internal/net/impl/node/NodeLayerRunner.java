@@ -30,7 +30,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
-import org.gamegineer.table.net.ITableNetworkConfiguration;
+import org.gamegineer.table.net.TableNetworkConfiguration;
 
 /**
  * Ensures a block of code is executed on a node layer thread.
@@ -87,7 +87,7 @@ public final class NodeLayerRunner
      */
     public void connect(
         /* @NonNull */
-        final ITableNetworkConfiguration configuration )
+        final TableNetworkConfiguration configuration )
         throws Exception
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$

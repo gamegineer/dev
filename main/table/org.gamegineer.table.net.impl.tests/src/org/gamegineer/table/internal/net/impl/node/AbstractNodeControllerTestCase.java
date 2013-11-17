@@ -31,7 +31,7 @@ import java.util.concurrent.Future;
 import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.impl.TableNetworkConfigurations;
 import org.gamegineer.table.net.IPlayer;
-import org.gamegineer.table.net.ITableNetworkConfiguration;
+import org.gamegineer.table.net.TableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkException;
 import org.junit.Before;
 import org.junit.Test;
@@ -166,7 +166,7 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     public void testConnect_Connected_ThrowsException()
         throws Exception
     {
-        final ITableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
+        final TableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
         nodeController_.endConnect( nodeLayerRunner_.run( new Callable<Future<Void>>()
         {
             @Override

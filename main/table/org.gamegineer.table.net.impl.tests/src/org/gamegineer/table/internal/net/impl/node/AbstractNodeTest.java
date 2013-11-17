@@ -36,7 +36,7 @@ import org.gamegineer.table.internal.net.impl.transport.ITransportLayer;
 import org.gamegineer.table.internal.net.impl.transport.ITransportLayerContext;
 import org.gamegineer.table.internal.net.impl.transport.fake.FakeTransportLayerFactory;
 import org.gamegineer.table.net.IPlayer;
-import org.gamegineer.table.net.ITableNetworkConfiguration;
+import org.gamegineer.table.net.TableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkException;
 import org.junit.Before;
 import org.junit.Test;
@@ -99,7 +99,7 @@ public final class AbstractNodeTest
     public void testConnect_AddsLocalTableProxy()
         throws Exception
     {
-        final ITableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
+        final TableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
         final MockNode.Factory nodeFactory = new MockNode.Factory()
         {
             @Override
@@ -121,7 +121,7 @@ public final class AbstractNodeTest
                     @Override
                     protected void connecting(
                         @SuppressWarnings( "hiding" )
-                        final ITableNetworkConfiguration configuration )
+                        final TableNetworkConfiguration configuration )
                         throws TableNetworkException
                     {
                         super.connecting( configuration );
@@ -169,7 +169,7 @@ public final class AbstractNodeTest
     public void testDisconnect_RemovesLocalTableProxy()
         throws Exception
     {
-        final ITableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
+        final TableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
         final MockNode.Factory nodeFactory = new MockNode.Factory()
         {
             @Override

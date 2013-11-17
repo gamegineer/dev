@@ -31,8 +31,8 @@ import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.test.TestTableEnvironments;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.ITableNetwork;
-import org.gamegineer.table.net.ITableNetworkConfiguration;
 import org.gamegineer.table.net.ITableNetworkListener;
+import org.gamegineer.table.net.TableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkConfigurationBuilder;
 import org.gamegineer.table.net.TableNetworkConstants;
 import org.gamegineer.table.net.TableNetworkDisconnectedEvent;
@@ -58,7 +58,7 @@ public abstract class AbstractTableNetworkTestCase
     private ITableNetwork tableNetwork_;
 
     /** The table network configuration for use in the fixture. */
-    private ITableNetworkConfiguration tableNetworkConfiguration_;
+    private TableNetworkConfiguration tableNetworkConfiguration_;
 
 
     // ======================================================================

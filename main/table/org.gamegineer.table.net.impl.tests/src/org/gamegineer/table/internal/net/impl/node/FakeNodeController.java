@@ -27,7 +27,7 @@ import java.util.concurrent.Future;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.util.concurrent.SynchronousFuture;
 import org.gamegineer.table.net.IPlayer;
-import org.gamegineer.table.net.ITableNetworkConfiguration;
+import org.gamegineer.table.net.TableNetworkConfiguration;
 
 /**
  * Fake implementation of {@link INodeController}.
@@ -53,12 +53,12 @@ public final class FakeNodeController
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.impl.node.INodeController#beginConnect(org.gamegineer.table.net.ITableNetworkConfiguration)
+     * @see org.gamegineer.table.internal.net.impl.node.INodeController#beginConnect(org.gamegineer.table.net.TableNetworkConfiguration)
      */
     @Override
     public Future<Void> beginConnect(
         @SuppressWarnings( "unused" )
-        final ITableNetworkConfiguration configuration )
+        final TableNetworkConfiguration configuration )
     {
         return new SynchronousFuture<>();
     }

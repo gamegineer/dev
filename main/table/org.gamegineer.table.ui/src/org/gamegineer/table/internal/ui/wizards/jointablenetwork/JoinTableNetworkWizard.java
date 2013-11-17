@@ -34,7 +34,7 @@ import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.internal.ui.util.OptionDialogs;
 import org.gamegineer.table.net.ITableNetwork;
-import org.gamegineer.table.net.ITableNetworkConfiguration;
+import org.gamegineer.table.net.TableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkConfigurationBuilder;
 import org.gamegineer.table.net.TableNetworkException;
 
@@ -129,7 +129,7 @@ public final class JoinTableNetworkWizard
      * @return The table network configuration; never {@code null}.
      */
     /* @NonNull */
-    private ITableNetworkConfiguration getTableNetworkConfiguration()
+    private TableNetworkConfiguration getTableNetworkConfiguration()
     {
         final TableNetworkConfigurationBuilder configurationBuilder = new TableNetworkConfigurationBuilder( tableModel_.getTable() );
         configurationBuilder.setHostName( model_.getHostName() );
@@ -148,7 +148,7 @@ public final class JoinTableNetworkWizard
         if( connectionState_ == ConnectionState.DISCONNECTED )
         {
             final ITableNetwork tableNetwork = tableModel_.getTableNetwork();
-            final ITableNetworkConfiguration configuration = getTableNetworkConfiguration();
+            final TableNetworkConfiguration configuration = getTableNetworkConfiguration();
             connectionState_ = ConnectionState.CONNECTING;
             getContainer().executeTask( new RunnableTask<ConnectionState, Void>()
             {

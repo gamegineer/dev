@@ -19,7 +19,7 @@
  * Created on Nov 12, 2010 at 10:17:28 PM.
  */
 
-package org.gamegineer.table.internal.net;
+package org.gamegineer.table.net;
 
 import static org.junit.Assert.assertArrayEquals;
 import org.easymock.EasyMock;

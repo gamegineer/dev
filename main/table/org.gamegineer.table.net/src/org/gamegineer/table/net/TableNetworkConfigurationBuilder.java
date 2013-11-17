@@ -25,10 +25,9 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.internal.net.TableNetworkConfiguration;
 
 /**
- * A factory for creating instances of {@link ITableNetworkConfiguration}.
+ * A factory for creating instances of {@link TableNetworkConfiguration}.
  */
 @NotThreadSafe
 public final class TableNetworkConfigurationBuilder
@@ -179,7 +178,7 @@ public final class TableNetworkConfigurationBuilder
      * @return A new table network configuration; never {@code null}.
      */
     /* @NonNull */
-    public ITableNetworkConfiguration toTableNetworkConfiguration()
+    public TableNetworkConfiguration toTableNetworkConfiguration()
     {
         return new TableNetworkConfiguration( hostName_, port_, password_, localPlayerName_, localTable_ );
     }

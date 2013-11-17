@@ -131,7 +131,7 @@ public interface ITableNetwork
      */
     public void host(
         /* @NonNull */
-        ITableNetworkConfiguration configuration )
+        TableNetworkConfiguration configuration )
         throws TableNetworkException, InterruptedException;
 
     /**
@@ -161,7 +161,7 @@ public interface ITableNetwork
      */
     public void join(
         /* @NonNull */
-        ITableNetworkConfiguration configuration )
+        TableNetworkConfiguration configuration )
         throws TableNetworkException, InterruptedException;
 
     /**

@@ -46,8 +46,8 @@ import org.gamegineer.table.internal.net.impl.transport.IService;
 import org.gamegineer.table.internal.net.impl.transport.ITransportLayer;
 import org.gamegineer.table.internal.net.impl.transport.TransportException;
 import org.gamegineer.table.net.IPlayer;
-import org.gamegineer.table.net.ITableNetworkConfiguration;
 import org.gamegineer.table.net.PlayerRole;
+import org.gamegineer.table.net.TableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkError;
 import org.gamegineer.table.net.TableNetworkException;
 
@@ -180,11 +180,11 @@ public final class ClientNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.impl.node.AbstractNode#connecting(org.gamegineer.table.net.ITableNetworkConfiguration)
+     * @see org.gamegineer.table.internal.net.impl.node.AbstractNode#connecting(org.gamegineer.table.net.TableNetworkConfiguration)
      */
     @Override
     protected void connecting(
-        final ITableNetworkConfiguration configuration )
+        final TableNetworkConfiguration configuration )
         throws TableNetworkException
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
