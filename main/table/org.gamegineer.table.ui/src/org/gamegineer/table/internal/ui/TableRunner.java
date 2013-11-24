@@ -43,6 +43,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.gamegineer.table.core.ITableEnvironmentFactory;
 import org.gamegineer.table.internal.ui.view.MainFrame;
+import org.gamegineer.table.net.ITableNetworkFactory;
 import org.gamegineer.table.ui.ITableAdvisor;
 import org.gamegineer.table.ui.ITableRunner;
 import org.gamegineer.table.ui.TableResult;
@@ -210,6 +211,12 @@ public final class TableRunner
                 throw new Exception( NonNlsMessages.TableRunner_openFrame_tableEnvironmentFactoryNotAvailable );
             }
 
+            final ITableNetworkFactory tableNetworkFactory = Activator.getDefault().getTableNetworkFactory();
+            if( tableNetworkFactory == null )
+            {
+                throw new Exception( NonNlsMessages.TableRunner_openFrame_tableNetworkFactoryNotAvailable );
+            }
+
             final WindowListener windowListener = new WindowAdapter()
             {
                 @Override
@@ -222,7 +229,7 @@ public final class TableRunner
                     stop( TableResult.OK );
                 }
             };
-            frame_ = new MainFrame( tableEnvironmentFactory );
+            frame_ = new MainFrame( tableEnvironmentFactory, tableNetworkFactory );
             frame_.addWindowListener( windowListener );
             frame_.setDefaultCloseOperation( WindowConstants.DISPOSE_ON_CLOSE );
             frame_.setVisible( true );

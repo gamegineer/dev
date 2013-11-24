@@ -32,6 +32,7 @@ import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableEnvironment;
+import org.gamegineer.table.net.ITableNetwork;
 
 /**
  * The table environment model.
@@ -174,10 +175,12 @@ public final class TableEnvironmentModel
     }
 
     /**
-     * Creates a new table model for the specified table.
+     * Creates a new table model for the specified table and table network.
      * 
      * @param table
      *        The table; must not be {@code null}.
+     * @param tableNetwork
+     *        The table network; must not be {@code null}.
      * 
      * @return A new table model for the specified table; never {@code null}.
      * 
@@ -185,17 +188,20 @@ public final class TableEnvironmentModel
      *         If {@code table} was created by a table environment other than
      *         the table environment associated with this model.
      * @throws java.lang.NullPointerException
-     *         If {@code table} is {@code null}.
+     *         If {@code table} or {@code tableNetwork} is {@code null}.
      */
     /* @NonNull */
     public TableModel createTableModel(
         /* @NonNull */
-        final ITable table )
+        final ITable table,
+        /* @NonNull */
+        final ITableNetwork tableNetwork )
     {
         assertArgumentNotNull( table, "table" ); //$NON-NLS-1$
         assertArgumentLegal( tableEnvironment_.equals( table.getTableEnvironment() ), "table", NonNlsMessages.TableEnvironmentModel_createTableModel_tableCreatedByDifferentTableEnvironment ); //$NON-NLS-1$
+        assertArgumentNotNull( tableNetwork, "tableNetwork" ); //$NON-NLS-1$
 
-        return new TableModel( this, table );
+        return new TableModel( this, table, tableNetwork );
     }
 
     /**

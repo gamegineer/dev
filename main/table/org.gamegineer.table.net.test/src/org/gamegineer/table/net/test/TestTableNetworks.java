@@ -1,5 +1,5 @@
 /*
- * TableNetworkFactory.java
+ * TestTableNetworks.java
  * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
@@ -16,29 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Nov 4, 2010 at 11:44:35 PM.
+ * Created on Nov 23, 2013 at 8:33:33 PM.
  */
 
-package org.gamegineer.table.net.impl;
+package org.gamegineer.table.net.test;
 
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.net.impl.TableNetwork;
+import org.easymock.EasyMock;
 import org.gamegineer.table.net.ITableNetwork;
 
 /**
- * A factory for creating table networks.
+ * A factory for creating various types of table networks suitable for testing.
  */
 @ThreadSafe
-public final class TableNetworkFactory
+public final class TestTableNetworks
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableNetworkFactory} class.
+     * Initializes a new instance of the {@code TestTableNetworks} class.
      */
-    private TableNetworkFactory()
+    private TestTableNetworks()
     {
     }
 
@@ -55,6 +55,6 @@ public final class TableNetworkFactory
     /* @NonNull */
     public static ITableNetwork createTableNetwork()
     {
-        return new TableNetwork();
+        return EasyMock.createMock( ITableNetwork.class );
     }
 }

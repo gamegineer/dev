@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.ui.model;
 import org.gamegineer.table.core.ITableEnvironment;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.test.TestTableEnvironments;
+import org.gamegineer.table.net.test.TestTableNetworks;
 import org.gamegineer.table.ui.TestComponents;
 import org.junit.Before;
 import org.junit.Test;
@@ -149,7 +150,7 @@ public final class TableEnvironmentModelTest
     {
         final ITableEnvironment otherTableEnvironment = createTableEnvironment();
 
-        tableEnvironmentModel_.createTableModel( otherTableEnvironment.createTable() );
+        tableEnvironmentModel_.createTableModel( otherTableEnvironment.createTable(), TestTableNetworks.createTableNetwork() );
     }
 
     /**
@@ -159,6 +160,16 @@ public final class TableEnvironmentModelTest
     @Test( expected = NullPointerException.class )
     public void testCreateTableModel_Table_Null()
     {
-        tableEnvironmentModel_.createTableModel( null );
+        tableEnvironmentModel_.createTableModel( null, TestTableNetworks.createTableNetwork() );
+    }
+
+    /**
+     * Ensures the {@link TableEnvironmentModel#createTableModel} method throws
+     * an exception when passed a {@code null} table network.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateTableModel_TableNetwork_Null()
+    {
+        tableEnvironmentModel_.createTableModel( tableEnvironmentModel_.getTableEnvironment().createTable(), null );
     }
 }

@@ -58,6 +58,7 @@ import org.gamegineer.table.internal.ui.model.TableEnvironmentModel;
 import org.gamegineer.table.internal.ui.model.TableModelEvent;
 import org.gamegineer.table.internal.ui.util.OptionDialogs;
 import org.gamegineer.table.internal.ui.util.swing.JFileChooser;
+import org.gamegineer.table.net.ITableNetworkFactory;
 
 /**
  * The top-level frame.
@@ -110,15 +111,21 @@ public final class MainFrame
      * 
      * @param tableEnvironmentFactory
      *        The table environment factory; must not be {@code null}.
+     * @param tableNetworkFactory
+     *        The table network factory; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code tableEnvironmentFactory} is {@code null}.
+     *         If {@code tableEnvironmentFactory} or {@code tableNetworkFactory}
+     *         is {@code null}.
      */
     public MainFrame(
         /* @NonNull */
-        final ITableEnvironmentFactory tableEnvironmentFactory )
+        final ITableEnvironmentFactory tableEnvironmentFactory,
+        /* @NonNull */
+        final ITableNetworkFactory tableNetworkFactory )
     {
         assertArgumentNotNull( tableEnvironmentFactory, "tableEnvironmentFactory" ); //$NON-NLS-1$
+        assertArgumentNotNull( tableNetworkFactory, "tableNetworkFactory" ); //$NON-NLS-1$
 
         actionMediator_ = new ActionMediator();
         actionUpdaterTaskFuture_ = null;
@@ -128,7 +135,7 @@ public final class MainFrame
 
         tableEnvironmentContext_ = new MultiThreadedTableEnvironmentContext();
         final TableEnvironmentModel tableEnvironmentModel = new TableEnvironmentModel( tableEnvironmentFactory.createTableEnvironment( tableEnvironmentContext_ ) );
-        model_ = new MainModel( tableEnvironmentModel.createTableModel( tableEnvironmentModel.getTableEnvironment().createTable() ) );
+        model_ = new MainModel( tableEnvironmentModel.createTableModel( tableEnvironmentModel.getTableEnvironment().createTable(), tableNetworkFactory.createTableNetwork() ) );
         mainView_ = new MainView( model_ );
         menuBarView_ = new MenuBarView( model_ );
 

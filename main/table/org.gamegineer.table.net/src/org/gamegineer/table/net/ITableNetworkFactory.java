@@ -1,5 +1,5 @@
 /*
- * TableNetworkFactoryTest.java
+ * ITableNetworkFactory.java
  * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
@@ -16,42 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Nov 11, 2010 at 10:51:35 PM.
+ * Created on Nov 16, 2013 at 10:53:32 PM.
  */
 
-package org.gamegineer.table.net.impl;
-
-import static org.junit.Assert.assertNotNull;
-import org.junit.Test;
+package org.gamegineer.table.net;
 
 /**
- * A fixture for testing the {@link TableNetworkFactory} class.
+ * A factory for creating table networks.
+ * 
+ * @noextend This interface is not intended to be extended by clients.
  */
-public final class TableNetworkFactoryTest
+public interface ITableNetworkFactory
 {
-    // ======================================================================
-    // Constructors
-    // ======================================================================
-
-    /**
-     * Initializes a new instance of the {@code TableNetworkFactoryTest} class.
-     */
-    public TableNetworkFactoryTest()
-    {
-    }
-
-
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Ensures the {@link TableNetworkFactory#createTableNetwork} method does
-     * not return {@code null}.
+     * Creates a new table network.
+     * 
+     * @return A new table network; never {@code null}.
      */
-    @Test
-    public void testCreateTableNetwork_ReturnValue_NonNull()
-    {
-        assertNotNull( TableNetworkFactory.createTableNetwork() );
-    }
+    /* @NonNull */
+    public ITableNetwork createTableNetwork();
 }

@@ -31,6 +31,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.gamegineer.common.core.app.IBranding;
 import org.gamegineer.common.ui.help.IHelpSystem;
 import org.gamegineer.table.core.ITableEnvironmentFactory;
+import org.gamegineer.table.net.ITableNetworkFactory;
 import org.gamegineer.table.ui.IComponentStrategyUIRegistry;
 import org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry;
 import org.osgi.framework.BundleActivator;
@@ -97,6 +98,10 @@ public final class Activator
     @GuardedBy( "lock_" )
     private ServiceTracker<ITableEnvironmentFactory, ITableEnvironmentFactory> tableEnvironmentFactoryTracker_;
 
+    /** The table network factory service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker<ITableNetworkFactory, ITableNetworkFactory> tableNetworkFactoryTracker_;
+
 
     // ======================================================================
     // Constructors
@@ -118,6 +123,7 @@ public final class Activator
         helpSystemTracker_ = null;
         preferencesServiceTracker_ = null;
         tableEnvironmentFactoryTracker_ = null;
+        tableNetworkFactoryTracker_ = null;
     }
 
 
@@ -346,9 +352,10 @@ public final class Activator
     /**
      * Gets the table environment factory service.
      * 
-     * @return The table environment factory service; never {@code null}.
+     * @return The table environment factory service or {@code null} if the
+     *         table environment factory service is not available.
      */
-    /* @NonNull */
+    /* @Nullable */
     public ITableEnvironmentFactory getTableEnvironmentFactory()
     {
         synchronized( lock_ )
@@ -362,6 +369,29 @@ public final class Activator
             }
 
             return tableEnvironmentFactoryTracker_.getService();
+        }
+    }
+
+    /**
+     * Gets the table network factory service.
+     * 
+     * @return The table network factory service or {@code null} if the table
+     *         network factory service is not available.
+     */
+    /* @Nullable */
+    public ITableNetworkFactory getTableNetworkFactory()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( tableNetworkFactoryTracker_ == null )
+            {
+                tableNetworkFactoryTracker_ = new ServiceTracker<>( bundleContext_, ITableNetworkFactory.class, null );
+                tableNetworkFactoryTracker_.open();
+            }
+
+            return tableNetworkFactoryTracker_.getService();
         }
     }
 
@@ -515,6 +545,11 @@ public final class Activator
             {
                 tableEnvironmentFactoryTracker_.close();
                 tableEnvironmentFactoryTracker_ = null;
+            }
+            if( tableNetworkFactoryTracker_ != null )
+            {
+                tableNetworkFactoryTracker_.close();
+                tableNetworkFactoryTracker_ = null;
             }
         }
     }

@@ -83,6 +83,9 @@ final class NonNlsMessages
     /** The table environment factory service is not available. */
     public static String TableRunner_openFrame_tableEnvironmentFactoryNotAvailable;
 
+    /** The table network factory service is not available. */
+    public static String TableRunner_openFrame_tableNetworkFactoryNotAvailable;
+
     /** The runner is already running or has already finished. */
     public static String TableRunner_state_notPristine;
 

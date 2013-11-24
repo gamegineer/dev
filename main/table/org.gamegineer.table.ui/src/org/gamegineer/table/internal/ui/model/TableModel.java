@@ -53,7 +53,6 @@ import org.gamegineer.table.net.ITableNetwork;
 import org.gamegineer.table.net.PlayerRole;
 import org.gamegineer.table.net.TableNetworkDisconnectedEvent;
 import org.gamegineer.table.net.TableNetworkEvent;
-import org.gamegineer.table.net.impl.TableNetworkFactory;
 
 /**
  * The table model.
@@ -142,16 +141,22 @@ public final class TableModel
      *        be {@code null}.
      * @param table
      *        The table associated with this model; must not be {@code null}.
+     * @param tableNetwork
+     *        The table network associated with this model; must not be
+     *        {@code null}.
      */
     TableModel(
         /* @NonNull */
         final TableEnvironmentModel tableEnvironmentModel,
         /* @NonNull */
-        final ITable table )
+        final ITable table,
+        /* @NonNull */
+        final ITableNetwork tableNetwork )
     {
         assert tableEnvironmentModel != null;
         assert table != null;
         assert tableEnvironmentModel.getTableEnvironment().equals( table.getTableEnvironment() );
+        assert tableNetwork != null;
 
         file_ = null;
         focusedComponentModel_ = null;
@@ -160,7 +165,7 @@ public final class TableModel
         originOffset_ = new Dimension( 0, 0 );
         table_ = table;
         tableEnvironmentModel_ = tableEnvironmentModel;
-        tableNetwork_ = TableNetworkFactory.createTableNetwork();
+        tableNetwork_ = tableNetwork;
         tabletopModel_ = new ContainerModel( tableEnvironmentModel, table_.getTabletop() );
 
         tableNetwork_.addTableNetworkListener( new TableNetworkListener() );

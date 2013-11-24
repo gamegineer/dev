@@ -28,6 +28,7 @@ import org.easymock.IMocksControl;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.test.TestComponentSurfaceDesigns;
 import org.gamegineer.table.core.test.TestTableEnvironments;
+import org.gamegineer.table.net.test.TestTableNetworks;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -182,7 +183,7 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
         tableEnvironmentModel_ = new TableEnvironmentModel( TestTableEnvironments.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
         componentModel_ = createComponentModel( tableEnvironmentModel_ );
         assertNotNull( componentModel_ );
-        final TableModel tableModel = new TableModel( tableEnvironmentModel_, tableEnvironmentModel_.getTableEnvironment().createTable() );
+        final TableModel tableModel = new TableModel( tableEnvironmentModel_, tableEnvironmentModel_.getTableEnvironment().createTable(), TestTableNetworks.createTableNetwork() );
         componentModel_.initialize( tableModel.getTabletopModel() );
     }
 

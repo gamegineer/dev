@@ -30,6 +30,7 @@ import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.test.TestContainerLayouts;
+import org.gamegineer.table.net.test.TestTableNetworks;
 import org.gamegineer.table.ui.TestComponents;
 import org.junit.Before;
 import org.junit.Test;
@@ -378,7 +379,7 @@ public abstract class AbstractContainerModelTestCase
     public void testGetChildPath_ComponentModel_Absent_AssociatedTableModel()
     {
         final ITable table = getTableEnvironmentModel().getTableEnvironment().createTable();
-        final TableModel tableModel = getTableEnvironmentModel().createTableModel( table );
+        final TableModel tableModel = getTableEnvironmentModel().createTableModel( table, TestTableNetworks.createTableNetwork() );
         final IContainer container = createUniqueContainer();
         table.getTabletop().addComponent( container );
         final ContainerModel containerModel = (ContainerModel)tableModel.getComponentModel( container.getPath() );
@@ -404,7 +405,7 @@ public abstract class AbstractContainerModelTestCase
     public void testGetChildPath_ComponentModel_Present_AssociatedTableModel()
     {
         final ITable table = getTableEnvironmentModel().getTableEnvironment().createTable();
-        final TableModel tableModel = getTableEnvironmentModel().createTableModel( table );
+        final TableModel tableModel = getTableEnvironmentModel().createTableModel( table, TestTableNetworks.createTableNetwork() );
         final IContainer container = createUniqueContainer();
         table.getTabletop().addComponent( container );
         final ContainerModel containerModel = (ContainerModel)tableModel.getComponentModel( container.getPath() );
@@ -441,7 +442,7 @@ public abstract class AbstractContainerModelTestCase
         throws Exception
     {
         final ITable table = getTableEnvironmentModel().getTableEnvironment().createTable();
-        final TableModel tableModel = getTableEnvironmentModel().createTableModel( table );
+        final TableModel tableModel = getTableEnvironmentModel().createTableModel( table, TestTableNetworks.createTableNetwork() );
         final IContainer container = createUniqueContainer();
         table.getTabletop().addComponent( container );
         final ContainerModel containerModel = (ContainerModel)tableModel.getComponentModel( container.getPath() );
