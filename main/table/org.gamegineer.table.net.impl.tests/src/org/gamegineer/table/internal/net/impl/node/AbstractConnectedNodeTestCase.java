@@ -28,6 +28,12 @@ import static org.junit.Assert.assertTrue;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.common.core.security.SecureString;
+import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.MultiThreadedTableEnvironmentContext;
+import org.gamegineer.table.core.test.TestTableEnvironments;
+import org.gamegineer.table.internal.net.impl.TableNetworkConfigurations;
+import org.gamegineer.table.net.TableNetworkConfiguration;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,6 +60,12 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
 
     /** The node layer runner for use in the fixture. */
     private NodeLayerRunner nodeLayerRunner_;
+
+    /** The table for use in the fixture. */
+    private ITable table_;
+
+    /** The table environment context for use in the fixture. */
+    private MultiThreadedTableEnvironmentContext tableEnvironmentContext_;
 
 
     // ======================================================================
@@ -123,6 +135,17 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
         T node );
 
     /**
+     * Creates a new table network configuration.
+     * 
+     * @return A new table network configuration; never {@code null}.
+     */
+    /* @NonNull */
+    protected final TableNetworkConfiguration createTableNetworkConfiguration()
+    {
+        return TableNetworkConfigurations.createDefaultTableNetworkConfiguration( table_ );
+    }
+
+    /**
      * Gets the table network node under test in the fixture.
      * 
      * @return The table network node under test in the fixture; never
@@ -180,10 +203,26 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
     public void setUp()
         throws Exception
     {
+        tableEnvironmentContext_ = new MultiThreadedTableEnvironmentContext();
+        table_ = TestTableEnvironments.createTableEnvironment( tableEnvironmentContext_ ).createTable();
+
         niceMocksControl_ = EasyMock.createNiceControl();
         node_ = createConnectedNode();
         assertNotNull( node_ );
         nodeLayerRunner_ = createNodeLayerRunner( node_ );
+    }
+
+    /**
+     * Tears down the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @After
+    public void tearDown()
+        throws Exception
+    {
+        tableEnvironmentContext_.dispose();
     }
 
     /**

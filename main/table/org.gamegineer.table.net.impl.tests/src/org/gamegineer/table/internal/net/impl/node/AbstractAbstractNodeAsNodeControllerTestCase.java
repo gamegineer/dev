@@ -30,7 +30,6 @@ import net.jcip.annotations.ThreadSafe;
 import org.easymock.EasyMock;
 import org.gamegineer.common.core.util.concurrent.SynchronousFuture;
 import org.gamegineer.table.internal.net.impl.ITableNetworkController;
-import org.gamegineer.table.internal.net.impl.TableNetworkConfigurations;
 import org.gamegineer.table.internal.net.impl.transport.ITransportLayer;
 import org.gamegineer.table.internal.net.impl.transport.TransportException;
 import org.gamegineer.table.net.IPlayer;
@@ -185,7 +184,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
 
         try
         {
-            nodeLayerRunner.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
+            nodeLayerRunner.connect( createTableNetworkConfiguration() );
         }
         finally
         {
@@ -210,7 +209,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
 
         try
         {
-            nodeLayerRunner.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
+            nodeLayerRunner.connect( createTableNetworkConfiguration() );
         }
         finally
         {
@@ -235,7 +234,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
 
         try
         {
-            nodeLayerRunner.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
+            nodeLayerRunner.connect( createTableNetworkConfiguration() );
         }
         finally
         {
@@ -258,7 +257,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         node.setTransportLayer( createSuccessfulTransportLayer() );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
 
-        nodeLayerRunner.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
+        nodeLayerRunner.connect( createTableNetworkConfiguration() );
 
         assertEquals( 1, node.getConnectedCallCount() );
     }
@@ -278,7 +277,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         node.setTransportLayer( createSuccessfulTransportLayer() );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
 
-        nodeLayerRunner.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
+        nodeLayerRunner.connect( createTableNetworkConfiguration() );
 
         assertEquals( 1, node.getConnectingCallCount() );
     }
@@ -323,7 +322,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         final MockNode node = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
         node.setTransportLayer( createSuccessfulTransportLayer() );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
-        nodeLayerRunner.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
+        nodeLayerRunner.connect( createTableNetworkConfiguration() );
 
         nodeLayerRunner.disconnect();
 
@@ -345,7 +344,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         final MockNode node = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
         node.setTransportLayer( createSuccessfulTransportLayer() );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
-        nodeLayerRunner.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
+        nodeLayerRunner.connect( createTableNetworkConfiguration() );
 
         nodeLayerRunner.disconnect();
 

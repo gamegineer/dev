@@ -30,6 +30,9 @@ import java.util.Collections;
 import java.util.Map;
 import net.jcip.annotations.Immutable;
 import org.easymock.EasyMock;
+import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.MultiThreadedTableEnvironmentContext;
+import org.gamegineer.table.core.test.TestTableEnvironments;
 import org.gamegineer.table.internal.net.impl.ITableNetworkController;
 import org.gamegineer.table.internal.net.impl.TableNetworkConfigurations;
 import org.gamegineer.table.internal.net.impl.transport.ITransportLayer;
@@ -38,6 +41,7 @@ import org.gamegineer.table.internal.net.impl.transport.fake.FakeTransportLayerF
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.TableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -55,6 +59,12 @@ public final class AbstractNodeTest
 
     /** The node layer runner for use in the fixture. */
     private NodeLayerRunner nodeLayerRunner_;
+
+    /** The table for use in the fixture. */
+    private ITable table_;
+
+    /** The table environment context for use in the fixture. */
+    private MultiThreadedTableEnvironmentContext tableEnvironmentContext_;
 
 
     // ======================================================================
@@ -74,6 +84,17 @@ public final class AbstractNodeTest
     // ======================================================================
 
     /**
+     * Creates a new table network configuration.
+     * 
+     * @return A new table network configuration; never {@code null}.
+     */
+    /* @NonNull */
+    private TableNetworkConfiguration createTableNetworkConfiguration()
+    {
+        return TableNetworkConfigurations.createDefaultTableNetworkConfiguration( table_ );
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -83,8 +104,24 @@ public final class AbstractNodeTest
     public void setUp()
         throws Exception
     {
+        tableEnvironmentContext_ = new MultiThreadedTableEnvironmentContext();
+        table_ = TestTableEnvironments.createTableEnvironment( tableEnvironmentContext_ ).createTable();
+
         node_ = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
         nodeLayerRunner_ = new NodeLayerRunner( node_ );
+    }
+
+    /**
+     * Tears down the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @After
+    public void tearDown()
+        throws Exception
+    {
+        tableEnvironmentContext_.dispose();
     }
 
     /**
@@ -99,7 +136,7 @@ public final class AbstractNodeTest
     public void testConnect_AddsLocalTableProxy()
         throws Exception
     {
-        final TableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
+        final TableNetworkConfiguration configuration = createTableNetworkConfiguration();
         final MockNode.Factory nodeFactory = new MockNode.Factory()
         {
             @Override
@@ -169,7 +206,7 @@ public final class AbstractNodeTest
     public void testDisconnect_RemovesLocalTableProxy()
         throws Exception
     {
-        final TableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
+        final TableNetworkConfiguration configuration = createTableNetworkConfiguration();
         final MockNode.Factory nodeFactory = new MockNode.Factory()
         {
             @Override

@@ -29,10 +29,14 @@ import java.util.Collection;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import org.easymock.EasyMock;
+import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.MultiThreadedTableEnvironmentContext;
+import org.gamegineer.table.core.test.TestTableEnvironments;
 import org.gamegineer.table.internal.net.impl.TableNetworkConfigurations;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.TableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,6 +58,12 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
 
     /** The node layer runner for use in the fixture. */
     private NodeLayerRunner nodeLayerRunner_;
+
+    /** The table for use in the fixture. */
+    private ITable table_;
+
+    /** The table environment context for use in the fixture. */
+    private MultiThreadedTableEnvironmentContext tableEnvironmentContext_;
 
 
     // ======================================================================
@@ -106,6 +116,17 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
         T nodeController );
 
     /**
+     * Creates a new table network configuration.
+     * 
+     * @return A new table network configuration; never {@code null}.
+     */
+    /* @NonNull */
+    protected final TableNetworkConfiguration createTableNetworkConfiguration()
+    {
+        return TableNetworkConfigurations.createDefaultTableNetworkConfiguration( table_ );
+    }
+
+    /**
      * Gets the table network node controller under test in the fixture.
      * 
      * @return The table network node controller under test in the fixture;
@@ -128,9 +149,25 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     public void setUp()
         throws Exception
     {
+        tableEnvironmentContext_ = new MultiThreadedTableEnvironmentContext();
+        table_ = TestTableEnvironments.createTableEnvironment( tableEnvironmentContext_ ).createTable();
+
         nodeController_ = createNodeController();
         assertNotNull( nodeController_ );
         nodeLayerRunner_ = createNodeLayerRunner( nodeController_ );
+    }
+
+    /**
+     * Tears down the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @After
+    public void tearDown()
+        throws Exception
+    {
+        tableEnvironmentContext_.dispose();
     }
 
     /**
@@ -166,7 +203,7 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     public void testConnect_Connected_ThrowsException()
         throws Exception
     {
-        final TableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
+        final TableNetworkConfiguration configuration = createTableNetworkConfiguration();
         nodeController_.endConnect( nodeLayerRunner_.run( new Callable<Future<Void>>()
         {
             @Override
@@ -278,7 +315,7 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
             public Future<Void> call()
                 throws Exception
             {
-                return nodeController_.beginConnect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
+                return nodeController_.beginConnect( createTableNetworkConfiguration() );
             }
         } ) );
 

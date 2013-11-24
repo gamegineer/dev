@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node.client;
 
-import org.gamegineer.table.internal.net.impl.TableNetworkConfigurations;
 import org.gamegineer.table.internal.net.impl.TableNetworkControllers;
 import org.gamegineer.table.internal.net.impl.node.AbstractNodeUtils;
 import org.gamegineer.table.internal.net.impl.node.NodeLayerRunner;
@@ -61,7 +60,7 @@ public final class ClientNodeAsConnectedClientNodeTest
         final ClientNode node = new ClientNode.Factory().createNode( TableNetworkControllers.createFakeTableNetworkController() );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
         node.setHandshakeComplete( null );
-        nodeLayerRunner.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
+        nodeLayerRunner.connect( createTableNetworkConfiguration() );
         return node;
     }
 

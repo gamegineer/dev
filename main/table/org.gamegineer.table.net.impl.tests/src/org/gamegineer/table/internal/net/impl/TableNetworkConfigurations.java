@@ -21,10 +21,10 @@
 
 package org.gamegineer.table.internal.net.impl;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
-import org.gamegineer.table.core.MultiThreadedTableEnvironmentContext;
-import org.gamegineer.table.core.test.TestTableEnvironments;
+import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.net.TableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkConfigurationBuilder;
 import org.gamegineer.table.net.TableNetworkConstants;
@@ -53,19 +53,29 @@ public final class TableNetworkConfigurations
     // ======================================================================
 
     /**
-     * Creates a new default table network configuration.
+     * Creates a new default table network configuration for the specified local
+     * table.
+     * 
+     * @param localTable
+     *        The local table to attach to the table network; must not be
+     *        {@code null}.
      * 
      * @return A new default table network configuration; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code localTable} is {@code null}.
      */
     /* @NonNull */
-    public static TableNetworkConfiguration createDefaultTableNetworkConfiguration()
+    public static TableNetworkConfiguration createDefaultTableNetworkConfiguration(
+        /* @NonNull */
+        final ITable localTable )
     {
+        assertArgumentNotNull( localTable, "localTable" ); //$NON-NLS-1$
+
         final SecureString password = new SecureString( "password".toCharArray() ); //$NON-NLS-1$
         try
         {
-            // TODO: pass in local table to this method instead of creating one by default; some callers
-            // may use single-threaded context and some may use multi-threaded context
-            final TableNetworkConfigurationBuilder builder = new TableNetworkConfigurationBuilder( TestTableEnvironments.createTableEnvironment( new MultiThreadedTableEnvironmentContext() ).createTable() );
+            final TableNetworkConfigurationBuilder builder = new TableNetworkConfigurationBuilder( localTable );
             return builder //
                 .setHostName( "hostName" ) //$NON-NLS-1$
                 .setLocalPlayerName( "playerName" ) //$NON-NLS-1$
