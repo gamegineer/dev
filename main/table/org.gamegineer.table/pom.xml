@@ -38,6 +38,12 @@
 		<module>../org.gamegineer.table.net.tests</module>
 		<module>../org.gamegineer.table.persistence</module>
 		<module>../org.gamegineer.table.persistence.tests</module>
+		<module>../org.gamegineer.table.ui</module>
+		<module>../org.gamegineer.table.ui.impl</module>
+		<module>../org.gamegineer.table.ui.impl.tests</module>
+		<module>../org.gamegineer.table.ui.test</module>
+		<module>../org.gamegineer.table.ui.test.tests</module>
+		<module>../org.gamegineer.table.ui.tests</module>
 	</modules>
 
 </project>
