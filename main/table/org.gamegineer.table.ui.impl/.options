@@ -1,0 +1,4 @@
+# Debugging options for the org.gamegineer.table.ui.impl bundle.
+
+# Reports default bundle activity.
+org.gamegineer.table.ui.impl/debug=false

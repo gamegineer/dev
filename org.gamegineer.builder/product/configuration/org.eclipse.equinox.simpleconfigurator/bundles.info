@@ -35,3 +35,4 @@ org.gamegineer.table.net.impl,%version.%qualifier,plugins/org.gamegineer.table.n
 org.gamegineer.table.persistence,%version.%qualifier,plugins/org.gamegineer.table.persistence_%version.%qualifier.jar,4,false
 org.gamegineer.table.product,%version.%qualifier,plugins/org.gamegineer.table.product_%version.%qualifier.jar,4,false
 org.gamegineer.table.ui,%version.%qualifier,plugins/org.gamegineer.table.ui_%version.%qualifier.jar,4,false
+org.gamegineer.table.ui.impl,%version.%qualifier,plugins/org.gamegineer.table.ui.impl_%version.%qualifier.jar,4,false
