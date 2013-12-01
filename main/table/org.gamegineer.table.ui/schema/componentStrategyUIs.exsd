@@ -93,7 +93,7 @@
 &lt;extension point=&quot;org.gamegineer.table.ui.componentStrategyUIs&quot;&gt;
     &lt;componentStrategyUI
             id=&quot;org.gamegineer.componentStrategies.card&quot;
-            className=&quot;org.gamegineer.table.internal.ui.strategies.ComponentStrategyUIExtensionFactory&quot; /&gt;
+            className=&quot;org.gamegineer.table.internal.ui.impl.strategies.ComponentStrategyUIExtensionFactory&quot; /&gt;
 &lt;/extension&gt;
       </documentation>
    </annotation>

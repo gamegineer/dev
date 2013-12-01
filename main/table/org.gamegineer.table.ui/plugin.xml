@@ -15,28 +15,4 @@
             name="%extensionPoint.componentSurfaceDesignUIs.name"
             schema="schema/componentSurfaceDesignUIs.exsd" />
 
-    <extension
-            point="org.gamegineer.table.ui.componentStrategyUIs">
-        <componentStrategyUI
-                className="org.gamegineer.table.internal.ui.strategies.ComponentStrategyUIExtensionFactory"
-                id="org.gamegineer.table.componentStrategies.nullComponent" />
-        <componentStrategyUI
-                className="org.gamegineer.table.internal.ui.strategies.ComponentStrategyUIExtensionFactory"
-                id="org.gamegineer.table.componentStrategies.nullContainer" />
-        <componentStrategyUI
-                className="org.gamegineer.table.internal.ui.strategies.ComponentStrategyUIExtensionFactory"
-                id="org.gamegineer.table.componentStrategies.tabletop" />
-    </extension>
-    <extension
-            point="org.gamegineer.table.ui.componentSurfaceDesignUIs">
-        <componentSurfaceDesignUI
-                icon="icons/components/null.png"
-                id="org.gamegineer.table.componentSurfaceDesigns.null"
-                name="%componentSurfaceDesign.null.name" />
-        <componentSurfaceDesignUI
-                icon="icons/tabletops/default.png"
-                id="org.gamegineer.table.tabletopSurfaceDesigns.default"
-                name="%tabletopSurfaceDesign.default.name" />
-    </extension>
-
 </plugin>

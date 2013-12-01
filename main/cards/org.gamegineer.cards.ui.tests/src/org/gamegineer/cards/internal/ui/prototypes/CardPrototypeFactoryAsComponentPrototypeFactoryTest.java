@@ -21,8 +21,8 @@
 
 package org.gamegineer.cards.internal.ui.prototypes;
 
-import org.gamegineer.table.ui.prototype.AbstractComponentPrototypeFactoryTestCase;
 import org.gamegineer.table.ui.prototype.IComponentPrototypeFactory;
+import org.gamegineer.table.ui.prototype.test.AbstractComponentPrototypeFactoryTestCase;
 
 /**
  * A fixture for testing the {@link CardPrototypeFactory} class to ensure it
@@ -50,7 +50,7 @@ public final class CardPrototypeFactoryAsComponentPrototypeFactoryTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.ui.prototype.AbstractComponentPrototypeFactoryTestCase#createComponentPrototypeFactory()
+     * @see org.gamegineer.table.ui.prototype.test.AbstractComponentPrototypeFactoryTestCase#createComponentPrototypeFactory()
      */
     @Override
     protected IComponentPrototypeFactory createComponentPrototypeFactory()

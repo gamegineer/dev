@@ -25,8 +25,10 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.ui.IComponentStrategyUIRegistry;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * The bundle activator for the org.gamegineer.table.ui.test bundle.
@@ -46,6 +48,10 @@ public final class Activator
     @GuardedBy( "lock_" )
     private BundleContext bundleContext_;
 
+    /** The component strategy user interface registry service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker<IComponentStrategyUIRegistry, IComponentStrategyUIRegistry> componentStrategyUIRegistryTracker_;
+
     /** The instance lock. */
     private final Object lock_;
 
@@ -61,6 +67,7 @@ public final class Activator
     {
         lock_ = new Object();
         bundleContext_ = null;
+        componentStrategyUIRegistryTracker_ = null;
     }
 
 
@@ -80,6 +87,30 @@ public final class Activator
         {
             assert bundleContext_ != null;
             return bundleContext_;
+        }
+    }
+
+    /**
+     * Gets the component strategy user interface registry service.
+     * 
+     * @return The component strategy user interface registry service or
+     *         {@code null} if no component strategy user interface registry
+     *         service is available.
+     */
+    /* @Nullable */
+    public IComponentStrategyUIRegistry getComponentStrategyUIRegistry()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( componentStrategyUIRegistryTracker_ == null )
+            {
+                componentStrategyUIRegistryTracker_ = new ServiceTracker<>( bundleContext_, IComponentStrategyUIRegistry.class, null );
+                componentStrategyUIRegistryTracker_.open();
+            }
+
+            return componentStrategyUIRegistryTracker_.getService();
         }
     }
 
@@ -131,6 +162,12 @@ public final class Activator
         {
             assert bundleContext_ != null;
             bundleContext_ = null;
+
+            if( componentStrategyUIRegistryTracker_ != null )
+            {
+                componentStrategyUIRegistryTracker_.close();
+                componentStrategyUIRegistryTracker_ = null;
+            }
         }
     }
 }

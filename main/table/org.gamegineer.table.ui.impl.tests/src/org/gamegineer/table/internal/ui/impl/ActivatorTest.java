@@ -67,6 +67,16 @@ public final class ActivatorTest
     }
 
     /**
+     * Ensures the {@link Activator#getUserPreferences(Class)} method throws an
+     * exception when passed a {@code null} type.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGetUserPreferencesFromType_Type_Null()
+    {
+        activator_.getUserPreferences( null );
+    }
+
+    /**
      * Ensures the {@link Activator#start} method throws an exception when
      * passed a {@code null} bundle context.
      */

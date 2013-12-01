@@ -38,7 +38,7 @@ import org.gamegineer.common.core.app.IBranding;
 import org.gamegineer.table.ui.ITableAdvisor;
 import org.gamegineer.table.ui.TableAdvisor;
 import org.gamegineer.table.ui.TableResult;
-import org.gamegineer.table.ui.TableUIFactory;
+import org.gamegineer.table.ui.impl.TableUIFactory;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.ServiceRegistration;
 

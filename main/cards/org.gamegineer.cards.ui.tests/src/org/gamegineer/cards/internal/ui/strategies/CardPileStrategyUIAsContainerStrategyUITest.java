@@ -21,8 +21,8 @@
 
 package org.gamegineer.cards.internal.ui.strategies;
 
-import org.gamegineer.table.ui.AbstractContainerStrategyUITestCase;
 import org.gamegineer.table.ui.IContainerStrategyUI;
+import org.gamegineer.table.ui.test.AbstractContainerStrategyUITestCase;
 
 /**
  * A fixture for testing the {@link CardPileStrategyUI} class to ensure it does
@@ -49,7 +49,7 @@ public final class CardPileStrategyUIAsContainerStrategyUITest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.ui.AbstractComponentStrategyUITestCase#createComponentStrategyUI()
+     * @see org.gamegineer.table.ui.test.AbstractComponentStrategyUITestCase#createComponentStrategyUI()
      */
     @Override
     protected CardPileStrategyUI createComponentStrategyUI()

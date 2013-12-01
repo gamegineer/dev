@@ -22,6 +22,7 @@
 package org.gamegineer.table.ui;
 
 import java.util.ArrayList;
+import org.gamegineer.table.ui.test.AbstractTableAdvisorTestCase;
 
 /**
  * A fixture for testing the {@link TableAdvisor} class to ensure it does not
@@ -48,7 +49,7 @@ public final class TableAdvisorAsTableAdvisorTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.ui.AbstractTableAdvisorTestCase#createTableAdvisor()
+     * @see org.gamegineer.table.ui.test.AbstractTableAdvisorTestCase#createTableAdvisor()
      */
     @Override
     protected ITableAdvisor createTableAdvisor()

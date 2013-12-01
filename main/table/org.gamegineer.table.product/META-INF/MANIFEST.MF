@@ -14,5 +14,6 @@ Import-Package: net.jcip.annotations;version="1.0.0",
  org.gamegineer.common.core.app;version="[0.17.0,0.18.0)",
  org.gamegineer.common.core.runtime;version="[0.17.0,0.18.0)",
  org.gamegineer.table.ui;version="[0.17.0,0.18.0)",
+ org.gamegineer.table.ui.impl;version="[0.17.0,0.18.0)",
  org.osgi.framework;version="1.6.0",
  org.osgi.util.tracker;version="1.5.0"
