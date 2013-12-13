@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<root>
+<root
+        xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
 	<scr:component
-			name="org.gamegineer.table.net.impl.node.common.messages.messagesPersistenceDelegate"
-			xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+			name="org.gamegineer.table.net.impl.node.common.messages.messagesPersistenceDelegate">
 		<implementation
 				class="org.gamegineer.table.internal.net.impl.node.common.messages.MessagesPersistenceDelegate" />
 		<service>

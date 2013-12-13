@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<root>
+<root
+        xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
     <scr:component
-            name="org.gamegineer.table.persistence.serializable.componentPathPersistenceDelegate"
-            xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+            name="org.gamegineer.table.persistence.serializable.componentPathPersistenceDelegate">
         <implementation
                 class="org.gamegineer.table.internal.persistence.serializable.ComponentPathPersistenceDelegate" />
         <service>
@@ -17,8 +17,7 @@
         </property>
     </scr:component>
     <scr:component
-            name="org.gamegineer.table.persistence.serializable.componentStrategyIdPersistenceDelegate"
-            xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+            name="org.gamegineer.table.persistence.serializable.componentStrategyIdPersistenceDelegate">
         <implementation
                 class="org.gamegineer.table.internal.persistence.serializable.ComponentStrategyIdPersistenceDelegate" />
         <service>
@@ -33,8 +32,7 @@
         </property>
     </scr:component>
 	<scr:component
-			name="org.gamegineer.table.persistence.serializable.componentSurfaceDesignIdPersistenceDelegate"
-			xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+			name="org.gamegineer.table.persistence.serializable.componentSurfaceDesignIdPersistenceDelegate">
 		<implementation
 				class="org.gamegineer.table.internal.persistence.serializable.ComponentSurfaceDesignIdPersistenceDelegate" />
 		<service>
@@ -49,8 +47,7 @@
 		</property>
 	</scr:component>
     <scr:component
-            name="org.gamegineer.table.persistence.serializable.containerLayoutIdPersistenceDelegate"
-            xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+            name="org.gamegineer.table.persistence.serializable.containerLayoutIdPersistenceDelegate">
         <implementation
                 class="org.gamegineer.table.internal.persistence.serializable.ContainerLayoutIdPersistenceDelegate" />
         <service>
@@ -65,8 +62,7 @@
         </property>
     </scr:component>
     <scr:component
-            name="org.gamegineer.table.persistence.serializable.nullOrientationPersistenceDelegate"
-            xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+            name="org.gamegineer.table.persistence.serializable.nullOrientationPersistenceDelegate">
         <implementation
                 class="org.gamegineer.table.internal.persistence.serializable.NullOrientationPersistenceDelegate" />
         <service>
@@ -80,8 +76,7 @@
        </property>
     </scr:component>
     <scr:component
-            name="org.gamegineer.table.persistence.serializable.tabletopOrientationPersistenceDelegate"
-            xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+            name="org.gamegineer.table.persistence.serializable.tabletopOrientationPersistenceDelegate">
         <implementation
                 class="org.gamegineer.table.internal.persistence.serializable.TabletopOrientationPersistenceDelegate" />
         <service>
