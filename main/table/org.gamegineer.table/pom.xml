@@ -28,6 +28,10 @@
 		<module>../org.gamegineer.table.core.test</module>
 		<module>../org.gamegineer.table.core.test.tests</module>
 		<module>../org.gamegineer.table.core.tests</module>
+		<module>../org.gamegineer.table.feature.base</module>
+		<module>../org.gamegineer.table.feature.base.tests</module>
+		<module>../org.gamegineer.table.feature.ui</module>
+		<module>../org.gamegineer.table.feature.ui.tests</module>
 		<module>../org.gamegineer.table.help.impl</module>
 		<module>../org.gamegineer.table.help.impl.tests</module>
 		<module>../org.gamegineer.table.net</module>
