@@ -26,7 +26,7 @@ import org.gamegineer.table.net.ITableNetwork;
 import org.gamegineer.table.net.ITableNetworkFactory;
 
 /**
- * A factory for creating table networks.
+ * Implementation of {@link ITableNetworkFactory}.
  */
 @ThreadSafe
 public final class TableNetworkFactory
