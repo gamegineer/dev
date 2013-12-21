@@ -21,14 +21,14 @@
 
 package org.gamegineer.table.internal.net.impl;
 
-import net.jcip.annotations.ThreadSafe;
+import net.jcip.annotations.Immutable;
 import org.gamegineer.table.net.ITableNetwork;
 import org.gamegineer.table.net.ITableNetworkFactory;
 
 /**
  * Implementation of {@link ITableNetworkFactory}.
  */
-@ThreadSafe
+@Immutable
 public final class TableNetworkFactory
     implements ITableNetworkFactory
 {
