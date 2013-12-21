@@ -26,6 +26,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.ui.ITableRunnerFactory;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
@@ -55,6 +56,10 @@ public final class Activator
     /** The instance lock. */
     private final Object lock_;
 
+    /** The table runner factory service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker<ITableRunnerFactory, ITableRunnerFactory> tableRunnerFactoryTracker_;
+
 
     // ======================================================================
     // Constructors
@@ -68,6 +73,7 @@ public final class Activator
         lock_ = new Object();
         bundleContext_ = null;
         executorServiceTracker_ = null;
+        tableRunnerFactoryTracker_ = null;
     }
 
 
@@ -133,6 +139,29 @@ public final class Activator
         return executorService;
     }
 
+    /**
+     * Gets the table runner factory service.
+     * 
+     * @return The table runner factory service or {@code null} if the table
+     *         runner factory service is not available.
+     */
+    /* @Nullable */
+    public ITableRunnerFactory getTableRunnerFactory()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( tableRunnerFactoryTracker_ == null )
+            {
+                tableRunnerFactoryTracker_ = new ServiceTracker<>( bundleContext_, ITableRunnerFactory.class, null );
+                tableRunnerFactoryTracker_.open();
+            }
+
+            return tableRunnerFactoryTracker_.getService();
+        }
+    }
+
     /*
      * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
      */
@@ -173,6 +202,11 @@ public final class Activator
             {
                 executorServiceTracker_.close();
                 executorServiceTracker_ = null;
+            }
+            if( tableRunnerFactoryTracker_ != null )
+            {
+                tableRunnerFactoryTracker_.close();
+                tableRunnerFactoryTracker_ = null;
             }
         }
     }

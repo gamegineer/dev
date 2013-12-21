@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -47,6 +47,9 @@ final class NonNlsMessages
 
     /** The application has stopped. */
     public static String Application_start_stopped;
+
+    /** The table runner factory service is not available. */
+    public static String Application_start_tableRunnerFactoryNotAvailable;
 
     /** Failed to cancel the application task. */
     public static String Application_stop_cancelFailed;

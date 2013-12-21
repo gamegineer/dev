@@ -36,9 +36,9 @@ import org.eclipse.equinox.app.IApplicationContext;
 import org.gamegineer.common.core.app.BrandingUtils;
 import org.gamegineer.common.core.app.IBranding;
 import org.gamegineer.table.ui.ITableAdvisor;
+import org.gamegineer.table.ui.ITableRunnerFactory;
 import org.gamegineer.table.ui.TableAdvisor;
 import org.gamegineer.table.ui.TableResult;
-import org.gamegineer.table.ui.impl.TableUIFactory;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.ServiceRegistration;
 
@@ -154,8 +154,14 @@ public final class Application
         final IBranding branding = publishBranding( context );
         Loggers.getDefaultLogger().info( NonNlsMessages.Application_start_starting( BrandingUtils.getVersion( branding ) ) );
 
+        final ITableRunnerFactory tableRunnerFactory = Activator.getDefault().getTableRunnerFactory();
+        if( tableRunnerFactory == null )
+        {
+            throw new Exception( NonNlsMessages.Application_start_tableRunnerFactoryNotAvailable );
+        }
+
         final ITableAdvisor advisor = createTableAdvisor( context );
-        final Future<TableResult> future = Activator.getDefault().getExecutorService().submit( TableUIFactory.createTableRunner( advisor ) );
+        final Future<TableResult> future = Activator.getDefault().getExecutorService().submit( tableRunnerFactory.createTableRunner( advisor ) );
         futureRef_.set( future );
 
         context.applicationRunning();

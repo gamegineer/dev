@@ -1,5 +1,5 @@
 /*
- * TableUIFactory.java
+ * ITableRunnerFactory.java
  * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
@@ -16,42 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jul 21, 2010 at 11:06:36 PM.
+ * Created on Dec 20, 2013 at 9:17:35 PM.
  */
 
-package org.gamegineer.table.ui.impl;
-
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.ui.impl.TableRunner;
-import org.gamegineer.table.ui.ITableAdvisor;
-import org.gamegineer.table.ui.ITableRunner;
+package org.gamegineer.table.ui;
 
 /**
- * A factory for creating table component user interfaces.
+ * A factory for creating table user interface runners.
+ * 
+ * @noextend This interface is not intended to be extended by clients.
  */
-@ThreadSafe
-public final class TableUIFactory
+public interface ITableRunnerFactory
 {
-    // ======================================================================
-    // Constructors
-    // ======================================================================
-
-    /**
-     * Initializes a new instance of the {@code TableUIFactory} class.
-     */
-    private TableUIFactory()
-    {
-    }
-
-
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Creates the table user interface and returns an object capable of running
-     * it.
+     * Creates a new table user interface and returns an object capable of
+     * running it.
      * 
      * @param advisor
      *        The table advisor; must not be {@code null}.
@@ -63,12 +46,7 @@ public final class TableUIFactory
      *         If {@code advisor} is {@code null}.
      */
     /* @NonNull */
-    public static ITableRunner createTableRunner(
+    public ITableRunner createTableRunner(
         /* @NonNull */
-        final ITableAdvisor advisor )
-    {
-        assertArgumentNotNull( advisor, "advisor" ); //$NON-NLS-1$
-
-        return new TableRunner( advisor );
-    }
+        ITableAdvisor advisor );
 }

@@ -8,7 +8,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-SymbolicName: org.gamegineer.table.ui.impl;singleton:=true
 Bundle-Vendor: %bundleVendor
 Bundle-Version: 0.17.0.qualifier
-Export-Package: org.gamegineer.table.ui.impl;version="0.17.0";x-friends:="org.gamegineer.table.product"
 Import-Package: net.jcip.annotations;version="1.0.0",
  org.apache.commons.cli;version="1.2.0",
  org.eclipse.core.databinding;version="0.0.0",
@@ -51,4 +50,5 @@ Require-Bundle: org.eclipse.equinox.registry;bundle-version="3.5.101"
 Service-Component: OSGI-INF/componentStrategyUIRegistry.xml,
  OSGI-INF/componentStrategyUIRegistryExtensionPointAdapter.xml,
  OSGI-INF/componentSurfaceDesignUIRegistry.xml,
- OSGI-INF/componentSurfaceDesignUIRegistryExtensionPointAdapter.xml
+ OSGI-INF/componentSurfaceDesignUIRegistryExtensionPointAdapter.xml,
+ OSGI-INF/tableRunnerFactory.xml

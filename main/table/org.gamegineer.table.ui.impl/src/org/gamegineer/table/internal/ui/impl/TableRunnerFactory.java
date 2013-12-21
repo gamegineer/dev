@@ -1,5 +1,5 @@
 /*
- * TableUIFactoryTest.java
+ * TableRunnerFactory.java
  * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
@@ -16,26 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jul 21, 2010 at 11:09:06 PM.
+ * Created on Dec 20, 2013 at 9:24:20 PM.
  */
 
-package org.gamegineer.table.ui.impl;
+package org.gamegineer.table.internal.ui.impl;
 
-import org.junit.Test;
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import net.jcip.annotations.Immutable;
+import org.gamegineer.table.ui.ITableAdvisor;
+import org.gamegineer.table.ui.ITableRunner;
+import org.gamegineer.table.ui.ITableRunnerFactory;
 
 /**
- * A fixture for testing the {@link TableUIFactory} class.
+ * Implementation of {@link ITableRunnerFactory}.
  */
-public final class TableUIFactoryTest
+@Immutable
+public final class TableRunnerFactory
+    implements ITableRunnerFactory
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableUIFactoryTest} class.
+     * Initializes a new instance of the {@code TableRunnerFactory} class.
      */
-    public TableUIFactoryTest()
+    public TableRunnerFactory()
     {
     }
 
@@ -44,13 +50,15 @@ public final class TableUIFactoryTest
     // Methods
     // ======================================================================
 
-    /**
-     * Ensures the {@link TableUIFactory#createTableRunner} method throws an
-     * exception when passed a {@code null} table advisor.
+    /*
+     * @see org.gamegineer.table.ui.ITableRunnerFactory#createTableRunner(org.gamegineer.table.ui.ITableAdvisor)
      */
-    @Test( expected = NullPointerException.class )
-    public void testCreateTableRunner_Advisor_Null()
+    @Override
+    public ITableRunner createTableRunner(
+        final ITableAdvisor advisor )
     {
-        TableUIFactory.createTableRunner( null );
+        assertArgumentNotNull( advisor, "advisor" ); //$NON-NLS-1$
+
+        return new TableRunner( advisor );
     }
 }
