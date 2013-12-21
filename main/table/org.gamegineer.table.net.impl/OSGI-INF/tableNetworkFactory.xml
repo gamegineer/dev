@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scr:component
-		name="org.gamegineer.table.net.impl.tableEnvironmentFactory"
+		name="org.gamegineer.table.net.impl.tableNetworkFactory"
 		xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
 	<implementation
 			class="org.gamegineer.table.internal.net.impl.TableNetworkFactory" />
