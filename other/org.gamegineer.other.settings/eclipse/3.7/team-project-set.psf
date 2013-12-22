@@ -8,6 +8,8 @@
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/third-party/net.jcip.annotations.source,net.jcip.annotations.source"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/org.gamegineer.builder,org.gamegineer.builder"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/cards/org.gamegineer.cards.core,org.gamegineer.cards.core"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/cards/org.gamegineer.cards.core.impl,org.gamegineer.cards.core.impl"/>
+<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/cards/org.gamegineer.cards.core.impl.tests,org.gamegineer.cards.core.impl.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/cards/org.gamegineer.cards.core.tests,org.gamegineer.cards.core.tests"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/cards/org.gamegineer.cards.feature.base,org.gamegineer.cards.feature.base"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/cards/org.gamegineer.cards.feature.base.tests,org.gamegineer.cards.feature.base.tests"/>

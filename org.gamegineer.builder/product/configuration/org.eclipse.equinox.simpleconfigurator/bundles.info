@@ -19,6 +19,7 @@ org.eclipse.equinox.registry,3.5.101.R37x_v20110810-1611,plugins/org.eclipse.equ
 org.eclipse.equinox.util,1.0.300.v20110502,plugins/org.eclipse.equinox.util_1.0.300.v20110502.jar,4,false
 org.eclipse.osgi.services,3.3.0.v20110513,plugins/org.eclipse.osgi.services_3.3.0.v20110513.jar,4,false
 org.gamegineer.cards.core,%version.%qualifier,plugins/org.gamegineer.cards.core_%version.%qualifier.jar,4,false
+org.gamegineer.cards.core.impl,%version.%qualifier,plugins/org.gamegineer.cards.core.impl_%version.%qualifier.jar,4,false
 org.gamegineer.cards.persistence,%version.%qualifier,plugins/org.gamegineer.cards.persistence_%version.%qualifier.jar,4,false
 org.gamegineer.cards.ui,%version.%qualifier,plugins/org.gamegineer.cards.ui_%version.%qualifier.jar,4,false
 org.gamegineer.common.core,%version.%qualifier,plugins/org.gamegineer.common.core_%version.%qualifier.jar,4,false
