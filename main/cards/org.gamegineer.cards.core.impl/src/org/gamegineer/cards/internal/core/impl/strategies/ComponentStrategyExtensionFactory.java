@@ -19,7 +19,7 @@
  * Created on Aug 4, 2012 at 9:44:14 PM.
  */
 
-package org.gamegineer.cards.internal.core.strategies;
+package org.gamegineer.cards.internal.core.impl.strategies;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,7 +30,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IExecutableExtensionFactory;
 import org.eclipse.core.runtime.Status;
-import org.gamegineer.cards.internal.core.BundleConstants;
+import org.gamegineer.cards.internal.core.impl.BundleConstants;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.IComponentStrategy;
 

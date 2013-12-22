@@ -19,7 +19,7 @@
  * Created on Nov 29, 2012 at 11:40:12 PM.
  */
 
-package org.gamegineer.cards.internal.core.strategies;
+package org.gamegineer.cards.internal.core.impl.strategies;
 
 import org.gamegineer.table.core.AbstractComponentStrategy;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;

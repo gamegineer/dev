@@ -5,10 +5,10 @@
     <extension
             point="org.gamegineer.table.core.componentStrategies">
         <componentStrategy
-                className="org.gamegineer.cards.internal.core.strategies.ComponentStrategyExtensionFactory"
+                className="org.gamegineer.cards.internal.core.impl.strategies.ComponentStrategyExtensionFactory"
                 id="org.gamegineer.cards.componentStrategies.card" />
         <componentStrategy
-                className="org.gamegineer.cards.internal.core.strategies.ComponentStrategyExtensionFactory"
+                className="org.gamegineer.cards.internal.core.impl.strategies.ComponentStrategyExtensionFactory"
                 id="org.gamegineer.cards.componentStrategies.cardPile" />
     </extension>
     <extension

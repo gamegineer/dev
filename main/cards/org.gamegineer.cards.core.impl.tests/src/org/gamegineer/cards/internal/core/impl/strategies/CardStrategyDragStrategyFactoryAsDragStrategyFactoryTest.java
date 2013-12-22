@@ -1,5 +1,5 @@
 /*
- * CardPileStrategyAsContainerStrategyTest.java
+ * CardStrategyDragStrategyFactoryAsDragStrategyFactoryTest.java
  * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
@@ -16,20 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 1, 2012 at 8:19:40 PM.
+ * Created on Jun 27, 2013 at 11:55:58 PM.
  */
 
-package org.gamegineer.cards.internal.core.strategies;
+package org.gamegineer.cards.internal.core.impl.strategies;
 
-import org.gamegineer.table.core.IContainerStrategy;
-import org.gamegineer.table.core.test.AbstractContainerStrategyTestCase;
+import org.gamegineer.table.core.dnd.IDragStrategyFactory;
+import org.gamegineer.table.core.dnd.test.AbstractDragStrategyFactoryTestCase;
 
 /**
- * A fixture for testing the {@link CardPileStrategy} class to ensure it does
- * not violate the contract of the {@link IContainerStrategy} interface.
+ * A fixture for testing the {@link CardStrategy.DragStrategyFactory} ensure it
+ * does not violate the contract of the {@link IDragStrategyFactory} interface.
  */
-public final class CardPileStrategyAsContainerStrategyTest
-    extends AbstractContainerStrategyTestCase<CardPileStrategy>
+public final class CardStrategyDragStrategyFactoryAsDragStrategyFactoryTest
+    extends AbstractDragStrategyFactoryTestCase
 {
     // ======================================================================
     // Constructors
@@ -37,9 +37,9 @@ public final class CardPileStrategyAsContainerStrategyTest
 
     /**
      * Initializes a new instance of the
-     * {@code CardPileStrategyAsContainerStrategyTest} class.
+     * {@code CardStrategyDragStrategyFactoryAsDragStrategyFactoryTest} class.
      */
-    public CardPileStrategyAsContainerStrategyTest()
+    public CardStrategyDragStrategyFactoryAsDragStrategyFactoryTest()
     {
     }
 
@@ -49,11 +49,11 @@ public final class CardPileStrategyAsContainerStrategyTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.test.AbstractComponentStrategyTestCase#createComponentStrategy()
+     * @see org.gamegineer.table.core.dnd.test.AbstractDragStrategyFactoryTestCase#createDragStrategyFactory()
      */
     @Override
-    protected CardPileStrategy createComponentStrategy()
+    protected IDragStrategyFactory createDragStrategyFactory()
     {
-        return new CardPileStrategy();
+        return CardStrategy.DragStrategyFactory.INSTANCE;
     }
 }

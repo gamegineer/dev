@@ -19,7 +19,7 @@
  * Created on Aug 1, 2012 at 8:19:30 PM.
  */
 
-package org.gamegineer.cards.internal.core.strategies;
+package org.gamegineer.cards.internal.core.impl.strategies;
 
 import org.gamegineer.table.core.IComponentStrategy;
 import org.gamegineer.table.core.test.AbstractComponentStrategyTestCase;

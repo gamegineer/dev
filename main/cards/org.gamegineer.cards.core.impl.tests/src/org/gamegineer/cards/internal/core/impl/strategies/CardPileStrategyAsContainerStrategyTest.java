@@ -1,6 +1,6 @@
 /*
- * InternalComponentStrategies.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * CardPileStrategyAsContainerStrategyTest.java
+ * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,41 +16,44 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 13, 2012 at 7:53:44 PM.
+ * Created on Aug 1, 2012 at 8:19:40 PM.
  */
 
-package org.gamegineer.cards.internal.core.strategies;
+package org.gamegineer.cards.internal.core.impl.strategies;
 
-import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.IComponentStrategy;
 import org.gamegineer.table.core.IContainerStrategy;
+import org.gamegineer.table.core.test.AbstractContainerStrategyTestCase;
 
 /**
- * A collection of component strategies provided by this bundle.
+ * A fixture for testing the {@link CardPileStrategy} class to ensure it does
+ * not violate the contract of the {@link IContainerStrategy} interface.
  */
-@ThreadSafe
-public final class InternalComponentStrategies
+public final class CardPileStrategyAsContainerStrategyTest
+    extends AbstractContainerStrategyTestCase<CardPileStrategy>
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The card component strategy. */
-    public static final IComponentStrategy CARD = new CardStrategy();
-
-    /** The card pile container strategy. */
-    public static final IContainerStrategy CARD_PILE = new CardPileStrategy();
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code InternalComponentStrategies}
-     * class.
+     * Initializes a new instance of the
+     * {@code CardPileStrategyAsContainerStrategyTest} class.
      */
-    private InternalComponentStrategies()
+    public CardPileStrategyAsContainerStrategyTest()
     {
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /*
+     * @see org.gamegineer.table.core.test.AbstractComponentStrategyTestCase#createComponentStrategy()
+     */
+    @Override
+    protected CardPileStrategy createComponentStrategy()
+    {
+        return new CardPileStrategy();
     }
 }

@@ -1,5 +1,5 @@
 /*
- * CardStrategyDragStrategyFactoryAsDragStrategyFactoryTest.java
+ * InternalComponentStrategies.java
  * Copyright 2008-2013 Gamegineer contributors and others.
  * All rights reserved.
  *
@@ -16,44 +16,41 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jun 27, 2013 at 11:55:58 PM.
+ * Created on Aug 13, 2012 at 7:53:44 PM.
  */
 
-package org.gamegineer.cards.internal.core.strategies;
+package org.gamegineer.cards.internal.core.impl.strategies;
 
-import org.gamegineer.table.core.dnd.IDragStrategyFactory;
-import org.gamegineer.table.core.dnd.test.AbstractDragStrategyFactoryTestCase;
+import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.core.IComponentStrategy;
+import org.gamegineer.table.core.IContainerStrategy;
 
 /**
- * A fixture for testing the {@link CardStrategy.DragStrategyFactory} ensure it
- * does not violate the contract of the {@link IDragStrategyFactory} interface.
+ * A collection of component strategies provided by this bundle.
  */
-public final class CardStrategyDragStrategyFactoryAsDragStrategyFactoryTest
-    extends AbstractDragStrategyFactoryTestCase
+@ThreadSafe
+public final class InternalComponentStrategies
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The card component strategy. */
+    public static final IComponentStrategy CARD = new CardStrategy();
+
+    /** The card pile container strategy. */
+    public static final IContainerStrategy CARD_PILE = new CardPileStrategy();
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code CardStrategyDragStrategyFactoryAsDragStrategyFactoryTest} class.
+     * Initializes a new instance of the {@code InternalComponentStrategies}
+     * class.
      */
-    public CardStrategyDragStrategyFactoryAsDragStrategyFactoryTest()
+    private InternalComponentStrategies()
     {
-    }
-
-
-    // ======================================================================
-    // Methods
-    // ======================================================================
-
-    /*
-     * @see org.gamegineer.table.core.dnd.test.AbstractDragStrategyFactoryTestCase#createDragStrategyFactory()
-     */
-    @Override
-    protected IDragStrategyFactory createDragStrategyFactory()
-    {
-        return CardStrategy.DragStrategyFactory.INSTANCE;
     }
 }

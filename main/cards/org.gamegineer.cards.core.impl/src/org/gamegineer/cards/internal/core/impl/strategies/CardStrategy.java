@@ -19,7 +19,7 @@
  * Created on Aug 1, 2012 at 8:14:04 PM.
  */
 
-package org.gamegineer.cards.internal.core.strategies;
+package org.gamegineer.cards.internal.core.impl.strategies;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Arrays;
