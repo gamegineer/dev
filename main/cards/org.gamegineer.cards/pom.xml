@@ -26,6 +26,10 @@
 		<module>../org.gamegineer.cards.core.impl</module>
 		<module>../org.gamegineer.cards.core.impl.tests</module>
 		<module>../org.gamegineer.cards.core.tests</module>
+		<module>../org.gamegineer.cards.feature.base</module>
+		<module>../org.gamegineer.cards.feature.base.tests</module>
+		<module>../org.gamegineer.cards.feature.ui</module>
+		<module>../org.gamegineer.cards.feature.ui.tests</module>
 		<module>../org.gamegineer.cards.persistence</module>
 		<module>../org.gamegineer.cards.persistence.tests</module>
 		<module>../org.gamegineer.cards.ui.impl</module>
