@@ -1,5 +1,4 @@
 Manifest-Version: 1.0
-Bundle-Localization: plugin
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
 Bundle-SymbolicName: javax.help.source

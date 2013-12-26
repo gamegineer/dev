@@ -1,6 +1,5 @@
 Manifest-Version: 1.0
 Bundle-ClassPath: lib/jcip-annotations.jar
-Bundle-Localization: plugin
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

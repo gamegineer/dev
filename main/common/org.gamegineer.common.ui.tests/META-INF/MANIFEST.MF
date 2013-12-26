@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Bundle-Localization: fragment-tests
+Bundle-Localization: OSGI-INF/l10n/fragment-tests
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

@@ -1,7 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.gamegineer.common.internal.core.impl.Activator
-Bundle-Localization: plugin
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
