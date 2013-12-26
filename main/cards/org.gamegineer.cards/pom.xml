@@ -28,6 +28,8 @@
 		<module>../org.gamegineer.cards.core.tests</module>
 		<module>../org.gamegineer.cards.persistence</module>
 		<module>../org.gamegineer.cards.persistence.tests</module>
+		<module>../org.gamegineer.cards.ui.impl</module>
+		<module>../org.gamegineer.cards.ui.impl.tests</module>
 	</modules>
 
 </project>

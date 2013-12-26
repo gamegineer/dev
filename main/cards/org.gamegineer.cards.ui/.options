@@ -1,4 +1,0 @@
-# Debugging options for the org.gamegineer.cards.ui bundle.
-
-# Reports default bundle activity.
-org.gamegineer.cards.ui/debug=false
