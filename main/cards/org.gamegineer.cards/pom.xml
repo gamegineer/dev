@@ -26,6 +26,8 @@
 		<module>../org.gamegineer.cards.core.impl</module>
 		<module>../org.gamegineer.cards.core.impl.tests</module>
 		<module>../org.gamegineer.cards.core.tests</module>
+		<module>../org.gamegineer.cards.persistence</module>
+		<module>../org.gamegineer.cards.persistence.tests</module>
 	</modules>
 
 </project>
