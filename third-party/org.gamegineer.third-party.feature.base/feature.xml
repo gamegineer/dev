@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+        id="org.gamegineer.third-party.feature.base"
+        label="%featureName"
+        version="0.17.0.qualifier"
+        provider-name="%providerName">
+
+    <description>
+        %description
+    </description>
+
+    <copyright>
+        %copyright
+    </copyright>
+
+    <license url="%licenseUrl">
+        %license
+    </license>
+
+    <plugin
+            download-size="0"
+            id="javax.help"
+            install-size="0"
+            version="0.0.0" />
+    <plugin
+            download-size="0"
+            id="javax.help.source"
+            install-size="0"
+            version="0.0.0" />
+    <plugin
+            download-size="0"
+            id="net.jcip.annotations"
+            install-size="0"
+            version="0.0.0" />
+    <plugin
+            download-size="0"
+            id="net.jcip.annotations.source"
+            install-size="0"
+            version="0.0.0" />
+
+</feature>

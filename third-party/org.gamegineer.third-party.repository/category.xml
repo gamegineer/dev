@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+	<feature id="org.gamegineer.third-party.feature.base">
+		<category name="org_gamegineer_third_party_base_category_id" />
+	</feature>
+	<category-def name="org_gamegineer_third_party_base_category_id" label="Gamegineer Third-Party Base Category">
+		<description>
+			Description of Gamegineer Third-Party Base category.
+		</description>
+	</category-def>
+</site>

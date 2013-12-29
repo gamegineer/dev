@@ -5,6 +5,11 @@ Deploy the target platform p2 repository to Nexus:
 	cd /target-platform/org.gamegineer.target-platform
 	mvn clean deploy
 
+Deploy the third party p2 repository to Nexus:
+
+	cd /third-party/org.gamegineer.third-party
+	mvn clean deploy
+
 Build the Gamegineer product:
 
 	cd /main/org.gamegineer.main

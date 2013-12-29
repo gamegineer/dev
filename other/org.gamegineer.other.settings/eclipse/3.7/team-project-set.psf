@@ -2,10 +2,6 @@
 <psf version="2.0">
 <provider id="org.tigris.subversion.subclipse.core.svnnature">
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/build/trunk,build"/>
-<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/third-party/javax.help,javax.help"/>
-<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/third-party/javax.help.source,javax.help.source"/>
-<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/third-party/net.jcip.annotations,net.jcip.annotations"/>
-<project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/third-party/net.jcip.annotations.source,net.jcip.annotations.source"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/org.gamegineer.builder,org.gamegineer.builder"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/cards/org.gamegineer.cards.core,org.gamegineer.cards.core"/>
 <project reference="0.9.3,https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/cards/org.gamegineer.cards.core.impl,org.gamegineer.cards.core.impl"/>

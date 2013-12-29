@@ -8,9 +8,9 @@
 
 	<parent>
 		<groupId>org.gamegineer</groupId>
-		<artifactId>org.gamegineer.main</artifactId>
+		<artifactId>org.gamegineer</artifactId>
 		<version>0.17.0-SNAPSHOT</version>
-		<relativePath>../../org.gamegineer.main</relativePath>
+		<relativePath>../../org.gamegineer</relativePath>
 	</parent>
 
 	<artifactId>org.gamegineer.third-party</artifactId>
@@ -26,6 +26,16 @@
 		<module>../javax.help.source</module>
 		<module>../net.jcip.annotations</module>
 		<module>../net.jcip.annotations.source</module>
+		<module>../org.gamegineer.third-party.feature.base</module>
+		<module>../org.gamegineer.third-party.repository</module>
 	</modules>
+
+	<repositories>
+		<repository>
+			<id>g8r-target-platform</id>
+			<url>http://${g8r-repository-authority}/nexus/content/unzip/public.unzip/org/gamegineer/org.gamegineer.target-platform.repository/${g8r-version}/org.gamegineer.target-platform.repository-${g8r-version}.zip-unzip</url>
+			<layout>p2</layout>
+		</repository>
+	</repositories>
 
 </project>
