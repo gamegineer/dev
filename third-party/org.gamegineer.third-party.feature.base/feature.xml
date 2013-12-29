@@ -37,5 +37,10 @@
             id="net.jcip.annotations.source"
             install-size="0"
             version="0.0.0" />
+    <plugin
+            download-size="0"
+            id="org.easymock.source"
+            install-size="0"
+            version="0.0.0" />
 
 </feature>

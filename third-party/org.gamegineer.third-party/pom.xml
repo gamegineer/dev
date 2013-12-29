@@ -26,6 +26,7 @@
 		<module>../javax.help.source</module>
 		<module>../net.jcip.annotations</module>
 		<module>../net.jcip.annotations.source</module>
+		<module>../org.easymock.source</module>
 		<module>../org.gamegineer.third-party.feature.base</module>
 		<module>../org.gamegineer.third-party.repository</module>
 	</modules>
