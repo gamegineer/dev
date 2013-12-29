@@ -12,6 +12,5 @@ Import-Package: org.easymock;version="3.2.0",
  org.gamegineer.common.core.util.registry.test;version="[0.17.0,0.18.0)",
  org.gamegineer.table.core.dnd.test;version="[0.17.0,0.18.0)",
  org.gamegineer.table.core.test;version="[0.17.0,0.18.0)",
- org.gamegineer.table.core.version.test;version="[0.17.0,0.18.0)",
- org.gamegineer.test.core;version="[0.17.0,0.18.0)"
+ org.gamegineer.table.core.version.test;version="[0.17.0,0.18.0)"
 Require-Bundle: org.junit;bundle-version="4.8.2"

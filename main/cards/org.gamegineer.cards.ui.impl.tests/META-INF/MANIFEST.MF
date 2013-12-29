@@ -8,6 +8,5 @@ Bundle-Vendor: %bundleVendor
 Bundle-Version: 0.17.0.qualifier
 Fragment-Host: org.gamegineer.cards.ui.impl;bundle-version="0.17.0"
 Import-Package: org.gamegineer.table.ui.prototype.test;version="[0.17.0,0.18.0)",
- org.gamegineer.table.ui.test;version="[0.17.0,0.18.0)",
- org.gamegineer.test.core;version="[0.17.0,0.18.0)"
+ org.gamegineer.table.ui.test;version="[0.17.0,0.18.0)"
 Require-Bundle: org.junit;bundle-version="4.8.2"

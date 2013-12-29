@@ -7,5 +7,4 @@ Bundle-SymbolicName: org.gamegineer.common.core.test.tests
 Bundle-Vendor: %bundleVendor
 Bundle-Version: 0.17.0.qualifier
 Fragment-Host: org.gamegineer.common.core.test;bundle-version="0.17.0"
-Import-Package: org.gamegineer.test.core;version="[0.17.0,0.18.0)"
 Require-Bundle: org.junit;bundle-version="4.8.2"
