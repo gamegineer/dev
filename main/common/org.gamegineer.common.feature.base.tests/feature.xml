@@ -27,54 +27,46 @@
             fragment="true"
             id="org.gamegineer.common.core.impl.tests"
             install-size="0"
-            unpack="true"
             version="0.0.0" />
     <plugin
             download-size="0"
             id="org.gamegineer.common.core.test"
             install-size="0"
-            unpack="false"
             version="0.0.0" />
     <plugin
             download-size="0"
             fragment="true"
             id="org.gamegineer.common.core.test.tests"
             install-size="0"
-            unpack="true"
             version="0.0.0" />
     <plugin
             download-size="0"
             fragment="true"
             id="org.gamegineer.common.core.tests"
             install-size="0"
-            unpack="true"
             version="0.0.0" />
     <plugin
             download-size="0"
             fragment="true"
             id="org.gamegineer.common.persistence.impl.tests"
             install-size="0"
-            unpack="true"
             version="0.0.0" />
     <plugin
             download-size="0"
             id="org.gamegineer.common.persistence.test"
             install-size="0"
-            unpack="false"
             version="0.0.0" />
     <plugin
             download-size="0"
             fragment="true"
             id="org.gamegineer.common.persistence.test.tests"
             install-size="0"
-            unpack="true"
             version="0.0.0" />
     <plugin
             download-size="0"
             fragment="true"
             id="org.gamegineer.common.persistence.tests"
             install-size="0"
-            unpack="true"
             version="0.0.0" />
 
 </feature>

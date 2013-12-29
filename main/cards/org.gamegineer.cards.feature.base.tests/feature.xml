@@ -27,21 +27,18 @@
             fragment="true"
             id="org.gamegineer.cards.core.impl.tests"
             install-size="0"
-            unpack="true"
             version="0.0.0" />
     <plugin
             download-size="0"
             fragment="true"
             id="org.gamegineer.cards.core.tests"
             install-size="0"
-            unpack="true"
             version="0.0.0" />
     <plugin
             download-size="0"
             fragment="true"
             id="org.gamegineer.cards.persistence.tests"
             install-size="0"
-            unpack="true"
             version="0.0.0" />
 
 </feature>

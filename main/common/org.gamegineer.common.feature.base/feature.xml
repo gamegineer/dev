@@ -21,31 +21,26 @@
             download-size="0"
             id="net.jcip.annotations"
             install-size="0"
-            unpack="true"
             version="0.0.0" />
     <plugin
             download-size="0"
             id="org.gamegineer.common.core"
             install-size="0"
-            unpack="false"
             version="0.0.0" />
     <plugin
             download-size="0"
             id="org.gamegineer.common.core.impl"
             install-size="0"
-            unpack="false"
             version="0.0.0" />
     <plugin
             download-size="0"
             id="org.gamegineer.common.persistence"
             install-size="0"
-            unpack="false"
             version="0.0.0" />
     <plugin
             download-size="0"
             id="org.gamegineer.common.persistence.impl"
             install-size="0"
-            unpack="false"
             version="0.0.0" />
 
 </feature>

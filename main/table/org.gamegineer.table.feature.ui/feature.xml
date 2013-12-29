@@ -25,31 +25,26 @@
             download-size="0"
             id="javax.help"
             install-size="0"
-            unpack="true"
             version="0.0.0" />
     <plugin
             download-size="0"
             id="org.gamegineer.table.help.impl"
             install-size="0"
-            unpack="false"
             version="0.0.0" />
     <plugin
             download-size="0"
             id="org.gamegineer.table.product"
             install-size="0"
-            unpack="false"
             version="0.0.0" />
     <plugin
             download-size="0"
             id="org.gamegineer.table.ui"
             install-size="0"
-            unpack="false"
             version="0.0.0" />
     <plugin
             download-size="0"
             id="org.gamegineer.table.ui.impl"
             install-size="0"
-            unpack="false"
             version="0.0.0" />
 
 </feature>

@@ -27,27 +27,23 @@
             fragment="true"
             id="org.gamegineer.common.ui.impl.tests"
             install-size="0"
-            unpack="true"
             version="0.0.0" />
     <plugin
             download-size="0"
             id="org.gamegineer.common.ui.test"
             install-size="0"
-            unpack="false"
             version="0.0.0" />
     <plugin
             download-size="0"
             fragment="true"
             id="org.gamegineer.common.ui.test.tests"
             install-size="0"
-            unpack="true"
             version="0.0.0" />
     <plugin
             download-size="0"
             fragment="true"
             id="org.gamegineer.common.ui.tests"
             install-size="0"
-            unpack="true"
             version="0.0.0" />
 
 </feature>

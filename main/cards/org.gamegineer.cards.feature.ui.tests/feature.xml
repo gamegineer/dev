@@ -27,7 +27,6 @@
             fragment="true"
             id="org.gamegineer.cards.ui.impl.tests"
             install-size="0"
-            unpack="true"
             version="0.0.0" />
 
 </feature>
