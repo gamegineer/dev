@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.6"?><target name="default" sequenceNumber="0">
 <locations>
-<location includeAllPlatforms="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<location includeAllPlatforms="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="com.ibm.icu" version="4.4.2.v20110823"/>
 <unit id="com.ibm.icu.source" version="4.4.2.v20110823"/>
 <unit id="org.apache.commons.cli" version="1.2.0"/>
@@ -49,7 +49,7 @@
 <unit id="org.junit.source" version="4.8.2.v4_8_2_v20110321-1705"/>
 <repository location="http://localhost:9089/nexus/content/unzip/public.unzip/org/gamegineer/org.gamegineer.target-platform.repository/0.17.0-SNAPSHOT/org.gamegineer.target-platform.repository-0.17.0-SNAPSHOT.zip-unzip"/>
 </location>
-<location includeAllPlatforms="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<location includeAllPlatforms="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="javax.help" version="2.0.5"/>
 <unit id="javax.help.source" version="2.0.5"/>
 <unit id="net.jcip.annotations" version="1.0.0"/>
