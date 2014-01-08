@@ -25,7 +25,27 @@
             download-size="0"
             id="javax.help"
             install-size="0"
-            version="0.0.0" />
+            version="2.0.5" />
+    <plugin
+            download-size="0"
+            id="org.eclipse.equinox.ds"
+            install-size="0"
+            version="1.3.1.R37x_v20110701" />
+    <plugin
+            download-size="0"
+            id="org.eclipse.equinox.launcher"
+            install-size="0"
+            version="1.2.0.v20110502" />
+    <plugin
+            download-size="0"
+            id="org.eclipse.equinox.simpleconfigurator"
+            install-size="0"
+            version="1.0.200.v20110815-1438" />
+    <plugin
+            download-size="0"
+            id="org.eclipse.equinox.util"
+            install-size="0"
+            version="1.0.300.v20110502" />
     <plugin
             download-size="0"
             id="org.gamegineer.table.help.impl"

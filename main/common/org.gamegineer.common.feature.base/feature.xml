@@ -21,7 +21,7 @@
             download-size="0"
             id="net.jcip.annotations"
             install-size="0"
-            version="0.0.0" />
+            version="1.0.0" />
     <plugin
             download-size="0"
             id="org.gamegineer.common.core"
