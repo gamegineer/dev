@@ -21,4 +21,32 @@
 		This project defines the implementation for the Gamegineer table help system.
 	</description>
 
+	<profiles>
+		<profile>
+			<id>update-javahelp-database</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo.javahelp</groupId>
+						<artifactId>maven-javahelp-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>jhindex</goal>
+								</goals>
+								<configuration>
+									<dataBase>help/JavaHelpSearch</dataBase>
+									<includes>
+										<include>topics/**/*.html</include>
+									</includes>
+									<sourcePath>help</sourcePath>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project>
