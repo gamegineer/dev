@@ -81,6 +81,13 @@
 		<tycho-version>0.19.0</tycho-version>
 	</properties>
 
+	<pluginRepositories>
+		<pluginRepository>
+			<id>g8r-plugin-snapshots</id>
+			<url>http://${g8r-repository-authority}/nexus/content/repositories/snapshots/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
 	<build>
 		<pluginManagement>
 			<plugins>
