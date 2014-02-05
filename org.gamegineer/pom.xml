@@ -15,7 +15,7 @@
 	<description>
 		Top-level project to be inherited by all Gamegineer projects.
 	</description>
-	<url>http://gamegineer.org/</url>
+	<url>${g8r-site-url}/org.gamegineer</url>
 	<inceptionYear>2008</inceptionYear>
 	<organization>
 		<name>Gamegineer.org</name>
@@ -41,9 +41,9 @@
 	</developers>
 
 	<scm>
-		<developerConnection>https://svn.code.sf.net/p/gamegineer/code/</developerConnection>
+		<developerConnection>scm:https://svn.code.sf.net/p/gamegineer/code/dev/trunk/org.gamegineer</developerConnection>
 		<tag>HEAD</tag>
-		<url>http://svn.code.sf.net/p/gamegineer/code/</url>
+		<url>http://svn.code.sf.net/p/gamegineer/code/dev/trunk/org.gamegineer</url>
 	</scm>
 	<issueManagement>
 		<system>Trac</system>
@@ -68,17 +68,25 @@
 			<url>http://${g8r-repository-authority}/nexus/content/repositories/snapshots/</url>
 			<layout>default</layout>
 		</snapshotRepository>
+		<site>
+			<id>g8r-site</id>
+			<url>dav:${g8r-site-url}/org.gamegineer</url>
+		</site>
 	</distributionManagement>
 
 	<properties>
 		<build-helper-maven-plugin-version>1.8</build-helper-maven-plugin-version>
 		<g8r-ci-authority>build.g8r.local:8080</g8r-ci-authority>
 		<g8r-repository-authority>build.g8r.local:8081</g8r-repository-authority>
+		<g8r-site-url>http://${g8r-repository-authority}/nexus/content/sites/site/gamegineer</g8r-site-url>
 		<g8r-version>0.17.0-SNAPSHOT</g8r-version>
 		<maven-deploy-plugin-version>2.8.1</maven-deploy-plugin-version>
+		<maven-javadoc-plugin-version>2.9.1</maven-javadoc-plugin-version>
 		<maven-javahelp-plugin-version>1.1-SNAPSHOT</maven-javahelp-plugin-version>
+		<maven-project-info-reports-plugin-version>2.7</maven-project-info-reports-plugin-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<tycho-version>0.19.0</tycho-version>
+		<wagon-webdav-jackrabbit-version>2.2</wagon-webdav-jackrabbit-version>
 	</properties>
 
 	<pluginRepositories>
@@ -89,11 +97,26 @@
 	</pluginRepositories>
 
 	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav-jackrabbit</artifactId>
+				<version>${wagon-webdav-jackrabbit-version}</version>
+			</extension>
+		</extensions>
 		<pluginManagement>
 			<plugins>
 				<plugin>
 					<artifactId>maven-deploy-plugin</artifactId>
 					<version>${maven-deploy-plugin-version}</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>${maven-javadoc-plugin-version}</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-project-info-reports-plugin</artifactId>
+					<version>${maven-project-info-reports-plugin-version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
@@ -130,6 +153,11 @@
 					<artifactId>tycho-p2-extras-plugin</artifactId>
 					<version>${tycho-version}</version>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.wagon</groupId>
+					<artifactId>wagon-webdav-jackrabbit</artifactId>
+					<version>${wagon-webdav-jackrabbit-version}</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -162,5 +190,37 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${maven-javadoc-plugin-version}</version> <!-- Should not be required; seems related to http://jira.codehaus.org/browse/MSITE-443 -->
+				<configuration>
+					<sourcepath>src</sourcepath> <!-- Need a better way to exclude test projects -->
+					<tags>
+						<tag>
+							<name>noextend</name>
+							<placement>t</placement>
+							<head>No Extend</head>
+						</tag>
+						<tag>
+							<name>noimplement</name>
+							<placement>t</placement>
+							<head>No Implement</head>
+						</tag>
+					</tags>
+				</configuration>
+				<reportSets>
+					<reportSet>
+						<id>default</id>
+						<reports>
+							<report>javadoc</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>
 
 </project>

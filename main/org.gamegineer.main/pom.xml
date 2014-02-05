@@ -20,6 +20,7 @@
 	<description>
 		Parent project for all projects used to build the Gamegineer product.
 	</description>
+	<url>${g8r-site-url}/main/org.gamegineer.main</url>
 
 	<modules>
 		<module>../cards/org.gamegineer.cards</module>
@@ -27,6 +28,18 @@
 		<module>../table/org.gamegineer.table</module>
 		<module>../test/org.gamegineer.test</module>
 	</modules>
+
+	<scm>
+		<developerConnection>scm:https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/org.gamegineer.main</developerConnection>
+		<tag>HEAD</tag>
+		<url>http://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/org.gamegineer.main</url>
+	</scm>
+	<distributionManagement>
+		<site>
+			<id>g8r-site</id>
+			<url>dav:${g8r-site-url}/main/org.gamegineer.main</url>
+		</site>
+	</distributionManagement>
 
 	<repositories>
 		<repository>

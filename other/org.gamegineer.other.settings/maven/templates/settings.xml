@@ -11,6 +11,11 @@
 			<password>password</password>
 		</server>
 		<server>
+			<id>g8r-site</id>
+			<username>deployment</username>
+			<password>password</password>
+		</server>
+		<server>
 			<id>g8r-snapshots</id>
 			<username>deployment</username>
 			<password>password</password>
