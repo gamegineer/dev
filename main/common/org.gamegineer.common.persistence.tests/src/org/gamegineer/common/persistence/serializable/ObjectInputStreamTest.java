@@ -1,6 +1,6 @@
 /*
  * ObjectInputStreamTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -64,7 +64,10 @@ public final class ObjectInputStreamTest
         oos.writeObject( null );
         oos.close();
 
-        new ObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ), null );
+        try( final ObjectInputStream inputStream = new ObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ), null ) )
+        {
+            // do nothing
+        }
     }
 
     /**
@@ -78,6 +81,9 @@ public final class ObjectInputStreamTest
     public void testConstructor_Stream_Null()
         throws Exception
     {
-        new ObjectInputStream( null, EasyMock.createMock( IPersistenceDelegateRegistry.class ) );
+        try( final ObjectInputStream inputStream = new ObjectInputStream( null, EasyMock.createMock( IPersistenceDelegateRegistry.class ) ) )
+        {
+            // do nothing
+        }
     }
 }

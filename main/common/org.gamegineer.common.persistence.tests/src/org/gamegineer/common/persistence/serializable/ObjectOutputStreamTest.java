@@ -1,6 +1,6 @@
 /*
  * ObjectOutputStreamTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -58,7 +58,10 @@ public final class ObjectOutputStreamTest
     public void testConstructor_PersistenceDelegateRegistry_Null()
         throws Exception
     {
-        new ObjectOutputStream( new ByteArrayOutputStream(), null );
+        try( final ObjectOutputStream outputStream = new ObjectOutputStream( new ByteArrayOutputStream(), null ) )
+        {
+            // do nothing
+        }
     }
 
     /**
@@ -72,6 +75,9 @@ public final class ObjectOutputStreamTest
     public void testConstructor_Stream_Null()
         throws Exception
     {
-        new ObjectOutputStream( null, EasyMock.createMock( IPersistenceDelegateRegistry.class ) );
+        try( final ObjectOutputStream outputStream = new ObjectOutputStream( null, EasyMock.createMock( IPersistenceDelegateRegistry.class ) ) )
+        {
+            // do nothing
+        }
     }
 }
