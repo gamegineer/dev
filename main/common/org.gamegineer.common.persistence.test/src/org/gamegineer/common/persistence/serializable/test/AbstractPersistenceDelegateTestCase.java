@@ -1,6 +1,6 @@
 /*
  * AbstractPersistenceDelegateTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -109,11 +109,11 @@ public abstract class AbstractPersistenceDelegateTestCase
     private ObjectInputStream createEmptyObjectInputStream()
         throws IOException
     {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final ObjectOutputStream oos = createObjectOutputStream( baos );
-        oos.close();
-        baos.close();
-        return createObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ) );
+        try( final ByteArrayOutputStream baos = new ByteArrayOutputStream(); //
+            final ObjectOutputStream oos = createObjectOutputStream( baos ) )
+        {
+            return createObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ) );
+        }
     }
 
     /**
@@ -297,13 +297,17 @@ public abstract class AbstractPersistenceDelegateTestCase
     {
         final Object obj = createSubject();
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final ObjectOutputStream oos = createObjectOutputStream( baos );
-        oos.writeObject( obj );
-        oos.close();
 
-        final ObjectInputStream ois = createObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ) );
-        final Object deserializedObj = ois.readObject();
-        ois.close();
+        try( final ObjectOutputStream oos = createObjectOutputStream( baos ) )
+        {
+            oos.writeObject( obj );
+        }
+
+        final Object deserializedObj;
+        try( final ObjectInputStream ois = createObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ) ) )
+        {
+            deserializedObj = ois.readObject();
+        }
 
         assertSubjectEquals( obj, deserializedObj );
     }

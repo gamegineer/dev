@@ -1,6 +1,6 @@
 /*
  * ExtensibleEnumTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -89,18 +89,21 @@ public final class ExtensibleEnumTest
         throws Exception
     {
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        final ObjectOutputStream objectOutputStream = new ObjectOutputStream( outputStream );
-        objectOutputStream.writeObject( MockEnum.CONSTANT_1 );
-        objectOutputStream.writeObject( MockEnum.CONSTANT_2 );
-        objectOutputStream.writeObject( MockEnum.CONSTANT_3 );
-        objectOutputStream.close();
+        try( final ObjectOutputStream objectOutputStream = new ObjectOutputStream( outputStream ) )
+        {
+            objectOutputStream.writeObject( MockEnum.CONSTANT_1 );
+            objectOutputStream.writeObject( MockEnum.CONSTANT_2 );
+            objectOutputStream.writeObject( MockEnum.CONSTANT_3 );
+        }
 
+        final Object constant1, constant2, constant3;
         final ByteArrayInputStream inputStream = new ByteArrayInputStream( outputStream.toByteArray() );
-        final ObjectInputStream objectInputStream = new ObjectInputStream( inputStream );
-        final Object constant1 = objectInputStream.readObject();
-        final Object constant2 = objectInputStream.readObject();
-        final Object constant3 = objectInputStream.readObject();
-        objectInputStream.close();
+        try( final ObjectInputStream objectInputStream = new ObjectInputStream( inputStream ) )
+        {
+            constant1 = objectInputStream.readObject();
+            constant2 = objectInputStream.readObject();
+            constant3 = objectInputStream.readObject();
+        }
 
         assertSame( MockEnum.CONSTANT_1, constant1 );
         assertSame( MockEnum.CONSTANT_2, constant2 );

@@ -1,6 +1,6 @@
 /*
  * ObjectStreamTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -153,13 +153,16 @@ public final class ObjectStreamTest
     {
         final FakeNonSerializableClass obj = new FakeNonSerializableClass( 2112, "42" ); //$NON-NLS-1$
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final ObjectOutputStream oos = createObjectOutputStream( baos );
-        oos.writeObject( obj );
-        oos.close();
+        try( final ObjectOutputStream oos = createObjectOutputStream( baos ) )
+        {
+            oos.writeObject( obj );
+        }
 
-        final ObjectInputStream ois = createObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ) );
-        final FakeNonSerializableClass deserializedObj = (FakeNonSerializableClass)ois.readObject();
-        ois.close();
+        final FakeNonSerializableClass deserializedObj;
+        try( final ObjectInputStream ois = createObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ) ) )
+        {
+            deserializedObj = (FakeNonSerializableClass)ois.readObject();
+        }
 
         assertEquals( obj, deserializedObj );
     }
@@ -176,13 +179,16 @@ public final class ObjectStreamTest
         throws Exception
     {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final ObjectOutputStream oos = createObjectOutputStream( baos );
-        oos.writeObject( null );
-        oos.close();
+        try( final ObjectOutputStream oos = createObjectOutputStream( baos ) )
+        {
+            oos.writeObject( null );
+        }
 
-        final ObjectInputStream ois = createObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ) );
-        final Object deserializedObj = ois.readObject();
-        ois.close();
+        final Object deserializedObj;
+        try( final ObjectInputStream ois = createObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ) ) )
+        {
+            deserializedObj = ois.readObject();
+        }
 
         assertNull( deserializedObj );
     }
@@ -200,13 +206,16 @@ public final class ObjectStreamTest
     {
         final Date obj = new Date();
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final ObjectOutputStream oos = createObjectOutputStream( baos );
-        oos.writeObject( obj );
-        oos.close();
+        try( final ObjectOutputStream oos = createObjectOutputStream( baos ) )
+        {
+            oos.writeObject( obj );
+        }
 
-        final ObjectInputStream ois = createObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ) );
-        final Date deserializedObj = (Date)ois.readObject();
-        ois.close();
+        final Date deserializedObj;
+        try( final ObjectInputStream ois = createObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ) ) )
+        {
+            deserializedObj = (Date)ois.readObject();
+        }
 
         assertEquals( obj, deserializedObj );
     }
