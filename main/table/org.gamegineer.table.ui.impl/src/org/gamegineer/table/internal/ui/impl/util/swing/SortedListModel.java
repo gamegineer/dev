@@ -1,6 +1,6 @@
 /*
  * SortedListModel.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -124,7 +124,6 @@ public final class SortedListModel<E>
      * @return A default comparator; never {@code null}.
      */
     /* @NonNull */
-    @SuppressWarnings( "static-method" )
     private Comparator<E> createDefaultComparator()
     {
         return new Comparator<E>()
