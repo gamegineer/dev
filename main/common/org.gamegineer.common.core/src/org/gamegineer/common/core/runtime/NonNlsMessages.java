@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.core.runtime;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 
@@ -38,16 +39,16 @@ final class NonNlsMessages
     // --- Assert -----------------------------------------------------------
 
     /** The default message for an illegal argument exception. */
-    public static String Assert_assertArgumentLegal_defaultMessage;
+    public static String Assert_assertArgumentLegal_defaultMessage = ""; //$NON-NLS-1$
 
     /** The default message for a null pointer exception. */
-    public static String Assert_assertArgumentNotNull_defaultMessage;
+    public static String Assert_assertArgumentNotNull_defaultMessage = ""; //$NON-NLS-1$
 
     /** The default parameter name for exception messages. */
-    public static String Assert_defaultParamName;
+    public static String Assert_defaultParamName = ""; //$NON-NLS-1$
 
     /** The message format for all exceptions. */
-    public static String Assert_message;
+    public static String Assert_message = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -87,13 +88,10 @@ final class NonNlsMessages
      * 
      * @return The formatted message for all exceptions; never {@code null}.
      */
-    /* @NonNull */
     static String Assert_message(
-        /* @NonNull */
         final String paramName,
-        /* @NonNull */
         final String message )
     {
-        return bind( Assert_message, paramName, message );
+        return nonNull( bind( Assert_message, paramName, message ) );
     }
 }

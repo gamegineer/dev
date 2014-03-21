@@ -1,6 +1,6 @@
 /*
  * SecureString.java
- * Copyright 2008-2011 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,9 +21,11 @@
 
 package org.gamegineer.common.core.security;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Arrays;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * An immutable sequence of characters that can be cleared from memory when they
@@ -74,12 +76,8 @@ public final class SecureString
      * 
      * @param value
      *        The initial value of the string; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code value} is {@code null}.
      */
     public SecureString(
-        /* @NonNull */
         final char[] value )
     {
         this( value, 0, value.length );
@@ -90,8 +88,8 @@ public final class SecureString
      * specified range of the specified character array.
      * 
      * @param value
-     *        The source of the initial value of the string; must not be {@code
-     *        null}.
+     *        The source of the initial value of the string; must not be
+     *        {@code null}.
      * @param offset
      *        The offset to the first character in the string value.
      * @param length
@@ -100,11 +98,8 @@ public final class SecureString
      * @throws java.lang.IndexOutOfBoundsException
      *         If {@code offset} and {@code length} are outside the bounds of
      *         {@code value}.
-     * @throws java.lang.NullPointerException
-     *         If {@code value} is {@code null}.
      */
     public SecureString(
-        /* @NonNull */
         final char[] value,
         final int offset,
         final int length )
@@ -120,12 +115,8 @@ public final class SecureString
      * @param secureString
      *        The secure string whose value will be used as the initial value of
      *        the string; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code secureString} is {@code null}.
      */
     public SecureString(
-        /* @NonNull */
         final SecureString secureString )
     {
         value_ = secureString.toCharArray();
@@ -154,12 +145,8 @@ public final class SecureString
      * 
      * @param value
      *        The character array; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code value} is {@code null}.
      */
     public static void clearCharArray(
-        /* @NonNull */
         final char[] value )
     {
         Arrays.fill( value, '\0' );
@@ -186,6 +173,7 @@ public final class SecureString
      */
     @Override
     public boolean equals(
+        @Nullable
         final Object obj )
     {
         if( this == obj )
@@ -237,15 +225,10 @@ public final class SecureString
      * @param value
      *        The initial value of the string; must not be {@code null}.
      * 
-     * @return A new instance of the {@code SecureString} class; never {@code
-     *         null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code value} is {@code null}.
+     * @return A new instance of the {@code SecureString} class; never
+     *         {@code null}.
      */
-    /* @NonNull */
     public static SecureString fromCharArray(
-        /* @NonNull */
         final char[] value )
     {
         final SecureString secureString = new SecureString( value );
@@ -299,12 +282,11 @@ public final class SecureString
      * @return A new character array that contains the contents of the secure
      *         string; never {@code null}.
      */
-    /* @NonNull */
     public char[] toCharArray()
     {
         synchronized( value_ )
         {
-            return value_.clone();
+            return nonNull( value_.clone() );
         }
     }
 

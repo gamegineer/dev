@@ -1,6 +1,6 @@
 /*
  * AbstractLoggingComponentFactory.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,12 +22,13 @@
 package org.gamegineer.common.internal.core.impl.logging;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Map;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.logging.LoggingServiceConstants;
 import org.gamegineer.common.internal.core.impl.Activator;
 import org.osgi.framework.InvalidSyntaxException;
@@ -65,16 +66,10 @@ public abstract class AbstractLoggingComponentFactory<T>
      * 
      * @param type
      *        The type of the logging component; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code type} is {@code null}.
      */
     protected AbstractLoggingComponentFactory(
-        /* @NonNull */
         final Class<T> type )
     {
-        assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
-
         type_ = type;
     }
 
@@ -105,21 +100,17 @@ public abstract class AbstractLoggingComponentFactory<T>
      *        properties in the specified logging properties.
      * @param properties
      *        The logging properties; may be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code component} or {@code instanceName} is {@code null}.
      */
     protected void configureLoggingComponent(
-        /* @NonNull */
+        @SuppressWarnings( "unused" )
         final T component,
-        /* @NonNull */
+        @SuppressWarnings( "unused" )
         final String instanceName,
-        /* @Nullable */
+        @Nullable
         @SuppressWarnings( "unused" )
         final Map<String, String> properties )
     {
-        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
-        assertArgumentNotNull( instanceName, "instanceName" ); //$NON-NLS-1$
+        // do nothing
     }
 
     /**
@@ -136,22 +127,16 @@ public abstract class AbstractLoggingComponentFactory<T>
      * 
      * @return A new instance of the logging component; never {@code null}.
      * 
-     * @throws java.lang.NullPointerException
-     *         If {@code typeName} is {@code null}.
      * @throws org.osgi.service.component.ComponentException
      *         If an error occurs while creating the component.
      */
-    /* @NonNull */
     protected T createLoggingComponent(
-        /* @NonNull */
         final String typeName )
     {
-        assertArgumentNotNull( typeName, "typeName" ); //$NON-NLS-1$
-
         try
         {
             final Class<?> type = Class.forName( typeName );
-            return type_.cast( type.newInstance() );
+            return nonNull( type_.cast( type.newInstance() ) );
         }
         catch( final ClassNotFoundException e )
         {
@@ -207,22 +192,16 @@ public abstract class AbstractLoggingComponentFactory<T>
      * @throws org.osgi.service.component.ComponentException
      *         If the component could not be created.
      */
-    /* @NonNull */
     static final <T> T createNamedLoggingComponent(
-        /* @NonNull */
         final Class<T> type,
-        /* @NonNull */
         final String name,
-        /* @Nullable */
+        @Nullable
         final Map<String, String> properties )
     {
-        assert type != null;
-        assert name != null;
-
         final int index = name.lastIndexOf( '.' );
         assertArgumentLegal( index != -1, "name", NonNlsMessages.AbstractLoggingComponentFactory_createNamedLoggingComponent_nameNoDots ); //$NON-NLS-1$
-        final String typeName = name.substring( 0, index );
-        final String instanceName = name.substring( index + 1 );
+        final String typeName = nonNull( name.substring( 0, index ) );
+        final String instanceName = nonNull( name.substring( index + 1 ) );
 
         final ServiceReference<ComponentFactory> serviceReference = findComponentFactory( typeName, type );
         final ComponentFactory factory = Activator.getDefault().getBundleContext().getService( serviceReference );
@@ -240,7 +219,7 @@ public abstract class AbstractLoggingComponentFactory<T>
             {
                 componentProperties.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_LOGGING_PROPERTIES, properties );
             }
-            return type.cast( factory.newInstance( componentProperties ).getInstance() );
+            return nonNull( type.cast( factory.newInstance( componentProperties ).getInstance() ) );
         }
         finally
         {
@@ -267,23 +246,17 @@ public abstract class AbstractLoggingComponentFactory<T>
      * @return A reference to the most appropriate component factory for the
      *         specified component type information; never {@code null}.
      */
-    /* @NonNull */
     private static ServiceReference<ComponentFactory> findComponentFactory(
-        /* @NonNull */
         final String typeName,
-        /* @NonNull */
         final Class<?> type )
     {
-        assert typeName != null;
-        assert type != null;
-
         ServiceReference<ComponentFactory> serviceReference = getComponentFactory( typeName );
         if( serviceReference != null )
         {
             return serviceReference;
         }
 
-        serviceReference = getComponentFactory( type.getName() );
+        serviceReference = getComponentFactory( nonNull( type.getName() ) );
         if( serviceReference != null )
         {
             return serviceReference;
@@ -305,13 +278,10 @@ public abstract class AbstractLoggingComponentFactory<T>
      * @throws org.osgi.service.component.ComponentException
      *         If an error occurs.
      */
-    /* @Nullable */
+    @Nullable
     private static ServiceReference<ComponentFactory> getComponentFactory(
-        /* @NonNull */
         final String typeName )
     {
-        assert typeName != null;
-
         try
         {
             final String filter = String.format( "(%1$s=%2$s)", ComponentConstants.COMPONENT_FACTORY, typeName ); //$NON-NLS-1$
@@ -352,20 +322,13 @@ public abstract class AbstractLoggingComponentFactory<T>
      *         component properties collection or the property value is the
      *         wrong type.
      */
-    /* @Nullable */
+    @Nullable
     private static <T> T getComponentProperty(
-        /* @NonNull */
         final Dictionary<?, ?> componentProperties,
-        /* @NonNull */
         final String name,
-        /* @NonNull */
         final Class<T> type,
         final boolean isNullable )
     {
-        assert componentProperties != null;
-        assert name != null;
-        assert type != null;
-
         final Object value = componentProperties.get( name );
         if( (value == null) && !isNullable )
         {
@@ -390,6 +353,7 @@ public abstract class AbstractLoggingComponentFactory<T>
      */
     @Override
     public final ComponentInstance newInstance(
+        @Nullable
         @SuppressWarnings( "rawtypes" )
         final Dictionary componentProperties )
     {
@@ -399,7 +363,9 @@ public abstract class AbstractLoggingComponentFactory<T>
         }
 
         final String typeName = getComponentProperty( componentProperties, LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_TYPE_NAME, String.class, false );
+        assert typeName != null;
         final String instanceName = getComponentProperty( componentProperties, LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_INSTANCE_NAME, String.class, false );
+        assert instanceName != null;
         @SuppressWarnings( "unchecked" )
         final Map<String, String> loggingProperties = getComponentProperty( componentProperties, LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_LOGGING_PROPERTIES, Map.class, true );
 

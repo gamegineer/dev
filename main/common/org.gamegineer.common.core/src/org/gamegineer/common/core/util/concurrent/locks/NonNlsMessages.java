@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,7 +38,7 @@ final class NonNlsMessages
     // --- LockUtils --------------------------------------------------------
 
     /** An unsupported lock type was specified. */
-    public static String LockUtils_isLockHeldByCurrentThread_unsupportedLockType;
+    public static String LockUtils_isLockHeldByCurrentThread_unsupportedLockType = ""; //$NON-NLS-1$
 
 
     // ======================================================================

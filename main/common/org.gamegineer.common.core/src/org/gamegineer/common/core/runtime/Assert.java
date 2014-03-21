@@ -1,6 +1,6 @@
 /*
  * Assert.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.common.core.runtime;
 
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A collection of methods useful for asserting conditions at runtime.
@@ -116,7 +117,7 @@ public final class Assert
      */
     public static void assertArgumentLegal(
         final boolean expression,
-        /* @Nullable */
+        @Nullable
         final String paramName )
     {
         assertArgumentLegal( expression, paramName, null );
@@ -138,9 +139,9 @@ public final class Assert
      */
     public static void assertArgumentLegal(
         final boolean expression,
-        /* @Nullable */
+        @Nullable
         final String paramName,
-        /* @Nullable */
+        @Nullable
         final String message )
     {
         if( !expression )
@@ -161,7 +162,7 @@ public final class Assert
      *         If {@code object} is {@code null}.
      */
     public static void assertArgumentNotNull(
-        /* @Nullable */
+        @Nullable
         final Object object )
     {
         assertArgumentNotNull( object, null, null );
@@ -180,9 +181,9 @@ public final class Assert
      *         If {@code object} is {@code null}.
      */
     public static void assertArgumentNotNull(
-        /* @Nullable */
+        @Nullable
         final Object object,
-        /* @Nullable */
+        @Nullable
         final String paramName )
     {
         assertArgumentNotNull( object, paramName, null );
@@ -201,13 +202,15 @@ public final class Assert
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code expression} is {@code false}.
+     * @throws java.lang.NullPointerException
+     *         If {@code object} is {@code null}.
      */
     public static void assertArgumentNotNull(
-        /* @Nullable */
+        @Nullable
         final Object object,
-        /* @Nullable */
+        @Nullable
         final String paramName,
-        /* @Nullable */
+        @Nullable
         final String message )
     {
         if( object == null )
@@ -246,7 +249,7 @@ public final class Assert
      */
     public static void assertStateLegal(
         final boolean expression,
-        /* @Nullable */
+        @Nullable
         final String message )
     {
         if( !expression )

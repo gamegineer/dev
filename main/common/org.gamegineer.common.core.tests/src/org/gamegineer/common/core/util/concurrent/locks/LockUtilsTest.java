@@ -1,6 +1,6 @@
 /*
  * LockUtilsTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.core.util.concurrent.locks;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import java.util.concurrent.locks.Lock;
@@ -56,17 +57,7 @@ public final class LockUtilsTest
     @Test( expected = IllegalArgumentException.class )
     public void testIsHeldByCurrentThread_Lock_Illegal()
     {
-        LockUtils.isHeldByCurrentThread( EasyMock.createMock( Lock.class ) );
-    }
-
-    /**
-     * Ensures the {@link LockUtils#isHeldByCurrentThread} method throws an
-     * exception when passed a {@code null} lock.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testIsHeldByCurrentThread_Lock_Null()
-    {
-        LockUtils.isHeldByCurrentThread( null );
+        LockUtils.isHeldByCurrentThread( nonNull( EasyMock.createMock( Lock.class ) ) );
     }
 
     /**

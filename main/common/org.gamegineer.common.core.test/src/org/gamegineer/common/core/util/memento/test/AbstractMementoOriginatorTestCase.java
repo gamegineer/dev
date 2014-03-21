@@ -1,6 +1,6 @@
 /*
  * AbstractMementoOriginatorTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,9 +21,10 @@
 
 package org.gamegineer.common.core.util.memento.test;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,6 +33,7 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IMementoOriginator} interface.
  */
+@NonNullByDefault( false )
 public abstract class AbstractMementoOriginatorTestCase
 {
     // ======================================================================
@@ -74,18 +76,13 @@ public abstract class AbstractMementoOriginatorTestCase
      * 
      * @throws java.lang.AssertionError
      *         If the two memento originators are not equal.
-     * @throws java.lang.NullPointerException
-     *         If {@code expected} or {@code actual} is {@code null}.
      */
     protected void assertMementoOriginatorEquals(
-        /* @NonNull */
+        @NonNull
         final IMementoOriginator expected,
-        /* @NonNull */
+        @NonNull
         final IMementoOriginator actual )
     {
-        assertArgumentNotNull( expected, "expected" ); //$NON-NLS-1$
-        assertArgumentNotNull( actual, "actual" ); //$NON-NLS-1$
-
         assertEquals( expected, actual );
     }
 
@@ -97,9 +94,22 @@ public abstract class AbstractMementoOriginatorTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract IMementoOriginator createMementoOriginator()
         throws Exception;
+
+    /**
+     * Gets the memento originator under test in the fixture.
+     * 
+     * @return The memento originator under test in the fixture; never
+     *         {@code null}.
+     */
+    @NonNull
+    protected final IMementoOriginator getMementoOriginator()
+    {
+        assertNotNull( mementoOriginator_ );
+        return mementoOriginator_;
+    }
 
     /**
      * Initializes the specified memento originator to a state other than that
@@ -107,12 +117,9 @@ public abstract class AbstractMementoOriginatorTestCase
      * 
      * @param mementoOriginator
      *        The memento originator; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code mementoOriginator} is {@code null}.
      */
     protected abstract void initializeMementoOriginator(
-        /* @NonNull */
+        @NonNull
         IMementoOriginator mementoOriginator );
 
     /**
@@ -151,25 +158,12 @@ public abstract class AbstractMementoOriginatorTestCase
     public void testSaveAndRestoreMementoOriginatorState()
         throws Exception
     {
-        initializeMementoOriginator( mementoOriginator_ );
-        final Object memento = mementoOriginator_.createMemento();
+        final IMementoOriginator mementoOriginator = getMementoOriginator();
+        initializeMementoOriginator( mementoOriginator );
+        final Object memento = mementoOriginator.createMemento();
         final IMementoOriginator otherMementoOriginator = createMementoOriginator();
         otherMementoOriginator.setMemento( memento );
 
-        assertMementoOriginatorEquals( mementoOriginator_, otherMementoOriginator );
-    }
-
-    /**
-     * Ensures the {@link IMementoOriginator#setMemento} method throws an
-     * exception when passed a {@code null} memento.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetMemento_Memento_Null()
-        throws Exception
-    {
-        mementoOriginator_.setMemento( null );
+        assertMementoOriginatorEquals( mementoOriginator, otherMementoOriginator );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * IBranding.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.core.app;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.osgi.framework.Bundle;
 
 /**
@@ -40,7 +41,7 @@ public interface IBranding
      * @return The identifier of the application associated with the branding or
      *         {@code null} if none.
      */
-    /* @Nullable */
+    @Nullable
     public String getApplication();
 
     /**
@@ -48,7 +49,7 @@ public interface IBranding
      * 
      * @return The bundle responsible for the branding or {@code null} if none.
      */
-    /* @Nullable */
+    @Nullable
     public Bundle getBundle();
 
     /**
@@ -56,7 +57,7 @@ public interface IBranding
      * 
      * @return The branding description or {@code null} if none.
      */
-    /* @Nullable */
+    @Nullable
     public String getDescription();
 
     /**
@@ -64,7 +65,6 @@ public interface IBranding
      * 
      * @return The branding identifier; never {@code null}.
      */
-    /* @NonNull */
     public String getId();
 
     /**
@@ -72,7 +72,7 @@ public interface IBranding
      * 
      * @return The branding name or {@code null} if none.
      */
-    /* @Nullable */
+    @Nullable
     public String getName();
 
     /**
@@ -83,12 +83,8 @@ public interface IBranding
      * 
      * @return The value of the branding property with the specified name or
      *         {@code null} if the property does not exist.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code name} is {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     public String getProperty(
-        /* @NonNull */
         String name );
 }

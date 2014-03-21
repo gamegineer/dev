@@ -1,6 +1,6 @@
 /*
  * IPredicate.java
- * Copyright 2008-2009 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,6 +20,8 @@
  */
 
 package org.gamegineer.common.core.util;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Transforms an object into a boolean result based on some conditions.
@@ -44,6 +46,6 @@ public interface IPredicate<T>
      *         this predicate; otherwise {@code false}.
      */
     public boolean evaluate(
-        /* @Nullable */
+        @Nullable
         T obj );
 }

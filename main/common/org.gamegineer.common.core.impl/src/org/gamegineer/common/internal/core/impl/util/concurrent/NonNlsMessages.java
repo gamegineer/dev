@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.internal.core.impl.util.concurrent;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 
@@ -38,7 +39,7 @@ final class NonNlsMessages
     // --- ExecutorService --------------------------------------------------
 
     /** The thread was terminated by an uncaught exception. */
-    public static String ExecutorService_uncaughtException;
+    public static String ExecutorService_uncaughtException = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -74,9 +75,8 @@ final class NonNlsMessages
      * @return The formatted message indicating the thread was terminated by an
      *         uncaught exception; never {@code null}.
      */
-    /* @NonNull */
     static String ExecutorService_uncaughtException()
     {
-        return bind( ExecutorService_uncaughtException, Thread.currentThread().getName() );
+        return nonNull( bind( ExecutorService_uncaughtException, Thread.currentThread().getName() ) );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.core.util;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 
@@ -38,10 +39,10 @@ final class NonNlsMessages
     // --- ExtensibleEnum ---------------------------------------------------
 
     /** The ordinal is out of range. */
-    public static String ExtensibleEnum_ordinal_outOfRange;
+    public static String ExtensibleEnum_ordinal_outOfRange = ""; //$NON-NLS-1$
 
     /** The enum type has no constant with the specified name. */
-    public static String ExtensibleEnum_valueOf_nameIllegal;
+    public static String ExtensibleEnum_valueOf_nameIllegal = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -79,12 +80,11 @@ final class NonNlsMessages
      * @return The formatted message indicating the ordinal is out of range;
      *         never {@code null}.
      */
-    /* @NonNull */
     @SuppressWarnings( "boxing" )
     static String ExtensibleEnum_ordinal_outOfRange(
         final int ordinal )
     {
-        return bind( ExtensibleEnum_ordinal_outOfRange, ordinal );
+        return nonNull( bind( ExtensibleEnum_ordinal_outOfRange, ordinal ) );
     }
 
     /**
@@ -99,13 +99,10 @@ final class NonNlsMessages
      * @return The formatted message indicating the enum type has no constant
      *         with the specified name; never {@code null}.
      */
-    /* @NonNull */
     static String ExtensibleEnum_valueOf_nameIllegal(
-        /* @NonNull */
         final Class<?> type,
-        /* @NonNull */
         final String name )
     {
-        return bind( ExtensibleEnum_valueOf_nameIllegal, type.getName(), name );
+        return nonNull( bind( ExtensibleEnum_valueOf_nameIllegal, type.getName(), name ) );
     }
 }

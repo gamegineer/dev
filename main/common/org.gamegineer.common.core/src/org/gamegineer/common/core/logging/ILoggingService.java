@@ -1,6 +1,6 @@
 /*
  * ILoggingService.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.common.core.logging;
 
 import java.util.logging.Logger;
+import org.eclipse.jdt.annotation.Nullable;
 import org.osgi.framework.Bundle;
 
 /**
@@ -78,13 +79,8 @@ public interface ILoggingService
      *        The bundle; must not be {@code null}.
      * 
      * @return The default logger for the specified bundle; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code bundle} is {@code null}.
      */
-    /* @NonNull */
     public Logger getLogger(
-        /* @NonNull */
         Bundle bundle );
 
     /**
@@ -99,10 +95,8 @@ public interface ILoggingService
      * 
      * @return The named logger for the specified bundle; never {@code null}.
      */
-    /* @NonNull */
     public Logger getLogger(
-        /* @NonNull */
         Bundle bundle,
-        /* @Nullable */
+        @Nullable
         String name );
 }

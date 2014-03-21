@@ -1,6 +1,6 @@
 /*
  * FakeFilter.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,12 +21,14 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.logging.Filter;
 import java.util.logging.LogRecord;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.internal.core.impl.Activator;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentConstants;
@@ -91,6 +93,7 @@ public final class FakeFilter
      */
     @Override
     public boolean isLoggable(
+        @Nullable
         @SuppressWarnings( "unused" )
         final LogRecord record )
     {
@@ -103,7 +106,6 @@ public final class FakeFilter
      * @return The service registration token associated with the component
      *         factory; never {@code null}.
      */
-    /* @NonNull */
     public static ServiceRegistration<ComponentFactory> registerComponentFactory()
     {
         final ComponentFactory componentFactory = new AbstractLoggingComponentFactory<FakeFilter>( FakeFilter.class )
@@ -112,6 +114,7 @@ public final class FakeFilter
             protected void configureLoggingComponent(
                 final FakeFilter component,
                 final String instanceName,
+                @Nullable
                 final Map<String, String> properties )
             {
                 super.configureLoggingComponent( component, instanceName, properties );
@@ -121,7 +124,7 @@ public final class FakeFilter
                     return;
                 }
 
-                final String value = LoggingProperties.getProperty( properties, component.getClass(), instanceName, PROPERTY_FAKE_BOOLEAN_PROPERTY );
+                final String value = LoggingProperties.getProperty( properties, nonNull( component.getClass() ), instanceName, PROPERTY_FAKE_BOOLEAN_PROPERTY );
                 if( value != null )
                 {
                     component.setFakeBooleanProperty( Boolean.parseBoolean( value ) );
@@ -130,7 +133,7 @@ public final class FakeFilter
         };
         final Dictionary<String, Object> properties = new Hashtable<>();
         properties.put( ComponentConstants.COMPONENT_FACTORY, FakeFilter.class.getName() );
-        return Activator.getDefault().getBundleContext().registerService( ComponentFactory.class, componentFactory, properties );
+        return nonNull( Activator.getDefault().getBundleContext().registerService( ComponentFactory.class, componentFactory, properties ) );
     }
 
     /**

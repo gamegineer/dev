@@ -1,6 +1,6 @@
 /*
  * Loggers.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,9 +21,10 @@
 
 package org.gamegineer.common.core.runtime;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.logging.Logger;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.logging.ILoggingService;
 import org.gamegineer.common.internal.core.Activator;
 import org.osgi.framework.Bundle;
@@ -69,23 +70,16 @@ public abstract class Loggers
      *        logger for the bundle will be returned.
      * 
      * @return The named logger for the specified bundle; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code bundle} is {@code null}.
      */
-    /* @NonNull */
     protected static Logger getLogger(
-        /* @NonNull */
         final Bundle bundle,
-        /* @Nullable */
+        @Nullable
         final String name )
     {
-        assertArgumentNotNull( bundle, "bundle" ); //$NON-NLS-1$
-
         final ILoggingService loggingService = Activator.getDefault().getLoggingService();
         if( loggingService == null )
         {
-            return Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
+            return nonNull( Logger.getLogger( Logger.GLOBAL_LOGGER_NAME ) );
         }
 
         return loggingService.getLogger( bundle, name );

@@ -17,6 +17,7 @@ Export-Package: org.gamegineer.common.core.app;version="0.17.0",
  org.gamegineer.common.core.util.memento;version="0.17.0",
  org.gamegineer.common.core.util.registry;version="0.17.0"
 Import-Package: net.jcip.annotations;version="1.0.0",
+ org.eclipse.jdt.annotation;version="0.0.0",
  org.eclipse.osgi.framework.log;version="1.1.0",
  org.eclipse.osgi.service.debug;version="1.2.0",
  org.eclipse.osgi.util;version="1.1.0",

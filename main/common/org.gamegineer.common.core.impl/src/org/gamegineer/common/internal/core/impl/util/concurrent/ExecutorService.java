@@ -1,6 +1,6 @@
 /*
  * ExecutorService.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.internal.core.impl.util.concurrent;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -33,6 +32,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.internal.core.impl.Loggers;
 
 /**
@@ -83,6 +83,7 @@ public final class ExecutorService
     @Override
     public boolean awaitTermination(
         final long timeout,
+        @Nullable
         final TimeUnit unit )
         throws InterruptedException
     {
@@ -101,15 +102,12 @@ public final class ExecutorService
      * 
      * @return A decorator for the specified task; never {@code null}.
      */
-    /* @NonNull */
     private static <T> Callable<T> createCallableDecorator(
-        /* @NonNull */
         final Callable<T> task )
     {
-        assert task != null;
-
         return new Callable<T>()
         {
+            @Nullable
             @Override
             public T call()
                 throws Exception
@@ -141,13 +139,9 @@ public final class ExecutorService
      * 
      * @return A decorator for the specified task; never {@code null}.
      */
-    /* @NonNull */
     private static Runnable createRunnableDecorator(
-        /* @NonNull */
         final Runnable task )
     {
-        assert task != null;
-
         return new Runnable()
         {
             @Override
@@ -196,6 +190,7 @@ public final class ExecutorService
      */
     @Override
     public void execute(
+        @Nullable
         final Runnable command )
     {
         getActualExecutorService().execute( command );
@@ -206,7 +201,6 @@ public final class ExecutorService
      * 
      * @return The actual executor service; never {@code null}.
      */
-    /* @NonNull */
     private java.util.concurrent.ExecutorService getActualExecutorService()
     {
         final java.util.concurrent.ExecutorService actualExecutorService = actualExecutorServiceRef_.get();
@@ -217,8 +211,10 @@ public final class ExecutorService
     /*
      * @see java.util.concurrent.ExecutorService#invokeAll(java.util.Collection)
      */
+    @Nullable
     @Override
     public <T> List<Future<T>> invokeAll(
+        @Nullable
         final Collection<? extends Callable<T>> tasks )
         throws InterruptedException
     {
@@ -228,10 +224,13 @@ public final class ExecutorService
     /*
      * @see java.util.concurrent.ExecutorService#invokeAll(java.util.Collection, long, java.util.concurrent.TimeUnit)
      */
+    @Nullable
     @Override
     public <T> List<Future<T>> invokeAll(
+        @Nullable
         final Collection<? extends Callable<T>> tasks,
         final long timeout,
+        @Nullable
         final TimeUnit unit )
         throws InterruptedException
     {
@@ -241,8 +240,10 @@ public final class ExecutorService
     /*
      * @see java.util.concurrent.ExecutorService#invokeAny(java.util.Collection)
      */
+    @Nullable
     @Override
     public <T> T invokeAny(
+        @Nullable
         final Collection<? extends Callable<T>> tasks )
         throws InterruptedException, ExecutionException
     {
@@ -252,10 +253,13 @@ public final class ExecutorService
     /*
      * @see java.util.concurrent.ExecutorService#invokeAny(java.util.Collection, long, java.util.concurrent.TimeUnit)
      */
+    @Nullable
     @Override
     public <T> T invokeAny(
+        @Nullable
         final Collection<? extends Callable<T>> tasks,
         final long timeout,
+        @Nullable
         final TimeUnit unit )
         throws InterruptedException, ExecutionException, TimeoutException
     {
@@ -292,6 +296,7 @@ public final class ExecutorService
     /*
      * @see java.util.concurrent.ExecutorService#shutdownNow()
      */
+    @Nullable
     @Override
     public List<Runnable> shutdownNow()
     {
@@ -301,11 +306,12 @@ public final class ExecutorService
     /*
      * @see java.util.concurrent.ExecutorService#submit(java.util.concurrent.Callable)
      */
+    @Nullable
     @Override
     public <T> Future<T> submit(
         final Callable<T> task )
     {
-        assertArgumentNotNull( task, "task" ); //$NON-NLS-1$
+        assert task != null;
 
         return getActualExecutorService().submit( createCallableDecorator( task ) );
     }
@@ -313,11 +319,13 @@ public final class ExecutorService
     /*
      * @see java.util.concurrent.ExecutorService#submit(java.lang.Runnable)
      */
+    @Nullable
     @Override
     public Future<?> submit(
+        @Nullable
         final Runnable task )
     {
-        assertArgumentNotNull( task, "task" ); //$NON-NLS-1$
+        assert task != null;
 
         return getActualExecutorService().submit( createRunnableDecorator( task ) );
     }
@@ -325,12 +333,13 @@ public final class ExecutorService
     /*
      * @see java.util.concurrent.ExecutorService#submit(java.lang.Runnable, java.lang.Object)
      */
+    @Nullable
     @Override
     public <T> Future<T> submit(
         final Runnable task,
         final T result )
     {
-        assertArgumentNotNull( task, "task" ); //$NON-NLS-1$
+        assert task != null;
 
         return getActualExecutorService().submit( createRunnableDecorator( task ), result );
     }

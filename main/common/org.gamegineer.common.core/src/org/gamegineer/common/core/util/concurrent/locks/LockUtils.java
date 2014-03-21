@@ -1,6 +1,6 @@
 /*
  * LockUtils.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.core.util.concurrent.locks;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import net.jcip.annotations.ThreadSafe;
@@ -60,15 +59,10 @@ public final class LockUtils
      * @throws java.lang.IllegalArgumentException
      *         If {@code lock} does not support an interface for determining if
      *         it is held by the current thread.
-     * @throws java.lang.NullPointerException
-     *         If {@code lock} is {@code null}.
      */
     public static boolean isHeldByCurrentThread(
-        /* @NonNull */
         final Lock lock )
     {
-        assertArgumentNotNull( lock, "lock" ); //$NON-NLS-1$
-
         if( lock instanceof ReentrantLock )
         {
             return ((ReentrantLock)lock).isHeldByCurrentThread();

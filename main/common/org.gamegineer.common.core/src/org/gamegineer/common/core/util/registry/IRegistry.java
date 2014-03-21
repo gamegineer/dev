@@ -1,6 +1,6 @@
 /*
  * IRegistry.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.common.core.util.registry;
 
 import java.util.Collection;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A registry for the management of objects.
@@ -45,13 +46,9 @@ public interface IRegistry<ObjectIdType, ObjectType>
      * 
      * @return The object with the specified identifier or {@code null} if no
      *         such identifier is registered.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     public ObjectType getObject(
-        /* @NonNull */
         ObjectIdType id );
 
     /**
@@ -61,7 +58,6 @@ public interface IRegistry<ObjectIdType, ObjectType>
      *         {@code null}. This collection is a snapshot of the objects
      *         registered at the time of the call.
      */
-    /* @NonNull */
     public Collection<ObjectType> getObjects();
 
     /**
@@ -72,11 +68,8 @@ public interface IRegistry<ObjectIdType, ObjectType>
      * 
      * @throws java.lang.IllegalArgumentException
      *         If an object with the same identifier is already registered.
-     * @throws java.lang.NullPointerException
-     *         If {@code object} is {@code null}.
      */
     public void registerObject(
-        /* @NonNull */
         ObjectType object );
 
     /**
@@ -87,10 +80,7 @@ public interface IRegistry<ObjectIdType, ObjectType>
      * 
      * @throws java.lang.IllegalArgumentException
      *         If the specified object was not previously registered.
-     * @throws java.lang.NullPointerException
-     *         If {@code object} is {@code null}.
      */
     public void unregisterObject(
-        /* @NonNull */
         ObjectType object );
 }

@@ -1,6 +1,6 @@
 /*
  * LoggerConfiguration.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,6 +29,7 @@ import java.util.logging.Filter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.logging.LoggingServiceConstants;
 import org.gamegineer.common.internal.core.impl.Debug;
 import org.osgi.service.component.ComponentException;
@@ -64,14 +65,9 @@ final class LoggerConfiguration
      *        The logging properties; must not be {@code null}.
      */
     LoggerConfiguration(
-        /* @NonNull */
         final String name,
-        /* @NonNull */
         final Map<String, String> properties )
     {
-        assert name != null;
-        assert properties != null;
-
         name_ = name;
         properties_ = new HashMap<>( properties );
     }
@@ -92,9 +88,9 @@ final class LoggerConfiguration
      * 
      * @see java.util.logging.Logger#getFilter()
      */
-    /* @Nullable */
+    @Nullable
     Filter getFilter(
-        /* @Nullable */
+        @Nullable
         final Filter defaultValue )
     {
         final String value = LoggingProperties.getProperty( properties_, name_, LoggingServiceConstants.PROPERTY_LOGGER_FILTER );
@@ -124,7 +120,6 @@ final class LoggerConfiguration
      * 
      * @see java.util.logging.Logger#getHandlers()
      */
-    /* @NonNull */
     List<Handler> getHandlers()
     {
         final List<Handler> handlers = new ArrayList<>();
@@ -133,6 +128,8 @@ final class LoggerConfiguration
         {
             for( final String name : value.split( "[,\\s]+" ) ) //$NON-NLS-1$
             {
+                assert name != null;
+
                 try
                 {
                     handlers.add( AbstractLoggingComponentFactory.createNamedLoggingComponent( Handler.class, name, properties_ ) );
@@ -162,9 +159,9 @@ final class LoggerConfiguration
      * 
      * @see java.util.logging.Logger#getLevel()
      */
-    /* @Nullable */
+    @Nullable
     Level getLevel(
-        /* @Nullable */
+        @Nullable
         final Level defaultValue )
     {
         try

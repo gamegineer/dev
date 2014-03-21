@@ -1,6 +1,6 @@
 /*
  * SecureStringTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,10 @@
 
 package org.gamegineer.common.core.security;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,6 +32,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link SecureString} class.
  */
+@NonNullByDefault( false )
 public final class SecureStringTest
 {
     // ======================================================================
@@ -66,7 +69,7 @@ public final class SecureStringTest
     public void setUp()
         throws Exception
     {
-        secureString_ = new SecureString( "password".toCharArray() ); //$NON-NLS-1$
+        secureString_ = new SecureString( nonNull( "password".toCharArray() ) ); //$NON-NLS-1$
     }
 
     /**
@@ -98,42 +101,12 @@ public final class SecureStringTest
     @Test
     public void testClearCharArray_Value_Cleared()
     {
-        final char[] value = "password".toCharArray(); //$NON-NLS-1$
-        final char[] expectedValue = "\0\0\0\0\0\0\0\0".toCharArray(); //$NON-NLS-1$
+        final char[] value = nonNull( "password".toCharArray() ); //$NON-NLS-1$
+        final char[] expectedValue = nonNull( "\0\0\0\0\0\0\0\0".toCharArray() ); //$NON-NLS-1$
 
         SecureString.clearCharArray( value );
 
         assertTrue( Arrays.equals( expectedValue, value ) );
-    }
-
-    /**
-     * Ensures the {@link SecureString#clearCharArray} method throws an
-     * exception when passed a {@code null} value.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testClearCharArray_Value_Null()
-    {
-        SecureString.clearCharArray( null );
-    }
-
-    /**
-     * Ensures the {@link SecureString#SecureString(SecureString)} constructor
-     * throws an exception when passed a {@code null} secure string.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructorFromSecureString_SecureString_Null()
-    {
-        new SecureString( (SecureString)null );
-    }
-
-    /**
-     * Ensures the {@link SecureString#SecureString(char[])} constructor throws
-     * an exception when passed a {@code null} value.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructorFromValue_Value_Null()
-    {
-        new SecureString( (char[])null );
     }
 
     /**
@@ -144,7 +117,7 @@ public final class SecureStringTest
     @Test( expected = IndexOutOfBoundsException.class )
     public void testConstructorFromValueAndOffsetAndLength_Length_OutOfBounds()
     {
-        new SecureString( "password".toCharArray(), 0, 100 ); //$NON-NLS-1$
+        new SecureString( nonNull( "password".toCharArray() ), 0, 100 ); //$NON-NLS-1$
     }
 
     /**
@@ -155,27 +128,7 @@ public final class SecureStringTest
     @Test( expected = IndexOutOfBoundsException.class )
     public void testConstructorFromValueAndOffsetAndLength_Offset_OutOfBounds()
     {
-        new SecureString( "password".toCharArray(), -1, 1 ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@link SecureString#SecureString(char[], int, int)}
-     * constructor throws an exception when passed a {@code null} value.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructorFromValueAndOffsetAndLength_Value_Null()
-    {
-        new SecureString( null, 0, 0 );
-    }
-
-    /**
-     * Ensures the {@link SecureString#fromCharArray} method throws an exception
-     * when passed a {@code null} value.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testFromCharArray_Value_Null()
-    {
-        SecureString.fromCharArray( null );
+        new SecureString( nonNull( "password".toCharArray() ), -1, 1 ); //$NON-NLS-1$
     }
 
     /**

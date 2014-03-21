@@ -1,6 +1,6 @@
 /*
  * LoggingPropertiesTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -30,12 +31,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the {@link LoggingProperties} class.
  */
+@NonNullByDefault( false )
 public final class LoggingPropertiesTest
 {
     // ======================================================================
@@ -61,6 +65,19 @@ public final class LoggingPropertiesTest
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the logging properties under test in the fixture.
+     * 
+     * @return The logging properties under test in the fixture; never
+     *         {@code null}.
+     */
+    @NonNull
+    private Map<String, String> getProperties()
+    {
+        assertNotNull( properties_ );
+        return properties_;
+    }
 
     /**
      * Sets up the test fixture.
@@ -92,7 +109,7 @@ public final class LoggingPropertiesTest
     @Test
     public void testGetAncestorLoggerNames_ReturnValue_NonNull()
     {
-        final List<String> names = LoggingProperties.getAncestorLoggerNames( properties_, "z" ); //$NON-NLS-1$
+        final List<String> names = LoggingProperties.getAncestorLoggerNames( getProperties(), "z" ); //$NON-NLS-1$
 
         assertNotNull( names );
         assertTrue( names.isEmpty() );
@@ -106,7 +123,7 @@ public final class LoggingPropertiesTest
     @Test
     public void testGetAncestorLoggerNames_ReturnValue_Ordered()
     {
-        final List<String> names = LoggingProperties.getAncestorLoggerNames( properties_, "a.b.c.d.e.f" ); //$NON-NLS-1$
+        final List<String> names = LoggingProperties.getAncestorLoggerNames( getProperties(), "a.b.c.d.e.f" ); //$NON-NLS-1$
 
         assertEquals( 3, names.size() );
         assertEquals( "a.b.c.d", names.get( 0 ) ); //$NON-NLS-1$
@@ -121,7 +138,7 @@ public final class LoggingPropertiesTest
     @Test
     public void testGetPropertyForComponentName_Property_Absent()
     {
-        assertNull( LoggingProperties.getProperty( properties_, "a.b.c.d", "p1000" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        assertNull( LoggingProperties.getProperty( getProperties(), "a.b.c.d", "p1000" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -131,7 +148,7 @@ public final class LoggingPropertiesTest
     @Test
     public void testGetPropertyForComponentName_Property_Present()
     {
-        assertEquals( "v1", LoggingProperties.getProperty( properties_, "a.b.c.d", "p1" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals( "v1", LoggingProperties.getProperty( getProperties(), "a.b.c.d", "p1" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     /**
@@ -145,7 +162,7 @@ public final class LoggingPropertiesTest
         final Class<?> type = Object.class;
         final String instanceName = "b"; //$NON-NLS-1$
         final String propertyName = "p1"; //$NON-NLS-1$
-        final Map<String, String> properties = Collections.emptyMap();
+        final Map<String, String> properties = nonNull( Collections.<String, String>emptyMap() );
 
         assertNull( LoggingProperties.getProperty( properties, type, instanceName, propertyName ) );
     }
@@ -162,7 +179,7 @@ public final class LoggingPropertiesTest
         final String instanceName = "b"; //$NON-NLS-1$
         final String propertyName = "p1"; //$NON-NLS-1$
         final String propertyValue = "value"; //$NON-NLS-1$
-        final Map<String, String> properties = Collections.singletonMap( String.format( "%1$s.%2$s.%3$s", type.getName(), instanceName, propertyName ), propertyValue ); //$NON-NLS-1$
+        final Map<String, String> properties = nonNull( Collections.singletonMap( String.format( "%1$s.%2$s.%3$s", type.getName(), instanceName, propertyName ), propertyValue ) ); //$NON-NLS-1$
 
         assertEquals( propertyValue, LoggingProperties.getProperty( properties, type, instanceName, propertyName ) );
     }

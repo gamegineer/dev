@@ -1,6 +1,6 @@
 /*
  * LoggingService.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -31,6 +31,7 @@ import java.util.logging.Handler;
 import java.util.logging.Logger;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.logging.ILoggingService;
 import org.gamegineer.common.internal.core.impl.Debug;
 import org.osgi.framework.Bundle;
@@ -84,21 +85,15 @@ public final class LoggingService
      * 
      * @param bundleContext
      *        The bundle context; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code bundleContext} is {@code null}.
      */
     public void activate(
-        /* @NonNull */
         final BundleContext bundleContext )
     {
-        assertArgumentNotNull( bundleContext, "bundleContext" ); //$NON-NLS-1$
-
         // NB: This seemingly meaningless log message is actually required in
         // order to ensure the "org.gamegineer" logger is created so that all
         // other Gamegineer bundle loggers will inherit its attributes.
         // DO NOT REMOVE THIS STATEMENT!
-        getLogger( bundleContext.getBundle() ).info( "Gamegineer logging service activated" ); //$NON-NLS-1$
+        getLogger( nonNull( bundleContext.getBundle() ) ).info( "Gamegineer logging service activated" ); //$NON-NLS-1$
     }
 
     /**
@@ -116,20 +111,17 @@ public final class LoggingService
      */
     @GuardedBy( "lock_" )
     private void configureAncestorLoggers(
-        /* @NonNull */
         final String loggerName,
-        /* @NonNull */
         final Map<String, String> properties )
     {
-        assert loggerName != null;
-        assert properties != null;
         assert Thread.holdsLock( lock_ );
 
         for( final String ancestorLoggerName : LoggingProperties.getAncestorLoggerNames( properties, loggerName ) )
         {
+            assert ancestorLoggerName != null;
             if( !loggers_.containsKey( ancestorLoggerName ) )
             {
-                final Logger logger = Logger.getLogger( ancestorLoggerName );
+                final Logger logger = nonNull( Logger.getLogger( ancestorLoggerName ) );
                 loggers_.put( ancestorLoggerName, logger );
                 configureLogger( logger, new LoggerConfiguration( ancestorLoggerName, properties ) );
             }
@@ -145,14 +137,9 @@ public final class LoggingService
      *        The logger configuration; must not be {@code null}.
      */
     private static void configureLogger(
-        /* @NonNull */
         final Logger logger,
-        /* @NonNull */
         final LoggerConfiguration config )
     {
-        assert logger != null;
-        assert config != null;
-
         Debug.getDefault().trace( Debug.OPTION_LOGGING, String.format( "Configuring logger '%1$s'", logger.getName() ) ); //$NON-NLS-1$
 
         logger.setFilter( config.getFilter( logger.getFilter() ) );
@@ -181,10 +168,9 @@ public final class LoggingService
     @Override
     public Logger getLogger(
         final Bundle bundle,
+        @Nullable
         final String name )
     {
-        assertArgumentNotNull( bundle, "bundle" ); //$NON-NLS-1$
-
         Logger logger = null;
         final String loggerName = getLoggerName( bundle, name );
 
@@ -196,7 +182,7 @@ public final class LoggingService
                 return logger;
             }
 
-            logger = Logger.getLogger( loggerName );
+            logger = nonNull( Logger.getLogger( loggerName ) );
             loggers_.put( loggerName, logger );
 
             final Map<String, String> properties = getLoggingProperties( bundle );
@@ -222,15 +208,11 @@ public final class LoggingService
      * 
      * @return The fully-qualified name of the logger for the specified bundle.
      */
-    /* @NonNull */
     private static String getLoggerName(
-        /* @NonNull */
         final Bundle bundle,
-        /* @Nullable */
+        @Nullable
         final String name )
     {
-        assert bundle != null;
-
         final StringBuilder sb = new StringBuilder();
         sb.append( bundle.getSymbolicName() );
         if( (name != null) && !name.isEmpty() )
@@ -238,7 +220,7 @@ public final class LoggingService
             sb.append( '.' );
             sb.append( name );
         }
-        return sb.toString();
+        return nonNull( sb.toString() );
     }
 
     /**
@@ -250,13 +232,10 @@ public final class LoggingService
      * @return The logging properties for the specified bundle or {@code null}
      *         if no properties exist or they could not be loaded.
      */
-    /* @Nullable */
+    @Nullable
     private static Map<String, String> getLoggingProperties(
-        /* @NonNull */
         final Bundle bundle )
     {
-        assert bundle != null;
-
         final URL propertiesUrl = bundle.getEntry( LOGGING_PROPERTIES_PATH );
         if( propertiesUrl == null )
         {

@@ -1,6 +1,6 @@
 /*
  * AbstractHandlerFactory.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.logging.Filter;
@@ -28,6 +29,7 @@ import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.logging.LoggingServiceConstants;
 import org.gamegineer.common.internal.core.impl.Debug;
 import org.osgi.service.component.ComponentException;
@@ -51,12 +53,8 @@ public abstract class AbstractHandlerFactory<T extends Handler>
      * 
      * @param type
      *        The type of the logging component; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code type} is {@code null}.
      */
     protected AbstractHandlerFactory(
-        /* @NonNull */
         final Class<T> type )
     {
         super( type );
@@ -74,6 +72,7 @@ public abstract class AbstractHandlerFactory<T extends Handler>
     protected void configureLoggingComponent(
         final T component,
         final String instanceName,
+        @Nullable
         final Map<String, String> properties )
     {
         super.configureLoggingComponent( component, instanceName, properties );
@@ -101,18 +100,11 @@ public abstract class AbstractHandlerFactory<T extends Handler>
      *        The logging properties; must not be {@code null}.
      */
     private static void setEncoding(
-        /* @NonNull */
         final Handler handler,
-        /* @NonNull */
         final String instanceName,
-        /* @NonNull */
         final Map<String, String> properties )
     {
-        assert handler != null;
-        assert instanceName != null;
-        assert properties != null;
-
-        final String value = LoggingProperties.getProperty( properties, handler.getClass(), instanceName, LoggingServiceConstants.PROPERTY_HANDLER_ENCODING );
+        final String value = LoggingProperties.getProperty( properties, nonNull( handler.getClass() ), instanceName, LoggingServiceConstants.PROPERTY_HANDLER_ENCODING );
         if( value != null )
         {
             try
@@ -138,18 +130,11 @@ public abstract class AbstractHandlerFactory<T extends Handler>
      *        The logging properties; must not be {@code null}.
      */
     private static void setFilter(
-        /* @NonNull */
         final Handler handler,
-        /* @NonNull */
         final String instanceName,
-        /* @NonNull */
         final Map<String, String> properties )
     {
-        assert handler != null;
-        assert instanceName != null;
-        assert properties != null;
-
-        final String value = LoggingProperties.getProperty( properties, handler.getClass(), instanceName, LoggingServiceConstants.PROPERTY_HANDLER_FILTER );
+        final String value = LoggingProperties.getProperty( properties, nonNull( handler.getClass() ), instanceName, LoggingServiceConstants.PROPERTY_HANDLER_FILTER );
         if( value != null )
         {
             try
@@ -179,18 +164,11 @@ public abstract class AbstractHandlerFactory<T extends Handler>
      *        The logging properties; must not be {@code null}.
      */
     private static void setFormatter(
-        /* @NonNull */
         final Handler handler,
-        /* @NonNull */
         final String instanceName,
-        /* @NonNull */
         final Map<String, String> properties )
     {
-        assert handler != null;
-        assert instanceName != null;
-        assert properties != null;
-
-        final String value = LoggingProperties.getProperty( properties, handler.getClass(), instanceName, LoggingServiceConstants.PROPERTY_HANDLER_FORMATTER );
+        final String value = LoggingProperties.getProperty( properties, nonNull( handler.getClass() ), instanceName, LoggingServiceConstants.PROPERTY_HANDLER_FORMATTER );
         if( value != null )
         {
             try
@@ -220,18 +198,11 @@ public abstract class AbstractHandlerFactory<T extends Handler>
      *        The logging properties; must not be {@code null}.
      */
     private static void setLevel(
-        /* @NonNull */
         final Handler handler,
-        /* @NonNull */
         final String instanceName,
-        /* @NonNull */
         final Map<String, String> properties )
     {
-        assert handler != null;
-        assert instanceName != null;
-        assert properties != null;
-
-        final String value = LoggingProperties.getProperty( properties, handler.getClass(), instanceName, LoggingServiceConstants.PROPERTY_HANDLER_LEVEL );
+        final String value = LoggingProperties.getProperty( properties, nonNull( handler.getClass() ), instanceName, LoggingServiceConstants.PROPERTY_HANDLER_LEVEL );
         if( value != null )
         {
             try

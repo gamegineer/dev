@@ -1,6 +1,6 @@
 /*
  * AbstractAbstractRegistryTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,8 @@
 package org.gamegineer.common.core.util.registry.test;
 
 import static org.junit.Assert.assertNotNull;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.util.registry.AbstractRegistry;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +39,7 @@ import org.junit.Test;
  * @param <ObjectType>
  *        The type of object managed by the registry.
  */
+@NonNullByDefault( false )
 public abstract class AbstractAbstractRegistryTestCase<RegistryType extends AbstractRegistry<ObjectIdType, ObjectType>, ObjectIdType, ObjectType>
 {
     // ======================================================================
@@ -74,15 +77,12 @@ public abstract class AbstractAbstractRegistryTestCase<RegistryType extends Abst
      *        The object; must not be {@code null}.
      * 
      * @return The identifier of the specified object; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code registry} or {@code object} is {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract ObjectIdType getObjectId(
-        /* @NonNull */
+        @NonNull
         RegistryType registry,
-        /* @NonNull */
+        @NonNull
         ObjectType object );
 
     /**
@@ -93,7 +93,7 @@ public abstract class AbstractAbstractRegistryTestCase<RegistryType extends Abst
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract RegistryType createRegistry()
         throws Exception;
 
@@ -112,12 +112,11 @@ public abstract class AbstractAbstractRegistryTestCase<RegistryType extends Abst
     }
 
     /**
-     * Ensures the {@link AbstractRegistry#getObjectId} method throws an
-     * exception when passed a {@code null} object.
+     * Placeholder for future interface tests.
      */
-    @Test( expected = NullPointerException.class )
-    public void testGetObjectId_Object_Null()
+    @Test
+    public void testDummy()
     {
-        getObjectId( registry_, null );
+        // do nothing
     }
 }

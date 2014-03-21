@@ -1,6 +1,6 @@
 /*
  * AbstractRegistry.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,12 +22,12 @@
 package org.gamegineer.common.core.util.registry;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.internal.core.Debug;
 
 /**
@@ -70,12 +70,11 @@ public abstract class AbstractRegistry<ObjectIdType, ObjectType>
     /*
      * @see org.gamegineer.common.core.util.registry.IRegistry#getObject(java.lang.Object)
      */
+    @Nullable
     @Override
     public final ObjectType getObject(
         final ObjectIdType id )
     {
-        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
-
         return objects_.get( id );
     }
 
@@ -86,13 +85,8 @@ public abstract class AbstractRegistry<ObjectIdType, ObjectType>
      *        The object; must not be {@code null}.
      * 
      * @return The identifier of the specified object; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code object} is {@code null}.
      */
-    /* @NonNull */
     protected abstract ObjectIdType getObjectId(
-        /* @NonNull */
         ObjectType object );
 
     /*
@@ -111,7 +105,6 @@ public abstract class AbstractRegistry<ObjectIdType, ObjectType>
     public final void registerObject(
         final ObjectType object )
     {
-        assertArgumentNotNull( object, "object" ); //$NON-NLS-1$
         final ObjectIdType id = getObjectId( object );
         assertArgumentLegal( objects_.putIfAbsent( id, object ) == null, "object", NonNlsMessages.AbstractRegistry_registerObject_object_registered( id ) ); //$NON-NLS-1$
 
@@ -125,7 +118,6 @@ public abstract class AbstractRegistry<ObjectIdType, ObjectType>
     public final void unregisterObject(
         final ObjectType object )
     {
-        assertArgumentNotNull( object, "object" ); //$NON-NLS-1$
         final ObjectIdType id = getObjectId( object );
         assertArgumentLegal( objects_.remove( id, object ), "object", NonNlsMessages.AbstractRegistry_unregisterObject_object_unregistered( id ) ); //$NON-NLS-1$
 

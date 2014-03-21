@@ -1,6 +1,6 @@
 /*
  * FrameworkLogHandler.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.common.core.logging;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.logging.ErrorManager;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
@@ -29,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import net.jcip.annotations.NotThreadSafe;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.osgi.framework.log.FrameworkLog;
 import org.eclipse.osgi.framework.log.FrameworkLogEntry;
 
@@ -77,16 +78,10 @@ public final class FrameworkLogHandler
      * @param frameworkLog
      *        The framework log to which output will be written; must not be
      *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code frameworkLog} is {@code null}.
      */
     public FrameworkLogHandler(
-        /* @NonNull */
         final FrameworkLog frameworkLog )
     {
-        assertArgumentNotNull( frameworkLog, "frameworkLog" ); //$NON-NLS-1$
-
         frameworkLog_ = frameworkLog;
         formatter_ = new FrameworkLogFormatter();
 
@@ -131,11 +126,8 @@ public final class FrameworkLogHandler
      * @see org.eclipse.osgi.framework.log.FrameworkLogEntry
      */
     private static int getSeverity(
-        /* @NonNull */
         final LogRecord record )
     {
-        assert record != null;
-
         if( record.getLevel() == Level.SEVERE )
         {
             return FrameworkLogEntry.ERROR;
@@ -155,9 +147,10 @@ public final class FrameworkLogHandler
      */
     @Override
     public synchronized void publish(
+        @Nullable
         final LogRecord record )
     {
-        if( !isLoggable( record ) )
+        if( (record == null) || !isLoggable( record ) )
         {
             return;
         }
@@ -211,8 +204,11 @@ public final class FrameworkLogHandler
          */
         @Override
         public String format(
+            @Nullable
             final LogRecord record )
         {
+            assert record != null;
+
             final StringBuilder sb = new StringBuilder();
             sb.append( formatMessage( record ) );
             sb.append( " [" ); //$NON-NLS-1$
@@ -226,7 +222,7 @@ public final class FrameworkLogHandler
                 sb.append( record.getSourceMethodName() );
             }
             sb.append( "]" ); //$NON-NLS-1$
-            return sb.toString();
+            return nonNull( sb.toString() );
         }
     }
 }

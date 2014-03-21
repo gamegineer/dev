@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.core.app;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 
@@ -38,7 +39,7 @@ final class NonNlsMessages
     // --- BrandingUtils ----------------------------------------------------
 
     /** An error occurred while parsing the application version. */
-    public static String BrandingUtils_getVersion_parseError;
+    public static String BrandingUtils_getVersion_parseError = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -77,11 +78,9 @@ final class NonNlsMessages
      * @return The formatted message indicating an error occurred while parsing
      *         the application version; never {@code null}.
      */
-    /* @NonNull */
     static String BrandingUtils_getVersion_parseError(
-        /* @NonNull */
         final String versionString )
     {
-        return bind( BrandingUtils_getVersion_parseError, versionString );
+        return nonNull( bind( BrandingUtils_getVersion_parseError, versionString ) );
     }
 }

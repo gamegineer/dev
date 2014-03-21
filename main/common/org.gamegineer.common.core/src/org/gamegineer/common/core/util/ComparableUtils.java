@@ -1,6 +1,6 @@
 /*
  * ComparableUtils.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.common.core.util;
 
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A collection of useful methods for working with instances of
@@ -63,9 +64,9 @@ public final class ComparableUtils
      *         second object.
      */
     public static <T extends Comparable<T>> int compareTo(
-        /* @Nullable */
+        @Nullable
         final T obj1,
-        /* @Nullable */
+        @Nullable
         final T obj2 )
     {
         if( obj1 == null )

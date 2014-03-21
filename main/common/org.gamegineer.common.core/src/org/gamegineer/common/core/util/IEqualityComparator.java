@@ -1,6 +1,6 @@
 /*
  * IEqualityComparator.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,6 +20,8 @@
  */
 
 package org.gamegineer.common.core.util;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Defines an algorithm for the comparison of objects for equality.
@@ -51,9 +53,9 @@ public interface IEqualityComparator<T>
      *         being compared by this comparator.
      */
     public boolean equals(
-        /* @Nullable */
+        @Nullable
         T obj1,
-        /* @Nullable */
+        @Nullable
         T obj2 );
 
     /**
@@ -70,6 +72,6 @@ public interface IEqualityComparator<T>
      *         comparator.
      */
     public int hashCode(
-        /* @Nullable */
+        @Nullable
         T obj );
 }

@@ -1,6 +1,6 @@
 /*
  * LoggerConfigurationTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -31,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Handler;
 import java.util.logging.Level;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.logging.LoggingServiceConstants;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,6 +43,7 @@ import org.osgi.service.component.ComponentFactory;
 /**
  * A fixture for testing the {@link LoggerConfiguration} class.
  */
+@NonNullByDefault( false )
 public final class LoggerConfigurationTest
 {
     // ======================================================================
@@ -47,18 +51,23 @@ public final class LoggerConfigurationTest
     // ======================================================================
 
     /** The class name of the filter used in the fixture. */
-    private static final String FILTER_CLASS_NAME = FakeFilter.class.getName();
+    @NonNull
+    private static final String FILTER_CLASS_NAME = nonNull( FakeFilter.class.getName() );
 
     /** The instance name of the filter used in the fixture. */
+    @NonNull
     private static final String FILTER_INSTANCE_NAME = "filterName"; //$NON-NLS-1$
 
     /** The class name of the handler used in the fixture. */
-    private static final String HANDLER_CLASS_NAME = FakeHandler.class.getName();
+    @NonNull
+    private static final String HANDLER_CLASS_NAME = nonNull( FakeHandler.class.getName() );
 
     /** The instance name of the first handler used in the fixture. */
+    @NonNull
     private static final String HANDLER_INSTANCE_NAME_1 = "handlerName1"; //$NON-NLS-1$
 
     /** The instance name of the second handler used in the fixture. */
+    @NonNull
     private static final String HANDLER_INSTANCE_NAME_2 = "handlerName2"; //$NON-NLS-1$
 
     /** The default logger configuration under test in the fixture. */
@@ -85,6 +94,18 @@ public final class LoggerConfigurationTest
     // ======================================================================
 
     /**
+     * Gets the fixture logger properties.
+     * 
+     * @return The fixture logger properties; never {@code null}.
+     */
+    @NonNull
+    private Map<String, String> getProperties()
+    {
+        assertNotNull( properties_ );
+        return properties_;
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -94,36 +115,37 @@ public final class LoggerConfigurationTest
     public void setUp()
         throws Exception
     {
-        properties_ = new HashMap<>();
+        final Map<String, String> properties = new HashMap<>();
 
         // Logger with all properties configured
-        properties_.put( "logger.default.filter", String.format( "%1$s.%2$s", FILTER_CLASS_NAME, FILTER_INSTANCE_NAME ) ); //$NON-NLS-1$ //$NON-NLS-2$
-        properties_.put( "logger.default.handlers", String.format( "%1$s.%2$s, %1$s.%3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_1, HANDLER_INSTANCE_NAME_2 ) ); //$NON-NLS-1$ //$NON-NLS-2$
-        properties_.put( "logger.default.level", Level.SEVERE.getName() ); //$NON-NLS-1$
-        properties_.put( "logger.default.useParentHandlers", "true" ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties.put( "logger.default.filter", String.format( "%1$s.%2$s", FILTER_CLASS_NAME, FILTER_INSTANCE_NAME ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties.put( "logger.default.handlers", String.format( "%1$s.%2$s, %1$s.%3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_1, HANDLER_INSTANCE_NAME_2 ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties.put( "logger.default.level", Level.SEVERE.getName() ); //$NON-NLS-1$
+        properties.put( "logger.default.useParentHandlers", "true" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // Logger with an illegal filter
-        properties_.put( "logger.illegalFilter.filter", "A_NAME_WITHOUT_A_DOT" ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties.put( "logger.illegalFilter.filter", "A_NAME_WITHOUT_A_DOT" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // Logger with an illegal handler
-        properties_.put( "logger.illegalHandler.handlers", String.format( "%1$s.%2$s, %3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_1, "A_NAME_WITHOUT_A_DOT" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        properties.put( "logger.illegalHandler.handlers", String.format( "%1$s.%2$s, %3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_1, "A_NAME_WITHOUT_A_DOT" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
         // Logger with no filter
-        properties_.put( "logger.noFilter.level", Level.INFO.getName() ); //$NON-NLS-1$
+        properties.put( "logger.noFilter.level", Level.INFO.getName() ); //$NON-NLS-1$
 
         // Logger with no handlers
-        properties_.put( "logger.noHandlers.level", Level.INFO.getName() ); //$NON-NLS-1$
+        properties.put( "logger.noHandlers.level", Level.INFO.getName() ); //$NON-NLS-1$
 
         // Filter
-        properties_.put( String.format( "%1$s.%2$s.%3$s", FILTER_CLASS_NAME, FILTER_INSTANCE_NAME, FakeFilter.PROPERTY_FAKE_BOOLEAN_PROPERTY ), Boolean.toString( false ) ); //$NON-NLS-1$
+        properties.put( String.format( "%1$s.%2$s.%3$s", FILTER_CLASS_NAME, FILTER_INSTANCE_NAME, FakeFilter.PROPERTY_FAKE_BOOLEAN_PROPERTY ), Boolean.toString( false ) ); //$NON-NLS-1$
 
         // Handler 1
-        properties_.put( String.format( "%1$s.%2$s.%3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_1, LoggingServiceConstants.PROPERTY_HANDLER_LEVEL ), Level.SEVERE.getName() ); //$NON-NLS-1$
+        properties.put( String.format( "%1$s.%2$s.%3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_1, LoggingServiceConstants.PROPERTY_HANDLER_LEVEL ), Level.SEVERE.getName() ); //$NON-NLS-1$
 
         // Handler 2
-        properties_.put( String.format( "%1$s.%2$s.%3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_2, LoggingServiceConstants.PROPERTY_HANDLER_LEVEL ), Level.WARNING.getName() ); //$NON-NLS-1$
+        properties.put( String.format( "%1$s.%2$s.%3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_2, LoggingServiceConstants.PROPERTY_HANDLER_LEVEL ), Level.WARNING.getName() ); //$NON-NLS-1$
 
-        config_ = new LoggerConfiguration( "logger.default", properties_ ); //$NON-NLS-1$
+        properties_ = properties;
+        config_ = new LoggerConfiguration( "logger.default", properties ); //$NON-NLS-1$
     }
 
     /**
@@ -185,7 +207,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetFilter_Configured_IllegalFilter()
     {
-        final LoggerConfiguration config = new LoggerConfiguration( "logger.illegalFilter", properties_ ); //$NON-NLS-1$
+        final LoggerConfiguration config = new LoggerConfiguration( "logger.illegalFilter", getProperties() ); //$NON-NLS-1$
 
         assertNull( config.getFilter( null ) );
     }
@@ -197,7 +219,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetFilter_Configured_NoFilter()
     {
-        final LoggerConfiguration config = new LoggerConfiguration( "logger.noFilter", properties_ ); //$NON-NLS-1$
+        final LoggerConfiguration config = new LoggerConfiguration( "logger.noFilter", getProperties() ); //$NON-NLS-1$
 
         assertNull( config.getFilter( null ) );
     }
@@ -209,7 +231,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetFilter_NotConfigured()
     {
-        final LoggerConfiguration config = new LoggerConfiguration( "logger.unknown", properties_ ); //$NON-NLS-1$
+        final LoggerConfiguration config = new LoggerConfiguration( "logger.unknown", getProperties() ); //$NON-NLS-1$
 
         assertNull( config.getFilter( null ) );
     }
@@ -268,7 +290,7 @@ public final class LoggerConfigurationTest
         final ServiceRegistration<ComponentFactory> serviceRegistration = FakeHandler.registerComponentFactory();
         try
         {
-            final LoggerConfiguration config = new LoggerConfiguration( "logger.illegalHandler", properties_ ); //$NON-NLS-1$
+            final LoggerConfiguration config = new LoggerConfiguration( "logger.illegalHandler", getProperties() ); //$NON-NLS-1$
 
             final List<Handler> handlers = config.getHandlers();
 
@@ -289,7 +311,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetHandlers_Configured_NoHandlers()
     {
-        final LoggerConfiguration config = new LoggerConfiguration( "logger.noHandlers", properties_ ); //$NON-NLS-1$
+        final LoggerConfiguration config = new LoggerConfiguration( "logger.noHandlers", getProperties() ); //$NON-NLS-1$
 
         final List<Handler> handlers = config.getHandlers();
 
@@ -304,7 +326,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetHandlers_NotConfigured()
     {
-        final LoggerConfiguration config = new LoggerConfiguration( "logger.unknown", properties_ ); //$NON-NLS-1$
+        final LoggerConfiguration config = new LoggerConfiguration( "logger.unknown", getProperties() ); //$NON-NLS-1$
 
         final List<Handler> handlers = config.getHandlers();
 
@@ -329,7 +351,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetLevel_NotConfigured()
     {
-        final LoggerConfiguration config = new LoggerConfiguration( "logger.unknown", properties_ ); //$NON-NLS-1$
+        final LoggerConfiguration config = new LoggerConfiguration( "logger.unknown", getProperties() ); //$NON-NLS-1$
 
         assertEquals( null, config.getLevel( null ) );
     }
@@ -353,7 +375,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetUseParentHandlers_NotConfigured()
     {
-        final LoggerConfiguration config = new LoggerConfiguration( "logger.unknown", properties_ ); //$NON-NLS-1$
+        final LoggerConfiguration config = new LoggerConfiguration( "logger.unknown", getProperties() ); //$NON-NLS-1$
 
         assertEquals( false, config.getUseParentHandlers( false ) );
     }

@@ -1,6 +1,6 @@
 /*
  * AbstractAbstractHandlerFactoryTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -81,14 +82,10 @@ public abstract class AbstractAbstractHandlerFactoryTestCase<F extends AbstractH
      * @return The map key for the specified logging property; never
      *         {@code null}.
      */
-    /* @NonNull */
     private String getLoggingPropertyKey(
-        /* @NonNull */
         final String propertyName )
     {
-        assert propertyName != null;
-
-        return String.format( "%1$s.%2$s.%3$s", getLoggingComponentType().getName(), DEFAULT_INSTANCE_NAME, propertyName ); //$NON-NLS-1$
+        return nonNull( String.format( "%1$s.%2$s.%3$s", getLoggingComponentType().getName(), DEFAULT_INSTANCE_NAME, propertyName ) ); //$NON-NLS-1$
     }
 
     /**

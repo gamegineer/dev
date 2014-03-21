@@ -1,6 +1,6 @@
 /*
  * AbstractLoggingComponentFactoryTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,12 +21,14 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import java.util.Collections;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.logging.Filter;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.logging.LoggingServiceConstants;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +39,7 @@ import org.osgi.service.component.ComponentFactory;
 /**
  * A fixture for testing the {@link AbstractLoggingComponentFactory} class.
  */
+@NonNullByDefault( false )
 public final class AbstractLoggingComponentFactoryTest
 {
     // ======================================================================
@@ -90,20 +93,6 @@ public final class AbstractLoggingComponentFactoryTest
 
     /**
      * Ensures the
-     * {@link AbstractLoggingComponentFactory#AbstractLoggingComponentFactory}
-     * constructor throws an exception when passed a {@code null} type.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_Type_Null()
-    {
-        new AbstractLoggingComponentFactory<Object>( null )
-        {
-            // no overrides
-        };
-    }
-
-    /**
-     * Ensures the
      * {@link AbstractLoggingComponentFactory#createNamedLoggingComponent}
      * method creates the expected object.
      */
@@ -113,7 +102,7 @@ public final class AbstractLoggingComponentFactoryTest
         final ServiceRegistration<ComponentFactory> serviceRegistration = FakeFilter.registerComponentFactory();
         try
         {
-            final String name = String.format( "%1$s.name", FakeFilter.class.getName() ); //$NON-NLS-1$
+            final String name = nonNull( String.format( "%1$s.name", FakeFilter.class.getName() ) ); //$NON-NLS-1$
 
             final Filter component = AbstractLoggingComponentFactory.createNamedLoggingComponent( Filter.class, name, null );
 

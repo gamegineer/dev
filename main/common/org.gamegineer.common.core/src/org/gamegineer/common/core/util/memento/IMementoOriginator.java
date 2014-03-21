@@ -1,6 +1,6 @@
 /*
  * IMementoOriginator.java
- * Copyright 2008-2011 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -36,7 +36,6 @@ public interface IMementoOriginator
      * @return A memento that represents the state of the originator; never
      *         {@code null}.
      */
-    /* @NonNull */
     public Object createMemento();
 
     /**
@@ -46,14 +45,11 @@ public interface IMementoOriginator
      *        The memento that represents the new state of the originator; must
      *        not be {@code null}.
      * 
-     * @throws java.lang.NullPointerException
-     *         If {@code memento} is {@code null}.
      * @throws org.gamegineer.common.core.util.memento.MementoException
      *         If the memento does not represent a valid state for the
      *         originator.
      */
     public void setMemento(
-        /* @NonNull */
         Object memento )
         throws MementoException;
 }

@@ -1,6 +1,6 @@
 /*
  * Debug.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,9 +21,10 @@
 
 package org.gamegineer.common.core.runtime;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.osgi.service.debug.DebugOptions;
 import org.eclipse.osgi.service.debug.DebugTrace;
 import org.gamegineer.common.internal.core.Activator;
@@ -63,16 +64,10 @@ public abstract class Debug
      * @param bundleSymbolicName
      *        The symbolic name of the bundle associated with this instance;
      *        must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code bundleSymbolicName} is {@code null}.
      */
     protected Debug(
-        /* @NonNull */
         final String bundleSymbolicName )
     {
-        assertArgumentNotNull( bundleSymbolicName, "bundleSymbolicName" ); //$NON-NLS-1$
-
         bundleSymbolicName_ = bundleSymbolicName;
     }
 
@@ -87,7 +82,6 @@ public abstract class Debug
      * @return The debug trace for the bundle associated with this instance;
      *         never {@code null}.
      */
-    /* @NonNull */
     private DebugTrace getDebugTrace()
     {
         final DebugOptions debugOptions = Activator.getDefault().getDebugOptions();
@@ -96,7 +90,7 @@ public abstract class Debug
             return DEFAULT_DEBUG_TRACE;
         }
 
-        return debugOptions.newDebugTrace( bundleSymbolicName_, Debug.class );
+        return nonNull( debugOptions.newDebugTrace( bundleSymbolicName_, Debug.class ) );
     }
 
     /**
@@ -109,9 +103,9 @@ public abstract class Debug
      *        The message; may be {@code null}.
      */
     public final void trace(
-        /* @Nullable */
+        @Nullable
         final String option,
-        /* @Nullable */
+        @Nullable
         final String message )
     {
         getDebugTrace().trace( option, message );
@@ -129,11 +123,11 @@ public abstract class Debug
      *        The exception; may be {@code null}.
      */
     public final void trace(
-        /* @Nullable */
+        @Nullable
         final String option,
-        /* @Nullable */
+        @Nullable
         final String message,
-        /* @Nullable */
+        @Nullable
         final Throwable error )
     {
         getDebugTrace().trace( option, message, error );
@@ -148,7 +142,7 @@ public abstract class Debug
      *        is printed or {@code null} to always print the trace message.
      */
     public final void traceDumpStack(
-        /* @Nullable */
+        @Nullable
         final String option )
     {
         getDebugTrace().traceDumpStack( option );
@@ -163,7 +157,7 @@ public abstract class Debug
      *        is printed or {@code null} to always print the trace message.
      */
     public final void traceEntry(
-        /* @Nullable */
+        @Nullable
         final String option )
     {
         getDebugTrace().traceEntry( option );
@@ -180,9 +174,9 @@ public abstract class Debug
      *        The method argument; may be {@code null}.
      */
     public final void traceEntry(
-        /* @Nullable */
+        @Nullable
         final String option,
-        /* @Nullable */
+        @Nullable
         final Object methodArgument )
     {
         getDebugTrace().traceEntry( option, methodArgument );
@@ -199,9 +193,9 @@ public abstract class Debug
      *        The method arguments; may be {@code null}.
      */
     public final void traceEntry(
-        /* @Nullable */
+        @Nullable
         final String option,
-        /* @Nullable */
+        @Nullable
         final Object... methodArguments )
     {
         getDebugTrace().traceEntry( option, methodArguments );
@@ -216,7 +210,7 @@ public abstract class Debug
      *        is printed or {@code null} to always print the trace message.
      */
     public final void traceExit(
-        /* @Nullable */
+        @Nullable
         final String option )
     {
         getDebugTrace().traceExit( option );
@@ -233,9 +227,9 @@ public abstract class Debug
      *        The method result; may be {@code null}.
      */
     public final void traceExit(
-        /* @Nullable */
+        @Nullable
         final String option,
-        /* @Nullable */
+        @Nullable
         final Object result )
     {
         getDebugTrace().traceExit( option, result );
@@ -274,8 +268,10 @@ public abstract class Debug
          */
         @Override
         public void trace(
+            @Nullable
             @SuppressWarnings( "unused" )
             final String option,
+            @Nullable
             @SuppressWarnings( "unused" )
             final String message )
         {
@@ -287,10 +283,13 @@ public abstract class Debug
          */
         @Override
         public void trace(
+            @Nullable
             @SuppressWarnings( "unused" )
             final String option,
+            @Nullable
             @SuppressWarnings( "unused" )
             final String message,
+            @Nullable
             @SuppressWarnings( "unused" )
             final Throwable error )
         {
@@ -302,6 +301,7 @@ public abstract class Debug
          */
         @Override
         public void traceDumpStack(
+            @Nullable
             @SuppressWarnings( "unused" )
             final String option )
         {
@@ -313,6 +313,7 @@ public abstract class Debug
          */
         @Override
         public void traceEntry(
+            @Nullable
             @SuppressWarnings( "unused" )
             final String option )
         {
@@ -324,8 +325,10 @@ public abstract class Debug
          */
         @Override
         public void traceEntry(
+            @Nullable
             @SuppressWarnings( "unused" )
             final String option,
+            @Nullable
             @SuppressWarnings( "unused" )
             final Object methodArgument )
         {
@@ -337,8 +340,10 @@ public abstract class Debug
          */
         @Override
         public void traceEntry(
+            @Nullable
             @SuppressWarnings( "unused" )
             final String option,
+            @Nullable
             @SuppressWarnings( "unused" )
             final Object[] methodArguments )
         {
@@ -350,6 +355,7 @@ public abstract class Debug
          */
         @Override
         public void traceExit(
+            @Nullable
             @SuppressWarnings( "unused" )
             final String option )
         {
@@ -361,8 +367,10 @@ public abstract class Debug
          */
         @Override
         public void traceExit(
+            @Nullable
             @SuppressWarnings( "unused" )
             final String option,
+            @Nullable
             @SuppressWarnings( "unused" )
             final Object result )
         {

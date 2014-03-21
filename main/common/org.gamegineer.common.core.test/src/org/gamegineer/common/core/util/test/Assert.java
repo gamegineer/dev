@@ -25,6 +25,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IAdapterManager;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.IEqualityComparator;
 import org.gamegineer.common.internal.core.test.Activator;
 
@@ -70,9 +71,9 @@ public final class Assert
      *         If the objects are not equal.
      */
     public static void assertObjectEquals(
-        /* @Nullable */
+        @Nullable
         final Object expected,
-        /* @Nullable */
+        @Nullable
         final Object actual )
     {
         if( expected == null )
@@ -117,11 +118,9 @@ public final class Assert
      *         If the objects are not equal.
      */
     private static boolean assertEqualsUsingEqualityComparator(
-        /* @NonNull */
         final Object expected,
-        /* @NonNull */
         final Object actual,
-        /* @Nullable */
+        @Nullable
         final IEqualityComparator<Object> equalityComparator )
     {
         assert expected != null;
@@ -157,13 +156,10 @@ public final class Assert
      * @return The platform equality comparator associated with the specified
      *         object or {@code null} if no equality comparator is available.
      */
-    /* @Nullable */
+    @Nullable
     private static IEqualityComparator<Object> getPlatformEqualityComparator(
-        /* @NonNull */
         final Object obj )
     {
-        assert obj != null;
-
         final IAdapterManager adapterManager = Activator.getDefault().getAdapterManager();
         if( adapterManager == null )
         {

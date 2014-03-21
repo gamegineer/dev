@@ -1,6 +1,6 @@
 /*
  * LoggingProperties.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,6 +30,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Pattern;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A collection of useful methods for manipulating properties used to configure
@@ -68,16 +69,10 @@ final class LoggingProperties
      *         properties; never {@code null}. The names are ordered from
      *         nearest to furthest ancestor.
      */
-    /* @NonNull */
     static List<String> getAncestorLoggerNames(
-        /* @NonNull */
         final Map<String, String> properties,
-        /* @NonNull */
         final String name )
     {
-        assert properties != null;
-        assert name != null;
-
         // Build a list of all possible ancestor names from nearest to furthest ancestor
         final List<String> ancestorNames = new ArrayList<>();
         String parentName = name;
@@ -131,19 +126,13 @@ final class LoggingProperties
      *         logging properties or {@code null} if the property does not
      *         exist.
      */
-    /* @Nullable */
+    @Nullable
     static String getProperty(
-        /* @NonNull */
         final Map<String, String> properties,
-        /* @NonNull */
         final String componentName,
-        /* @NonNull */
         final String propertyName )
     {
-        assert properties != null;
-        assert componentName != null;
         assert componentName.indexOf( '.' ) != -1;
-        assert propertyName != null;
         assert propertyName.indexOf( '.' ) == -1;
 
         return properties.get( String.format( "%1$s.%2$s", componentName, propertyName ) ); //$NON-NLS-1$
@@ -168,22 +157,14 @@ final class LoggingProperties
      *         logging properties or {@code null} if the property does not
      *         exist.
      */
-    /* @Nullable */
+    @Nullable
     static String getProperty(
-        /* @NonNull */
         final Map<String, String> properties,
-        /* @NonNull */
         final Class<?> type,
-        /* @NonNull */
         final String instanceName,
-        /* @NonNull */
         final String propertyName )
     {
-        assert properties != null;
-        assert type != null;
-        assert instanceName != null;
         assert instanceName.indexOf( '.' ) == -1;
-        assert propertyName != null;
         assert propertyName.indexOf( '.' ) == -1;
 
         return properties.get( String.format( "%1$s.%2$s.%3$s", type.getName(), instanceName, propertyName ) ); //$NON-NLS-1$
@@ -198,13 +179,9 @@ final class LoggingProperties
      * @return A map that is equivalent to the specified properties collection;
      *         never {@code null}.
      */
-    /* @NonNull */
     static Map<String, String> toMap(
-        /* @NonNUll */
         final Properties properties )
     {
-        assert properties != null;
-
         final Map<String, String> map = new HashMap<>( properties.size() );
         for( final String name : properties.stringPropertyNames() )
         {

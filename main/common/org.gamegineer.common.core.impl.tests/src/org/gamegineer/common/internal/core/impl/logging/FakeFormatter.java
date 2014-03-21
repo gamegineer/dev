@@ -1,6 +1,6 @@
 /*
  * FakeFormatter.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,6 +24,7 @@ package org.gamegineer.common.internal.core.impl.logging;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Fake implementation of {@link Formatter}.
@@ -53,6 +54,7 @@ public final class FakeFormatter
      */
     @Override
     public String format(
+        @Nullable
         @SuppressWarnings( "unused" )
         final LogRecord record )
     {

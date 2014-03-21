@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 
@@ -38,33 +39,33 @@ final class NonNlsMessages
     // --- AbstractLoggingComponentFactory ----------------------------------
 
     /** Logging component creation failed. */
-    public static String AbstractLoggingComponentFactory_createLoggingComponent_failed;
+    public static String AbstractLoggingComponentFactory_createLoggingComponent_failed = ""; //$NON-NLS-1$
 
     /** The fully-qualified component name must contain at least one dot. */
-    public static String AbstractLoggingComponentFactory_createNamedLoggingComponent_nameNoDots;
+    public static String AbstractLoggingComponentFactory_createNamedLoggingComponent_nameNoDots = ""; //$NON-NLS-1$
 
     /** A component factory is no longer available. */
-    public static String AbstractLoggingComponentFactory_createNamedLoggingComponent_noComponentFactoryAvailable;
+    public static String AbstractLoggingComponentFactory_createNamedLoggingComponent_noComponentFactoryAvailable = ""; //$NON-NLS-1$
 
     /** No component factory is available. */
-    public static String AbstractLoggingComponentFactory_findComponentFactory_noComponentFactoryAvailable;
+    public static String AbstractLoggingComponentFactory_findComponentFactory_noComponentFactoryAvailable = ""; //$NON-NLS-1$
 
     /** The filter syntax is invalid. */
-    public static String AbstractLoggingComponentFactory_getComponentFactory_invalidFilterSyntax;
+    public static String AbstractLoggingComponentFactory_getComponentFactory_invalidFilterSyntax = ""; //$NON-NLS-1$
 
     /** The property value is illegal. */
-    public static String AbstractLoggingComponentFactory_getComponentProperty_illegalPropertyValue;
+    public static String AbstractLoggingComponentFactory_getComponentProperty_illegalPropertyValue = ""; //$NON-NLS-1$
 
     /** No component properties specified. */
-    public static String AbstractLoggingComponentFactory_newInstance_noComponentProperties;
+    public static String AbstractLoggingComponentFactory_newInstance_noComponentProperties = ""; //$NON-NLS-1$
 
     // --- FrameworkLogHandlerFactory ---------------------------------------
 
     /** An illegal component type name was specified. */
-    public static String FrameworkLogHandlerFactory_createLoggingComponent_illegalTypeName;
+    public static String FrameworkLogHandlerFactory_createLoggingComponent_illegalTypeName = ""; //$NON-NLS-1$
 
     /** No framework log service is available. */
-    public static String FrameworkLogHandlerFactory_createLoggingComponent_noFrameworkLogAvailable;
+    public static String FrameworkLogHandlerFactory_createLoggingComponent_noFrameworkLogAvailable = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -102,12 +103,10 @@ final class NonNlsMessages
      * @return The formatted message indicating logging component creation
      *         failed; never {@code null}.
      */
-    /* @NonNull */
     static String AbstractLoggingComponentFactory_createLoggingComponent_failed(
-        /* @NonNull */
         final String typeName )
     {
-        return bind( AbstractLoggingComponentFactory_createLoggingComponent_failed, typeName );
+        return nonNull( bind( AbstractLoggingComponentFactory_createLoggingComponent_failed, typeName ) );
     }
 
     /**
@@ -121,12 +120,10 @@ final class NonNlsMessages
      *         available for the specified logging component type; never
      *         {@code null}.
      */
-    /* @NonNull */
     static String AbstractLoggingComponentFactory_findComponentFactory_noComponentFactoryAvailable(
-        /* @NonNull */
         final String typeName )
     {
-        return bind( AbstractLoggingComponentFactory_findComponentFactory_noComponentFactoryAvailable, typeName );
+        return nonNull( bind( AbstractLoggingComponentFactory_findComponentFactory_noComponentFactoryAvailable, typeName ) );
     }
 
     /**
@@ -138,11 +135,9 @@ final class NonNlsMessages
      * @return The formatted message indicating the property value is illegal;
      *         never {@code null}.
      */
-    /* @NonNull */
     static String AbstractLoggingComponentFactory_getComponentProperty_illegalPropertyValue(
-        /* @NonNull */
         final String propertyName )
     {
-        return bind( AbstractLoggingComponentFactory_getComponentProperty_illegalPropertyValue, propertyName );
+        return nonNull( bind( AbstractLoggingComponentFactory_getComponentProperty_illegalPropertyValue, propertyName ) );
     }
 }

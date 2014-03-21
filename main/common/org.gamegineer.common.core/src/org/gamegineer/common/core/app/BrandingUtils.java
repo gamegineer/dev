@@ -1,6 +1,6 @@
 /*
  * BrandingUtils.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.common.core.app;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.internal.core.Loggers;
@@ -59,31 +59,27 @@ public final class BrandingUtils
      * 
      * @return The version associated with the specified application branding;
      *         never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code branding} is {@code null}.
      */
-    /* @NonNull */
     public static Version getVersion(
-        /* @NonNull */
         final IBranding branding )
     {
-        assertArgumentNotNull( branding, "branding" ); //$NON-NLS-1$
-
         final Bundle brandingBundle = branding.getBundle();
         if( brandingBundle != null )
         {
             final String versionString = brandingBundle.getHeaders().get( org.osgi.framework.Constants.BUNDLE_VERSION );
-            try
+            if( versionString != null )
             {
-                return Version.parseVersion( versionString );
-            }
-            catch( final IllegalArgumentException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.BrandingUtils_getVersion_parseError( versionString ), e );
+                try
+                {
+                    return nonNull( Version.parseVersion( versionString ) );
+                }
+                catch( final IllegalArgumentException e )
+                {
+                    Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.BrandingUtils_getVersion_parseError( versionString ), e );
+                }
             }
         }
 
-        return Version.emptyVersion;
+        return nonNull( Version.emptyVersion );
     }
 }

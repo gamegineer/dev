@@ -1,6 +1,6 @@
 /*
  * AbstractEqualityComparator.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.common.core.util;
 
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Superclass for all implementations of {@link IEqualityComparator}.
@@ -55,7 +56,9 @@ public abstract class AbstractEqualityComparator<T>
      */
     @Override
     public final boolean equals(
+        @Nullable
         final T obj1,
+        @Nullable
         final T obj2 )
     {
         if( obj1 == null )
@@ -80,14 +83,9 @@ public abstract class AbstractEqualityComparator<T>
      * 
      * @return {@code true} if the specified objects are equal; otherwise
      *         {@code false}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code obj1} or {@code obj2} is {@code null}.
      */
     protected abstract boolean equalsInternal(
-        /* @NonNull */
         T obj1,
-        /* @NonNull */
         T obj2 );
 
     /*
@@ -95,6 +93,7 @@ public abstract class AbstractEqualityComparator<T>
      */
     @Override
     public final int hashCode(
+        @Nullable
         final T obj )
     {
         if( obj == null )
@@ -113,11 +112,7 @@ public abstract class AbstractEqualityComparator<T>
      *        {@code null}.
      * 
      * @return A hash code for the specified object.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code obj} is {@code null}.
      */
     protected abstract int hashCodeInternal(
-        /* @NonNull */
         T obj );
 }

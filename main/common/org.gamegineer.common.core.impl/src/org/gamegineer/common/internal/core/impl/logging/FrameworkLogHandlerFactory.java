@@ -1,6 +1,6 @@
 /*
  * FrameworkLogHandlerFactory.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.ThreadSafe;
@@ -72,14 +71,10 @@ public final class FrameworkLogHandlerFactory
      * 
      * @throws java.lang.IllegalStateException
      *         If a framework log service is already bound.
-     * @throws java.lang.NullPointerException
-     *         If {@code frameworkLog} is {@code null}.
      */
     public void bindFrameworkLog(
-        /* @NonNull */
         final FrameworkLog frameworkLog )
     {
-        assertArgumentNotNull( frameworkLog, "frameworkLog" ); //$NON-NLS-1$
         assertStateLegal( frameworkLog_.compareAndSet( null, frameworkLog ) );
     }
 
@@ -90,8 +85,6 @@ public final class FrameworkLogHandlerFactory
     protected FrameworkLogHandler createLoggingComponent(
         final String typeName )
     {
-        assertArgumentNotNull( typeName, "typeName" ); //$NON-NLS-1$
-
         if( !typeName.equals( FrameworkLogHandler.class.getName() ) )
         {
             throw new ComponentException( NonNlsMessages.FrameworkLogHandlerFactory_createLoggingComponent_illegalTypeName );
@@ -114,14 +107,10 @@ public final class FrameworkLogHandlerFactory
      * 
      * @throws java.lang.IllegalStateException
      *         If a different or no framework log service is currently bound.
-     * @throws java.lang.NullPointerException
-     *         If {@code frameworkLog} is {@code null}.
      */
     public void unbindFrameworkLog(
-        /* @NonNull */
         final FrameworkLog frameworkLog )
     {
-        assertArgumentNotNull( frameworkLog, "frameworkLog" ); //$NON-NLS-1$
         assertStateLegal( frameworkLog_.compareAndSet( frameworkLog, null ) );
     }
 }

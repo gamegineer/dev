@@ -1,6 +1,6 @@
 /*
  * ExtensibleEnum.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 package org.gamegineer.common.core.util;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.InvalidObjectException;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
@@ -32,6 +32,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * An extensible type-safe enumeration.
@@ -68,15 +69,11 @@ public abstract class ExtensibleEnum
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code ordinal} is negative.
-     * @throws java.lang.NullPointerException
-     *         If {@code name} is {@code null}.
      */
     protected ExtensibleEnum(
-        /* @NonNull */
         final String name,
         final int ordinal )
     {
-        assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
         assertArgumentLegal( ordinal >= 0, "ordinal", NonNlsMessages.ExtensibleEnum_ordinal_outOfRange( ordinal ) ); //$NON-NLS-1$
 
         name_ = name;
@@ -103,6 +100,7 @@ public abstract class ExtensibleEnum
      */
     @Override
     public final boolean equals(
+        @Nullable
         final Object obj )
     {
         return super.equals( obj );
@@ -131,7 +129,6 @@ public abstract class ExtensibleEnum
      * 
      * @return The name of the enum constant; never {@code null}.
      */
-    /* @NonNull */
     public final String name()
     {
         return name_;
@@ -162,18 +159,19 @@ public abstract class ExtensibleEnum
      * @throws java.io.ObjectStreamException
      *         If an error occurs.
      */
-    /* @NonNull */
     protected final Object readResolve()
         throws ObjectStreamException
     {
-        final ExtensibleEnum[] values = ExtensibleEnum.values( getClass() );
+        final ExtensibleEnum[] values = ExtensibleEnum.values( nonNull( getClass() ) );
         final int ordinal = ordinal();
         if( (ordinal < 0) || (ordinal >= values.length) )
         {
             throw new InvalidObjectException( NonNlsMessages.ExtensibleEnum_ordinal_outOfRange( ordinal ) );
         }
 
-        return values[ ordinal ];
+        final Object value = values[ ordinal ];
+        assert value != null;
+        return value;
     }
 
     /*
@@ -202,19 +200,11 @@ public abstract class ExtensibleEnum
      * @throws java.lang.IllegalArgumentException
      *         If the specified enum type has no constant with the specified
      *         name.
-     * @throws java.lang.NullPointerException
-     *         If {@code type} or {@code name} is {@code null}.
      */
-    /* @NonNull */
     public static <T extends ExtensibleEnum> T valueOf(
-        /* @NonNull */
         final Class<T> type,
-        /* @NonNull */
         final String name )
     {
-        assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
-        assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-
         for( final T value : values( type ) )
         {
             if( name.equals( value.name() ) )
@@ -237,17 +227,10 @@ public abstract class ExtensibleEnum
      * 
      * @return The collection of values associated with the specified enum type;
      *         never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code type} is {@code null}.
      */
-    /* @NonNull */
     public static <T extends ExtensibleEnum> T[] values(
-        /* @NonNull */
         final Class<T> type )
     {
-        assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
-
         final Collection<T> values = new ArrayList<>();
 
         for( final Field field : type.getDeclaredFields() )
@@ -273,6 +256,6 @@ public abstract class ExtensibleEnum
 
         @SuppressWarnings( "unchecked" )
         final T[] array = (T[])Array.newInstance( type, values.size() );
-        return values.toArray( array );
+        return nonNull( values.toArray( array ) );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * SynchronousFutureTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -48,16 +48,6 @@ public final class SynchronousFutureTest
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Ensures the {@link SynchronousFuture#SynchronousFuture(Throwable)}
-     * constructor throws an exception when passed a {@code null} exception.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructorFromException_Exception_Null()
-    {
-        new SynchronousFuture<>( (Throwable)null );
-    }
 
     /**
      * Ensures the {@link SynchronousFuture#get()} method throws an exception

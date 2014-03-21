@@ -22,8 +22,8 @@
 package org.gamegineer.common.core.util.registry;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -36,6 +36,7 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IRegistryEventListener;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.internal.core.Loggers;
 
 /**
@@ -57,6 +58,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
 
     /** The extension registry service. */
     @GuardedBy( "lock_" )
+    @Nullable
     private IExtensionRegistry extensionRegistry_;
 
     /** The instance lock. */
@@ -67,10 +69,12 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
      * registry.
      */
     @GuardedBy( "lock_" )
+    @Nullable
     private Collection<ObjectRegistration<ObjectType>> objectRegistrations_;
 
     /** The object registry service. */
     @GuardedBy( "lock_" )
+    @Nullable
     private IRegistry<ObjectIdType, ObjectType> objectRegistry_;
 
 
@@ -102,8 +106,11 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
     {
         synchronized( lock_ )
         {
+            final IExtensionRegistry extensionRegistry = extensionRegistry_;
+            assert extensionRegistry != null;
+
             registerObjects();
-            extensionRegistry_.addListener( this, getExtensionPointId() );
+            extensionRegistry.addListener( this, getExtensionPointId() );
         }
     }
 
@@ -112,12 +119,16 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
      */
     @Override
     public final void added(
+        @Nullable
         final IExtension[] extensions )
     {
+        assert extensions != null;
+
         for( final IExtension extension : extensions )
         {
             for( final IConfigurationElement configurationElement : extension.getConfigurationElements() )
             {
+                assert configurationElement != null;
                 registerObject( configurationElement );
             }
         }
@@ -128,6 +139,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
      */
     @Override
     public final void added(
+        @Nullable
         @SuppressWarnings( "unused" )
         final IExtensionPoint[] extensionPoints )
     {
@@ -142,15 +154,10 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
      * 
      * @throws java.lang.IllegalStateException
      *         If the extension registry is already bound.
-     * @throws java.lang.NullPointerException
-     *         If {@code extensionRegistry} is {@code null}.
      */
     public final void bindExtensionRegistry(
-        /* @NonNull */
         final IExtensionRegistry extensionRegistry )
     {
-        assertArgumentNotNull( extensionRegistry, "extensionRegistry" ); //$NON-NLS-1$
-
         synchronized( lock_ )
         {
             assertStateLegal( extensionRegistry_ == null, NonNlsMessages.AbstractRegistryExtensionPointAdapter_bindExtensionRegistry_bound );
@@ -166,15 +173,10 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
      * 
      * @throws java.lang.IllegalStateException
      *         If the object registry is already bound.
-     * @throws java.lang.NullPointerException
-     *         If {@code objectRegistry} is {@code null}.
      */
     public final void bindObjectRegistry(
-        /* @NonNull */
         final IRegistry<ObjectIdType, ObjectType> objectRegistry )
     {
-        assertArgumentNotNull( objectRegistry, "objectRegistry" ); //$NON-NLS-1$
-
         synchronized( lock_ )
         {
             assertStateLegal( objectRegistry_ == null, NonNlsMessages.AbstractRegistryExtensionPointAdapter_bindObjectRegistry_bound );
@@ -192,12 +194,8 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
      * 
      * @throws java.lang.IllegalArgumentException
      *         If the configuration element represents an illegal object.
-     * @throws java.lang.NullPointerException
-     *         If {@code confgiurationElement} is {@code null}.
      */
-    /* @NonNull */
     protected abstract ObjectType createObject(
-        /* @NonNull */
         IConfigurationElement configurationElement );
 
     /**
@@ -212,14 +210,10 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
      * @throws java.lang.IllegalArgumentException
      *         If the configuration element represents an illegal object.
      */
-    /* @NonNull */
     private ObjectRegistration<ObjectType> createObjectRegistration(
-        /* @NonNull */
         final IConfigurationElement configurationElement )
     {
-        assert configurationElement != null;
-
-        return new ObjectRegistration<>( configurationElement.getDeclaringExtension(), createObject( configurationElement ) );
+        return new ObjectRegistration<>( nonNull( configurationElement.getDeclaringExtension() ), createObject( configurationElement ) );
     }
 
     /**
@@ -229,7 +223,10 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
     {
         synchronized( lock_ )
         {
-            extensionRegistry_.removeListener( this );
+            final IExtensionRegistry extensionRegistry = extensionRegistry_;
+            assert extensionRegistry != null;
+
+            extensionRegistry.removeListener( this );
             unregisterObjects();
         }
     }
@@ -240,7 +237,6 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
      * @return The identifier of the extension point associated with this
      *         adapter; never {@code null}.
      */
-    /* @NonNull */
     protected abstract String getExtensionPointId();
 
     /**
@@ -256,14 +252,9 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
      *         by the specified extension; otherwise {@code false}.
      */
     private boolean isObjectRegistrationContributedByExtension(
-        /* @NonNull */
         final ObjectRegistration<ObjectType> objectRegistration,
-        /* @NonNull */
         final IExtension extension )
     {
-        assert objectRegistration != null;
-        assert extension != null;
-
         if( !objectRegistration.getExtensionNamespaceId().equals( extension.getNamespaceIdentifier() ) )
         {
             return false;
@@ -281,8 +272,12 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
     {
         assert Thread.holdsLock( lock_ );
 
-        for( final IConfigurationElement configurationElement : extensionRegistry_.getConfigurationElementsFor( getExtensionPointId() ) )
+        final IExtensionRegistry extensionRegistry = extensionRegistry_;
+        assert extensionRegistry != null;
+
+        for( final IConfigurationElement configurationElement : extensionRegistry.getConfigurationElementsFor( getExtensionPointId() ) )
         {
+            assert configurationElement != null;
             registerObject( configurationElement );
         }
     }
@@ -295,11 +290,8 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
      *        The extension configuration element; must not be {@code null}.
      */
     private void registerObject(
-        /* @NonNull */
         final IConfigurationElement configurationElement )
     {
-        assert configurationElement != null;
-
         final ObjectRegistration<ObjectType> objectRegistration;
         try
         {
@@ -313,8 +305,13 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
 
         synchronized( lock_ )
         {
-            objectRegistry_.registerObject( objectRegistration.getObject() );
-            objectRegistrations_.add( objectRegistration );
+            final Collection<ObjectRegistration<ObjectType>> objectRegistrations = objectRegistrations_;
+            assert objectRegistrations != null;
+            final IRegistry<ObjectIdType, ObjectType> objectRegistry = objectRegistry_;
+            assert objectRegistry != null;
+
+            objectRegistry.registerObject( objectRegistration.getObject() );
+            objectRegistrations.add( objectRegistration );
         }
     }
 
@@ -323,10 +320,14 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
      */
     @Override
     public final void removed(
+        @Nullable
         final IExtension[] extensions )
     {
+        assert extensions != null;
+
         for( final IExtension extension : extensions )
         {
+            assert extension != null;
             unregisterObjects( extension );
         }
     }
@@ -336,6 +337,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
      */
     @Override
     public final void removed(
+        @Nullable
         @SuppressWarnings( "unused" )
         final IExtensionPoint[] extensionPoints )
     {
@@ -350,15 +352,10 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code extensionRegistry} is not currently bound.
-     * @throws java.lang.NullPointerException
-     *         If {@code extensionRegistry} is {@code null}.
      */
     public final void unbindExtensionRegistry(
-        /* @NonNull */
         final IExtensionRegistry extensionRegistry )
     {
-        assertArgumentNotNull( extensionRegistry, "extensionRegistry" ); //$NON-NLS-1$
-
         synchronized( lock_ )
         {
             assertArgumentLegal( extensionRegistry_ == extensionRegistry, "extensionRegistry", NonNlsMessages.AbstractRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound ); //$NON-NLS-1$
@@ -374,15 +371,10 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code objectRegistry} is not currently bound.
-     * @throws java.lang.NullPointerException
-     *         If {@code objectRegistry} is {@code null}.
      */
     public final void unbindObjectRegistry(
-        /* @NonNull */
         final IRegistry<ObjectIdType, ObjectType> objectRegistry )
     {
-        assertArgumentNotNull( objectRegistry, "objectRegistry" ); //$NON-NLS-1$
-
         synchronized( lock_ )
         {
             assertArgumentLegal( objectRegistry_ == objectRegistry, "objectRegistry", NonNlsMessages.AbstractRegistryExtensionPointAdapter_unbindObjectRegistry_notBound ); //$NON-NLS-1$
@@ -398,12 +390,17 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
     {
         assert Thread.holdsLock( lock_ );
 
-        for( final ObjectRegistration<ObjectType> objectRegistration : objectRegistrations_ )
+        final Collection<ObjectRegistration<ObjectType>> objectRegistrations = objectRegistrations_;
+        assert objectRegistrations != null;
+        final IRegistry<ObjectIdType, ObjectType> objectRegistry = objectRegistry_;
+        assert objectRegistry != null;
+
+        for( final ObjectRegistration<ObjectType> objectRegistration : objectRegistrations )
         {
-            objectRegistry_.unregisterObject( objectRegistration.getObject() );
+            objectRegistry.unregisterObject( objectRegistration.getObject() );
         }
 
-        objectRegistrations_.clear();
+        objectRegistrations.clear();
     }
 
     /**
@@ -413,19 +410,22 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
      *        The extension; must not be {@code null}.
      */
     private void unregisterObjects(
-        /* @NonNull */
         final IExtension extension )
     {
-        assert extension != null;
-
         synchronized( lock_ )
         {
-            for( final Iterator<ObjectRegistration<ObjectType>> iterator = objectRegistrations_.iterator(); iterator.hasNext(); )
+            final Collection<ObjectRegistration<ObjectType>> objectRegistrations = objectRegistrations_;
+            assert objectRegistrations != null;
+            final IRegistry<ObjectIdType, ObjectType> objectRegistry = objectRegistry_;
+            assert objectRegistry != null;
+
+            for( final Iterator<ObjectRegistration<ObjectType>> iterator = objectRegistrations.iterator(); iterator.hasNext(); )
             {
                 final ObjectRegistration<ObjectType> objectRegistration = iterator.next();
+                assert objectRegistration != null;
                 if( isObjectRegistrationContributedByExtension( objectRegistration, extension ) )
                 {
-                    objectRegistry_.unregisterObject( objectRegistration.getObject() );
+                    objectRegistry.unregisterObject( objectRegistration.getObject() );
                     iterator.remove();
                 }
             }
@@ -454,6 +454,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
         private final String extensionNamespaceId_;
 
         /** The simple identifier of the contributing extension. */
+        @Nullable
         private final String extensionSimpleId_;
 
         /** The object contributed by the extension. */
@@ -475,15 +476,10 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
          *        {@code null}.
          */
         ObjectRegistration(
-            /* @NonNull */
             final IExtension extension,
-            /* @NonNull */
             final ObjectType object )
         {
-            assert extension != null;
-            assert object != null;
-
-            extensionNamespaceId_ = extension.getNamespaceIdentifier();
+            extensionNamespaceId_ = nonNull( extension.getNamespaceIdentifier() );
             extensionSimpleId_ = extension.getSimpleIdentifier();
             object_ = object;
         }
@@ -499,7 +495,6 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
          * @return The namespace identifier of the contributing extension; never
          *         {@code null}.
          */
-        /* @NonNull */
         String getExtensionNamespaceId()
         {
             return extensionNamespaceId_;
@@ -511,7 +506,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
          * @return The simple identifier of the contributing extension; may be
          *         {@code null}.
          */
-        /* @Nullable */
+        @Nullable
         String getExtensionSimpleId()
         {
             return extensionSimpleId_;
@@ -522,7 +517,6 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
          * 
          * @return The object contributed by the extension; never {@code null}.
          */
-        /* @NonNull */
         ObjectType getObject()
         {
             return object_;

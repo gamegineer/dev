@@ -53,19 +53,6 @@ public final class ExtensibleEnumTest
 
     /**
      * Ensures the {@link ExtensibleEnum#ExtensibleEnum} constructor throws an
-     * exception when passed a {@code null} name.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_Name_Null()
-    {
-        new ExtensibleEnum( null, 0 )
-        {
-            private static final long serialVersionUID = 1L;
-        };
-    }
-
-    /**
-     * Ensures the {@link ExtensibleEnum#ExtensibleEnum} constructor throws an
      * exception when passed an illegal ordinal that is negative.
      */
     @Test( expected = IllegalArgumentException.class )
@@ -133,26 +120,6 @@ public final class ExtensibleEnumTest
     }
 
     /**
-     * Ensures the {@link ExtensibleEnum#valueOf} method throws an exception
-     * when passed a {@code null} name.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testValueOf_Name_Null()
-    {
-        ExtensibleEnum.valueOf( MockEnum.class, null );
-    }
-
-    /**
-     * Ensures the {@link ExtensibleEnum#valueOf} method throws an exception
-     * when passed a {@code null} type.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testValueOf_Type_Null()
-    {
-        ExtensibleEnum.valueOf( null, "name" ); //$NON-NLS-1$
-    }
-
-    /**
      * Ensures the {@link ExtensibleEnum#values} method returns the correct
      * values.
      */
@@ -168,16 +135,6 @@ public final class ExtensibleEnumTest
         final MockEnum[] actualValues = ExtensibleEnum.values( MockEnum.class );
 
         assertArrayEquals( expectedValues, actualValues );
-    }
-
-    /**
-     * Ensures the {@link ExtensibleEnum#values} method throws an exception when
-     * passed a {@code null} type.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testValues_Type_Null()
-    {
-        ExtensibleEnum.values( null );
     }
 
 
@@ -223,11 +180,8 @@ public final class ExtensibleEnumTest
          * 
          * @throws java.lang.IllegalArgumentException
          *         If {@code ordinal} is negative.
-         * @throws java.lang.NullPointerException
-         *         If {@code name} is {@code null}.
          */
         private MockEnum(
-            /* @NonNull */
             final String name,
             final int ordinal )
         {

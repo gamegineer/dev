@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.core.util.registry;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.osgi.util.NLS;
@@ -39,27 +40,27 @@ final class NonNlsMessages
     // --- AbstractRegistry -------------------------------------------------
 
     /** An object is already registered for the specified identifier. */
-    public static String AbstractRegistry_registerObject_object_registered;
+    public static String AbstractRegistry_registerObject_object_registered = ""; //$NON-NLS-1$
 
     /** The object is not registered for the specified identifier. */
-    public static String AbstractRegistry_unregisterObject_object_unregistered;
+    public static String AbstractRegistry_unregisterObject_object_unregistered = ""; //$NON-NLS-1$
 
     // --- AbstractRegistryExtensionPointAdapter ----------------------------
 
     /** The extension registry service is already bound. */
-    public static String AbstractRegistryExtensionPointAdapter_bindExtensionRegistry_bound;
+    public static String AbstractRegistryExtensionPointAdapter_bindExtensionRegistry_bound = ""; //$NON-NLS-1$
 
     /** The object registry service is already bound. */
-    public static String AbstractRegistryExtensionPointAdapter_bindObjectRegistry_bound;
+    public static String AbstractRegistryExtensionPointAdapter_bindObjectRegistry_bound = ""; //$NON-NLS-1$
 
     /** An error occurred while parsing the object configuration element. */
-    public static String AbstractRegistryExtensionPointAdapter_registerObject_parseError;
+    public static String AbstractRegistryExtensionPointAdapter_registerObject_parseError = ""; //$NON-NLS-1$
 
     /** The extension registry service is not bound. */
-    public static String AbstractRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound;
+    public static String AbstractRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound = ""; //$NON-NLS-1$
 
     /** The object registry service is not bound. */
-    public static String AbstractRegistryExtensionPointAdapter_unbindObjectRegistry_notBound;
+    public static String AbstractRegistryExtensionPointAdapter_unbindObjectRegistry_notBound = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -98,12 +99,10 @@ final class NonNlsMessages
      * @return The formatted message indicating an object is already registered
      *         for the specified identifier; never {@code null}.
      */
-    /* @NonNull */
     static String AbstractRegistry_registerObject_object_registered(
-        /* @NonNull */
         final Object id )
     {
-        return bind( AbstractRegistry_registerObject_object_registered, id );
+        return nonNull( bind( AbstractRegistry_registerObject_object_registered, id ) );
     }
 
     /**
@@ -116,12 +115,10 @@ final class NonNlsMessages
      * @return The formatted message indicating the object is not registered for
      *         the specified identifier; never {@code null}.
      */
-    /* @NonNull */
     static String AbstractRegistry_unregisterObject_object_unregistered(
-        /* @NonNull */
         final Object id )
     {
-        return bind( AbstractRegistry_unregisterObject_object_unregistered, id );
+        return nonNull( bind( AbstractRegistry_unregisterObject_object_unregistered, id ) );
     }
 
     // --- AbstractRegistryExtensionPointAdapter ----------------------------
@@ -136,11 +133,9 @@ final class NonNlsMessages
      * @return The formatted message indicating an error occurred while parsing
      *         the object configuration element; never {@code null}.
      */
-    /* @NonNull */
     static String AbstractRegistryExtensionPointAdapter_registerObject_parseError(
-        /* @NonNull */
         final IConfigurationElement configurationElement )
     {
-        return bind( AbstractRegistryExtensionPointAdapter_registerObject_parseError, configurationElement.getDeclaringExtension().getUniqueIdentifier(), configurationElement.getContributor().getName() );
+        return nonNull( bind( AbstractRegistryExtensionPointAdapter_registerObject_parseError, configurationElement.getDeclaringExtension().getUniqueIdentifier(), configurationElement.getContributor().getName() ) );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * IterableUtils.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,11 +21,12 @@
 
 package org.gamegineer.common.core.util;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A collection of useful methods for working with instances of {@link Iterable}
@@ -60,17 +61,10 @@ public final class IterableUtils
      *        The list; must not be {@code null}.
      * 
      * @return A reversed view of the specified list; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code list} is {@code null}.
      */
-    /* @NonNull */
     public static <T> Iterable<T> reverse(
-        /* @NonNull */
         final List<T> list )
     {
-        assertArgumentNotNull( list, "list" ); //$NON-NLS-1$
-
         return new Iterable<T>()
         {
             @Override
@@ -78,7 +72,7 @@ public final class IterableUtils
             {
                 return new Iterator<T>()
                 {
-                    private final ListIterator<T> iterator_ = list.listIterator( list.size() );
+                    private final ListIterator<T> iterator_ = nonNull( list.listIterator( list.size() ) );
 
                     @Override
                     public boolean hasNext()
@@ -86,6 +80,7 @@ public final class IterableUtils
                         return iterator_.hasPrevious();
                     }
 
+                    @Nullable
                     @Override
                     public T next()
                     {

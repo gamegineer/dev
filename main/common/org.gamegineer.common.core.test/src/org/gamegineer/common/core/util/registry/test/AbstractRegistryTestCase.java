@@ -1,6 +1,6 @@
 /*
  * AbstractRegistryTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,6 +27,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import java.util.Collection;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.util.registry.IRegistry;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,6 +42,7 @@ import org.junit.Test;
  * @param <ObjectType>
  *        The type of object managed by the registry.
  */
+@NonNullByDefault( false )
 public abstract class AbstractRegistryTestCase<ObjectIdType, ObjectType>
 {
     // ======================================================================
@@ -73,13 +76,10 @@ public abstract class AbstractRegistryTestCase<ObjectIdType, ObjectType>
      *        The object to clone; must not be {@code null}.
      * 
      * @return A new object; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code object} is {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract ObjectType cloneObject(
-        /* @NonNull */
+        @NonNull
         ObjectType object );
 
     /**
@@ -90,7 +90,7 @@ public abstract class AbstractRegistryTestCase<ObjectIdType, ObjectType>
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract IRegistry<ObjectIdType, ObjectType> createRegistry()
         throws Exception;
 
@@ -99,7 +99,7 @@ public abstract class AbstractRegistryTestCase<ObjectIdType, ObjectType>
      * 
      * @return A new object; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract ObjectType createUniqueObject();
 
     /**
@@ -109,13 +109,10 @@ public abstract class AbstractRegistryTestCase<ObjectIdType, ObjectType>
      *        The object; must not be {@code null}.
      * 
      * @return The identifier of the specified object; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code object} is {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract ObjectIdType getObjectId(
-        /* @NonNull */
+        @NonNull
         ObjectType object );
 
     /**
@@ -140,16 +137,6 @@ public abstract class AbstractRegistryTestCase<ObjectIdType, ObjectType>
     public void testGetObject_Id_Absent()
     {
         assertNull( registry_.getObject( getObjectId( createUniqueObject() ) ) );
-    }
-
-    /**
-     * Ensures the {@link IRegistry#getObject} method throws an exception when
-     * passed a {@code null} identifier.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetObject_Id_Null()
-    {
-        registry_.getObject( null );
     }
 
     /**
@@ -197,16 +184,6 @@ public abstract class AbstractRegistryTestCase<ObjectIdType, ObjectType>
 
     /**
      * Ensures the {@link IRegistry#registerObject} method throws an exception
-     * when passed a {@code null} object.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRegisterObject_Object_Null()
-    {
-        registry_.registerObject( null );
-    }
-
-    /**
-     * Ensures the {@link IRegistry#registerObject} method throws an exception
      * when an object with the same identifier is already registered.
      */
     @Test( expected = IllegalArgumentException.class )
@@ -230,16 +207,6 @@ public abstract class AbstractRegistryTestCase<ObjectIdType, ObjectType>
         registry_.registerObject( object );
 
         assertTrue( registry_.getObjects().contains( object ) );
-    }
-
-    /**
-     * Ensures the {@link IRegistry#unregisterObject} method throws an exception
-     * when passed a {@code null} object.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testUnregisterObject_Object_Null()
-    {
-        registry_.unregisterObject( null );
     }
 
     /**
