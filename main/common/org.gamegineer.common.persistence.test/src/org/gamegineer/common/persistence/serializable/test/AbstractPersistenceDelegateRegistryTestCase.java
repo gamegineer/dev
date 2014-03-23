@@ -1,6 +1,6 @@
 /*
  * AbstractPersistenceDelegateRegistryTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,12 +21,15 @@
 
 package org.gamegineer.common.persistence.serializable.test;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import java.util.Set;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
 import org.junit.Before;
@@ -36,6 +39,7 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IPersistenceDelegateRegistry} interface.
  */
+@NonNullByDefault( false )
 public abstract class AbstractPersistenceDelegateRegistryTestCase
 {
     // ======================================================================
@@ -72,7 +76,7 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract IPersistenceDelegateRegistry createPersistenceDelegateRegistry()
         throws Exception;
 
@@ -99,17 +103,6 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     public void testGetPersistenceDelegateForType_Type_Absent()
     {
         assertNull( persistenceDelegateRegistry_.getPersistenceDelegate( Object.class ) );
-    }
-
-    /**
-     * Ensures the
-     * {@link IPersistenceDelegateRegistry#getPersistenceDelegate(Class)} method
-     * throws an exception when passed a {@code null} type.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetPersistenceDelegateForType_Type_Null()
-    {
-        persistenceDelegateRegistry_.getPersistenceDelegate( (Class<?>)null );
     }
 
     /**
@@ -143,17 +136,6 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     /**
      * Ensures the
      * {@link IPersistenceDelegateRegistry#getPersistenceDelegate(String)}
-     * method throws an exception when passed a {@code null} type name.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetPersistenceDelegateForTypeName_TypeName_Null()
-    {
-        persistenceDelegateRegistry_.getPersistenceDelegate( (String)null );
-    }
-
-    /**
-     * Ensures the
-     * {@link IPersistenceDelegateRegistry#getPersistenceDelegate(String)}
      * method returns the correct value when passed a type name that is present.
      */
     @Test
@@ -163,7 +145,7 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
         final IPersistenceDelegate expectedPersistenceDelegate = new FakePersistenceDelegate();
         persistenceDelegateRegistry_.registerPersistenceDelegate( expectedType, expectedPersistenceDelegate );
 
-        final IPersistenceDelegate actualPersistenceDelegate = persistenceDelegateRegistry_.getPersistenceDelegate( expectedType.getName() );
+        final IPersistenceDelegate actualPersistenceDelegate = persistenceDelegateRegistry_.getPersistenceDelegate( nonNull( expectedType.getName() ) );
 
         assertSame( expectedPersistenceDelegate, actualPersistenceDelegate );
     }
@@ -199,28 +181,6 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     /**
      * Ensures the
      * {@link IPersistenceDelegateRegistry#registerPersistenceDelegate} method
-     * throws an exception when passed a {@code null} persistence delegate.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRegisterPersistenceDelegate_PersistenceDelegate_Null()
-    {
-        persistenceDelegateRegistry_.registerPersistenceDelegate( Object.class, null );
-    }
-
-    /**
-     * Ensures the
-     * {@link IPersistenceDelegateRegistry#registerPersistenceDelegate} method
-     * throws an exception when passed a {@code null} type.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRegisterPersistenceDelegate_Type_Null()
-    {
-        persistenceDelegateRegistry_.registerPersistenceDelegate( null, new FakePersistenceDelegate() );
-    }
-
-    /**
-     * Ensures the
-     * {@link IPersistenceDelegateRegistry#registerPersistenceDelegate} method
      * throws an exception when a persistence delegate is already registered for
      * the specified type.
      */
@@ -247,28 +207,6 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
         persistenceDelegateRegistry_.registerPersistenceDelegate( type, expectedPersistenceDelegate );
 
         assertSame( expectedPersistenceDelegate, persistenceDelegateRegistry_.getPersistenceDelegate( type ) );
-    }
-
-    /**
-     * Ensures the
-     * {@link IPersistenceDelegateRegistry#unregisterPersistenceDelegate} method
-     * throws an exception when passed a {@code null} persistence delegate.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testUnregisterPersistenceDelegate_PersistenceDelegate_Null()
-    {
-        persistenceDelegateRegistry_.unregisterPersistenceDelegate( Object.class, null );
-    }
-
-    /**
-     * Ensures the
-     * {@link IPersistenceDelegateRegistry#unregisterPersistenceDelegate} method
-     * throws an exception when passed a {@code null} type.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testUnregisterPersistenceDelegate_Type_Null()
-    {
-        persistenceDelegateRegistry_.unregisterPersistenceDelegate( null, new FakePersistenceDelegate() );
     }
 
     /**

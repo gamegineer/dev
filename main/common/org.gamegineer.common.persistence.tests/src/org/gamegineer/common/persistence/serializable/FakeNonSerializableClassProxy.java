@@ -1,6 +1,6 @@
 /*
  * FakeNonSerializableClassProxy.java
- * Copyright 2008-2010 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ package org.gamegineer.common.persistence.serializable;
 
 import java.io.Serializable;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A serializable proxy for the {@code FakeNonSerializableClass} class.
@@ -50,6 +51,7 @@ public final class FakeNonSerializableClassProxy
      * 
      * @serial
      */
+    @Nullable
     private String stringField_;
 
 
@@ -73,14 +75,10 @@ public final class FakeNonSerializableClassProxy
      * class from the specified {@code FakeNonSerializableClass} instance.
      * 
      * @param subject
-     *        The {@code FakeNonSerializableClass} instance; must not be {@code
-     *        null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code subject} is {@code null}.
+     *        The {@code FakeNonSerializableClass} instance; must not be
+     *        {@code null}.
      */
     public FakeNonSerializableClassProxy(
-        /* @NonNull */
         final FakeNonSerializableClass subject )
     {
         intField_ = subject.getIntField();
@@ -99,7 +97,6 @@ public final class FakeNonSerializableClassProxy
      * @return A replacement object for this instance after it has been
      *         deserialized; never {@code null}.
      */
-    /* @NonNull */
     private Object readResolve()
     {
         return new FakeNonSerializableClass( intField_, stringField_ );

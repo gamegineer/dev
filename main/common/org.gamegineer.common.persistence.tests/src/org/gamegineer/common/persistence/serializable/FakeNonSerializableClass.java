@@ -1,6 +1,6 @@
 /*
  * FakeNonSerializableClass.java
- * Copyright 2008-2010 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,14 +22,16 @@
 package org.gamegineer.common.persistence.serializable;
 
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.Nullable;
+import org.gamegineer.common.core.util.ObjectUtils;
 
 /**
  * A fake non-serializable class used for testing the object serialization
  * streams.
  * 
  * <p>
- * This class is non-serializable because a) it does not implement {@code
- * Serializable}, b) it is immutable, and c) it does not define a default
+ * This class is non-serializable because a) it does not implement
+ * {@code Serializable}, b) it is immutable, and c) it does not define a default
  * constructor.
  * </p>
  */
@@ -44,6 +46,7 @@ public final class FakeNonSerializableClass
     private final int intField_;
 
     /** The string field. */
+    @Nullable
     private final String stringField_;
 
 
@@ -61,7 +64,7 @@ public final class FakeNonSerializableClass
      */
     public FakeNonSerializableClass(
         final int intField,
-        /* @Nullable */
+        @Nullable
         final String stringField )
     {
         intField_ = intField;
@@ -78,6 +81,7 @@ public final class FakeNonSerializableClass
      */
     @Override
     public boolean equals(
+        @Nullable
         final Object obj )
     {
         if( obj == this )
@@ -91,7 +95,7 @@ public final class FakeNonSerializableClass
         }
 
         final FakeNonSerializableClass other = (FakeNonSerializableClass)obj;
-        return (intField_ == other.intField_) && stringField_.equals( other.stringField_ );
+        return (intField_ == other.intField_) && ObjectUtils.equals( stringField_, other.stringField_ );
     }
 
     /**
@@ -109,7 +113,7 @@ public final class FakeNonSerializableClass
      * 
      * @return The string field; may be {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     public String getStringField()
     {
         return stringField_;
@@ -123,7 +127,7 @@ public final class FakeNonSerializableClass
     {
         int result = 17;
         result = result * 31 + intField_;
-        result = result * 31 + stringField_.hashCode();
+        result = result * 31 + ObjectUtils.hashCode( stringField_ );
         return result;
     }
 }

@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,7 +40,7 @@ final class NonNlsMessages
     /**
      * The platform Serializable persistence delegate registry is not available.
      */
-    public static String ObjectStreams_platformPersistenceDelegateRegistry_notAvailable;
+    public static String ObjectStreams_platformPersistenceDelegateRegistry_notAvailable = ""; //$NON-NLS-1$
 
 
     // ======================================================================

@@ -1,6 +1,6 @@
 /*
  * Activator.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,10 +21,10 @@
 
 package org.gamegineer.common.internal.persistence;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
@@ -45,6 +45,7 @@ public final class Activator
 
     /** The bundle context. */
     @GuardedBy( "lock_" )
+    @Nullable
     private BundleContext bundleContext_;
 
     /** The instance lock. */
@@ -52,6 +53,7 @@ public final class Activator
 
     /** The Serializable persistence delegate registry service tracker. */
     @GuardedBy( "lock_" )
+    @Nullable
     private ServiceTracker<org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry, org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry> serializablePersistenceDelegateRegistryTracker_;
 
 
@@ -79,7 +81,6 @@ public final class Activator
      * 
      * @return The bundle context; never {@code null}.
      */
-    /* @NonNull */
     public BundleContext getBundleContext()
     {
         synchronized( lock_ )
@@ -94,7 +95,6 @@ public final class Activator
      * 
      * @return The default instance of the bundle activator; never {@code null}.
      */
-    /* @NonNull */
     public static Activator getDefault()
     {
         final Activator instance = instance_.get();
@@ -109,7 +109,7 @@ public final class Activator
      *         {@code null} if no Serializable persistence delegate registry
      *         service is available.
      */
-    /* @Nullable */
+    @Nullable
     public org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry getSerializablePersistenceDelegateRegistry()
     {
         synchronized( lock_ )
@@ -122,6 +122,7 @@ public final class Activator
                 serializablePersistenceDelegateRegistryTracker_.open();
             }
 
+            assert serializablePersistenceDelegateRegistryTracker_ != null;
             return serializablePersistenceDelegateRegistryTracker_.getService();
         }
     }
@@ -131,9 +132,13 @@ public final class Activator
      */
     @Override
     public void start(
+        @Nullable
         final BundleContext bundleContext )
     {
-        assertArgumentNotNull( bundleContext, "bundleContext" ); //$NON-NLS-1$
+        if( bundleContext == null )
+        {
+            throw new NullPointerException( "bundleContext" ); //$NON-NLS-1$
+        }
 
         synchronized( lock_ )
         {
@@ -150,9 +155,13 @@ public final class Activator
      */
     @Override
     public void stop(
+        @Nullable
         final BundleContext bundleContext )
     {
-        assertArgumentNotNull( bundleContext, "bundleContext" ); //$NON-NLS-1$
+        if( bundleContext == null )
+        {
+            throw new NullPointerException( "bundleContext" ); //$NON-NLS-1$
+        }
 
         final boolean wasInstanceNonNull = instance_.compareAndSet( this, null );
         assert wasInstanceNonNull;

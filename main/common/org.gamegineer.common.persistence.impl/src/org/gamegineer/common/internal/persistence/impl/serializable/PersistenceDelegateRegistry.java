@@ -1,6 +1,6 @@
 /*
  * PersistenceDelegateRegistry.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 package org.gamegineer.common.internal.persistence.impl.serializable;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -33,6 +33,7 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.internal.persistence.impl.Debug;
 import org.gamegineer.common.internal.persistence.impl.Loggers;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
@@ -102,17 +103,13 @@ public final class PersistenceDelegateRegistry
      *         specified persistence delegate service reference; never
      *         {@code null}.
      */
-    /* @NonNull */
     private static Set<String> getDelegatorTypeNames(
-        /* @NonNull */
         final ServiceReference<IPersistenceDelegate> persistenceDelegateReference )
     {
-        assert persistenceDelegateReference != null;
-
         final Object propertyValue = persistenceDelegateReference.getProperty( PersistenceDelegateRegistryConstants.PROPERTY_DELEGATORS );
         if( propertyValue instanceof String )
         {
-            return Collections.singleton( (String)propertyValue );
+            return nonNull( Collections.singleton( (String)propertyValue ) );
         }
         else if( propertyValue instanceof String[] )
         {
@@ -120,30 +117,28 @@ public final class PersistenceDelegateRegistry
         }
 
         Loggers.getDefaultLogger().warning( NonNlsMessages.PersistenceDelegateRegistry_getDelegatorTypeNames_noDelegators( persistenceDelegateReference ) );
-        return Collections.emptySet();
+        return nonNull( Collections.<String>emptySet() );
     }
 
     /*
      * @see org.gamegineer.common.persistence.serializable.persistencedelegateregistry.IPersistenceDelegateRegistry#getPersistenceDelegate(java.lang.Class)
      */
+    @Nullable
     @Override
     public IPersistenceDelegate getPersistenceDelegate(
         final Class<?> type )
     {
-        assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
-
-        return getPersistenceDelegate( type.getName() );
+        return getPersistenceDelegate( nonNull( type.getName() ) );
     }
 
     /*
      * @see org.gamegineer.common.persistence.serializable.persistencedelegateregistry.IPersistenceDelegateRegistry#getPersistenceDelegate(java.lang.String)
      */
+    @Nullable
     @Override
     public IPersistenceDelegate getPersistenceDelegate(
         final String typeName )
     {
-        assertArgumentNotNull( typeName, "typeName" ); //$NON-NLS-1$
-
         synchronized( lock_ )
         {
             return persistenceDelegates_.get( typeName );
@@ -170,12 +165,9 @@ public final class PersistenceDelegateRegistry
         final Class<?> type,
         final IPersistenceDelegate persistenceDelegate )
     {
-        assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
-        assertArgumentNotNull( persistenceDelegate, "persistenceDelegate" ); //$NON-NLS-1$
-
         synchronized( lock_ )
         {
-            registerPersistenceDelegate( type.getName(), persistenceDelegate );
+            registerPersistenceDelegate( nonNull( type.getName() ), persistenceDelegate );
         }
     }
 
@@ -196,22 +188,18 @@ public final class PersistenceDelegateRegistry
      * @param persistenceDelegateReference
      *        The persistence delegate service reference; must not be
      *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code persistenceDelegateReference} is {@code null}.
      */
     public void registerPersistenceDelegate(
-        /* @NonNull */
         final ServiceReference<IPersistenceDelegate> persistenceDelegateReference )
     {
-        assertArgumentNotNull( persistenceDelegateReference, "persistenceDelegateReference" ); //$NON-NLS-1$
-
         synchronized( lock_ )
         {
             final PersistenceDelegateProxy persistenceDelegateProxy = new PersistenceDelegateProxy( persistenceDelegateReference );
             final Set<String> typeNames = new HashSet<>();
             for( final String typeName : getDelegatorTypeNames( persistenceDelegateReference ) )
             {
+                assert typeName != null;
+
                 try
                 {
                     registerPersistenceDelegate( typeName, persistenceDelegateProxy );
@@ -246,13 +234,9 @@ public final class PersistenceDelegateRegistry
      */
     @GuardedBy( "lock_" )
     private void registerPersistenceDelegate(
-        /* @NonNull */
         final String typeName,
-        /* @NonNull */
         final IPersistenceDelegate persistenceDelegate )
     {
-        assert typeName != null;
-        assert persistenceDelegate != null;
         assert Thread.holdsLock( lock_ );
 
         assertArgumentLegal( !persistenceDelegates_.containsKey( typeName ), "typeName", NonNlsMessages.PersistenceDelegateRegistry_registerPersistenceDelegate_type_registered( typeName ) ); //$NON-NLS-1$
@@ -268,12 +252,9 @@ public final class PersistenceDelegateRegistry
         final Class<?> type,
         final IPersistenceDelegate persistenceDelegate )
     {
-        assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
-        assertArgumentNotNull( persistenceDelegate, "persistenceDelegate" ); //$NON-NLS-1$
-
         synchronized( lock_ )
         {
-            unregisterPersistenceDelegate( type.getName(), persistenceDelegate );
+            unregisterPersistenceDelegate( nonNull( type.getName() ), persistenceDelegate );
         }
     }
 
@@ -291,16 +272,10 @@ public final class PersistenceDelegateRegistry
      * @param persistenceDelegateReference
      *        The persistence delegate service reference; must not be
      *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code persistenceDelegateReference} is {@code null}.
      */
     public void unregisterPersistenceDelegate(
-        /* @NonNull */
         final ServiceReference<IPersistenceDelegate> persistenceDelegateReference )
     {
-        assertArgumentNotNull( persistenceDelegateReference, "persistenceDelegateReference" ); //$NON-NLS-1$
-
         synchronized( lock_ )
         {
             final PersistenceDelegateProxyRegistration persistenceDelegateProxyRegistration = persistenceDelegateProxyRegistrations_.remove( persistenceDelegateReference );
@@ -309,6 +284,7 @@ public final class PersistenceDelegateRegistry
                 final PersistenceDelegateProxy persistenceDelegateProxy = persistenceDelegateProxyRegistration.persistenceDelegateProxy;
                 for( final String typeName : persistenceDelegateProxyRegistration.typeNames )
                 {
+                    assert typeName != null;
                     unregisterPersistenceDelegate( typeName, persistenceDelegateProxy );
                 }
                 persistenceDelegateProxy.dispose();
@@ -331,13 +307,9 @@ public final class PersistenceDelegateRegistry
      */
     @GuardedBy( "lock_" )
     private void unregisterPersistenceDelegate(
-        /* @NonNull */
         final String typeName,
-        /* @NonNull */
         final IPersistenceDelegate persistenceDelegate )
     {
-        assert typeName != null;
-        assert persistenceDelegate != null;
         assert Thread.holdsLock( lock_ );
 
         assertArgumentLegal( persistenceDelegate.equals( persistenceDelegates_.get( typeName ) ), "typeName", NonNlsMessages.PersistenceDelegateRegistry_unregisterPersistenceDelegate_type_unregistered( typeName ) ); //$NON-NLS-1$
@@ -386,17 +358,12 @@ public final class PersistenceDelegateRegistry
          *        The persistence delegate proxy; must not be {@code null}.
          */
         PersistenceDelegateProxyRegistration(
-            /* @NonNull */
             @SuppressWarnings( "hiding" )
             final Set<String> typeNames,
-            /* @NonNull */
             @SuppressWarnings( "hiding" )
             final PersistenceDelegateProxy persistenceDelegateProxy )
         {
-            assert typeNames != null;
-            assert persistenceDelegateProxy != null;
-
-            this.typeNames = Collections.unmodifiableSet( new HashSet<>( typeNames ) );
+            this.typeNames = nonNull( Collections.unmodifiableSet( new HashSet<>( typeNames ) ) );
             this.persistenceDelegateProxy = persistenceDelegateProxy;
         }
     }

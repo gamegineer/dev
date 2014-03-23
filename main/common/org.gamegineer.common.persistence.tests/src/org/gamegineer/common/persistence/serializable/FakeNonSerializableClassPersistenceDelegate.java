@@ -1,6 +1,6 @@
 /*
  * FakeNonSerializableClassPersistenceDelegate.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ package org.gamegineer.common.persistence.serializable;
 
 import java.io.IOException;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A persistence delegate for the {@code FakeNonSerializableClass} class.
@@ -51,8 +52,10 @@ public final class FakeNonSerializableClassPersistenceDelegate
     /*
      * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate#replaceObject(java.lang.Object)
      */
+    @Nullable
     @Override
     public Object replaceObject(
+        @Nullable
         final Object obj )
         throws IOException
     {

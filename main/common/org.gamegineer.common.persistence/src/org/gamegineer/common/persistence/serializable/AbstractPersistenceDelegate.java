@@ -1,6 +1,6 @@
 /*
  * AbstractPersistenceDelegate.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,10 +21,11 @@
 
 package org.gamegineer.common.persistence.serializable;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.IOException;
 import java.io.ObjectStreamClass;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Superclass for all implementations of {@link IPersistenceDelegate}.
@@ -63,8 +64,7 @@ public abstract class AbstractPersistenceDelegate
         final Class<?> cl )
         throws IOException
     {
-        assertArgumentNotNull( stream, "stream" ); //$NON-NLS-1$
-        assertArgumentNotNull( cl, "cl" ); //$NON-NLS-1$
+        // do nothing
     }
 
     /**
@@ -73,9 +73,11 @@ public abstract class AbstractPersistenceDelegate
      * 
      * @see org.gamegineer.common.persistence.serializable.IPersistenceDelegate#replaceObject(java.lang.Object)
      */
+    @Nullable
     @Override
     @SuppressWarnings( "unused" )
     public Object replaceObject(
+        @Nullable
         final Object obj )
         throws IOException
     {
@@ -99,10 +101,7 @@ public abstract class AbstractPersistenceDelegate
         final ObjectStreamClass desc )
         throws IOException, ClassNotFoundException
     {
-        assertArgumentNotNull( stream, "stream" ); //$NON-NLS-1$
-        assertArgumentNotNull( desc, "desc" ); //$NON-NLS-1$
-
-        return Class.forName( desc.getName(), false, getClass().getClassLoader() );
+        return nonNull( Class.forName( desc.getName(), false, getClass().getClassLoader() ) );
     }
 
     /**
@@ -111,9 +110,11 @@ public abstract class AbstractPersistenceDelegate
      * 
      * @see org.gamegineer.common.persistence.serializable.IPersistenceDelegate#resolveObject(java.lang.Object)
      */
+    @Nullable
     @Override
     @SuppressWarnings( "unused" )
     public Object resolveObject(
+        @Nullable
         final Object obj )
         throws IOException
     {

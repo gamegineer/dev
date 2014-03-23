@@ -1,6 +1,6 @@
 /*
  * ObjectOutputStream.java
- * Copyright 2008-2011 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,10 +21,11 @@
 
 package org.gamegineer.common.persistence.serializable;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.IOException;
 import java.io.OutputStream;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A stream used for serializing objects.
@@ -66,20 +67,13 @@ public final class ObjectOutputStream
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs while writing the stream header.
-     * @throws java.lang.NullPointerException
-     *         If {@code out} or {@code persistenceDelegateRegistry} is {@code
-     *         null}.
      */
     public ObjectOutputStream(
-        /* @NonNull */
         final OutputStream out,
-        /* @NonNull */
         final IPersistenceDelegateRegistry persistenceDelegateRegistry )
         throws IOException
     {
         super( out );
-
-        assertArgumentNotNull( persistenceDelegateRegistry, "persistenceDelegateRegistry" ); //$NON-NLS-1$
 
         persistenceDelegateRegistry_ = persistenceDelegateRegistry;
 
@@ -96,13 +90,21 @@ public final class ObjectOutputStream
      */
     @Override
     protected void annotateClass(
+        @Nullable
         final Class<?> cl )
         throws IOException
     {
-        final IPersistenceDelegate delegate = persistenceDelegateRegistry_.getPersistenceDelegate( cl.getName() );
-        if( delegate != null )
+        if( cl != null )
         {
-            delegate.annotateClass( this, cl );
+            final IPersistenceDelegate delegate = persistenceDelegateRegistry_.getPersistenceDelegate( nonNull( cl.getName() ) );
+            if( delegate != null )
+            {
+                delegate.annotateClass( this, cl );
+            }
+            else
+            {
+                super.annotateClass( cl );
+            }
         }
         else
         {
@@ -113,19 +115,28 @@ public final class ObjectOutputStream
     /*
      * @see java.io.ObjectOutputStream#replaceObject(java.lang.Object)
      */
+    @Nullable
     @Override
     protected Object replaceObject(
+        @Nullable
         final Object obj )
         throws IOException
     {
         Object object = obj;
         while( true )
         {
-            final IPersistenceDelegate delegate = persistenceDelegateRegistry_.getPersistenceDelegate( object.getClass().getName() );
-            final Object replacedObject = (delegate != null) ? delegate.replaceObject( object ) : super.replaceObject( object );
-            if( object != replacedObject )
+            if( object != null )
             {
-                object = replacedObject;
+                final IPersistenceDelegate delegate = persistenceDelegateRegistry_.getPersistenceDelegate( nonNull( object.getClass().getName() ) );
+                final Object replacedObject = (delegate != null) ? delegate.replaceObject( object ) : super.replaceObject( object );
+                if( object != replacedObject )
+                {
+                    object = replacedObject;
+                }
+                else
+                {
+                    break;
+                }
             }
             else
             {

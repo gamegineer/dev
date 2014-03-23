@@ -1,6 +1,6 @@
 /*
  * package-info.java
- * Copyright 2008-2010 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,4 +23,5 @@
  * Provides classes and interfaces that augment the Java object serialization
  * framework.
  */
+@org.eclipse.jdt.annotation.NonNullByDefault
 package org.gamegineer.common.persistence.serializable;

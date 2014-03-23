@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.internal.persistence.impl.serializable;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
@@ -40,10 +41,10 @@ final class NonNlsMessages
     // --- PersistenceDelegateProxy -----------------------------------------
 
     /** The actual object is not available. */
-    public static String PersistenceDelegateProxy_getActualPersistenceDelegate_actualObjectNotAvailable;
+    public static String PersistenceDelegateProxy_getActualPersistenceDelegate_actualObjectNotAvailable = ""; //$NON-NLS-1$
 
     /** The proxy has been disposed. */
-    public static String PersistenceDelegateProxy_getActualPersistenceDelegate_proxyDisposed;
+    public static String PersistenceDelegateProxy_getActualPersistenceDelegate_proxyDisposed = ""; //$NON-NLS-1$
 
     // --- PersistenceDelegateRegistry --------------------------------------
 
@@ -51,19 +52,19 @@ final class NonNlsMessages
      * The persistence delegate associated with the specified service reference
      * has no delegators.
      */
-    public static String PersistenceDelegateRegistry_getDelegatorTypeNames_noDelegators;
+    public static String PersistenceDelegateRegistry_getDelegatorTypeNames_noDelegators = ""; //$NON-NLS-1$
 
     /** A persistence delegate is already registered for the specified type. */
-    public static String PersistenceDelegateRegistry_registerPersistenceDelegate_type_registered;
+    public static String PersistenceDelegateRegistry_registerPersistenceDelegate_type_registered = ""; //$NON-NLS-1$
 
     /**
      * The persistence delegate associated with the specified service reference
      * cannot be registered for the specified type.
      */
-    public static String PersistenceDelegateRegistry_registerPersistenceDelegateFromServiceReference_registrationFailed;
+    public static String PersistenceDelegateRegistry_registerPersistenceDelegateFromServiceReference_registrationFailed = ""; //$NON-NLS-1$
 
     /** The persistence delegate is not registered for the specified type. */
-    public static String PersistenceDelegateRegistry_unregisterPersistenceDelegate_type_unregistered;
+    public static String PersistenceDelegateRegistry_unregisterPersistenceDelegate_type_unregistered = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -103,12 +104,10 @@ final class NonNlsMessages
      *         associated with the specified service reference has no
      *         delegators; never {@code null}.
      */
-    /* @NonNull */
     static String PersistenceDelegateRegistry_getDelegatorTypeNames_noDelegators(
-        /* @NonNull */
         final ServiceReference<IPersistenceDelegate> persistenceDelegateReference )
     {
-        return bind( PersistenceDelegateRegistry_getDelegatorTypeNames_noDelegators, persistenceDelegateReference );
+        return nonNull( bind( PersistenceDelegateRegistry_getDelegatorTypeNames_noDelegators, persistenceDelegateReference ) );
     }
 
     /**
@@ -122,12 +121,10 @@ final class NonNlsMessages
      * @return The formatted message indicating a persistence delegate is
      *         already registered for the specified type; never {@code null}.
      */
-    /* @NonNull */
     static String PersistenceDelegateRegistry_registerPersistenceDelegate_type_registered(
-        /* @NonNull */
         final String typeName )
     {
-        return bind( PersistenceDelegateRegistry_registerPersistenceDelegate_type_registered, typeName );
+        return nonNull( bind( PersistenceDelegateRegistry_registerPersistenceDelegate_type_registered, typeName ) );
     }
 
     /**
@@ -145,14 +142,11 @@ final class NonNlsMessages
      *         associated with the specified service reference cannot be
      *         registered for the specified type; never {@code null}.
      */
-    /* @NonNull */
     static String PersistenceDelegateRegistry_registerPersistenceDelegateFromServiceReference_registrationFailed(
-        /* @NonNull */
         final String typeName,
-        /* @NonNull */
         final ServiceReference<IPersistenceDelegate> persistenceDelegateReference )
     {
-        return bind( PersistenceDelegateRegistry_registerPersistenceDelegateFromServiceReference_registrationFailed, persistenceDelegateReference, typeName );
+        return nonNull( bind( PersistenceDelegateRegistry_registerPersistenceDelegateFromServiceReference_registrationFailed, persistenceDelegateReference, typeName ) );
     }
 
     /**
@@ -166,11 +160,9 @@ final class NonNlsMessages
      * @return The formatted message indicating the persistence delegate is not
      *         registered for the specified type; never {@code null}.
      */
-    /* @NonNull */
     static String PersistenceDelegateRegistry_unregisterPersistenceDelegate_type_unregistered(
-        /* @NonNull */
         final String typeName )
     {
-        return bind( PersistenceDelegateRegistry_unregisterPersistenceDelegate_type_unregistered, typeName );
+        return nonNull( bind( PersistenceDelegateRegistry_unregisterPersistenceDelegate_type_unregistered, typeName ) );
     }
 }

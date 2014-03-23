@@ -21,7 +21,9 @@
 
 package org.gamegineer.common.persistence.serializable;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -32,6 +34,8 @@ import java.util.Date;
 import org.easymock.EasyMock;
 import org.easymock.IAnswer;
 import org.easymock.IMocksControl;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,6 +43,7 @@ import org.junit.Test;
  * A fixture for testing the interaction between the {@link ObjectInputStream}
  * and {@link ObjectOutputStream} classes.
  */
+@NonNullByDefault( false )
 public final class ObjectStreamTest
 {
     // ======================================================================
@@ -77,14 +82,13 @@ public final class ObjectStreamTest
      * @throws java.io.IOException
      *         If an I/O error occurs.
      */
-    /* @NonNull */
+    @NonNull
     private ObjectInputStream createObjectInputStream(
-        /* @NonNull */
+        @NonNull
         final InputStream is )
         throws IOException
     {
-        assert is != null;
-
+        assertNotNull( persistenceDelegateRegistry_ );
         return new ObjectInputStream( is, persistenceDelegateRegistry_ );
     }
 
@@ -100,14 +104,13 @@ public final class ObjectStreamTest
      * @throws java.io.IOException
      *         If an I/O error occurs.
      */
-    /* @NonNull */
+    @NonNull
     private ObjectOutputStream createObjectOutputStream(
-        /* @NonNull */
+        @NonNull
         final OutputStream os )
         throws IOException
     {
-        assert os != null;
-
+        assertNotNull( persistenceDelegateRegistry_ );
         return new ObjectOutputStream( os, persistenceDelegateRegistry_ );
     }
 
@@ -123,7 +126,7 @@ public final class ObjectStreamTest
     {
         final IMocksControl mocksControl = EasyMock.createControl();
         persistenceDelegateRegistry_ = mocksControl.createMock( IPersistenceDelegateRegistry.class );
-        EasyMock.expect( persistenceDelegateRegistry_.getPersistenceDelegate( EasyMock.<String>notNull() ) ).andAnswer( new IAnswer<IPersistenceDelegate>()
+        EasyMock.expect( persistenceDelegateRegistry_.getPersistenceDelegate( assumeNonNull( EasyMock.<String>notNull() ) ) ).andAnswer( new IAnswer<IPersistenceDelegate>()
         {
             @Override
             public IPersistenceDelegate answer()
