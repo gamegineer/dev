@@ -1,6 +1,6 @@
 /*
  * ComponentEvent.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -68,7 +68,6 @@ public class ComponentEvent
      */
     public ComponentEvent(
         /* @NonNull */
-        @SuppressWarnings( "hiding" )
         final IComponent source,
         /* @Nullable */
         final ComponentPath componentPath )

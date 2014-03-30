@@ -1,6 +1,6 @@
 /*
  * TableNetworkEvent.java
- * Copyright 2008-2011 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -56,7 +56,6 @@ public class TableNetworkEvent
      */
     public TableNetworkEvent(
         /* @NonNull */
-        @SuppressWarnings( "hiding" )
         final ITableNetwork source )
     {
         super( source );

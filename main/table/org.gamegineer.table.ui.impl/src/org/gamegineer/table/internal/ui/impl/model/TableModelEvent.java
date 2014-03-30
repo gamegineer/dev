@@ -1,6 +1,6 @@
 /*
  * TableModelEvent.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -54,7 +54,6 @@ public final class TableModelEvent
      */
     public TableModelEvent(
         /* @NonNull */
-        @SuppressWarnings( "hiding" )
         final TableModel source )
     {
         super( source );

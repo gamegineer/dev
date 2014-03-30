@@ -1,6 +1,6 @@
 /*
  * TableNetworkDisconnectedEvent.java
- * Copyright 2008-2011 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -39,8 +39,8 @@ public final class TableNetworkDisconnectedEvent
     private static final long serialVersionUID = -526834421408764189L;
 
     /**
-     * The error that caused the table network to be disconnected or {@code
-     * null} if the table network was disconnected normally.
+     * The error that caused the table network to be disconnected or
+     * {@code null} if the table network was disconnected normally.
      */
     private final TableNetworkError error_;
 
@@ -64,7 +64,6 @@ public final class TableNetworkDisconnectedEvent
      */
     public TableNetworkDisconnectedEvent(
         /* @NonNull */
-        @SuppressWarnings( "hiding" )
         final ITableNetwork source,
         /* @Nullable */
         final TableNetworkError error )

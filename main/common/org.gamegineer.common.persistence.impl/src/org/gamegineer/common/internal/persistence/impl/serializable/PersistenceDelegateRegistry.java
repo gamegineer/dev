@@ -358,9 +358,7 @@ public final class PersistenceDelegateRegistry
          *        The persistence delegate proxy; must not be {@code null}.
          */
         PersistenceDelegateProxyRegistration(
-            @SuppressWarnings( "hiding" )
             final Set<String> typeNames,
-            @SuppressWarnings( "hiding" )
             final PersistenceDelegateProxy persistenceDelegateProxy )
         {
             this.typeNames = nonNull( Collections.unmodifiableSet( new HashSet<>( typeNames ) ) );
