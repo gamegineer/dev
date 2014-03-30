@@ -1,6 +1,6 @@
 /*
  * AbstractDialog.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.common.ui.dialog;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
@@ -44,6 +44,7 @@ import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.internal.ui.Debug;
 import org.gamegineer.common.ui.layout.PixelConverter;
 import org.gamegineer.common.ui.window.AbstractWindow;
@@ -61,6 +62,7 @@ public abstract class AbstractDialog
     // ======================================================================
 
     /** The dialog button bar component. */
+    @Nullable
     private Component buttonBar_;
 
     /**
@@ -70,12 +72,15 @@ public abstract class AbstractDialog
     private final Map<String, JButton> buttons_;
 
     /** The dialog content area component. */
+    @Nullable
     private Component dialogArea_;
 
     /** The dialog pixel converter. */
+    @Nullable
     private PixelConverter pixelConverter_;
 
     /** The dialog title. */
+    @Nullable
     private String title_;
 
 
@@ -90,7 +95,7 @@ public abstract class AbstractDialog
      *        The parent shell or {@code null} to create a top-level shell.
      */
     protected AbstractDialog(
-        /* @Nullable */
+        @Nullable
         final Window parentShell )
     {
         super( parentShell );
@@ -119,12 +124,8 @@ public abstract class AbstractDialog
      * @param id
      *        The identifier of the button that was pressed; must not be
      *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
      */
     protected void buttonPressed(
-        /* @NonNull */
         final String id )
     {
         if( id.equals( DialogConstants.OK_BUTTON_ID ) )
@@ -187,6 +188,7 @@ public abstract class AbstractDialog
         {
             @Override
             public void windowClosing(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final WindowEvent event )
             {
@@ -206,13 +208,14 @@ public abstract class AbstractDialog
     protected final int convertHeightInCharsToPixels(
         final int chars )
     {
-        if( pixelConverter_ == null )
+        final PixelConverter pixelConverter = pixelConverter_;
+        if( pixelConverter == null )
         {
             Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Dialog pixel converter not initialized" ); //$NON-NLS-1$
             return 0;
         }
 
-        return pixelConverter_.convertHeightInCharsToPixels( chars );
+        return pixelConverter.convertHeightInCharsToPixels( chars );
     }
 
     /**
@@ -226,13 +229,14 @@ public abstract class AbstractDialog
     protected final int convertHeightInDlusToPixels(
         final int dlus )
     {
-        if( pixelConverter_ == null )
+        final PixelConverter pixelConverter = pixelConverter_;
+        if( pixelConverter == null )
         {
             Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Dialog pixel converter not initialized" ); //$NON-NLS-1$
             return 0;
         }
 
-        return pixelConverter_.convertHeightInDlusToPixels( dlus );
+        return pixelConverter.convertHeightInDlusToPixels( dlus );
     }
 
     /**
@@ -246,13 +250,14 @@ public abstract class AbstractDialog
     protected final int convertWidthInCharsToPixels(
         final int chars )
     {
-        if( pixelConverter_ == null )
+        final PixelConverter pixelConverter = pixelConverter_;
+        if( pixelConverter == null )
         {
             Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Dialog pixel converter not initialized" ); //$NON-NLS-1$
             return 0;
         }
 
-        return pixelConverter_.convertWidthInCharsToPixels( chars );
+        return pixelConverter.convertWidthInCharsToPixels( chars );
     }
 
     /**
@@ -266,13 +271,14 @@ public abstract class AbstractDialog
     protected final int convertWidthInDlusToPixels(
         final int dlus )
     {
-        if( pixelConverter_ == null )
+        final PixelConverter pixelConverter = pixelConverter_;
+        if( pixelConverter == null )
         {
             Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Dialog pixel converter not initialized" ); //$NON-NLS-1$
             return 0;
         }
 
-        return pixelConverter_.convertWidthInDlusToPixels( dlus );
+        return pixelConverter.convertWidthInDlusToPixels( dlus );
     }
 
     /**
@@ -289,22 +295,14 @@ public abstract class AbstractDialog
      *        {@code false}.
      * 
      * @return The new button; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code parent} or {@code id} is {@code null}.
      */
-    /* @NonNull */
     protected final JButton createButton(
-        /* @NonNull */
         final Container parent,
-        /* @NonNull */
         final String id,
-        /* @Nullable */
+        @Nullable
         final String label,
         final boolean defaultButton )
     {
-        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
-
         final JButton button = new JButton();
         parent.add( button );
         button.setActionCommand( id );
@@ -313,16 +311,25 @@ public abstract class AbstractDialog
         {
             @Override
             public void actionPerformed(
+                @Nullable
                 final ActionEvent event )
             {
-                buttonPressed( event.getActionCommand() );
+                assert event != null;
+
+                final String buttonId = event.getActionCommand();
+                if( buttonId != null )
+                {
+                    buttonPressed( buttonId );
+                }
             }
         } );
         setButtonLayoutData( button );
 
         if( defaultButton )
         {
-            getShell().getRootPane().setDefaultButton( button );
+            final JDialog shell = getShell();
+            assert shell != null;
+            shell.getRootPane().setDefaultButton( button );
         }
 
         buttons_.put( id, button );
@@ -342,13 +349,8 @@ public abstract class AbstractDialog
      *        The parent container for the button bar; must not be {@code null}.
      * 
      * @return The dialog button bar component; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code parent} is {@code null}.
      */
-    /* @NonNull */
     protected Component createButtonBar(
-        /* @NonNull */
         final Container parent )
     {
         final JPanel container = new JPanel();
@@ -394,12 +396,8 @@ public abstract class AbstractDialog
      * 
      * @param parent
      *        The parent container for the buttons; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code parent} is {@code null}.
      */
     protected void createButtonsForButtonBar(
-        /* @NonNull */
         final Container parent )
     {
         createButton( parent, DialogConstants.OK_BUTTON_ID, DialogConstants.OK_BUTTON_LABEL, true );
@@ -411,8 +409,11 @@ public abstract class AbstractDialog
      */
     @Override
     protected final Component createContent(
+        @Nullable
         final Container parent )
     {
+        assert parent != null;
+
         final Container container = new JPanel();
         parent.add( container );
 
@@ -444,13 +445,8 @@ public abstract class AbstractDialog
      *        {@code null}.
      * 
      * @return The dialog content area component; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code parent} is {@code null}.
      */
-    /* @NonNull */
     protected Component createDialogArea(
-        /* @NonNull */
         final Container parent )
     {
         final JPanel container = new JPanel();
@@ -470,12 +466,16 @@ public abstract class AbstractDialog
      */
     @Override
     protected final JDialog createShell(
+        @Nullable
         final Window parent )
     {
+        assert parent != null;
+
         final ActionListener escapeKeyListener = new ActionListener()
         {
             @Override
             public void actionPerformed(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
@@ -483,7 +483,7 @@ public abstract class AbstractDialog
             }
         };
 
-        return new JDialog( parent, Dialog.ModalityType.APPLICATION_MODAL )
+        return new JDialog( parent, nonNull( Dialog.ModalityType.APPLICATION_MODAL ) )
         {
             private static final long serialVersionUID = -1569267715967524723L;
 
@@ -506,17 +506,11 @@ public abstract class AbstractDialog
      * 
      * @return The button with the specified identifier or {@code null} if no
      *         such button exists.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     protected final JButton getButton(
-        /* @NonNull */
         final String id )
     {
-        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
-
         return buttons_.get( id );
     }
 
@@ -526,7 +520,7 @@ public abstract class AbstractDialog
      * @return The dialog button bar component or {@code null} if the button bar
      *         has not yet been created.
      */
-    /* @Nullable */
+    @Nullable
     protected final Component getButtonBar()
     {
         return buttonBar_;
@@ -538,7 +532,7 @@ public abstract class AbstractDialog
      * @return The dialog content area component or {@code null} if the content
      *         area component has not yet been created.
      */
-    /* @Nullable */
+    @Nullable
     protected final Component getDialogArea()
     {
         return dialogArea_;
@@ -563,12 +557,8 @@ public abstract class AbstractDialog
      * 
      * @param button
      *        The button; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code button} is {@code null}.
      */
     protected final void setButtonLayoutData(
-        /* @NonNull */
         final JButton button )
     {
         final int defaultWidth = convertWidthInDlusToPixels( DialogConstants.BUTTON_WIDTH );
@@ -584,7 +574,7 @@ public abstract class AbstractDialog
      *        The dialog title or {@code null} to clear the title.
      */
     protected final void setTitle(
-        /* @Nullable */
+        @Nullable
         final String title )
     {
         title_ = title;

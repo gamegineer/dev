@@ -1,6 +1,6 @@
 /*
  * ComponentPasswordProperty.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,6 +26,7 @@ import javax.swing.JPasswordField;
 import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.core.databinding.property.value.DelegatingValueProperty;
 import org.eclipse.core.databinding.property.value.IValueProperty;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.security.SecureString;
 
 /**
@@ -40,6 +41,7 @@ final class ComponentPasswordProperty
     // ======================================================================
 
     /** The value property for instances of {@code JPasswordField}. */
+    @Nullable
     private IValueProperty passwordFieldValueProperty_;
 
 
@@ -68,8 +70,11 @@ final class ComponentPasswordProperty
      */
     @Override
     protected IValueProperty doGetDelegate(
+        @Nullable
         final Object source )
     {
+        assert source != null;
+
         if( source instanceof JPasswordField )
         {
             if( passwordFieldValueProperty_ == null )
@@ -77,6 +82,7 @@ final class ComponentPasswordProperty
                 passwordFieldValueProperty_ = new PasswordFieldTextProperty();
             }
 
+            assert passwordFieldValueProperty_ != null;
             return passwordFieldValueProperty_;
         }
 

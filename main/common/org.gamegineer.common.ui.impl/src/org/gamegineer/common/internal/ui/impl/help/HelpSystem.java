@@ -1,6 +1,6 @@
 /*
  * HelpSystem.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.common.internal.ui.impl.help;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -42,6 +41,7 @@ import javax.help.WindowPresentation;
 import javax.swing.JFrame;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.app.IBranding;
 import org.gamegineer.common.internal.ui.impl.Debug;
 import org.gamegineer.common.internal.ui.impl.Loggers;
@@ -63,6 +63,7 @@ public final class HelpSystem
 
     /** The branding for the running application. */
     @GuardedBy( "lock_" )
+    @Nullable
     private IBranding branding_;
 
     /**
@@ -82,10 +83,12 @@ public final class HelpSystem
 
     /** The master help broker. */
     @GuardedBy( "lock_" )
+    @Nullable
     private HelpBroker masterHelpBroker_;
 
     /** The master help set. */
     @GuardedBy( "lock_" )
+    @Nullable
     private HelpSet masterHelpSet_;
 
 
@@ -137,13 +140,15 @@ public final class HelpSystem
             masterHelpSet_ = masterHelpSet;
             masterHelpBroker_ = masterHelpBroker;
 
-            if( branding_ != null )
+            final IBranding branding = branding_;
+            if( branding != null )
             {
-                masterHelpSet_.setTitle( NlsMessages.HelpSystem_masterHelpSet_title( branding_.getName() ) );
+                masterHelpSet.setTitle( NlsMessages.HelpSystem_masterHelpSet_title( branding.getName() ) );
             }
 
             for( final HelpSetProviderProxy helpSetProviderProxy : helpSetProviderProxies_.values() )
             {
+                assert helpSetProviderProxy != null;
                 addHelpSet( helpSetProviderProxy );
             }
         }
@@ -157,11 +162,8 @@ public final class HelpSystem
      *        The help set provider; must not be {@code null}.
      */
     private void addHelpSet(
-        /* @NonNull */
         final IHelpSetProvider helpSetProvider )
     {
-        assert helpSetProvider != null;
-
         try
         {
             synchronized( lock_ )
@@ -186,15 +188,10 @@ public final class HelpSystem
      * 
      * @throws java.lang.IllegalStateException
      *         If the application branding is already bound.
-     * @throws java.lang.NullPointerException
-     *         If {@code branding} is {@code null}.
      */
     public void bindBranding(
-        /* @NonNull */
         final IBranding branding )
     {
-        assertArgumentNotNull( branding, "branding" ); //$NON-NLS-1$
-
         synchronized( lock_ )
         {
             assertStateLegal( branding_ == null, NonNlsMessages.HelpSystem_bindBranding_bound );
@@ -215,6 +212,7 @@ public final class HelpSystem
             {
                 for( final HelpSetProviderProxy helpSetProviderProxy : helpSetProviderProxies_.values() )
                 {
+                    assert helpSetProviderProxy != null;
                     removeHelpSet( helpSetProviderProxy );
                 }
 
@@ -230,8 +228,6 @@ public final class HelpSystem
     public void displayHelp(
         final Object activationObject )
     {
-        assertArgumentNotNull( activationObject, "activationObject" ); //$NON-NLS-1$
-
         final ActionListener listener;
         synchronized( lock_ )
         {
@@ -261,16 +257,10 @@ public final class HelpSystem
      * 
      * @param helpSetProviderReference
      *        The help set provider service reference; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code helpSetProviderReference} is {@code null}.
      */
     public void registerHelpSetProvider(
-        /* @NonNull */
         final ServiceReference<IHelpSetProvider> helpSetProviderReference )
     {
-        assertArgumentNotNull( helpSetProviderReference, "helpSetProviderReference" ); //$NON-NLS-1$
-
         synchronized( lock_ )
         {
             final HelpSetProviderProxy helpSetProviderProxy = new HelpSetProviderProxy( helpSetProviderReference );
@@ -288,11 +278,8 @@ public final class HelpSystem
      *        The help set provider; must not be {@code null}.
      */
     private void removeHelpSet(
-        /* @NonNull */
         final IHelpSetProvider helpSetProvider )
     {
-        assert helpSetProvider != null;
-
         try
         {
             synchronized( lock_ )
@@ -379,15 +366,10 @@ public final class HelpSystem
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code branding} is not currently bound.
-     * @throws java.lang.NullPointerException
-     *         If {@code branding} is {@code null}.
      */
     public void unbindBranding(
-        /* @NonNull */
         final IBranding branding )
     {
-        assertArgumentNotNull( branding, "branding" ); //$NON-NLS-1$
-
         synchronized( lock_ )
         {
             assertArgumentLegal( branding_ == branding, "branding", NonNlsMessages.HelpSystem_unbindBranding_notBound ); //$NON-NLS-1$
@@ -401,16 +383,10 @@ public final class HelpSystem
      * 
      * @param helpSetProviderReference
      *        The help set provider service reference; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code helpSetProviderReference} is {@code null}.
      */
     public void unregisterHelpSetProvider(
-        /* @NonNull */
         final ServiceReference<IHelpSetProvider> helpSetProviderReference )
     {
-        assertArgumentNotNull( helpSetProviderReference, "helpSetProviderReference" ); //$NON-NLS-1$
-
         synchronized( lock_ )
         {
             final HelpSetProviderProxy helpSetProviderProxy = helpSetProviderProxies_.remove( helpSetProviderReference );

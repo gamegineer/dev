@@ -1,6 +1,6 @@
 /*
  * AbstractDialogPage.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,6 +30,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.internal.ui.Debug;
 import org.gamegineer.common.ui.layout.PixelConverter;
 
@@ -45,18 +46,23 @@ public abstract class AbstractDialogPage
     // ======================================================================
 
     /** The dialog page content. */
+    @Nullable
     private Component content_;
 
     /** The dialog page description. */
+    @Nullable
     private String description_;
 
     /** The dialog page message. */
+    @Nullable
     private DialogMessage message_;
 
     /** The dialog page pixel converter. */
+    @Nullable
     private PixelConverter pixelConverter_;
 
     /** The dialog page title. */
+    @Nullable
     private String title_;
 
 
@@ -92,13 +98,14 @@ public abstract class AbstractDialogPage
     protected final int convertHeightInCharsToPixels(
         final int chars )
     {
-        if( pixelConverter_ == null )
+        final PixelConverter pixelConverter = pixelConverter_;
+        if( pixelConverter == null )
         {
             Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Dialog page pixel converter not initialized" ); //$NON-NLS-1$
             return 0;
         }
 
-        return pixelConverter_.convertHeightInCharsToPixels( chars );
+        return pixelConverter.convertHeightInCharsToPixels( chars );
     }
 
     /**
@@ -112,13 +119,14 @@ public abstract class AbstractDialogPage
     protected final int convertHeightInDlusToPixels(
         final int dlus )
     {
-        if( pixelConverter_ == null )
+        final PixelConverter pixelConverter = pixelConverter_;
+        if( pixelConverter == null )
         {
             Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Dialog page pixel converter not initialized" ); //$NON-NLS-1$
             return 0;
         }
 
-        return pixelConverter_.convertHeightInDlusToPixels( dlus );
+        return pixelConverter.convertHeightInDlusToPixels( dlus );
     }
 
     /**
@@ -132,13 +140,14 @@ public abstract class AbstractDialogPage
     protected final int convertWidthInCharsToPixels(
         final int chars )
     {
-        if( pixelConverter_ == null )
+        final PixelConverter pixelConverter = pixelConverter_;
+        if( pixelConverter == null )
         {
             Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Dialog page pixel converter not initialized" ); //$NON-NLS-1$
             return 0;
         }
 
-        return pixelConverter_.convertWidthInCharsToPixels( chars );
+        return pixelConverter.convertWidthInCharsToPixels( chars );
     }
 
     /**
@@ -152,13 +161,14 @@ public abstract class AbstractDialogPage
     protected final int convertWidthInDlusToPixels(
         final int dlus )
     {
-        if( pixelConverter_ == null )
+        final PixelConverter pixelConverter = pixelConverter_;
+        if( pixelConverter == null )
         {
             Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Dialog page pixel converter not initialized" ); //$NON-NLS-1$
             return 0;
         }
 
-        return pixelConverter_.convertWidthInDlusToPixels( dlus );
+        return pixelConverter.convertWidthInDlusToPixels( dlus );
     }
 
     /*
@@ -186,13 +196,8 @@ public abstract class AbstractDialogPage
      *        {@code null}.
      * 
      * @return The dialog page content area component; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code parent} is {@code null}.
      */
-    /* @NonNull */
     protected Component createContent(
-        /* @NonNull */
         final Container parent )
     {
         final JPanel container = new JPanel();
@@ -215,6 +220,7 @@ public abstract class AbstractDialogPage
     /*
      * @see org.gamegineer.common.ui.dialog.IDialogPage#getContent()
      */
+    @Nullable
     @Override
     public final Component getContent()
     {
@@ -224,6 +230,7 @@ public abstract class AbstractDialogPage
     /*
      * @see org.gamegineer.common.ui.dialog.IDialogPage#getDescription()
      */
+    @Nullable
     @Override
     public final String getDescription()
     {
@@ -233,6 +240,7 @@ public abstract class AbstractDialogPage
     /*
      * @see org.gamegineer.common.ui.dialog.IDialogPage#getMessage()
      */
+    @Nullable
     @Override
     public final DialogMessage getMessage()
     {
@@ -242,6 +250,7 @@ public abstract class AbstractDialogPage
     /*
      * @see org.gamegineer.common.ui.dialog.IDialogPage#getShell()
      */
+    @Nullable
     @Override
     public final Window getShell()
     {
@@ -256,6 +265,7 @@ public abstract class AbstractDialogPage
     /*
      * @see org.gamegineer.common.ui.dialog.IDialogPage#getTitle()
      */
+    @Nullable
     @Override
     public final String getTitle()
     {
@@ -267,12 +277,8 @@ public abstract class AbstractDialogPage
      * 
      * @param button
      *        The button; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code button} is {@code null}.
      */
     protected final void setButtonLayoutData(
-        /* @NonNull */
         final JButton button )
     {
         final int defaultWidth = convertWidthInDlusToPixels( DialogConstants.BUTTON_WIDTH );
@@ -292,7 +298,7 @@ public abstract class AbstractDialogPage
      *        The dialog page description or {@code null} to clear it.
      */
     protected void setDescription(
-        /* @Nullable */
+        @Nullable
         final String description )
     {
         description_ = description;
@@ -305,7 +311,7 @@ public abstract class AbstractDialogPage
      */
     @Override
     public void setMessage(
-        /* @Nullable */
+        @Nullable
         final DialogMessage message )
     {
         message_ = message;
@@ -322,7 +328,7 @@ public abstract class AbstractDialogPage
      *        The dialog page title or {@code null} to clear it.
      */
     protected void setTitle(
-        /* @Nullable */
+        @Nullable
         final String title )
     {
         title_ = title;

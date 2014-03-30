@@ -1,6 +1,6 @@
 /*
  * AbstractWizard.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,12 +21,12 @@
 
 package org.gamegineer.common.ui.wizard;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Container;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Superclass for all implementations of {@link IWizard}.
@@ -40,6 +40,7 @@ public abstract class AbstractWizard
     // ======================================================================
 
     /** The container that hosts this wizard. */
+    @Nullable
     private IWizardContainer container_;
 
     /** Indicates the wizard needs Previous and Back buttons. */
@@ -52,6 +53,7 @@ public abstract class AbstractWizard
     private final List<IWizardPage> pages_;
 
     /** The wizard title. */
+    @Nullable
     private String title_;
 
 
@@ -85,12 +87,8 @@ public abstract class AbstractWizard
      * 
      * @param page
      *        The new page; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code page} is {@code null}.
      */
     protected final void addPage(
-        /* @NonNull */
         final IWizardPage page )
     {
         page.setWizard( this );
@@ -138,8 +136,6 @@ public abstract class AbstractWizard
     public void create(
         final Container parent )
     {
-        assertArgumentNotNull( parent, "parent" ); //$NON-NLS-1$
-
         for( final IWizardPage page : pages_ )
         {
             page.create( parent );
@@ -164,6 +160,7 @@ public abstract class AbstractWizard
     /*
      * @see org.gamegineer.common.ui.wizard.IWizard#getContainer()
      */
+    @Nullable
     @Override
     public final IWizardContainer getContainer()
     {
@@ -175,6 +172,7 @@ public abstract class AbstractWizard
      * 
      * @see org.gamegineer.common.ui.wizard.IWizard#getFirstPage()
      */
+    @Nullable
     @Override
     public IWizardPage getFirstPage()
     {
@@ -192,12 +190,11 @@ public abstract class AbstractWizard
      * 
      * @see org.gamegineer.common.ui.wizard.IWizard#getNextPage(org.gamegineer.common.ui.wizard.IWizardPage)
      */
+    @Nullable
     @Override
     public IWizardPage getNextPage(
         final IWizardPage page )
     {
-        assertArgumentNotNull( page, "page" ); //$NON-NLS-1$
-
         final int index = pages_.indexOf( page );
         if( (index == -1) || (index == (pages_.size() - 1)) )
         {
@@ -210,12 +207,11 @@ public abstract class AbstractWizard
     /*
      * @see org.gamegineer.common.ui.wizard.IWizard#getPage(java.lang.String)
      */
+    @Nullable
     @Override
     public final IWizardPage getPage(
         final String name )
     {
-        assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-
         for( final IWizardPage page : pages_ )
         {
             if( name.equals( page.getName() ) )
@@ -251,12 +247,11 @@ public abstract class AbstractWizard
      * 
      * @see org.gamegineer.common.ui.wizard.IWizard#getPreviousPage(org.gamegineer.common.ui.wizard.IWizardPage)
      */
+    @Nullable
     @Override
     public IWizardPage getPreviousPage(
         final IWizardPage page )
     {
-        assertArgumentNotNull( page, "page" ); //$NON-NLS-1$
-
         final int index = pages_.indexOf( page );
         if( (index == -1) || (index == 0) )
         {
@@ -269,6 +264,7 @@ public abstract class AbstractWizard
     /*
      * @see org.gamegineer.common.ui.wizard.IWizard#getTitle()
      */
+    @Nullable
     @Override
     public final String getTitle()
     {
@@ -320,6 +316,7 @@ public abstract class AbstractWizard
      */
     @Override
     public final void setContainer(
+        @Nullable
         final IWizardContainer container )
     {
         container_ = container;
@@ -364,7 +361,7 @@ public abstract class AbstractWizard
      *        The wizard title or {@code null} to clear the title.
      */
     protected final void setTitle(
-        /* @Nullable */
+        @Nullable
         final String title )
     {
         title_ = title;

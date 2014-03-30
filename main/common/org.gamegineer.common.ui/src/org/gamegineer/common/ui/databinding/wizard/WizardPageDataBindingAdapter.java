@@ -1,6 +1,6 @@
 /*
  * WizardPageDataBindingAdapter.java
- * Copyright 2008-2011 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -45,15 +45,9 @@ public class WizardPageDataBindingAdapter
      *        The wizard page; must not be {@code null}.
      * @param dataBindingContext
      *        The data binding context; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code wizardPage} or {@code dataBindingContext} is {@code
-     *         null}.
      */
     public WizardPageDataBindingAdapter(
-        /* @NonNull */
         final IWizardPage wizardPage,
-        /* @NonNull */
         final DataBindingContext dataBindingContext )
     {
         super( wizardPage, dataBindingContext );
@@ -69,7 +63,6 @@ public class WizardPageDataBindingAdapter
      * 
      * @return The wizard page; never {@code null}.
      */
-    /* @NonNull */
     protected final IWizardPage getWizardPage()
     {
         return (IWizardPage)getDialogPage();

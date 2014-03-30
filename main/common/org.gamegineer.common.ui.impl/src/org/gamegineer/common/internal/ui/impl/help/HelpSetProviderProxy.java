@@ -1,6 +1,6 @@
 /*
  * HelpSetProviderProxy.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,6 +26,7 @@ import javax.help.HelpSet;
 import javax.help.HelpSetException;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.internal.ui.impl.Activator;
 import org.gamegineer.common.ui.help.IHelpSetProvider;
 import org.osgi.framework.ServiceReference;
@@ -44,6 +45,7 @@ final class HelpSetProviderProxy
 
     /** The actual help set provider. */
     @GuardedBy( "lock_" )
+    @Nullable
     private IHelpSetProvider helpSetProvider_;
 
     /** The service registry reference to the help set provider. */
@@ -69,11 +71,8 @@ final class HelpSetProviderProxy
      *        be {@code null}.
      */
     HelpSetProviderProxy(
-        /* @NonNull */
         final ServiceReference<IHelpSetProvider> helpSetProviderReference )
     {
-        assert helpSetProviderReference != null;
-
         helpSetProvider_ = null;
         helpSetProviderReference_ = helpSetProviderReference;
         lock_ = new Object();
@@ -112,7 +111,6 @@ final class HelpSetProviderProxy
      * @throws java.lang.IllegalStateException
      *         If the actual help set provider cannot be obtained.
      */
-    /* @NonNull */
     private IHelpSetProvider getActualHelpSetProvider()
     {
         synchronized( lock_ )
@@ -125,6 +123,7 @@ final class HelpSetProviderProxy
             }
 
             assertStateLegal( helpSetProvider_ != null, NonNlsMessages.HelpSetProviderProxy_getActualHelpSetProvider_actualObjectNotAvailable );
+            assert helpSetProvider_ != null;
             return helpSetProvider_;
         }
     }

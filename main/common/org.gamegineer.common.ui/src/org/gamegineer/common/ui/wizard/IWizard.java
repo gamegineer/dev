@@ -1,6 +1,6 @@
 /*
  * IWizard.java
- * Copyright 2008-2010 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ package org.gamegineer.common.ui.wizard;
 
 import java.awt.Container;
 import java.util.Collection;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A wizard.
@@ -51,12 +52,8 @@ public interface IWizard
      * 
      * @param parent
      *        The parent container for the wizard; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code parent} is {@code null}.
      */
     public void create(
-        /* @NonNull */
         Container parent );
 
     /**
@@ -70,7 +67,7 @@ public interface IWizard
      * @return The container hosting the wizard or {@code null} if the wizard
      *         has not yet been added to a container.
      */
-    /* @Nullable */
+    @Nullable
     public IWizardContainer getContainer();
 
     /**
@@ -81,13 +78,9 @@ public interface IWizard
      * 
      * @return The successor of the specified page in the wizard sequence or
      *         {@code null} if none.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code page} is {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     public IWizardPage getNextPage(
-        /* @NonNull */
         IWizardPage page );
 
     /**
@@ -98,13 +91,9 @@ public interface IWizard
      * 
      * @return The page with the specified name or {@code null} if no such page
      *         exists.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code name} is {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     public IWizardPage getPage(
-        /* @NonNull */
         String name );
 
     /**
@@ -119,7 +108,6 @@ public interface IWizard
      * 
      * @return The collection of pages in the wizard; never {@code null}.
      */
-    /* @NonNull */
     public Collection<IWizardPage> getPages();
 
     /**
@@ -130,20 +118,18 @@ public interface IWizard
      * 
      * @return The predecessor of the specified page in the wizard sequence or
      *         {@code null} if none.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code page} is {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     public IWizardPage getPreviousPage(
-        /* @NonNull */
         IWizardPage page );
 
     /**
      * Gets the first page to be displayed in the wizard.
      * 
-     * @return The first page to be displayed in the wizard; never {@code null}.
+     * @return The first page to be displayed in the wizard or {@code null} if
+     *         none.
      */
+    @Nullable
     public IWizardPage getFirstPage();
 
     /**
@@ -151,7 +137,7 @@ public interface IWizard
      * 
      * @return The wizard title or {@code null} if the wizard has no title.
      */
-    /* @Nullable */
+    @Nullable
     public String getTitle();
 
     /**
@@ -173,8 +159,8 @@ public interface IWizard
     /**
      * Performs the appropriate actions when the wizard is cancelled.
      * 
-     * @return {@code true} if the cancellation request was accepted or {@code
-     *         false} if the cancellation request was refused.
+     * @return {@code true} if the cancellation request was accepted or
+     *         {@code false} if the cancellation request was refused.
      */
     public boolean performCancel();
 
@@ -193,6 +179,6 @@ public interface IWizard
      *        The container hosting the wizard or {@code null} to clear it.
      */
     public void setContainer(
-        /* @Nullable */
+        @Nullable
         IWizardContainer container );
 }

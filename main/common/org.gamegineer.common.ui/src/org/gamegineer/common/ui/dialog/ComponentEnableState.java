@@ -1,6 +1,6 @@
 /*
  * ComponentEnableState.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.ui.dialog;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Component;
 import java.awt.Container;
 import java.util.ArrayList;
@@ -55,11 +54,8 @@ public final class ComponentEnableState
      *        {@code null}.
      */
     private ComponentEnableState(
-        /* @NonNull */
         final Collection<Component> components )
     {
-        assert components != null;
-
         components_ = components;
     }
 
@@ -76,17 +72,10 @@ public final class ComponentEnableState
      * 
      * @return A memento representing the previous enable/disable state of the
      *         component and its descendants; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code component} is {@code null}.
      */
-    /* @NonNull */
     public static ComponentEnableState disable(
-        /* @NonNull */
         final Component component )
     {
-        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
-
         final Collection<Component> components = new ArrayList<>();
         disable( component, components );
 
@@ -103,14 +92,9 @@ public final class ComponentEnableState
      *        {@code null}.
      */
     private static void disable(
-        /* @NonNull */
         final Component component,
-        /* @NonNull */
         final Collection<Component> components )
     {
-        assert component != null;
-        assert components != null;
-
         if( component.isEnabled() )
         {
             components.add( component );
@@ -122,7 +106,9 @@ public final class ComponentEnableState
             final Container container = (Container)component;
             for( int index = 0, count = container.getComponentCount(); index < count; ++index )
             {
-                disable( container.getComponent( index ), components );
+                final Component childComponent = container.getComponent( index );
+                assert childComponent != null;
+                disable( childComponent, components );
             }
         }
     }

@@ -1,6 +1,6 @@
 /*
  * IDialogPage.java
- * Copyright 2008-2010 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,6 +24,7 @@ package org.gamegineer.common.ui.dialog;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Window;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A page in a multi-page dialog.
@@ -45,12 +46,8 @@ public interface IDialogPage
      * @param parent
      *        The parent container for the dialog page; must not be {@code null}
      *        .
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code parent} is {@code null}.
      */
     public void create(
-        /* @NonNull */
         Container parent );
 
     /**
@@ -64,7 +61,7 @@ public interface IDialogPage
      * @return The top-level component encapsulating the dialog page content or
      *         {@code null} if the dialog page content has not yet been created.
      */
-    /* @Nullable */
+    @Nullable
     public Component getContent();
 
     /**
@@ -73,7 +70,7 @@ public interface IDialogPage
      * @return The dialog page description or {@code null} if the dialog page
      *         has no description.
      */
-    /* @Nullable */
+    @Nullable
     public String getDescription();
 
     /**
@@ -82,7 +79,7 @@ public interface IDialogPage
      * @return The dialog page message or {@code null} if the dialog page has no
      *         message.
      */
-    /* @Nullable */
+    @Nullable
     public DialogMessage getMessage();
 
     /**
@@ -91,7 +88,7 @@ public interface IDialogPage
      * @return The dialog page shell or {@code null} if the dialog page has no
      *         shell.
      */
-    /* @Nullable */
+    @Nullable
     public Window getShell();
 
     /**
@@ -100,7 +97,7 @@ public interface IDialogPage
      * @return The dialog page title or {@code null} if the dialog page has no
      *         title.
      */
-    /* @Nullable */
+    @Nullable
     public String getTitle();
 
     /**
@@ -110,7 +107,7 @@ public interface IDialogPage
      *        The dialog page message or {@code null} to clear the message.
      */
     public void setMessage(
-        /* @Nullable */
+        @Nullable
         DialogMessage message );
 
     /**

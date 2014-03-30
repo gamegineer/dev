@@ -1,6 +1,6 @@
 /*
  * ComponentProperties.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -56,7 +56,6 @@ public final class ComponentProperties
      * @return A value property for observing the password of a
      *         {@link JPasswordField}; never {@code null}.
      */
-    /* @NonNull */
     public static IValueProperty password()
     {
         return new ComponentPasswordProperty();
@@ -69,7 +68,6 @@ public final class ComponentProperties
      * @return A value property for observing the password of a {@link JList};
      *         never {@code null}.
      */
-    /* @NonNull */
     public static IValueProperty singleSelectionValue()
     {
         return new ComponentSingleSelectionValueProperty();
@@ -81,7 +79,6 @@ public final class ComponentProperties
      * @return A value property for observing the text of a
      *         {@link JTextComponent}; never {@code null}.
      */
-    /* @NonNull */
     public static IValueProperty text()
     {
         return new ComponentTextProperty();

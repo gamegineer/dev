@@ -1,6 +1,6 @@
 /*
  * SwingRealm.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.internal.ui.Loggers;
 
 /**
@@ -56,6 +57,7 @@ public final class SwingRealm
      */
     @Override
     public void asyncExec(
+        @Nullable
         final Runnable runnable )
     {
         final Runnable safeRunnable = new Runnable()
@@ -83,11 +85,8 @@ public final class SwingRealm
      *        The runnable to execute; must not be {@code null}.
      */
     private static void execSystem(
-        /* @NonNull */
         final Runnable runnable )
     {
-        assert runnable != null;
-
         if( SwingUtilities.isEventDispatchThread() )
         {
             safeRun( runnable );
@@ -104,7 +103,7 @@ public final class SwingRealm
      * @return The Swing realm for the system event dispatch thread or
      *         {@code null} if no system event dispatch thread is running.
      */
-    /* @Nullable */
+    @Nullable
     public static SwingRealm getSystemRealm()
     {
         final AtomicReference<SwingRealm> systemRealm = new AtomicReference<>();
@@ -164,11 +163,8 @@ public final class SwingRealm
      *        The runnable to execute; must not be {@code null}.
      */
     private static void safeInvokeAndWait(
-        /* @NonNull */
         final Runnable runnable )
     {
-        assert runnable != null;
-
         try
         {
             SwingUtilities.invokeAndWait( runnable );

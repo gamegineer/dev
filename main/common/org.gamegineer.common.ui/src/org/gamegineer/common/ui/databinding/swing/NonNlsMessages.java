@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.ui.databinding.swing;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 
@@ -38,21 +39,21 @@ final class NonNlsMessages
     // --- ComponentProperties ----------------------------------------------
 
     /** The password property was requested for an unsupported component. */
-    public static String ComponentProperties_password_unsupportedComponent;
+    public static String ComponentProperties_password_unsupportedComponent = ""; //$NON-NLS-1$
 
     /**
      * The single selection value property was requested for an unsupported
      * component.
      */
-    public static String ComponentProperties_singleSelectionValue_unsupportedComponent;
+    public static String ComponentProperties_singleSelectionValue_unsupportedComponent = ""; //$NON-NLS-1$
 
     /** The text property was requested for an unsupported component. */
-    public static String ComponentProperties_text_unsupportedComponent;
+    public static String ComponentProperties_text_unsupportedComponent = ""; //$NON-NLS-1$
 
     // --- SwingRealm -------------------------------------------------------
 
     /** An error occurred while executing the runnable. */
-    public static String SwingRealm_safeInvokeAndWait_error;
+    public static String SwingRealm_safeInvokeAndWait_error = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -91,12 +92,10 @@ final class NonNlsMessages
      * @return The formatted message indicating the password property was
      *         requested for an unsupported component; never {@code null}.
      */
-    /* @NonNull */
     static String ComponentProperties_password_unsupportedComponent(
-        /* @NonNull */
         final Object source )
     {
-        return bind( ComponentProperties_password_unsupportedComponent, source );
+        return nonNull( bind( ComponentProperties_password_unsupportedComponent, source ) );
     }
 
     /**
@@ -110,12 +109,10 @@ final class NonNlsMessages
      *         property was requested for an unsupported component; never
      *         {@code null}.
      */
-    /* @NonNull */
     static String ComponentProperties_singleSelectionValue_unsupportedComponent(
-        /* @NonNull */
         final Object source )
     {
-        return bind( ComponentProperties_singleSelectionValue_unsupportedComponent, source );
+        return nonNull( bind( ComponentProperties_singleSelectionValue_unsupportedComponent, source ) );
     }
 
     /**
@@ -128,11 +125,9 @@ final class NonNlsMessages
      * @return The formatted message indicating the text property was requested
      *         for an unsupported component; never {@code null}.
      */
-    /* @NonNull */
     static String ComponentProperties_text_unsupportedComponent(
-        /* @NonNull */
         final Object source )
     {
-        return bind( ComponentProperties_text_unsupportedComponent, source );
+        return nonNull( bind( ComponentProperties_text_unsupportedComponent, source ) );
     }
 }

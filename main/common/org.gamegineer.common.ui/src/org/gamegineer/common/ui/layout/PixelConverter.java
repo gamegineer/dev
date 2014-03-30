@@ -1,6 +1,6 @@
 /*
  * PixelConverter.java
- * Copyright 2008-2011 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.common.ui.layout;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Component;
 import java.awt.FontMetrics;
 import net.jcip.annotations.Immutable;
@@ -58,15 +58,11 @@ public final class PixelConverter
      * @param component
      *        The component whose font used for pixel conversions; must not be
      *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code component} is {@code null}.
      */
     public PixelConverter(
-        /* @NonNull */
         final Component component )
     {
-        this( component.getFontMetrics( component.getFont() ) );
+        this( nonNull( component.getFontMetrics( component.getFont() ) ) );
     }
 
     /**
@@ -74,18 +70,12 @@ public final class PixelConverter
      * specified font metrics.
      * 
      * @param fontMetrics
-     *        The font metrics used for pixel conversions; must not be {@code
-     *        null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code fontMetrics} is {@code null}.
+     *        The font metrics used for pixel conversions; must not be
+     *        {@code null}.
      */
     public PixelConverter(
-        /* @NonNull */
         final FontMetrics fontMetrics )
     {
-        assertArgumentNotNull( fontMetrics, "fontMetrics" ); //$NON-NLS-1$
-
         fontMetrics_ = fontMetrics;
     }
 

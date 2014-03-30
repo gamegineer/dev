@@ -1,6 +1,6 @@
 /*
  * NlsMessages.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,10 +38,10 @@ final class NlsMessages
     // --- DialogConstants --------------------------------------------------
 
     /** The label for the Cancel button. */
-    public static String DialogConstants_cancelButton_label;
+    public static String DialogConstants_cancelButton_label = ""; //$NON-NLS-1$
 
     /** The label for the OK button. */
-    public static String DialogConstants_okButton_label;
+    public static String DialogConstants_okButton_label = ""; //$NON-NLS-1$
 
 
     // ======================================================================

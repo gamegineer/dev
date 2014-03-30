@@ -1,6 +1,6 @@
 /*
  * ListSingleSelectionValueProperty.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -31,6 +31,7 @@ import org.eclipse.core.databinding.property.IProperty;
 import org.eclipse.core.databinding.property.ISimplePropertyListener;
 import org.eclipse.core.databinding.property.NativePropertyListener;
 import org.eclipse.core.databinding.property.value.SimpleValueProperty;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A value property for the single selection value property of an instance of
@@ -62,18 +63,25 @@ final class ListSingleSelectionValueProperty
      */
     @Override
     public INativePropertyListener adaptListener(
+        @Nullable
         final ISimplePropertyListener listener )
     {
+        assert listener != null;
+
         return new ListPropertyListener( this, listener );
     }
 
     /*
      * @see org.eclipse.core.databinding.property.value.SimpleValueProperty#doGetValue(java.lang.Object)
      */
+    @Nullable
     @Override
     protected Object doGetValue(
+        @Nullable
         final Object source )
     {
+        assert source != null;
+
         return ((JList<?>)source).getSelectedValue();
     }
 
@@ -82,15 +90,20 @@ final class ListSingleSelectionValueProperty
      */
     @Override
     protected void doSetValue(
+        @Nullable
         final Object source,
+        @Nullable
         final Object value )
     {
+        assert source != null;
+
         ((JList<?>)source).setSelectedValue( value, true );
     }
 
     /*
      * @see org.eclipse.core.databinding.property.value.IValueProperty#getValueType()
      */
+    @Nullable
     @Override
     public Object getValueType()
     {
@@ -115,6 +128,7 @@ final class ListSingleSelectionValueProperty
         // ==================================================================
 
         /** The list associated with this listener. */
+        @Nullable
         private JList<?> source_;
 
 
@@ -133,9 +147,7 @@ final class ListSingleSelectionValueProperty
          *        not be {@code null}.
          */
         ListPropertyListener(
-            /* @NonNull */
             final IProperty property,
-            /* @NonNull */
             final ISimplePropertyListener listener )
         {
             super( property, listener );
@@ -153,8 +165,10 @@ final class ListSingleSelectionValueProperty
          */
         @Override
         protected void doAddTo(
+            @Nullable
             final Object source )
         {
+            assert source != null;
             assert source_ == null;
 
             source_ = (JList<?>)source;
@@ -166,8 +180,10 @@ final class ListSingleSelectionValueProperty
          */
         @Override
         protected void doRemoveFrom(
+            @Nullable
             final Object source )
         {
+            assert source != null;
             assert source_ == source;
 
             source_.removeListSelectionListener( this );
@@ -179,6 +195,7 @@ final class ListSingleSelectionValueProperty
          */
         @Override
         public void valueChanged(
+            @Nullable
             @SuppressWarnings( "unused" )
             final ListSelectionEvent event )
         {

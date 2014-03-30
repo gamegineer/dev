@@ -1,6 +1,6 @@
 /*
  * IWizardContainer.java
- * Copyright 2008-2010 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.common.ui.wizard;
 
 import java.awt.Window;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.ui.operation.IRunnableContext;
 
 /**
@@ -39,12 +40,8 @@ public interface IWizardContainer
      * 
      * @param page
      *        A wizard page; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code page} is {@code null}.
      */
     public void activatePage(
-        /* @NonNull */
         IWizardPage page );
 
     /**
@@ -83,7 +80,7 @@ public interface IWizardContainer
      * @return The active page displayed in the container or {@code null} if no
      *         page is active.
      */
-    /* @Nullable */
+    @Nullable
     public IWizardPage getActivePage();
 
     /**
@@ -92,7 +89,7 @@ public interface IWizardContainer
      * @return The shell hosting container or {@code null} if the container does
      *         not have a shell.
      */
-    /* @Nullable */
+    @Nullable
     public Window getShell();
 
     /**

@@ -1,6 +1,6 @@
 /*
  * PasswordFieldTextProperty.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.ui.databinding.swing;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import javax.swing.JPasswordField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -32,6 +33,7 @@ import org.eclipse.core.databinding.property.IProperty;
 import org.eclipse.core.databinding.property.ISimplePropertyListener;
 import org.eclipse.core.databinding.property.NativePropertyListener;
 import org.eclipse.core.databinding.property.value.SimpleValueProperty;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.security.SecureString;
 
 /**
@@ -64,8 +66,11 @@ final class PasswordFieldTextProperty
      */
     @Override
     public INativePropertyListener adaptListener(
+        @Nullable
         final ISimplePropertyListener listener )
     {
+        assert listener != null;
+
         return new DocumentPropertyListener( this, listener );
     }
 
@@ -74,9 +79,12 @@ final class PasswordFieldTextProperty
      */
     @Override
     protected Object doGetValue(
+        @Nullable
         final Object source )
     {
-        return SecureString.fromCharArray( ((JPasswordField)source).getPassword() );
+        assert source != null;
+
+        return SecureString.fromCharArray( nonNull( ((JPasswordField)source).getPassword() ) );
     }
 
     /*
@@ -84,9 +92,14 @@ final class PasswordFieldTextProperty
      */
     @Override
     protected void doSetValue(
+        @Nullable
         final Object source,
+        @Nullable
         final Object value )
     {
+        assert source != null;
+        assert value != null;
+
         ((JPasswordField)source).setText( ((SecureString)value).toString() );
     }
 
@@ -117,6 +130,7 @@ final class PasswordFieldTextProperty
         // ==================================================================
 
         /** The text component associated with this listener. */
+        @Nullable
         private JPasswordField source_;
 
 
@@ -136,9 +150,7 @@ final class PasswordFieldTextProperty
          *        not be {@code null}.
          */
         DocumentPropertyListener(
-            /* @NonNull */
             final IProperty property,
-            /* @NonNull */
             final ISimplePropertyListener listener )
         {
             super( property, listener );
@@ -156,6 +168,7 @@ final class PasswordFieldTextProperty
          */
         @Override
         public void changedUpdate(
+            @Nullable
             @SuppressWarnings( "unused" )
             final DocumentEvent event )
         {
@@ -169,8 +182,10 @@ final class PasswordFieldTextProperty
          */
         @Override
         protected void doAddTo(
+            @Nullable
             final Object source )
         {
+            assert source != null;
             assert source_ == null;
 
             source_ = (JPasswordField)source;
@@ -182,8 +197,10 @@ final class PasswordFieldTextProperty
          */
         @Override
         protected void doRemoveFrom(
+            @Nullable
             final Object source )
         {
+            assert source != null;
             assert source_ == source;
 
             source_.getDocument().removeDocumentListener( this );
@@ -195,6 +212,7 @@ final class PasswordFieldTextProperty
          */
         @Override
         public void insertUpdate(
+            @Nullable
             @SuppressWarnings( "unused" )
             final DocumentEvent event )
         {
@@ -208,6 +226,7 @@ final class PasswordFieldTextProperty
          */
         @Override
         public void removeUpdate(
+            @Nullable
             @SuppressWarnings( "unused" )
             final DocumentEvent event )
         {

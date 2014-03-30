@@ -1,6 +1,6 @@
 /*
  * ProgressMonitorComponent.java
- * Copyright 2008-2011 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,7 +28,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.ui.layout.PixelConverter;
 import org.gamegineer.common.ui.operation.RunnableTask;
 
@@ -48,12 +50,9 @@ final class ProgressMonitorComponent
     /** Serializable class version number. */
     private static final long serialVersionUID = 5081928693810072186L;
 
-    /** The task label. */
-    private JLabel label_;
-
-    /** The task progress indicator. */
-    private JProgressBar progressBar_;
-
+    /** The component controls. */
+    @Nullable
+    private Controls controls_;
 
     // ======================================================================
     // Constructors
@@ -64,6 +63,8 @@ final class ProgressMonitorComponent
      */
     ProgressMonitorComponent()
     {
+        controls_ = null;
+
         initializeComponent();
     }
 
@@ -71,6 +72,17 @@ final class ProgressMonitorComponent
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the component controls.
+     * 
+     * @return The component controls; never {@code null}.
+     */
+    private Controls getControls()
+    {
+        assert controls_ != null;
+        return controls_;
+    }
 
     /**
      * Initializes the component.
@@ -81,11 +93,13 @@ final class ProgressMonitorComponent
 
         final PixelConverter pixelConverter = new PixelConverter( this );
 
-        label_ = new JLabel();
-        label_.setBorder( BorderFactory.createEmptyBorder( 0, 0, pixelConverter.convertHeightInDlusToPixels( 2 ), 0 ) );
-        add( label_, BorderLayout.NORTH );
-        progressBar_ = new JProgressBar();
-        add( progressBar_, BorderLayout.SOUTH );
+        final JLabel label = new JLabel();
+        label.setBorder( BorderFactory.createEmptyBorder( 0, 0, pixelConverter.convertHeightInDlusToPixels( 2 ), 0 ) );
+        add( label, BorderLayout.NORTH );
+        final JProgressBar progressBar = new JProgressBar();
+        add( progressBar, BorderLayout.SOUTH );
+
+        controls_ = new Controls( label, progressBar );
     }
 
     /*
@@ -94,20 +108,25 @@ final class ProgressMonitorComponent
     @Override
     @SuppressWarnings( "boxing" )
     public void propertyChange(
+        @Nullable
         final PropertyChangeEvent event )
     {
+        assert event != null;
+
+        final Controls controls = getControls();
+
         final String propertyName = event.getPropertyName();
         if( RunnableTask.PROGRESS_PROPERTY_NAME.equals( propertyName ) )
         {
-            progressBar_.setValue( (Integer)event.getNewValue() );
+            controls.progressBar.setValue( (Integer)event.getNewValue() );
         }
         else if( RunnableTask.PROGRESS_INDETERMINATE_PROPERTY_NAME.equals( propertyName ) )
         {
-            progressBar_.setIndeterminate( (Boolean)event.getNewValue() );
+            controls.progressBar.setIndeterminate( (Boolean)event.getNewValue() );
         }
         else if( RunnableTask.DESCRIPTION_PROPERTY_NAME.equals( propertyName ) )
         {
-            label_.setText( (String)event.getNewValue() );
+            controls.label.setText( (String)event.getNewValue() );
         }
     }
 
@@ -120,10 +139,53 @@ final class ProgressMonitorComponent
     {
         if( isVisible )
         {
-            label_.setText( "" ); //$NON-NLS-1$
-            progressBar_.setValue( 0 );
+            final Controls controls = getControls();
+            controls.label.setText( "" ); //$NON-NLS-1$
+            controls.progressBar.setValue( 0 );
         }
 
         super.setVisible( isVisible );
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * The component controls.
+     */
+    @Immutable
+    private static final class Controls
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The task label. */
+        final JLabel label;
+
+        /** The task progress indicator. */
+        final JProgressBar progressBar;
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code Controls} class.
+         * 
+         * @param label
+         *        The task label; must not be {@code null}.
+         * @param progressBar
+         *        The task progress indicator; must not be {@code null}.
+         */
+        Controls(
+            final JLabel label,
+            final JProgressBar progressBar )
+        {
+            this.label = label;
+            this.progressBar = progressBar;
+        }
     }
 }

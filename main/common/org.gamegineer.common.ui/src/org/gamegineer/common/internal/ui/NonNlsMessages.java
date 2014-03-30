@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.internal.ui;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 
@@ -38,7 +39,7 @@ final class NonNlsMessages
     // --- ImageRegistry ----------------------------------------------------
 
     /** An error occurred while loading the image. */
-    public static String ImageRegistry_loadImage_error;
+    public static String ImageRegistry_loadImage_error = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -77,11 +78,9 @@ final class NonNlsMessages
      * @return The formatted message indicating an error occurred while loading
      *         the image; never {@code null}.
      */
-    /* @NonNull */
     static String ImageRegistry_loadImage_error(
-        /* @NonNull */
         final String imagePath )
     {
-        return bind( ImageRegistry_loadImage_error, imagePath );
+        return nonNull( bind( ImageRegistry_loadImage_error, imagePath ) );
     }
 }

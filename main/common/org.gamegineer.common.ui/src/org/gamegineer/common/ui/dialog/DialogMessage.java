@@ -1,6 +1,6 @@
 /*
  * DialogMessage.java
- * Copyright 2008-2010 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.ui.dialog;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 
 /**
@@ -52,19 +51,11 @@ public final class DialogMessage
      *        The message text; must not be {@code null}.
      * @param type
      *        The message type; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code text} or {@code type} is {@code null}.
      */
     public DialogMessage(
-        /* @NonNull */
         final String text,
-        /* @NonNull */
         final DialogMessageType type )
     {
-        assertArgumentNotNull( text, "text" ); //$NON-NLS-1$
-        assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
-
         text_ = text;
         type_ = type;
     }
@@ -79,7 +70,6 @@ public final class DialogMessage
      * 
      * @return The message text; never {@code null}.
      */
-    /* @NonNull */
     public String getText()
     {
         return text_;
@@ -90,7 +80,6 @@ public final class DialogMessage
      * 
      * @return The message type; never {@code null}.
      */
-    /* @NonNull */
     public DialogMessageType getType()
     {
         return type_;

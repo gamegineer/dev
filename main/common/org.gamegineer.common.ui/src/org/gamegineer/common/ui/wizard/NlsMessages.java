@@ -1,6 +1,6 @@
 /*
  * NlsMessages.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,22 +38,22 @@ final class NlsMessages
     // --- WizardDialog -----------------------------------------------------
 
     /** The label for the Back button. */
-    public static String WizardDialog_backButton_label;
+    public static String WizardDialog_backButton_label = ""; //$NON-NLS-1$
 
     /** The mnemonic for the Back button. */
-    public static String WizardDialog_backButton_mnemonic;
+    public static String WizardDialog_backButton_mnemonic = ""; //$NON-NLS-1$
 
     /** The label for the Finish button. */
-    public static String WizardDialog_finishButton_label;
+    public static String WizardDialog_finishButton_label = ""; //$NON-NLS-1$
 
     /** The mnemonic for the Finish button. */
-    public static String WizardDialog_finishButton_mnemonic;
+    public static String WizardDialog_finishButton_mnemonic = ""; //$NON-NLS-1$
 
     /** The label for the Next button. */
-    public static String WizardDialog_nextButton_label;
+    public static String WizardDialog_nextButton_label = ""; //$NON-NLS-1$
 
     /** The mnemonic for the Next button. */
-    public static String WizardDialog_nextButton_mnemonic;
+    public static String WizardDialog_nextButton_mnemonic = ""; //$NON-NLS-1$
 
 
     // ======================================================================

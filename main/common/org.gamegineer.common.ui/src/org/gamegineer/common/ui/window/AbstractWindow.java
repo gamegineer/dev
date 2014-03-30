@@ -1,6 +1,6 @@
 /*
  * AbstractWindow.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.ui.window;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
@@ -32,6 +33,7 @@ import java.awt.Toolkit;
 import java.awt.Window;
 import javax.swing.JPanel;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.ui.util.Geometry;
 
 /**
@@ -48,15 +50,18 @@ public abstract class AbstractWindow<T extends Window>
     // ======================================================================
 
     /** The window content. */
+    @Nullable
     private Component content_;
 
     /** The window parent shell. */
+    @Nullable
     private Window parentShell_;
 
     /** The window return code. */
     private int returnCode_;
 
     /** The window shell. */
+    @Nullable
     private T shell_;
 
 
@@ -71,7 +76,7 @@ public abstract class AbstractWindow<T extends Window>
      *        The parent shell or {@code null} to create a top-level shell.
      */
     protected AbstractWindow(
-        /* @Nullable */
+        @Nullable
         final Window parentShell )
     {
         content_ = null;
@@ -93,12 +98,13 @@ public abstract class AbstractWindow<T extends Window>
      */
     public boolean close()
     {
-        if( (shell_ == null) || !shell_.isDisplayable() )
+        final T shell = shell_;
+        if( (shell == null) || !shell.isDisplayable() )
         {
             return true;
         }
 
-        shell_.dispose();
+        shell.dispose();
         shell_ = null;
         content_ = null;
 
@@ -114,12 +120,8 @@ public abstract class AbstractWindow<T extends Window>
      * 
      * @param shell
      *        The shell; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code shell} is {@code null}.
      */
     protected void configureShell(
-        /* @NonNull */
         final T shell )
     {
         final LayoutManager layout = getLayout();
@@ -134,11 +136,13 @@ public abstract class AbstractWindow<T extends Window>
      */
     private void constrainShellSize()
     {
-        final Rectangle bounds = shell_.getBounds();
+        final T shell = shell_;
+        assert shell != null;
+        final Rectangle bounds = nonNull( shell.getBounds() );
         final Rectangle constrainedBounds = getConstrainedBounds( bounds );
         if( !bounds.equals( constrainedBounds ) )
         {
-            shell_.setBounds( constrainedBounds );
+            shell.setBounds( constrainedBounds );
         }
     }
 
@@ -171,13 +175,13 @@ public abstract class AbstractWindow<T extends Window>
      */
     public final void create()
     {
-        shell_ = createShell( getParentShell() );
-        configureShell( shell_ );
+        final T shell = shell_ = createShell( getParentShell() );
+        configureShell( shell );
 
-        content_ = createContent( shell_ );
+        content_ = createContent( shell );
         contentCreated();
 
-        shell_.pack();
+        shell.pack();
         contentRealized();
 
         initializeBounds();
@@ -194,13 +198,8 @@ public abstract class AbstractWindow<T extends Window>
      *        The parent container for all content; must not be {@code null}.
      * 
      * @return The window content; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code parent} is {@code null}.
      */
-    /* @NonNull */
     protected Component createContent(
-        /* @NonNull */
         final Container parent )
     {
         final Component content = new JPanel();
@@ -216,9 +215,8 @@ public abstract class AbstractWindow<T extends Window>
      * 
      * @return The window shell; never {@code null}.
      */
-    /* @NonNull */
     protected abstract T createShell(
-        /* @Nullable */
+        @Nullable
         final Window parent );
 
     /**
@@ -232,13 +230,9 @@ public abstract class AbstractWindow<T extends Window>
      *         possible without extending beyond the display bounds; never
      *         {@code null}.
      */
-    /* @NonNull */
     private static Rectangle getConstrainedBounds(
-        /* @NonNull */
         final Rectangle preferredBounds )
     {
-        assert preferredBounds != null;
-
         final Rectangle bounds = new Rectangle( preferredBounds );
         final Rectangle displayBounds = new Rectangle( new Point( 0, 0 ), Toolkit.getDefaultToolkit().getScreenSize() );
 
@@ -263,7 +257,7 @@ public abstract class AbstractWindow<T extends Window>
      * @return The window content or {@code null} if the window content has not
      *         yet been created.
      */
-    /* @Nullable */
+    @Nullable
     protected final Component getContent()
     {
         return content_;
@@ -282,18 +276,15 @@ public abstract class AbstractWindow<T extends Window>
      *        The initial size of the shell; must not be {@code null}.
      * 
      * @return The initial location of the shell; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code initialSize} is {@code null}.
      */
-    /* @NonNull */
     protected Point getInitialLocation(
-        /* @NonNull */
         final Dimension initialSize )
     {
-        final Container parent = shell_.getParent();
+        final T shell = shell_;
+        assert shell != null;
+        final Container parent = shell.getParent();
         final Rectangle displayBounds = new Rectangle( new Point( 0, 0 ), Toolkit.getDefaultToolkit().getScreenSize() );
-        final Point centerPoint = Geometry.calculateCenterPoint( (parent != null) ? parent.getBounds() : displayBounds );
+        final Point centerPoint = Geometry.calculateCenterPoint( (parent != null) ? nonNull( parent.getBounds() ) : displayBounds );
         return new Point( //
             centerPoint.x - (initialSize.width / 2), //
             Math.max( displayBounds.y, Math.min( centerPoint.y - (initialSize.height * 2 / 3), displayBounds.y + displayBounds.height - initialSize.height ) ) );
@@ -308,10 +299,11 @@ public abstract class AbstractWindow<T extends Window>
      * 
      * @return The initial size of the shell; never {@code null}.
      */
-    /* @NonNull */
     protected Dimension getInitialSize()
     {
-        return shell_.getPreferredSize();
+        final T shell = shell_;
+        assert shell != null;
+        return nonNull( shell.getPreferredSize() );
     }
 
     /**
@@ -324,7 +316,7 @@ public abstract class AbstractWindow<T extends Window>
      * @return The layout for the shell or {@code null} if no layout should be
      *         associated with the shell.
      */
-    /* @Nullable */
+    @Nullable
     protected LayoutManager getLayout()
     {
         return new BorderLayout();
@@ -336,7 +328,7 @@ public abstract class AbstractWindow<T extends Window>
      * @return The window parent shell or {@code null} if the window has no
      *         parent shell.
      */
-    /* @Nullable */
+    @Nullable
     protected final Window getParentShell()
     {
         return parentShell_;
@@ -358,7 +350,7 @@ public abstract class AbstractWindow<T extends Window>
      * @return The window shell or {@code null} if the window shell has not yet
      *         been created.
      */
-    /* @Nullable */
+    @Nullable
     public final T getShell()
     {
         return shell_;
@@ -372,8 +364,10 @@ public abstract class AbstractWindow<T extends Window>
         final Dimension size = getInitialSize();
         final Point location = getInitialLocation( size );
         final Rectangle bounds = getConstrainedBounds( new Rectangle( location, size ) );
-        shell_.setBounds( bounds );
-        shell_.setPreferredSize( bounds.getSize() );
+        final T shell = shell_;
+        assert shell != null;
+        shell.setBounds( bounds );
+        shell.setPreferredSize( bounds.getSize() );
     }
 
     /**
@@ -383,15 +377,18 @@ public abstract class AbstractWindow<T extends Window>
      */
     public final int open()
     {
-        if( (shell_ == null) || !shell_.isDisplayable() )
+        T shell = shell_;
+        if( (shell == null) || !shell.isDisplayable() )
         {
-            shell_ = null;
+            shell = shell_ = null;
             create();
+            shell = shell_;
+            assert shell != null;
         }
 
         constrainShellSize();
 
-        shell_.setVisible( true );
+        shell.setVisible( true );
 
         return returnCode_;
     }

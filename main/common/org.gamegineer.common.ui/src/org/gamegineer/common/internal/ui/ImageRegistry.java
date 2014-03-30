@@ -1,6 +1,6 @@
 /*
  * ImageRegistry.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.internal.ui;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.HashMap;
@@ -30,6 +29,7 @@ import java.util.logging.Level;
 import javax.imageio.ImageIO;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A registry of images used by the bundle.
@@ -90,17 +90,11 @@ public final class ImageRegistry
      * 
      * @return The image associated with the specified bundle-relative path or
      *         {@code null} if no such image exists.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code path} is {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     public Image getImage(
-        /* @NonNull */
         final String path )
     {
-        assertArgumentNotNull( path, "path" ); //$NON-NLS-1$
-
         Image image = null;
         synchronized( lock_ )
         {

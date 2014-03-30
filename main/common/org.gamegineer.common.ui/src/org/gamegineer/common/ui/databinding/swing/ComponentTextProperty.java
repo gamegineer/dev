@@ -1,6 +1,6 @@
 /*
  * ComponentTextProperty.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,6 +26,7 @@ import javax.swing.text.JTextComponent;
 import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.core.databinding.property.value.DelegatingValueProperty;
 import org.eclipse.core.databinding.property.value.IValueProperty;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A value property for the text of an instance of {@link Component}.
@@ -39,6 +40,7 @@ final class ComponentTextProperty
     // ======================================================================
 
     /** The value property for instances of {@code JTextComponent}. */
+    @Nullable
     private IValueProperty textComponentValueProperty_;
 
 
@@ -66,8 +68,11 @@ final class ComponentTextProperty
      */
     @Override
     protected IValueProperty doGetDelegate(
+        @Nullable
         final Object source )
     {
+        assert source != null;
+
         if( source instanceof JTextComponent )
         {
             if( textComponentValueProperty_ == null )
@@ -75,6 +80,7 @@ final class ComponentTextProperty
                 textComponentValueProperty_ = new TextComponentTextProperty();
             }
 
+            assert textComponentValueProperty_ != null;
             return textComponentValueProperty_;
         }
 

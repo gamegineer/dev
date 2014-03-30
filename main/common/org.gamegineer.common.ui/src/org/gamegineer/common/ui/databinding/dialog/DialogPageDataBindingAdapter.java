@@ -1,6 +1,6 @@
 /*
  * DialogPageDataBindingAdapter.java
- * Copyright 2008-2011 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.common.ui.databinding.dialog;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Iterator;
 import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.core.databinding.AggregateValidationStatus;
@@ -41,6 +41,7 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.ui.dialog.DialogMessage;
 import org.gamegineer.common.ui.dialog.IDialogPage;
 
@@ -55,15 +56,19 @@ public class DialogPageDataBindingAdapter
     // ======================================================================
 
     /** The aggregate validation status. */
+    @Nullable
     private IObservableValue aggregateValidationStatus_;
 
     /** The current validation status. */
+    @Nullable
     private IStatus currentValidationStatus_;
 
     /** The data binding context. */
+    @Nullable
     private DataBindingContext dataBindingContext_;
 
     /** The dialog page. */
+    @Nullable
     private IDialogPage dialogPage_;
 
     /** Indicates the UI has changed. */
@@ -73,12 +78,15 @@ public class DialogPageDataBindingAdapter
     private boolean isCurrentValidationStatusStale_;
 
     /** The UI change listener. */
+    @Nullable
     private IChangeListener uiChangeListener_;
 
     /** The validation status provider targets list change listener. */
+    @Nullable
     private IListChangeListener validationStatusProviderTargetsListChangeListener_;
 
     /** The validation status providers list change listener. */
+    @Nullable
     private IListChangeListener validationStatusProvidersListChangeListener_;
 
 
@@ -94,20 +102,11 @@ public class DialogPageDataBindingAdapter
      *        The dialog page; must not be {@code null}.
      * @param dataBindingContext
      *        The data binding context; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code dialogPage} or {@code dataBindingContext} is {@code
-     *         null}.
      */
     public DialogPageDataBindingAdapter(
-        /* @NonNull */
         final IDialogPage dialogPage,
-        /* @NonNull */
         final DataBindingContext dataBindingContext )
     {
-        assertArgumentNotNull( dialogPage, "dialogPage" ); //$NON-NLS-1$
-        assertArgumentNotNull( dataBindingContext, "dataBindingContext" ); //$NON-NLS-1$
-
         aggregateValidationStatus_ = null;
         currentValidationStatus_ = null;
         dataBindingContext_ = dataBindingContext;
@@ -131,13 +130,13 @@ public class DialogPageDataBindingAdapter
      * 
      * @return The UI change listener; never {@code null}.
      */
-    /* @NonNull */
     private IChangeListener createUIChangeListener()
     {
         return new IChangeListener()
         {
             @Override
             public void handleChange(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final ChangeEvent event )
             {
@@ -152,7 +151,6 @@ public class DialogPageDataBindingAdapter
      * @return The validation status provider targets list change listener;
      *         never {@code null}.
      */
-    /* @NonNull */
     private IListChangeListener createValidationStatusProviderTargetsListChangeListener()
     {
         return new IListChangeListener()
@@ -160,8 +158,11 @@ public class DialogPageDataBindingAdapter
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void handleListChange(
+                @Nullable
                 final ListChangeEvent event )
             {
+                assert event != null;
+
                 for( final ListDiffEntry difference : event.diff.getDifferences() )
                 {
                     final IObservable target = (IObservable)difference.getElement();
@@ -184,7 +185,6 @@ public class DialogPageDataBindingAdapter
      * @return The validation status providers list change listener; never
      *         {@code null}.
      */
-    /* @NonNull */
     private IListChangeListener createValidationStatusProvidersListChangeListener()
     {
         return new IListChangeListener()
@@ -192,8 +192,11 @@ public class DialogPageDataBindingAdapter
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void handleListChange(
+                @Nullable
                 final ListChangeEvent event )
             {
+                assert event != null;
+
                 for( final ListDiffEntry difference : event.diff.getDifferences() )
                 {
                     final ValidationStatusProvider validationStatusProvider = (ValidationStatusProvider)difference.getElement();
@@ -224,15 +227,17 @@ public class DialogPageDataBindingAdapter
      */
     public void dispose()
     {
-        if( aggregateValidationStatus_ != null )
+        final IObservableValue aggregateValidationStatus = aggregateValidationStatus_;
+        if( aggregateValidationStatus != null )
         {
-            aggregateValidationStatus_.dispose();
+            aggregateValidationStatus.dispose();
         }
 
-        if( (dataBindingContext_ != null) && !hasUIChanged_ )
+        final DataBindingContext dataBindingContext = dataBindingContext_;
+        if( (dataBindingContext != null) && !hasUIChanged_ )
         {
-            dataBindingContext_.getValidationStatusProviders().removeListChangeListener( validationStatusProvidersListChangeListener_ );
-            for( final Iterator<?> validationStatusProviderIterator = dataBindingContext_.getValidationStatusProviders().iterator(); validationStatusProviderIterator.hasNext(); )
+            dataBindingContext.getValidationStatusProviders().removeListChangeListener( validationStatusProvidersListChangeListener_ );
+            for( final Iterator<?> validationStatusProviderIterator = dataBindingContext.getValidationStatusProviders().iterator(); validationStatusProviderIterator.hasNext(); )
             {
                 final ValidationStatusProvider validationStatusProvider = (ValidationStatusProvider)validationStatusProviderIterator.next();
                 final IObservableList targets = validationStatusProvider.getTargets();
@@ -258,7 +263,7 @@ public class DialogPageDataBindingAdapter
      * @return The current validation status or {@code null} if there is no
      *         current validation status.
      */
-    /* @Nullable */
+    @Nullable
     protected final IStatus getCurrentValidationStatus()
     {
         return currentValidationStatus_;
@@ -269,9 +274,9 @@ public class DialogPageDataBindingAdapter
      * 
      * @return The dialog page; never {@code null}.
      */
-    /* @NonNull */
     protected final IDialogPage getDialogPage()
     {
+        assert dialogPage_ != null;
         return dialogPage_;
     }
 
@@ -287,8 +292,10 @@ public class DialogPageDataBindingAdapter
             handleValidationStatusChanged();
         }
 
-        dataBindingContext_.getValidationStatusProviders().removeListChangeListener( validationStatusProvidersListChangeListener_ );
-        for( final Iterator<?> validationStatusProviderListener = dataBindingContext_.getValidationStatusProviders().iterator(); validationStatusProviderListener.hasNext(); )
+        final DataBindingContext dataBindingContext = dataBindingContext_;
+        assert dataBindingContext != null;
+        dataBindingContext.getValidationStatusProviders().removeListChangeListener( validationStatusProvidersListChangeListener_ );
+        for( final Iterator<?> validationStatusProviderListener = dataBindingContext.getValidationStatusProviders().iterator(); validationStatusProviderListener.hasNext(); )
         {
             final ValidationStatusProvider validationStatusProvider = (ValidationStatusProvider)validationStatusProviderListener.next();
             final IObservableList targets = validationStatusProvider.getTargets();
@@ -306,16 +313,17 @@ public class DialogPageDataBindingAdapter
     protected void handleValidationStatusChanged()
     {
         final DialogMessage message;
-        if( (currentValidationStatus_ != null) && hasUIChanged_ && !currentValidationStatus_.isOK() )
+        final IStatus currentValidationStatus = currentValidationStatus_;
+        if( (currentValidationStatus != null) && hasUIChanged_ && !currentValidationStatus.isOK() )
         {
-            message = new DialogMessage( currentValidationStatus_.getMessage(), DataBindingUtils.getDialogMessageType( currentValidationStatus_ ) );
+            message = new DialogMessage( nonNull( currentValidationStatus.getMessage() ), DataBindingUtils.getDialogMessageType( currentValidationStatus ) );
         }
         else
         {
             message = null;
         }
 
-        dialogPage_.setMessage( message );
+        getDialogPage().setMessage( message );
     }
 
     /**
@@ -323,32 +331,42 @@ public class DialogPageDataBindingAdapter
      */
     private void initializeListeners()
     {
+        final DataBindingContext dataBindingContext = dataBindingContext_;
+        assert dataBindingContext != null;
+
         ObservableTracker.runAndIgnore( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                aggregateValidationStatus_ = new AggregateValidationStatus( dataBindingContext_.getValidationStatusProviders(), AggregateValidationStatus.MAX_SEVERITY );
+                aggregateValidationStatus_ = new AggregateValidationStatus( dataBindingContext.getValidationStatusProviders(), AggregateValidationStatus.MAX_SEVERITY );
             }
         } );
-        aggregateValidationStatus_.addValueChangeListener( new IValueChangeListener()
+
+        final IObservableValue aggregateValidationStatus = aggregateValidationStatus_;
+        assert aggregateValidationStatus != null;
+        aggregateValidationStatus.addValueChangeListener( new IValueChangeListener()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void handleValueChange(
+                @Nullable
                 final ValueChangeEvent event )
             {
+                assert event != null;
+
                 currentValidationStatus_ = (IStatus)event.diff.getNewValue();
-                isCurrentValidationStatusStale_ = aggregateValidationStatus_.isStale();
+                isCurrentValidationStatusStale_ = aggregateValidationStatus.isStale();
                 handleValidationStatusChanged();
             }
         } );
-        aggregateValidationStatus_.addStaleListener( new IStaleListener()
+        aggregateValidationStatus.addStaleListener( new IStaleListener()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void handleStale(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final StaleEvent event )
             {
@@ -356,12 +374,12 @@ public class DialogPageDataBindingAdapter
                 handleValidationStatusChanged();
             }
         } );
-        currentValidationStatus_ = (IStatus)aggregateValidationStatus_.getValue();
-        isCurrentValidationStatusStale_ = aggregateValidationStatus_.isStale();
+        currentValidationStatus_ = (IStatus)aggregateValidationStatus.getValue();
+        isCurrentValidationStatusStale_ = aggregateValidationStatus.isStale();
         handleValidationStatusChanged();
 
-        dataBindingContext_.getValidationStatusProviders().addListChangeListener( validationStatusProvidersListChangeListener_ );
-        for( final Iterator<?> validationStatusProviderIterator = dataBindingContext_.getValidationStatusProviders().iterator(); validationStatusProviderIterator.hasNext(); )
+        dataBindingContext.getValidationStatusProviders().addListChangeListener( validationStatusProvidersListChangeListener_ );
+        for( final Iterator<?> validationStatusProviderIterator = dataBindingContext.getValidationStatusProviders().iterator(); validationStatusProviderIterator.hasNext(); )
         {
             final ValidationStatusProvider validationStatusProvider = (ValidationStatusProvider)validationStatusProviderIterator.next();
             final IObservableList targets = validationStatusProvider.getTargets();
@@ -381,7 +399,9 @@ public class DialogPageDataBindingAdapter
      */
     protected final boolean isCurrentValidationStatusFatal()
     {
-        return DataBindingUtils.isValidationStatusFatal( currentValidationStatus_, isCurrentValidationStatusStale_ );
+        final IStatus currentValidationStatus = currentValidationStatus_;
+        assert currentValidationStatus != null;
+        return DataBindingUtils.isValidationStatusFatal( currentValidationStatus, isCurrentValidationStatusStale_ );
     }
 
     /**

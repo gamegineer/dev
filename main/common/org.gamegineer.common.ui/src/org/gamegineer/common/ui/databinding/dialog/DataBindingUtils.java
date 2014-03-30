@@ -1,6 +1,6 @@
 /*
  * DataBindingUtils.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ package org.gamegineer.common.ui.databinding.dialog;
 
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.ui.dialog.DialogMessageType;
 
 /**
@@ -57,9 +58,7 @@ final class DataBindingUtils
      * @return The appropriate dialog message type for the severity of the
      *         specified validation status; never {@code null}.
      */
-    /* @NonNull */
     static DialogMessageType getDialogMessageType(
-        /* @NonNull */
         final IStatus status )
     {
         assert status != null;
@@ -98,7 +97,7 @@ final class DataBindingUtils
      *         otherwise {@code false}.
      */
     static boolean isValidationStatusFatal(
-        /* @Nullable */
+        @Nullable
         final IStatus status,
         final boolean isStatusStale )
     {

@@ -1,6 +1,6 @@
 /*
  * NlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,9 @@
 
 package org.gamegineer.common.internal.ui.impl.help;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.osgi.util.NLS;
 
 /**
@@ -38,7 +40,7 @@ final class NlsMessages
     // --- HelpSystem -------------------------------------------------------
 
     /** The master help set title. */
-    public static String HelpSystem_masterHelpSet_title;
+    public static String HelpSystem_masterHelpSet_title = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -71,16 +73,15 @@ final class NlsMessages
      * Gets the formatted message for the master help set title.
      * 
      * @param name
-     *        The application name; must not be {@code null}.
+     *        The application name; may be {@code null}.
      * 
      * @return The formatted message for the master help set title; never
      *         {@code null}.
      */
-    /* @NonNull */
     static String HelpSystem_masterHelpSet_title(
-        /* @NonNull */
+        @Nullable
         final String name )
     {
-        return bind( HelpSystem_masterHelpSet_title, name );
+        return nonNull( bind( HelpSystem_masterHelpSet_title, name ) );
     }
 }

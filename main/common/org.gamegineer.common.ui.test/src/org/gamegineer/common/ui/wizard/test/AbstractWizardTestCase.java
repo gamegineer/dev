@@ -1,6 +1,6 @@
 /*
  * AbstractWizardTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,6 +26,8 @@ import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.easymock.EasyMock;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.ui.wizard.IWizard;
 import org.gamegineer.common.ui.wizard.IWizardPage;
 import org.junit.Before;
@@ -35,6 +37,7 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IWizard} interface.
  */
+@NonNullByDefault( false )
 public abstract class AbstractWizardTestCase
 {
     // ======================================================================
@@ -69,7 +72,7 @@ public abstract class AbstractWizardTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract IWizard createWizard()
         throws Exception;
 
@@ -88,36 +91,6 @@ public abstract class AbstractWizardTestCase
     }
 
     /**
-     * Ensures the {@link IWizard#create} method throws an exception when passed
-     * a {@code null} parent.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreate_Parent_Null()
-    {
-        wizard_.create( null );
-    }
-
-    /**
-     * Ensures the {@link IWizard#getNextPage} method throws an exception when
-     * passed a {@code null} page.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetNextPage_Page_Null()
-    {
-        wizard_.getNextPage( null );
-    }
-
-    /**
-     * Ensures the {@link IWizard#getPage} method throws an exception when
-     * passed a {@code null} name.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetPage_Name_Null()
-    {
-        wizard_.getPage( null );
-    }
-
-    /**
      * Ensures the {@link IWizard#getPages} method returns a copy of the wizard
      * page collection.
      */
@@ -131,15 +104,5 @@ public abstract class AbstractWizardTestCase
         final Collection<IWizardPage> actualPages = wizard_.getPages();
 
         assertEquals( expectedPages, actualPages );
-    }
-
-    /**
-     * Ensures the {@link IWizard#getPreviousPage} method throws an exception
-     * when passed a {@code null} page.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetPreviousPage_Page_Null()
-    {
-        wizard_.getPreviousPage( null );
     }
 }

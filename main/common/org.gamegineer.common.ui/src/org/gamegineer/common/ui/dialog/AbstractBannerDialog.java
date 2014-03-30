@@ -1,6 +1,6 @@
 /*
  * AbstractBannerDialog.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -39,6 +39,7 @@ import javax.swing.Spring;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.internal.ui.Activator;
 import org.gamegineer.common.internal.ui.ImageRegistry;
 
@@ -62,30 +63,37 @@ public abstract class AbstractBannerDialog
     private static final int MINIMUM_DIALOG_WIDTH = 350;
 
     /** The banner image. */
+    @Nullable
     private Image bannerImage_;
 
     /** The banner image label. */
+    @Nullable
     private JLabel bannerImageLabel_;
 
     /** The banner title. */
     private String bannerTitle_;
 
     /** The banner title label. */
+    @Nullable
     private JLabel bannerTitleLabel_;
 
     /** The dialog content area component. */
+    @Nullable
     private Component contentArea_;
 
     /** The description. */
     private String description_;
 
     /** The description image label. */
+    @Nullable
     private JLabel descriptionImageLabel_;
 
     /** The description label. */
+    @Nullable
     private JTextArea descriptionLabel_;
 
     /** The active message or {@code null} if no active message. */
+    @Nullable
     private DialogMessage message_;
 
 
@@ -100,7 +108,7 @@ public abstract class AbstractBannerDialog
      *        The parent shell or {@code null} to create a top-level shell.
      */
     protected AbstractBannerDialog(
-        /* @Nullable */
+        @Nullable
         final Window parentShell )
     {
         super( parentShell );
@@ -111,9 +119,9 @@ public abstract class AbstractBannerDialog
         bannerTitleLabel_ = null;
         contentArea_ = null;
         message_ = null;
+        description_ = ""; //$NON-NLS-1$
         descriptionImageLabel_ = null;
         descriptionLabel_ = null;
-        description_ = ""; //$NON-NLS-1$
     }
 
 
@@ -130,9 +138,7 @@ public abstract class AbstractBannerDialog
      * 
      * @return The dialog banner component; never {@code null}.
      */
-    /* @NonNull */
     private Component createBanner(
-        /* @NonNull */
         final Container parent )
     {
         final JPanel container = new JPanel();
@@ -147,36 +153,36 @@ public abstract class AbstractBannerDialog
         final int horizontalSpacing = convertWidthInDlusToPixels( DialogConstants.HORIZONTAL_SPACING );
         final int verticalSpacing = convertHeightInDlusToPixels( DialogConstants.VERTICAL_SPACING );
 
-        bannerImageLabel_ = new JLabel();
-        bannerImageLabel_.setVerticalAlignment( SwingConstants.BOTTOM );
-        container.add( bannerImageLabel_ );
-        layout.putConstraint( SpringLayout.EAST, bannerImageLabel_, 0, SpringLayout.EAST, container );
-        layout.putConstraint( SpringLayout.NORTH, bannerImageLabel_, 0, SpringLayout.NORTH, container );
+        final JLabel bannerImageLabel = bannerImageLabel_ = new JLabel();
+        bannerImageLabel.setVerticalAlignment( SwingConstants.BOTTOM );
+        container.add( bannerImageLabel );
+        layout.putConstraint( SpringLayout.EAST, bannerImageLabel, 0, SpringLayout.EAST, container );
+        layout.putConstraint( SpringLayout.NORTH, bannerImageLabel, 0, SpringLayout.NORTH, container );
 
-        bannerTitleLabel_ = new JLabel();
-        bannerTitleLabel_.setFont( bannerTitleLabel_.getFont().deriveFont( Font.BOLD ).deriveFont( bannerTitleLabel_.getFont().getSize() * 1.2F ) );
-        container.add( bannerTitleLabel_ );
-        layout.putConstraint( SpringLayout.WEST, bannerTitleLabel_, horizontalMargin, SpringLayout.WEST, container );
-        layout.putConstraint( SpringLayout.NORTH, bannerTitleLabel_, verticalMargin, SpringLayout.NORTH, container );
-        layout.putConstraint( SpringLayout.EAST, bannerTitleLabel_, 0, SpringLayout.WEST, bannerImageLabel_ );
+        final JLabel bannerTitleLabel = bannerTitleLabel_ = new JLabel();
+        bannerTitleLabel.setFont( bannerTitleLabel.getFont().deriveFont( Font.BOLD ).deriveFont( bannerTitleLabel.getFont().getSize() * 1.2F ) );
+        container.add( bannerTitleLabel );
+        layout.putConstraint( SpringLayout.WEST, bannerTitleLabel, horizontalMargin, SpringLayout.WEST, container );
+        layout.putConstraint( SpringLayout.NORTH, bannerTitleLabel, verticalMargin, SpringLayout.NORTH, container );
+        layout.putConstraint( SpringLayout.EAST, bannerTitleLabel, 0, SpringLayout.WEST, bannerImageLabel );
 
-        descriptionImageLabel_ = new JLabel();
-        container.add( descriptionImageLabel_ );
-        layout.putConstraint( SpringLayout.WEST, descriptionImageLabel_, 0, SpringLayout.WEST, bannerTitleLabel_ );
-        layout.putConstraint( SpringLayout.NORTH, descriptionImageLabel_, verticalSpacing, SpringLayout.SOUTH, bannerTitleLabel_ );
+        final JLabel descriptionImageLabel = descriptionImageLabel_ = new JLabel();
+        container.add( descriptionImageLabel );
+        layout.putConstraint( SpringLayout.WEST, descriptionImageLabel, 0, SpringLayout.WEST, bannerTitleLabel );
+        layout.putConstraint( SpringLayout.NORTH, descriptionImageLabel, verticalSpacing, SpringLayout.SOUTH, bannerTitleLabel );
 
-        descriptionLabel_ = new JTextArea();
-        descriptionLabel_.setFont( container.getFont() );
-        descriptionLabel_.setEditable( false );
-        descriptionLabel_.setFocusable( false );
-        descriptionLabel_.setLineWrap( true );
-        descriptionLabel_.setOpaque( false );
-        descriptionLabel_.setWrapStyleWord( true );
-        container.add( descriptionLabel_ );
-        layout.putConstraint( SpringLayout.WEST, descriptionLabel_, horizontalSpacing, SpringLayout.EAST, descriptionImageLabel_ );
-        layout.putConstraint( SpringLayout.NORTH, descriptionLabel_, verticalSpacing, SpringLayout.SOUTH, bannerTitleLabel_ );
-        layout.putConstraint( SpringLayout.EAST, descriptionLabel_, 0, SpringLayout.WEST, bannerImageLabel_ );
-        layout.getConstraints( descriptionLabel_ ).setHeight( Spring.constant( convertHeightInCharsToPixels( 2 ) ) );
+        final JTextArea descriptionLabel = descriptionLabel_ = new JTextArea();
+        descriptionLabel.setFont( container.getFont() );
+        descriptionLabel.setEditable( false );
+        descriptionLabel.setFocusable( false );
+        descriptionLabel.setLineWrap( true );
+        descriptionLabel.setOpaque( false );
+        descriptionLabel.setWrapStyleWord( true );
+        container.add( descriptionLabel );
+        layout.putConstraint( SpringLayout.WEST, descriptionLabel, horizontalSpacing, SpringLayout.EAST, descriptionImageLabel );
+        layout.putConstraint( SpringLayout.NORTH, descriptionLabel, verticalSpacing, SpringLayout.SOUTH, bannerTitleLabel );
+        layout.putConstraint( SpringLayout.EAST, descriptionLabel, 0, SpringLayout.WEST, bannerImageLabel );
+        layout.getConstraints( descriptionLabel ).setHeight( Spring.constant( convertHeightInCharsToPixels( 2 ) ) );
 
         final JSeparator separator = new JSeparator();
         container.add( separator );
@@ -185,9 +191,9 @@ public abstract class AbstractBannerDialog
         layout.getConstraints( separator ).setConstraint( SpringLayout.NORTH, //
             Spring.max( //
                 Spring.sum( //
-                    layout.getConstraint( SpringLayout.SOUTH, descriptionLabel_ ), //
+                    layout.getConstraint( SpringLayout.SOUTH, descriptionLabel ), //
                     Spring.constant( verticalSpacing ) ), //
-                layout.getConstraint( SpringLayout.SOUTH, bannerImageLabel_ ) ) );
+                layout.getConstraint( SpringLayout.SOUTH, bannerImageLabel ) ) );
 
         layout.putConstraint( SpringLayout.SOUTH, container, 0, SpringLayout.SOUTH, separator );
 
@@ -217,13 +223,8 @@ public abstract class AbstractBannerDialog
      *        {@code null}.
      * 
      * @return The dialog content area component; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code parent} is {@code null}.
      */
-    /* @NonNull */
     protected Component createContentArea(
-        /* @NonNull */
         final Container parent )
     {
         final JPanel container = new JPanel();
@@ -279,7 +280,7 @@ public abstract class AbstractBannerDialog
      *        The dialog banner image or {@code null} to clear the banner image.
      */
     protected final void setBannerImage(
-        /* @Nullable */
+        @Nullable
         final Image image )
     {
         bannerImage_ = image;
@@ -297,7 +298,7 @@ public abstract class AbstractBannerDialog
      *        The dialog banner title or {@code null} to clear the banner title.
      */
     protected final void setBannerTitle(
-        /* @Nullable */
+        @Nullable
         final String title )
     {
         bannerTitle_ = (title != null) ? title : ""; //$NON-NLS-1$
@@ -315,7 +316,7 @@ public abstract class AbstractBannerDialog
      *        The dialog description or {@code null} to clear the description.
      */
     protected final void setDescription(
-        /* @Nullable */
+        @Nullable
         final String description )
     {
         description_ = (description != null) ? description : ""; //$NON-NLS-1$
@@ -336,7 +337,7 @@ public abstract class AbstractBannerDialog
      *        The dialog message or {@code null} to clear the message.
      */
     public final void setMessage(
-        /* @Nullable */
+        @Nullable
         final DialogMessage message )
     {
         message_ = message;
@@ -350,12 +351,14 @@ public abstract class AbstractBannerDialog
     @SuppressWarnings( "incomplete-switch" )
     private void updateDescription()
     {
-        if( descriptionLabel_ != null )
+        final JTextArea descriptionLabel = descriptionLabel_;
+        if( descriptionLabel != null )
         {
-            descriptionLabel_.setText( (message_ != null) ? message_.getText() : description_ );
+            descriptionLabel.setText( (message_ != null) ? message_.getText() : description_ );
         }
 
-        if( descriptionImageLabel_ != null )
+        final JLabel descriptionImageLabel = descriptionImageLabel_;
+        if( descriptionImageLabel != null )
         {
             String imagePath = null;
             if( message_ != null )
@@ -377,7 +380,7 @@ public abstract class AbstractBannerDialog
             }
 
             final Image image = (imagePath != null) ? Activator.getDefault().getImageRegistry().getImage( imagePath ) : null;
-            descriptionImageLabel_.setIcon( (image != null) ? new ImageIcon( image ) : null );
+            descriptionImageLabel.setIcon( (image != null) ? new ImageIcon( image ) : null );
         }
     }
 }

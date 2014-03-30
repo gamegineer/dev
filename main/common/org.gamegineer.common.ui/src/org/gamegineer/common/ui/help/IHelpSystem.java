@@ -1,6 +1,6 @@
 /*
  * IHelpSystem.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,12 +38,8 @@ public interface IHelpSystem
      * @param activationObject
      *        The activation object for the help viewer; must not be
      *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code activationObject} is {@code null}.
      */
     public void displayHelp(
-        /* @NonNull */
         Object activationObject );
 
     /**

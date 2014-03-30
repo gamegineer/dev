@@ -1,6 +1,6 @@
 /*
  * ComponentSingleSelectionValueProperty.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,6 +26,7 @@ import javax.swing.JList;
 import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.core.databinding.property.value.DelegatingValueProperty;
 import org.eclipse.core.databinding.property.value.IValueProperty;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A value property for the single selection value of an instance of
@@ -40,6 +41,7 @@ final class ComponentSingleSelectionValueProperty
     // ======================================================================
 
     /** The value property for instances of {@code JList}. */
+    @Nullable
     private IValueProperty listValueProperty_;
 
 
@@ -68,8 +70,11 @@ final class ComponentSingleSelectionValueProperty
      */
     @Override
     protected IValueProperty doGetDelegate(
+        @Nullable
         final Object source )
     {
+        assert source != null;
+
         if( source instanceof JList )
         {
             if( listValueProperty_ == null )
@@ -77,6 +82,7 @@ final class ComponentSingleSelectionValueProperty
                 listValueProperty_ = new ListSingleSelectionValueProperty();
             }
 
+            assert listValueProperty_ != null;
             return listValueProperty_;
         }
 

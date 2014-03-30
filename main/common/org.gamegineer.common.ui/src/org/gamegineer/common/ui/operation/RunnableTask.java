@@ -1,6 +1,6 @@
 /*
  * RunnableTask.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.ui.operation;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.swing.SwingWorker;
@@ -132,10 +131,11 @@ public abstract class RunnableTask<T, V>
      * 
      * @return The current task description; never {@code null}.
      */
-    /* @NonNull */
     public final String getDescription()
     {
-        return description_.get();
+        final String description = description_.get();
+        assert description != null;
+        return description;
     }
 
     /**
@@ -175,16 +175,10 @@ public abstract class RunnableTask<T, V>
      * 
      * @param description
      *        The current task description; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code description} is {@code null}.
      */
     protected final void setDescription(
-        /* @NonNull */
         final String description )
     {
-        assertArgumentNotNull( description, "description" ); //$NON-NLS-1$
-
         final String oldDescription = description_.getAndSet( description );
         firePropertyChange( DESCRIPTION_PROPERTY_NAME, oldDescription, description );
     }
