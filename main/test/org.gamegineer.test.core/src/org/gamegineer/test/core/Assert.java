@@ -1,6 +1,6 @@
 /*
  * Assert.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.test.core;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 import java.util.Collection;
 import java.util.Map;
@@ -56,11 +55,8 @@ public final class Assert
      *        The collection to be tested; must not be {@code null}.
      */
     public static void assertImmutableCollection(
-        /* @NonNull */
         final Collection<?> c )
     {
-        assertNotNull( c );
-
         try
         {
             c.add( null );
@@ -79,11 +75,8 @@ public final class Assert
      *        The map to be tested; must not be {@code null}.
      */
     public static void assertImmutableMap(
-        /* @NonNull */
         final Map<?, ?> m )
     {
-        assertNotNull( m );
-
         try
         {
             m.put( null, null );
