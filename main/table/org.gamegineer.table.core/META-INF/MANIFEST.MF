@@ -11,6 +11,7 @@ Export-Package: org.gamegineer.table.core;version="0.17.0",
  org.gamegineer.table.core.dnd;version="0.17.0",
  org.gamegineer.table.core.version;version="0.17.0"
 Import-Package: net.jcip.annotations;version="1.0.0",
+ org.eclipse.jdt.annotation;version="0.0.0",
  org.eclipse.osgi.util;version="1.1.0",
  org.gamegineer.common.core.runtime;version="[0.17.0,0.18.0)",
  org.gamegineer.common.core.util;version="[0.17.0,0.18.0)",

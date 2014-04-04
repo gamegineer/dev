@@ -1,6 +1,6 @@
 /*
  * TestContainerLayouts.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.core.test;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Point;
 import java.util.concurrent.atomic.AtomicLong;
 import net.jcip.annotations.Immutable;
@@ -71,17 +71,10 @@ public final class TestContainerLayouts
      *        The container layout to clone; must not be {@code null}.
      * 
      * @return A new container layout; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code containerLayout} is {@code null}.
      */
-    /* @NonNull */
     public static IContainerLayout cloneContainerLayout(
-        /* @NonNull */
         final IContainerLayout containerLayout )
     {
-        assertArgumentNotNull( containerLayout, "containerLayout" ); //$NON-NLS-1$
-
         return new IContainerLayout()
         {
             @Override
@@ -106,7 +99,6 @@ public final class TestContainerLayouts
      * 
      * @return A new container layout; never {@code null}.
      */
-    /* @NonNull */
     public static IContainerLayout createHorizontalContainerLayout()
     {
         return registerContainerLayout( new AbstractContainerLayout( getUniqueContainerLayoutId() )
@@ -130,7 +122,6 @@ public final class TestContainerLayouts
      * 
      * @return A new container layout; never {@code null}.
      */
-    /* @NonNull */
     public static IContainerLayout createUniqueContainerLayout()
     {
         return registerContainerLayout( new AbstractContainerLayout( getUniqueContainerLayoutId() )
@@ -152,7 +143,6 @@ public final class TestContainerLayouts
      * 
      * @return A new container layout; never {@code null}.
      */
-    /* @NonNull */
     public static IContainerLayout createVerticalContainerLayout()
     {
         return registerContainerLayout( new AbstractContainerLayout( getUniqueContainerLayoutId() )
@@ -176,11 +166,10 @@ public final class TestContainerLayouts
      * 
      * @return A unique container layout identifier; never {@code null}.
      */
-    /* @NonNull */
     @SuppressWarnings( "boxing" )
     private static ContainerLayoutId getUniqueContainerLayoutId()
     {
-        return ContainerLayoutId.fromString( String.format( "container-layout-%1$d", nextContainerLayoutId_.incrementAndGet() ) ); //$NON-NLS-1$
+        return ContainerLayoutId.fromString( nonNull( String.format( "container-layout-%1$d", nextContainerLayoutId_.incrementAndGet() ) ) ); //$NON-NLS-1$
     }
 
     /**
@@ -192,13 +181,9 @@ public final class TestContainerLayouts
      * 
      * @return The registered container layout; never {@code null}.
      */
-    /* @NonNull */
     private static IContainerLayout registerContainerLayout(
-        /* @NonNull */
         final IContainerLayout containerLayout )
     {
-        assert containerLayout != null;
-
         final IContainerLayoutRegistry containerLayoutRegistry = Activator.getDefault().getContainerLayoutRegistry();
         assert containerLayoutRegistry != null;
         containerLayoutRegistry.registerObject( containerLayout );
@@ -238,11 +223,8 @@ public final class TestContainerLayouts
          *        The container layout identifier; must not be {@code null}.
          */
         AbstractContainerLayout(
-            /* @NonNull */
             final ContainerLayoutId id )
         {
-            assert id != null;
-
             id_ = id;
         }
 

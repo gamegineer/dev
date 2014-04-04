@@ -1,6 +1,6 @@
 /*
  * AccordianLayout.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.core.impl.layouts;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.AbstractContainerLayout;
@@ -66,12 +65,8 @@ final class AccordianLayout
      * @param offsetY
      *        The offset of each component in the y-direction in table
      *        coordinates; must not be zero if {@code offsetX} is zero.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
      */
     AccordianLayout(
-        /* @NonNull */
         final ContainerLayoutId id,
         final int offsetX,
         final int offsetY )
@@ -93,10 +88,10 @@ final class AccordianLayout
      */
     @Override
     protected Dimension getComponentOffsetAt(
+        @SuppressWarnings( "unused" )
         final IContainer container,
         final int index )
     {
-        assertArgumentNotNull( container, "container" ); //$NON-NLS-1$
         assertArgumentLegal( index >= 0, "index", NonNlsMessages.AbstractContainerLayout_getComponentOffsetAt_index_negative ); //$NON-NLS-1$
 
         return new Dimension( index * offset_.width, index * offset_.height );

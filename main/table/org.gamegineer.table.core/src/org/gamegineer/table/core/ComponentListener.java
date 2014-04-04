@@ -1,6 +1,6 @@
 /*
  * ComponentListener.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.core;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 
 /**
@@ -58,9 +57,10 @@ public class ComponentListener
      */
     @Override
     public void componentBoundsChanged(
+        @SuppressWarnings( "unused" )
         final ComponentEvent event )
     {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        // do nothing
     }
 
     /**
@@ -70,9 +70,10 @@ public class ComponentListener
      */
     @Override
     public void componentOrientationChanged(
+        @SuppressWarnings( "unused" )
         final ComponentEvent event )
     {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        // do nothing
     }
 
     /**
@@ -82,8 +83,9 @@ public class ComponentListener
      */
     @Override
     public void componentSurfaceDesignChanged(
+        @SuppressWarnings( "unused" )
         final ComponentEvent event )
     {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        // do nothing
     }
 }

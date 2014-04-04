@@ -1,6 +1,6 @@
 /*
  * ITable.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ package org.gamegineer.table.core;
 
 import java.awt.Point;
 import java.util.List;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
 
 /**
@@ -45,13 +46,9 @@ public interface ITable
      * 
      * @return The component in this table at the specified path or {@code null}
      *         if no component exists at the specified path.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code path} is {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     public IComponent getComponent(
-        /* @NonNull */
         ComponentPath path );
 
     /**
@@ -70,13 +67,8 @@ public interface ITable
      *         location; never {@code null}. The components are returned in
      *         order from the bottom-most component to the top-most component;
      *         never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code location} is {@code null}.
      */
-    /* @NonNull */
     public List<IComponent> getComponents(
-        /* @NonNull */
         Point location );
 
     /**
@@ -90,13 +82,9 @@ public interface ITable
      * 
      * @return The table extension of the specified type or {@code null} if the
      *         table does not support the specified extension.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code type} is {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     public <T> T getExtension(
-        /* @NonNull */
         Class<T> type );
 
     /**
@@ -105,7 +93,6 @@ public interface ITable
      * @return The table environment associated with this table; never
      *         {@code null}.
      */
-    /* @NonNull */
     public ITableEnvironment getTableEnvironment();
 
     /**
@@ -117,6 +104,5 @@ public interface ITable
      * 
      * @return The tabletop; never {@code null}.
      */
-    /* @NonNull */
     public IContainer getTabletop();
 }

@@ -1,6 +1,6 @@
 /*
  * AbstractTableEnvironmentFactoryTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,11 @@
 
 package org.gamegineer.table.core.test;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertNotNull;
 import org.easymock.EasyMock;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.ITableEnvironmentContext;
 import org.gamegineer.table.core.ITableEnvironmentFactory;
 import org.junit.Before;
@@ -32,6 +35,7 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link ITableEnvironmentFactory} interface.
  */
+@NonNullByDefault( false )
 public abstract class AbstractTableEnvironmentFactoryTestCase
 {
     // ======================================================================
@@ -67,7 +71,7 @@ public abstract class AbstractTableEnvironmentFactoryTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract ITableEnvironmentFactory createTableEnvironmentFactory()
         throws Exception;
 
@@ -87,21 +91,11 @@ public abstract class AbstractTableEnvironmentFactoryTestCase
 
     /**
      * Ensures the {@link ITableEnvironmentFactory#createTableEnvironment}
-     * method throws an exception when passed a {@code null} context.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateTableEnvironment_Context_Null()
-    {
-        tableEnvironmentFactory_.createTableEnvironment( null );
-    }
-
-    /**
-     * Ensures the {@link ITableEnvironmentFactory#createTableEnvironment}
      * method does not return {@code null}.
      */
     @Test
     public void testCreateTableEnvironment_ReturnValue_NonNull()
     {
-        assertNotNull( tableEnvironmentFactory_.createTableEnvironment( EasyMock.createMock( ITableEnvironmentContext.class ) ) );
+        assertNotNull( tableEnvironmentFactory_.createTableEnvironment( nonNull( EasyMock.createMock( ITableEnvironmentContext.class ) ) ) );
     }
 }

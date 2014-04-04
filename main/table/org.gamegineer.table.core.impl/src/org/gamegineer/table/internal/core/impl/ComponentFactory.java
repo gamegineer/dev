@@ -1,6 +1,6 @@
 /*
  * ComponentFactory.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -81,17 +81,11 @@ final class ComponentFactory
      * @throws org.gamegineer.common.core.util.memento.MementoException
      *         If {@code memento} is malformed.
      */
-    /* @NonNull */
     static Component createComponent(
-        /* @NonNull */
         final TableEnvironment tableEnvironment,
-        /* @NonNull */
         final Object memento )
         throws MementoException
     {
-        assert tableEnvironment != null;
-        assert memento != null;
-
         final IComponentStrategy strategy = getComponentStrategy( MementoUtils.getAttribute( memento, STRATEGY_ID_MEMENTO_ATTRIBUTE_NAME, ComponentStrategyId.class ) );
         final Component component = createComponent( MementoUtils.getAttribute( memento, CLASS_NAME_MEMENTO_ATTRIBUTE_NAME, String.class ), tableEnvironment, strategy );
         component.setMemento( memento );
@@ -114,20 +108,12 @@ final class ComponentFactory
      * @throws org.gamegineer.common.core.util.memento.MementoException
      *         If the component cannot be created.
      */
-    /* @NonNull */
     private static Component createComponent(
-        /* @NonNull */
         final String className,
-        /* @NonNull */
         final TableEnvironment tableEnvironment,
-        /* @NonNull */
         final IComponentStrategy strategy )
         throws MementoException
     {
-        assert className != null;
-        assert tableEnvironment != null;
-        assert strategy != null;
-
         if( className.equals( Component.class.getName() ) )
         {
             return new Component( tableEnvironment, strategy );
@@ -154,13 +140,9 @@ final class ComponentFactory
      * @return A new empty memento for the specified component; never
      *         {@code null}.
      */
-    /* @NonNull */
     static Map<String, Object> createMemento(
-        /* @NonNull */
         final Component component )
     {
-        assert component != null;
-
         final Map<String, Object> memento = new HashMap<>();
         memento.put( CLASS_NAME_MEMENTO_ATTRIBUTE_NAME, component.getClass().getName() );
         memento.put( STRATEGY_ID_MEMENTO_ATTRIBUTE_NAME, component.getStrategy().getId() );
@@ -179,14 +161,10 @@ final class ComponentFactory
      * @throws org.gamegineer.common.core.util.memento.MementoException
      *         If the component strategy is unknown.
      */
-    /* @NonNull */
     private static IComponentStrategy getComponentStrategy(
-        /* @NonNull */
         final ComponentStrategyId id )
         throws MementoException
     {
-        assert id != null;
-
         try
         {
             return ComponentStrategyRegistry.getComponentStrategy( id );

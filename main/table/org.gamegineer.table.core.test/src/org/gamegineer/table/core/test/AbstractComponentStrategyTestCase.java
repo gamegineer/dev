@@ -1,6 +1,6 @@
 /*
  * AbstractComponentStrategyTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,6 +30,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.IComponentStrategy;
@@ -43,6 +45,7 @@ import org.junit.Test;
  * @param <ComponentStrategyType>
  *        The type of the component strategy.
  */
+@NonNullByDefault( false )
 public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType extends IComponentStrategy>
 {
     // ======================================================================
@@ -78,7 +81,7 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract ComponentStrategyType createComponentStrategy()
         throws Exception;
 
@@ -88,7 +91,7 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
      * 
      * @return An illegal component orientation; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private static ComponentOrientation createIllegalOrientation()
     {
         return new ComponentOrientation( "illegal", 0 ) //$NON-NLS-1$
@@ -109,7 +112,7 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
      * @return The component strategy under test in the fixture; never
      *         {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     protected final ComponentStrategyType getComponentStrategy()
     {
         assertNotNull( componentStrategy_ );
@@ -241,16 +244,6 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
         {
             assertNotNull( surfaceDesign );
         }
-    }
-
-    /**
-     * Ensures the {@link IComponentStrategy#getExtension} method throws an
-     * exception when passed a {@code null} type.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetExtension_Type_Null()
-    {
-        componentStrategy_.getExtension( null );
     }
 
     /**

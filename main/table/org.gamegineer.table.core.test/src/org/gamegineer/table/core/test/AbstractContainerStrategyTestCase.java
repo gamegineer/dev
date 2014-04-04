@@ -1,6 +1,6 @@
 /*
  * AbstractContainerStrategyTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -58,7 +58,6 @@ public abstract class AbstractContainerStrategyTestCase<ContainerStrategyType ex
      * @return The container strategy under test in the fixture; never
      *         {@code null}.
      */
-    /* @NonNull */
     protected final ContainerStrategyType getContainerStrategy()
     {
         return getComponentStrategy();

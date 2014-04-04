@@ -1,6 +1,6 @@
 /*
  * IDragStrategyFactory.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -44,15 +44,8 @@ public interface IDragStrategyFactory
      *        they cannot be handled; must not be {@code null}.
      * 
      * @return A new drag strategy; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code component} or {@code successorDragStrategy} is
-     *         {@code null}.
      */
-    /* @NonNull */
     public IDragStrategy createDragStrategy(
-        /* @NonNull */
         IComponent component,
-        /* @NonNull */
         IDragStrategy successorDragStrategy );
 }

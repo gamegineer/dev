@@ -1,6 +1,6 @@
 /*
  * AbstractContainerLayout.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.core;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import java.awt.Point;
 import net.jcip.annotations.Immutable;
@@ -50,16 +49,10 @@ public abstract class AbstractContainerLayout
      * 
      * @param id
      *        The container layout identifier; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
      */
     protected AbstractContainerLayout(
-        /* @NonNull */
         final ContainerLayoutId id )
     {
-        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
-
         id_ = id;
     }
 
@@ -82,12 +75,8 @@ public abstract class AbstractContainerLayout
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code index} is negative.
-     * @throws java.lang.NullPointerException
-     *         If {@code container} is {@code null}.
      */
-    /* @NonNull */
     protected abstract Dimension getComponentOffsetAt(
-        /* @NonNull */
         IContainer container,
         int index );
 
@@ -107,8 +96,6 @@ public abstract class AbstractContainerLayout
     public final void layout(
         final IContainer container )
     {
-        assertArgumentNotNull( container, "container" ); //$NON-NLS-1$
-
         final Point containerOrigin = container.getOrigin();
         final Point componentLocation = new Point();
         for( int index = 0, size = container.getComponentCount(); index < size; ++index )

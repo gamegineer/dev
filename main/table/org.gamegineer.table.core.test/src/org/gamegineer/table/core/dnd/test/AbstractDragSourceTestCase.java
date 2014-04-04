@@ -1,6 +1,6 @@
 /*
  * AbstractDragSourceTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.core.dnd.test;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -29,6 +30,8 @@ import static org.junit.Assert.assertNull;
 import java.awt.Point;
 import java.util.List;
 import org.easymock.EasyMock;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
@@ -46,6 +49,7 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IDragSource} interface.
  */
+@NonNullByDefault( false )
 public abstract class AbstractDragSourceTestCase
 {
     // ======================================================================
@@ -82,7 +86,7 @@ public abstract class AbstractDragSourceTestCase
      * 
      * @return A new component; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private IComponent createUniqueComponent()
     {
         return TestComponents.createUniqueComponent( table_.getTableEnvironment() );
@@ -94,7 +98,7 @@ public abstract class AbstractDragSourceTestCase
      * 
      * @return A new container; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private IContainer createUniqueContainer()
     {
         return TestComponents.createUniqueContainer( table_.getTableEnvironment() );
@@ -105,7 +109,7 @@ public abstract class AbstractDragSourceTestCase
      * 
      * @return The table associated with the fixture; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract ITable getTable();
 
     /**
@@ -149,7 +153,7 @@ public abstract class AbstractDragSourceTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testBeginDrag_Component_Illegal_NoContainer()
     {
-        dragSource_.beginDrag( new Point( 0, 0 ), table_.getTabletop(), EasyMock.createMock( IDragStrategyFactory.class ) );
+        dragSource_.beginDrag( new Point( 0, 0 ), table_.getTabletop(), nonNull( EasyMock.createMock( IDragStrategyFactory.class ) ) );
     }
 
     /**
@@ -159,37 +163,7 @@ public abstract class AbstractDragSourceTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testBeginDrag_Component_Illegal_NotExistsInTable()
     {
-        dragSource_.beginDrag( new Point( 0, 0 ), createUniqueComponent(), EasyMock.createMock( IDragStrategyFactory.class ) );
-    }
-
-    /**
-     * Ensures the {@link IDragSource#beginDrag} method throws an exception when
-     * passed a {@code null} component.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testBeginDrag_Component_Null()
-    {
-        dragSource_.beginDrag( new Point( 0, 0 ), null, EasyMock.createMock( IDragStrategyFactory.class ) );
-    }
-
-    /**
-     * Ensures the {@link IDragSource#beginDrag} method throws an exception when
-     * passed a {@code null} drag strategy factory.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testBeginDrag_DragStrategyFactory_Null()
-    {
-        dragSource_.beginDrag( new Point( 0, 0 ), EasyMock.createMock( IComponent.class ), null );
-    }
-
-    /**
-     * Ensures the {@link IDragSource#beginDrag} method throws an exception when
-     * passed a {@code null} location.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testBeginDrag_Location_Null()
-    {
-        dragSource_.beginDrag( null, EasyMock.createMock( IComponent.class ), EasyMock.createMock( IDragStrategyFactory.class ) );
+        dragSource_.beginDrag( new Point( 0, 0 ), createUniqueComponent(), nonNull( EasyMock.createMock( IDragStrategyFactory.class ) ) );
     }
 
     /**
@@ -221,7 +195,9 @@ public abstract class AbstractDragSourceTestCase
                     @Override
                     public List<IComponent> getDragComponents()
                     {
-                        return component.getContainer().getComponents();
+                        final IContainer container = component.getContainer();
+                        assert container != null;
+                        return container.getComponents();
                     }
                 };
             }

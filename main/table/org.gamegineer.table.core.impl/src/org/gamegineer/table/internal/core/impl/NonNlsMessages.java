@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.core.impl;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 
@@ -38,34 +39,34 @@ final class NonNlsMessages
     // --- Component --------------------------------------------------------
 
     /** The component listener is already registered. */
-    public static String Component_addComponentListener_listener_registered;
+    public static String Component_addComponentListener_listener_registered = ""; //$NON-NLS-1$
 
     /**
      * An unexpected exception was thrown from
      * IComponentListener.componentBoundsChanged().
      */
-    public static String Component_componentBoundsChanged_unexpectedException;
+    public static String Component_componentBoundsChanged_unexpectedException = ""; //$NON-NLS-1$
 
     /**
      * An unexpected exception was thrown from
      * IComponentListener.componentOrientationChanged().
      */
-    public static String Component_componentOrientationChanged_unexpectedException;
+    public static String Component_componentOrientationChanged_unexpectedException = ""; //$NON-NLS-1$
 
     /**
      * An unexpected exception was thrown from
      * IComponentListener.componentSurfaceDesignChanged().
      */
-    public static String Component_componentSurfaceDesignChanged_unexpectedException;
+    public static String Component_componentSurfaceDesignChanged_unexpectedException = ""; //$NON-NLS-1$
 
     /** The orientation is illegal. */
-    public static String Component_orientation_illegal;
+    public static String Component_orientation_illegal = ""; //$NON-NLS-1$
 
     /** The component listener is not registered. */
-    public static String Component_removeComponentListener_listener_notRegistered;
+    public static String Component_removeComponentListener_listener_notRegistered = ""; //$NON-NLS-1$
 
     /** The surface designs collection contains a {@code null} surface design. */
-    public static String Component_setSurfaceDesigns_surfaceDesigns_containsNullSurfaceDesign;
+    public static String Component_setSurfaceDesigns_surfaceDesigns_containsNullSurfaceDesign = ""; //$NON-NLS-1$
 
     // --- ComponentFactory -------------------------------------------------
 
@@ -73,10 +74,10 @@ final class NonNlsMessages
      * The memento specifies an illegal component strategy for the specified
      * component type.
      */
-    public static String ComponentFactory_createComponent_illegalComponentStrategy;
+    public static String ComponentFactory_createComponent_illegalComponentStrategy = ""; //$NON-NLS-1$
 
     /** The memento specifies an unknown component type. */
-    public static String ComponentFactory_createComponent_unknownComponentType;
+    public static String ComponentFactory_createComponent_unknownComponentType = ""; //$NON-NLS-1$
 
     // --- ComponentStrategyRegistryExtensionPointAdapter -------------------
 
@@ -84,27 +85,27 @@ final class NonNlsMessages
      * An error occurred while creating the component strategy of a component
      * strategy configuration element.
      */
-    public static String ComponentStrategyRegistryExtensionPointAdapter_createObject_createComponentStrategyError;
+    public static String ComponentStrategyRegistryExtensionPointAdapter_createObject_createComponentStrategyError = ""; //$NON-NLS-1$
 
     /** The component strategy identifier is missing. */
-    public static String ComponentStrategyRegistryExtensionPointAdapter_createObject_missingId;
+    public static String ComponentStrategyRegistryExtensionPointAdapter_createObject_missingId = ""; //$NON-NLS-1$
 
     // --- ComponentSurfaceDesignRegistryExtensionPointAdapter --------------
 
     /** The component surface design identifier is missing. */
-    public static String ComponentSurfaceDesignRegistryExtensionPointAdapter_createObject_missingId;
+    public static String ComponentSurfaceDesignRegistryExtensionPointAdapter_createObject_missingId = ""; //$NON-NLS-1$
 
     /**
      * An error occurred while parsing the height attribute of a component
      * surface design configuration element.
      */
-    public static String ComponentSurfaceDesignRegistryExtensionPointAdapter_createObject_parseHeightError;
+    public static String ComponentSurfaceDesignRegistryExtensionPointAdapter_createObject_parseHeightError = ""; //$NON-NLS-1$
 
     /**
      * An error occurred while parsing the width attribute of a component
      * surface design configuration element.
      */
-    public static String ComponentSurfaceDesignRegistryExtensionPointAdapter_createObject_parseWidthError;
+    public static String ComponentSurfaceDesignRegistryExtensionPointAdapter_createObject_parseWidthError = ""; //$NON-NLS-1$
 
     // --- Container --------------------------------------------------------
 
@@ -112,46 +113,46 @@ final class NonNlsMessages
      * The component collection contains a component created by a different
      * table environment.
      */
-    public static String Container_addComponents_components_containsComponentCreatedByDifferentTableEnvironment;
+    public static String Container_addComponents_components_containsComponentCreatedByDifferentTableEnvironment = ""; //$NON-NLS-1$
 
     /** The component collection contains a {@code null} element. */
-    public static String Container_addComponents_components_containsNullElement;
+    public static String Container_addComponents_components_containsNullElement = ""; //$NON-NLS-1$
 
     /**
      * The component collection contains a component already contained in a
      * container.
      */
-    public static String Container_addComponents_components_containsOwnedComponent;
+    public static String Container_addComponents_components_containsOwnedComponent = ""; //$NON-NLS-1$
 
     /** The container listener is already registered. */
-    public static String Container_addContainerListener_listener_registered;
+    public static String Container_addContainerListener_listener_registered = ""; //$NON-NLS-1$
 
     /**
      * An unexpected exception was thrown from
      * IContainerListener.componentAdded().
      */
-    public static String Container_componentAdded_unexpectedException;
+    public static String Container_componentAdded_unexpectedException = ""; //$NON-NLS-1$
 
     /**
      * An unexpected exception was thrown from
      * IContainerListener.componentRemoved().
      */
-    public static String Container_componentRemoved_unexpectedException;
+    public static String Container_componentRemoved_unexpectedException = ""; //$NON-NLS-1$
 
     /**
      * An unexpected exception was thrown from
      * IContainerListener.containerLayoutChanged().
      */
-    public static String Container_containerLayoutChanged_unexpectedException;
+    public static String Container_containerLayoutChanged_unexpectedException = ""; //$NON-NLS-1$
 
     /** The component index is out of range. */
-    public static String Container_getComponentFromIndex_index_outOfRange;
+    public static String Container_getComponentFromIndex_index_outOfRange = ""; //$NON-NLS-1$
 
     /** The component is not contained in the container. */
-    public static String Container_removeComponent_component_notOwned;
+    public static String Container_removeComponent_component_notOwned = ""; //$NON-NLS-1$
 
     /** The container listener is not registered. */
-    public static String Container_removeContainerListener_listener_notRegistered;
+    public static String Container_removeContainerListener_listener_notRegistered = ""; //$NON-NLS-1$
 
     // --- ContainerLayoutRegistryExtensionPointAdapter ---------------------
 
@@ -159,45 +160,45 @@ final class NonNlsMessages
      * An error occurred while creating the container layout of a container
      * layout configuration element.
      */
-    public static String ContainerLayoutRegistryExtensionPointAdapter_createObject_createContainerLayoutError;
+    public static String ContainerLayoutRegistryExtensionPointAdapter_createObject_createContainerLayoutError = ""; //$NON-NLS-1$
 
     /** The container layout identifier is missing. */
-    public static String ContainerLayoutRegistryExtensionPointAdapter_createObject_missingId;
+    public static String ContainerLayoutRegistryExtensionPointAdapter_createObject_missingId = ""; //$NON-NLS-1$
 
     // --- DragContext ------------------------------------------------------
 
     /** A drag-and-drop operation is not active. */
-    public static String DragContext_dragNotActive;
+    public static String DragContext_dragNotActive = ""; //$NON-NLS-1$
 
     // --- MementoUtils -----------------------------------------------------
 
     /** The required attribute is absent. */
-    public static String MementoUtils_attribute_absent;
+    public static String MementoUtils_attribute_absent = ""; //$NON-NLS-1$
 
     /** The attribute value is {@code null}. */
-    public static String MementoUtils_attributeValue_null;
+    public static String MementoUtils_attributeValue_null = ""; //$NON-NLS-1$
 
     /** The attribute value is of the wrong type. */
-    public static String MementoUtils_attributeValue_wrongType;
+    public static String MementoUtils_attributeValue_wrongType = ""; //$NON-NLS-1$
 
     /** The memento is of the wrong type. */
-    public static String MementoUtils_memento_wrongType;
+    public static String MementoUtils_memento_wrongType = ""; //$NON-NLS-1$
 
     // --- Table ------------------------------------------------------------
 
     /** The component has no container. */
-    public static String Table_beginDrag_component_noContainer;
+    public static String Table_beginDrag_component_noContainer = ""; //$NON-NLS-1$
 
     /** The component does not exist in the table. */
-    public static String Table_beginDrag_component_notExists;
+    public static String Table_beginDrag_component_notExists = ""; //$NON-NLS-1$
 
     /** A drag-and-drop operation is active. */
-    public static String Table_beginDrag_dragActive;
+    public static String Table_beginDrag_dragActive = ""; //$NON-NLS-1$
 
     // --- TableEnvironment -------------------------------------------------
 
     /** Failed to queue the event notification. */
-    public static String TableEnvironment_addEventNotification_queueFailed;
+    public static String TableEnvironment_addEventNotification_queueFailed = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -235,12 +236,10 @@ final class NonNlsMessages
      * @return The formatted message indicating the attribute is absent; never
      *         {@code null}.
      */
-    /* @NonNull */
     static String MementoUtils_attribute_absent(
-        /* @NonNull */
         final String attributeName )
     {
-        return bind( MementoUtils_attribute_absent, attributeName );
+        return nonNull( bind( MementoUtils_attribute_absent, attributeName ) );
     }
 
     /**
@@ -253,12 +252,10 @@ final class NonNlsMessages
      * @return The formatted message indicating the attribute value is
      *         {@code null}; never {@code null}.
      */
-    /* @NonNull */
     static String MementoUtils_attributeValue_null(
-        /* @NonNull */
         final String attributeName )
     {
-        return bind( MementoUtils_attributeValue_null, attributeName );
+        return nonNull( bind( MementoUtils_attributeValue_null, attributeName ) );
     }
 
     /**
@@ -271,11 +268,9 @@ final class NonNlsMessages
      * @return The formatted message indicating the attribute value is of the
      *         wrong type; never {@code null}.
      */
-    /* @NonNull */
     static String MementoUtils_attributeValue_wrongType(
-        /* @NonNull */
         final String attributeName )
     {
-        return bind( MementoUtils_attributeValue_wrongType, attributeName );
+        return nonNull( bind( MementoUtils_attributeValue_wrongType, attributeName ) );
     }
 }

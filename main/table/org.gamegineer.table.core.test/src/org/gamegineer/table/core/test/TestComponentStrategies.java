@@ -1,6 +1,6 @@
 /*
  * TestComponentStrategies.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,12 +21,13 @@
 
 package org.gamegineer.table.core.test;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Point;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentStrategies;
 import org.gamegineer.table.core.ComponentStrategyId;
@@ -75,17 +76,10 @@ public final class TestComponentStrategies
      *        The component strategy to clone; must not be {@code null}.
      * 
      * @return A new component strategy; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code componentStrategy} is {@code null}.
      */
-    /* @NonNull */
     public static IComponentStrategy cloneComponentStrategy(
-        /* @NonNull */
         final IComponentStrategy componentStrategy )
     {
-        assertArgumentNotNull( componentStrategy, "componentStrategy" ); //$NON-NLS-1$
-
         return (componentStrategy instanceof IContainerStrategy) //
             ? createContainerStrategyDecorator( (IContainerStrategy)componentStrategy, componentStrategy.getId() ) //
             : createComponentStrategyDecorator( componentStrategy, componentStrategy.getId() );
@@ -103,16 +97,10 @@ public final class TestComponentStrategies
      * @return A decorator for the specified component strategy; never
      *         {@code null}.
      */
-    /* @NonNull */
     private static IComponentStrategy createComponentStrategyDecorator(
-        /* @NonNull */
         final IComponentStrategy componentStrategy,
-        /* @NonNull */
         final ComponentStrategyId componentStrategyId )
     {
-        assert componentStrategy != null;
-        assert componentStrategyId != null;
-
         return new IComponentStrategy()
         {
             @Override
@@ -139,6 +127,7 @@ public final class TestComponentStrategies
                 return componentStrategy.getDefaultSurfaceDesigns();
             }
 
+            @Nullable
             @Override
             public <T> T getExtension(
                 final Class<T> type )
@@ -172,16 +161,10 @@ public final class TestComponentStrategies
      * @return A decorator for the specified container strategy; never
      *         {@code null}.
      */
-    /* @NonNull */
     private static IContainerStrategy createContainerStrategyDecorator(
-        /* @NonNull */
         final IContainerStrategy containerStrategy,
-        /* @NonNull */
         final ComponentStrategyId componentStrategyId )
     {
-        assert containerStrategy != null;
-        assert componentStrategyId != null;
-
         return new IContainerStrategy()
         {
             @Override
@@ -214,6 +197,7 @@ public final class TestComponentStrategies
                 return containerStrategy.getDefaultSurfaceDesigns();
             }
 
+            @Nullable
             @Override
             public <T> T getExtension(
                 final Class<T> type )
@@ -240,7 +224,6 @@ public final class TestComponentStrategies
      * 
      * @return A new component strategy; never {@code null}.
      */
-    /* @NonNull */
     public static IComponentStrategy createUniqueComponentStrategy()
     {
         return registerComponentStrategy( createComponentStrategyDecorator( ComponentStrategies.NULL_COMPONENT, getUniqueComponentStrategyId() ) );
@@ -251,7 +234,6 @@ public final class TestComponentStrategies
      * 
      * @return A new container strategy; never {@code null}.
      */
-    /* @NonNull */
     public static IContainerStrategy createUniqueContainerStrategy()
     {
         return registerComponentStrategy( createContainerStrategyDecorator( ComponentStrategies.NULL_CONTAINER, getUniqueComponentStrategyId() ) );
@@ -262,11 +244,10 @@ public final class TestComponentStrategies
      * 
      * @return A unique component strategy identifier; never {@code null}.
      */
-    /* @NonNull */
     @SuppressWarnings( "boxing" )
     private static ComponentStrategyId getUniqueComponentStrategyId()
     {
-        return ComponentStrategyId.fromString( String.format( "component-strategy-%1$d", nextComponentStrategyId_.incrementAndGet() ) ); //$NON-NLS-1$
+        return ComponentStrategyId.fromString( nonNull( String.format( "component-strategy-%1$d", nextComponentStrategyId_.incrementAndGet() ) ) ); //$NON-NLS-1$
     }
 
     /**
@@ -281,13 +262,9 @@ public final class TestComponentStrategies
      * 
      * @return The registered component strategy; never {@code null}.
      */
-    /* @NonNull */
     private static <T extends IComponentStrategy> T registerComponentStrategy(
-        /* @NonNull */
         final T componentStrategy )
     {
-        assert componentStrategy != null;
-
         final IComponentStrategyRegistry componentStrategyRegistry = Activator.getDefault().getComponentStrategyRegistry();
         assert componentStrategyRegistry != null;
         componentStrategyRegistry.registerObject( componentStrategy );

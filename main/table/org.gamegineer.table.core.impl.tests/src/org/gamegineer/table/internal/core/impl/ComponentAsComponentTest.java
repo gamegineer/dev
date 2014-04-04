@@ -1,6 +1,6 @@
 /*
  * ComponentAsComponentTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -99,14 +99,9 @@ public final class ComponentAsComponentTest
      *        {@code null}.
      */
     private static void fireComponentEvent(
-        /* @NonNull */
         final Component component,
-        /* @NonNull */
         final String methodName )
     {
-        assert component != null;
-        assert methodName != null;
-
         try
         {
             final Method method = Component.class.getDeclaredMethod( methodName );

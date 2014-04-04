@@ -1,6 +1,6 @@
 /*
  * TableTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,9 @@
 
 package org.gamegineer.table.internal.core.impl;
 
+import static org.junit.Assert.assertNotNull;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.test.TestComponentStrategies;
 import org.junit.Before;
@@ -29,6 +32,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link Table} class.
  */
+@NonNullByDefault( false )
 public final class TableTest
 {
     // ======================================================================
@@ -59,6 +63,18 @@ public final class TableTest
     // ======================================================================
 
     /**
+     * Gets the table environment for use in the fixture.
+     * 
+     * @return The table environment for use in the fixture; never {@code null}.
+     */
+    @NonNull
+    private TableEnvironment getTableEnvironment()
+    {
+        assertNotNull( tableEnvironment_ );
+        return tableEnvironment_;
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -68,8 +84,8 @@ public final class TableTest
     public void setUp()
         throws Exception
     {
-        tableEnvironment_ = new TableEnvironment( new SingleThreadedTableEnvironmentContext() );
-        table_ = new Table( tableEnvironment_ );
+        final TableEnvironment tableEnvironment = tableEnvironment_ = new TableEnvironment( new SingleThreadedTableEnvironmentContext() );
+        table_ = new Table( tableEnvironment );
     }
 
     /**
@@ -79,6 +95,6 @@ public final class TableTest
     @Test( expected = AssertionError.class )
     public void testGetChildPath_Component_NotTabletop()
     {
-        table_.getChildPath( new Component( tableEnvironment_, TestComponentStrategies.createUniqueComponentStrategy() ) );
+        table_.getChildPath( new Component( getTableEnvironment(), TestComponentStrategies.createUniqueComponentStrategy() ) );
     }
 }

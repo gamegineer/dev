@@ -1,6 +1,6 @@
 /*
  * IContainer.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -45,11 +45,8 @@ public interface IContainer
      *         If {@code component} is already contained in a container or if
      *         {@code component} was created by a table environment other than
      *         the table environment that created this container.
-     * @throws java.lang.NullPointerException
-     *         If {@code component} is {@code null}.
      */
     public void addComponent(
-        /* @NonNull */
         IComponent component );
 
     /**
@@ -67,11 +64,8 @@ public interface IContainer
      * @throws java.lang.IndexOutOfBoundsException
      *         If {@code index} is out of range (
      *         {@code index < 0 || index > getComponentCount()}).
-     * @throws java.lang.NullPointerException
-     *         If {@code component} is {@code null}.
      */
     public void addComponent(
-        /* @NonNull */
         IComponent component,
         int index );
 
@@ -88,11 +82,8 @@ public interface IContainer
      *         component is already contained in a container; or if any
      *         component was created by a table environment other than the table
      *         environment that created this container.
-     * @throws java.lang.NullPointerException
-     *         If {@code components} is {@code null}.
      */
     public void addComponents(
-        /* @NonNull */
         List<IComponent> components );
 
     /**
@@ -115,11 +106,8 @@ public interface IContainer
      * @throws java.lang.IndexOutOfBoundsException
      *         If {@code index} is out of range (
      *         {@code index < 0 || index > getComponentCount()}).
-     * @throws java.lang.NullPointerException
-     *         If {@code components} is {@code null}.
      */
     public void addComponents(
-        /* @NonNull */
         List<IComponent> components,
         int index );
 
@@ -131,11 +119,8 @@ public interface IContainer
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is already a registered container listener.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
      */
     public void addContainerListener(
-        /* @NonNull */
         IContainerListener listener );
 
     /**
@@ -151,7 +136,6 @@ public interface IContainer
      *         If {@code index} is less than zero or greater than or equal to
      *         the component count.
      */
-    /* @NonNull */
     public IComponent getComponent(
         int index );
 
@@ -170,7 +154,6 @@ public interface IContainer
      *         component at the bottom of the container to the component at the
      *         top of the container.
      */
-    /* @NonNull */
     public List<IComponent> getComponents();
 
     /**
@@ -178,7 +161,6 @@ public interface IContainer
      * 
      * @return The layout of components in this container; never {@code null}.
      */
-    /* @NonNull */
     public IContainerLayout getLayout();
 
     /**
@@ -186,7 +168,6 @@ public interface IContainer
      * 
      * @return The container strategy; never {@code null}.
      */
-    /* @NonNull */
     @Override
     public IContainerStrategy getStrategy();
 
@@ -198,7 +179,6 @@ public interface IContainer
      *         component at the bottom of the container to the component at the
      *         top of the container.
      */
-    /* @NonNull */
     public List<IComponent> removeAllComponents();
 
     /**
@@ -209,11 +189,8 @@ public interface IContainer
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code component} is not contained within this container.
-     * @throws java.lang.NullPointerException
-     *         If {@code component} is {@code null}.
      */
     public void removeComponent(
-        /* @NonNull */
         IComponent component );
 
     /**
@@ -228,7 +205,6 @@ public interface IContainer
      *         If {@code index} is out of range (
      *         {@code index < 0 || index > getComponentCount()}).
      */
-    /* @NonNull */
     public IComponent removeComponent(
         int index );
 
@@ -240,11 +216,8 @@ public interface IContainer
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is not a registered container listener.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
      */
     public void removeContainerListener(
-        /* @NonNull */
         IContainerListener listener );
 
     /**
@@ -253,11 +226,7 @@ public interface IContainer
      * @param layout
      *        The layout of components in this container; must not be
      *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code layout} is {@code null}.
      */
     public void setLayout(
-        /* @NonNull */
         IContainerLayout layout );
 }

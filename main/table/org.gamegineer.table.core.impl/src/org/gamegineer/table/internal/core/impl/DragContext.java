@@ -1,6 +1,6 @@
 /*
  * DragContext.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.core.impl;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -30,7 +29,9 @@ import java.util.List;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.IterableUtils;
+import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentStrategies;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
@@ -103,23 +104,12 @@ final class DragContext
      *        The drag strategy; must not be {@code null}.
      */
     private DragContext(
-        /* @NonNull */
         final Table table,
-        /* @NonNull */
         final Point initialLocation,
-        /* @NonNull */
         final List<PreDragComponentState> preDragComponentStates,
-        /* @NonNull */
         final Container mobileContainer,
-        /* @NonNull */
         final IDragStrategy dragStrategy )
     {
-        assert table != null;
-        assert initialLocation != null;
-        assert preDragComponentStates != null;
-        assert mobileContainer != null;
-        assert dragStrategy != null;
-
         dragStrategy_ = dragStrategy;
         initialLocation_ = initialLocation;
         mobileContainer_ = mobileContainer;
@@ -153,21 +143,13 @@ final class DragContext
      *         arguments.
      */
     @GuardedBy( "table.getTableEnvironment().getLock()" )
-    /* @Nullable */
+    @Nullable
     static DragContext beginDrag(
-        /* @NonNull */
         final Table table,
-        /* @NonNull */
         final Point location,
-        /* @NonNull */
         final Component component,
-        /* @NonNull */
         final IDragStrategyFactory dragStrategyFactory )
     {
-        assert table != null;
-        assert location != null;
-        assert component != null;
-        assert dragStrategyFactory != null;
         assert table.getTableEnvironment().getLock().isHeldByCurrentThread();
 
         final IDragStrategy dragStrategy = dragStrategyFactory.createDragStrategy( component, getDefaultDragStrategy( component ) );
@@ -180,6 +162,7 @@ final class DragContext
         final List<PreDragComponentState> preDragComponentStates = new ArrayList<>( dragComponents.size() );
         for( final IComponent dragComponent : dragComponents )
         {
+            assert dragComponent != null;
             preDragComponentStates.add( new PreDragComponentState( dragComponent ) );
         }
 
@@ -187,7 +170,9 @@ final class DragContext
         final Container mobileContainer = new Container( table.getTableEnvironment(), ComponentStrategies.NULL_CONTAINER );
         for( final IComponent dragComponent : dragComponents )
         {
-            dragComponent.getContainer().removeComponent( dragComponent );
+            final IContainer dragComponentContainer = dragComponent.getContainer();
+            assert dragComponentContainer != null;
+            dragComponentContainer.removeComponent( dragComponent );
             mobileContainer.addComponent( dragComponent );
 
             final PreDragComponentState preDragComponentState = preDragComponentStates.get( index++ );
@@ -224,8 +209,6 @@ final class DragContext
     public void drag(
         final Point location )
     {
-        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
-
         getLock().lock();
         try
         {
@@ -248,7 +231,7 @@ final class DragContext
      */
     @GuardedBy( "getLock()" )
     private void endDrag(
-        /* @Nullable */
+        @Nullable
         final Point location )
     {
         assert getLock().isHeldByCurrentThread();
@@ -292,8 +275,6 @@ final class DragContext
     public void drop(
         final Point location )
     {
-        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
-
         getLock().lock();
         try
         {
@@ -317,13 +298,9 @@ final class DragContext
      * @return The default drag strategy for the specified component; never
      *         {@code null}.
      */
-    /* @NonNull */
     private static IDragStrategy getDefaultDragStrategy(
-        /* @NonNull */
         final IComponent component )
     {
-        assert component != null;
-
         IDragStrategyFactory dragStrategyFactory = component.getStrategy().getExtension( IDragStrategyFactory.class );
         if( dragStrategyFactory == null )
         {
@@ -343,12 +320,9 @@ final class DragContext
      *         {@code null}.
      */
     @GuardedBy( "getLock()" )
-    /* @NonNull */
     private IContainer getDropContainer(
-        /* @NonNull */
         final Point location )
     {
-        assert location != null;
         assert getLock().isHeldByCurrentThread();
 
         for( final IComponent component : IterableUtils.reverse( table_.getComponents( location ) ) )
@@ -367,7 +341,6 @@ final class DragContext
      * 
      * @return The table environment lock; never {@code null}.
      */
-    /* @NonNull */
     private ITableEnvironmentLock getLock()
     {
         return table_.getTableEnvironment().getLock();
@@ -380,11 +353,8 @@ final class DragContext
      *        The drag location in table coordinates; must not be {@code null}.
      */
     private void moveMobileContainer(
-        /* @NonNull */
         final Point location )
     {
-        assert location != null;
-
         final Dimension offset = new Dimension( location.x - initialLocation_.x, location.y - initialLocation_.y );
         mobileContainer_.setOrigin( new Point( originalMobileContainerOrigin_.x + offset.width, originalMobileContainerOrigin_.y + offset.height ) );
     }
@@ -433,14 +403,15 @@ final class DragContext
          *        The component being dragged; must not be {@code null}.
          */
         PreDragComponentState(
-            /* @NonNull */
             final IComponent component )
         {
-            assert component != null;
-
             component_ = component;
-            container_ = component.getContainer();
-            index_ = component.getPath().getIndex();
+            final IContainer container = component.getContainer();
+            assert container != null;
+            container_ = container;
+            final ComponentPath componentPath = component.getPath();
+            assert componentPath != null;
+            index_ = componentPath.getIndex();
             origin_ = component.getOrigin();
         }
 

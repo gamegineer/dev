@@ -1,6 +1,6 @@
 /*
  * StackedLayoutTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -60,16 +60,6 @@ public final class StackedLayoutTest
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Ensures the {@link StackedLayout#StackedLayout} constructor throws an
-     * exception when passed a {@code null} identifier.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_Id_Null()
-    {
-        new StackedLayout( null, 1, 1, 1 );
-    }
 
     /**
      * Ensures the {@link StackedLayout#layout} method correctly lays out the

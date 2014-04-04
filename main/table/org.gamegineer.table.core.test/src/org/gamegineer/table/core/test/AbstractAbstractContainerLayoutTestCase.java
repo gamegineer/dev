@@ -1,6 +1,6 @@
 /*
  * AbstractAbstractContainerLayoutTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,9 +21,12 @@
 
 package org.gamegineer.table.core.test;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Dimension;
 import org.easymock.EasyMock;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.AbstractContainerLayout;
 import org.gamegineer.table.core.IContainer;
 import org.junit.Before;
@@ -36,6 +39,7 @@ import org.junit.Test;
  * @param <ContainerLayoutType>
  *        The type of the container layout.
  */
+@NonNullByDefault( false )
 public abstract class AbstractAbstractContainerLayoutTestCase<ContainerLayoutType extends AbstractContainerLayout>
 {
     // ======================================================================
@@ -71,7 +75,7 @@ public abstract class AbstractAbstractContainerLayoutTestCase<ContainerLayoutTyp
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract ContainerLayoutType createContainerLayout()
         throws Exception;
 
@@ -92,16 +96,27 @@ public abstract class AbstractAbstractContainerLayoutTestCase<ContainerLayoutTyp
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code index} is negative.
-     * @throws java.lang.NullPointerException
-     *         If {@code containerLayout} or {@code container} is {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract Dimension getComponentOffsetAt(
-        /* @NonNull */
+        @NonNull
         ContainerLayoutType containerLayout,
-        /* @NonNull */
+        @NonNull
         IContainer container,
         int index );
+
+    /**
+     * Gets the container layout under test in the fixture.
+     * 
+     * @return The container layout under test in the fixture; never
+     *         {@code null}.
+     */
+    @NonNull
+    protected final ContainerLayoutType getContainerLayout()
+    {
+        assertNotNull( containerLayout_ );
+        return containerLayout_;
+    }
 
     /**
      * Sets up the test fixture.
@@ -119,21 +134,11 @@ public abstract class AbstractAbstractContainerLayoutTestCase<ContainerLayoutTyp
 
     /**
      * Ensures the {@link AbstractContainerLayout#getComponentOffsetAt} method
-     * throws an exception when passed a {@code null} container.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetComponentOffsetAt_Container_Null()
-    {
-        getComponentOffsetAt( containerLayout_, null, 0 );
-    }
-
-    /**
-     * Ensures the {@link AbstractContainerLayout#getComponentOffsetAt} method
      * throws an exception when passed an illegal index that is negative.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testGetComponentOffsetAt_Index_Illegal_Negative()
     {
-        getComponentOffsetAt( containerLayout_, EasyMock.createMock( IContainer.class ), -1 );
+        getComponentOffsetAt( getContainerLayout(), nonNull( EasyMock.createMock( IContainer.class ) ), -1 );
     }
 }

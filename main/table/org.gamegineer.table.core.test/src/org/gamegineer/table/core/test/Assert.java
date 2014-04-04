@@ -1,6 +1,6 @@
 /*
  * Assert.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,6 +26,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import java.util.List;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
@@ -64,9 +65,9 @@ public final class Assert
      *         If the two values are not equal.
      */
     public static void assertComponentEquals(
-        /* @Nullable */
+        @Nullable
         final IComponent expected,
-        /* @Nullable */
+        @Nullable
         final IComponent actual )
     {
         if( expected == null )
@@ -111,14 +112,9 @@ public final class Assert
      *         If the two values are not equal.
      */
     private static void assertContainerEquals(
-        /* @NonNull */
         final IContainer expected,
-        /* @NonNull */
         final IContainer actual )
     {
-        assert expected != null;
-        assert actual != null;
-
         assertEquals( expected.getLayout(), actual.getLayout() );
 
         final List<IComponent> expectedComponents = expected.getComponents();
@@ -142,9 +138,9 @@ public final class Assert
      *         If the two values are not equal.
      */
     public static void assertTableEquals(
-        /* @Nullable */
+        @Nullable
         final ITable expected,
-        /* @Nullable */
+        @Nullable
         final ITable actual )
     {
         if( expected == null )

@@ -1,6 +1,6 @@
 /*
  * IComponent.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,6 +26,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Collection;
 import java.util.Map;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
 
 /**
@@ -48,11 +49,8 @@ public interface IComponent
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is already a registered component listener.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
      */
     public void addComponentListener(
-        /* @NonNull */
         IComponentListener listener );
 
     /**
@@ -61,7 +59,6 @@ public interface IComponent
      * @return The bounds of this component in table coordinates; never
      *         {@code null}.
      */
-    /* @NonNull */
     public Rectangle getBounds();
 
     /**
@@ -70,7 +67,7 @@ public interface IComponent
      * @return The container that contains this component or {@code null} if
      *         this component is not contained in a container.
      */
-    /* @Nullable */
+    @Nullable
     public IContainer getContainer();
 
     /**
@@ -84,7 +81,6 @@ public interface IComponent
      * @return The location of this component in table coordinates; never
      *         {@code null}.
      */
-    /* @NonNull */
     public Point getLocation();
 
     /**
@@ -92,7 +88,6 @@ public interface IComponent
      * 
      * @return The orientation of this component; never {@code null}.
      */
-    /* @NonNull */
     public ComponentOrientation getOrientation();
 
     /**
@@ -108,7 +103,6 @@ public interface IComponent
      * @return The origin of this component in table coordinates; never
      *         {@code null}.
      */
-    /* @NonNull */
     public Point getOrigin();
 
     /**
@@ -117,7 +111,7 @@ public interface IComponent
      * @return The path to this component from its associated table or
      *         {@code null} if the component is not associated with a table.
      */
-    /* @Nullable */
+    @Nullable
     public ComponentPath getPath();
 
     /**
@@ -126,7 +120,6 @@ public interface IComponent
      * @return The size of this component in table coordinates; never
      *         {@code null}.
      */
-    /* @NonNull */
     public Dimension getSize();
 
     /**
@@ -134,7 +127,6 @@ public interface IComponent
      * 
      * @return The component strategy; never {@code null}.
      */
-    /* @NonNull */
     public IComponentStrategy getStrategy();
 
     /**
@@ -145,7 +137,6 @@ public interface IComponent
      *         this component; never {@code null}. The returned collection is
      *         guaranteed to not be empty.
      */
-    /* @NonNull */
     public Collection<ComponentOrientation> getSupportedOrientations();
 
     /**
@@ -161,12 +152,8 @@ public interface IComponent
      * @throws java.lang.IllegalArgumentException
      *         If {@code orientation} is not a legal orientation for this
      *         component.
-     * @throws java.lang.NullPointerException
-     *         If {@code orientation} is {@code null}.
      */
-    /* @NonNull */
     public ComponentSurfaceDesign getSurfaceDesign(
-        /* @NonNull */
         ComponentOrientation orientation );
 
     /**
@@ -175,7 +162,6 @@ public interface IComponent
      * @return The collection of surface designs for this component; never
      *         {@code null}.
      */
-    /* @NonNull */
     public Map<ComponentOrientation, ComponentSurfaceDesign> getSurfaceDesigns();
 
     /**
@@ -184,7 +170,7 @@ public interface IComponent
      * @return The table associated with this component or {@code null} if this
      *         component is not associated with a table.
      */
-    /* @Nullable */
+    @Nullable
     public ITable getTable();
 
     /**
@@ -193,7 +179,6 @@ public interface IComponent
      * @return The table environment associated with this component; never
      *         {@code null}.
      */
-    /* @NonNull */
     public ITableEnvironment getTableEnvironment();
 
     /**
@@ -204,11 +189,8 @@ public interface IComponent
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is not a registered component listener.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
      */
     public void removeComponentListener(
-        /* @NonNull */
         IComponentListener listener );
 
     /**
@@ -217,12 +199,8 @@ public interface IComponent
      * @param location
      *        The location of this component in table coordinates; must not be
      *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code location} is {@code null}.
      */
     public void setLocation(
-        /* @NonNull */
         Point location );
 
     /**
@@ -234,11 +212,8 @@ public interface IComponent
      * @throws java.lang.IllegalArgumentException
      *         If {@code orientation} is not a legal orientation for this
      *         component.
-     * @throws java.lang.NullPointerException
-     *         If {@code orientation} is {@code null}.
      */
     public void setOrientation(
-        /* @NonNull */
         ComponentOrientation orientation );
 
     /**
@@ -247,12 +222,8 @@ public interface IComponent
      * @param origin
      *        The origin of this component in table coordinates; must not be
      *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code origin} is {@code null}.
      */
     public void setOrigin(
-        /* @NonNull */
         Point origin );
 
     /**
@@ -268,13 +239,9 @@ public interface IComponent
      * @throws java.lang.IllegalArgumentException
      *         If {@code orientation} is not a legal orientation for this
      *         component.
-     * @throws java.lang.NullPointerException
-     *         If {@code orientation} or {@code surfaceDesign} is {@code null}.
      */
     public void setSurfaceDesign(
-        /* @NonNull */
         ComponentOrientation orientation,
-        /* @NonNull */
         ComponentSurfaceDesign surfaceDesign );
 
     /**
@@ -288,10 +255,7 @@ public interface IComponent
      * @throws java.lang.IllegalArgumentException
      *         If {@code surfaceDesigns} contains an illegal orientation for
      *         this component or contains a {@code null} surface design.
-     * @throws java.lang.NullPointerException
-     *         If {@code surfaceDesigns} is {@code null}.
      */
     public void setSurfaceDesigns(
-        /* @NonNull */
         Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns );
 }

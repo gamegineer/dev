@@ -1,6 +1,6 @@
 /*
  * ComponentStrategies.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.core;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A collection of common component strategies.
@@ -79,7 +80,7 @@ public final class ComponentStrategies
         private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.table.componentStrategies.nullComponent" ); //$NON-NLS-1$
 
         /** The collection of supported component orientations. */
-        private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( NullOrientation.values( NullOrientation.class ) ) );
+        private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = nonNull( Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( NullOrientation.values( NullOrientation.class ) ) ) );
 
 
         // ==================================================================
@@ -140,12 +141,12 @@ public final class ComponentStrategies
         /*
          * @see org.gamegineer.table.core.IComponentStrategy#getExtension(java.lang.Class)
          */
+        @Nullable
         @Override
         public final <T> T getExtension(
+            @SuppressWarnings( "unused" )
             final Class<T> type )
         {
-            assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
-
             return null;
         }
 

@@ -1,6 +1,6 @@
 /*
  * ContainerLayoutIdTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -45,16 +45,6 @@ public final class ContainerLayoutIdTest
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Ensures the {@link ContainerLayoutId#fromString} method throws an
-     * exception when passed a {@code null} underlying identifier.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testFromString_Id_Null()
-    {
-        ContainerLayoutId.fromString( null );
-    }
 
     /**
      * Ensures the {@link ContainerLayoutId#toString} method does not return

@@ -1,6 +1,6 @@
 /*
  * IComponentListener.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -41,12 +41,8 @@ public interface IComponentListener
      * 
      * @param event
      *        The event describing the component; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
      */
     public void componentBoundsChanged(
-        /* @NonNull */
         ComponentEvent event );
 
     /**
@@ -54,12 +50,8 @@ public interface IComponentListener
      * 
      * @param event
      *        The event describing the component; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
      */
     public void componentOrientationChanged(
-        /* @NonNull */
         ComponentEvent event );
 
     /**
@@ -67,11 +59,7 @@ public interface IComponentListener
      * 
      * @param event
      *        The event describing the component; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
      */
     public void componentSurfaceDesignChanged(
-        /* @NonNull */
         ComponentEvent event );
 }

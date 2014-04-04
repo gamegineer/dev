@@ -1,6 +1,6 @@
 /*
  * IDragContext.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -51,11 +51,8 @@ public interface IDragContext
      * 
      * @throws java.lang.IllegalStateException
      *         If the drag-and-drop operation is not active.
-     * @throws java.lang.NullPointerException
-     *         If {@code location} is {@code null}.
      */
     public void drag(
-        /* @NonNull */
         Point location );
 
     /**
@@ -67,10 +64,7 @@ public interface IDragContext
      * 
      * @throws java.lang.IllegalStateException
      *         If the drag-and-drop operation is not active.
-     * @throws java.lang.NullPointerException
-     *         If {@code location} is {@code null}.
      */
     public void drop(
-        /* @NonNull */
         Point location );
 }

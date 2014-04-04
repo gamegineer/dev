@@ -1,6 +1,6 @@
 /*
  * ContainerLayouts.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.table.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import java.awt.Point;
 import net.jcip.annotations.Immutable;
@@ -98,7 +97,6 @@ public final class ContainerLayouts
             final IContainer container,
             final int index )
         {
-            assertArgumentNotNull( container, "container" ); //$NON-NLS-1$
             assertArgumentLegal( index >= 0, "index", NonNlsMessages.ContainerLayouts_NullContainerLayout_getComponentOffsetAt_index_negative ); //$NON-NLS-1$
 
             final Point containerOrigin = container.getOrigin();

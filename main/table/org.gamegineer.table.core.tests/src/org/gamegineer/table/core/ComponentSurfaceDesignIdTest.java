@@ -1,6 +1,6 @@
 /*
  * ComponentSurfaceDesignIdTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -46,16 +46,6 @@ public final class ComponentSurfaceDesignIdTest
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Ensures the {@link ComponentSurfaceDesignId#fromString} method throws an
-     * exception when passed a {@code null} underlying identifier.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testFromString_Id_Null()
-    {
-        ComponentSurfaceDesignId.fromString( null );
-    }
 
     /**
      * Ensures the {@link ComponentSurfaceDesignId#toString} method does not

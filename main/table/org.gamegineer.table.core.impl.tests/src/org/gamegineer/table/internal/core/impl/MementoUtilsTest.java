@@ -1,6 +1,6 @@
 /*
  * MementoUtilsTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,11 +21,15 @@
 
 package org.gamegineer.table.internal.core.impl;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,6 +37,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link MementoUtils} class.
  */
+@NonNullByDefault( false )
 public final class MementoUtilsTest
 {
     // ======================================================================
@@ -40,18 +45,22 @@ public final class MementoUtilsTest
     // ======================================================================
 
     /** The name of an attribute guaranteed to be absent from the memento. */
+    @NonNull
     private static final String ABSENT_ATTRIBUTE_NAME = "absent"; //$NON-NLS-1$
 
     /**
      * The name of an attribute guaranteed to be present and in the memento with
      * a {@code null} value.
      */
+    @NonNull
     private static final String NULL_ATTRIBUTE_NAME = "null"; //$NON-NLS-1$
 
     /** The name of an attribute guaranteed to be present in the memento. */
+    @NonNull
     private static final String PRESENT_ATTRIBUTE_NAME = "present"; //$NON-NLS-1$
 
     /** The value of an attribute guaranteed to be present in the memento. */
+    @NonNull
     private static final String PRESENT_ATTRIBUTE_VALUE = "present-Value"; //$NON-NLS-1$
 
     /** A memento for use in the fixture. */
@@ -73,6 +82,18 @@ public final class MementoUtilsTest
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the fixture memento.
+     * 
+     * @return The fixture memento; never {@code null}.
+     */
+    @NonNull
+    private Map<String, Object> getMemento()
+    {
+        assertNotNull( memento_ );
+        return memento_;
+    }
 
     /**
      * Sets up the test fixture.
@@ -100,7 +121,7 @@ public final class MementoUtilsTest
     public void testGetAttribute_Attribute_Absent()
         throws Exception
     {
-        MementoUtils.getAttribute( memento_, ABSENT_ATTRIBUTE_NAME, String.class );
+        MementoUtils.getAttribute( getMemento(), ABSENT_ATTRIBUTE_NAME, String.class );
     }
 
     /**
@@ -114,7 +135,7 @@ public final class MementoUtilsTest
     public void testGetAttribute_Attribute_Present()
         throws Exception
     {
-        final String actualValue = MementoUtils.getAttribute( memento_, PRESENT_ATTRIBUTE_NAME, PRESENT_ATTRIBUTE_VALUE.getClass() );
+        final String actualValue = MementoUtils.getAttribute( getMemento(), PRESENT_ATTRIBUTE_NAME, nonNull( PRESENT_ATTRIBUTE_VALUE.getClass() ) );
 
         assertEquals( PRESENT_ATTRIBUTE_VALUE, actualValue );
     }
@@ -130,7 +151,7 @@ public final class MementoUtilsTest
     public void testGetAttribute_Attribute_Present_Null()
         throws Exception
     {
-        MementoUtils.getAttribute( memento_, NULL_ATTRIBUTE_NAME, String.class );
+        MementoUtils.getAttribute( getMemento(), NULL_ATTRIBUTE_NAME, String.class );
     }
 
     /**
@@ -144,7 +165,7 @@ public final class MementoUtilsTest
     public void testGetAttribute_Attribute_Present_WrongType()
         throws Exception
     {
-        MementoUtils.getAttribute( memento_, PRESENT_ATTRIBUTE_NAME, Integer.class );
+        MementoUtils.getAttribute( getMemento(), PRESENT_ATTRIBUTE_NAME, Integer.class );
     }
 
     /**
@@ -158,7 +179,7 @@ public final class MementoUtilsTest
     public void testHasAttribute_Attribute_Absent()
         throws Exception
     {
-        assertFalse( MementoUtils.hasAttribute( memento_, ABSENT_ATTRIBUTE_NAME ) );
+        assertFalse( MementoUtils.hasAttribute( getMemento(), ABSENT_ATTRIBUTE_NAME ) );
     }
 
     /**
@@ -172,6 +193,6 @@ public final class MementoUtilsTest
     public void testHasAttribute_Attribute_Present()
         throws Exception
     {
-        assertTrue( MementoUtils.hasAttribute( memento_, PRESENT_ATTRIBUTE_NAME ) );
+        assertTrue( MementoUtils.hasAttribute( getMemento(), PRESENT_ATTRIBUTE_NAME ) );
     }
 }

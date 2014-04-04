@@ -1,6 +1,6 @@
 /*
  * package-info.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,4 +22,5 @@
 /**
  * Provides extensions for supporting table drag-and-drop operations.
  */
+@org.eclipse.jdt.annotation.NonNullByDefault
 package org.gamegineer.table.core.dnd;

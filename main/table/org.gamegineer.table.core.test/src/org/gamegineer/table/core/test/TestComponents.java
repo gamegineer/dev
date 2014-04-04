@@ -1,6 +1,6 @@
 /*
  * TestComponents.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -60,13 +60,8 @@ public final class TestComponents
      *        be {@code null}.
      * 
      * @return A new component; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code tableEnvironment} is {@code null}.
      */
-    /* @NonNull */
     public static IComponent createUniqueComponent(
-        /* @NonNull */
         final ITableEnvironment tableEnvironment )
     {
         return createUniqueComponent( tableEnvironment, TestComponentStrategies.createUniqueComponentStrategy() );
@@ -83,16 +78,9 @@ public final class TestComponents
      *        The component strategy; must not be {@code null}.
      * 
      * @return A new component; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code tableEnvironment} or {@code componentStrategy} is
-     *         {@code null}.
      */
-    /* @NonNull */
     public static IComponent createUniqueComponent(
-        /* @NonNull */
         final ITableEnvironment tableEnvironment,
-        /* @NonNull */
         final IComponentStrategy componentStrategy )
     {
         final IComponent component = tableEnvironment.createComponent( componentStrategy );
@@ -109,13 +97,8 @@ public final class TestComponents
      *        be {@code null}.
      * 
      * @return A new container; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code tableEnvironment} is {@code null}.
      */
-    /* @NonNull */
     public static IContainer createUniqueContainer(
-        /* @NonNull */
         final ITableEnvironment tableEnvironment )
     {
         return createUniqueContainer( tableEnvironment, TestComponentStrategies.createUniqueContainerStrategy() );
@@ -132,16 +115,9 @@ public final class TestComponents
      *        The container strategy; must not be {@code null}.
      * 
      * @return A new container; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code tableEnvironment} or {@code containerStrategy} is
-     *         {@code null}.
      */
-    /* @NonNull */
     public static IContainer createUniqueContainer(
-        /* @NonNull */
         final ITableEnvironment tableEnvironment,
-        /* @NonNull */
         final IContainerStrategy containerStrategy )
     {
         final IContainer container = tableEnvironment.createContainer( containerStrategy );
@@ -157,13 +133,11 @@ public final class TestComponents
      *        The component; must not be {@code null}.
      */
     private static void setUniqueSurfaceDesigns(
-        /* @NonNull */
         final IComponent component )
     {
-        assert component != null;
-
         for( final ComponentOrientation orientation : component.getSupportedOrientations() )
         {
+            assert orientation != null;
             component.setSurfaceDesign( orientation, TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         }
     }

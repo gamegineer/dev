@@ -1,6 +1,6 @@
 /*
  * AbstractComponentTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.core.test;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.gamegineer.table.core.test.Assert.assertComponentEquals;
 import static org.gamegineer.test.core.Assert.assertImmutableCollection;
 import static org.junit.Assert.assertEquals;
@@ -38,6 +40,8 @@ import java.util.Map;
 import java.util.Set;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.gamegineer.common.core.util.memento.test.AbstractMementoOriginatorTestCase;
 import org.gamegineer.table.core.ComponentEvent;
@@ -63,6 +67,7 @@ import org.junit.Test;
  * @param <ComponentType>
  *        The type of the component.
  */
+@NonNullByDefault( false )
 public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITableEnvironment, ComponentType extends IComponent>
     extends AbstractMementoOriginatorTestCase
 {
@@ -124,12 +129,10 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
-     * @throws java.lang.NullPointerException
-     *         If {@code tableEnvironment} is {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract ComponentType createComponent(
-        /* @NonNull */
+        @NonNull
         TableEnvironmentType tableEnvironment )
         throws Exception;
 
@@ -139,7 +142,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      * 
      * @return An illegal component orientation; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private static ComponentOrientation createIllegalOrientation()
     {
         return new ComponentOrientation( "illegal", 0 ) //$NON-NLS-1$
@@ -161,7 +164,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     protected final IMementoOriginator createMementoOriginator()
         throws Exception
     {
-        return createComponent( tableEnvironment_ );
+        return createComponent( getTableEnvironment() );
     }
 
     /**
@@ -169,7 +172,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      * 
      * @return The table environment for use in the fixture; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     protected final TableEnvironmentType createTableEnvironment()
     {
         return createTableEnvironment( new SingleThreadedTableEnvironmentContext() );
@@ -183,13 +186,10 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      *        The table environment context; must not be {@code null}.
      * 
      * @return The table environment for use in the fixture; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract TableEnvironmentType createTableEnvironment(
-        /* @NonNull */
+        @NonNull
         final ITableEnvironmentContext context );
 
     /**
@@ -197,12 +197,9 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      * 
      * @param component
      *        The component; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code component} is {@code null}.
      */
     protected abstract void fireComponentBoundsChanged(
-        /* @NonNull */
+        @NonNull
         ComponentType component );
 
     /**
@@ -210,12 +207,9 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      * 
      * @param component
      *        The component; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code component} is {@code null}.
      */
     protected abstract void fireComponentOrientationChanged(
-        /* @NonNull */
+        @NonNull
         ComponentType component );
 
     /**
@@ -224,12 +218,9 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      * 
      * @param component
      *        The component; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code component} is {@code null}.
      */
     protected abstract void fireComponentSurfaceDesignChanged(
-        /* @NonNull */
+        @NonNull
         ComponentType component );
 
     /**
@@ -247,15 +238,17 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      *         alternate component orientation is available, the specified
      *         component orientation is returned.
      */
-    /* @NonNull */
+    @NonNull
     private static ComponentOrientation getAlternateOrientation(
-        /* @NonNull */
+        @NonNull
         final ComponentOrientation orientation,
-        /* @NonNull */
+        @NonNull
         final Collection<ComponentOrientation> supportedOrientations )
     {
         for( final ComponentOrientation supportedOrientation : supportedOrientations )
         {
+            assert supportedOrientation != null;
+
             if( supportedOrientation != orientation )
             {
                 return supportedOrientation;
@@ -274,13 +267,11 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      * 
      * @return The alternate point; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private static Point getAlternatePoint(
-        /* @NonNull */
+        @NonNull
         final Point point )
     {
-        assert point != null;
-
         return new Point( point.x + 1000, point.y + 1000 );
     }
 
@@ -289,7 +280,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      * 
      * @return The component under test in the fixture; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     protected final ComponentType getComponent()
     {
         assertNotNull( component_ );
@@ -301,7 +292,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      * 
      * @return The table environment for use in the fixture; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     protected final TableEnvironmentType getTableEnvironment()
     {
         assertNotNull( tableEnvironment_ );
@@ -321,6 +312,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
         component.setOrigin( getAlternatePoint( component.getOrigin() ) );
         for( final ComponentOrientation orientation : component.getSupportedOrientations() )
         {
+            assert orientation != null;
             component.setSurfaceDesign( orientation, TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         }
     }
@@ -344,26 +336,16 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
 
     /**
      * Ensures the {@link IComponent#addComponentListener} method throws an
-     * exception when passed a {@code null} listener.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testAddComponentListener_Listener_Null()
-    {
-        component_.addComponentListener( null );
-    }
-
-    /**
-     * Ensures the {@link IComponent#addComponentListener} method throws an
      * exception when passed a listener that is present in the component
      * listener collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddComponentListener_Listener_Present()
     {
-        final IComponentListener listener = EasyMock.createMock( IComponentListener.class );
-        component_.addComponentListener( listener );
+        final IComponentListener listener = nonNull( EasyMock.createMock( IComponentListener.class ) );
+        getComponent().addComponentListener( listener );
 
-        component_.addComponentListener( listener );
+        getComponent().addComponentListener( listener );
     }
 
     /**
@@ -375,15 +357,15 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testComponentBoundsChanged_CatchesListenerException()
     {
         final IComponentListener listener1 = mocksControl_.createMock( IComponentListener.class );
-        listener1.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener1.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IComponentListener listener2 = mocksControl_.createMock( IComponentListener.class );
-        listener2.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener2.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         mocksControl_.replay();
-        component_.addComponentListener( listener1 );
-        component_.addComponentListener( listener2 );
+        getComponent().addComponentListener( listener1 );
+        getComponent().addComponentListener( listener2 );
 
-        fireComponentBoundsChanged( component_ );
+        fireComponentBoundsChanged( getComponent() );
 
         mocksControl_.verify();
     }
@@ -397,15 +379,15 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testComponentOrientationChanged_CatchesListenerException()
     {
         final IComponentListener listener1 = mocksControl_.createMock( IComponentListener.class );
-        listener1.componentOrientationChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener1.componentOrientationChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IComponentListener listener2 = mocksControl_.createMock( IComponentListener.class );
-        listener2.componentOrientationChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener2.componentOrientationChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         mocksControl_.replay();
-        component_.addComponentListener( listener1 );
-        component_.addComponentListener( listener2 );
+        getComponent().addComponentListener( listener1 );
+        getComponent().addComponentListener( listener2 );
 
-        fireComponentOrientationChanged( component_ );
+        fireComponentOrientationChanged( getComponent() );
 
         mocksControl_.verify();
     }
@@ -419,15 +401,15 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testComponentSurfaceDesignChanged_CatchesListenerException()
     {
         final IComponentListener listener1 = mocksControl_.createMock( IComponentListener.class );
-        listener1.componentSurfaceDesignChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener1.componentSurfaceDesignChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IComponentListener listener2 = mocksControl_.createMock( IComponentListener.class );
-        listener2.componentSurfaceDesignChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener2.componentSurfaceDesignChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         mocksControl_.replay();
-        component_.addComponentListener( listener1 );
-        component_.addComponentListener( listener2 );
+        getComponent().addComponentListener( listener1 );
+        getComponent().addComponentListener( listener2 );
 
-        fireComponentSurfaceDesignChanged( component_ );
+        fireComponentSurfaceDesignChanged( getComponent() );
 
         mocksControl_.verify();
     }
@@ -440,12 +422,14 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testGetBounds_MatchesCurrentOrientationSurface()
     {
         int length = 0;
-        for( final ComponentOrientation orientation : component_.getSupportedOrientations() )
+        for( final ComponentOrientation orientation : getComponent().getSupportedOrientations() )
         {
+            assert orientation != null;
+
             length += 10;
-            component_.setSurfaceDesign( orientation, TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign( length, length ) );
-            component_.setOrientation( orientation );
-            final Rectangle bounds = component_.getBounds();
+            getComponent().setSurfaceDesign( orientation, TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign( length, length ) );
+            getComponent().setOrientation( orientation );
+            final Rectangle bounds = getComponent().getBounds();
             assertEquals( length, bounds.height );
             assertEquals( length, bounds.width );
         }
@@ -458,12 +442,12 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testGetBounds_ReturnValue_Copy()
     {
-        final Rectangle bounds = component_.getBounds();
+        final Rectangle bounds = getComponent().getBounds();
         final Rectangle expectedBounds = new Rectangle( bounds );
 
         bounds.setBounds( 1010, 2020, 101, 202 );
 
-        assertEquals( expectedBounds, component_.getBounds() );
+        assertEquals( expectedBounds, getComponent().getBounds() );
     }
 
     /**
@@ -473,7 +457,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testGetBounds_ReturnValue_NonNull()
     {
-        assertNotNull( component_.getBounds() );
+        assertNotNull( getComponent().getBounds() );
     }
 
     /**
@@ -484,11 +468,11 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testGetBounds_Translate()
     {
         final Point expectedLocation = new Point( 1010, 2020 );
-        final Rectangle expectedBounds = component_.getBounds();
+        final Rectangle expectedBounds = getComponent().getBounds();
         expectedBounds.setLocation( expectedLocation );
-        component_.setLocation( expectedLocation );
+        getComponent().setLocation( expectedLocation );
 
-        final Rectangle actualBounds = component_.getBounds();
+        final Rectangle actualBounds = getComponent().getBounds();
 
         assertEquals( expectedBounds, actualBounds );
     }
@@ -500,12 +484,12 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testGetLocation_ReturnValue_Copy()
     {
-        final Point location = component_.getLocation();
+        final Point location = getComponent().getLocation();
         final Point expectedLocation = new Point( location );
 
         location.setLocation( 1010, 2020 );
 
-        assertEquals( expectedLocation, component_.getLocation() );
+        assertEquals( expectedLocation, getComponent().getLocation() );
     }
 
     /**
@@ -515,7 +499,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testGetLocation_ReturnValue_NonNull()
     {
-        assertNotNull( component_.getLocation() );
+        assertNotNull( getComponent().getLocation() );
     }
 
     /**
@@ -526,9 +510,9 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testGetLocation_Translate()
     {
         final Point expectedLocation = new Point( 1010, 2020 );
-        component_.setLocation( expectedLocation );
+        getComponent().setLocation( expectedLocation );
 
-        final Point actualLocation = component_.getLocation();
+        final Point actualLocation = getComponent().getLocation();
 
         assertEquals( expectedLocation, actualLocation );
     }
@@ -540,7 +524,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testGetOrientation_ReturnValue_NonNull()
     {
-        assertNotNull( component_.getOrientation() );
+        assertNotNull( getComponent().getOrientation() );
     }
 
     /**
@@ -550,12 +534,12 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testGetOrigin_ReturnValue_Copy()
     {
-        final Point origin = component_.getOrigin();
+        final Point origin = getComponent().getOrigin();
         final Point expectedOrigin = new Point( origin );
 
         origin.setLocation( 1010, 2020 );
 
-        assertEquals( expectedOrigin, component_.getOrigin() );
+        assertEquals( expectedOrigin, getComponent().getOrigin() );
     }
 
     /**
@@ -565,7 +549,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testGetOrigin_ReturnValue_NonNull()
     {
-        assertNotNull( component_.getOrigin() );
+        assertNotNull( getComponent().getOrigin() );
     }
 
     /**
@@ -576,9 +560,9 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testGetOrigin_Translate()
     {
         final Point expectedOrigin = new Point( 1010, 2020 );
-        component_.setOrigin( expectedOrigin );
+        getComponent().setOrigin( expectedOrigin );
 
-        final Point actualOrigin = component_.getOrigin();
+        final Point actualOrigin = getComponent().getOrigin();
 
         assertEquals( expectedOrigin, actualOrigin );
     }
@@ -594,14 +578,14 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testGetPath_AssociatedTable()
         throws Exception
     {
-        final ITable table = tableEnvironment_.createTable();
-        final IContainer container = TestComponents.createUniqueContainer( tableEnvironment_ );
+        final ITable table = getTableEnvironment().createTable();
+        final IContainer container = TestComponents.createUniqueContainer( getTableEnvironment() );
         table.getTabletop().addComponent( container );
-        final IComponent component1 = createComponent( tableEnvironment_ );
+        final IComponent component1 = createComponent( getTableEnvironment() );
         container.addComponent( component1 );
-        final IComponent component2 = createComponent( tableEnvironment_ );
+        final IComponent component2 = createComponent( getTableEnvironment() );
         container.addComponent( component2 );
-        final IComponent component3 = createComponent( tableEnvironment_ );
+        final IComponent component3 = createComponent( getTableEnvironment() );
         container.addComponent( component3 );
         final ComponentPath expectedTabletopPath = new ComponentPath( null, 0 );
         final ComponentPath expectedContainerPath = new ComponentPath( expectedTabletopPath, 0 );
@@ -629,8 +613,8 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testGetPath_NoAssociatedTable_NoParent()
     {
-        assertNull( component_.getTable() );
-        assertNull( component_.getPath() );
+        assertNull( getComponent().getTable() );
+        assertNull( getComponent().getPath() );
     }
 
     /**
@@ -640,11 +624,11 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testGetPath_NoAssociatedTable_WithParent()
     {
-        final IContainer container = TestComponents.createUniqueContainer( tableEnvironment_ );
-        container.addComponent( component_ );
+        final IContainer container = TestComponents.createUniqueContainer( getTableEnvironment() );
+        container.addComponent( getComponent() );
 
-        assertNull( component_.getTable() );
-        assertNull( component_.getPath() );
+        assertNull( getComponent().getTable() );
+        assertNull( getComponent().getPath() );
     }
 
     /**
@@ -655,12 +639,14 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testGetSize_MatchesCurrentOrientationSurface()
     {
         int length = 0;
-        for( final ComponentOrientation orientation : component_.getSupportedOrientations() )
+        for( final ComponentOrientation orientation : getComponent().getSupportedOrientations() )
         {
+            assert orientation != null;
+
             length += 10;
-            component_.setSurfaceDesign( orientation, TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign( length, length ) );
-            component_.setOrientation( orientation );
-            final Dimension size = component_.getSize();
+            getComponent().setSurfaceDesign( orientation, TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign( length, length ) );
+            getComponent().setOrientation( orientation );
+            final Dimension size = getComponent().getSize();
             assertEquals( length, size.height );
             assertEquals( length, size.width );
         }
@@ -672,12 +658,12 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testGetSize_ReturnValue_Copy()
     {
-        final Dimension size = component_.getSize();
+        final Dimension size = getComponent().getSize();
         final Dimension expectedSize = new Dimension( size );
 
         size.setSize( 101, 202 );
 
-        assertEquals( expectedSize, component_.getSize() );
+        assertEquals( expectedSize, getComponent().getSize() );
     }
 
     /**
@@ -687,7 +673,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testGetSize_ReturnValue_NonNull()
     {
-        assertNotNull( component_.getSize() );
+        assertNotNull( getComponent().getSize() );
     }
 
     /**
@@ -698,10 +684,10 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testGetSize_Translate()
     {
         final Point expectedLocation = new Point( 1010, 2020 );
-        final Dimension expectedSize = component_.getSize();
-        component_.setLocation( expectedLocation );
+        final Dimension expectedSize = getComponent().getSize();
+        getComponent().setLocation( expectedLocation );
 
-        final Dimension actualSize = component_.getSize();
+        final Dimension actualSize = getComponent().getSize();
 
         assertEquals( expectedSize, actualSize );
     }
@@ -713,7 +699,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testGetStrategy_ReturnValue_NonNull()
     {
-        assertNotNull( component_.getStrategy() );
+        assertNotNull( getComponent().getStrategy() );
     }
 
     /**
@@ -723,7 +709,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testGetSupportedOrientations_ReturnValue_Immutable()
     {
-        assertImmutableCollection( component_.getSupportedOrientations() );
+        assertImmutableCollection( getComponent().getSupportedOrientations() );
     }
 
     /**
@@ -733,7 +719,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testGetSupportedOrientations_ReturnValue_NonEmpty()
     {
-        assertFalse( component_.getSupportedOrientations().isEmpty() );
+        assertFalse( getComponent().getSupportedOrientations().isEmpty() );
     }
 
     /**
@@ -743,7 +729,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testGetSupportedOrientations_ReturnValue_NonNull()
     {
-        assertNotNull( component_.getSupportedOrientations() );
+        assertNotNull( getComponent().getSupportedOrientations() );
     }
 
     /**
@@ -753,17 +739,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test( expected = IllegalArgumentException.class )
     public void testGetSurfaceDesign_Orientation_Illegal()
     {
-        component_.getSurfaceDesign( createIllegalOrientation() );
-    }
-
-    /**
-     * Ensures the {@link IComponent#getSurfaceDesign} method throws an
-     * exception when passed a {@code null} orientation.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetSurfaceDesign_Orientation_Null()
-    {
-        component_.getSurfaceDesign( null );
+        getComponent().getSurfaceDesign( createIllegalOrientation() );
     }
 
     /**
@@ -773,9 +749,10 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testGetSurfaceDesign_ReturnValue_NonNull()
     {
-        for( final ComponentOrientation orientation : component_.getSupportedOrientations() )
+        for( final ComponentOrientation orientation : getComponent().getSupportedOrientations() )
         {
-            assertNotNull( component_.getSurfaceDesign( orientation ) );
+            assert orientation != null;
+            assertNotNull( getComponent().getSurfaceDesign( orientation ) );
         }
     }
 
@@ -786,12 +763,12 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testGetSurfaceDesigns_ReturnValue_Copy()
     {
-        final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = component_.getSurfaceDesigns();
+        final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = getComponent().getSurfaceDesigns();
         final Map<ComponentOrientation, ComponentSurfaceDesign> expectedSurfaceDesigns = new IdentityHashMap<>( surfaceDesigns );
 
         surfaceDesigns.put( createIllegalOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
 
-        assertEquals( expectedSurfaceDesigns, component_.getSurfaceDesigns() );
+        assertEquals( expectedSurfaceDesigns, getComponent().getSurfaceDesigns() );
     }
 
     /**
@@ -801,9 +778,9 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testGetSurfaceDesigns_ReturnValue_Keys_SupportedOrientations()
     {
-        final Set<ComponentOrientation> expectedValue = new HashSet<>( component_.getSupportedOrientations() );
+        final Set<ComponentOrientation> expectedValue = new HashSet<>( getComponent().getSupportedOrientations() );
 
-        final Set<ComponentOrientation> actualValue = component_.getSurfaceDesigns().keySet();
+        final Set<ComponentOrientation> actualValue = getComponent().getSurfaceDesigns().keySet();
 
         assertEquals( expectedValue, actualValue );
     }
@@ -815,7 +792,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testGetSurfaceDesigns_ReturnValue_NonNull()
     {
-        assertNotNull( component_.getSurfaceDesigns() );
+        assertNotNull( getComponent().getSurfaceDesigns() );
     }
 
     /**
@@ -825,7 +802,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testGetSurfaceDesigns_ReturnValue_Values_NonNull()
     {
-        for( final ComponentSurfaceDesign surfaceDesign : component_.getSurfaceDesigns().values() )
+        for( final ComponentSurfaceDesign surfaceDesign : getComponent().getSurfaceDesigns().values() )
         {
             assertNotNull( surfaceDesign );
         }
@@ -838,7 +815,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testGetTableEnvironment_ReturnValue_NonNull()
     {
-        assertNotNull( component_.getTableEnvironment() );
+        assertNotNull( getComponent().getTableEnvironment() );
     }
 
     /**
@@ -849,17 +826,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveComponentListener_Listener_Absent()
     {
-        component_.removeComponentListener( EasyMock.createMock( IComponentListener.class ) );
-    }
-
-    /**
-     * Ensures the {@link IComponent#removeComponentListener} method throws an
-     * exception when passed a {@code null} listener.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRemoveComponentListener_Listener_Null()
-    {
-        component_.removeComponentListener( null );
+        getComponent().removeComponentListener( nonNull( EasyMock.createMock( IComponentListener.class ) ) );
     }
 
     /**
@@ -870,13 +837,13 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testRemoveComponentListener_Listener_Present()
     {
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentOrientationChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener.componentOrientationChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         mocksControl_.replay();
-        component_.addComponentListener( listener );
-        fireComponentOrientationChanged( component_ );
+        getComponent().addComponentListener( listener );
+        fireComponentOrientationChanged( getComponent() );
 
-        component_.removeComponentListener( listener );
-        fireComponentOrientationChanged( component_ );
+        getComponent().removeComponentListener( listener );
+        fireComponentOrientationChanged( getComponent() );
 
         mocksControl_.verify();
     }
@@ -889,11 +856,11 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testSetLocation_FiresComponentBoundsChangedEvent()
     {
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         mocksControl_.replay();
-        component_.addComponentListener( listener );
+        getComponent().addComponentListener( listener );
 
-        component_.setLocation( new Point( 1010, 2020 ) );
+        getComponent().setLocation( new Point( 1010, 2020 ) );
 
         mocksControl_.verify();
     }
@@ -908,20 +875,10 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
         final Point expectedLocation = new Point( 1010, 2020 );
         final Point location = new Point( expectedLocation );
 
-        component_.setLocation( location );
+        getComponent().setLocation( location );
         location.setLocation( 1, 2 );
 
-        assertEquals( expectedLocation, component_.getLocation() );
-    }
-
-    /**
-     * Ensures the {@link IComponent#setLocation} method throws an exception
-     * when passed a {@code null} location.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetLocation_Location_Null()
-    {
-        component_.setLocation( null );
+        assertEquals( expectedLocation, getComponent().getLocation() );
     }
 
     /**
@@ -932,11 +889,11 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testSetOrientation_FiresComponentOrientationChangedEvent()
     {
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentOrientationChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener.componentOrientationChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         mocksControl_.replay();
-        component_.addComponentListener( listener );
+        getComponent().addComponentListener( listener );
 
-        component_.setOrientation( component_.getOrientation().inverse() );
+        getComponent().setOrientation( getComponent().getOrientation().inverse() );
 
         mocksControl_.verify();
     }
@@ -948,17 +905,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test( expected = IllegalArgumentException.class )
     public void testSetOrientation_Orientation_Illegal()
     {
-        component_.setOrientation( createIllegalOrientation() );
-    }
-
-    /**
-     * Ensures the {@link IComponent#setOrientation} method throws an exception
-     * when passed a {@code null} orientation.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetOrientation_Orientation_Null()
-    {
-        component_.setOrientation( null );
+        getComponent().setOrientation( createIllegalOrientation() );
     }
 
     /**
@@ -969,11 +916,11 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testSetOrigin_FiresComponentBoundsChangedEvent()
     {
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         mocksControl_.replay();
-        component_.addComponentListener( listener );
+        getComponent().addComponentListener( listener );
 
-        component_.setOrigin( new Point( 1010, 2020 ) );
+        getComponent().setOrigin( new Point( 1010, 2020 ) );
 
         mocksControl_.verify();
     }
@@ -988,20 +935,10 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
         final Point expectedOrigin = new Point( 1010, 2020 );
         final Point origin = new Point( expectedOrigin );
 
-        component_.setOrigin( origin );
+        getComponent().setOrigin( origin );
         origin.setLocation( 1, 2 );
 
-        assertEquals( expectedOrigin, component_.getOrigin() );
-    }
-
-    /**
-     * Ensures the {@link IComponent#setOrigin} method throws an exception when
-     * passed a {@code null} origin.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetOrigin_Origin_Null()
-    {
-        component_.setOrigin( null );
+        assertEquals( expectedOrigin, getComponent().getOrigin() );
     }
 
     /**
@@ -1012,11 +949,11 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testSetSurfaceDesign_FiresComponentSurfaceDesignChangedEvent()
     {
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentSurfaceDesignChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener.componentSurfaceDesignChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         mocksControl_.replay();
-        component_.addComponentListener( listener );
+        getComponent().addComponentListener( listener );
 
-        component_.setSurfaceDesign( component_.getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+        getComponent().setSurfaceDesign( getComponent().getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
 
         mocksControl_.verify();
     }
@@ -1028,27 +965,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test( expected = IllegalArgumentException.class )
     public void testSetSurfaceDesign_Orientation_Illegal()
     {
-        component_.setSurfaceDesign( createIllegalOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
-    }
-
-    /**
-     * Ensures the {@link IComponent#setSurfaceDesign} method throws an
-     * exception when passed a {@code null} orientation.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetSurfaceDesign_Orientation_Null()
-    {
-        component_.setSurfaceDesign( null, TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
-    }
-
-    /**
-     * Ensures the {@link IComponent#setSurfaceDesign} method throws an
-     * exception when passed a {@code null} surface design.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetSurfaceDesign_SurfaceDesign_Null()
-    {
-        component_.setSurfaceDesign( component_.getOrientation(), null );
+        getComponent().setSurfaceDesign( createIllegalOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
     }
 
     /**
@@ -1059,19 +976,19 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testSetSurfaceDesigns_FiresComponentSurfaceDesignChangedEvent()
     {
-        final Collection<ComponentOrientation> orientations = component_.getSupportedOrientations();
+        final Collection<ComponentOrientation> orientations = getComponent().getSupportedOrientations();
         final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<>( orientations.size() );
         for( final ComponentOrientation orientation : orientations )
         {
             surfaceDesigns.put( orientation, TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         }
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentSurfaceDesignChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener.componentSurfaceDesignChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         EasyMock.expectLastCall().times( orientations.size() );
         mocksControl_.replay();
-        component_.addComponentListener( listener );
+        getComponent().addComponentListener( listener );
 
-        component_.setSurfaceDesigns( surfaceDesigns );
+        getComponent().setSurfaceDesigns( surfaceDesigns );
 
         mocksControl_.verify();
     }
@@ -1083,7 +1000,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testSetSurfaceDesigns_SurfaceDesigns_Empty()
     {
-        component_.setSurfaceDesigns( Collections.<ComponentOrientation, ComponentSurfaceDesign>emptyMap() );
+        getComponent().setSurfaceDesigns( nonNull( Collections.<ComponentOrientation, ComponentSurfaceDesign>emptyMap() ) );
     }
 
     /**
@@ -1094,7 +1011,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test( expected = IllegalArgumentException.class )
     public void testSetSurfaceDesigns_SurfaceDesigns_Illegal_ContainsNullSurfaceDesign()
     {
-        component_.setSurfaceDesigns( Collections.singletonMap( component_.getOrientation(), (ComponentSurfaceDesign)null ) );
+        getComponent().setSurfaceDesigns( nonNull( Collections.singletonMap( getComponent().getOrientation(), (ComponentSurfaceDesign)null ) ) );
     }
 
     /**
@@ -1105,16 +1022,6 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test( expected = IllegalArgumentException.class )
     public void testSetSurfaceDesigns_SurfaceDesigns_Illegal_ContainsUnsupportedOrientation()
     {
-        component_.setSurfaceDesigns( Collections.singletonMap( createIllegalOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() ) );
-    }
-
-    /**
-     * Ensures the {@link IComponent#setSurfaceDesigns} method throws an
-     * exception when passed a {@code null} surface designs collection.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetSurfaceDesigns_SurfaceDesigns_Null()
-    {
-        component_.setSurfaceDesigns( null );
+        getComponent().setSurfaceDesigns( nonNull( Collections.singletonMap( createIllegalOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() ) ) );
     }
 }

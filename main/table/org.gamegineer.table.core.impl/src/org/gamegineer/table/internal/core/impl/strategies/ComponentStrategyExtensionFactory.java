@@ -1,6 +1,6 @@
 /*
  * ComponentStrategyExtensionFactory.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.core.impl.strategies;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +31,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IExecutableExtensionFactory;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.IComponentStrategy;
 import org.gamegineer.table.internal.core.impl.BundleConstants;
@@ -56,6 +58,7 @@ public final class ComponentStrategyExtensionFactory
     private static final Map<ComponentStrategyId, IComponentStrategy> COMPONENT_STRATEGIES;
 
     /** The identifier of the component strategy to create. */
+    @Nullable
     private ComponentStrategyId componentStrategyId_;
 
 
@@ -70,7 +73,7 @@ public final class ComponentStrategyExtensionFactory
     {
         final Map<ComponentStrategyId, IComponentStrategy> componentStrategies = new HashMap<>();
         componentStrategies.put( InternalComponentStrategies.TABLETOP.getId(), InternalComponentStrategies.TABLETOP );
-        COMPONENT_STRATEGIES = Collections.unmodifiableMap( componentStrategies );
+        COMPONENT_STRATEGIES = nonNull( Collections.unmodifiableMap( componentStrategies ) );
     }
 
     /**
@@ -96,6 +99,7 @@ public final class ComponentStrategyExtensionFactory
         final IComponentStrategy componentStrategy = COMPONENT_STRATEGIES.get( componentStrategyId_ );
         if( componentStrategy == null )
         {
+            assert componentStrategyId_ != null;
             throw new CoreException( new Status( Status.ERROR, BundleConstants.SYMBOLIC_NAME, NonNlsMessages.ComponentStrategyExtensionFactory_create_unknownId( componentStrategyId_ ) ) );
         }
 
@@ -107,13 +111,18 @@ public final class ComponentStrategyExtensionFactory
      */
     @Override
     public void setInitializationData(
+        @Nullable
         final IConfigurationElement config,
+        @Nullable
         @SuppressWarnings( "unused" )
         final String propertyName,
+        @Nullable
         @SuppressWarnings( "unused" )
         final Object data )
         throws CoreException
     {
+        assert config != null;
+
         final String idString = config.getAttribute( ATTR_ID );
         if( idString == null )
         {

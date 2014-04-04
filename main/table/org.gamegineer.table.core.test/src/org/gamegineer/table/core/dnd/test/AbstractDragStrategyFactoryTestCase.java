@@ -1,6 +1,6 @@
 /*
  * AbstractDragStrategyFactoryTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,9 +22,8 @@
 package org.gamegineer.table.core.dnd.test;
 
 import static org.junit.Assert.assertNotNull;
-import org.easymock.EasyMock;
-import org.gamegineer.table.core.IComponent;
-import org.gamegineer.table.core.dnd.IDragStrategy;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.dnd.IDragStrategyFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,6 +32,7 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IDragStrategyFactory} interface.
  */
+@NonNullByDefault( false )
 public abstract class AbstractDragStrategyFactoryTestCase
 {
     // ======================================================================
@@ -68,7 +68,7 @@ public abstract class AbstractDragStrategyFactoryTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract IDragStrategyFactory createDragStrategyFactory()
         throws Exception;
 
@@ -87,22 +87,11 @@ public abstract class AbstractDragStrategyFactoryTestCase
     }
 
     /**
-     * Ensures the {@link IDragStrategyFactory#createDragStrategy} method throws
-     * an exception when passed a {@code null} component.
+     * Placeholder for future interface tests.
      */
-    @Test( expected = NullPointerException.class )
-    public void testCreateDragStrategy_Component_Null()
+    @Test
+    public void testDummy()
     {
-        dragStrategyFactory_.createDragStrategy( null, EasyMock.createMock( IDragStrategy.class ) );
-    }
-
-    /**
-     * Ensures the {@link IDragStrategyFactory#createDragStrategy} method throws
-     * an exception when passed a {@code null} successor drag strategy.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateDragStrategy_SuccessorDragStrategy_Null()
-    {
-        dragStrategyFactory_.createDragStrategy( EasyMock.createMock( IComponent.class ), null );
+        // do nothing
     }
 }

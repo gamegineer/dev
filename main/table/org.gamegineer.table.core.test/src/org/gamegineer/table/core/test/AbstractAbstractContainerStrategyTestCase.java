@@ -1,6 +1,6 @@
 /*
  * AbstractAbstractContainerStrategyTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -59,7 +59,6 @@ public abstract class AbstractAbstractContainerStrategyTestCase<ContainerStrateg
      * @return The container strategy under test in the fixture; never
      *         {@code null}.
      */
-    /* @NonNull */
     protected final ContainerStrategyType getContainerStrategy()
     {
         return getComponentStrategy();
@@ -74,13 +73,8 @@ public abstract class AbstractAbstractContainerStrategyTestCase<ContainerStrateg
      * 
      * @return The identifier of the default container layout for the specified
      *         container strategy; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code containerStrategy} is {@code null}.
      */
-    /* @NonNull */
     protected abstract ContainerLayoutId getDefaultLayoutId(
-        /* @NonNull */
         ContainerStrategyType containerStrategy );
 
     /**

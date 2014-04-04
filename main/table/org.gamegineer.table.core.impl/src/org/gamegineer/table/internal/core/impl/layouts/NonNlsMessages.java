@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.core.impl.layouts;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.core.ContainerLayoutId;
@@ -39,15 +40,15 @@ final class NonNlsMessages
     // --- AbstractContainerLayout ------------------------------------------
 
     /** The component index is negative. */
-    public static String AbstractContainerLayout_getComponentOffsetAt_index_negative;
+    public static String AbstractContainerLayout_getComponentOffsetAt_index_negative = ""; //$NON-NLS-1$
 
     // --- ContainerLayoutExtensionFactory ----------------------------------
 
     /** The container layout identifier is unknown. */
-    public static String ContainerLayoutExtensionFactory_create_unknownId;
+    public static String ContainerLayoutExtensionFactory_create_unknownId = ""; //$NON-NLS-1$
 
     /** The container layout identifier is missing. */
-    public static String ContainerLayoutExtensionFactory_setInitializationData_missingId;
+    public static String ContainerLayoutExtensionFactory_setInitializationData_missingId = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -86,11 +87,9 @@ final class NonNlsMessages
      * @return The formatted message indicating the container layout identifier
      *         is unknown; never {@code null}.
      */
-    /* @NonNull */
     static String ContainerLayoutExtensionFactory_create_unknownId(
-        /* @NonNull */
         final ContainerLayoutId containerLayoutId )
     {
-        return bind( ContainerLayoutExtensionFactory_create_unknownId, containerLayoutId );
+        return nonNull( bind( ContainerLayoutExtensionFactory_create_unknownId, containerLayoutId ) );
     }
 }

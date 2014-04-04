@@ -1,6 +1,6 @@
 /*
  * ComponentSurfaceDesignRegistryExtensionPointAdapterTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,6 +26,7 @@ import static org.junit.Assert.assertNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.registry.test.AbstractAbstractRegistryExtensionPointAdapterTestCase;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
@@ -59,7 +60,9 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapterTest
      */
     @Override
     protected void assertObjectEquals(
+        @Nullable
         final ComponentSurfaceDesign expected,
+        @Nullable
         final ComponentSurfaceDesign actual )
     {
         if( expected == null )

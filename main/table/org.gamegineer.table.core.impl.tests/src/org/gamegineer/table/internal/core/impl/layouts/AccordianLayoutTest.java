@@ -1,6 +1,6 @@
 /*
  * AccordianLayoutTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -60,16 +60,6 @@ public final class AccordianLayoutTest
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Ensures the {@link AccordianLayout#AccordianLayout} constructor throws an
-     * exception when passed a {@code null} identifier.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_Id_Null()
-    {
-        new AccordianLayout( null, 1, 1 );
-    }
 
     /**
      * Ensures the {@link AccordianLayout#layout} method correctly lays out the

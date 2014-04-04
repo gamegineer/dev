@@ -1,6 +1,6 @@
 /*
  * ContainerAsContainerTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -110,14 +110,9 @@ public final class ContainerAsContainerTest
      *        {@code null}.
      */
     private static void fireComponentEvent(
-        /* @NonNull */
         final Container container,
-        /* @NonNull */
         final String methodName )
     {
-        assert container != null;
-        assert methodName != null;
-
         try
         {
             final Method method = Component.class.getDeclaredMethod( methodName );
@@ -180,14 +175,9 @@ public final class ContainerAsContainerTest
      *        {@code null}.
      */
     private static void fireContainerContentChangedEvent(
-        /* @NonNull */
         final Container container,
-        /* @NonNull */
         final String methodName )
     {
-        assert container != null;
-        assert methodName != null;
-
         try
         {
             final Method method = Container.class.getDeclaredMethod( methodName, Component.class, int.class );
@@ -220,14 +210,9 @@ public final class ContainerAsContainerTest
      *        {@code null}.
      */
     private static void fireContainerEvent(
-        /* @NonNull */
         final Container container,
-        /* @NonNull */
         final String methodName )
     {
-        assert container != null;
-        assert methodName != null;
-
         try
         {
             final Method method = Container.class.getDeclaredMethod( methodName );

@@ -1,6 +1,6 @@
 /*
  * AbstractTableEnvironmentTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,8 @@ package org.gamegineer.table.core.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentStrategy;
 import org.gamegineer.table.core.IContainer;
@@ -37,6 +39,7 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link ITableEnvironment} interface.
  */
+@NonNullByDefault( false )
 public abstract class AbstractTableEnvironmentTestCase
 {
     // ======================================================================
@@ -74,12 +77,10 @@ public abstract class AbstractTableEnvironmentTestCase
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
-     * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract ITableEnvironment createTableEnvironment(
-        /* @NonNull */
+        @NonNull
         final ITableEnvironmentContext context )
         throws Exception;
 
@@ -95,20 +96,6 @@ public abstract class AbstractTableEnvironmentTestCase
     {
         tableEnvironment_ = createTableEnvironment( new SingleThreadedTableEnvironmentContext() );
         assertNotNull( tableEnvironment_ );
-    }
-
-    /**
-     * Ensures the {@link ITableEnvironment#createComponent(Object)} method
-     * throws an exception when passed a {@code null} memento.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateComponentFromMemento_Memento_Null()
-        throws Exception
-    {
-        tableEnvironment_.createComponent( (Object)null );
     }
 
     /**
@@ -135,16 +122,6 @@ public abstract class AbstractTableEnvironmentTestCase
     }
 
     /**
-     * Ensures the {@link ITableEnvironment#createComponent(IComponentStrategy)}
-     * method throws an exception when passed a {@code null} strategy.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateComponentFromStrategy_Strategy_Null()
-    {
-        tableEnvironment_.createComponent( (IComponentStrategy)null );
-    }
-
-    /**
      * Ensures the {@link ITableEnvironment#createContainer} method returns a
      * container that is associated with the table environment.
      */
@@ -165,16 +142,6 @@ public abstract class AbstractTableEnvironmentTestCase
     public void testCreateContainer_ReturnValue_NonNull()
     {
         assertNotNull( tableEnvironment_.createContainer( TestComponentStrategies.createUniqueContainerStrategy() ) );
-    }
-
-    /**
-     * Ensures the {@link ITableEnvironment#createContainer} method throws an
-     * exception when passed a {@code null} strategy.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateContainer_Strategy_Null()
-    {
-        tableEnvironment_.createContainer( null );
     }
 
     /**

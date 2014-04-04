@@ -1,6 +1,6 @@
 /*
  * ContainerContentChangedEventTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,14 +21,17 @@
 
 package org.gamegineer.table.core;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertNotNull;
 import org.easymock.EasyMock;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the {@link ContainerContentChangedEvent} class.
  */
+@NonNullByDefault( false )
 public final class ContainerContentChangedEventTest
 {
     // ======================================================================
@@ -66,18 +69,7 @@ public final class ContainerContentChangedEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new ContainerContentChangedEvent( EasyMock.createMock( IContainer.class ), new ComponentPath( null, 0 ), EasyMock.createMock( IComponent.class ), 0 );
-    }
-
-    /**
-     * Ensures the
-     * {@link ContainerContentChangedEvent#ContainerContentChangedEvent}
-     * constructor throws an exception when passed a {@code null} component.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_Component_Null()
-    {
-        new ContainerContentChangedEvent( EasyMock.createMock( IContainer.class ), new ComponentPath( null, 0 ), null, 0 );
+        event_ = new ContainerContentChangedEvent( nonNull( EasyMock.createMock( IContainer.class ) ), new ComponentPath( null, 0 ), nonNull( EasyMock.createMock( IComponent.class ) ), 0 );
     }
 
     /**
@@ -89,18 +81,7 @@ public final class ContainerContentChangedEventTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_ComponentIndex_Illegal_Negative()
     {
-        new ContainerContentChangedEvent( EasyMock.createMock( IContainer.class ), new ComponentPath( null, 0 ), EasyMock.createMock( IComponent.class ), -1 );
-    }
-
-    /**
-     * Ensures the
-     * {@link ContainerContentChangedEvent#ContainerContentChangedEvent}
-     * constructor throws an exception when passed a {@code null} source.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testConstructor_Source_Null()
-    {
-        new ContainerContentChangedEvent( null, new ComponentPath( null, 0 ), EasyMock.createMock( IComponent.class ), 0 );
+        new ContainerContentChangedEvent( nonNull( EasyMock.createMock( IContainer.class ) ), new ComponentPath( null, 0 ), nonNull( EasyMock.createMock( IComponent.class ) ), -1 );
     }
 
     /**

@@ -1,6 +1,6 @@
 /*
  * IDragStrategy.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -45,12 +45,8 @@ public interface IDragStrategy
      * 
      * @return {@code true} if the components being dragged on the specified
      *         container; otherwise {@code false}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code dropContainer} is {@code null}.
      */
     public boolean canDrop(
-        /* @NonNull */
         IContainer dropContainer );
 
     /**
@@ -60,6 +56,5 @@ public interface IDragStrategy
      *         An empty collection indicates no drag-and-drop operation should
      *         occur.
      */
-    /* @NonNull */
     public List<IComponent> getDragComponents();
 }

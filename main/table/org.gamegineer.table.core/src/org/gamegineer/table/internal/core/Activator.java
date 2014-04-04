@@ -1,6 +1,6 @@
 /*
  * Activator.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,11 +21,11 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.core.IComponentStrategyRegistry;
 import org.gamegineer.table.core.IComponentSurfaceDesignRegistry;
 import org.gamegineer.table.core.IContainerLayoutRegistry;
@@ -49,22 +49,27 @@ public final class Activator
 
     /** The bundle context. */
     @GuardedBy( "lock_" )
+    @Nullable
     private BundleContext bundleContext_;
 
     /** The component strategy registry service tracker. */
     @GuardedBy( "lock_" )
+    @Nullable
     private ServiceTracker<IComponentStrategyRegistry, IComponentStrategyRegistry> componentStrategyRegistryTracker_;
 
     /** The component surface design registry service tracker. */
     @GuardedBy( "lock_" )
+    @Nullable
     private ServiceTracker<IComponentSurfaceDesignRegistry, IComponentSurfaceDesignRegistry> componentSurfaceDesignRegistryTracker_;
 
     /** The container layout registry service tracker. */
     @GuardedBy( "lock_" )
+    @Nullable
     private ServiceTracker<IContainerLayoutRegistry, IContainerLayoutRegistry> containerLayoutRegistryTracker_;
 
     /** The executor service tracker. */
     @GuardedBy( "lock_" )
+    @Nullable
     private ServiceTracker<ExecutorService, ExecutorService> executorServiceTracker_;
 
     /** The instance lock. */
@@ -98,7 +103,6 @@ public final class Activator
      * 
      * @return The bundle context; never {@code null}.
      */
-    /* @NonNull */
     public BundleContext getBundleContext()
     {
         synchronized( lock_ )
@@ -114,7 +118,7 @@ public final class Activator
      * @return The component strategy registry service or {@code null} if no
      *         component strategy registry service is available.
      */
-    /* @Nullable */
+    @Nullable
     public IComponentStrategyRegistry getComponentStrategyRegistry()
     {
         synchronized( lock_ )
@@ -127,6 +131,7 @@ public final class Activator
                 componentStrategyRegistryTracker_.open();
             }
 
+            assert componentStrategyRegistryTracker_ != null;
             return componentStrategyRegistryTracker_.getService();
         }
     }
@@ -137,7 +142,7 @@ public final class Activator
      * @return The component surface design registry service or {@code null} if
      *         no component surface design registry service is available.
      */
-    /* @Nullable */
+    @Nullable
     public IComponentSurfaceDesignRegistry getComponentSurfaceDesignRegistry()
     {
         synchronized( lock_ )
@@ -150,6 +155,7 @@ public final class Activator
                 componentSurfaceDesignRegistryTracker_.open();
             }
 
+            assert componentSurfaceDesignRegistryTracker_ != null;
             return componentSurfaceDesignRegistryTracker_.getService();
         }
     }
@@ -160,7 +166,7 @@ public final class Activator
      * @return The container layout registry service or {@code null} if no
      *         container layout registry service is available.
      */
-    /* @Nullable */
+    @Nullable
     public IContainerLayoutRegistry getContainerLayoutRegistry()
     {
         synchronized( lock_ )
@@ -173,6 +179,7 @@ public final class Activator
                 containerLayoutRegistryTracker_.open();
             }
 
+            assert containerLayoutRegistryTracker_ != null;
             return containerLayoutRegistryTracker_.getService();
         }
     }
@@ -182,7 +189,6 @@ public final class Activator
      * 
      * @return The default instance of the bundle activator; never {@code null}.
      */
-    /* @NonNull */
     public static Activator getDefault()
     {
         final Activator instance = instance_.get();
@@ -195,7 +201,6 @@ public final class Activator
      * 
      * @return The executor service; never {@code null}.
      */
-    /* @NonNull */
     public ExecutorService getExecutorService()
     {
         final ExecutorService executorService;
@@ -209,6 +214,7 @@ public final class Activator
                 executorServiceTracker_.open();
             }
 
+            assert executorServiceTracker_ != null;
             executorService = executorServiceTracker_.getService();
         }
 
@@ -225,9 +231,13 @@ public final class Activator
      */
     @Override
     public void start(
+        @Nullable
         final BundleContext bundleContext )
     {
-        assertArgumentNotNull( bundleContext, "bundleContext" ); //$NON-NLS-1$
+        if( bundleContext == null )
+        {
+            throw new NullPointerException( "bundleContext" ); //$NON-NLS-1$
+        }
 
         synchronized( lock_ )
         {
@@ -244,9 +254,13 @@ public final class Activator
      */
     @Override
     public void stop(
+        @Nullable
         final BundleContext bundleContext )
     {
-        assertArgumentNotNull( bundleContext, "bundleContext" ); //$NON-NLS-1$
+        if( bundleContext == null )
+        {
+            throw new NullPointerException( "bundleContext" ); //$NON-NLS-1$
+        }
 
         final boolean wasInstanceNonNull = instance_.compareAndSet( this, null );
         assert wasInstanceNonNull;

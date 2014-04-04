@@ -1,6 +1,6 @@
 /*
  * IComponentParent.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.core.impl;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.core.ComponentPath;
 
 /**
@@ -42,9 +43,8 @@ interface IComponentParent
      *         table or {@code null} if this component parent is not associated
      *         with a table.
      */
-    /* @NonNull */
+    @Nullable
     ComponentPath getChildPath(
-        /* @NonNull */
         Component component );
 
     /**
@@ -53,6 +53,6 @@ interface IComponentParent
      * @return The table associated with the component parent or {@code null} if
      *         this component parent is not associated with a table.
      */
-    /* @Nullable */
+    @Nullable
     Table getTable();
 }

@@ -1,6 +1,6 @@
 /*
  * DefaultDragStrategy.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.core.dnd;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collections;
 import java.util.List;
 import net.jcip.annotations.Immutable;
@@ -54,16 +54,10 @@ public final class DefaultDragStrategy
      * @param component
      *        The component from which the drag-and-drop operation will begin;
      *        must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code component} is {@code null}.
      */
     public DefaultDragStrategy(
-        /* @NonNull */
         final IComponent component )
     {
-        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
-
         component_ = component;
     }
 
@@ -77,10 +71,9 @@ public final class DefaultDragStrategy
      */
     @Override
     public boolean canDrop(
+        @SuppressWarnings( "unused" )
         final IContainer dropContainer )
     {
-        assertArgumentNotNull( dropContainer, "dropContainer" ); //$NON-NLS-1$
-
         return true;
     }
 
@@ -90,6 +83,6 @@ public final class DefaultDragStrategy
     @Override
     public List<IComponent> getDragComponents()
     {
-        return Collections.singletonList( component_ );
+        return nonNull( Collections.singletonList( component_ ) );
     }
 }

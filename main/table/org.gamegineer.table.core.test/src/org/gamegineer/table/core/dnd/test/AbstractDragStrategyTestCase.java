@@ -1,6 +1,6 @@
 /*
  * AbstractDragStrategyTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,8 @@
 package org.gamegineer.table.core.dnd.test;
 
 import static org.junit.Assert.assertNotNull;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.dnd.IDragStrategy;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,6 +32,7 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IDragStrategy} interface.
  */
+@NonNullByDefault( false )
 public abstract class AbstractDragStrategyTestCase
 {
     // ======================================================================
@@ -65,7 +68,7 @@ public abstract class AbstractDragStrategyTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract IDragStrategy createDragStrategy()
         throws Exception;
 
@@ -81,16 +84,6 @@ public abstract class AbstractDragStrategyTestCase
     {
         dragStrategy_ = createDragStrategy();
         assertNotNull( dragStrategy_ );
-    }
-
-    /**
-     * Ensures the {@link IDragStrategy#canDrop} method throws an exception when
-     * passed a {@code null} drop container.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCanDrop_DropContainer_Null()
-    {
-        dragStrategy_.canDrop( null );
     }
 
     /**

@@ -1,6 +1,6 @@
 /*
  * ContainerLayoutId.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,8 @@
 
 package org.gamegineer.table.core;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Identifies a container layout.
@@ -49,11 +49,8 @@ public final class ContainerLayoutId
      *        The underlying identifier; must not be {@code null}.
      */
     private ContainerLayoutId(
-        /* @NonNull */
         final String id )
     {
-        assert id != null;
-
         id_ = id;
     }
 
@@ -67,6 +64,7 @@ public final class ContainerLayoutId
      */
     @Override
     public boolean equals(
+        @Nullable
         final Object obj )
     {
         if( this == obj )
@@ -97,17 +95,10 @@ public final class ContainerLayoutId
      * 
      * @return A new instance of the {@code ContainerLayoutId} class; never
      *         {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
      */
-    /* @NonNull */
     public static ContainerLayoutId fromString(
-        /* @NonNull */
         final String id )
     {
-        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
-
         return new ContainerLayoutId( id );
     }
 
@@ -131,7 +122,6 @@ public final class ContainerLayoutId
      * 
      * @see java.lang.Object#toString()
      */
-    /* @NonNull */
     @Override
     public String toString()
     {

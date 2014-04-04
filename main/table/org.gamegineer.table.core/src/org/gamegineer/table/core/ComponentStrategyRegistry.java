@@ -1,6 +1,6 @@
 /*
  * ComponentStrategyRegistry.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.core;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.core.Activator;
 
@@ -57,19 +56,13 @@ public final class ComponentStrategyRegistry
      * @return The component strategy with the specified identifier; never
      *         {@code null}.
      * 
-     * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
      * @throws org.gamegineer.table.core.NoSuchComponentStrategyException
      *         If {@code id} is not registered.
      */
-    /* @NonNull */
     public static IComponentStrategy getComponentStrategy(
-        /* @NonNull */
         final ComponentStrategyId id )
         throws NoSuchComponentStrategyException
     {
-        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
-
         final IComponentStrategyRegistry componentStrategyRegistry = Activator.getDefault().getComponentStrategyRegistry();
         if( componentStrategyRegistry == null )
         {
@@ -94,14 +87,10 @@ public final class ComponentStrategyRegistry
      * @return The container strategy with the specified identifier; never
      *         {@code null}.
      * 
-     * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
      * @throws org.gamegineer.table.core.NoSuchComponentStrategyException
      *         If {@code id} is not registered or is not a container strategy.
      */
-    /* @NonNull */
     public static IContainerStrategy getContainerStrategy(
-        /* @NonNull */
         final ComponentStrategyId id )
         throws NoSuchComponentStrategyException
     {

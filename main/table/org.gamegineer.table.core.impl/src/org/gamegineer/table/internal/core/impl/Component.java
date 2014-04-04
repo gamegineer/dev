@@ -1,6 +1,6 @@
 /*
  * Component.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.core.impl;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -36,6 +36,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ComponentOrientation;
@@ -93,6 +94,7 @@ class Component
 
     /** The component parent or {@code null} if this component has no parent. */
     @GuardedBy( "getLock()" )
+    @Nullable
     private IComponentParent parent_;
 
     /** The component strategy. */
@@ -123,14 +125,9 @@ class Component
      *        The component strategy; must not be {@code null}.
      */
     Component(
-        /* @NonNull */
         final TableEnvironment tableEnvironment,
-        /* @NonNull */
         final IComponentStrategy strategy )
     {
-        assert tableEnvironment != null;
-        assert strategy != null;
-
         componentListeners_ = new CopyOnWriteArrayList<>();
         location_ = strategy.getDefaultLocation();
         orientation_ = strategy.getDefaultOrientation();
@@ -153,8 +150,6 @@ class Component
     public final void addComponentListener(
         final IComponentListener listener )
     {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-
         getLock().lock();
         try
         {
@@ -172,7 +167,6 @@ class Component
      * @return A new component event; never {@code null}.
      */
     @GuardedBy( "getLock()" )
-    /* @NonNull */
     private ComponentEvent createComponentEvent()
     {
         assert getLock().isHeldByCurrentThread();
@@ -198,7 +192,7 @@ class Component
             getLock().unlock();
         }
 
-        return Collections.unmodifiableMap( memento );
+        return nonNull( Collections.unmodifiableMap( memento ) );
     }
 
     /**
@@ -299,10 +293,8 @@ class Component
      */
     @GuardedBy( "getLock()" )
     final void fireEventNotification(
-        /* @NonNull */
         final Runnable eventNotification )
     {
-        assert eventNotification != null;
         assert getLock().isHeldByCurrentThread();
 
         tableEnvironment_.fireEventNotification( eventNotification );
@@ -333,6 +325,7 @@ class Component
     /*
      * @see org.gamegineer.table.core.IComponent#getContainer()
      */
+    @Nullable
     @Override
     public final Container getContainer()
     {
@@ -353,7 +346,7 @@ class Component
     @Override
     public final Point getLocation()
     {
-        return getBounds().getLocation();
+        return nonNull( getBounds().getLocation() );
     }
 
     /**
@@ -361,7 +354,6 @@ class Component
      * 
      * @return The table environment lock; never {@code null}.
      */
-    /* @NonNull */
     final ITableEnvironmentLock getLock()
     {
         return tableEnvironment_.getLock();
@@ -404,6 +396,7 @@ class Component
     /*
      * @see org.gamegineer.table.core.IComponent#getPath()
      */
+    @Nullable
     @Override
     public final ComponentPath getPath()
     {
@@ -424,7 +417,7 @@ class Component
     @Override
     public final Dimension getSize()
     {
-        return getBounds().getSize();
+        return nonNull( getBounds().getSize() );
     }
 
     /*
@@ -452,13 +445,14 @@ class Component
     public final ComponentSurfaceDesign getSurfaceDesign(
         final ComponentOrientation orientation )
     {
-        assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
         assertArgumentLegal( isSupportedOrientation( orientation ), "orientation", NonNlsMessages.Component_orientation_illegal ); //$NON-NLS-1$
 
         getLock().lock();
         try
         {
-            return surfaceDesigns_.get( orientation );
+            final ComponentSurfaceDesign surfaceDesign = surfaceDesigns_.get( orientation );
+            assert surfaceDesign != null;
+            return surfaceDesign;
         }
         finally
         {
@@ -506,6 +500,7 @@ class Component
     /*
      * @see org.gamegineer.table.core.IComponent#getTable()
      */
+    @Nullable
     @Override
     public final Table getTable()
     {
@@ -549,13 +544,9 @@ class Component
      */
     @GuardedBy( "getLock()" )
     boolean hitTest(
-        /* @NonNull */
         final Point location,
-        /* @NonNull */
         final List<IComponent> components )
     {
-        assert location != null;
-        assert components != null;
         assert getLock().isHeldByCurrentThread();
 
         if( getBounds().contains( location ) )
@@ -598,11 +589,8 @@ class Component
      *         otherwise {@code false}.
      */
     private boolean isSupportedOrientation(
-        /* @NonNull */
         final ComponentOrientation orientation )
     {
-        assert orientation != null;
-
         return getSupportedOrientations().contains( orientation );
     }
 
@@ -625,11 +613,9 @@ class Component
     @GuardedBy( "getLock()" )
     @SuppressWarnings( "unchecked" )
     void readMemento(
-        /* @NonNull */
         final Object memento )
         throws MementoException
     {
-        assert memento != null;
         assert getLock().isHeldByCurrentThread();
 
         setLocation( MementoUtils.getAttribute( memento, LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class ) );
@@ -645,8 +631,6 @@ class Component
     public final void removeComponentListener(
         final IComponentListener listener )
     {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-
         getLock().lock();
         try
         {
@@ -665,8 +649,6 @@ class Component
     public final void setLocation(
         final Point location )
     {
-        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
-
         getLock().lock();
         try
         {
@@ -686,8 +668,6 @@ class Component
         final Object memento )
         throws MementoException
     {
-        assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
-
         getLock().lock();
         try
         {
@@ -706,7 +686,6 @@ class Component
     public final void setOrientation(
         final ComponentOrientation orientation )
     {
-        assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
         assertArgumentLegal( isSupportedOrientation( orientation ), "orientation", NonNlsMessages.Component_orientation_illegal ); //$NON-NLS-1$
 
         getLock().lock();
@@ -729,8 +708,6 @@ class Component
     public final void setOrigin(
         final Point origin )
     {
-        assertArgumentNotNull( origin, "origin" ); //$NON-NLS-1$
-
         getLock().lock();
         try
         {
@@ -751,7 +728,7 @@ class Component
      */
     @GuardedBy( "getLock()" )
     final void setParent(
-        /* @Nullable */
+        @Nullable
         final IComponentParent parent )
     {
         assert getLock().isHeldByCurrentThread();
@@ -767,9 +744,7 @@ class Component
         final ComponentOrientation orientation,
         final ComponentSurfaceDesign surfaceDesign )
     {
-        assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
         assertArgumentLegal( isSupportedOrientation( orientation ), "orientation", NonNlsMessages.Component_orientation_illegal ); //$NON-NLS-1$
-        assertArgumentNotNull( surfaceDesign, "surfaceDesign" ); //$NON-NLS-1$
 
         getLock().lock();
         try
@@ -797,18 +772,17 @@ class Component
      */
     @GuardedBy( "getLock()" )
     private void setSurfaceDesignIds(
-        /* @NonNull */
         final Map<ComponentOrientation, ComponentSurfaceDesignId> surfaceDesignIds )
         throws MementoException
     {
-        assert surfaceDesignIds != null;
-
         try
         {
             final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<>( surfaceDesignIds.size() );
             for( final Map.Entry<ComponentOrientation, ComponentSurfaceDesignId> entry : surfaceDesignIds.entrySet() )
             {
-                surfaceDesigns.put( entry.getKey(), ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( entry.getValue() ) );
+                final ComponentSurfaceDesignId surfaceDesignId = entry.getValue();
+                assert surfaceDesignId != null;
+                surfaceDesigns.put( entry.getKey(), ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( surfaceDesignId ) );
             }
 
             setSurfaceDesigns( surfaceDesigns );
@@ -826,12 +800,14 @@ class Component
     public final void setSurfaceDesigns(
         final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns )
     {
-        assertArgumentNotNull( surfaceDesigns, "surfaceDesigns" ); //$NON-NLS-1$
-
         for( final Map.Entry<ComponentOrientation, ComponentSurfaceDesign> entry : surfaceDesigns.entrySet() )
         {
-            assertArgumentLegal( entry.getValue() != null, "surfaceDesigns", NonNlsMessages.Component_setSurfaceDesigns_surfaceDesigns_containsNullSurfaceDesign ); //$NON-NLS-1$
-            setSurfaceDesign( entry.getKey(), entry.getValue() );
+            final ComponentOrientation orientation = entry.getKey();
+            assert orientation != null;
+            final ComponentSurfaceDesign surfaceDesign = entry.getValue();
+            assertArgumentLegal( surfaceDesign != null, "surfaceDesigns", NonNlsMessages.Component_setSurfaceDesigns_surfaceDesigns_containsNullSurfaceDesign ); //$NON-NLS-1$
+            assert surfaceDesign != null;
+            setSurfaceDesign( orientation, surfaceDesign );
         }
     }
 
@@ -849,10 +825,8 @@ class Component
      */
     @GuardedBy( "getLock()" )
     void translate(
-        /* @NonNull */
         final Dimension offset )
     {
-        assert offset != null;
         assert getLock().isHeldByCurrentThread();
 
         location_.translate( offset.width, offset.height );
@@ -875,10 +849,8 @@ class Component
      */
     @GuardedBy( "getLock()" )
     void writeMemento(
-        /* @NonNull */
         final Map<String, Object> memento )
     {
-        assert memento != null;
         assert getLock().isHeldByCurrentThread();
 
         memento.put( LOCATION_MEMENTO_ATTRIBUTE_NAME, new Point( location_ ) );

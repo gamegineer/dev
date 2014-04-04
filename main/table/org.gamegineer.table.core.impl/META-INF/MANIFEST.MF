@@ -9,6 +9,7 @@ Bundle-Vendor: %bundleVendor
 Bundle-Version: 0.17.0.qualifier
 Export-Package: org.gamegineer.table.core.impl;version="0.17.0";x-friends:="org.gamegineer.table.ui.impl"
 Import-Package: net.jcip.annotations;version="1.0.0",
+ org.eclipse.jdt.annotation;version="0.0.0",
  org.eclipse.osgi.util;version="1.1.0",
  org.gamegineer.common.core.runtime;version="[0.17.0,0.18.0)",
  org.gamegineer.common.core.util;version="[0.17.0,0.18.0)",

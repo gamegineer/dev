@@ -1,6 +1,6 @@
 /*
  * SingleThreadedTableEnvironmentContext.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,13 +21,14 @@
 
 package org.gamegineer.table.core;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Implementation of {@link ITableEnvironmentContext} for use when the table
@@ -67,7 +68,7 @@ public final class SingleThreadedTableEnvironmentContext
         eventNotifications_ = new ArrayDeque<>();
         isEventNotificationInProgress_ = false;
         lock_ = new TableEnvironmentLock();
-        thread_ = Thread.currentThread();
+        thread_ = nonNull( Thread.currentThread() );
     }
 
 
@@ -93,7 +94,6 @@ public final class SingleThreadedTableEnvironmentContext
     public void fireEventNotification(
         final Runnable eventNotification )
     {
-        assertArgumentNotNull( eventNotification, "eventNotification" ); //$NON-NLS-1$
         assertStateLegal( lock_.isHeldByCurrentThread(), NonNlsMessages.SingleThreadedTableEnvironmentContext_fireEventNotification_tableEnvironmentLockNotHeld );
         assert thread_ == Thread.currentThread();
 
@@ -232,6 +232,7 @@ public final class SingleThreadedTableEnvironmentContext
         public boolean tryLock(
             @SuppressWarnings( "unused" )
             final long time,
+            @Nullable
             @SuppressWarnings( "unused" )
             final TimeUnit unit )
         {

@@ -1,6 +1,6 @@
 /*
  * ITableEnvironment.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -53,14 +53,10 @@ public interface ITableEnvironment
      * 
      * @return A new component; never {@code null}.
      * 
-     * @throws java.lang.NullPointerException
-     *         If {@code memento} is {@code null}.
      * @throws org.gamegineer.common.core.util.memento.MementoException
      *         If the memento is unknown or malformed.
      */
-    /* @NonNull */
     public IComponent createComponent(
-        /* @NonNull */
         Object memento )
         throws MementoException;
 
@@ -71,13 +67,8 @@ public interface ITableEnvironment
      *        The component strategy; must not be {@code null}.
      * 
      * @return A new component; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code strategy} is {@code null}.
      */
-    /* @NonNull */
     public IComponent createComponent(
-        /* @NonNull */
         IComponentStrategy strategy );
 
     /**
@@ -87,13 +78,8 @@ public interface ITableEnvironment
      *        The container strategy; must not be {@code null}.
      * 
      * @return A new container; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code strategy} is {@code null}.
      */
-    /* @NonNull */
     public IContainer createContainer(
-        /* @NonNull */
         IContainerStrategy strategy );
 
     /**
@@ -101,7 +87,6 @@ public interface ITableEnvironment
      * 
      * @return A new table; never {@code null}.
      */
-    /* @NonNull */
     public ITable createTable();
 
     /**
@@ -117,6 +102,5 @@ public interface ITableEnvironment
      * 
      * @return The table environment lock; never {@code null}.
      */
-    /* @NonNull */
     public ITableEnvironmentLock getLock();
 }

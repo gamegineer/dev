@@ -1,6 +1,6 @@
 /*
  * ComponentPath.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,11 +22,12 @@
 package org.gamegineer.table.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.ComparableUtils;
 import org.gamegineer.common.core.util.ObjectUtils;
 
@@ -57,6 +58,7 @@ public final class ComponentPath
     private final int index_;
 
     /** The parent path or {@code null} if the component has no parent. */
+    @Nullable
     private final ComponentPath parentPath_;
 
 
@@ -76,7 +78,7 @@ public final class ComponentPath
      *         If {@code index} is negative.
      */
     public ComponentPath(
-        /* @Nullable */
+        @Nullable
         final ComponentPath parentPath,
         final int index )
     {
@@ -98,8 +100,6 @@ public final class ComponentPath
     public int compareTo(
         final ComponentPath other )
     {
-        assertArgumentNotNull( other, "other" ); //$NON-NLS-1$
-
         final int parentPathCompareResult = ComparableUtils.compareTo( parentPath_, other.parentPath_ );
         if( parentPathCompareResult != 0 )
         {
@@ -114,6 +114,7 @@ public final class ComponentPath
      */
     @Override
     public boolean equals(
+        @Nullable
         final Object obj )
     {
         if( this == obj )
@@ -144,7 +145,7 @@ public final class ComponentPath
      * 
      * @return The parent path or {@code null} if the component has no parent.
      */
-    /* @Nullable */
+    @Nullable
     public ComponentPath getParentPath()
     {
         return parentPath_;
@@ -170,7 +171,6 @@ public final class ComponentPath
      *         the leaf-most component; never {@code null}. The returned
      *         collection is guaranteed to have at least one element.
      */
-    /* @NonNull */
     public List<ComponentPath> toList()
     {
         final List<ComponentPath> componentPaths = new ArrayList<>();
@@ -206,6 +206,6 @@ public final class ComponentPath
         }
 
         sb.append( "]" ); //$NON-NLS-1$
-        return sb.toString();
+        return nonNull( sb.toString() );
     }
 }

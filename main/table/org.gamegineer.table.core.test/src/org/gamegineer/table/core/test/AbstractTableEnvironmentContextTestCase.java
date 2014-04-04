@@ -1,6 +1,6 @@
 /*
  * AbstractTableEnvironmentContextTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,11 @@
 
 package org.gamegineer.table.core.test;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertNotNull;
 import org.easymock.EasyMock;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.ITableEnvironmentContext;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,6 +37,7 @@ import org.junit.Test;
  * @param <TableEnvironmentContextType>
  *        The type of the table environment context.
  */
+@NonNullByDefault( false )
 public abstract class AbstractTableEnvironmentContextTestCase<TableEnvironmentContextType extends ITableEnvironmentContext>
 {
     // ======================================================================
@@ -69,7 +73,7 @@ public abstract class AbstractTableEnvironmentContextTestCase<TableEnvironmentCo
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract TableEnvironmentContextType createTableEnvironmentContext()
         throws Exception;
 
@@ -79,7 +83,7 @@ public abstract class AbstractTableEnvironmentContextTestCase<TableEnvironmentCo
      * @return The table environment context under test in the fixture; never
      *         {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     protected final TableEnvironmentContextType getTableEnvironmentContext()
     {
         assertNotNull( tableEnvironmentContext_ );
@@ -102,31 +106,13 @@ public abstract class AbstractTableEnvironmentContextTestCase<TableEnvironmentCo
 
     /**
      * Ensures the {@link ITableEnvironmentContext#fireEventNotification} method
-     * throws an exception when passed a {@code null} event notification.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testFireEventNotification_EventNotification_Null()
-    {
-        tableEnvironmentContext_.getLock().lock();
-        try
-        {
-            tableEnvironmentContext_.fireEventNotification( null );
-        }
-        finally
-        {
-            tableEnvironmentContext_.getLock().unlock();
-        }
-    }
-
-    /**
-     * Ensures the {@link ITableEnvironmentContext#fireEventNotification} method
      * throws an exception when invoked while the table environment lock is not
      * held.
      */
     @Test( expected = IllegalStateException.class )
     public void testFireEventNotification_ThrowsExceptionWhenLockNotHeld()
     {
-        tableEnvironmentContext_.fireEventNotification( EasyMock.createMock( Runnable.class ) );
+        tableEnvironmentContext_.fireEventNotification( nonNull( EasyMock.createMock( Runnable.class ) ) );
     }
 
     /**

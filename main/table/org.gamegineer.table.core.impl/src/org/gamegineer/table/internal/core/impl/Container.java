@@ -1,6 +1,6 @@
 /*
  * Container.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.core.impl;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -36,6 +36,7 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.IterableUtils;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ComponentPath;
@@ -104,9 +105,7 @@ final class Container
      *        The container strategy; must not be {@code null}.
      */
     Container(
-        /* @NonNull */
         final TableEnvironment tableEnvironment,
-        /* @NonNull */
         final IContainerStrategy strategy )
     {
         super( tableEnvironment, strategy );
@@ -128,9 +127,7 @@ final class Container
     public void addComponent(
         final IComponent component )
     {
-        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
-
-        addComponents( Collections.singletonList( component ), null );
+        addComponents( nonNull( Collections.singletonList( component ) ), null );
     }
 
     /*
@@ -141,9 +138,7 @@ final class Container
         final IComponent component,
         final int index )
     {
-        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
-
-        addComponents( Collections.singletonList( component ), new Integer( index ) );
+        addComponents( nonNull( Collections.singletonList( component ) ), new Integer( index ) );
     }
 
     /*
@@ -153,8 +148,6 @@ final class Container
     public void addComponents(
         final List<IComponent> components )
     {
-        assertArgumentNotNull( components, "components" ); //$NON-NLS-1$
-
         addComponents( components, null );
     }
 
@@ -166,8 +159,6 @@ final class Container
         final List<IComponent> components,
         final int index )
     {
-        assertArgumentNotNull( components, "components" ); //$NON-NLS-1$
-
         addComponents( components, new Integer( index ) );
     }
 
@@ -194,13 +185,10 @@ final class Container
      *         {@code index < 0 || index > getComponentCount()}).
      */
     private void addComponents(
-        /* @NonNull */
         final List<IComponent> components,
-        /* @Nullable */
+        @Nullable
         final Integer boxedIndex )
     {
-        assert components != null;
-
         getLock().lock();
         try
         {
@@ -238,6 +226,7 @@ final class Container
             int componentIndex = firstComponentIndex;
             for( final Component component : addedComponents )
             {
+                assert component != null;
                 fireComponentAdded( component, componentIndex++ );
             }
 
@@ -259,8 +248,6 @@ final class Container
     public void addContainerListener(
         final IContainerListener listener )
     {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-
         getLock().lock();
         try
         {
@@ -284,13 +271,10 @@ final class Container
      * @return A new container content changed event; never {@code null}.
      */
     @GuardedBy( "getLock()" )
-    /* @NonNull */
     private ContainerContentChangedEvent createContainerContentChangedEvent(
-        /* @NonNull */
         final Component component,
         final int componentIndex )
     {
-        assert component != null;
         assert componentIndex >= 0;
         assert getLock().isHeldByCurrentThread();
 
@@ -303,7 +287,6 @@ final class Container
      * @return A new container event; never {@code null}.
      */
     @GuardedBy( "getLock()" )
-    /* @NonNull */
     private ContainerEvent createContainerEvent()
     {
         assert getLock().isHeldByCurrentThread();
@@ -321,11 +304,9 @@ final class Container
      */
     @GuardedBy( "getLock()" )
     private void fireComponentAdded(
-        /* @NonNull */
         final Component component,
         final int componentIndex )
     {
-        assert component != null;
         assert componentIndex >= 0;
         assert getLock().isHeldByCurrentThread();
 
@@ -361,11 +342,9 @@ final class Container
      */
     @GuardedBy( "getLock()" )
     private void fireComponentRemoved(
-        /* @NonNull */
         final Component component,
         final int componentIndex )
     {
-        assert component != null;
         assert componentIndex >= 0;
         assert getLock().isHeldByCurrentThread();
 
@@ -434,7 +413,7 @@ final class Container
 
             for( final IComponent component : components_ )
             {
-                bounds = bounds.union( component.getBounds() );
+                bounds = nonNull( bounds.union( component.getBounds() ) );
             }
 
             return bounds;
@@ -449,11 +428,11 @@ final class Container
      * @see org.gamegineer.table.internal.core.IComponentParent#getChildPath(org.gamegineer.table.internal.core.Component)
      */
     @GuardedBy( "getLock()" )
+    @Nullable
     @Override
     public ComponentPath getChildPath(
         final Component component )
     {
-        assert component != null;
         assert getLock().isHeldByCurrentThread();
 
         final ComponentPath path = getPath();
@@ -479,7 +458,9 @@ final class Container
         try
         {
             assertArgumentLegal( (index >= 0) && (index < components_.size()), "index", NonNlsMessages.Container_getComponentFromIndex_index_outOfRange ); //$NON-NLS-1$
-            return components_.get( index );
+            final Component component = components_.get( index );
+            assert component != null;
+            return component;
         }
         finally
         {
@@ -498,12 +479,10 @@ final class Container
      *         {@code null} if no component exists at the specified path.
      */
     @GuardedBy( "getLock()" )
-    /* @Nullable */
+    @Nullable
     Component getComponent(
-        /* @NonNull */
         final List<ComponentPath> paths )
     {
-        assert paths != null;
         assert !paths.isEmpty();
         assert getLock().isHeldByCurrentThread();
 
@@ -517,7 +496,7 @@ final class Container
             }
             else if( component instanceof Container )
             {
-                return ((Container)component).getComponent( paths.subList( 1, paths.size() ) );
+                return ((Container)component).getComponent( nonNull( paths.subList( 1, paths.size() ) ) );
             }
         }
 
@@ -549,7 +528,6 @@ final class Container
      *         container; never {@code null}.
      */
     @GuardedBy( "getLock()" )
-    /* @NonNull */
     private List<Object> getComponentMementos()
     {
         assert getLock().isHeldByCurrentThread();
@@ -603,7 +581,6 @@ final class Container
      * @return The container layout identifier; never {@code null}.
      */
     @GuardedBy( "getLock()" )
-    /* @NonNull */
     private ContainerLayoutId getLayoutId()
     {
         assert getLock().isHeldByCurrentThread();
@@ -628,8 +605,6 @@ final class Container
         final Point location,
         final List<IComponent> components )
     {
-        assert location != null;
-        assert components != null;
         assert getLock().isHeldByCurrentThread();
 
         if( super.hitTest( location, components ) )
@@ -654,7 +629,6 @@ final class Container
         final Object memento )
         throws MementoException
     {
-        assert memento != null;
         assert getLock().isHeldByCurrentThread();
 
         super.readMemento( memento );
@@ -679,8 +653,6 @@ final class Container
     public void removeComponent(
         final IComponent component )
     {
-        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
-
         final ComponentRangeStrategy componentRangeStrategy = new ComponentRangeStrategy()
         {
             private int index_ = -1;
@@ -748,7 +720,9 @@ final class Container
         };
         final List<IComponent> components = removeComponents( componentRangeStrategy );
         assert components.size() == 1;
-        return components.get( 0 );
+        final IComponent component = components.get( 0 );
+        assert component != null;
+        return component;
     }
 
     /**
@@ -764,13 +738,9 @@ final class Container
      *         component nearest the bottom of the container to the component
      *         nearest the top of the container.
      */
-    /* @NonNull */
     private List<IComponent> removeComponents(
-        /* @NonNull */
         final ComponentRangeStrategy componentRangeStrategy )
     {
-        assert componentRangeStrategy != null;
-
         final List<Component> removedComponents = new ArrayList<>();
 
         getLock().lock();
@@ -799,6 +769,7 @@ final class Container
             int componentIndex = componentRangeStrategy.getUpperIndex();
             for( final Component component : IterableUtils.reverse( removedComponents ) )
             {
+                assert component != null;
                 fireComponentRemoved( component, --componentIndex );
             }
 
@@ -822,8 +793,6 @@ final class Container
     public void removeContainerListener(
         final IContainerListener listener )
     {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-
         getLock().lock();
         try
         {
@@ -848,17 +817,16 @@ final class Container
      */
     @GuardedBy( "getLock()" )
     private void setComponentMementos(
-        /* @NonNull */
         final List<Object> componentMementos )
         throws MementoException
     {
-        assert componentMementos != null;
         assert getLock().isHeldByCurrentThread();
 
         removeAllComponents();
 
         for( final Object componentMemento : componentMementos )
         {
+            assert componentMemento != null;
             addComponent( ComponentFactory.createComponent( getTableEnvironment(), componentMemento ) );
         }
     }
@@ -870,8 +838,6 @@ final class Container
     public void setLayout(
         final IContainerLayout layout )
     {
-        assertArgumentNotNull( layout, "layout" ); //$NON-NLS-1$
-
         getLock().lock();
         try
         {
@@ -916,11 +882,9 @@ final class Container
      */
     @GuardedBy( "getLock()" )
     private void setLayoutId(
-        /* @NonNull */
         final ContainerLayoutId layoutId )
         throws MementoException
     {
-        assert layoutId != null;
         assert getLock().isHeldByCurrentThread();
 
         try
@@ -940,7 +904,6 @@ final class Container
     void translate(
         final Dimension offset )
     {
-        assert offset != null;
         assert getLock().isHeldByCurrentThread();
 
         super.translate( offset );
@@ -958,7 +921,6 @@ final class Container
     void writeMemento(
         final Map<String, Object> memento )
     {
-        assert memento != null;
         assert getLock().isHeldByCurrentThread();
 
         super.writeMemento( memento );

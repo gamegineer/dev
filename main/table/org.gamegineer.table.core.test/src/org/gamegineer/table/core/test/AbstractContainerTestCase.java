@@ -1,6 +1,6 @@
 /*
  * AbstractContainerTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.core.test;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -35,6 +37,8 @@ import java.util.List;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
@@ -59,6 +63,7 @@ import org.junit.rules.Timeout;
  * @param <ContainerType>
  *        The type of the container.
  */
+@NonNullByDefault( false )
 public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITableEnvironment, ContainerType extends IContainer>
     extends AbstractComponentTestCase<TableEnvironmentType, ContainerType>
 {
@@ -97,7 +102,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * 
      * @return A new component; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private IComponent createUniqueComponent()
     {
         return createUniqueComponent( getTableEnvironment() );
@@ -113,13 +118,11 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * 
      * @return A new component; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private IComponent createUniqueComponent(
-        /* @NonNull */
+        @NonNull
         final TableEnvironmentType tableEnvironment )
     {
-        assert tableEnvironment != null;
-
         return TestComponents.createUniqueComponent( tableEnvironment );
     }
 
@@ -129,7 +132,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * 
      * @return A new container; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private IContainer createUniqueContainer()
     {
         return createUniqueContainer( getTableEnvironment() );
@@ -145,13 +148,11 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * 
      * @return A new container; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private IContainer createUniqueContainer(
-        /* @NonNull */
+        @NonNull
         final TableEnvironmentType tableEnvironment )
     {
-        assert tableEnvironment != null;
-
         return TestComponents.createUniqueContainer( tableEnvironment );
     }
 
@@ -160,12 +161,9 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * 
      * @param container
      *        The container; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code container} is {@code null}.
      */
     protected abstract void fireComponentAdded(
-        /* @NonNull */
+        @NonNull
         ContainerType container );
 
     /**
@@ -173,12 +171,9 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * 
      * @param container
      *        The container; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code container} is {@code null}.
      */
     protected abstract void fireComponentRemoved(
-        /* @NonNull */
+        @NonNull
         ContainerType container );
 
     /**
@@ -186,12 +181,9 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * 
      * @param container
      *        The container; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code container} is {@code null}.
      */
     protected abstract void fireContainerLayoutChanged(
-        /* @NonNull */
+        @NonNull
         ContainerType container );
 
     /**
@@ -199,7 +191,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * 
      * @return The container under test in the fixture; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     protected final ContainerType getContainer()
     {
         return getComponent();
@@ -278,16 +270,6 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IContainer#addComponent(IComponent)} method throws an
-     * exception when passed a {@code null} component.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testAddComponent_Component_Null()
-    {
-        getContainer().addComponent( null );
-    }
-
-    /**
      * Ensures the {@link IContainer#addComponent(IComponent)} method changes
      * the location the component to reflect the container location.
      */
@@ -296,7 +278,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     {
         final IComponent component = createUniqueComponent();
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         mocksControl_.replay();
         component.addComponentListener( listener );
 
@@ -315,7 +297,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
         getContainer().setSurfaceDesign( getContainer().getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         mocksControl_.replay();
         getContainer().addComponentListener( listener );
         final Rectangle originalContainerBounds = getContainer().getBounds();
@@ -341,7 +323,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         final IComponent component = createUniqueComponent();
         final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
         final Capture<ContainerContentChangedEvent> eventCapture = new Capture<>();
-        listener.componentAdded( EasyMock.capture( eventCapture ) );
+        listener.componentAdded( assumeNonNull( EasyMock.capture( eventCapture ) ) );
         mocksControl_.replay();
         getContainer().addContainerListener( listener );
 
@@ -404,16 +386,6 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
 
     /**
      * Ensures the {@link IContainer#addComponent(IComponent, int)} method
-     * throws an exception when passed a {@code null} component.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testAddComponentAtIndex_Component_Null()
-    {
-        getContainer().addComponent( null, 0 );
-    }
-
-    /**
-     * Ensures the {@link IContainer#addComponent(IComponent, int)} method
      * changes the location the component to reflect the container location.
      */
     @Test
@@ -421,7 +393,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     {
         final IComponent component = createUniqueComponent();
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         mocksControl_.replay();
         component.addComponentListener( listener );
 
@@ -440,7 +412,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
         getContainer().setSurfaceDesign( getContainer().getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         mocksControl_.replay();
         getContainer().addComponentListener( listener );
         final Rectangle originalContainerBounds = getContainer().getBounds();
@@ -466,7 +438,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         final IComponent component = createUniqueComponent();
         final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
         final Capture<ContainerContentChangedEvent> eventCapture = new Capture<>();
-        listener.componentAdded( EasyMock.capture( eventCapture ) );
+        listener.componentAdded( assumeNonNull( EasyMock.capture( eventCapture ) ) );
         mocksControl_.replay();
         getContainer().addContainerListener( listener );
 
@@ -510,7 +482,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         final IComponent component1 = createUniqueComponent();
         final IComponent component2 = createUniqueComponent();
 
-        getContainer().addComponents( Arrays.asList( component1, component2 ) );
+        getContainer().addComponents( nonNull( Arrays.asList( component1, component2 ) ) );
 
         final List<IComponent> components = getContainer().getComponents();
         assertSame( component1, components.get( 0 ) );
@@ -530,7 +502,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         final TableEnvironmentType otherTableEnvironment = createTableEnvironment();
         final IComponent otherComponent = createUniqueComponent( otherTableEnvironment );
 
-        getContainer().addComponents( Arrays.asList( createUniqueComponent(), otherComponent ) );
+        getContainer().addComponents( nonNull( Arrays.asList( createUniqueComponent(), otherComponent ) ) );
     }
 
     /**
@@ -545,7 +517,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         final IComponent component = createUniqueComponent();
         otherContainer.addComponent( component );
 
-        getContainer().addComponents( Arrays.asList( createUniqueComponent(), component ) );
+        getContainer().addComponents( nonNull( Arrays.asList( createUniqueComponent(), component ) ) );
     }
 
     /**
@@ -556,17 +528,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test( expected = IllegalArgumentException.class )
     public void testAddComponents_Components_Illegal_ContainsNullElement()
     {
-        getContainer().addComponents( Collections.<IComponent>singletonList( null ) );
-    }
-
-    /**
-     * Ensures the {@link IContainer#addComponents(List)} method throws an
-     * exception when passed a {@code null} component collection.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testAddComponents_Components_Null()
-    {
-        getContainer().addComponents( null );
+        getContainer().addComponents( nonNull( Collections.<IComponent>singletonList( null ) ) );
     }
 
     /**
@@ -578,11 +540,11 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     {
         final IComponent component = createUniqueComponent();
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         mocksControl_.replay();
         component.addComponentListener( listener );
 
-        getContainer().addComponents( Collections.singletonList( component ) );
+        getContainer().addComponents( nonNull( Collections.singletonList( component ) ) );
 
         mocksControl_.verify();
     }
@@ -597,14 +559,14 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
         getContainer().setSurfaceDesign( getContainer().getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         mocksControl_.replay();
         getContainer().addComponentListener( listener );
         final Rectangle originalContainerBounds = getContainer().getBounds();
 
         do
         {
-            getContainer().addComponents( Collections.singletonList( createUniqueComponent() ) );
+            getContainer().addComponents( nonNull( Collections.singletonList( createUniqueComponent() ) ) );
 
         } while( originalContainerBounds.equals( getContainer().getBounds() ) );
 
@@ -624,13 +586,13 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         final IComponent component2 = createUniqueComponent();
         final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
         final Capture<ContainerContentChangedEvent> eventCapture1 = new Capture<>();
-        listener.componentAdded( EasyMock.capture( eventCapture1 ) );
+        listener.componentAdded( assumeNonNull( EasyMock.capture( eventCapture1 ) ) );
         final Capture<ContainerContentChangedEvent> eventCapture2 = new Capture<>();
-        listener.componentAdded( EasyMock.capture( eventCapture2 ) );
+        listener.componentAdded( assumeNonNull( EasyMock.capture( eventCapture2 ) ) );
         mocksControl_.replay();
         getContainer().addContainerListener( listener );
 
-        getContainer().addComponents( Arrays.asList( component1, component2 ) );
+        getContainer().addComponents( nonNull( Arrays.asList( component1, component2 ) ) );
 
         mocksControl_.verify();
         assertSame( getContainer(), eventCapture1.getValue().getContainer() );
@@ -656,7 +618,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         getContainer().addComponent( component4 );
         final List<IComponent> expectedValue = Arrays.asList( component1, component2, component3, component4 );
 
-        getContainer().addComponents( Arrays.asList( component2, component3 ), 1 );
+        getContainer().addComponents( nonNull( Arrays.asList( component2, component3 ) ), 1 );
 
         assertEquals( expectedValue, getContainer().getComponents() );
         assertSame( getContainer(), component2.getContainer() );
@@ -674,7 +636,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         final TableEnvironmentType otherTableEnvironment = createTableEnvironment();
         final IComponent otherComponent = createUniqueComponent( otherTableEnvironment );
 
-        getContainer().addComponents( Arrays.asList( createUniqueComponent(), otherComponent ), 0 );
+        getContainer().addComponents( nonNull( Arrays.asList( createUniqueComponent(), otherComponent ) ), 0 );
     }
 
     /**
@@ -689,7 +651,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         final IComponent component = createUniqueComponent();
         otherContainer.addComponent( component );
 
-        getContainer().addComponents( Arrays.asList( createUniqueComponent(), component ), 0 );
+        getContainer().addComponents( nonNull( Arrays.asList( createUniqueComponent(), component ) ), 0 );
     }
 
     /**
@@ -700,17 +662,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test( expected = IllegalArgumentException.class )
     public void testAddComponentsAtIndex_Components_Illegal_ContainsNullElement()
     {
-        getContainer().addComponents( Collections.<IComponent>singletonList( null ), 0 );
-    }
-
-    /**
-     * Ensures the {@link IContainer#addComponents(List, int)} method throws an
-     * exception when passed a {@code null} component collection.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testAddComponentsAtIndex_Components_Null()
-    {
-        getContainer().addComponents( null, 0 );
+        getContainer().addComponents( nonNull( Collections.<IComponent>singletonList( null ) ), 0 );
     }
 
     /**
@@ -722,11 +674,11 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     {
         final IComponent component = createUniqueComponent();
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         mocksControl_.replay();
         component.addComponentListener( listener );
 
-        getContainer().addComponents( Collections.singletonList( component ), 0 );
+        getContainer().addComponents( nonNull( Collections.singletonList( component ) ), 0 );
 
         mocksControl_.verify();
     }
@@ -741,14 +693,14 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
         getContainer().setSurfaceDesign( getContainer().getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         mocksControl_.replay();
         getContainer().addComponentListener( listener );
         final Rectangle originalContainerBounds = getContainer().getBounds();
 
         do
         {
-            getContainer().addComponents( Collections.singletonList( createUniqueComponent() ), getContainer().getComponentCount() );
+            getContainer().addComponents( nonNull( Collections.singletonList( createUniqueComponent() ) ), getContainer().getComponentCount() );
 
         } while( originalContainerBounds.equals( getContainer().getBounds() ) );
 
@@ -768,13 +720,13 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         final IComponent component2 = createUniqueComponent();
         final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
         final Capture<ContainerContentChangedEvent> eventCapture1 = new Capture<>();
-        listener.componentAdded( EasyMock.capture( eventCapture1 ) );
+        listener.componentAdded( assumeNonNull( EasyMock.capture( eventCapture1 ) ) );
         final Capture<ContainerContentChangedEvent> eventCapture2 = new Capture<>();
-        listener.componentAdded( EasyMock.capture( eventCapture2 ) );
+        listener.componentAdded( assumeNonNull( EasyMock.capture( eventCapture2 ) ) );
         mocksControl_.replay();
         getContainer().addContainerListener( listener );
 
-        getContainer().addComponents( Arrays.asList( component1, component2 ), 1 );
+        getContainer().addComponents( nonNull( Arrays.asList( component1, component2 ) ), 1 );
 
         mocksControl_.verify();
         assertSame( getContainer(), eventCapture1.getValue().getContainer() );
@@ -793,7 +745,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test( expected = IndexOutOfBoundsException.class )
     public void testAddComponentsAtIndex_Index_OutOfBounds_GreaterThanComponentCount()
     {
-        getContainer().addComponents( Arrays.asList( createUniqueComponent() ), getContainer().getComponentCount() + 1 );
+        getContainer().addComponents( nonNull( Arrays.asList( createUniqueComponent() ) ), getContainer().getComponentCount() + 1 );
     }
 
     /**
@@ -804,17 +756,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test( expected = IndexOutOfBoundsException.class )
     public void testAddComponentsAtIndex_Index_OutOfBounds_LessThanZero()
     {
-        getContainer().addComponents( Arrays.asList( createUniqueComponent() ), -1 );
-    }
-
-    /**
-     * Ensures the {@link IContainer#addContainerListener} method throws an
-     * exception when passed a {@code null} listener.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testAddContainerListener_Listener_Null()
-    {
-        getContainer().addContainerListener( null );
+        getContainer().addComponents( nonNull( Arrays.asList( createUniqueComponent() ) ), -1 );
     }
 
     /**
@@ -825,7 +767,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test( expected = IllegalArgumentException.class )
     public void testAddContainerListener_Listener_Present()
     {
-        final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
+        final IContainerListener listener = nonNull( mocksControl_.createMock( IContainerListener.class ) );
         getContainer().addContainerListener( listener );
 
         getContainer().addContainerListener( listener );
@@ -839,10 +781,10 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     public void testComponentAdded_CatchesListenerException()
     {
         final IContainerListener listener1 = mocksControl_.createMock( IContainerListener.class );
-        listener1.componentAdded( EasyMock.notNull( ContainerContentChangedEvent.class ) );
+        listener1.componentAdded( assumeNonNull( EasyMock.notNull( ContainerContentChangedEvent.class ) ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IContainerListener listener2 = mocksControl_.createMock( IContainerListener.class );
-        listener2.componentAdded( EasyMock.notNull( ContainerContentChangedEvent.class ) );
+        listener2.componentAdded( assumeNonNull( EasyMock.notNull( ContainerContentChangedEvent.class ) ) );
         mocksControl_.replay();
         getContainer().addContainerListener( listener1 );
         getContainer().addContainerListener( listener2 );
@@ -861,10 +803,10 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     public void testComponentRemoved_CatchesListenerException()
     {
         final IContainerListener listener1 = mocksControl_.createMock( IContainerListener.class );
-        listener1.componentRemoved( EasyMock.notNull( ContainerContentChangedEvent.class ) );
+        listener1.componentRemoved( assumeNonNull( EasyMock.notNull( ContainerContentChangedEvent.class ) ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IContainerListener listener2 = mocksControl_.createMock( IContainerListener.class );
-        listener2.componentRemoved( EasyMock.notNull( ContainerContentChangedEvent.class ) );
+        listener2.componentRemoved( assumeNonNull( EasyMock.notNull( ContainerContentChangedEvent.class ) ) );
         mocksControl_.replay();
         getContainer().addContainerListener( listener1 );
         getContainer().addContainerListener( listener2 );
@@ -883,10 +825,10 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     public void testContainerLayoutChanged_CatchesListenerException()
     {
         final IContainerListener listener1 = mocksControl_.createMock( IContainerListener.class );
-        listener1.containerLayoutChanged( EasyMock.notNull( ContainerEvent.class ) );
+        listener1.containerLayoutChanged( assumeNonNull( EasyMock.notNull( ContainerEvent.class ) ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IContainerListener listener2 = mocksControl_.createMock( IContainerListener.class );
-        listener2.containerLayoutChanged( EasyMock.notNull( ContainerEvent.class ) );
+        listener2.containerLayoutChanged( assumeNonNull( EasyMock.notNull( ContainerEvent.class ) ) );
         mocksControl_.replay();
         getContainer().addContainerListener( listener1 );
         getContainer().addContainerListener( listener2 );
@@ -989,7 +931,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test
     public void testRemoveAllComponents_Empty_DoesNotFireComponentRemovedEvent()
     {
-        final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
+        final IContainerListener listener = nonNull( mocksControl_.createMock( IContainerListener.class ) );
         mocksControl_.replay();
         getContainer().addContainerListener( listener );
 
@@ -1041,7 +983,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
         getContainer().setSurfaceDesign( getContainer().getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         EasyMock.expectLastCall().times( 2 );
         mocksControl_.replay();
         getContainer().addComponentListener( listener );
@@ -1064,13 +1006,13 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test
     public void testRemoveAllComponents_NotEmpty_FiresComponentRemovedEvent()
     {
-        final List<IComponent> components = Arrays.asList( createUniqueComponent(), createUniqueComponent() );
+        final List<IComponent> components = nonNull( Arrays.asList( createUniqueComponent(), createUniqueComponent() ) );
         getContainer().addComponents( components );
         final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
         final Capture<ContainerContentChangedEvent> eventCapture1 = new Capture<>();
-        listener.componentRemoved( EasyMock.capture( eventCapture1 ) );
+        listener.componentRemoved( assumeNonNull( EasyMock.capture( eventCapture1 ) ) );
         final Capture<ContainerContentChangedEvent> eventCapture2 = new Capture<>();
-        listener.componentRemoved( EasyMock.capture( eventCapture2 ) );
+        listener.componentRemoved( assumeNonNull( EasyMock.capture( eventCapture2 ) ) );
         mocksControl_.replay();
         getContainer().addContainerListener( listener );
 
@@ -1139,7 +1081,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
         getContainer().setSurfaceDesign( getContainer().getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         EasyMock.expectLastCall().times( 2 );
         mocksControl_.replay();
         getContainer().addComponentListener( listener );
@@ -1169,16 +1111,6 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IContainer#removeComponent(IComponent)} method throws
-     * an exception when passed a {@code null} component.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRemoveComponent_Component_Null()
-    {
-        getContainer().removeComponent( null );
-    }
-
-    /**
      * Ensures the {@link IContainer#removeComponent(IComponent)} method fires a
      * component removed event.
      */
@@ -1189,7 +1121,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         getContainer().addComponent( component );
         final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
         final Capture<ContainerContentChangedEvent> eventCapture = new Capture<>();
-        listener.componentRemoved( EasyMock.capture( eventCapture ) );
+        listener.componentRemoved( assumeNonNull( EasyMock.capture( eventCapture ) ) );
         mocksControl_.replay();
         getContainer().addContainerListener( listener );
 
@@ -1249,7 +1181,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         getContainer().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
         getContainer().setSurfaceDesign( getContainer().getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         EasyMock.expectLastCall().times( 2 );
         mocksControl_.replay();
         getContainer().addComponentListener( listener );
@@ -1278,7 +1210,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         getContainer().addComponent( component );
         final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
         final Capture<ContainerContentChangedEvent> eventCapture = new Capture<>();
-        listener.componentRemoved( EasyMock.capture( eventCapture ) );
+        listener.componentRemoved( assumeNonNull( EasyMock.capture( eventCapture ) ) );
         mocksControl_.replay();
         getContainer().addContainerListener( listener );
 
@@ -1338,17 +1270,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveContainerListener_Listener_Absent()
     {
-        getContainer().removeContainerListener( mocksControl_.createMock( IContainerListener.class ) );
-    }
-
-    /**
-     * Ensures the {@link IContainer#removeContainerListener} method throws an
-     * exception when passed a {@code null} listener.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRemoveContainerListener_Listener_Null()
-    {
-        getContainer().removeContainerListener( null );
+        getContainer().removeContainerListener( nonNull( mocksControl_.createMock( IContainerListener.class ) ) );
     }
 
     /**
@@ -1359,7 +1281,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     public void testRemoveContainerListener_Listener_Present()
     {
         final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
-        listener.componentAdded( EasyMock.notNull( ContainerContentChangedEvent.class ) );
+        listener.componentAdded( assumeNonNull( EasyMock.notNull( ContainerContentChangedEvent.class ) ) );
         mocksControl_.replay();
         getContainer().addContainerListener( listener );
         getContainer().addComponent( createUniqueComponent() );
@@ -1382,9 +1304,9 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         getContainer().addComponent( createUniqueComponent() );
         getContainer().addComponent( createUniqueComponent() );
         final IComponentListener componentListener = mocksControl_.createMock( IComponentListener.class );
-        componentListener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        componentListener.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         final IContainerListener containerListener = mocksControl_.createMock( IContainerListener.class );
-        containerListener.containerLayoutChanged( EasyMock.notNull( ContainerEvent.class ) );
+        containerListener.containerLayoutChanged( assumeNonNull( EasyMock.notNull( ContainerEvent.class ) ) );
         mocksControl_.replay();
         getContainer().addComponentListener( componentListener );
         getContainer().addContainerListener( containerListener );
@@ -1403,23 +1325,13 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     {
         getContainer().setLayout( TestContainerLayouts.createUniqueContainerLayout() );
         final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
-        listener.containerLayoutChanged( EasyMock.notNull( ContainerEvent.class ) );
+        listener.containerLayoutChanged( assumeNonNull( EasyMock.notNull( ContainerEvent.class ) ) );
         mocksControl_.replay();
         getContainer().addContainerListener( listener );
 
         getContainer().setLayout( TestContainerLayouts.createUniqueContainerLayout() );
 
         mocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@link IContainer#setLayout} method throws an exception when
-     * passed a {@code null} layout.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetLayout_Layout_Null()
-    {
-        getContainer().setLayout( null );
     }
 
     /**
@@ -1432,7 +1344,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         final IComponent component = createUniqueComponent();
         getContainer().addComponent( component );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         mocksControl_.replay();
         component.addComponentListener( listener );
 
@@ -1451,7 +1363,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         final IComponent component = createUniqueComponent();
         getContainer().addComponent( component );
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        listener.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
         mocksControl_.replay();
         component.addComponentListener( listener );
 

@@ -1,6 +1,6 @@
 /*
  * ContainerEventTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,15 +21,18 @@
 
 package org.gamegineer.table.core;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import org.easymock.EasyMock;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the {@link ContainerEvent} class.
  */
+@NonNullByDefault( false )
 public final class ContainerEventTest
 {
     // ======================================================================
@@ -66,17 +69,7 @@ public final class ContainerEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new ContainerEvent( EasyMock.createMock( IContainer.class ), new ComponentPath( null, 0 ) );
-    }
-
-    /**
-     * Ensures the {@link ContainerEvent#ContainerEvent} constructor throws an
-     * exception when passed a {@code null} source.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testConstructor_Source_Null()
-    {
-        new ContainerEvent( null, new ComponentPath( null, 0 ) );
+        event_ = new ContainerEvent( nonNull( EasyMock.createMock( IContainer.class ) ), new ComponentPath( null, 0 ) );
     }
 
     /**

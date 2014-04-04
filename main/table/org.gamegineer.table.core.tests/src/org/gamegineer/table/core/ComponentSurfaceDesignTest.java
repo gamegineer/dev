@@ -1,6 +1,6 @@
 /*
  * ComponentSurfaceDesignTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -50,17 +50,6 @@ public final class ComponentSurfaceDesignTest
     /**
      * Ensures the
      * {@link ComponentSurfaceDesign#ComponentSurfaceDesign(ComponentSurfaceDesignId, Dimension)}
-     * constructor throws an exception when passed a {@code null} identifier.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructorFromSize_Id_Null()
-    {
-        new ComponentSurfaceDesign( null, new Dimension( 0, 0 ) );
-    }
-
-    /**
-     * Ensures the
-     * {@link ComponentSurfaceDesign#ComponentSurfaceDesign(ComponentSurfaceDesignId, Dimension)}
      * constructor makes a copy of the size.
      */
     @Test
@@ -100,17 +89,6 @@ public final class ComponentSurfaceDesignTest
 
     /**
      * Ensures the
-     * {@link ComponentSurfaceDesign#ComponentSurfaceDesign(ComponentSurfaceDesignId, Dimension)}
-     * constructor throws an exception when passed a {@code null} size.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructorFromSize_Size_Null()
-    {
-        new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "id" ), null ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the
      * {@link ComponentSurfaceDesign#ComponentSurfaceDesign(ComponentSurfaceDesignId, int, int)}
      * constructor throws an exception when passed a negative height.
      */
@@ -118,17 +96,6 @@ public final class ComponentSurfaceDesignTest
     public void testConstructorFromWidthAndHeight_Height_Negative()
     {
         new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "id" ), 0, -1 ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the
-     * {@link ComponentSurfaceDesign#ComponentSurfaceDesign(ComponentSurfaceDesignId, int, int)}
-     * constructor throws an exception when passed a {@code null} identifier.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructorFromWidthAndHeight_Id_Null()
-    {
-        new ComponentSurfaceDesign( null, 0, 0 );
     }
 
     /**

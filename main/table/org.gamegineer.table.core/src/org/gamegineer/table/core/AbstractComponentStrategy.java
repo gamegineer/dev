@@ -1,6 +1,6 @@
 /*
  * AbstractComponentStrategy.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,13 +21,13 @@
 
 package org.gamegineer.table.core;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Point;
 import java.util.Collection;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.core.Loggers;
 
 /**
@@ -55,16 +55,10 @@ public abstract class AbstractComponentStrategy
      * 
      * @param id
      *        The component strategy identifier; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
      */
     protected AbstractComponentStrategy(
-        /* @NonNull */
         final ComponentStrategyId id )
     {
-        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
-
         id_ = id;
     }
 
@@ -103,7 +97,6 @@ public abstract class AbstractComponentStrategy
      * 
      * @return The default component surface design; never {@code null}.
      */
-    /* @NonNull */
     private ComponentSurfaceDesign getDefaultSurfaceDesign()
     {
         try
@@ -124,7 +117,6 @@ public abstract class AbstractComponentStrategy
      * @return The identifier of the default component surface design; never
      *         {@code null}.
      */
-    /* @NonNull */
     protected abstract ComponentSurfaceDesignId getDefaultSurfaceDesignId();
 
     /*
@@ -150,12 +142,12 @@ public abstract class AbstractComponentStrategy
      * 
      * @see org.gamegineer.table.core.IComponentStrategy#getExtension(java.lang.Class)
      */
+    @Nullable
     @Override
     public <T> T getExtension(
+        @SuppressWarnings( "unused" )
         final Class<T> type )
     {
-        assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
-
         return null;
     }
 

@@ -1,6 +1,6 @@
 /*
  * Table.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,8 +22,8 @@
 package org.gamegineer.table.internal.core.impl;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.IComponent;
@@ -65,10 +66,12 @@ final class Table
             final IComponent component2 )
         {
             assert component1.getTableEnvironment().getLock().isHeldByCurrentThread();
-            assert component1.getPath() != null;
-            assert component2.getPath() != null;
+            final ComponentPath componentPath1 = component1.getPath();
+            assert componentPath1 != null;
+            final ComponentPath componentPath2 = component2.getPath();
+            assert componentPath2 != null;
 
-            return component1.getPath().compareTo( component2.getPath() );
+            return componentPath1.compareTo( componentPath2 );
         }
     };
 
@@ -83,6 +86,7 @@ final class Table
      * if a drag-and-drop operation is not active.
      */
     @GuardedBy( "getLock()" )
+    @Nullable
     private IDragContext dragContext_;
 
     /** The table revision number. */
@@ -107,11 +111,8 @@ final class Table
      *        The table environment; must not be {@code null}.
      */
     Table(
-        /* @NonNull */
         final TableEnvironment tableEnvironment )
     {
-        assert tableEnvironment != null;
-
         dragContext_ = null;
         revisionNumber_ = 0L;
         tableEnvironment_ = tableEnvironment;
@@ -136,16 +137,13 @@ final class Table
     /*
      * @see org.gamegineer.table.core.dnd.IDragSource#beginDrag(java.awt.Point, org.gamegineer.table.core.IComponent, org.gamegineer.table.core.dnd.IDragStrategyFactory)
      */
+    @Nullable
     @Override
     public IDragContext beginDrag(
         final Point location,
         final IComponent component,
         final IDragStrategyFactory dragStrategyFactory )
     {
-        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
-        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
-        assertArgumentNotNull( dragStrategyFactory, "dragStrategyFactory" ); //$NON-NLS-1$
-
         getLock().lock();
         try
         {
@@ -180,7 +178,7 @@ final class Table
             getLock().unlock();
         }
 
-        return Collections.unmodifiableMap( memento );
+        return nonNull( Collections.unmodifiableMap( memento ) );
     }
 
     /**
@@ -214,17 +212,11 @@ final class Table
      * @throws org.gamegineer.common.core.util.memento.MementoException
      *         If {@code memento} is malformed.
      */
-    /* @NonNull */
     private static Table fromMemento(
-        /* @NonNull */
         final TableEnvironment tableEnvironment,
-        /* @NonNull */
         final Object memento )
         throws MementoException
     {
-        assert tableEnvironment != null;
-        assert memento != null;
-
         final Table table = new Table( tableEnvironment );
 
         final Object tabletopMemento = MementoUtils.getAttribute( memento, TABLETOP_MEMENTO_ATTRIBUTE_NAME, Object.class );
@@ -236,12 +228,11 @@ final class Table
     /*
      * @see org.gamegineer.table.internal.core.IComponentParent#getChildPath(org.gamegineer.table.internal.core.Component)
      */
+    @Nullable
     @Override
     public ComponentPath getChildPath(
         final Component component )
     {
-        assert component != null;
-
         assert component == tabletop_;
         return TABLETOP_PATH;
     }
@@ -249,12 +240,11 @@ final class Table
     /*
      * @see org.gamegineer.table.core.ITable#getComponent(org.gamegineer.table.core.ComponentPath)
      */
+    @Nullable
     @Override
     public IComponent getComponent(
         final ComponentPath path )
     {
-        assertArgumentNotNull( path, "path" ); //$NON-NLS-1$
-
         final List<ComponentPath> paths = path.toList();
         final ComponentPath tabletopPath = paths.get( 0 );
         if( tabletopPath.getIndex() != 0 )
@@ -269,7 +259,7 @@ final class Table
         getLock().lock();
         try
         {
-            return tabletop_.getComponent( paths.subList( 1, paths.size() ) );
+            return tabletop_.getComponent( nonNull( paths.subList( 1, paths.size() ) ) );
         }
         finally
         {
@@ -284,8 +274,6 @@ final class Table
     public List<IComponent> getComponents(
         final Point location )
     {
-        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
-
         final List<IComponent> components = new ArrayList<>();
 
         getLock().lock();
@@ -307,12 +295,11 @@ final class Table
     /*
      * @see org.gamegineer.table.core.ITable#getExtension(java.lang.Class)
      */
+    @Nullable
     @Override
     public <T> T getExtension(
         final Class<T> type )
     {
-        assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
-
         if( type.isInstance( this ) )
         {
             return type.cast( this );
@@ -326,7 +313,6 @@ final class Table
      * 
      * @return The table environment lock; never {@code null}.
      */
-    /* @NonNull */
     private ITableEnvironmentLock getLock()
     {
         return tableEnvironment_.getLock();
@@ -352,6 +338,7 @@ final class Table
     /*
      * @see org.gamegineer.table.internal.core.IComponentParent#getTable()
      */
+    @Nullable
     @Override
     public Table getTable()
     {
@@ -409,8 +396,6 @@ final class Table
         final Object memento )
         throws MementoException
     {
-        assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
-
         getLock().lock();
         try
         {

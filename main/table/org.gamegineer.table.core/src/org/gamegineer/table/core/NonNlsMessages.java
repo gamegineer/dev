@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.core;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 
@@ -38,76 +39,76 @@ final class NonNlsMessages
     // --- AbstractComponentStrategy ----------------------------------------
 
     /** The default component surface design is not available. */
-    public static String AbstractComponentStrategy_getDefaultSurfaceDesign_notAvailable;
+    public static String AbstractComponentStrategy_getDefaultSurfaceDesign_notAvailable = ""; //$NON-NLS-1$
 
     // --- AbstractContainerStrategy ----------------------------------------
 
     /** The default container layout is not available. */
-    public static String AbstractContainerStrategy_getDefaultLayout_notAvailable;
+    public static String AbstractContainerStrategy_getDefaultLayout_notAvailable = ""; //$NON-NLS-1$
 
     // --- ComponentPath ----------------------------------------------------
 
     /** The component path index must not be negative. */
-    public static String ComponentPath_ctor_index_negative;
+    public static String ComponentPath_ctor_index_negative = ""; //$NON-NLS-1$
 
     // --- ComponentStrategyRegistry ----------------------------------------
 
     /** The component strategy registry is not available. */
-    public static String ComponentStrategyRegistry_getComponentStrategy_componentStrategyRegistryNotAvailable;
+    public static String ComponentStrategyRegistry_getComponentStrategy_componentStrategyRegistryNotAvailable = ""; //$NON-NLS-1$
 
     /** The component strategy identifier is not registered. */
-    public static String ComponentStrategyRegistry_getComponentStrategy_unknownComponentStrategyId;
+    public static String ComponentStrategyRegistry_getComponentStrategy_unknownComponentStrategyId = ""; //$NON-NLS-1$
 
     /**
      * The component strategy identifier is not associated with a container
      * strategy.
      */
-    public static String ComponentStrategyRegistry_getContainerStrategy_notContainerStrategy;
+    public static String ComponentStrategyRegistry_getContainerStrategy_notContainerStrategy = ""; //$NON-NLS-1$
 
     // --- ComponentSurfaceDesign -------------------------------------------
 
     /** The component surface design height must not be negative. */
-    public static String ComponentSurfaceDesign_ctor_height_negative;
+    public static String ComponentSurfaceDesign_ctor_height_negative = ""; //$NON-NLS-1$
 
     /** The component surface design width must not be negative. */
-    public static String ComponentSurfaceDesign_ctor_width_negative;
+    public static String ComponentSurfaceDesign_ctor_width_negative = ""; //$NON-NLS-1$
 
     // --- ComponentSurfaceDesignRegistry -----------------------------------
 
     /** The component surface design registry is not available. */
-    public static String ComponentSurfaceDesignRegistry_getComponentSurfaceDesign_componentSurfaceDesignRegistryNotAvailable;
+    public static String ComponentSurfaceDesignRegistry_getComponentSurfaceDesign_componentSurfaceDesignRegistryNotAvailable = ""; //$NON-NLS-1$
 
     /** The component surface design identifier is not registered. */
-    public static String ComponentSurfaceDesignRegistry_getComponentSurfaceDesign_unknownComponentSurfaceDesignId;
+    public static String ComponentSurfaceDesignRegistry_getComponentSurfaceDesign_unknownComponentSurfaceDesignId = ""; //$NON-NLS-1$
 
     // --- ContainerContentChangedEvent -------------------------------------
 
     /** The component index is negative. */
-    public static String ContainerContentChangedEvent_ctor_componentIndex_negative;
+    public static String ContainerContentChangedEvent_ctor_componentIndex_negative = ""; //$NON-NLS-1$
 
     // --- ContainerLayoutRegistry ------------------------------------------
 
     /** The container layout registry is not available. */
-    public static String ContainerLayoutRegistry_getContainerLayout_containerLayoutRegistryNotAvailable;
+    public static String ContainerLayoutRegistry_getContainerLayout_containerLayoutRegistryNotAvailable = ""; //$NON-NLS-1$
 
     /** The container layout identifier is not registered. */
-    public static String ContainerLayoutRegistry_getContainerLayout_unknownContainerLayoutId;
+    public static String ContainerLayoutRegistry_getContainerLayout_unknownContainerLayoutId = ""; //$NON-NLS-1$
 
     // --- ContainerLayouts.NullContainerLayout -----------------------------
 
     /** The component index is negative. */
-    public static String ContainerLayouts_NullContainerLayout_getComponentOffsetAt_index_negative;
+    public static String ContainerLayouts_NullContainerLayout_getComponentOffsetAt_index_negative = ""; //$NON-NLS-1$
 
     // --- MultiThreadedTableEnvironmentContext -----------------------------
 
     /** Failed to cancel the event notification task. */
-    public static String MultiThreadedTableEnvironmentContext_dispose_cancelFailed;
+    public static String MultiThreadedTableEnvironmentContext_dispose_cancelFailed = ""; //$NON-NLS-1$
 
     /**
      * The table environment lock was not held when submitting an event
      * notification.
      */
-    public static String MultiThreadedTableEnvironmentContext_fireEventNotification_tableEnvironmentLockNotHeld;
+    public static String MultiThreadedTableEnvironmentContext_fireEventNotification_tableEnvironmentLockNotHeld = ""; //$NON-NLS-1$
 
     // --- SingleThreadedTableEnvironmentContext ----------------------------
 
@@ -115,7 +116,7 @@ final class NonNlsMessages
      * The table environment lock was not held when submitting an event
      * notification.
      */
-    public static String SingleThreadedTableEnvironmentContext_fireEventNotification_tableEnvironmentLockNotHeld;
+    public static String SingleThreadedTableEnvironmentContext_fireEventNotification_tableEnvironmentLockNotHeld = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -154,12 +155,10 @@ final class NonNlsMessages
      * @return The formatted message indicating the component strategy
      *         identifier is not registered; never {@code null}.
      */
-    /* @NonNull */
     static String ComponentStrategyRegistry_getComponentStrategy_unknownComponentStrategyId(
-        /* @NonNull */
         final ComponentStrategyId componentStrategyId )
     {
-        return bind( ComponentStrategyRegistry_getComponentStrategy_unknownComponentStrategyId, componentStrategyId );
+        return nonNull( bind( ComponentStrategyRegistry_getComponentStrategy_unknownComponentStrategyId, componentStrategyId ) );
     }
 
     /**
@@ -173,12 +172,10 @@ final class NonNlsMessages
      *         identifier is not associated with a container strategy; never
      *         {@code null}.
      */
-    /* @NonNull */
     static String ComponentStrategyRegistry_getContainerStrategy_notContainerStrategy(
-        /* @NonNull */
         final ComponentStrategyId componentStrategyId )
     {
-        return bind( ComponentStrategyRegistry_getContainerStrategy_notContainerStrategy, componentStrategyId );
+        return nonNull( bind( ComponentStrategyRegistry_getContainerStrategy_notContainerStrategy, componentStrategyId ) );
     }
 
     // --- ComponentSurfaceDesignRegistry -----------------------------------
@@ -193,12 +190,10 @@ final class NonNlsMessages
      * @return The formatted message indicating the component surface design
      *         identifier is not registered; never {@code null}.
      */
-    /* @NonNull */
     static String ComponentSurfaceDesignRegistry_getComponentSurfaceDesign_unknownComponentSurfaceDesignId(
-        /* @NonNull */
         final ComponentSurfaceDesignId componentSurfaceDesignId )
     {
-        return bind( ComponentSurfaceDesignRegistry_getComponentSurfaceDesign_unknownComponentSurfaceDesignId, componentSurfaceDesignId );
+        return nonNull( bind( ComponentSurfaceDesignRegistry_getComponentSurfaceDesign_unknownComponentSurfaceDesignId, componentSurfaceDesignId ) );
     }
 
     // --- ContainerLayoutRegistry ------------------------------------------
@@ -213,11 +208,9 @@ final class NonNlsMessages
      * @return The formatted message indicating the container layout identifier
      *         is not registered; never {@code null}.
      */
-    /* @NonNull */
     static String ContainerLayoutRegistry_getContainerLayout_unknownContainerLayoutId(
-        /* @NonNull */
         final ContainerLayoutId containerLayoutId )
     {
-        return bind( ContainerLayoutRegistry_getContainerLayout_unknownContainerLayoutId, containerLayoutId );
+        return nonNull( bind( ContainerLayoutRegistry_getContainerLayout_unknownContainerLayoutId, containerLayoutId ) );
     }
 }

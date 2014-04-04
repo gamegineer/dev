@@ -1,6 +1,6 @@
 /*
  * TableEnvironment.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.core.impl;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
@@ -60,11 +59,8 @@ final class TableEnvironment
      *        The table environment context; must not be {@code null}.
      */
     TableEnvironment(
-        /* @NonNull */
         final ITableEnvironmentContext context )
     {
-        assert context != null;
-
         context_ = context;
     }
 
@@ -81,8 +77,6 @@ final class TableEnvironment
         final Object memento )
         throws MementoException
     {
-        assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
-
         return ComponentFactory.createComponent( this, memento );
     }
 
@@ -93,8 +87,6 @@ final class TableEnvironment
     public IComponent createComponent(
         final IComponentStrategy strategy )
     {
-        assertArgumentNotNull( strategy, "strategy" ); //$NON-NLS-1$
-
         return new Component( this, strategy );
     }
 
@@ -105,8 +97,6 @@ final class TableEnvironment
     public IContainer createContainer(
         final IContainerStrategy strategy )
     {
-        assertArgumentNotNull( strategy, "strategy" ); //$NON-NLS-1$
-
         return new Container( this, strategy );
     }
 
@@ -127,10 +117,8 @@ final class TableEnvironment
      */
     @GuardedBy( "getLock()" )
     void fireEventNotification(
-        /* @NonNull */
         final Runnable eventNotification )
     {
-        assert eventNotification != null;
         assert getLock().isHeldByCurrentThread();
 
         context_.fireEventNotification( eventNotification );

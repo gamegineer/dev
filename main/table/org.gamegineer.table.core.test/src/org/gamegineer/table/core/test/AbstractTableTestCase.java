@@ -1,6 +1,6 @@
 /*
  * AbstractTableTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,6 +30,8 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.List;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.gamegineer.common.core.util.memento.test.AbstractMementoOriginatorTestCase;
 import org.gamegineer.table.core.ComponentPath;
@@ -51,6 +53,7 @@ import org.junit.Test;
  * @param <TableType>
  *        The type of the table.
  */
+@NonNullByDefault( false )
 public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableEnvironment, TableType extends ITable>
     extends AbstractMementoOriginatorTestCase
 {
@@ -105,6 +108,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     protected final IMementoOriginator createMementoOriginator()
         throws Exception
     {
+        assertNotNull( tableEnvironment_ );
         return createTable( tableEnvironment_ );
     }
 
@@ -119,9 +123,9 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract TableType createTable(
-        /* @NonNull */
+        @NonNull
         TableEnvironmentType tableEnvironment )
         throws Exception;
 
@@ -130,7 +134,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
      * 
      * @return The table environment for use in the fixture; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     protected final TableEnvironmentType createTableEnvironment()
     {
         return createTableEnvironment( new SingleThreadedTableEnvironmentContext() );
@@ -144,13 +148,10 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
      *        The table environment context; must not be {@code null}.
      * 
      * @return The table environment for use in the fixture; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract TableEnvironmentType createTableEnvironment(
-        /* @NonNull */
+        @NonNull
         final ITableEnvironmentContext context );
 
     /**
@@ -159,9 +160,10 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
      * 
      * @return A new component; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private IComponent createUniqueComponent()
     {
+        assertNotNull( tableEnvironment_ );
         return TestComponents.createUniqueComponent( tableEnvironment_ );
     }
 
@@ -171,9 +173,10 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
      * 
      * @return A new container; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private IContainer createUniqueContainer()
     {
+        assertNotNull( tableEnvironment_ );
         return TestComponents.createUniqueContainer( tableEnvironment_ );
     }
 
@@ -216,16 +219,6 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
-     * Ensures the {@link ITable#getComponent} method throws an exception when
-     * passed a {@code null} path.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetComponent_Path_Null()
-    {
-        table_.getComponent( (ComponentPath)null );
-    }
-
-    /**
      * Ensures the {@link ITable#getComponent} method returns the correct
      * component when passed a path that is present.
      */
@@ -240,9 +233,15 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
         final IComponent expectedComponent = createUniqueComponent();
         expectedContainer.addComponent( expectedComponent );
 
-        final IComponent actualTabletop = table_.getComponent( expectedTabletop.getPath() );
-        final IComponent actualContainer = table_.getComponent( expectedContainer.getPath() );
-        final IComponent actualComponent = table_.getComponent( expectedComponent.getPath() );
+        final ComponentPath expectedTabletopPath = expectedTabletop.getPath();
+        assertNotNull( expectedTabletopPath );
+        final IComponent actualTabletop = table_.getComponent( expectedTabletopPath );
+        final ComponentPath expectedContainerPath = expectedContainer.getPath();
+        assertNotNull( expectedContainerPath );
+        final IComponent actualContainer = table_.getComponent( expectedContainerPath );
+        final ComponentPath expectedComponentPath = expectedComponent.getPath();
+        assertNotNull( expectedComponentPath );
+        final IComponent actualComponent = table_.getComponent( expectedComponentPath );
 
         assertSame( expectedTabletop, actualTabletop );
         assertSame( expectedContainer, actualContainer );
@@ -336,16 +335,6 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     }
 
     /**
-     * Ensures the {@link ITable#getComponents} method throws an exception when
-     * passed a {@code null} location.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetComponents_Location_Null()
-    {
-        table_.getComponents( null );
-    }
-
-    /**
      * Ensures the {@link ITable#getComponents} method returns a copy of the
      * component collection.
      */
@@ -368,16 +357,6 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     public void testGetComponents_ReturnValue_NonNull()
     {
         assertNotNull( table_.getComponents( new Point( Integer.MIN_VALUE, Integer.MIN_VALUE ) ) );
-    }
-
-    /**
-     * Ensures the {@link ITable#getExtension} method throws an exception when
-     * passed a {@code null} type.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetExtension_Type_Null()
-    {
-        table_.getExtension( null );
     }
 
     /**

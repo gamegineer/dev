@@ -22,7 +22,7 @@
 package org.gamegineer.table.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import org.eclipse.jdt.annotation.Nullable;
 import net.jcip.annotations.ThreadSafe;
 
 /**
@@ -72,23 +72,17 @@ public class ContainerContentChangedEvent
      *        the event was fired.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code source} is {@code null} or if {@code componentIndex} is
-     *         negative.
-     * @throws java.lang.NullPointerException
-     *         If {@code component} is {@code null}.
+     *         If {@code componentIndex} is negative.
      */
     public ContainerContentChangedEvent(
-        /* @NonNull */
         final IContainer source,
-        /* @NonNull */
+        @Nullable
         final ComponentPath containerPath,
-        /* @NonNull */
         final IComponent component,
         final int componentIndex )
     {
         super( source, containerPath );
 
-        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
         assertArgumentLegal( componentIndex >= 0, "componentIndex", NonNlsMessages.ContainerContentChangedEvent_ctor_componentIndex_negative ); //$NON-NLS-1$
 
         component_ = component;
@@ -105,7 +99,6 @@ public class ContainerContentChangedEvent
      * 
      * @return The component associated with the event; never {@code null}.
      */
-    /* @NonNull */
     public final IComponent getComponent()
     {
         return component_;

@@ -1,6 +1,6 @@
 /*
  * ComponentSurfaceDesign.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 package org.gamegineer.table.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Dimension;
 import net.jcip.annotations.Immutable;
 
@@ -59,13 +59,9 @@ public final class ComponentSurfaceDesign
      * 
      * @throws java.lang.IllegalArgumentException
      *         If the width or height of {@code size} is negative.
-     * @throws java.lang.NullPointerException
-     *         If {@code id} or {@code size} is {@code null}.
      */
     public ComponentSurfaceDesign(
-        /* @NonNull */
         final ComponentSurfaceDesignId id,
-        /* @NonNull */
         final Dimension size )
     {
         this( id, size.width, size.height );
@@ -84,16 +80,12 @@ public final class ComponentSurfaceDesign
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code width} or {@code height} is negative.
-     * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
      */
     public ComponentSurfaceDesign(
-        /* @NonNull */
         final ComponentSurfaceDesignId id,
         final int width,
         final int height )
     {
-        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
         assertArgumentLegal( width >= 0, "width", NonNlsMessages.ComponentSurfaceDesign_ctor_width_negative ); //$NON-NLS-1$
         assertArgumentLegal( height >= 0, "height", NonNlsMessages.ComponentSurfaceDesign_ctor_height_negative ); //$NON-NLS-1$
 
@@ -111,7 +103,6 @@ public final class ComponentSurfaceDesign
      * 
      * @return The component surface design identifier; never {@code null}.
      */
-    /* @NonNull */
     public ComponentSurfaceDesignId getId()
     {
         return id_;
@@ -123,7 +114,6 @@ public final class ComponentSurfaceDesign
      * @return The component surface design size in table coordinates; never
      *         {@code null}.
      */
-    /* @NonNull */
     public Dimension getSize()
     {
         return new Dimension( size_ );
@@ -142,6 +132,6 @@ public final class ComponentSurfaceDesign
         sb.append( ", size_=" ); //$NON-NLS-1$
         sb.append( size_ );
         sb.append( "]" ); //$NON-NLS-1$
-        return sb.toString();
+        return nonNull( sb.toString() );
     }
 }

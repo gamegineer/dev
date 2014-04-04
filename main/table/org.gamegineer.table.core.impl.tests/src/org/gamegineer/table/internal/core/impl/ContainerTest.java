@@ -1,6 +1,6 @@
 /*
  * ContainerTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,10 @@
 package org.gamegineer.table.internal.core.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ITable;
@@ -35,6 +38,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link Container} class.
  */
+@NonNullByDefault( false )
 public final class ContainerTest
 {
     // ======================================================================
@@ -70,16 +74,41 @@ public final class ContainerTest
      * 
      * @return A new component; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private Component createUniqueComponent()
     {
-        final Component component = new Component( tableEnvironment_, TestComponentStrategies.createUniqueComponentStrategy() );
+        final Component component = new Component( getTableEnvironment(), TestComponentStrategies.createUniqueComponentStrategy() );
         for( final ComponentOrientation orientation : component.getSupportedOrientations() )
         {
+            assert orientation != null;
             component.setSurfaceDesign( orientation, TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         }
 
         return component;
+    }
+
+    /**
+     * Gets the container under test in the fixture.
+     * 
+     * @return The container under test in the fixture; never {@code null}.
+     */
+    @NonNull
+    private Container getContainer()
+    {
+        assertNotNull( container_ );
+        return container_;
+    }
+
+    /**
+     * Gets the fixture table environment.
+     * 
+     * @return The fixture table environment; never {@code null}.
+     */
+    @NonNull
+    private TableEnvironment getTableEnvironment()
+    {
+        assertNotNull( tableEnvironment_ );
+        return tableEnvironment_;
     }
 
     /**
@@ -92,8 +121,8 @@ public final class ContainerTest
     public void setUp()
         throws Exception
     {
-        tableEnvironment_ = new TableEnvironment( new SingleThreadedTableEnvironmentContext() );
-        container_ = new Container( tableEnvironment_, TestComponentStrategies.createUniqueContainerStrategy() );
+        final TableEnvironment tableEnvironment = tableEnvironment_ = new TableEnvironment( new SingleThreadedTableEnvironmentContext() );
+        container_ = new Container( tableEnvironment, TestComponentStrategies.createUniqueContainerStrategy() );
     }
 
     /**
@@ -104,17 +133,17 @@ public final class ContainerTest
     @Test( expected = AssertionError.class )
     public void testGetChildPath_Component_Absent_AssociatedTable()
     {
-        final ITable table = tableEnvironment_.createTable();
-        table.getTabletop().addComponent( container_ );
+        final ITable table = getTableEnvironment().createTable();
+        table.getTabletop().addComponent( getContainer() );
 
-        container_.getLock().lock();
+        getContainer().getLock().lock();
         try
         {
-            container_.getChildPath( createUniqueComponent() );
+            getContainer().getChildPath( createUniqueComponent() );
         }
         finally
         {
-            container_.getLock().unlock();
+            getContainer().getLock().unlock();
         }
     }
 
@@ -126,22 +155,22 @@ public final class ContainerTest
     @Test
     public void testGetChildPath_Component_Present_AssociatedTable()
     {
-        final ITable table = tableEnvironment_.createTable();
-        table.getTabletop().addComponent( container_ );
+        final ITable table = getTableEnvironment().createTable();
+        table.getTabletop().addComponent( getContainer() );
         final Component component = createUniqueComponent();
-        container_.addComponent( createUniqueComponent() );
-        container_.addComponent( component );
-        container_.addComponent( createUniqueComponent() );
+        getContainer().addComponent( createUniqueComponent() );
+        getContainer().addComponent( component );
+        getContainer().addComponent( createUniqueComponent() );
 
         final ComponentPath actualValue;
-        container_.getLock().lock();
+        getContainer().getLock().lock();
         try
         {
-            actualValue = container_.getChildPath( component );
+            actualValue = getContainer().getChildPath( component );
         }
         finally
         {
-            container_.getLock().unlock();
+            getContainer().getLock().unlock();
         }
 
         assertEquals( new ComponentPath( new ComponentPath( new ComponentPath( null, 0 ), 0 ), 1 ), actualValue );
@@ -155,17 +184,17 @@ public final class ContainerTest
     public void testGetChildPath_Container_NoAssociatedTable()
     {
         final Component component = createUniqueComponent();
-        container_.addComponent( component );
+        getContainer().addComponent( component );
 
         final ComponentPath actualValue;
-        container_.getLock().lock();
+        getContainer().getLock().lock();
         try
         {
-            actualValue = container_.getChildPath( component );
+            actualValue = getContainer().getChildPath( component );
         }
         finally
         {
-            container_.getLock().unlock();
+            getContainer().getLock().unlock();
         }
 
         assertNull( actualValue );

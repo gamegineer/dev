@@ -1,6 +1,6 @@
 /*
  * ComponentOrientation.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -53,11 +53,8 @@ public abstract class ComponentOrientation
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code ordinal} is negative.
-     * @throws java.lang.NullPointerException
-     *         If {@code name} is {@code null}.
      */
     protected ComponentOrientation(
-        /* @NonNull */
         final String name,
         final int ordinal )
     {
@@ -79,6 +76,5 @@ public abstract class ComponentOrientation
      * 
      * @return The inverse of this component orientation; never {@code null}.
      */
-    /* @NonNull */
     public abstract ComponentOrientation inverse();
 }

@@ -21,8 +21,10 @@
 
 package org.gamegineer.table.core;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.EventObject;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * An event fired by a container.
@@ -44,6 +46,7 @@ public class ContainerEvent
      * The path of the container that fired the event at the time the event was
      * fired.
      */
+    @Nullable
     private final ComponentPath containerPath_;
 
     /** The thread on which the event originated. */
@@ -62,20 +65,16 @@ public class ContainerEvent
      * @param containerPath
      *        The path of the container that fired the event at the time the
      *        event was fired; may be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code source} is {@code null}.
      */
     public ContainerEvent(
-        /* @NonNull */
         final IContainer source,
-        /* @Nullable */
+        @Nullable
         final ComponentPath containerPath )
     {
         super( source );
 
         containerPath_ = containerPath;
-        thread_ = Thread.currentThread();
+        thread_ = nonNull( Thread.currentThread() );
     }
 
 
@@ -88,10 +87,9 @@ public class ContainerEvent
      * 
      * @return The container that fired the event; never {@code null}.
      */
-    /* @NonNull */
     public final IContainer getContainer()
     {
-        return (IContainer)getSource();
+        return nonNull( (IContainer)getSource() );
     }
 
     /**
@@ -101,7 +99,7 @@ public class ContainerEvent
      * @return The path of the container that fired the event at the time the
      *         event was fired; may be {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     public final ComponentPath getContainerPath()
     {
         return containerPath_;
@@ -112,7 +110,6 @@ public class ContainerEvent
      * 
      * @return The thread on which the event originated; never {@code null}.
      */
-    /* @NonNull */
     public final Thread getThread()
     {
         return thread_;

@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.core.dnd.test;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -30,6 +31,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.IComponent;
@@ -48,6 +52,7 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IDragContext} interface.
  */
+@NonNullByDefault( false )
 public abstract class AbstractDragContextTestCase
 {
     // ======================================================================
@@ -55,6 +60,7 @@ public abstract class AbstractDragContextTestCase
     // ======================================================================
 
     /** The default component surface design for use in the fixture. */
+    @NonNull
     private static final ComponentSurfaceDesign DEFAULT_SURFACE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "defaultSurfaceDesign" ), 10, 10 ); //$NON-NLS-1$
 
     /** The location where the drag-and-drop operation is begun. */
@@ -117,7 +123,7 @@ public abstract class AbstractDragContextTestCase
      * 
      * @return A new drag strategy factory; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private static IDragStrategyFactory createFixtureDragStrategyFactory()
     {
         return new IDragStrategyFactory()
@@ -142,10 +148,14 @@ public abstract class AbstractDragContextTestCase
                     public List<IComponent> getDragComponents()
                     {
                         // drag the target component and the sibling immediately above it, if present
-                        final List<IComponent> components = component.getContainer().getComponents();
-                        final int beginIndex = component.getPath().getIndex();
+                        final IContainer container = component.getContainer();
+                        assertNotNull( container );
+                        final List<IComponent> components = container.getComponents();
+                        final ComponentPath componentPath = component.getPath();
+                        assertNotNull( componentPath );
+                        final int beginIndex = componentPath.getIndex();
                         final int endIndex = ((beginIndex + 1) < components.size()) ? (beginIndex + 1) : (components.size() - 1);
-                        return components.subList( beginIndex, endIndex + 1 );
+                        return nonNull( components.subList( beginIndex, endIndex + 1 ) );
                     }
                 };
             }
@@ -158,7 +168,7 @@ public abstract class AbstractDragContextTestCase
      * 
      * @return A new component; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private IComponent createUniqueComponent()
     {
         return createUniqueComponent( 0, 0 );
@@ -175,7 +185,7 @@ public abstract class AbstractDragContextTestCase
      * 
      * @return A new component; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private IComponent createUniqueComponent(
         final int x,
         final int y )
@@ -197,7 +207,7 @@ public abstract class AbstractDragContextTestCase
      * 
      * @return A new container; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private IContainer createUniqueContainer(
         final int x,
         final int y )
@@ -213,7 +223,7 @@ public abstract class AbstractDragContextTestCase
      * 
      * @return The table associated with the fixture; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract ITable getTable();
 
     /**
@@ -244,14 +254,14 @@ public abstract class AbstractDragContextTestCase
         preDragComponentStates_.add( new PreDragComponentState( dragComponent1 ) );
         preDragComponentStates_.add( new PreDragComponentState( dragComponent2 ) );
 
-        targetContainer_ = createUniqueContainer( 50, 50 );
-        targetContainer_.addComponent( createUniqueComponent( 50, 50 ) );
-        targetContainer_.addComponent( createUniqueComponent( 55, 50 ) );
-        table_.getTabletop().addComponent( targetContainer_ );
+        final IContainer targetContainer = targetContainer_ = createUniqueContainer( 50, 50 );
+        targetContainer.addComponent( createUniqueComponent( 50, 50 ) );
+        targetContainer.addComponent( createUniqueComponent( 55, 50 ) );
+        table_.getTabletop().addComponent( targetContainer );
 
-        beginDragLocation_ = new Point( 0, 0 );
+        final Point beginDragLocation = beginDragLocation_ = new Point( 0, 0 );
 
-        dragContext_ = dragSource_.beginDrag( beginDragLocation_, dragComponent1, createFixtureDragStrategyFactory() );
+        dragContext_ = dragSource_.beginDrag( beginDragLocation, dragComponent1, createFixtureDragStrategyFactory() );
         assertNotNull( dragContext_ );
         mobileContainer_ = dragComponent1.getContainer();
     }
@@ -268,7 +278,9 @@ public abstract class AbstractDragContextTestCase
         for( final PreDragComponentState preDragComponentState : preDragComponentStates_ )
         {
             assertSame( preDragComponentState.container, preDragComponentState.component.getContainer() );
-            assertEquals( preDragComponentState.index, preDragComponentState.component.getPath().getIndex() );
+            final ComponentPath componentPath = preDragComponentState.component.getPath();
+            assertNotNull( componentPath );
+            assertEquals( preDragComponentState.index, componentPath.getIndex() );
         }
     }
 
@@ -346,16 +358,6 @@ public abstract class AbstractDragContextTestCase
     }
 
     /**
-     * Ensures the {@link IDragContext#drag} method throws an exception when
-     * passed a {@code null} location.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testDrag_Location_Null()
-    {
-        dragContext_.drag( null );
-    }
-
-    /**
      * Ensures the {@link IDragContext#drag} method throws an exception when the
      * drag context state is illegal because a drag-and-drop operation is not
      * active.
@@ -381,7 +383,9 @@ public abstract class AbstractDragContextTestCase
         for( final PreDragComponentState preDragComponentState : preDragComponentStates_ )
         {
             assertSame( targetContainer_, preDragComponentState.component.getContainer() );
-            assertEquals( targetContainer_.getComponentCount() - (preDragComponentStates_.size() - index), preDragComponentState.component.getPath().getIndex() );
+            final ComponentPath componentPath = preDragComponentState.component.getPath();
+            assertNotNull( componentPath );
+            assertEquals( targetContainer_.getComponentCount() - (preDragComponentStates_.size() - index), componentPath.getIndex() );
             ++index;
         }
     }
@@ -436,7 +440,7 @@ public abstract class AbstractDragContextTestCase
                     @Override
                     public List<IComponent> getDragComponents()
                     {
-                        return Collections.singletonList( component );
+                        return nonNull( Collections.singletonList( component ) );
                     }
                 };
             }
@@ -449,7 +453,9 @@ public abstract class AbstractDragContextTestCase
         dragContext_.drop( new Point( 0, 0 ) );
 
         assertEquals( preDragComponentState.container, component.getContainer() );
-        assertEquals( preDragComponentState.index, component.getPath().getIndex() );
+        final ComponentPath componentPath = component.getPath();
+        assertNotNull( componentPath );
+        assertEquals( preDragComponentState.index, componentPath.getIndex() );
         assertEquals( preDragComponentState.location, component.getLocation() );
     }
 
@@ -466,16 +472,6 @@ public abstract class AbstractDragContextTestCase
         dragContext_.drop( new Point( 0, 0 ) );
 
         assertNotNull( dragSource_.beginDrag( new Point( 0, 0 ), component, PassiveDragStrategyFactory.INSTANCE ) );
-    }
-
-    /**
-     * Ensures the {@link IDragContext#drop} method throws an exception when
-     * passed a {@code null} location.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testDrop_Location_Null()
-    {
-        dragContext_.drop( null );
     }
 
     /**
@@ -520,11 +516,13 @@ public abstract class AbstractDragContextTestCase
         // ==================================================================
 
         /** The component being dragged. */
+        @NonNull
         final IComponent component;
 
         /**
          * The component container before the drag-and-drop operation began.
          */
+        @NonNull
         final IContainer container;
 
         /**
@@ -537,6 +535,7 @@ public abstract class AbstractDragContextTestCase
          * The component location in table coordinates before the drag-and-drop
          * operation began.
          */
+        @NonNull
         final Point location;
 
 
@@ -552,14 +551,17 @@ public abstract class AbstractDragContextTestCase
          *        The component being dragged; must not be {@code null}.
          */
         PreDragComponentState(
-            /* @NonNull */
+            @NonNull
             final IComponent component )
         {
-            assert component != null;
-
             this.component = component;
-            this.container = component.getContainer();
-            this.index = component.getPath().getIndex();
+            @SuppressWarnings( "hiding" )
+            final IContainer container = component.getContainer();
+            assertNotNull( container );
+            this.container = container;
+            final ComponentPath componentPath = component.getPath();
+            assertNotNull( componentPath );
+            this.index = componentPath.getIndex();
             this.location = component.getLocation();
         }
     }

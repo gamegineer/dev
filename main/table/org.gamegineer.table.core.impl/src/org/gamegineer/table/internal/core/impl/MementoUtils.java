@@ -1,6 +1,6 @@
 /*
  * MementoUtils.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -67,20 +67,12 @@ final class MementoUtils
      *         contain the attribute, the attribute value is {@code null}, or
      *         the attribute value is of the wrong type.
      */
-    /* @NonNull */
     static <T> T getAttribute(
-        /* @NonNull */
         final Object memento,
-        /* @NonNull */
         final String name,
-        /* @NonNull */
         final Class<T> type )
         throws MementoException
     {
-        assert memento != null;
-        assert name != null;
-        assert type != null;
-
         if( !(memento instanceof Map<?, ?>) )
         {
             throw new MementoException( NonNlsMessages.MementoUtils_memento_wrongType );
@@ -127,15 +119,10 @@ final class MementoUtils
      *         If the memento is not of type {@code Map}.
      */
     static boolean hasAttribute(
-        /* @NonNull */
         final Object memento,
-        /* @NonNull */
         final String name )
         throws MementoException
     {
-        assert memento != null;
-        assert name != null;
-
         if( !(memento instanceof Map<?, ?>) )
         {
             throw new MementoException( NonNlsMessages.MementoUtils_memento_wrongType );

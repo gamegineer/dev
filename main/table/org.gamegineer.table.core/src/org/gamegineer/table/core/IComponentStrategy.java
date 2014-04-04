@@ -1,6 +1,6 @@
 /*
  * IComponentStrategy.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,6 +24,7 @@ package org.gamegineer.table.core;
 import java.awt.Point;
 import java.util.Collection;
 import java.util.Map;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A strategy for customizing the behavior of a component.
@@ -41,7 +42,6 @@ public interface IComponentStrategy
      * 
      * @return The default component location; never {@code null}.
      */
-    /* @NonNull */
     public Point getDefaultLocation();
 
     /**
@@ -49,7 +49,6 @@ public interface IComponentStrategy
      * 
      * @return The default component orientation; never {@code null}.
      */
-    /* @NonNull */
     public ComponentOrientation getDefaultOrientation();
 
     /**
@@ -57,7 +56,6 @@ public interface IComponentStrategy
      * 
      * @return The default component origin; never {@code null}.
      */
-    /* @NonNull */
     public Point getDefaultOrigin();
 
     /**
@@ -68,7 +66,6 @@ public interface IComponentStrategy
      *         identical to the keys in the collection returned from
      *         {@link #getSupportedOrientations}.
      */
-    /* @NonNull */
     public Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns();
 
     /**
@@ -83,13 +80,9 @@ public interface IComponentStrategy
      * @return The component strategy extension of the specified type or
      *         {@code null} if the component strategy does not support the
      *         specified extension.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code type} is {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     public <T> T getExtension(
-        /* @NonNull */
         Class<T> type );
 
     /**
@@ -97,7 +90,6 @@ public interface IComponentStrategy
      * 
      * @return The component strategy identifier; never {@code null}.
      */
-    /* @NonNull */
     public ComponentStrategyId getId();
 
     /**
@@ -108,6 +100,5 @@ public interface IComponentStrategy
      *         the component; never {@code null}. The returned collection is
      *         guaranteed to not be empty.
      */
-    /* @NonNull */
     public Collection<ComponentOrientation> getSupportedOrientations();
 }

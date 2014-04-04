@@ -1,6 +1,6 @@
 /*
  * ContainerLayoutExtensionFactory.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.core.impl.layouts;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +31,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IExecutableExtensionFactory;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.IContainerLayout;
 import org.gamegineer.table.internal.core.impl.BundleConstants;
@@ -56,6 +58,7 @@ public final class ContainerLayoutExtensionFactory
     private static final Map<ContainerLayoutId, IContainerLayout> CONTAINER_LAYOUTS;
 
     /** The identifier of the container layouts to create. */
+    @Nullable
     private ContainerLayoutId containerLayoutId_;
 
 
@@ -74,7 +77,7 @@ public final class ContainerLayoutExtensionFactory
         containerLayouts.put( InternalContainerLayouts.ACCORDIAN_RIGHT.getId(), InternalContainerLayouts.ACCORDIAN_RIGHT );
         containerLayouts.put( InternalContainerLayouts.ACCORDIAN_UP.getId(), InternalContainerLayouts.ACCORDIAN_UP );
         containerLayouts.put( InternalContainerLayouts.STACKED.getId(), InternalContainerLayouts.STACKED );
-        CONTAINER_LAYOUTS = Collections.unmodifiableMap( containerLayouts );
+        CONTAINER_LAYOUTS = nonNull( Collections.unmodifiableMap( containerLayouts ) );
     }
 
     /**
@@ -100,6 +103,7 @@ public final class ContainerLayoutExtensionFactory
         final IContainerLayout containerLayout = CONTAINER_LAYOUTS.get( containerLayoutId_ );
         if( containerLayout == null )
         {
+            assert containerLayoutId_ != null;
             throw new CoreException( new Status( Status.ERROR, BundleConstants.SYMBOLIC_NAME, NonNlsMessages.ContainerLayoutExtensionFactory_create_unknownId( containerLayoutId_ ) ) );
         }
 
@@ -111,13 +115,18 @@ public final class ContainerLayoutExtensionFactory
      */
     @Override
     public void setInitializationData(
+        @Nullable
         final IConfigurationElement config,
+        @Nullable
         @SuppressWarnings( "unused" )
         final String propertyName,
+        @Nullable
         @SuppressWarnings( "unused" )
         final Object data )
         throws CoreException
     {
+        assert config != null;
+
         final String idString = config.getAttribute( ATTR_ID );
         if( idString == null )
         {

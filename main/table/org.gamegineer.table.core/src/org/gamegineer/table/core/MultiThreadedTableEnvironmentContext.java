@@ -1,6 +1,6 @@
 /*
  * MultiThreadedTableEnvironmentContext.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,8 @@
 
 package org.gamegineer.table.core;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -69,7 +69,7 @@ public final class MultiThreadedTableEnvironmentContext
         eventNotifications_ = new LinkedBlockingQueue<>();
         lock_ = new TableEnvironmentLock();
 
-        eventNotificationTaskFuture_ = Activator.getDefault().getExecutorService().submit( createEventNotificationTask() );
+        eventNotificationTaskFuture_ = nonNull( Activator.getDefault().getExecutorService().submit( createEventNotificationTask() ) );
     }
 
 
@@ -83,7 +83,6 @@ public final class MultiThreadedTableEnvironmentContext
      * @return The task used to execute the event notifications; never
      *         {@code null}.
      */
-    /* @NonNull */
     private Runnable createEventNotificationTask()
     {
         return new Runnable()
@@ -115,7 +114,6 @@ public final class MultiThreadedTableEnvironmentContext
     public void fireEventNotification(
         final Runnable eventNotification )
     {
-        assertArgumentNotNull( eventNotification, "eventNotification" ); //$NON-NLS-1$
         assertStateLegal( lock_.isHeldByCurrentThread(), NonNlsMessages.MultiThreadedTableEnvironmentContext_fireEventNotification_tableEnvironmentLockNotHeld );
 
         eventNotifications_.add( eventNotification );

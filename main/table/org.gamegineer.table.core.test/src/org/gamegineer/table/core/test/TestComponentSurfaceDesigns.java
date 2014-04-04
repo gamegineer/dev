@@ -1,6 +1,6 @@
 /*
  * TestComponentSurfaceDesigns.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.core.test;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.concurrent.atomic.AtomicLong;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
@@ -68,17 +68,10 @@ public final class TestComponentSurfaceDesigns
      *        The component surface design to clone; must not be {@code null}.
      * 
      * @return A new component surface design; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code componentSurfaceDesign} is {@code null}.
      */
-    /* @NonNull */
     public static ComponentSurfaceDesign cloneComponentSurfaceDesign(
-        /* @NonNull */
         final ComponentSurfaceDesign componentSurfaceDesign )
     {
-        assertArgumentNotNull( componentSurfaceDesign, "componentSurfaceDesign" ); //$NON-NLS-1$
-
         return new ComponentSurfaceDesign( componentSurfaceDesign.getId(), componentSurfaceDesign.getSize() );
     }
 
@@ -88,7 +81,6 @@ public final class TestComponentSurfaceDesigns
      * 
      * @return A new component surface design; never {@code null}.
      */
-    /* @NonNull */
     public static ComponentSurfaceDesign createUniqueComponentSurfaceDesign()
     {
         return createUniqueComponentSurfaceDesign( 100, 100 );
@@ -110,7 +102,6 @@ public final class TestComponentSurfaceDesigns
      * @throws java.lang.IllegalArgumentException
      *         If {@code width} or {@code height} is negative.
      */
-    /* @NonNull */
     public static ComponentSurfaceDesign createUniqueComponentSurfaceDesign(
         final int width,
         final int height )
@@ -123,11 +114,10 @@ public final class TestComponentSurfaceDesigns
      * 
      * @return A unique component surface design identifier; never {@code null}.
      */
-    /* @NonNull */
     @SuppressWarnings( "boxing" )
     private static ComponentSurfaceDesignId getUniqueComponentSurfaceDesignId()
     {
-        return ComponentSurfaceDesignId.fromString( String.format( "component-surface-design-%1$d", nextComponentSurfaceDesignId_.incrementAndGet() ) ); //$NON-NLS-1$
+        return ComponentSurfaceDesignId.fromString( nonNull( String.format( "component-surface-design-%1$d", nextComponentSurfaceDesignId_.incrementAndGet() ) ) ); //$NON-NLS-1$
     }
 
     /**
@@ -139,13 +129,9 @@ public final class TestComponentSurfaceDesigns
      * 
      * @return The registered component surface design; never {@code null}.
      */
-    /* @NonNull */
     private static ComponentSurfaceDesign registerComponentSurfaceDesign(
-        /* @NonNull */
         final ComponentSurfaceDesign componentSurfaceDesign )
     {
-        assert componentSurfaceDesign != null;
-
         final IComponentSurfaceDesignRegistry componentSurfaceDesignRegistry = Activator.getDefault().getComponentSurfaceDesignRegistry();
         assert componentSurfaceDesignRegistry != null;
         componentSurfaceDesignRegistry.registerObject( componentSurfaceDesign );

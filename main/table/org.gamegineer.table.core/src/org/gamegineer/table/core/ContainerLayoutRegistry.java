@@ -1,6 +1,6 @@
 /*
  * ContainerLayoutRegistry.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.core;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.core.Activator;
 
@@ -56,19 +55,13 @@ public final class ContainerLayoutRegistry
      * @return The container layout with the specified identifier; never
      *         {@code null}.
      * 
-     * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
      * @throws org.gamegineer.table.core.NoSuchContainerLayoutException
      *         If {@code id} is not registered.
      */
-    /* @NonNull */
     public static IContainerLayout getContainerLayout(
-        /* @NonNull */
         final ContainerLayoutId id )
         throws NoSuchContainerLayoutException
     {
-        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
-
         final IContainerLayoutRegistry containerLayoutRegistry = Activator.getDefault().getContainerLayoutRegistry();
         if( containerLayoutRegistry == null )
         {

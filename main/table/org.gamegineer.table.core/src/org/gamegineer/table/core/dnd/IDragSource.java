@@ -1,6 +1,6 @@
 /*
  * IDragSource.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.table.core.dnd;
 
 import java.awt.Point;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.core.IComponent;
 
 /**
@@ -59,16 +60,10 @@ public interface IDragSource
      * @throws java.lang.IllegalStateException
      *         If there is an active drag-and-drop operation in the associated
      *         table.
-     * @throws java.lang.NullPointerException
-     *         If {@code location}, {@code component}, or
-     *         {@code dragStrategyFactory} is {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     public IDragContext beginDrag(
-        /* @NonNull */
         Point location,
-        /* @NonNull */
         IComponent component,
-        /* @NonNull */
         IDragStrategyFactory dragStrategyFactory );
 }
