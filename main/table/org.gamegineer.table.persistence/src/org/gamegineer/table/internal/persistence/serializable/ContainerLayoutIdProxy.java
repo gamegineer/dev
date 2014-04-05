@@ -1,6 +1,6 @@
 /*
  * ContainerLayoutIdProxy.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.persistence.serializable;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.Serializable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.ContainerLayoutId;
@@ -58,7 +57,7 @@ public final class ContainerLayoutIdProxy
     @SuppressWarnings( "unused" )
     private ContainerLayoutIdProxy()
     {
-        id_ = null;
+        id_ = ""; //$NON-NLS-1$
     }
 
     /**
@@ -67,16 +66,10 @@ public final class ContainerLayoutIdProxy
      * 
      * @param containerLayoutId
      *        The {@code ContainerLayoutId} instance; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code containerLayoutId} is {@code null}.
      */
     public ContainerLayoutIdProxy(
-        /* @NonNull */
         final ContainerLayoutId containerLayoutId )
     {
-        assertArgumentNotNull( containerLayoutId, "containerLayoutId" ); //$NON-NLS-1$
-
         id_ = containerLayoutId.toString();
     }
 
@@ -92,7 +85,6 @@ public final class ContainerLayoutIdProxy
      * @return A replacement object for this instance after it has been
      *         deserialized; never {@code null}.
      */
-    /* @NonNull */
     private Object readResolve()
     {
         return ContainerLayoutId.fromString( id_ );

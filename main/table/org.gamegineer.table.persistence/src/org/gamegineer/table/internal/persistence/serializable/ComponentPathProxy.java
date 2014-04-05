@@ -1,6 +1,6 @@
 /*
  * ComponentPathProxy.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.persistence.serializable;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.Serializable;
 import java.util.List;
 import net.jcip.annotations.NotThreadSafe;
@@ -60,7 +59,7 @@ public final class ComponentPathProxy
     @SuppressWarnings( "unused" )
     private ComponentPathProxy()
     {
-        indexes_ = null;
+        indexes_ = new int[ 0 ];
     }
 
     /**
@@ -69,16 +68,10 @@ public final class ComponentPathProxy
      * 
      * @param componentPath
      *        The {@code ComponentPath} instance; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code componentPath} is {@code null}.
      */
     public ComponentPathProxy(
-        /* @NonNull */
         final ComponentPath componentPath )
     {
-        assertArgumentNotNull( componentPath, "componentPath" ); //$NON-NLS-1$
-
         final List<ComponentPath> componentPaths = componentPath.toList();
         indexes_ = new int[ componentPaths.size() ];
         for( int index = 0; index < indexes_.length; ++index )
@@ -99,7 +92,6 @@ public final class ComponentPathProxy
      * @return A replacement object for this instance after it has been
      *         deserialized; never {@code null}.
      */
-    /* @NonNull */
     private Object readResolve()
     {
         assert indexes_.length > 0;
@@ -110,6 +102,7 @@ public final class ComponentPathProxy
             componentPath = new ComponentPath( componentPath, indexes_[ index ] );
         }
 
+        assert componentPath != null;
         return componentPath;
     }
 }

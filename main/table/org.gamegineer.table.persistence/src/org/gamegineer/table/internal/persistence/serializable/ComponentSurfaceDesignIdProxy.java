@@ -1,6 +1,6 @@
 /*
  * ComponentSurfaceDesignIdProxy.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.persistence.serializable;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.Serializable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
@@ -59,7 +58,7 @@ public final class ComponentSurfaceDesignIdProxy
     @SuppressWarnings( "unused" )
     private ComponentSurfaceDesignIdProxy()
     {
-        id_ = null;
+        id_ = ""; //$NON-NLS-1$
     }
 
     /**
@@ -69,16 +68,10 @@ public final class ComponentSurfaceDesignIdProxy
      * @param componentSurfaceDesignId
      *        The {@code ComponentSurfaceDesignId} instance; must not be
      *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code componentSurfaceDesignId} is {@code null}.
      */
     public ComponentSurfaceDesignIdProxy(
-        /* @NonNull */
         final ComponentSurfaceDesignId componentSurfaceDesignId )
     {
-        assertArgumentNotNull( componentSurfaceDesignId, "componentSurfaceDesignId" ); //$NON-NLS-1$
-
         id_ = componentSurfaceDesignId.toString();
     }
 
@@ -94,7 +87,6 @@ public final class ComponentSurfaceDesignIdProxy
      * @return A replacement object for this instance after it has been
      *         deserialized; never {@code null}.
      */
-    /* @NonNull */
     private Object readResolve()
     {
         return ComponentSurfaceDesignId.fromString( id_ );

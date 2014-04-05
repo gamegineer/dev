@@ -1,6 +1,6 @@
 /*
  * ComponentStrategyIdProxy.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.persistence.serializable;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.Serializable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.ComponentStrategyId;
@@ -58,7 +57,7 @@ public final class ComponentStrategyIdProxy
     @SuppressWarnings( "unused" )
     private ComponentStrategyIdProxy()
     {
-        id_ = null;
+        id_ = ""; //$NON-NLS-1$
     }
 
     /**
@@ -68,16 +67,10 @@ public final class ComponentStrategyIdProxy
      * @param componentStrategyId
      *        The {@code ComponentStrategyId} instance; must not be {@code null}
      *        .
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code componentStrategyId} is {@code null}.
      */
     public ComponentStrategyIdProxy(
-        /* @NonNull */
         final ComponentStrategyId componentStrategyId )
     {
-        assertArgumentNotNull( componentStrategyId, "componentStrategyId" ); //$NON-NLS-1$
-
         id_ = componentStrategyId.toString();
     }
 
@@ -93,7 +86,6 @@ public final class ComponentStrategyIdProxy
      * @return A replacement object for this instance after it has been
      *         deserialized; never {@code null}.
      */
-    /* @NonNull */
     private Object readResolve()
     {
         return ComponentStrategyId.fromString( id_ );

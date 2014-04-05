@@ -1,6 +1,6 @@
 /*
  * ContainerLayoutIdPersistenceDelegate.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.persistence.serializable;
 
 import java.io.IOException;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
 import org.gamegineer.table.core.ContainerLayoutId;
 
@@ -53,8 +54,10 @@ public final class ContainerLayoutIdPersistenceDelegate
     /*
      * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate#replaceObject(java.lang.Object)
      */
+    @Nullable
     @Override
     public Object replaceObject(
+        @Nullable
         final Object obj )
         throws IOException
     {
