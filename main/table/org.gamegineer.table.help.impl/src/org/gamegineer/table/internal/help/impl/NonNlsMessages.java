@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,7 +38,7 @@ final class NonNlsMessages
     // --- HelpSetProviderProxy ---------------------------------------------
 
     /** The help set is not available. */
-    public static String HelpSetProvider_getHelpSet_helpSetNotAvailable;
+    public static String HelpSetProvider_getHelpSet_helpSetNotAvailable = ""; //$NON-NLS-1$
 
 
     // ======================================================================
