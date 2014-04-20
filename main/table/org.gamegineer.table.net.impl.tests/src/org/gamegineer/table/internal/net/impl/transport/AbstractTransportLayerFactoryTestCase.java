@@ -1,6 +1,6 @@
 /*
  * AbstractTransportLayerFactoryTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,8 @@
 package org.gamegineer.table.internal.net.impl.transport;
 
 import static org.junit.Assert.assertNotNull;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,6 +31,7 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link ITransportLayerFactory} interface.
  */
+@NonNullByDefault( false )
 public abstract class AbstractTransportLayerFactoryTestCase
 {
     // ======================================================================
@@ -64,7 +67,7 @@ public abstract class AbstractTransportLayerFactoryTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract ITransportLayerFactory createTransportLayerFactory()
         throws Exception;
 
@@ -83,30 +86,11 @@ public abstract class AbstractTransportLayerFactoryTestCase
     }
 
     /**
-     * Ensures the {@link ITransportLayerFactory#createActiveTransportLayer}
-     * method throws an exception when passed a {@code null} context.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
+     * Placeholder for future interface tests.
      */
-    @Test( expected = NullPointerException.class )
-    public void testCreateActiveTransportLayer_Context_Null()
-        throws Exception
+    @Test
+    public void testDummy()
     {
-        transportLayerFactory_.createActiveTransportLayer( null );
-    }
-
-    /**
-     * Ensures the {@link ITransportLayerFactory#createPassiveTransportLayer}
-     * method throws an exception when passed a {@code null} context.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreatePassiveTransportLayer_Context_Null()
-        throws Exception
-    {
-        transportLayerFactory_.createPassiveTransportLayer( null );
+        // do nothing
     }
 }

@@ -1,6 +1,6 @@
 /*
  * FakeSelectableChannel.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,6 +28,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.spi.SelectorProvider;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Fake implementation of {@link SelectableChannel}.
@@ -55,6 +56,7 @@ class FakeSelectableChannel
     /*
      * @see java.nio.channels.SelectableChannel#blockingLock()
      */
+    @Nullable
     @Override
     public Object blockingLock()
     {
@@ -64,6 +66,7 @@ class FakeSelectableChannel
     /*
      * @see java.nio.channels.SelectableChannel#configureBlocking(boolean)
      */
+    @Nullable
     @Override
     @SuppressWarnings( "unused" )
     public SelectableChannel configureBlocking(
@@ -105,8 +108,10 @@ class FakeSelectableChannel
     /*
      * @see java.nio.channels.SelectableChannel#keyFor(java.nio.channels.Selector)
      */
+    @Nullable
     @Override
     public SelectionKey keyFor(
+        @Nullable
         @SuppressWarnings( "unused" )
         final Selector selector )
     {
@@ -116,6 +121,7 @@ class FakeSelectableChannel
     /*
      * @see java.nio.channels.SelectableChannel#provider()
      */
+    @Nullable
     @Override
     public SelectorProvider provider()
     {
@@ -125,11 +131,14 @@ class FakeSelectableChannel
     /*
      * @see java.nio.channels.SelectableChannel#register(java.nio.channels.Selector, int, java.lang.Object)
      */
+    @Nullable
     @Override
     @SuppressWarnings( "unused" )
     public SelectionKey register(
+        @Nullable
         final Selector selector,
         final int ops,
+        @Nullable
         final Object attachment )
         throws ClosedChannelException
     {

@@ -1,6 +1,6 @@
 /*
  * BeginAuthenticationRequestMessageHandlerTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,11 +21,14 @@
 
 package org.gamegineer.table.internal.net.impl.node.client.handlers;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.impl.node.IMessageHandler;
 import org.gamegineer.table.internal.net.impl.node.client.IClientNode;
@@ -41,6 +44,7 @@ import org.junit.Test;
  * A fixture for testing the {@link BeginAuthenticationRequestMessageHandler}
  * class.
  */
+@NonNullByDefault( false )
 public final class BeginAuthenticationRequestMessageHandlerTest
 {
     // ======================================================================
@@ -98,14 +102,14 @@ public final class BeginAuthenticationRequestMessageHandlerTest
         throws Exception
     {
         final String playerName = "playerName"; //$NON-NLS-1$
-        final SecureString password = new SecureString( "password".toCharArray() ); //$NON-NLS-1$
+        final SecureString password = new SecureString( nonNull( "password".toCharArray() ) ); //$NON-NLS-1$
         final IClientNode localNode = mocksControl_.createMock( IClientNode.class );
         EasyMock.expect( localNode.getPlayerName() ).andReturn( playerName );
         EasyMock.expect( localNode.getPassword() ).andReturn( new SecureString( password ) );
         final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
         EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
         final Capture<IMessage> messageCapture = new Capture<>();
-        remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.notNull( IMessageHandler.class ) );
+        remoteNodeController.sendMessage( assumeNonNull( EasyMock.capture( messageCapture ) ), EasyMock.notNull( IMessageHandler.class ) );
         mocksControl_.replay();
 
         final BeginAuthenticationRequestMessage message = new BeginAuthenticationRequestMessage();

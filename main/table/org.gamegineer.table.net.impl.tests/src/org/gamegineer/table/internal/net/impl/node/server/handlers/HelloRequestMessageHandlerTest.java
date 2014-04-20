@@ -1,6 +1,6 @@
 /*
  * HelloRequestMessageHandlerTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,11 +21,13 @@
 
 package org.gamegineer.table.internal.net.impl.node.server.handlers;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
 import static org.junit.Assert.assertEquals;
 import org.easymock.Capture;
 import org.easymock.CaptureType;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.internal.net.impl.node.IMessageHandler;
 import org.gamegineer.table.internal.net.impl.node.common.ProtocolVersions;
 import org.gamegineer.table.internal.net.impl.node.common.messages.BeginAuthenticationRequestMessage;
@@ -41,6 +43,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link HelloRequestMessageHandler} class.
  */
+@NonNullByDefault( false )
 public final class HelloRequestMessageHandlerTest
 {
     // ======================================================================
@@ -95,10 +98,10 @@ public final class HelloRequestMessageHandlerTest
     {
         final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
         final Capture<IMessage> messageCapture = new Capture<>( CaptureType.ALL );
-        remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) );
+        remoteNodeController.sendMessage( assumeNonNull( EasyMock.capture( messageCapture ) ), EasyMock.isNull( IMessageHandler.class ) );
         remoteNodeController.setChallenge( EasyMock.notNull( byte[].class ) );
         remoteNodeController.setSalt( EasyMock.notNull( byte[].class ) );
-        remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.notNull( IMessageHandler.class ) );
+        remoteNodeController.sendMessage( assumeNonNull( EasyMock.capture( messageCapture ) ), EasyMock.notNull( IMessageHandler.class ) );
         mocksControl_.replay();
 
         final HelloRequestMessage message = new HelloRequestMessage();
@@ -126,7 +129,7 @@ public final class HelloRequestMessageHandlerTest
     {
         final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
         final Capture<IMessage> messageCapture = new Capture<>();
-        remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) );
+        remoteNodeController.sendMessage( assumeNonNull( EasyMock.capture( messageCapture ) ), EasyMock.isNull( IMessageHandler.class ) );
         remoteNodeController.close( TableNetworkError.UNSUPPORTED_PROTOCOL_VERSION );
         mocksControl_.replay();
 

@@ -1,6 +1,6 @@
 /*
  * INodeLayer.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.net.impl.node;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * The node layer.
@@ -50,14 +51,10 @@ public interface INodeLayer
      * @return An asynchronous completion token for the task; never {@code null}
      *         .
      * 
-     * @throws java.lang.NullPointerException
-     *         If {@code task} is {@code null}.
      * @throws java.util.concurrent.RejectedExecutionException
      *         If the task cannot be scheduled for execution.
      */
-    /* @NonNull */
     public <T> Future<T> asyncExec(
-        /* @NonNull */
         Callable<T> task );
 
     /**
@@ -69,14 +66,10 @@ public interface INodeLayer
      * @return An asynchronous completion token for the task; never {@code null}
      *         .
      * 
-     * @throws java.lang.NullPointerException
-     *         If {@code task} is {@code null}.
      * @throws java.util.concurrent.RejectedExecutionException
      *         If the task cannot be scheduled for execution.
      */
-    /* @NonNull */
     public Future<?> asyncExec(
-        /* @NonNull */
         Runnable task );
 
     /**
@@ -100,12 +93,8 @@ public interface INodeLayer
      * 
      * @return {@code true} if the specified thread is the node layer thread;
      *         otherwise {@code false}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code thread} is {@code null}.
      */
     public boolean isNodeLayerThread(
-        /* @NonNull */
         Thread thread );
 
     /**
@@ -122,16 +111,13 @@ public interface INodeLayer
      * @throws java.lang.InterruptedException
      *         If this thread is interrupted while waiting for the task to
      *         complete.
-     * @throws java.lang.NullPointerException
-     *         If {@code task} is {@code null}.
      * @throws java.util.concurrent.ExecutionException
      *         If an error occurs while executing the task.
      * @throws java.util.concurrent.RejectedExecutionException
      *         If the task cannot be scheduled for execution.
      */
-    /* @Nullable */
+    @Nullable
     public <T> T syncExec(
-        /* @NonNull */
         Callable<T> task )
         throws ExecutionException, InterruptedException;
 
@@ -144,15 +130,12 @@ public interface INodeLayer
      * @throws java.lang.InterruptedException
      *         If this thread is interrupted while waiting for the task to
      *         complete.
-     * @throws java.lang.NullPointerException
-     *         If {@code task} is {@code null}.
      * @throws java.util.concurrent.ExecutionException
      *         If an error occurs while executing the task.
      * @throws java.util.concurrent.RejectedExecutionException
      *         If the task cannot be scheduled for execution.
      */
     public void syncExec(
-        /* @NonNull */
         Runnable task )
         throws ExecutionException, InterruptedException;
 }

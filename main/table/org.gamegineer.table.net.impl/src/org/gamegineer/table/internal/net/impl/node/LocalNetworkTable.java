@@ -1,6 +1,6 @@
 /*
  * LocalNetworkTable.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -89,17 +88,11 @@ final class LocalNetworkTable
      *        The local table; must not be {@code null}.
      */
     LocalNetworkTable(
-        /* @NonNull */
         final INodeLayer nodeLayer,
-        /* @NonNull */
         final ITableManager tableManager,
-        /* @NonNull */
         final ITable table )
     {
-        assert nodeLayer != null;
         assert nodeLayer.isNodeLayerThread();
-        assert tableManager != null;
-        assert table != null;
 
         componentListener_ = new ComponentListenerProxy( new ComponentListener() );
         containerListener_ = new ContainerListenerProxy( new ContainerListener() );
@@ -123,10 +116,8 @@ final class LocalNetworkTable
      */
     @GuardedBy( "getTableEnvironmentLock()" )
     private void addComponentListeners(
-        /* @NonNull */
         final IComponent component )
     {
-        assert component != null;
         assert LockUtils.isHeldByCurrentThread( getTableEnvironmentLock() );
 
         component.addComponentListener( componentListener_ );
@@ -139,6 +130,7 @@ final class LocalNetworkTable
 
             for( final IComponent childComponent : container.getComponents() )
             {
+                assert childComponent != null;
                 addComponentListeners( childComponent );
             }
         }
@@ -160,7 +152,6 @@ final class LocalNetworkTable
      * 
      * @return The table environment lock; never {@code null}.
      */
-    /* @NonNull */
     private Lock getTableEnvironmentLock()
     {
         return table_.getTableEnvironment().getLock();
@@ -174,8 +165,6 @@ final class LocalNetworkTable
         final ComponentPath componentPath,
         final ComponentIncrement componentIncrement )
     {
-        assertArgumentNotNull( componentPath, "componentPath" ); //$NON-NLS-1$
-        assertArgumentNotNull( componentIncrement, "componentIncrement" ); //$NON-NLS-1$
         assert nodeLayer_.isNodeLayerThread();
 
         NetworkTableUtils.incrementComponentState( table_, componentPath, componentIncrement );
@@ -205,10 +194,8 @@ final class LocalNetworkTable
      */
     @GuardedBy( "getTableEnvironmentLock()" )
     private void removeComponentListeners(
-        /* @NonNull */
         final IComponent component )
     {
-        assert component != null;
         assert LockUtils.isHeldByCurrentThread( getTableEnvironmentLock() );
 
         component.removeComponentListener( componentListener_ );
@@ -221,6 +208,7 @@ final class LocalNetworkTable
 
             for( final IComponent childComponent : container.getComponents() )
             {
+                assert childComponent != null;
                 removeComponentListeners( childComponent );
             }
         }
@@ -233,7 +221,6 @@ final class LocalNetworkTable
     public void setTableState(
         final Object tableMemento )
     {
-        assertArgumentNotNull( tableMemento, "tableMemento" ); //$NON-NLS-1$
         assert nodeLayer_.isNodeLayerThread();
 
         NetworkTableUtils.setTableState( table_, tableMemento );
@@ -250,11 +237,8 @@ final class LocalNetworkTable
      *        The task to execute; must not be {@code null}.
      */
     private void syncExec(
-        /* @NonNull */
         final Runnable task )
     {
-        assert task != null;
-
         try
         {
             nodeLayer_.syncExec( task );
@@ -322,7 +306,6 @@ final class LocalNetworkTable
         public void componentBoundsChanged(
             final ComponentEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
             assert nodeLayer_.isNodeLayerThread();
 
             if( ignoreEvent( event ) )
@@ -380,7 +363,6 @@ final class LocalNetworkTable
         public void componentOrientationChanged(
             final ComponentEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
             assert nodeLayer_.isNodeLayerThread();
 
             if( ignoreEvent( event ) )
@@ -417,7 +399,6 @@ final class LocalNetworkTable
         public void componentSurfaceDesignChanged(
             final ComponentEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
             assert nodeLayer_.isNodeLayerThread();
 
             if( ignoreEvent( event ) )
@@ -465,11 +446,8 @@ final class LocalNetworkTable
          *         ignored; otherwise {@code false}.
          */
         private boolean ignoreEvent(
-            /* @NonNull */
             final ComponentEvent event )
         {
-            assert event != null;
-
             return nodeLayer_.isNodeLayerThread( event.getThread() );
         }
     }
@@ -503,11 +481,8 @@ final class LocalNetworkTable
          *        The actual component listener; must not be {@code null}.
          */
         ComponentListenerProxy(
-            /* @NonNull */
             final IComponentListener actualComponentListener )
         {
-            assert actualComponentListener != null;
-
             actualComponentListener_ = actualComponentListener;
         }
 
@@ -600,7 +575,6 @@ final class LocalNetworkTable
         public void componentAdded(
             final ContainerContentChangedEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
             assert nodeLayer_.isNodeLayerThread();
 
             final ComponentPath containerPath;
@@ -642,7 +616,6 @@ final class LocalNetworkTable
         public void componentRemoved(
             final ContainerContentChangedEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
             assert nodeLayer_.isNodeLayerThread();
 
             final ComponentPath containerPath;
@@ -683,7 +656,6 @@ final class LocalNetworkTable
         public void containerLayoutChanged(
             final ContainerEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
             assert nodeLayer_.isNodeLayerThread();
 
             if( ignoreEvent( event ) )
@@ -724,11 +696,8 @@ final class LocalNetworkTable
          *         ignored; otherwise {@code false}.
          */
         private boolean ignoreEvent(
-            /* @NonNull */
             final ContainerEvent event )
         {
-            assert event != null;
-
             return nodeLayer_.isNodeLayerThread( event.getThread() );
         }
     }
@@ -762,11 +731,8 @@ final class LocalNetworkTable
          *        The actual container listener; must not be {@code null}.
          */
         ContainerListenerProxy(
-            /* @NonNull */
             final IContainerListener actualContainerListener )
         {
-            assert actualContainerListener != null;
-
             actualContainerListener_ = actualContainerListener;
         }
 

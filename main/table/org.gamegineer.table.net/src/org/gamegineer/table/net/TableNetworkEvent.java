@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.net;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.EventObject;
 import net.jcip.annotations.ThreadSafe;
 
@@ -50,12 +51,8 @@ public class TableNetworkEvent
      * 
      * @param source
      *        The table network that fired the event; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code source} is {@code null}.
      */
     public TableNetworkEvent(
-        /* @NonNull */
         final ITableNetwork source )
     {
         super( source );
@@ -71,9 +68,8 @@ public class TableNetworkEvent
      * 
      * @return The table network that fired the event; never {@code null}.
      */
-    /* @NonNull */
     public final ITableNetwork getTableNetwork()
     {
-        return (ITableNetwork)getSource();
+        return nonNull( (ITableNetwork)getSource() );
     }
 }

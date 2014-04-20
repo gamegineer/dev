@@ -1,6 +1,6 @@
 /*
  * PlayersMessage.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.node.common.messages;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -74,8 +74,8 @@ public final class PlayersMessage
      */
     public PlayersMessage()
     {
-        playerNames_ = Collections.emptyList();
-        playerRoles_ = Collections.emptyList();
+        playerNames_ = nonNull( Collections.<String>emptyList() );
+        playerRoles_ = nonNull( Collections.<Set<PlayerRole>>emptyList() );
     }
 
 
@@ -91,23 +91,17 @@ public final class PlayersMessage
      * 
      * @return The collection of players connected to the table network; never
      *         {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code localPlayerName} is {@code null}.
      */
-    /* @NonNull */
     public Collection<IPlayer> getPlayers(
-        /* @NonNull */
         final String localPlayerName )
     {
-        assertArgumentNotNull( localPlayerName, "localPlayerName" ); //$NON-NLS-1$
-
         assert playerNames_.size() == playerRoles_.size();
         final Collection<IPlayer> players = new ArrayList<>( playerNames_.size() );
         for( int index = 0, size = playerNames_.size(); index < size; ++index )
         {
             final String playerName = playerNames_.get( index );
             final Set<PlayerRole> playerRoles = playerRoles_.get( index );
+            assert playerRoles != null;
 
             if( playerName.equals( localPlayerName ) )
             {
@@ -128,16 +122,10 @@ public final class PlayersMessage
      * @param players
      *        The collection of players connected to the table network; must not
      *        be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code players} is {@code null}.
      */
     public void setPlayers(
-        /* @NonNull */
         final Collection<IPlayer> players )
     {
-        assertArgumentNotNull( players, "players" ); //$NON-NLS-1$
-
         playerNames_ = new ArrayList<>( players.size() );
         playerRoles_ = new ArrayList<>( players.size() );
         for( final IPlayer player : players )

@@ -1,6 +1,6 @@
 /*
  * AbstractMessageHandler.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
@@ -57,16 +57,10 @@ public abstract class AbstractMessageHandler<RemoteNodeControllerType extends IR
      * 
      * @param remoteNodeControllerType
      *        The type of the remote node controller; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code remoteNodeControllerType} is {@code null}.
      */
     protected AbstractMessageHandler(
-        /* @NonNull */
         final Class<RemoteNodeControllerType> remoteNodeControllerType )
     {
-        assertArgumentNotNull( remoteNodeControllerType, "remoteNodeControllerType" ); //$NON-NLS-1$
-
         remoteNodeControllerType_ = remoteNodeControllerType;
     }
 
@@ -96,9 +90,6 @@ public abstract class AbstractMessageHandler<RemoteNodeControllerType extends IR
         final IRemoteNodeController<?> remoteNodeController,
         final IMessage message )
     {
-        assertArgumentNotNull( remoteNodeController, "remoteNodeController" ); //$NON-NLS-1$
-        assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
-
         try
         {
             final Method method = getClass().getDeclaredMethod( "handleMessage", remoteNodeControllerType_, message.getClass() ); //$NON-NLS-1$
@@ -121,7 +112,7 @@ public abstract class AbstractMessageHandler<RemoteNodeControllerType extends IR
             errorMessage.setError( TableNetworkError.UNEXPECTED_MESSAGE );
             remoteNodeController.sendMessage( errorMessage, null );
 
-            handleUnexpectedMessage( remoteNodeControllerType_.cast( remoteNodeController ) );
+            handleUnexpectedMessage( nonNull( remoteNodeControllerType_.cast( remoteNodeController ) ) );
         }
     }
 
@@ -135,14 +126,11 @@ public abstract class AbstractMessageHandler<RemoteNodeControllerType extends IR
      * @param remoteNodeController
      *        The control interface for the remote node that received the
      *        message; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code remoteNodeController} is {@code null}.
      */
     protected void handleUnexpectedMessage(
-        /* @NonNull */
+        @SuppressWarnings( "unused" )
         final RemoteNodeControllerType remoteNodeController )
     {
-        assertArgumentNotNull( remoteNodeController, "remoteNodeController" ); //$NON-NLS-1$
+        // do nothing
     }
 }

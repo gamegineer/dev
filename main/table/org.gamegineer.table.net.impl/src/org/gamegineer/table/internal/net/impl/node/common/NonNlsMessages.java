@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,13 +38,13 @@ final class NonNlsMessages
     // --- Authenticator ----------------------------------------------------
 
     /** Failed to create an authentication response. */
-    public static String Authenticator_createResponse_failed;
+    public static String Authenticator_createResponse_failed = ""; //$NON-NLS-1$
 
     /** Failed to create a secret key. */
-    public static String Authenticator_createSecretKey_failed;
+    public static String Authenticator_createSecretKey_failed = ""; //$NON-NLS-1$
 
     /** Failed to create a secure random byte buffer. */
-    public static String Authenticator_createSecureRandomBytes_failed;
+    public static String Authenticator_createSecureRandomBytes_failed = ""; //$NON-NLS-1$
 
 
     // ======================================================================

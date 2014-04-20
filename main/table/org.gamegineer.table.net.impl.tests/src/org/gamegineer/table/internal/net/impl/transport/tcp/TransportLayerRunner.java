@@ -1,6 +1,6 @@
 /*
  * TransportLayerRunner.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,12 +21,14 @@
 
 package org.gamegineer.table.internal.net.impl.transport.tcp;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
 
 /**
@@ -59,11 +61,8 @@ final class TransportLayerRunner
      *        The transport layer; must not be {@code null}.
      */
     TransportLayerRunner(
-        /* @NonNull */
         final AbstractTransportLayer transportLayer )
     {
-        assert transportLayer != null;
-
         transportLayer_ = transportLayer;
     }
 
@@ -90,6 +89,7 @@ final class TransportLayerRunner
                 return transportLayer_.beginClose();
             }
         } );
+        assert future != null;
 
         transportLayer_.endClose( future );
     }
@@ -106,13 +106,10 @@ final class TransportLayerRunner
      *         If an error occurs.
      */
     void open(
-        /* @NonNull */
         final String hostName,
         final int port )
         throws Exception
     {
-        assert hostName != null;
-
         final Future<Void> future = run( new Callable<Future<Void>>()
         {
             @Override
@@ -122,6 +119,7 @@ final class TransportLayerRunner
                 return transportLayer_.beginOpen( hostName, port );
             }
         } );
+        assert future != null;
 
         transportLayer_.endOpen( future );
     }
@@ -142,15 +140,12 @@ final class TransportLayerRunner
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    /* @Nullable */
+    @Nullable
     <V> V run(
-        /* @NonNull */
         final Callable<V> task )
         throws Exception
     {
-        assert task != null;
-
-        return run( task, Collections.<Class<? extends Exception>>emptyList() );
+        return run( task, nonNull( Collections.<Class<? extends Exception>>emptyList() ) );
     }
 
     /**
@@ -172,18 +167,13 @@ final class TransportLayerRunner
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    /* @Nullable */
+    @Nullable
     <V> V run(
-        /* @NonNull */
         final Callable<V> task,
-        /* @NonNull */
         final Class<? extends Exception> exceptionType )
         throws Exception
     {
-        assert task != null;
-        assert exceptionType != null;
-
-        return run( task, Collections.<Class<? extends Exception>>singletonList( exceptionType ) );
+        return run( task, nonNull( Collections.<Class<? extends Exception>>singletonList( exceptionType ) ) );
     }
 
     /**
@@ -206,16 +196,12 @@ final class TransportLayerRunner
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    /* @Nullable */
+    @Nullable
     <V> V run(
-        /* @NonNull */
         final Callable<V> task,
-        /* @NonNull */
         final Collection<Class<? extends Exception>> exceptionTypes )
         throws Exception
     {
-        assert task != null;
-        assert exceptionTypes != null;
         assert !exceptionTypes.contains( null );
 
         try

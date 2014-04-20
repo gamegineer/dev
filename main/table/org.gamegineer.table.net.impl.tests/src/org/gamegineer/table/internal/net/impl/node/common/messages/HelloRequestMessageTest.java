@@ -1,6 +1,6 @@
 /*
  * HelloRequestMessageTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,12 +21,14 @@
 
 package org.gamegineer.table.internal.net.impl.node.common.messages;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the {@link HelloRequestMessage} class.
  */
+@NonNullByDefault( false )
 public final class HelloRequestMessageTest
 {
     // ======================================================================

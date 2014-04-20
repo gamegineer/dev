@@ -1,6 +1,6 @@
 /*
  * ITransportLayerContext.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,6 +20,8 @@
  */
 
 package org.gamegineer.table.internal.net.impl.transport;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * The execution context for a network transport layer.
@@ -42,7 +44,6 @@ public interface ITransportLayerContext
      * 
      * @return A new network service; never {@code null}.
      */
-    /* @NonNull */
     public IService createService();
 
     /**
@@ -58,6 +59,6 @@ public interface ITransportLayerContext
      *        or {@code null} if the transport layer was disconnected normally.
      */
     public void transportLayerDisconnected(
-        /* @Nullable */
+        @Nullable
         Exception exception );
 }

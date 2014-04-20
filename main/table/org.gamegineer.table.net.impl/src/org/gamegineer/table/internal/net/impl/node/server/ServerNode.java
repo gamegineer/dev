@@ -1,6 +1,6 @@
 /*
  * ServerNode.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.node.server;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ITable;
@@ -69,6 +70,7 @@ public final class ServerNode
     // ======================================================================
 
     /** The master table for the table network. */
+    @Nullable
     private ITable masterTable_;
 
     /**
@@ -92,15 +94,9 @@ public final class ServerNode
      *        The node layer; must not be {@code null}.
      * @param tableNetworkController
      *        The table network controller; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code nodeLayer} or {@code tableNetworkController} is
-     *         {@code null}.
      */
     private ServerNode(
-        /* @NonNull */
         final INodeLayer nodeLayer,
-        /* @NonNull */
         final ITableNetworkController tableNetworkController )
     {
         super( nodeLayer, tableNetworkController );
@@ -122,11 +118,8 @@ public final class ServerNode
      *        The player to bind to the table network; must not be {@code null}.
      */
     private void bindPlayer(
-        /* @NonNull */
         final Player player )
     {
-        assert player != null;
-
         assert !players_.containsKey( player.getName() );
         players_.put( player.getName(), player );
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Player '%s' has connected", player.getName() ) ); //$NON-NLS-1$
@@ -151,7 +144,7 @@ public final class ServerNode
             return;
         }
 
-        requestingPlayer.removeRoles( EnumSet.of( PlayerRole.EDITOR_REQUESTER ) );
+        requestingPlayer.removeRoles( nonNull( EnumSet.of( PlayerRole.EDITOR_REQUESTER ) ) );
 
         notifyPlayersUpdated();
     }
@@ -164,14 +157,13 @@ public final class ServerNode
         final TableNetworkConfiguration configuration )
         throws TableNetworkException
     {
-        assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         super.connecting( configuration );
 
         initializeMasterTable( configuration.getLocalTable() );
         final Player player = new Player( getPlayerName() );
-        player.addRoles( EnumSet.of( PlayerRole.EDITOR, PlayerRole.HOST, PlayerRole.LOCAL ) );
+        player.addRoles( nonNull( EnumSet.of( PlayerRole.EDITOR, PlayerRole.HOST, PlayerRole.LOCAL ) ) );
         bindPlayer( player );
     }
 
@@ -182,7 +174,6 @@ public final class ServerNode
     protected ITableManager createTableManagerDecoratorForLocalNetworkTable(
         final ITableManager tableManager )
     {
-        assertArgumentNotNull( tableManager, "tableManager" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         return new ServerTableManagerDecorator( tableManager, getPlayerName() );
@@ -254,6 +245,7 @@ public final class ServerNode
     /*
      * @see org.gamegineer.table.internal.net.impl.node.INodeController#getPlayer()
      */
+    @Nullable
     @Override
     public Player getPlayer()
     {
@@ -290,7 +282,6 @@ public final class ServerNode
     public void giveControl(
         final String playerName )
     {
-        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         final String requestingPlayerName = ThreadPlayer.getPlayerName();
@@ -308,9 +299,9 @@ public final class ServerNode
             return;
         }
 
-        requestingPlayer.removeRoles( EnumSet.of( PlayerRole.EDITOR ) );
-        player.removeRoles( EnumSet.of( PlayerRole.EDITOR_REQUESTER ) );
-        player.addRoles( EnumSet.of( PlayerRole.EDITOR ) );
+        requestingPlayer.removeRoles( nonNull( EnumSet.of( PlayerRole.EDITOR ) ) );
+        player.removeRoles( nonNull( EnumSet.of( PlayerRole.EDITOR_REQUESTER ) ) );
+        player.addRoles( nonNull( EnumSet.of( PlayerRole.EDITOR ) ) );
 
         notifyPlayersUpdated();
     }
@@ -327,12 +318,9 @@ public final class ServerNode
      *         If an error occurs.
      */
     private void initializeMasterTable(
-        /* @NonNull */
         final ITable table )
         throws TableNetworkException
     {
-        assert table != null;
-
         final ITableEnvironmentFactory tableEnvironmentFactory = Activator.getDefault().getTableEnvironmentFactory();
         if( tableEnvironmentFactory == null )
         {
@@ -360,7 +348,6 @@ public final class ServerNode
     public boolean isPlayerConnected(
         final String playerName )
     {
-        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         assertConnected();
@@ -389,7 +376,6 @@ public final class ServerNode
     protected void remoteNodeBound(
         final IRemoteClientNode remoteNode )
     {
-        assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         super.remoteNodeBound( remoteNode );
@@ -405,7 +391,6 @@ public final class ServerNode
     protected void remoteNodeUnbound(
         final IRemoteClientNode remoteNode )
     {
-        assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         super.remoteNodeUnbound( remoteNode );
@@ -433,7 +418,7 @@ public final class ServerNode
             return;
         }
 
-        requestingPlayer.addRoles( EnumSet.of( PlayerRole.EDITOR_REQUESTER ) );
+        requestingPlayer.addRoles( nonNull( EnumSet.of( PlayerRole.EDITOR_REQUESTER ) ) );
 
         notifyPlayersUpdated();
     }
@@ -446,12 +431,11 @@ public final class ServerNode
      *        The remote node; must not be {@code null}.
      */
     private void synchronizeRemoteTable(
-        /* @NonNull */
         final IRemoteClientNode remoteNode )
     {
-        assert remoteNode != null;
-
-        remoteNode.getTable().setTableState( masterTable_.createMemento() );
+        final ITable masterTable = masterTable_;
+        assert masterTable != null;
+        remoteNode.getTable().setTableState( masterTable.createMemento() );
     }
 
     /**
@@ -462,11 +446,8 @@ public final class ServerNode
      *        be {@code null}.
      */
     private void unbindPlayer(
-        /* @NonNull */
         final String playerName )
     {
-        assert playerName != null;
-
         assert players_.containsKey( playerName );
         final Player player = players_.remove( playerName );
         if( player.hasRole( PlayerRole.EDITOR ) )
@@ -475,7 +456,7 @@ public final class ServerNode
             if( hostPlayer != null )
             {
                 assert hostPlayer.hasRole( PlayerRole.HOST );
-                hostPlayer.addRoles( EnumSet.of( PlayerRole.EDITOR ) );
+                hostPlayer.addRoles( nonNull( EnumSet.of( PlayerRole.EDITOR ) ) );
             }
         }
 
@@ -558,12 +539,9 @@ public final class ServerNode
             final ComponentPath componentPath,
             final ComponentIncrement componentIncrement )
         {
-            assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
-            assertArgumentNotNull( componentPath, "componentPath" ); //$NON-NLS-1$
-            assertArgumentNotNull( componentIncrement, "componentIncrement" ); //$NON-NLS-1$
-
             if( verifyRequestingPlayerIsEditor() )
             {
+                assert masterTable_ != null;
                 NetworkTableUtils.incrementComponentState( masterTable_, componentPath, componentIncrement );
                 super.incrementComponentState( sourceTable, componentPath, componentIncrement );
             }
@@ -577,11 +555,9 @@ public final class ServerNode
             final INetworkTable sourceTable,
             final Object tableMemento )
         {
-            assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
-            assertArgumentNotNull( tableMemento, "tableMemento" ); //$NON-NLS-1$
-
             if( verifyRequestingPlayerIsEditor() )
             {
+                assert masterTable_ != null;
                 NetworkTableUtils.setTableState( masterTable_, tableMemento );
                 super.setTableState( sourceTable, tableMemento );
             }
@@ -639,14 +615,9 @@ public final class ServerNode
          *        The name of the local player; must not be {@code null}.
          */
         ServerTableManagerDecorator(
-            /* @NonNull */
             final ITableManager tableManagerDecoratee,
-            /* @NonNull */
             final String localPlayerName )
         {
-            assert tableManagerDecoratee != null;
-            assert localPlayerName != null;
-
             localPlayerName_ = localPlayerName;
             tableManagerDecoratee_ = tableManagerDecoratee;
         }

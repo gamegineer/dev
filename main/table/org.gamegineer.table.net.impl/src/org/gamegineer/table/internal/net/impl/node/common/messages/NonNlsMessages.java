@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,15 +38,15 @@ final class NonNlsMessages
     // --- BeginAuthenticationRequestMessage --------------------------------
 
     /** The challenge length must be greater than zero. */
-    public static String BeginAuthenticationRequestMessage_setChallenge_empty;
+    public static String BeginAuthenticationRequestMessage_setChallenge_empty = ""; //$NON-NLS-1$
 
     /** The salt length must be greater than zero. */
-    public static String BeginAuthenticationRequestMessage_setSalt_empty;
+    public static String BeginAuthenticationRequestMessage_setSalt_empty = ""; //$NON-NLS-1$
 
     // --- BeginAuthenticationResponseMessage -------------------------------
 
     /** The response length must be greater than zero. */
-    public static String BeginAuthenticationResponseMessage_setResponse_empty;
+    public static String BeginAuthenticationResponseMessage_setResponse_empty = ""; //$NON-NLS-1$
 
 
     // ======================================================================

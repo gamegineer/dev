@@ -1,6 +1,6 @@
 /*
  * PlayersMessageHandlerTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,11 +21,15 @@
 
 package org.gamegineer.table.internal.net.impl.node.client.handlers;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.internal.net.impl.node.IMessageHandler;
 import org.gamegineer.table.internal.net.impl.node.client.IClientNode;
 import org.gamegineer.table.internal.net.impl.node.client.IRemoteServerNodeController;
@@ -38,6 +42,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link PlayersMessageHandler} class.
  */
+@NonNullByDefault( false )
 public final class PlayersMessageHandlerTest
 {
     // ======================================================================
@@ -76,13 +81,11 @@ public final class PlayersMessageHandlerTest
      * 
      * @return The new mock player; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private IPlayer createMockPlayer(
-        /* @NonNull */
+        @NonNull
         final String name )
     {
-        assert name != null;
-
         final IPlayer player = mocksControl_.createMock( IPlayer.class );
         EasyMock.expect( player.getName() ).andReturn( name ).anyTimes();
         EasyMock.expect( player.getRoles() ).andReturn( EnumSet.noneOf( PlayerRole.class ) ).anyTimes();
@@ -114,13 +117,13 @@ public final class PlayersMessageHandlerTest
     public void testHandleMessage_PlayersMessage()
         throws Exception
     {
-        final Collection<IPlayer> players = Arrays.asList( //
+        final Collection<IPlayer> players = nonNull( Arrays.asList( //
             createMockPlayer( "player1" ), //$NON-NLS-1$
             createMockPlayer( "player2" ), //$NON-NLS-1$
-            createMockPlayer( "player3" ) ); //$NON-NLS-1$
+            createMockPlayer( "player3" ) ) ); //$NON-NLS-1$
         final IClientNode localNode = mocksControl_.createMock( IClientNode.class );
         EasyMock.expect( localNode.getPlayerName() ).andReturn( "player1" ).anyTimes(); //$NON-NLS-1$
-        localNode.setPlayers( EasyMock.<Collection<IPlayer>>notNull() );
+        localNode.setPlayers( assumeNonNull( EasyMock.<Collection<IPlayer>>notNull() ) );
         final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
         EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
         mocksControl_.replay();

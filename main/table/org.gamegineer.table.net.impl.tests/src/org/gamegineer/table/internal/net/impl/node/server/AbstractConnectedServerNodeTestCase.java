@@ -25,7 +25,6 @@ import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.internal.net.impl.node.AbstractConnectedNodeTestCase;
 import org.gamegineer.table.internal.net.impl.node.INetworkTable;
-import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
@@ -65,27 +64,5 @@ public abstract class AbstractConnectedServerNodeTestCase<T extends IServerNode>
         EasyMock.expect( remoteNode.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
         EasyMock.expect( remoteNode.getTable() ).andReturn( mocksControl.createMock( INetworkTable.class ) ).anyTimes();
         return remoteNode;
-    }
-
-    /**
-     * Ensures the {@link IServerNode#isPlayerConnected} method throws an
-     * exception when passed a {@code null} player name.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testIsPlayerConnected_PlayerName_Null()
-        throws Exception
-    {
-        getNodeLayerRunner().run( new Runnable()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                getNode().isPlayerConnected( null );
-            }
-        } );
     }
 }

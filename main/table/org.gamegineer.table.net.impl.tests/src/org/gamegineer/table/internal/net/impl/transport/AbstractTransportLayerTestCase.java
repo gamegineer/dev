@@ -1,6 +1,6 @@
 /*
  * AbstractTransportLayerTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,6 +24,8 @@ package org.gamegineer.table.internal.net.impl.transport;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 import java.util.concurrent.Future;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,6 +34,7 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link ITransportLayer} interface.
  */
+@NonNullByDefault( false )
 public abstract class AbstractTransportLayerTestCase
 {
     // ======================================================================
@@ -67,7 +70,7 @@ public abstract class AbstractTransportLayerTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract ITransportLayer createTransportLayer()
         throws Exception;
 
@@ -99,30 +102,6 @@ public abstract class AbstractTransportLayerTestCase
     }
 
     /**
-     * Ensures the {@link ITransportLayer#beginOpen} method throws an exception
-     * when passed a {@code null} host name.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testBeginOpen_HostName_Null()
-    {
-        transportLayer_.beginOpen( null, 8888 );
-    }
-
-    /**
-     * Ensures the {@link ITransportLayer#endClose} method throws an exception
-     * when passed a {@code null} future.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testEndClose_Future_Null()
-        throws Exception
-    {
-        transportLayer_.endClose( null );
-    }
-
-    /**
      * Ensures the {@link ITransportLayer#endOpen} method throws an exception if
      * the transport layer has been closed.
      * 
@@ -145,20 +124,6 @@ public abstract class AbstractTransportLayerTestCase
         {
             // expected
         }
-    }
-
-    /**
-     * Ensures the {@link ITransportLayer#endOpen} method throws an exception
-     * when passed a {@code null} future.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testEndOpen_Future_Null()
-        throws Exception
-    {
-        transportLayer_.endOpen( null );
     }
 
     /**

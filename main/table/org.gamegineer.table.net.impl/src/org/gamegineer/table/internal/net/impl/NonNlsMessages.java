@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,28 +38,28 @@ final class NonNlsMessages
     // --- TableNetwork -----------------------------------------------------
 
     /** The table network listener is already registered. */
-    public static String TableNetwork_addTableNetworkListener_listener_registered;
+    public static String TableNetwork_addTableNetworkListener_listener_registered = ""; //$NON-NLS-1$
 
     /** The table network listener is not registered. */
-    public static String TableNetwork_removeTableNetworkListener_listener_notRegistered;
+    public static String TableNetwork_removeTableNetworkListener_listener_notRegistered = ""; //$NON-NLS-1$
 
     /**
      * An unexpected exception was thrown from
      * ITableNetworkListener.tableNetworkConnected().
      */
-    public static String TableNetwork_tableNetworkConnected_unexpectedException;
+    public static String TableNetwork_tableNetworkConnected_unexpectedException = ""; //$NON-NLS-1$
 
     /**
      * An unexpected exception was thrown from
      * ITableNetworkListener.tableNetworkDisconnected().
      */
-    public static String TableNetwork_tableNetworkDisconnected_unexpectedException;
+    public static String TableNetwork_tableNetworkDisconnected_unexpectedException = ""; //$NON-NLS-1$
 
     /**
      * An unexpected exception was thrown from
      * ITableNetworkListener.tableNetworkPlayersUpdated().
      */
-    public static String TableNetwork_tableNetworkPlayersUpdated_unexpectedException;
+    public static String TableNetwork_tableNetworkPlayersUpdated_unexpectedException = ""; //$NON-NLS-1$
 
 
     // ======================================================================

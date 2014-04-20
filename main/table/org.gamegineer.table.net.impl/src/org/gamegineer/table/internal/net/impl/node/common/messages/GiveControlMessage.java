@@ -1,6 +1,6 @@
 /*
  * GiveControlMessage.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node.common.messages;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.impl.transport.AbstractMessage;
 
@@ -71,7 +70,6 @@ public final class GiveControlMessage
      * @return The name of the player to which control is being given; never
      *         {@code null}.
      */
-    /* @NonNull */
     public String getPlayerName()
     {
         return playerName_;
@@ -83,16 +81,10 @@ public final class GiveControlMessage
      * @param playerName
      *        The name of the player to which control is being given; must not
      *        be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code playerName} is {@code null}.
      */
     public void setPlayerName(
-        /* @NonNull */
         final String playerName )
     {
-        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
-
         playerName_ = playerName;
     }
 }

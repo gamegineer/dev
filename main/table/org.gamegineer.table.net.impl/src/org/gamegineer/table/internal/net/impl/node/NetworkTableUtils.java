@@ -1,6 +1,6 @@
 /*
  * NetworkTableUtils.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,9 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.awt.Point;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
@@ -32,6 +33,7 @@ import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ComponentSurfaceDesignRegistry;
+import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.ContainerLayoutRegistry;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
@@ -73,23 +75,12 @@ public final class NetworkTableUtils
      * @param componentIncrement
      *        The incremental change to the state of the component; must not be
      *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code table}, {@code componentPath}, or
-     *         {@code componentIncrement} is {@code null}.
      */
     public static void incrementComponentState(
-        /* @NonNull */
         final ITable table,
-        /* @NonNull */
         final ComponentPath componentPath,
-        /* @NonNull */
         final ComponentIncrement componentIncrement )
     {
-        assertArgumentNotNull( table, "table" ); //$NON-NLS-1$
-        assertArgumentNotNull( componentPath, "componentPath" ); //$NON-NLS-1$
-        assertArgumentNotNull( componentIncrement, "componentIncrement" ); //$NON-NLS-1$
-
         table.getTableEnvironment().getLock().lock();
         try
         {
@@ -119,32 +110,32 @@ public final class NetworkTableUtils
      *        {@code null}.
      */
     private static void incrementComponentState(
-        /* @NonNull */
         final IComponent component,
-        /* @NonNull */
         final ComponentIncrement componentIncrement )
     {
-        assert component != null;
-        assert componentIncrement != null;
-
-        if( componentIncrement.getLocation() != null )
+        final Point location = componentIncrement.getLocation();
+        if( location != null )
         {
-            component.setLocation( componentIncrement.getLocation() );
+            component.setLocation( location );
         }
 
-        if( componentIncrement.getOrientation() != null )
+        final ComponentOrientation orientation = componentIncrement.getOrientation();
+        if( orientation != null )
         {
-            component.setOrientation( componentIncrement.getOrientation() );
+            component.setOrientation( orientation );
         }
 
-        if( componentIncrement.getSurfaceDesignIds() != null )
+        final Map<ComponentOrientation, ComponentSurfaceDesignId> surfaceDesignIds = componentIncrement.getSurfaceDesignIds();
+        if( surfaceDesignIds != null )
         {
             try
             {
-                final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<>( componentIncrement.getSurfaceDesignIds().size() );
-                for( final Map.Entry<ComponentOrientation, ComponentSurfaceDesignId> entry : componentIncrement.getSurfaceDesignIds().entrySet() )
+                final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<>( surfaceDesignIds.size() );
+                for( final Map.Entry<ComponentOrientation, ComponentSurfaceDesignId> entry : surfaceDesignIds.entrySet() )
                 {
-                    surfaceDesigns.put( entry.getKey(), ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( entry.getValue() ) );
+                    final ComponentSurfaceDesignId surfaceDesignId = entry.getValue();
+                    assert surfaceDesignId != null;
+                    surfaceDesigns.put( entry.getKey(), ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( surfaceDesignId ) );
                 }
 
                 component.setSurfaceDesigns( surfaceDesigns );
@@ -166,19 +157,15 @@ public final class NetworkTableUtils
      *        {@code null}.
      */
     private static void incrementContainerState(
-        /* @NonNull */
         final IContainer container,
-        /* @NonNull */
         final ContainerIncrement containerIncrement )
     {
-        assert container != null;
-        assert containerIncrement != null;
-
-        if( containerIncrement.getLayoutId() != null )
+        final ContainerLayoutId layoutId = containerIncrement.getLayoutId();
+        if( layoutId != null )
         {
             try
             {
-                container.setLayout( ContainerLayoutRegistry.getContainerLayout( containerIncrement.getLayoutId() ) );
+                container.setLayout( ContainerLayoutRegistry.getContainerLayout( layoutId ) );
             }
             catch( final NoSuchContainerLayoutException e )
             {
@@ -186,12 +173,14 @@ public final class NetworkTableUtils
             }
         }
 
-        if( (containerIncrement.getRemovedComponentIndex() != null) && (containerIncrement.getRemovedComponentCount() != null) )
+        final Integer boxedRemovedComponentIndex = containerIncrement.getRemovedComponentIndex();
+        final Integer boxedRemovedComponentCount = containerIncrement.getRemovedComponentCount();
+        if( (boxedRemovedComponentIndex != null) && (boxedRemovedComponentCount != null) )
         {
             @SuppressWarnings( "boxing" )
-            final int removedComponentIndex = containerIncrement.getRemovedComponentIndex();
+            final int removedComponentIndex = boxedRemovedComponentIndex;
             @SuppressWarnings( "boxing" )
-            final int removedComponentCount = containerIncrement.getRemovedComponentCount();
+            final int removedComponentCount = boxedRemovedComponentCount;
             if( (removedComponentIndex == 0) && (removedComponentCount == container.getComponentCount()) )
             {
                 container.removeAllComponents();
@@ -205,12 +194,16 @@ public final class NetworkTableUtils
             }
         }
 
-        if( (containerIncrement.getAddedComponentIndex() != null) && (containerIncrement.getAddedComponentMementos() != null) )
+        final Integer boxedAddedComponentIndex = containerIncrement.getAddedComponentIndex();
+        final List<Object> addedComponentMementos = containerIncrement.getAddedComponentMementos();
+        if( (boxedAddedComponentIndex != null) && (addedComponentMementos != null) )
         {
             @SuppressWarnings( "boxing" )
-            int addedComponentIndex = containerIncrement.getAddedComponentIndex();
-            for( final Object componentMemento : containerIncrement.getAddedComponentMementos() )
+            int addedComponentIndex = boxedAddedComponentIndex;
+            for( final Object componentMemento : addedComponentMementos )
             {
+                assert componentMemento != null;
+
                 try
                 {
                     container.addComponent( container.getTableEnvironment().createComponent( componentMemento ), addedComponentIndex++ );
@@ -230,19 +223,11 @@ public final class NetworkTableUtils
      *        The table; must not be {@code null}.
      * @param tableMemento
      *        The memento containing the table state; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code table} or {@code tableMemento} is {@code null}.
      */
     public static void setTableState(
-        /* @NonNull */
         final ITable table,
-        /* @NonNull */
         final Object tableMemento )
     {
-        assertArgumentNotNull( table, "table" ); //$NON-NLS-1$
-        assertArgumentNotNull( tableMemento, "tableMemento" ); //$NON-NLS-1$
-
         try
         {
             table.setMemento( tableMemento );

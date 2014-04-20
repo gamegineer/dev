@@ -1,6 +1,6 @@
 /*
  * TableMessageHandlerTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,10 @@
 
 package org.gamegineer.table.internal.net.impl.node.common.handlers;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.internal.net.impl.node.IMessageHandler;
 import org.gamegineer.table.internal.net.impl.node.INetworkTable;
 import org.gamegineer.table.internal.net.impl.node.INode;
@@ -35,6 +37,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link TableMessageHandler} class.
  */
+@NonNullByDefault( false )
 public final class TableMessageHandlerTest
 {
     // ======================================================================
@@ -91,7 +94,7 @@ public final class TableMessageHandlerTest
         throws Exception
     {
         final Object tableMemento = new Object();
-        final INetworkTable table = mocksControl_.createMock( INetworkTable.class );
+        final INetworkTable table = nonNull( mocksControl_.createMock( INetworkTable.class ) );
         final ITableManager tableManager = mocksControl_.createMock( ITableManager.class );
         tableManager.setTableState( table, tableMemento );
         final INode localNode = mocksControl_.createMock( INode.class );

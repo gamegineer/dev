@@ -1,6 +1,6 @@
 /*
  * BeginAuthenticationResponseMessageHandler.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node.server.handlers;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Arrays;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
@@ -86,24 +85,21 @@ public final class BeginAuthenticationResponseMessageHandler
      *         If the remote player cannot be authenticated.
      */
     private static void authenticate(
-        /* @NonNull */
         final IRemoteClientNodeController remoteNodeController,
-        /* @NonNull */
         final String playerName,
-        /* @NonNull */
         final byte[] response )
         throws TableNetworkException
     {
-        assert remoteNodeController != null;
-        assert playerName != null;
-        assert response != null;
-
         final IServerNode localNode = remoteNodeController.getLocalNode();
         final SecureString password = localNode.getPassword();
         try
         {
+            final byte[] challenge = remoteNodeController.getChallenge();
+            assert challenge != null;
+            final byte[] salt = remoteNodeController.getSalt();
+            assert salt != null;
             final Authenticator authenticator = new Authenticator();
-            final byte[] expectedResponse = authenticator.createResponse( remoteNodeController.getChallenge(), password, remoteNodeController.getSalt() );
+            final byte[] expectedResponse = authenticator.createResponse( challenge, password, salt );
             if( Arrays.equals( expectedResponse, response ) )
             {
                 Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Client authenticated" ); //$NON-NLS-1$
@@ -137,14 +133,9 @@ public final class BeginAuthenticationResponseMessageHandler
         "static-method", "unused"
     } )
     private void handleMessage(
-        /* @NonNull */
         final IRemoteClientNodeController remoteNodeController,
-        /* @NonNull */
         final BeginAuthenticationResponseMessage message )
     {
-        assert remoteNodeController != null;
-        assert message != null;
-
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
             String.format( "Received begin authentication response (id=%d, correlation-id=%d)", //$NON-NLS-1$
                 Integer.valueOf( message.getId() ), //
@@ -184,8 +175,6 @@ public final class BeginAuthenticationResponseMessageHandler
     protected void handleUnexpectedMessage(
         final IRemoteClientNodeController remoteNodeController )
     {
-        assertArgumentNotNull( remoteNodeController, "remoteNodeController" ); //$NON-NLS-1$
-
         remoteNodeController.close( TableNetworkError.UNEXPECTED_MESSAGE );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * ComponentIncrement.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,6 +25,7 @@ import java.awt.Point;
 import java.io.Serializable;
 import java.util.Map;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 
@@ -47,6 +48,7 @@ public class ComponentIncrement
      * 
      * @serial The new component location.
      */
+    @Nullable
     private Point location_;
 
     /**
@@ -54,6 +56,7 @@ public class ComponentIncrement
      * 
      * @serial The new component orientation.
      */
+    @Nullable
     private ComponentOrientation orientation_;
 
     /**
@@ -63,6 +66,7 @@ public class ComponentIncrement
      * 
      * @serial The collection of new component surface design identifiers.
      */
+    @Nullable
     private Map<ComponentOrientation, ComponentSurfaceDesignId> surfaceDesignIds_;
 
 
@@ -92,7 +96,7 @@ public class ComponentIncrement
      *         location is unchanged. The returned value is not a copy and must
      *         not be modified.
      */
-    /* @Nullable */
+    @Nullable
     public final Point getLocation()
     {
         return location_;
@@ -104,7 +108,7 @@ public class ComponentIncrement
      * @return The new component orientation or {@code null} if the component
      *         orientation is unchanged.
      */
-    /* @Nullable */
+    @Nullable
     public final ComponentOrientation getOrientation()
     {
         return orientation_;
@@ -119,7 +123,7 @@ public class ComponentIncrement
      *         new component surface design identifier. The returned value is
      *         not a copy and must not be modified.
      */
-    /* @Nullable */
+    @Nullable
     public final Map<ComponentOrientation, ComponentSurfaceDesignId> getSurfaceDesignIds()
     {
         return surfaceDesignIds_;
@@ -134,7 +138,7 @@ public class ComponentIncrement
      *        not be modified after calling this method.
      */
     public final void setLocation(
-        /* @Nullable */
+        @Nullable
         final Point location )
     {
         location_ = location;
@@ -148,7 +152,7 @@ public class ComponentIncrement
      *        orientation is unchanged.
      */
     public final void setOrientation(
-        /* @Nullable */
+        @Nullable
         final ComponentOrientation orientation )
     {
         orientation_ = orientation;
@@ -166,7 +170,7 @@ public class ComponentIncrement
      *        method.
      */
     public final void setSurfaceDesignIds(
-        /* @Nullable */
+        @Nullable
         final Map<ComponentOrientation, ComponentSurfaceDesignId> surfaceDesignIds )
     {
         surfaceDesignIds_ = surfaceDesignIds;

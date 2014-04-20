@@ -1,6 +1,6 @@
 /*
  * AbstractEventHandler.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.net.impl.transport.tcp;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Superclass for all event handlers in the TCP transport layer
@@ -41,6 +42,7 @@ abstract class AbstractEventHandler
      * an event dispatcher or {@code null} if the event handler is not currently
      * bound to an event dispatcher.
      */
+    @Nullable
     private SelectionKey selectionKey_;
 
     /** The event handler state. */
@@ -62,11 +64,8 @@ abstract class AbstractEventHandler
      *        {@code null}.
      */
     AbstractEventHandler(
-        /* @NonNull */
         final AbstractTransportLayer transportLayer )
     {
-        assert transportLayer != null;
-
         selectionKey_ = null;
         state_ = State.PRISTINE;
         transportLayer_ = transportLayer;
@@ -93,7 +92,7 @@ abstract class AbstractEventHandler
      *        {@code null} if the event handler was closed normally.
      */
     abstract void close(
-        /* @Nullable */
+        @Nullable
         Exception exception );
 
     /**
@@ -102,7 +101,7 @@ abstract class AbstractEventHandler
      * @return The channel associated with the event handler or {@code null} if
      *         the channel is not available.
      */
-    /* @Nullable */
+    @Nullable
     abstract SelectableChannel getChannel();
 
     /**
@@ -122,7 +121,7 @@ abstract class AbstractEventHandler
      *         handler and an event dispatcher or {@code null} if the event
      *         handler is not currently bound to an event dispatcher.
      */
-    /* @Nullable */
+    @Nullable
     final SelectionKey getSelectionKey()
     {
         assert isTransportLayerThread();
@@ -135,7 +134,6 @@ abstract class AbstractEventHandler
      * 
      * @return The event handler state; never {@code null}.
      */
-    /* @NonNull */
     final State getState()
     {
         assert isTransportLayerThread();
@@ -153,7 +151,6 @@ abstract class AbstractEventHandler
      * @return The transport layer associated with the event handler; never
      *         {@code null}.
      */
-    /* @NonNull */
     final AbstractTransportLayer getTransportLayer()
     {
         return transportLayer_;
@@ -205,7 +202,7 @@ abstract class AbstractEventHandler
      *        binding.
      */
     final void setSelectionKey(
-        /* @Nullable */
+        @Nullable
         final SelectionKey selectionKey )
     {
         assert isTransportLayerThread();
@@ -220,10 +217,8 @@ abstract class AbstractEventHandler
      *        The event handler state; must not be {@code null}.
      */
     final void setState(
-        /* @NonNull */
         final State state )
     {
-        assert state != null;
         assert isTransportLayerThread();
 
         state_ = state;

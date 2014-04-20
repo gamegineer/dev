@@ -22,6 +22,7 @@
 package org.gamegineer.table.net;
 
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * An event used to notify listeners that the table network has been
@@ -42,6 +43,7 @@ public final class TableNetworkDisconnectedEvent
      * The error that caused the table network to be disconnected or
      * {@code null} if the table network was disconnected normally.
      */
+    @Nullable
     private final TableNetworkError error_;
 
 
@@ -58,14 +60,10 @@ public final class TableNetworkDisconnectedEvent
      * @param error
      *        The error that caused the table network to be disconnected or
      *        {@code null} if the table network was disconnected normally.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code source} is {@code null}.
      */
     public TableNetworkDisconnectedEvent(
-        /* @NonNull */
         final ITableNetwork source,
-        /* @Nullable */
+        @Nullable
         final TableNetworkError error )
     {
         super( source );
@@ -84,7 +82,7 @@ public final class TableNetworkDisconnectedEvent
      * @return The error that caused the table network to be disconnected or
      *         {@code null} if the table network was disconnected normally.
      */
-    /* @Nullable */
+    @Nullable
     public TableNetworkError getError()
     {
         return error_;

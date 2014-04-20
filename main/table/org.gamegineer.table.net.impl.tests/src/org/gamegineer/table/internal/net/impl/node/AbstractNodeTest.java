@@ -1,6 +1,6 @@
 /*
  * AbstractNodeTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,10 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -30,6 +32,8 @@ import java.util.Collections;
 import java.util.Map;
 import net.jcip.annotations.Immutable;
 import org.easymock.EasyMock;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.MultiThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.test.TestTableEnvironments;
@@ -48,6 +52,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link AbstractNode} class.
  */
+@NonNullByDefault( false )
 public final class AbstractNodeTest
 {
     // ======================================================================
@@ -88,9 +93,10 @@ public final class AbstractNodeTest
      * 
      * @return A new table network configuration; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private TableNetworkConfiguration createTableNetworkConfiguration()
     {
+        assertNotNull( table_ );
         return TableNetworkConfigurations.createDefaultTableNetworkConfiguration( table_ );
     }
 
@@ -104,11 +110,11 @@ public final class AbstractNodeTest
     public void setUp()
         throws Exception
     {
-        tableEnvironmentContext_ = new MultiThreadedTableEnvironmentContext();
-        table_ = TestTableEnvironments.createTableEnvironment( tableEnvironmentContext_ ).createTable();
+        final MultiThreadedTableEnvironmentContext tableEnvironmentContext = tableEnvironmentContext_ = new MultiThreadedTableEnvironmentContext();
+        table_ = TestTableEnvironments.createTableEnvironment( tableEnvironmentContext ).createTable();
 
-        node_ = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
-        nodeLayerRunner_ = new NodeLayerRunner( node_ );
+        final AbstractNode<?> node = node_ = new MockNode.Factory().createNode( nonNull( EasyMock.createMock( ITableNetworkController.class ) ) );
+        nodeLayerRunner_ = new NodeLayerRunner( node );
     }
 
     /**
@@ -168,30 +174,10 @@ public final class AbstractNodeTest
                 };
             }
         };
-        final MockNode node = nodeFactory.createNode( EasyMock.createMock( ITableNetworkController.class ) );
+        final MockNode node = nodeFactory.createNode( nonNull( EasyMock.createMock( ITableNetworkController.class ) ) );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
 
         nodeLayerRunner.connect( configuration );
-    }
-
-    /**
-     * Ensures the {@link AbstractNode#AbstractNode} constructor throws an
-     * exception when passed a {@code null} node layer.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_NodeLayer_Null()
-    {
-        new MockNode( null, EasyMock.createMock( ITableNetworkController.class ) );
-    }
-
-    /**
-     * Ensures the {@link AbstractNode#AbstractNode} constructor throws an
-     * exception when passed a {@code null} table network controller.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_TableNetworkController_Null()
-    {
-        new MockNode( EasyMock.createMock( INodeLayer.class ), null );
     }
 
     /**
@@ -234,33 +220,11 @@ public final class AbstractNodeTest
                 };
             }
         };
-        final MockNode node = nodeFactory.createNode( EasyMock.createMock( ITableNetworkController.class ) );
+        final MockNode node = nodeFactory.createNode( nonNull( EasyMock.createMock( ITableNetworkController.class ) ) );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
         nodeLayerRunner.connect( configuration );
 
         nodeLayerRunner.disconnect();
-    }
-
-    /**
-     * Ensures the {@link AbstractNode#getRemoteNode} method throws an exception
-     * when passed a {@code null} player name.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetRemoteNode_PlayerName_Null()
-        throws Exception
-    {
-        nodeLayerRunner_.run( new Runnable()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                node_.getRemoteNode( null );
-            }
-        } );
     }
 
     /**
@@ -314,15 +278,11 @@ public final class AbstractNodeTest
          *        The node layer; must not be {@code null}.
          * @param tableNetworkController
          *        The table network controller; must not be {@code null}.
-         * 
-         * @throws java.lang.NullPointerException
-         *         If {@code nodeLayer} or {@code tableNetworkController} is
-         *         {@code null}.
          */
         MockNode(
-            /* @NonNull */
+            @NonNull
             final INodeLayer nodeLayer,
-            /* @NonNull */
+            @NonNull
             final ITableNetworkController tableNetworkController )
         {
             super( nodeLayer, tableNetworkController );
@@ -348,7 +308,7 @@ public final class AbstractNodeTest
         @Override
         protected ITransportLayer createTransportLayer()
         {
-            return new FakeTransportLayerFactory().createActiveTransportLayer( EasyMock.createNiceMock( ITransportLayerContext.class ) );
+            return new FakeTransportLayerFactory().createActiveTransportLayer( nonNull( EasyMock.createNiceMock( ITransportLayerContext.class ) ) );
         }
 
         /*
@@ -366,7 +326,7 @@ public final class AbstractNodeTest
         @Override
         public Collection<IPlayer> getPlayers()
         {
-            return Collections.emptyList();
+            return nonNull( Collections.<IPlayer>emptyList() );
         }
 
         /*
@@ -375,7 +335,7 @@ public final class AbstractNodeTest
         @Override
         public ITableManager getTableManager()
         {
-            return EasyMock.createMock( ITableManager.class );
+            return nonNull( EasyMock.createMock( ITableManager.class ) );
         }
 
         /*
@@ -400,11 +360,9 @@ public final class AbstractNodeTest
          *         specified player name; otherwise {@code false}.
          */
         final boolean isTableBound(
-            /* @NonNull */
+            @NonNull
             final String playerName )
         {
-            assert playerName != null;
-
             try
             {
                 final Field field = AbstractNode.class.getDeclaredField( "tables_" ); //$NON-NLS-1$

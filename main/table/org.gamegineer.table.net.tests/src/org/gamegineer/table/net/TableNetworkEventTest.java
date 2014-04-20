@@ -1,6 +1,6 @@
 /*
  * TableNetworkEventTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,15 +21,18 @@
 
 package org.gamegineer.table.net;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import org.easymock.EasyMock;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the {@link TableNetworkEvent} class.
  */
+@NonNullByDefault( false )
 public final class TableNetworkEventTest
 {
     // ======================================================================
@@ -66,18 +69,8 @@ public final class TableNetworkEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new TableNetworkEvent( EasyMock.createMock( ITableNetwork.class ) );
+        event_ = new TableNetworkEvent( nonNull( EasyMock.createMock( ITableNetwork.class ) ) );
         assertNotNull( event_ );
-    }
-
-    /**
-     * Ensures the {@link TableNetworkEvent#TableNetworkEvent} constructor
-     * throws an exception when passed a {@code null} table network.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testConstructor_TableNetwork_Null()
-    {
-        new TableNetworkEvent( null );
     }
 
     /**

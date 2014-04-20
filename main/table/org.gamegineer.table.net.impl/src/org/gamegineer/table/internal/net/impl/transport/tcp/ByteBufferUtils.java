@@ -1,6 +1,6 @@
 /*
  * ByteBufferUtils.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,6 +25,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A collection of useful methods for working with byte buffers.
@@ -57,13 +58,9 @@ final class ByteBufferUtils
      * 
      * @return A new collection of duplicate byte buffers; never {@code null}.
      */
-    /* @NonNull */
     static Collection<ByteBuffer> duplicate(
-        /* @NonNull */
         final Collection<ByteBuffer> buffers )
     {
-        assert buffers != null;
-
         final Collection<ByteBuffer> duplicateBuffers = new ArrayList<>( buffers.size() );
         for( final ByteBuffer buffer : buffers )
         {
@@ -82,14 +79,9 @@ final class ByteBufferUtils
      *        The source buffer; must not be {@code null}.
      */
     static void fill(
-        /* @NonNull */
         final ByteBuffer destinationBuffer,
-        /* @NonNull */
         final ByteBuffer sourceBuffer )
     {
-        assert destinationBuffer != null;
-        assert sourceBuffer != null;
-
         if( sourceBuffer.remaining() <= destinationBuffer.remaining() )
         {
             destinationBuffer.put( sourceBuffer );
@@ -115,13 +107,11 @@ final class ByteBufferUtils
      *         {@code null} if the byte buffer collection does not have enough
      *         remaining bytes to satisfy the request.
      */
-    /* @Nullable */
+    @Nullable
     static byte[] get(
-        /* @NonNull */
         final Collection<ByteBuffer> buffers,
         final int length )
     {
-        assert buffers != null;
         assert length >= 0;
 
         if( !hasRemaining( buffers, length ) )
@@ -160,11 +150,9 @@ final class ByteBufferUtils
      *         the specified count of bytes remaining; otherwise {@code false}.
      */
     static boolean hasRemaining(
-        /* @NonNull */
         final Collection<ByteBuffer> buffers,
         final int length )
     {
-        assert buffers != null;
         assert length >= 0;
 
         int remaining = 0;

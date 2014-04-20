@@ -1,6 +1,6 @@
 /*
  * Dispatcher.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,9 @@
 
 package org.gamegineer.table.internal.net.impl.transport.tcp;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.IOException;
+import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.util.ArrayList;
@@ -42,6 +44,7 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.concurrent.SynchronousFuture;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
 import org.gamegineer.table.internal.net.impl.Activator;
@@ -77,6 +80,7 @@ final class Dispatcher
      * dispatch thread or {@code null} if the event dispatch thread is not
      * running.
      */
+    @Nullable
     private Future<?> eventDispatchTaskFuture_;
 
     /** The event handler shutdown timeout in milliseconds. */
@@ -90,6 +94,7 @@ final class Dispatcher
      * or {@code null} if the event dispatch thread is not running.
      */
     @GuardedBy( "selectorGuard_" )
+    @Nullable
     private Selector selector_;
 
     /** The selector lock. */
@@ -117,11 +122,8 @@ final class Dispatcher
      *        {@code null}.
      */
     Dispatcher(
-        /* @NonNull */
         final AbstractTransportLayer transportLayer )
     {
-        assert transportLayer != null;
-
         bufferPool_ = new ByteBufferPool( 4096 );
         eventDispatchTaskFuture_ = null;
         eventHandlerShutdownTimeout_ = 10000L;
@@ -157,7 +159,6 @@ final class Dispatcher
      * @return An asynchronous completion token for the operation; never
      *         {@code null}.
      */
-    /* @NonNull */
     Future<Void> beginClose()
     {
         assert isTransportLayerThread();
@@ -169,8 +170,9 @@ final class Dispatcher
         }
 
         final Closer closer = new Closer();
-        return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<Void>()
         {
+            @Nullable
             @Override
             public Void call()
             {
@@ -178,7 +180,7 @@ final class Dispatcher
 
                 return null;
             }
-        } );
+        } ) );
     }
 
     /**
@@ -204,11 +206,8 @@ final class Dispatcher
      *        The event selector; must not be {@code null}.
      */
     private void dispatchEvents(
-        /* @NonNull */
         final Selector selector )
     {
-        assert selector != null;
-
         Thread.currentThread().setName( NonNlsMessages.Dispatcher_eventDispatchThread_name );
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Event dispatch thread started" ); //$NON-NLS-1$
 
@@ -234,6 +233,7 @@ final class Dispatcher
 
                                 for( final SelectionKey selectionKey : selectionKeys )
                                 {
+                                    assert selectionKey != null;
                                     processEvents( selectionKey );
                                 }
                             }
@@ -285,11 +285,9 @@ final class Dispatcher
      *         complete.
      */
     void endClose(
-        /* @NonNull */
         final Future<Void> future )
         throws InterruptedException
     {
-        assert future != null;
         assert !isTransportLayerThread() || future.isDone();
 
         try
@@ -309,10 +307,8 @@ final class Dispatcher
      *        The event handler; must not be {@code null}.
      */
     void enqueueStatusChange(
-        /* @NonNull */
         final AbstractEventHandler eventHandler )
     {
-        assert eventHandler != null;
         assert isTransportLayerThread();
 
         statusChangeQueue_.add( eventHandler );
@@ -327,7 +323,6 @@ final class Dispatcher
      * @return The byte buffer pool associated with the dispatcher; never
      *         {@code null}.
      */
-    /* @NonNull */
     ByteBufferPool getByteBufferPool()
     {
         assert isTransportLayerThread();
@@ -371,7 +366,7 @@ final class Dispatcher
         final Selector selector;
         try
         {
-            selector = Selector.open();
+            selector = nonNull( Selector.open() );
         }
         catch( final IOException e )
         {
@@ -408,11 +403,8 @@ final class Dispatcher
      *        The selection key; must not be {@code null}.
      */
     private void processEvents(
-        /* @NonNull */
         final SelectionKey selectionKey )
     {
-        assert selectionKey != null;
-
         final AbstractEventHandler eventHandler = (AbstractEventHandler)selectionKey.attachment();
         eventHandler.prepareToRun();
         selectionKey.interestOps( 0 );
@@ -454,11 +446,9 @@ final class Dispatcher
      *         If an I/O error occurs.
      */
     void registerEventHandler(
-        /* @NonNull */
         final AbstractEventHandler eventHandler )
         throws IOException
     {
-        assert eventHandler != null;
         assert isTransportLayerThread();
         assert state_ == State.OPEN;
         assert !eventHandlers_.contains( eventHandler );
@@ -466,7 +456,9 @@ final class Dispatcher
         acquireSelectorGuard();
         try
         {
-            eventHandler.setSelectionKey( eventHandler.getChannel().register( selector_, eventHandler.getInterestOperations(), eventHandler ) );
+            final SelectableChannel channel = eventHandler.getChannel();
+            assert channel != null;
+            eventHandler.setSelectionKey( channel.register( selector_, eventHandler.getInterestOperations(), eventHandler ) );
         }
         finally
         {
@@ -484,12 +476,10 @@ final class Dispatcher
      *        The event handler; must not be {@code null}.
      */
     private static void resumeSelection(
-        /* @NonNull */
         final AbstractEventHandler eventHandler )
     {
-        assert eventHandler != null;
-
         final SelectionKey selectionKey = eventHandler.getSelectionKey();
+        assert selectionKey != null;
         if( selectionKey.isValid() )
         {
             selectionKey.interestOps( eventHandler.getInterestOperations() );
@@ -539,10 +529,8 @@ final class Dispatcher
      *        previously registered.
      */
     void unregisterEventHandler(
-        /* @NonNull */
         final AbstractEventHandler eventHandler )
     {
-        assert eventHandler != null;
         assert isTransportLayerThread();
         assert state_ == State.OPEN;
 
@@ -606,8 +594,9 @@ final class Dispatcher
         {
             assert isTransportLayerThread();
 
-            eventDispatchTaskFuture_ = Dispatcher.this.eventDispatchTaskFuture_;
-            assert eventDispatchTaskFuture_ != null;
+            final Future<?> eventDispatchTaskFuture = Dispatcher.this.eventDispatchTaskFuture_;
+            assert eventDispatchTaskFuture != null;
+            eventDispatchTaskFuture_ = eventDispatchTaskFuture;
         }
 
 
@@ -662,6 +651,7 @@ final class Dispatcher
                         acquireSelectorGuard();
                         try
                         {
+                            assert selector_ != null;
                             selector_.close();
                         }
                         catch( final IOException e )
@@ -762,25 +752,26 @@ final class Dispatcher
             {
                 try
                 {
-                    final boolean areEventHandlersClosed = transportLayer_.syncExec( new Callable<Boolean>()
+                    final Boolean areEventHandlersClosed = transportLayer_.syncExec( new Callable<Boolean>()
                     {
                         @Override
                         public Boolean call()
                         {
                             if( eventHandlers_.isEmpty() )
                             {
-                                return Boolean.TRUE;
+                                return nonNull( Boolean.TRUE );
                             }
                             else if( (System.currentTimeMillis() - startTime) >= eventHandlerShutdownTimeout_ )
                             {
                                 closeOrphanedEventHandlers();
-                                return Boolean.TRUE;
+                                return nonNull( Boolean.TRUE );
                             }
 
-                            return Boolean.FALSE;
+                            return nonNull( Boolean.FALSE );
                         }
-                    } ).booleanValue();
-                    if( areEventHandlersClosed )
+                    } );
+                    assert areEventHandlersClosed != null;
+                    if( areEventHandlersClosed.booleanValue() )
                     {
                         break;
                     }

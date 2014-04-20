@@ -1,6 +1,6 @@
 /*
  * FakeService.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,8 @@
 
 package org.gamegineer.table.internal.net.impl.transport;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Fake implementation of {@link IService}.
@@ -52,9 +52,10 @@ public class FakeService
      */
     @Override
     public void messageReceived(
+        @SuppressWarnings( "unused" )
         final MessageEnvelope messageEnvelope )
     {
-        assertArgumentNotNull( messageEnvelope, "messageEnvelope" ); //$NON-NLS-1$
+        // do nothing
     }
 
     /*
@@ -71,9 +72,10 @@ public class FakeService
      */
     @Override
     public void started(
+        @SuppressWarnings( "unused" )
         final IServiceContext context )
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
+        // do nothing
     }
 
     /*
@@ -81,6 +83,7 @@ public class FakeService
      */
     @Override
     public void stopped(
+        @Nullable
         @SuppressWarnings( "unused" )
         final Exception exception )
     {

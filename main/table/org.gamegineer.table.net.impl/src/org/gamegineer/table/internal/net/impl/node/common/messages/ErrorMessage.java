@@ -1,6 +1,6 @@
 /*
  * ErrorMessage.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node.common.messages;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.impl.transport.AbstractMessage;
 import org.gamegineer.table.net.TableNetworkError;
@@ -70,7 +69,6 @@ public final class ErrorMessage
      * 
      * @return The error that occurred; never {@code null}.
      */
-    /* @NonNull */
     public TableNetworkError getError()
     {
         return error_;
@@ -81,16 +79,10 @@ public final class ErrorMessage
      * 
      * @param error
      *        The error that occurred; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code error} is {@code null}.
      */
     public void setError(
-        /* @NonNull */
         final TableNetworkError error )
     {
-        assertArgumentNotNull( error, "error" ); //$NON-NLS-1$
-
         error_ = error;
     }
 }

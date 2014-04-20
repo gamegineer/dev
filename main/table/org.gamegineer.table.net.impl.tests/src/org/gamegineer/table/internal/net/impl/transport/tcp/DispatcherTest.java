@@ -1,6 +1,6 @@
 /*
  * DispatcherTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,9 @@
 
 package org.gamegineer.table.internal.net.impl.transport.tcp;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
@@ -30,6 +32,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 import org.easymock.EasyMock;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.internal.net.impl.transport.ITransportLayerContext;
 import org.junit.After;
 import org.junit.Before;
@@ -38,6 +42,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link Dispatcher} class.
  */
+@NonNullByDefault( false )
 public final class DispatcherTest
 {
     // ======================================================================
@@ -89,9 +94,22 @@ public final class DispatcherTest
                 return dispatcher_.beginClose();
             }
         } );
+        assertNotNull( dispatcherCloseFuture );
 
         // Wait for dispatcher to close on current thread
         dispatcher_.endClose( dispatcherCloseFuture );
+    }
+
+    /**
+     * Gets the fixture transport layer.
+     * 
+     * @return The fixture transport layer; never {@code null}.
+     */
+    @NonNull
+    private AbstractTransportLayer getTransportLayer()
+    {
+        assertNotNull( transportLayer_ );
+        return transportLayer_;
     }
 
     /**
@@ -104,8 +122,8 @@ public final class DispatcherTest
     public void setUp()
         throws Exception
     {
-        transportLayer_ = new FakeTransportLayer.Factory().createTransportLayer( EasyMock.createMock( ITransportLayerContext.class ) );
-        transportLayerRunner_ = new TransportLayerRunner( transportLayer_ );
+        final AbstractTransportLayer transportLayer = transportLayer_ = new FakeTransportLayer.Factory().createTransportLayer( nonNull( EasyMock.createMock( ITransportLayerContext.class ) ) );
+        transportLayerRunner_ = new TransportLayerRunner( transportLayer );
 
         transportLayerRunner_.run( new Callable<Void>()
         {
@@ -113,7 +131,7 @@ public final class DispatcherTest
             @SuppressWarnings( "synthetic-access" )
             public Void call()
             {
-                dispatcher_ = new Dispatcher( transportLayer_ );
+                dispatcher_ = new Dispatcher( transportLayer );
                 dispatcher_.setEventHandlerShutdownTimeout( 500L );
                 return null;
             }
@@ -154,7 +172,7 @@ public final class DispatcherTest
                 throws Exception
             {
                 dispatcher_.open();
-                final AbstractEventHandler eventHandler = new FakeEventHandler( transportLayer_ )
+                final AbstractEventHandler eventHandler = new FakeEventHandler( getTransportLayer() )
                 {
                     {
                         setState( State.OPEN );
@@ -215,7 +233,7 @@ public final class DispatcherTest
                     };
                     dispatcher_.open();
 
-                    dispatcher_.registerEventHandler( new FakeEventHandler( transportLayer_, channel ) );
+                    dispatcher_.registerEventHandler( new FakeEventHandler( getTransportLayer(), channel ) );
 
                     return null;
                 }

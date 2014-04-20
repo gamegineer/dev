@@ -1,6 +1,6 @@
 /*
  * HelloRequestMessageHandler.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -81,14 +81,9 @@ public final class HelloRequestMessageHandler
         "static-method", "unused"
     } )
     private void handleMessage(
-        /* @NonNull */
         final IRemoteClientNodeController remoteNodeController,
-        /* @NonNull */
         final HelloRequestMessage message )
     {
-        assert remoteNodeController != null;
-        assert message != null;
-
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
             String.format( "Received hello request with supported version '%d' (id=%d, correlation-id=%d)", //$NON-NLS-1$
                 Integer.valueOf( message.getSupportedProtocolVersion() ), //

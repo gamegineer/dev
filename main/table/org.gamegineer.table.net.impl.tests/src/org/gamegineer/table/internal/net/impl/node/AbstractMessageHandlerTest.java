@@ -1,6 +1,6 @@
 /*
  * AbstractMessageHandlerTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,12 +21,16 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.internal.net.impl.node.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.impl.transport.AbstractMessage;
 import org.gamegineer.table.internal.net.impl.transport.IMessage;
@@ -37,6 +41,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link AbstractMessageHandler} class.
  */
+@NonNullByDefault( false )
 public final class AbstractMessageHandlerTest
 {
     // ======================================================================
@@ -82,37 +87,13 @@ public final class AbstractMessageHandlerTest
     }
 
     /**
-     * Ensures the {@link AbstractMessageHandler#AbstractMessageHandler}
-     * constructor throws an exception when passed a {@code null} remote node
-     * controller type.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_RemoteNodeControllerType_Null()
-    {
-        new AbstractMessageHandler<IRemoteNodeController<?>>( null )
-        {
-            // no overrides
-        };
-    }
-
-    /**
-     * Ensures the {@link AbstractMessageHandler#handleMessage} method throws an
-     * exception when passed a {@code null} message.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testHandleMessage_Message_Null()
-    {
-        messageHandler_.handleMessage( mocksControl_.createMock( IRemoteNodeController.class ), (IMessage)null );
-    }
-
-    /**
      * Ensures the {@link AbstractMessageHandler#handleMessage} method correctly
      * handles a supported message.
      */
     @Test
     public void testHandleMessage_Message_Supported()
     {
-        final IRemoteNodeController<?> remoteNodeController = mocksControl_.createMock( IRemoteNodeController.class );
+        final IRemoteNodeController<?> remoteNodeController = nonNull( mocksControl_.createMock( IRemoteNodeController.class ) );
         final IMessage message = new FakeMessage();
         mocksControl_.replay();
 
@@ -131,7 +112,7 @@ public final class AbstractMessageHandlerTest
     {
         final IRemoteNodeController<?> remoteNodeController = mocksControl_.createMock( IRemoteNodeController.class );
         final Capture<IMessage> messageCapture = new Capture<>();
-        remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) );
+        remoteNodeController.sendMessage( assumeNonNull( EasyMock.capture( messageCapture ) ), EasyMock.isNull( IMessageHandler.class ) );
         final IMessage message = mocksControl_.createMock( IMessage.class );
         EasyMock.expect( message.getId() ).andReturn( IMessage.MINIMUM_ID ).anyTimes();
         EasyMock.expect( message.getCorrelationId() ).andReturn( IMessage.MAXIMUM_ID ).anyTimes();
@@ -143,28 +124,6 @@ public final class AbstractMessageHandlerTest
         assertEquals( 1, messageHandler_.getHandleUnexpectedMessageCallCount() );
         assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
         assertEquals( TableNetworkError.UNEXPECTED_MESSAGE, ((ErrorMessage)messageCapture.getValue()).getError() );
-    }
-
-    /**
-     * Ensures the {@link AbstractMessageHandler#handleMessage} method throws an
-     * exception when passed a {@code null} remote node controller.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testHandleMessage_RemoteNodeController_Null()
-    {
-        final IMessage message = new FakeMessage();
-
-        messageHandler_.handleMessage( null, message );
-    }
-
-    /**
-     * Ensures the {@link AbstractMessageHandler#handleUnexpectedMessage} method
-     * throws an exception when passed a {@code null} remote node controller.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testHandleUnexpectedMessage_RemoteNodeController_Null()
-    {
-        messageHandler_.handleUnexpectedMessage( null );
     }
 
 
@@ -281,14 +240,11 @@ public final class AbstractMessageHandlerTest
          */
         @SuppressWarnings( "unused" )
         private void handleMessage(
-            /* @NonNull */
+            @NonNull
             final IRemoteNodeController<?> remoteNodeController,
-            /* @NonNull */
+            @NonNull
             final FakeMessage message )
         {
-            assert remoteNodeController != null;
-            assert message != null;
-
             ++handleFakeMessageCallCount_;
         }
 
@@ -297,6 +253,7 @@ public final class AbstractMessageHandlerTest
          */
         @Override
         protected void handleUnexpectedMessage(
+            @NonNull
             final IRemoteNodeController remoteNodeController )
         {
             super.handleUnexpectedMessage( remoteNodeController );

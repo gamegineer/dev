@@ -1,6 +1,6 @@
 /*
  * PlayersMessageHandler.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -70,14 +70,9 @@ public final class PlayersMessageHandler
         "static-method", "unused"
     } )
     private void handleMessage(
-        /* @NonNull */
         final IRemoteServerNodeController remoteNodeController,
-        /* @NonNull */
         final PlayersMessage message )
     {
-        assert remoteNodeController != null;
-        assert message != null;
-
         final IClientNode localNode = remoteNodeController.getLocalNode();
         localNode.setPlayers( message.getPlayers( localNode.getPlayerName() ) );
     }

@@ -1,6 +1,6 @@
 /*
  * AbstractTableNetworkTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,12 +21,16 @@
 
 package org.gamegineer.table.net.test;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.test.TestTableEnvironments;
 import org.gamegineer.table.net.IPlayer;
@@ -45,6 +49,7 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link ITableNetwork} interface.
  */
+@NonNullByDefault( false )
 public abstract class AbstractTableNetworkTestCase
 {
     // ======================================================================
@@ -91,7 +96,7 @@ public abstract class AbstractTableNetworkTestCase
     private void connectTableNetwork()
         throws Exception
     {
-        tableNetwork_.host( tableNetworkConfiguration_ );
+        tableNetwork_.host( getTableNetworkConfiguration() );
     }
 
     /**
@@ -102,7 +107,7 @@ public abstract class AbstractTableNetworkTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract ITableNetwork createTableNetwork()
         throws Exception;
 
@@ -112,13 +117,34 @@ public abstract class AbstractTableNetworkTestCase
      * 
      * @param tableNetwork
      *        The table network; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code tableNetwork} is {@code null}.
      */
     protected abstract void fireTableNetworkPlayersUpdatedEvent(
-        /* @NonNull */
+        @NonNull
         ITableNetwork tableNetwork );
+
+    /**
+     * Gets the table network under test in the fixture.
+     * 
+     * @return The table network under test in the fixture; never {@code null}.
+     */
+    @NonNull
+    private ITableNetwork getTableNetwork()
+    {
+        assertNotNull( tableNetwork_ );
+        return tableNetwork_;
+    }
+
+    /**
+     * Gets the fixture table network configuration.
+     * 
+     * @return The fixture table network configuration; never {@code null}.
+     */
+    @NonNull
+    private TableNetworkConfiguration getTableNetworkConfiguration()
+    {
+        assertNotNull( tableNetworkConfiguration_ );
+        return tableNetworkConfiguration_;
+    }
 
     /**
      * Sets up the test fixture.
@@ -144,26 +170,16 @@ public abstract class AbstractTableNetworkTestCase
 
     /**
      * Ensures the {@link ITableNetwork#addTableNetworkListener} method throws
-     * an exception when passed a {@code null} listener.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testAddTableNetworkListener_Listener_Null()
-    {
-        tableNetwork_.addTableNetworkListener( null );
-    }
-
-    /**
-     * Ensures the {@link ITableNetwork#addTableNetworkListener} method throws
      * an exception when passed a listener that is present in the table network
      * listener collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddTableNetworkListener_Listener_Present()
     {
-        final ITableNetworkListener listener = mocksControl_.createMock( ITableNetworkListener.class );
-        tableNetwork_.addTableNetworkListener( listener );
+        final ITableNetworkListener listener = nonNull( mocksControl_.createMock( ITableNetworkListener.class ) );
+        getTableNetwork().addTableNetworkListener( listener );
 
-        tableNetwork_.addTableNetworkListener( listener );
+        getTableNetwork().addTableNetworkListener( listener );
     }
 
     /**
@@ -179,11 +195,11 @@ public abstract class AbstractTableNetworkTestCase
     {
         connectTableNetwork();
         final ITableNetworkListener listener = mocksControl_.createMock( ITableNetworkListener.class );
-        listener.tableNetworkDisconnected( EasyMock.notNull( TableNetworkDisconnectedEvent.class ) );
+        listener.tableNetworkDisconnected( assumeNonNull( EasyMock.notNull( TableNetworkDisconnectedEvent.class ) ) );
         mocksControl_.replay();
-        tableNetwork_.addTableNetworkListener( listener );
+        getTableNetwork().addTableNetworkListener( listener );
 
-        tableNetwork_.disconnect();
+        getTableNetwork().disconnect();
 
         mocksControl_.verify();
     }
@@ -199,11 +215,11 @@ public abstract class AbstractTableNetworkTestCase
     public void testDisconnect_Disconnected_DoesNotFireDisconnectedEvent()
         throws Exception
     {
-        final ITableNetworkListener listener = mocksControl_.createMock( ITableNetworkListener.class );
+        final ITableNetworkListener listener = nonNull( mocksControl_.createMock( ITableNetworkListener.class ) );
         mocksControl_.replay();
-        tableNetwork_.addTableNetworkListener( listener );
+        getTableNetwork().addTableNetworkListener( listener );
 
-        tableNetwork_.disconnect();
+        getTableNetwork().disconnect();
 
         mocksControl_.verify();
     }
@@ -215,11 +231,11 @@ public abstract class AbstractTableNetworkTestCase
     @Test
     public void testGetPlayers_ReturnValue_Copy()
     {
-        final Collection<IPlayer> players = tableNetwork_.getPlayers();
+        final Collection<IPlayer> players = getTableNetwork().getPlayers();
         final Collection<IPlayer> expectedValue = new ArrayList<>( players );
 
         players.add( EasyMock.createMock( IPlayer.class ) );
-        final Collection<IPlayer> actualValue = tableNetwork_.getPlayers();
+        final Collection<IPlayer> actualValue = getTableNetwork().getPlayers();
 
         assertEquals( expectedValue, actualValue );
     }
@@ -231,31 +247,7 @@ public abstract class AbstractTableNetworkTestCase
     @Test
     public void testGetPlayers_ReturnValue_NonNull()
     {
-        assertNotNull( tableNetwork_.getPlayers() );
-    }
-
-    /**
-     * Ensures the {@link ITableNetwork#giveControl} method throws an exception
-     * when passed a {@code null} player.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGiveControl_Player_Null()
-    {
-        tableNetwork_.giveControl( null );
-    }
-
-    /**
-     * Ensures the {@link ITableNetwork#host} method throws an exception when
-     * passed a {@code null} configuration.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testHost_Configuration_Null()
-        throws Exception
-    {
-        tableNetwork_.host( null );
+        assertNotNull( getTableNetwork().getPlayers() );
     }
 
     /**
@@ -269,9 +261,9 @@ public abstract class AbstractTableNetworkTestCase
     public void testHost_Connected_ThrowsException()
         throws Exception
     {
-        tableNetwork_.host( tableNetworkConfiguration_ );
+        getTableNetwork().host( getTableNetworkConfiguration() );
 
-        tableNetwork_.host( tableNetworkConfiguration_ );
+        getTableNetwork().host( getTableNetworkConfiguration() );
     }
 
     /**
@@ -286,27 +278,13 @@ public abstract class AbstractTableNetworkTestCase
         throws Exception
     {
         final ITableNetworkListener listener = mocksControl_.createMock( ITableNetworkListener.class );
-        listener.tableNetworkConnected( EasyMock.notNull( TableNetworkEvent.class ) );
+        listener.tableNetworkConnected( assumeNonNull( EasyMock.notNull( TableNetworkEvent.class ) ) );
         mocksControl_.replay();
-        tableNetwork_.addTableNetworkListener( listener );
+        getTableNetwork().addTableNetworkListener( listener );
 
-        tableNetwork_.host( tableNetworkConfiguration_ );
+        getTableNetwork().host( getTableNetworkConfiguration() );
 
         mocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@link ITableNetwork#join} method throws an exception when
-     * passed a {@code null} configuration.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testJoin_Configuration_Null()
-        throws Exception
-    {
-        tableNetwork_.join( null );
     }
 
     /**
@@ -320,9 +298,9 @@ public abstract class AbstractTableNetworkTestCase
     public void testJoin_Connected_ThrowsException()
         throws Exception
     {
-        tableNetwork_.join( tableNetworkConfiguration_ );
+        getTableNetwork().join( getTableNetworkConfiguration() );
 
-        tableNetwork_.join( tableNetworkConfiguration_ );
+        getTableNetwork().join( getTableNetworkConfiguration() );
     }
 
     /**
@@ -337,11 +315,11 @@ public abstract class AbstractTableNetworkTestCase
         throws Exception
     {
         final ITableNetworkListener listener = mocksControl_.createMock( ITableNetworkListener.class );
-        listener.tableNetworkConnected( EasyMock.notNull( TableNetworkEvent.class ) );
+        listener.tableNetworkConnected( assumeNonNull( EasyMock.notNull( TableNetworkEvent.class ) ) );
         mocksControl_.replay();
-        tableNetwork_.addTableNetworkListener( listener );
+        getTableNetwork().addTableNetworkListener( listener );
 
-        tableNetwork_.join( tableNetworkConfiguration_ );
+        getTableNetwork().join( getTableNetworkConfiguration() );
 
         mocksControl_.verify();
     }
@@ -354,17 +332,7 @@ public abstract class AbstractTableNetworkTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveTableNetworkListener_Listener_Absent()
     {
-        tableNetwork_.removeTableNetworkListener( mocksControl_.createMock( ITableNetworkListener.class ) );
-    }
-
-    /**
-     * Ensures the {@link ITableNetwork#removeTableNetworkListener} method
-     * throws an exception when passed a {@code null} listener.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRemoveTableNetworkListener_Listener_Null()
-    {
-        tableNetwork_.removeTableNetworkListener( null );
+        getTableNetwork().removeTableNetworkListener( nonNull( mocksControl_.createMock( ITableNetworkListener.class ) ) );
     }
 
     /**
@@ -379,13 +347,13 @@ public abstract class AbstractTableNetworkTestCase
         throws Exception
     {
         final ITableNetworkListener listener = mocksControl_.createMock( ITableNetworkListener.class );
-        listener.tableNetworkConnected( EasyMock.notNull( TableNetworkEvent.class ) );
+        listener.tableNetworkConnected( assumeNonNull( EasyMock.notNull( TableNetworkEvent.class ) ) );
         mocksControl_.replay();
-        tableNetwork_.addTableNetworkListener( listener );
+        getTableNetwork().addTableNetworkListener( listener );
         connectTableNetwork();
 
-        tableNetwork_.removeTableNetworkListener( listener );
-        tableNetwork_.disconnect();
+        getTableNetwork().removeTableNetworkListener( listener );
+        getTableNetwork().disconnect();
 
         mocksControl_.verify();
     }
@@ -403,13 +371,13 @@ public abstract class AbstractTableNetworkTestCase
         throws Exception
     {
         final ITableNetworkListener listener1 = mocksControl_.createMock( ITableNetworkListener.class );
-        listener1.tableNetworkConnected( EasyMock.notNull( TableNetworkEvent.class ) );
+        listener1.tableNetworkConnected( assumeNonNull( EasyMock.notNull( TableNetworkEvent.class ) ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final ITableNetworkListener listener2 = mocksControl_.createMock( ITableNetworkListener.class );
-        listener2.tableNetworkConnected( EasyMock.notNull( TableNetworkEvent.class ) );
+        listener2.tableNetworkConnected( assumeNonNull( EasyMock.notNull( TableNetworkEvent.class ) ) );
         mocksControl_.replay();
-        tableNetwork_.addTableNetworkListener( listener1 );
-        tableNetwork_.addTableNetworkListener( listener2 );
+        getTableNetwork().addTableNetworkListener( listener1 );
+        getTableNetwork().addTableNetworkListener( listener2 );
 
         connectTableNetwork();
 
@@ -430,15 +398,15 @@ public abstract class AbstractTableNetworkTestCase
     {
         connectTableNetwork();
         final ITableNetworkListener listener1 = mocksControl_.createMock( ITableNetworkListener.class );
-        listener1.tableNetworkDisconnected( EasyMock.notNull( TableNetworkDisconnectedEvent.class ) );
+        listener1.tableNetworkDisconnected( assumeNonNull( EasyMock.notNull( TableNetworkDisconnectedEvent.class ) ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final ITableNetworkListener listener2 = mocksControl_.createMock( ITableNetworkListener.class );
-        listener2.tableNetworkDisconnected( EasyMock.notNull( TableNetworkDisconnectedEvent.class ) );
+        listener2.tableNetworkDisconnected( assumeNonNull( EasyMock.notNull( TableNetworkDisconnectedEvent.class ) ) );
         mocksControl_.replay();
-        tableNetwork_.addTableNetworkListener( listener1 );
-        tableNetwork_.addTableNetworkListener( listener2 );
+        getTableNetwork().addTableNetworkListener( listener1 );
+        getTableNetwork().addTableNetworkListener( listener2 );
 
-        tableNetwork_.disconnect();
+        getTableNetwork().disconnect();
 
         mocksControl_.verify();
     }
@@ -456,15 +424,15 @@ public abstract class AbstractTableNetworkTestCase
         throws Exception
     {
         final ITableNetworkListener listener1 = mocksControl_.createMock( ITableNetworkListener.class );
-        listener1.tableNetworkPlayersUpdated( EasyMock.notNull( TableNetworkEvent.class ) );
+        listener1.tableNetworkPlayersUpdated( assumeNonNull( EasyMock.notNull( TableNetworkEvent.class ) ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final ITableNetworkListener listener2 = mocksControl_.createMock( ITableNetworkListener.class );
-        listener2.tableNetworkPlayersUpdated( EasyMock.notNull( TableNetworkEvent.class ) );
+        listener2.tableNetworkPlayersUpdated( assumeNonNull( EasyMock.notNull( TableNetworkEvent.class ) ) );
         mocksControl_.replay();
-        tableNetwork_.addTableNetworkListener( listener1 );
-        tableNetwork_.addTableNetworkListener( listener2 );
+        getTableNetwork().addTableNetworkListener( listener1 );
+        getTableNetwork().addTableNetworkListener( listener2 );
 
-        fireTableNetworkPlayersUpdatedEvent( tableNetwork_ );
+        fireTableNetworkPlayersUpdatedEvent( getTableNetwork() );
 
         mocksControl_.verify();
     }

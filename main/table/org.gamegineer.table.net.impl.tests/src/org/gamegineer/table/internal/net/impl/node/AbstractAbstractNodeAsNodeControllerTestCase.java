@@ -1,6 +1,6 @@
 /*
  * AbstractAbstractNodeAsNodeControllerTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import java.util.Collection;
 import java.util.Collections;
@@ -28,6 +29,7 @@ import java.util.concurrent.Future;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.easymock.EasyMock;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.concurrent.SynchronousFuture;
 import org.gamegineer.table.internal.net.impl.ITableNetworkController;
 import org.gamegineer.table.internal.net.impl.transport.ITransportLayer;
@@ -72,7 +74,6 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
      * 
      * @return A transport layer that will fail when opened; never {@code null}.
      */
-    /* @NonNull */
     private static ITransportLayer createFailingTransportLayer()
     {
         return new ITransportLayer()
@@ -128,7 +129,6 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
      * @return A transport layer that will succeed when opened; never
      *         {@code null}.
      */
-    /* @NonNull */
     private static ITransportLayer createSuccessfulTransportLayer()
     {
         return new ITransportLayer()
@@ -178,7 +178,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
     public void testConnect_TransportLayerOpenFailure_DoesNotInvokeConnected()
         throws Exception
     {
-        final MockNode node = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
+        final MockNode node = new MockNode.Factory().createNode( nonNull( EasyMock.createMock( ITableNetworkController.class ) ) );
         node.setTransportLayer( createFailingTransportLayer() );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
 
@@ -203,7 +203,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
     public void testConnect_TransportLayerOpenFailure_InvokesConnecting()
         throws Exception
     {
-        final MockNode node = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
+        final MockNode node = new MockNode.Factory().createNode( nonNull( EasyMock.createMock( ITableNetworkController.class ) ) );
         node.setTransportLayer( createFailingTransportLayer() );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
 
@@ -228,7 +228,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
     public void testConnect_TransportLayerOpenFailure_InvokesDispose()
         throws Exception
     {
-        final MockNode node = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
+        final MockNode node = new MockNode.Factory().createNode( nonNull( EasyMock.createMock( ITableNetworkController.class ) ) );
         node.setTransportLayer( createFailingTransportLayer() );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
 
@@ -253,7 +253,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
     public void testConnect_TransportLayerOpenSuccess_InvokesConnected()
         throws Exception
     {
-        final MockNode node = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
+        final MockNode node = new MockNode.Factory().createNode( nonNull( EasyMock.createMock( ITableNetworkController.class ) ) );
         node.setTransportLayer( createSuccessfulTransportLayer() );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
 
@@ -273,38 +273,13 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
     public void testConnect_TransportLayerOpenSuccess_InvokesConnecting()
         throws Exception
     {
-        final MockNode node = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
+        final MockNode node = new MockNode.Factory().createNode( nonNull( EasyMock.createMock( ITableNetworkController.class ) ) );
         node.setTransportLayer( createSuccessfulTransportLayer() );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
 
         nodeLayerRunner.connect( createTableNetworkConfiguration() );
 
         assertEquals( 1, node.getConnectingCallCount() );
-    }
-
-    /**
-     * Ensures the {@link AbstractNode#connecting} method throws an exception
-     * when passed a {@code null} table network configuration.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConnecting_Configuration_Null()
-        throws Exception
-    {
-        getNodeController().connecting( null );
-    }
-
-    /**
-     * Ensures the
-     * {@link AbstractNode#createTableManagerDecoratorForLocalNetworkTable}
-     * method throws an exception when passed a {@code null} table manager.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateTableManagerDecoratorForLocalNetworkTable_TableManager_Null()
-    {
-        getNodeController().createTableManagerDecoratorForLocalNetworkTable( null );
     }
 
     /**
@@ -319,7 +294,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
     public void testDisconnect_TransportLayerOpen_InvokesDisconnected()
         throws Exception
     {
-        final MockNode node = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
+        final MockNode node = new MockNode.Factory().createNode( nonNull( EasyMock.createMock( ITableNetworkController.class ) ) );
         node.setTransportLayer( createSuccessfulTransportLayer() );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
         nodeLayerRunner.connect( createTableNetworkConfiguration() );
@@ -341,7 +316,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
     public void testDisconnect_TransportLayerOpen_InvokesDisconnecting()
         throws Exception
     {
-        final MockNode node = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
+        final MockNode node = new MockNode.Factory().createNode( nonNull( EasyMock.createMock( ITableNetworkController.class ) ) );
         node.setTransportLayer( createSuccessfulTransportLayer() );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
         nodeLayerRunner.connect( createTableNetworkConfiguration() );
@@ -349,26 +324,6 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         nodeLayerRunner.disconnect();
 
         assertEquals( 1, node.getDisconnectingCallCount() );
-    }
-
-    /**
-     * Ensures the {@link AbstractNode#remoteNodeBound} method throws an
-     * exception when passed a {@code null} remote node.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRemoteNodeBound_RemoteNode_Null()
-    {
-        getNodeController().remoteNodeBound( null );
-    }
-
-    /**
-     * Ensures the {@link AbstractNode#remoteNodeUnbound} method throws an
-     * exception when passed a {@code null} remote node.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRemoteNodeUnbound_RemoteNode_Null()
-    {
-        getNodeController().remoteNodeUnbound( null );
     }
 
 
@@ -409,6 +364,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         private final Object lock_;
 
         /** The transport layer used by the node. */
+        @Nullable
         private ITransportLayer transportLayer_;
 
 
@@ -423,15 +379,9 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
          *        The node layer; must not be {@code null}.
          * @param tableNetworkController
          *        The table network controller; must not be {@code null}.
-         * 
-         * @throws java.lang.NullPointerException
-         *         If {@code nodeLayer} or {@code tableNetworkController} is
-         *         {@code null}.
          */
         private MockNode(
-            /* @NonNull */
             final INodeLayer nodeLayer,
-            /* @NonNull */
             final ITableNetworkController tableNetworkController )
         {
             super( nodeLayer, tableNetworkController );
@@ -617,6 +567,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         /*
          * @see org.gamegineer.table.internal.net.impl.node.INodeController#getPlayer()
          */
+        @Nullable
         @Override
         public IPlayer getPlayer()
         {
@@ -629,7 +580,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         @Override
         public Collection<IPlayer> getPlayers()
         {
-            return Collections.emptyList();
+            return nonNull( Collections.<IPlayer>emptyList() );
         }
 
         /*
@@ -638,7 +589,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         @Override
         public ITableManager getTableManager()
         {
-            return EasyMock.createMock( ITableManager.class );
+            return nonNull( EasyMock.createMock( ITableManager.class ) );
         }
 
         /*
@@ -668,11 +619,8 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
          *        The transport layer; must not be {@code null}.
          */
         void setTransportLayer(
-            /* @NonNull */
             final ITransportLayer transportLayer )
         {
-            assert transportLayer != null;
-
             synchronized( lock_ )
             {
                 transportLayer_ = transportLayer;

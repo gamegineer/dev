@@ -1,6 +1,6 @@
 /*
  * AbstractRemoteServerNodeTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.impl.node.client;
 
 import org.gamegineer.table.internal.net.impl.node.AbstractRemoteNodeTestCase;
-import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
@@ -44,20 +43,5 @@ public abstract class AbstractRemoteServerNodeTestCase<T extends IRemoteServerNo
      */
     protected AbstractRemoteServerNodeTestCase()
     {
-    }
-
-
-    // ======================================================================
-    // Methods
-    // ======================================================================
-
-    /**
-     * Ensures the {@link IRemoteServerNode#giveControl} method throws an
-     * exception when passed a {@code null} player name.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGiveControl_PlayerName_Null()
-    {
-        getRemoteNode().giveControl( null );
     }
 }

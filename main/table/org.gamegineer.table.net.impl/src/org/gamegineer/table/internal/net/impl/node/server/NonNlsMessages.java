@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.node.server;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 
@@ -38,13 +39,13 @@ final class NonNlsMessages
     // --- ServerNode -------------------------------------------------------
 
     /** The table environment factory service is not available. */
-    public static String ServerNode_initializeMasterTable_tableEnvironmentFactoryNotAvailable;
+    public static String ServerNode_initializeMasterTable_tableEnvironmentFactoryNotAvailable = ""; //$NON-NLS-1$
 
     /**
      * An attempt was made to modify the network table by a player without the
      * editor role.
      */
-    public static String ServerNode_networkTableModification_playerNotEditor;
+    public static String ServerNode_networkTableModification_playerNotEditor = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -85,11 +86,9 @@ final class NonNlsMessages
      *         the network table by a player without the editor role; never
      *         {@code null}.
      */
-    /* @NonNull */
     static String ServerNode_networkTableModification_playerNotEditor(
-        /* @NonNull */
         final String playerName )
     {
-        return bind( ServerNode_networkTableModification_playerNotEditor, playerName );
+        return nonNull( bind( ServerNode_networkTableModification_playerNotEditor, playerName ) );
     }
 }

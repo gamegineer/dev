@@ -1,6 +1,6 @@
 /*
  * TableNetwork.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,13 +22,13 @@
 package org.gamegineer.table.internal.net.impl;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.net.impl.node.DefaultNodeFactory;
 import org.gamegineer.table.internal.net.impl.node.INodeController;
 import org.gamegineer.table.internal.net.impl.node.INodeFactory;
@@ -101,14 +101,9 @@ public final class TableNetwork
      *        {@code null}.
      */
     TableNetwork(
-        /* @NonNull */
         final INodeFactory nodeFactory,
-        /* @NonNull */
         final ITransportLayerFactory transportLayerFactory )
     {
-        assert nodeFactory != null;
-        assert transportLayerFactory != null;
-
         connectionStateRef_ = new AtomicReference<>( ConnectionState.DISCONNECTED );
         listeners_ = new CopyOnWriteArrayList<>();
         nodeControllerRef_ = new AtomicReference<>( null );
@@ -128,7 +123,6 @@ public final class TableNetwork
     public void addTableNetworkListener(
         final ITableNetworkListener listener )
     {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.TableNetwork_addTableNetworkListener_listener_registered ); //$NON-NLS-1$
     }
 
@@ -141,7 +135,9 @@ public final class TableNetwork
         final INodeController nodeController = nodeControllerRef_.get();
         if( nodeController != null )
         {
-            ThreadPlayer.setPlayerName( nodeController.getPlayer().getName() );
+            final IPlayer nodeControllerPlayer = nodeController.getPlayer();
+            assert nodeControllerPlayer != null;
+            ThreadPlayer.setPlayerName( nodeControllerPlayer.getName() );
             try
             {
                 nodeController.cancelControlRequest();
@@ -171,15 +167,10 @@ public final class TableNetwork
      *         already connected.
      */
     private void connect(
-        /* @NonNull */
         final TableNetworkConfiguration configuration,
-        /* @NonNull */
         final INodeController nodeController )
         throws TableNetworkException, InterruptedException
     {
-        assert configuration != null;
-        assert nodeController != null;
-
         if( connectionStateRef_.compareAndSet( ConnectionState.DISCONNECTED, ConnectionState.CONNECTING ) )
         {
             try
@@ -221,6 +212,7 @@ public final class TableNetwork
      */
     @Override
     public void disconnect(
+        @Nullable
         final TableNetworkError error )
         throws InterruptedException
     {
@@ -266,7 +258,7 @@ public final class TableNetwork
      *        {@code null} if the table network was disconnected normally.
      */
     private void fireTableNetworkDisconnected(
-        /* @Nullable */
+        @Nullable
         final TableNetworkError error )
     {
         final TableNetworkDisconnectedEvent event = new TableNetworkDisconnectedEvent( this, error );
@@ -305,6 +297,7 @@ public final class TableNetwork
     /*
      * @see org.gamegineer.table.net.ITableNetwork#getLocalPlayer()
      */
+    @Nullable
     @Override
     public IPlayer getLocalPlayer()
     {
@@ -348,12 +341,12 @@ public final class TableNetwork
     public void giveControl(
         final IPlayer player )
     {
-        assertArgumentNotNull( player, "player" ); //$NON-NLS-1$
-
         final INodeController nodeController = nodeControllerRef_.get();
         if( nodeController != null )
         {
-            ThreadPlayer.setPlayerName( nodeController.getPlayer().getName() );
+            final IPlayer nodeControllerPlayer = nodeController.getPlayer();
+            assert nodeControllerPlayer != null;
+            ThreadPlayer.setPlayerName( nodeControllerPlayer.getName() );
             try
             {
                 nodeController.giveControl( player.getName() );
@@ -373,8 +366,6 @@ public final class TableNetwork
         final TableNetworkConfiguration configuration )
         throws TableNetworkException, InterruptedException
     {
-        assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
-
         connect( configuration, nodeFactory_.createServerNode( this ) );
     }
 
@@ -395,8 +386,6 @@ public final class TableNetwork
         final TableNetworkConfiguration configuration )
         throws TableNetworkException, InterruptedException
     {
-        assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
-
         connect( configuration, nodeFactory_.createClientNode( this ) );
     }
 
@@ -407,7 +396,6 @@ public final class TableNetwork
     public void removeTableNetworkListener(
         final ITableNetworkListener listener )
     {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.TableNetwork_removeTableNetworkListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
@@ -432,7 +420,9 @@ public final class TableNetwork
         final INodeController nodeController = nodeControllerRef_.get();
         if( nodeController != null )
         {
-            ThreadPlayer.setPlayerName( nodeController.getPlayer().getName() );
+            final IPlayer nodeControllerPlayer = nodeController.getPlayer();
+            assert nodeControllerPlayer != null;
+            ThreadPlayer.setPlayerName( nodeControllerPlayer.getName() );
             try
             {
                 nodeController.requestControl();

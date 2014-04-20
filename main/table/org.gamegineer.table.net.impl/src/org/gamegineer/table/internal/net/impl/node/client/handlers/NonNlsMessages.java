@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,7 +38,7 @@ final class NonNlsMessages
     // --- BeginAuthenticationRequestMessageHandler -------------------------
 
     /** Failed to create the begin authentication response. */
-    public static String BeginAuthenticationRequestMessageHandler_beginAuthenticationResponseFailed;
+    public static String BeginAuthenticationRequestMessageHandler_beginAuthenticationResponseFailed = ""; //$NON-NLS-1$
 
 
     // ======================================================================

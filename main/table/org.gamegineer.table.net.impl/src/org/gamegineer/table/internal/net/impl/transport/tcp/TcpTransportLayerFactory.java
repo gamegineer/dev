@@ -1,6 +1,6 @@
 /*
  * TcpTransportLayerFactory.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.transport.tcp;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.impl.transport.ITransportLayer;
 import org.gamegineer.table.internal.net.impl.transport.ITransportLayerContext;
@@ -59,8 +58,6 @@ public final class TcpTransportLayerFactory
         final ITransportLayerContext context )
         throws TransportException
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
-
         return createTransportLayer( new ActiveTransportLayer.Factory(), context );
     }
 
@@ -72,8 +69,6 @@ public final class TcpTransportLayerFactory
         final ITransportLayerContext context )
         throws TransportException
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
-
         return createTransportLayer( new PassiveTransportLayer.Factory(), context );
     }
 
@@ -90,17 +85,11 @@ public final class TcpTransportLayerFactory
      * @throws org.gamegineer.table.internal.net.impl.transport.TransportException
      *         If the transport layer cannot be created.
      */
-    /* @NonNull */
     private static ITransportLayer createTransportLayer(
-        /* @NonNull */
         final AbstractTransportLayer.AbstractFactory factory,
-        /* @NonNull */
         final ITransportLayerContext context )
         throws TransportException
     {
-        assert factory != null;
-        assert context != null;
-
         return new TransportLayerProxy( factory.createTransportLayer( context ) );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,10 +38,10 @@ final class NonNlsMessages
     // --- ClientNode -------------------------------------------------------
 
     /** The protocol handshake was interrupted waiting for completion. */
-    public static String ClientNode_handshake_interrupted;
+    public static String ClientNode_handshake_interrupted = ""; //$NON-NLS-1$
 
     /** The protocol handshake timed out waiting for completion. */
-    public static String ClientNode_handshake_timedOut;
+    public static String ClientNode_handshake_timedOut = ""; //$NON-NLS-1$
 
 
     // ======================================================================

@@ -1,6 +1,6 @@
 /*
  * IService.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,6 +20,8 @@
  */
 
 package org.gamegineer.table.internal.net.impl.transport;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A network service.
@@ -41,12 +43,8 @@ public interface IService
      * 
      * @param messageEnvelope
      *        The message envelope; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code messageEnvelope} is {@code null}.
      */
     public void messageReceived(
-        /* @NonNull */
         MessageEnvelope messageEnvelope );
 
     /**
@@ -59,12 +57,8 @@ public interface IService
      * 
      * @param context
      *        The service context; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
      */
     public void started(
-        /* @NonNull */
         IServiceContext context );
 
     /**
@@ -75,6 +69,6 @@ public interface IService
      *        {@code null} if the service was stopped normally.
      */
     public void stopped(
-        /* @Nullable */
+        @Nullable
         Exception exception );
 }

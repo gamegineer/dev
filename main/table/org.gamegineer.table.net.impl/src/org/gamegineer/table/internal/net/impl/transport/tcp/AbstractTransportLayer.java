@@ -1,6 +1,6 @@
 /*
  * AbstractTransportLayer.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.transport.tcp;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -31,6 +31,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.concurrent.SynchronousFuture;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
 import org.gamegineer.table.internal.net.impl.Activator;
@@ -63,6 +64,7 @@ abstract class AbstractTransportLayer
      * The dispatcher associated with the transport layer or {@code null} if the
      * transport layer is not open.
      */
+    @Nullable
     private Dispatcher dispatcher_;
 
     /** The transport layer executor service. */
@@ -93,19 +95,14 @@ abstract class AbstractTransportLayer
      *        The transport layer context; must not be {@code null}.
      */
     AbstractTransportLayer(
-        /* @NonNull */
         final ExecutorService executorService,
-        /* @NonNull */
         final ITransportLayerContext context )
     {
-        assert executorService != null;
-        assert context != null;
-
         context_ = context;
         dispatcher_ = null;
         executorService_ = executorService;
         state_ = State.PRISTINE;
-        transportLayerThread_ = Thread.currentThread();
+        transportLayerThread_ = nonNull( Thread.currentThread() );
     }
 
 
@@ -128,14 +125,10 @@ abstract class AbstractTransportLayer
      * @throws java.util.concurrent.RejectedExecutionException
      *         If the task cannot be scheduled for execution.
      */
-    /* @NonNull */
     final <T> Future<T> asyncExec(
-        /* @NonNull */
         final Callable<T> task )
     {
-        assert task != null;
-
-        return executorService_.submit( task );
+        return nonNull( executorService_.submit( task ) );
     }
 
     /**
@@ -150,14 +143,10 @@ abstract class AbstractTransportLayer
      * @throws java.util.concurrent.RejectedExecutionException
      *         If the task cannot be scheduled for execution.
      */
-    /* @NonNull */
     Future<?> asyncExec(
-        /* @NonNull */
         final Runnable task )
     {
-        assert task != null;
-
-        return executorService_.submit( task );
+        return nonNull( executorService_.submit( task ) );
     }
 
     /*
@@ -177,10 +166,12 @@ abstract class AbstractTransportLayer
 
         close();
         final Dispatcher dispatcher = dispatcher_;
+        assert dispatcher != null;
         final Future<Void> dispatcherCloseTaskFuture = dispatcher.beginClose();
 
-        return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<Void>()
         {
+            @Nullable
             @Override
             @SuppressWarnings( "synthetic-access" )
             public Void call()
@@ -191,6 +182,7 @@ abstract class AbstractTransportLayer
 
                     final Future<Void> closeTaskFuture = executorService_.submit( new Callable<Void>()
                     {
+                        @Nullable
                         @Override
                         public Void call()
                         {
@@ -218,7 +210,7 @@ abstract class AbstractTransportLayer
 
                 return null;
             }
-        } );
+        } ) );
     }
 
     /*
@@ -229,7 +221,6 @@ abstract class AbstractTransportLayer
         final String hostName,
         final int port )
     {
-        assertArgumentNotNull( hostName, "hostName" ); //$NON-NLS-1$
         assert isTransportLayerThread();
 
         if( state_ != State.PRISTINE )
@@ -240,8 +231,9 @@ abstract class AbstractTransportLayer
         state_ = State.OPEN;
         dispatcher_ = new Dispatcher( this );
 
-        return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<Void>()
         {
+            @Nullable
             @Override
             @SuppressWarnings( "synthetic-access" )
             public Void call()
@@ -251,13 +243,16 @@ abstract class AbstractTransportLayer
                 {
                     syncExec( new Callable<Void>()
                     {
+                        @Nullable
                         @Override
                         public Void call()
                             throws TransportException
                         {
                             try
                             {
-                                dispatcher_.open();
+                                final Dispatcher dispatcher = dispatcher_;
+                                assert dispatcher != null;
+                                dispatcher.open();
                                 open( hostName, port );
                             }
                             catch( final IOException e )
@@ -287,7 +282,7 @@ abstract class AbstractTransportLayer
 
                 return null;
             }
-        } );
+        } ) );
     }
 
     /**
@@ -302,7 +297,6 @@ abstract class AbstractTransportLayer
      * @return A new network service that can be associated with the transport
      *         layer; never {@code null}.
      */
-    /* @NonNull */
     final IService createService()
     {
         assert isTransportLayerThread();
@@ -318,7 +312,7 @@ abstract class AbstractTransportLayer
      *        or {@code null} if the transport layer was disconnected normally.
      */
     final void disconnected(
-        /* @Nullable */
+        @Nullable
         final Exception exception )
     {
         assert isTransportLayerThread();
@@ -337,7 +331,6 @@ abstract class AbstractTransportLayer
         final Future<Void> future )
         throws InterruptedException
     {
-        assertArgumentNotNull( future, "future" ); //$NON-NLS-1$
         assert !isTransportLayerThread() || future.isDone();
 
         try
@@ -361,7 +354,6 @@ abstract class AbstractTransportLayer
         final Future<Void> future )
         throws TransportException, InterruptedException
     {
-        assertArgumentNotNull( future, "future" ); //$NON-NLS-1$
         assert !isTransportLayerThread() || future.isDone();
 
         try
@@ -386,7 +378,6 @@ abstract class AbstractTransportLayer
      * @return The dispatcher associated with the transport layer; never
      *         {@code null}.
      */
-    /* @NonNull */
     final Dispatcher getDispatcher()
     {
         assert isTransportLayerThread();
@@ -422,7 +413,6 @@ abstract class AbstractTransportLayer
      *         If an I/O error occurs.
      */
     abstract void open(
-        /* @NonNull */
         String hostName,
         int port )
         throws IOException;
@@ -446,14 +436,11 @@ abstract class AbstractTransportLayer
      * @throws java.util.concurrent.RejectedExecutionException
      *         If the task cannot be scheduled for execution.
      */
-    /* @Nullable */
+    @Nullable
     <T> T syncExec(
-        /* @NonNull */
         final Callable<T> task )
         throws ExecutionException, InterruptedException
     {
-        assert task != null;
-
         if( isTransportLayerThread() )
         {
             try
@@ -484,12 +471,9 @@ abstract class AbstractTransportLayer
      *         If the task cannot be scheduled for execution.
      */
     void syncExec(
-        /* @NonNull */
         final Runnable task )
         throws ExecutionException, InterruptedException
     {
-        assert task != null;
-
         if( isTransportLayerThread() )
         {
             try
@@ -529,7 +513,9 @@ abstract class AbstractTransportLayer
 
         try
         {
-            endClose( beginCloseTaskFuture.get() );
+            final Future<Void> closeTaskFuture = beginCloseTaskFuture.get();
+            assert closeTaskFuture != null;
+            endClose( closeTaskFuture );
         }
         catch( final ExecutionException e )
         {
@@ -580,18 +566,18 @@ abstract class AbstractTransportLayer
          * 
          * @return The transport layer executor service; never {@code null}.
          */
-        /* @NonNull */
         private static ExecutorService createExecutorService()
         {
-            return Executors.newSingleThreadExecutor( new ThreadFactory()
+            return nonNull( Executors.newSingleThreadExecutor( new ThreadFactory()
             {
                 @Override
                 public Thread newThread(
+                    @Nullable
                     final Runnable r )
                 {
                     return new Thread( r, NonNlsMessages.AbstractTransportLayer_transportLayerThread_name );
                 }
-            } );
+            } ) );
         }
 
         /**
@@ -605,14 +591,10 @@ abstract class AbstractTransportLayer
          * @throws org.gamegineer.table.internal.net.impl.transport.TransportException
          *         If the transport layer cannot be created.
          */
-        /* @NonNull */
         final AbstractTransportLayer createTransportLayer(
-            /* @NonNull */
             final ITransportLayerContext context )
             throws TransportException
         {
-            assert context != null;
-
             final ExecutorService executorService = createExecutorService();
             final Future<AbstractTransportLayer> future = executorService.submit( new Callable<AbstractTransportLayer>()
             {
@@ -625,7 +607,9 @@ abstract class AbstractTransportLayer
 
             try
             {
-                return future.get();
+                final AbstractTransportLayer transportLayer = future.get();
+                assert transportLayer != null;
+                return transportLayer;
             }
             catch( final ExecutionException e )
             {
@@ -653,11 +637,8 @@ abstract class AbstractTransportLayer
          * 
          * @return A new transport layer; never {@code null}.
          */
-        /* @NonNull */
         abstract AbstractTransportLayer createTransportLayer(
-            /* @NonNull */
             ExecutorService executorService,
-            /* @NonNull */
             ITransportLayerContext context );
     }
 }

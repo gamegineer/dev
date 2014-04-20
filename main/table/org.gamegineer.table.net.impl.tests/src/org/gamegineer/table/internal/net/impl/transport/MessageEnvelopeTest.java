@@ -1,6 +1,6 @@
 /*
  * MessageEnvelopeTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -112,16 +112,6 @@ public final class MessageEnvelopeTest
     }
 
     /**
-     * Ensures the {@link MessageEnvelope#fromByteArray} method throws an
-     * exception when passed a {@code null} byte array.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testFromByteArray_Bytes_Null()
-    {
-        MessageEnvelope.fromByteArray( null );
-    }
-
-    /**
      * Ensures the {@link MessageEnvelope#fromMessage} method returns the
      * correct message envelope.
      * 
@@ -143,19 +133,5 @@ public final class MessageEnvelopeTest
         assertEquals( expectedValue.getCorrelationId(), messageEnvelope.getHeader().getCorrelationId() );
         assertEquals( expectedValue.getId(), actualValue.getId() );
         assertEquals( expectedValue.getCorrelationId(), actualValue.getCorrelationId() );
-    }
-
-    /**
-     * Ensures the {@link MessageEnvelope#fromMessage} method throws an
-     * exception when passed a {@code null} message.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testFromMessage_Message_Null()
-        throws Exception
-    {
-        MessageEnvelope.fromMessage( null );
     }
 }

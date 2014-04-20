@@ -1,6 +1,6 @@
 /*
  * MessageEnvelopeHeaderTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -67,16 +67,6 @@ public final class MessageEnvelopeHeaderTest
     public void testFromByteArray_Bytes_Illegal_LengthShorterThanHeaderLength()
     {
         Header.fromByteArray( new byte[ Header.LENGTH - 1 ] );
-    }
-
-    /**
-     * Ensures the {@link Header#fromByteArray} method throws an exception when
-     * passed a {@code null} byte array.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testFromByteArray_Bytes_Null()
-    {
-        Header.fromByteArray( null );
     }
 
     /**

@@ -1,6 +1,6 @@
 /*
  * AbstractNodeUtils.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.ThreadSafe;
 
 /**
@@ -60,19 +59,11 @@ public final class AbstractNodeUtils
      * @return {@code true} if a remote node for the specified player is bound
      *         to the specified local table network node; otherwise
      *         {@code false}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code node} or {@code playerName} is {@code null}.
      */
     public static boolean isRemoteNodeBound(
-        /* @NonNull */
         final AbstractNode<?> node,
-        /* @NonNull */
         final String playerName )
     {
-        assertArgumentNotNull( node, "node" ); //$NON-NLS-1$
-        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
-
         for( final IRemoteNode remoteNode : node.getRemoteNodes() )
         {
             if( playerName.equals( remoteNode.getPlayerName() ) )

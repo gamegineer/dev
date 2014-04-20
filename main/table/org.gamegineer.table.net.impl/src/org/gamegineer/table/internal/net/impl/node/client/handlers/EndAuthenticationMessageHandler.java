@@ -1,6 +1,6 @@
 /*
  * EndAuthenticationMessageHandler.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node.client.handlers;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.impl.Debug;
 import org.gamegineer.table.internal.net.impl.node.client.ClientNodeConstants;
@@ -75,14 +74,9 @@ public final class EndAuthenticationMessageHandler
         "static-method", "unused"
     } )
     private void handleMessage(
-        /* @NonNull */
         final IRemoteServerNodeController remoteNodeController,
-        /* @NonNull */
         final EndAuthenticationMessage message )
     {
-        assert remoteNodeController != null;
-        assert message != null;
-
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
             String.format( "Received authentication confirmation (id=%d, correlation-id=%d)", //$NON-NLS-1$
                 Integer.valueOf( message.getId() ), //
@@ -103,14 +97,9 @@ public final class EndAuthenticationMessageHandler
         "static-method", "unused"
     } )
     private void handleMessage(
-        /* @NonNull */
         final IRemoteServerNodeController remoteNodeController,
-        /* @NonNull */
         final ErrorMessage message )
     {
-        assert remoteNodeController != null;
-        assert message != null;
-
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
             String.format( "Received error '%s' in response to begin authentication response (id=%d, correlation-id=%d)", //$NON-NLS-1$
                 message.getError(), //
@@ -126,8 +115,6 @@ public final class EndAuthenticationMessageHandler
     protected void handleUnexpectedMessage(
         final IRemoteServerNodeController remoteNodeController )
     {
-        assertArgumentNotNull( remoteNodeController, "remoteNodeController" ); //$NON-NLS-1$
-
         remoteNodeController.close( TableNetworkError.UNEXPECTED_MESSAGE );
     }
 }

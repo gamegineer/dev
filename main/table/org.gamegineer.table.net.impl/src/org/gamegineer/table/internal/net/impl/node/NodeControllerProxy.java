@@ -1,6 +1,6 @@
 /*
  * NodeControllerProxy.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.Callable;
@@ -30,6 +30,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.concurrent.SynchronousFuture;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
 import org.gamegineer.table.internal.net.impl.Activator;
@@ -67,11 +68,8 @@ final class NodeControllerProxy
      *        The actual node controller; must not be {@code null}.
      */
     NodeControllerProxy(
-        /* @NonNull */
         final AbstractNode<?> actualNodeController )
     {
-        assert actualNodeController != null;
-
         actualNodeController_ = actualNodeController;
     }
 
@@ -105,8 +103,9 @@ final class NodeControllerProxy
             return new SynchronousFuture<>( new TableNetworkException( TableNetworkError.ILLEGAL_CONNECTION_STATE ) );
         }
 
-        return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<Void>()
         {
+            @Nullable
             @Override
             @SuppressWarnings( "synthetic-access" )
             public Void call()
@@ -124,6 +123,7 @@ final class NodeControllerProxy
                         throw TaskUtils.launderThrowable( e.getCause() );
                     }
 
+                    assert connectTaskFuture != null;
                     actualNodeController_.endConnect( connectTaskFuture );
                 }
                 catch( final InterruptedException e )
@@ -133,7 +133,7 @@ final class NodeControllerProxy
 
                 return null;
             }
-        } );
+        } ) );
     }
 
     /*
@@ -161,8 +161,9 @@ final class NodeControllerProxy
             return new SynchronousFuture<>();
         }
 
-        return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<Void>()
         {
+            @Nullable
             @Override
             @SuppressWarnings( "synthetic-access" )
             public Void call()
@@ -179,6 +180,7 @@ final class NodeControllerProxy
                         throw TaskUtils.launderThrowable( e.getCause() );
                     }
 
+                    assert disconnectTaskFuture != null;
                     actualNodeController_.endDisconnect( disconnectTaskFuture );
                 }
                 catch( final InterruptedException e )
@@ -188,7 +190,7 @@ final class NodeControllerProxy
 
                 return null;
             }
-        } );
+        } ) );
     }
 
     /*
@@ -228,8 +230,6 @@ final class NodeControllerProxy
         final Future<Void> future )
         throws TableNetworkException, InterruptedException
     {
-        assertArgumentNotNull( future, "future" ); //$NON-NLS-1$
-
         try
         {
             future.get();
@@ -254,8 +254,6 @@ final class NodeControllerProxy
         final Future<Void> future )
         throws InterruptedException
     {
-        assertArgumentNotNull( future, "future" ); //$NON-NLS-1$
-
         try
         {
             future.get();
@@ -269,6 +267,7 @@ final class NodeControllerProxy
     /*
      * @see org.gamegineer.table.internal.net.impl.node.INodeController#getPlayer()
      */
+    @Nullable
     @Override
     public IPlayer getPlayer()
     {
@@ -276,6 +275,7 @@ final class NodeControllerProxy
         {
             return actualNodeController_.getNodeLayer().syncExec( new Callable<IPlayer>()
             {
+                @Nullable
                 @Override
                 @SuppressWarnings( "synthetic-access" )
                 public IPlayer call()
@@ -305,7 +305,7 @@ final class NodeControllerProxy
     {
         try
         {
-            return actualNodeController_.getNodeLayer().syncExec( new Callable<Collection<IPlayer>>()
+            final Collection<IPlayer> players = actualNodeController_.getNodeLayer().syncExec( new Callable<Collection<IPlayer>>()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
@@ -314,6 +314,8 @@ final class NodeControllerProxy
                     return actualNodeController_.getPlayers();
                 }
             } );
+            assert players != null;
+            return players;
         }
         catch( final ExecutionException e )
         {
@@ -323,7 +325,7 @@ final class NodeControllerProxy
         {
             Thread.currentThread().interrupt();
             Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.NodeControllerProxy_interrupted, e );
-            return Collections.emptyList();
+            return nonNull( Collections.<IPlayer>emptyList() );
         }
     }
 

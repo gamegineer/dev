@@ -1,6 +1,6 @@
 /*
  * EchoResponseMessage.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node.common.messages;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.impl.transport.AbstractMessage;
 
@@ -69,7 +68,6 @@ public final class EchoResponseMessage
      * 
      * @return The message content; never {@code null}.
      */
-    /* @NonNull */
     public String getContent()
     {
         return content_;
@@ -80,16 +78,10 @@ public final class EchoResponseMessage
      * 
      * @param content
      *        The message content; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code content} is {@code null}.
      */
     public void setContent(
-        /* @NonNull */
         final String content )
     {
-        assertArgumentNotNull( content, "content" ); //$NON-NLS-1$
-
         content_ = content;
     }
 }

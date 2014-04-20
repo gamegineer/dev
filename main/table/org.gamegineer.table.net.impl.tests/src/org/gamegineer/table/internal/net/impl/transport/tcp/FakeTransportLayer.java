@@ -1,6 +1,6 @@
 /*
  * FakeTransportLayer.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -45,9 +45,7 @@ final class FakeTransportLayer
      *        The transport layer context; must not be {@code null}.
      */
     private FakeTransportLayer(
-        /* @NonNull */
         final ExecutorService executorService,
-        /* @NonNull */
         final ITransportLayerContext context )
     {
         super( executorService, context );
@@ -74,11 +72,11 @@ final class FakeTransportLayer
      */
     @Override
     void open(
+        @SuppressWarnings( "unused" )
         final String hostName,
         @SuppressWarnings( "unused" )
         final int port )
     {
-        assert hostName != null;
         assert isTransportLayerThread();
 
         // do nothing

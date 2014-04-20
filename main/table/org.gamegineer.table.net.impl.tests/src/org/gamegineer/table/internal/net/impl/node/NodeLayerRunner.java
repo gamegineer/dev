@@ -1,6 +1,6 @@
 /*
  * NodeLayerRunner.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,13 +22,14 @@
 package org.gamegineer.table.internal.net.impl.node;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
 import org.gamegineer.table.net.TableNetworkConfiguration;
 
@@ -55,16 +56,10 @@ public final class NodeLayerRunner
      * 
      * @param node
      *        The node that manages the node layer; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code node} is {@code null}.
      */
     public NodeLayerRunner(
-        /* @NonNull */
         final AbstractNode<?> node )
     {
-        assertArgumentNotNull( node, "node" ); //$NON-NLS-1$
-
         node_ = node;
     }
 
@@ -82,16 +77,11 @@ public final class NodeLayerRunner
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
-     * @throws java.lang.NullPointerException
-     *         If {@code configuration} is {@code null}.
      */
     public void connect(
-        /* @NonNull */
         final TableNetworkConfiguration configuration )
         throws Exception
     {
-        assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
-
         final Future<Void> future = run( new Callable<Future<Void>>()
         {
             @Override
@@ -101,6 +91,7 @@ public final class NodeLayerRunner
                 return node_.beginConnect( configuration );
             }
         } );
+        assert future != null;
 
         node_.endConnect( future );
     }
@@ -124,6 +115,7 @@ public final class NodeLayerRunner
                 return node_.beginDisconnect();
             }
         } );
+        assert future != null;
 
         node_.endDisconnect( future );
     }
@@ -143,18 +135,13 @@ public final class NodeLayerRunner
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
-     * @throws java.lang.NullPointerException
-     *         If {@code task} is {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     public <V> V run(
-        /* @NonNull */
         final Callable<V> task )
         throws Exception
     {
-        assertArgumentNotNull( task, "task" ); //$NON-NLS-1$
-
-        return run( task, Collections.<Class<? extends Exception>>emptyList() );
+        return run( task, nonNull( Collections.<Class<? extends Exception>>emptyList() ) );
     }
 
     /**
@@ -175,21 +162,14 @@ public final class NodeLayerRunner
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
-     * @throws java.lang.NullPointerException
-     *         If {@code task} or {@code exceptionType} is {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     public <V> V run(
-        /* @NonNull */
         final Callable<V> task,
-        /* @NonNull */
         final Class<? extends Exception> exceptionType )
         throws Exception
     {
-        assertArgumentNotNull( task, "task" ); //$NON-NLS-1$
-        assertArgumentNotNull( exceptionType, "exceptionType" ); //$NON-NLS-1$
-
-        return run( task, Collections.<Class<? extends Exception>>singletonList( exceptionType ) );
+        return run( task, nonNull( Collections.<Class<? extends Exception>>singletonList( exceptionType ) ) );
     }
 
     /**
@@ -212,19 +192,13 @@ public final class NodeLayerRunner
      *         If an error occurs.
      * @throws java.lang.IllegalArgumentException
      *         If {@code exceptionTypes} contains a {@code null} element.
-     * @throws java.lang.NullPointerException
-     *         If {@code task} or {@code exceptionTypes} is {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     public <V> V run(
-        /* @NonNull */
         final Callable<V> task,
-        /* @NonNull */
         final Collection<Class<? extends Exception>> exceptionTypes )
         throws Exception
     {
-        assertArgumentNotNull( task, "task" ); //$NON-NLS-1$
-        assertArgumentNotNull( exceptionTypes, "exceptionTypes" ); //$NON-NLS-1$
         assertArgumentLegal( !exceptionTypes.contains( null ), "exceptionTypes" ); //$NON-NLS-1$
 
         try
@@ -256,17 +230,11 @@ public final class NodeLayerRunner
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
-     * @throws java.lang.NullPointerException
-     *         If {@code task} is {@code null}.
      */
-    /* @Nullable */
     public void run(
-        /* @NonNull */
         final Runnable task )
         throws Exception
     {
-        assertArgumentNotNull( task, "task" ); //$NON-NLS-1$
-
         try
         {
             node_.getNodeLayer().syncExec( task );

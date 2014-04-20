@@ -1,6 +1,6 @@
 /*
  * ITableNetwork.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.table.net;
 
 import java.util.Collection;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A network of virtual game tables.
@@ -43,11 +44,8 @@ public interface ITableNetwork
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is already a registered table network
      *         listener.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
      */
     public void addTableNetworkListener(
-        /* @NonNull */
         ITableNetworkListener listener );
 
     /**
@@ -82,7 +80,7 @@ public interface ITableNetwork
      * @return The local player connected to the table network or {@code null}
      *         if the table network is not connected.
      */
-    /* @Nullable */
+    @Nullable
     public IPlayer getLocalPlayer();
 
     /**
@@ -91,7 +89,6 @@ public interface ITableNetwork
      * @return The collection of players connected to the table network; never
      *         {@code null}.
      */
-    /* @NonNull */
     public Collection<IPlayer> getPlayers();
 
     /**
@@ -104,12 +101,8 @@ public interface ITableNetwork
      * 
      * @param player
      *        The player to receive control; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code player} is {@code null}.
      */
     public void giveControl(
-        /* @NonNull */
         IPlayer player );
 
     /**
@@ -130,7 +123,6 @@ public interface ITableNetwork
      *         already connected.
      */
     public void host(
-        /* @NonNull */
         TableNetworkConfiguration configuration )
         throws TableNetworkException, InterruptedException;
 
@@ -160,7 +152,6 @@ public interface ITableNetwork
      *         already connected.
      */
     public void join(
-        /* @NonNull */
         TableNetworkConfiguration configuration )
         throws TableNetworkException, InterruptedException;
 
@@ -172,11 +163,8 @@ public interface ITableNetwork
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is not a registered table network listener.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
      */
     public void removeTableNetworkListener(
-        /* @NonNull */
         ITableNetworkListener listener );
 
     /**

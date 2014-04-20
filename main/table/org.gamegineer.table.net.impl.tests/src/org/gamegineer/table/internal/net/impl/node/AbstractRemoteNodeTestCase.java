@@ -1,6 +1,6 @@
 /*
  * AbstractRemoteNodeTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,8 @@
 package org.gamegineer.table.internal.net.impl.node;
 
 import static org.junit.Assert.assertNotNull;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,6 +34,7 @@ import org.junit.Test;
  * @param <T>
  *        The type of the remote node.
  */
+@NonNullByDefault( false )
 public abstract class AbstractRemoteNodeTestCase<T extends IRemoteNode>
 {
     // ======================================================================
@@ -67,7 +70,7 @@ public abstract class AbstractRemoteNodeTestCase<T extends IRemoteNode>
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract T createRemoteNode()
         throws Exception;
 
@@ -76,7 +79,7 @@ public abstract class AbstractRemoteNodeTestCase<T extends IRemoteNode>
      * 
      * @return The remote node under test in the fixture; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     protected final T getRemoteNode()
     {
         assertNotNull( remoteNode_ );

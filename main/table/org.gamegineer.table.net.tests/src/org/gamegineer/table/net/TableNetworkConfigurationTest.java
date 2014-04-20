@@ -1,6 +1,6 @@
 /*
  * TableNetworkConfigurationTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.net;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertArrayEquals;
 import org.easymock.EasyMock;
 import org.gamegineer.common.core.security.SecureString;
@@ -51,60 +52,19 @@ public final class TableNetworkConfigurationTest
 
     /**
      * Ensures the {@link TableNetworkConfiguration#TableNetworkConfiguration}
-     * constructor throws an exception when passed a {@code null} host name.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_HostName_Null()
-    {
-        new TableNetworkConfiguration( null, 0, new SecureString(), "localPlayerName", EasyMock.createMock( ITable.class ) ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@link TableNetworkConfiguration#TableNetworkConfiguration}
-     * constructor throws an exception when passed a {@code null} local player
-     * name.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_LocalPlayerName_Null()
-    {
-        new TableNetworkConfiguration( "hostName", 0, new SecureString(), null, EasyMock.createMock( ITable.class ) ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@link TableNetworkConfiguration#TableNetworkConfiguration}
-     * constructor throws an exception when passed a {@code null} local table.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_LocalTable_Null()
-    {
-        new TableNetworkConfiguration( "hostName", 0, new SecureString(), "localPlayerName", null ); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-
-    /**
-     * Ensures the {@link TableNetworkConfiguration#TableNetworkConfiguration}
      * constructor makes a copy of the password.
      */
     @Test
     public void testConstructor_Password_Copy()
     {
-        final char[] expectedPassword = "password".toCharArray(); //$NON-NLS-1$
+        final char[] expectedPassword = nonNull( "password".toCharArray() ); //$NON-NLS-1$
         final SecureString password = new SecureString( expectedPassword );
-        final TableNetworkConfiguration configuration = new TableNetworkConfiguration( "hostName", 0, password, "localPlayerName", EasyMock.createMock( ITable.class ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        final TableNetworkConfiguration configuration = new TableNetworkConfiguration( "hostName", 0, password, "localPlayerName", nonNull( EasyMock.createMock( ITable.class ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
         password.dispose();
 
         final char[] actualPassword = configuration.getPassword().toCharArray();
 
         assertArrayEquals( expectedPassword, actualPassword );
-    }
-
-    /**
-     * Ensures the {@link TableNetworkConfiguration#TableNetworkConfiguration}
-     * constructor throws an exception when passed a {@code null} password.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_Password_Null()
-    {
-        new TableNetworkConfiguration( "hostName", 0, null, "localPlayerName", EasyMock.createMock( ITable.class ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -114,8 +74,8 @@ public final class TableNetworkConfigurationTest
     @Test
     public void testGetPassword_ReturnValue_Copy()
     {
-        final char[] expectedPassword = "password".toCharArray(); //$NON-NLS-1$
-        final TableNetworkConfiguration configuration = new TableNetworkConfiguration( "hostName", 0, new SecureString( expectedPassword ), "localPlayerName", EasyMock.createMock( ITable.class ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        final char[] expectedPassword = nonNull( "password".toCharArray() ); //$NON-NLS-1$
+        final TableNetworkConfiguration configuration = new TableNetworkConfiguration( "hostName", 0, new SecureString( expectedPassword ), "localPlayerName", nonNull( EasyMock.createMock( ITable.class ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
         final SecureString password = configuration.getPassword();
         password.dispose();
 

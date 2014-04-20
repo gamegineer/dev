@@ -1,6 +1,6 @@
 /*
  * IRemoteClientNodeController.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.node.server;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.net.impl.node.IRemoteNodeController;
 
 /**
@@ -42,7 +43,7 @@ public interface IRemoteClientNodeController
      *         {@code null} if an authentication request has not yet been sent.
      *         Callers must not modify the returned array.
      */
-    /* @Nullable */
+    @Nullable
     public byte[] getChallenge();
 
     /**
@@ -52,7 +53,7 @@ public interface IRemoteClientNodeController
      *         {@code null} if an authentication request has not yet been sent.
      *         Callers must not modify the returned array.
      */
-    /* @Nullable */
+    @Nullable
     public byte[] getSalt();
 
     /**
@@ -64,7 +65,7 @@ public interface IRemoteClientNodeController
      *        after passing it to this method.
      */
     public void setChallenge(
-        /* @Nullable */
+        @Nullable
         byte[] challenge );
 
     /**
@@ -76,6 +77,6 @@ public interface IRemoteClientNodeController
      *        passing it to this method.
      */
     public void setSalt(
-        /* @Nullable */
+        @Nullable
         byte[] salt );
 }

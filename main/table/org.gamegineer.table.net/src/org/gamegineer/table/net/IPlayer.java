@@ -1,6 +1,6 @@
 /*
  * IPlayer.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -39,7 +39,6 @@ public interface IPlayer
      * 
      * @return The player name; never {@code null}.
      */
-    /* @NonNull */
     public String getName();
 
     /**
@@ -47,7 +46,6 @@ public interface IPlayer
      * 
      * @return The collection of player roles; never {@code null}.
      */
-    /* @NonNull */
     public Set<PlayerRole> getRoles();
 
     /**
@@ -58,11 +56,7 @@ public interface IPlayer
      * 
      * @return {@code true} if the player has the specified role; otherwise
      *         {@code false}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code role} is {@code null}.
      */
     public boolean hasRole(
-        /* @NonNull */
         PlayerRole role );
 }

@@ -1,6 +1,6 @@
 /*
  * AbstractRemoteNodeTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,10 +21,14 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.internal.net.impl.node.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.impl.transport.FakeMessage;
 import org.gamegineer.table.internal.net.impl.transport.IMessage;
@@ -37,6 +41,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link AbstractRemoteNode} class.
  */
+@NonNullByDefault( false )
 public final class AbstractRemoteNodeTest
 {
     // ======================================================================
@@ -71,11 +76,11 @@ public final class AbstractRemoteNodeTest
      * 
      * @return A mock local node for use in the fixture; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private static INode<IRemoteNode> createMockLocalNode()
     {
         final IMocksControl mocksControl = EasyMock.createControl();
-        final INode<IRemoteNode> localNode = mocksControl.createMock( INode.class );
+        final INode<IRemoteNode> localNode = nonNull( mocksControl.createMock( INode.class ) );
         mocksControl.replay();
         return localNode;
     }
@@ -85,7 +90,7 @@ public final class AbstractRemoteNodeTest
      * 
      * @return A mock node layer for use in the fixture; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     @SuppressWarnings( "boxing" )
     private static INodeLayer createMockNodeLayer()
     {
@@ -106,15 +111,12 @@ public final class AbstractRemoteNodeTest
      * 
      * @return A new instance of the {@code AbstractRemoteNode} class; never
      *         {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code nodeLayer} or {@code node} is {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private static AbstractRemoteNode<INode<IRemoteNode>, IRemoteNode> createRemoteNode(
-        /* @NonNull */
+        @NonNull
         final INodeLayer nodeLayer,
-        /* @NonNull */
+        @NonNull
         final INode<IRemoteNode> node )
     {
         return new AbstractRemoteNode<INode<IRemoteNode>, IRemoteNode>( nodeLayer, node )
@@ -142,26 +144,6 @@ public final class AbstractRemoteNodeTest
     }
 
     /**
-     * Ensures the {@link AbstractRemoteNode#AbstractRemoteNode} constructor
-     * throws an exception when passed a {@code null} table network node.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_Node_Null()
-    {
-        createRemoteNode( EasyMock.createMock( INodeLayer.class ), null );
-    }
-
-    /**
-     * Ensures the {@link AbstractRemoteNode#AbstractRemoteNode} constructor
-     * throws an exception when passed a {@code null} node layer.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_NodeLayer_Null()
-    {
-        createRemoteNode( null, EasyMock.createMock( INode.class ) );
-    }
-
-    /**
      * Ensures the {@link AbstractRemoteNode#messageReceived} method does
      * nothing in response to a message envelope that contains an error message
      * with a null correlation identifier.
@@ -173,7 +155,7 @@ public final class AbstractRemoteNodeTest
     public void testMessageReceived_MessageEnvelope_ErrorMessage_Uncorrelated()
         throws Exception
     {
-        final IServiceContext serviceContext = mocksControl_.createMock( IServiceContext.class );
+        final IServiceContext serviceContext = nonNull( mocksControl_.createMock( IServiceContext.class ) );
         final ErrorMessage message = new ErrorMessage();
         message.setId( IMessage.MINIMUM_ID );
         message.setCorrelationId( IMessage.NULL_CORRELATION_ID );
@@ -199,7 +181,7 @@ public final class AbstractRemoteNodeTest
     public void testMessageReceived_MessageEnvelope_UnhandledMessage_Correlated_Error()
         throws Exception
     {
-        final IServiceContext serviceContext = mocksControl_.createMock( IServiceContext.class );
+        final IServiceContext serviceContext = nonNull( mocksControl_.createMock( IServiceContext.class ) );
         final ErrorMessage message = new ErrorMessage();
         message.setId( IMessage.MINIMUM_ID );
         message.setCorrelationId( IMessage.MINIMUM_ID );
@@ -227,7 +209,7 @@ public final class AbstractRemoteNodeTest
     {
         final IServiceContext serviceContext = mocksControl_.createMock( IServiceContext.class );
         final Capture<IMessage> messageCapture = new Capture<>();
-        serviceContext.sendMessage( EasyMock.capture( messageCapture ) );
+        serviceContext.sendMessage( assumeNonNull( EasyMock.capture( messageCapture ) ) );
         final FakeMessage message = new FakeMessage();
         message.setId( IMessage.MINIMUM_ID );
         message.setCorrelationId( IMessage.MAXIMUM_ID );
@@ -256,7 +238,7 @@ public final class AbstractRemoteNodeTest
     {
         final IServiceContext serviceContext = mocksControl_.createMock( IServiceContext.class );
         final Capture<IMessage> messageCapture = new Capture<>();
-        serviceContext.sendMessage( EasyMock.capture( messageCapture ) );
+        serviceContext.sendMessage( assumeNonNull( EasyMock.capture( messageCapture ) ) );
         final FakeMessage message = new FakeMessage();
         message.setId( IMessage.MINIMUM_ID );
         message.setCorrelationId( IMessage.NULL_CORRELATION_ID );
@@ -281,7 +263,7 @@ public final class AbstractRemoteNodeTest
     {
         final IServiceContext serviceContext = mocksControl_.createMock( IServiceContext.class );
         final Capture<IMessage> messageCapture = new Capture<>();
-        serviceContext.sendMessage( EasyMock.capture( messageCapture ) );
+        serviceContext.sendMessage( assumeNonNull( EasyMock.capture( messageCapture ) ) );
         final MessageEnvelope.HeaderBuilder headerBuilder = new MessageEnvelope.HeaderBuilder();
         final MessageEnvelope messageEnvelope = MessageEnvelope.fromByteArray( //
             headerBuilder //
@@ -301,34 +283,14 @@ public final class AbstractRemoteNodeTest
 
     /**
      * Ensures the {@link AbstractRemoteNode#registerUncorrelatedMessageHandler}
-     * method throws an exception when passed a {@code null} message handler.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRegisterUncorrelatedMessageHandler_MessageHandler_Null()
-    {
-        remoteNode_.registerUncorrelatedMessageHandler( IMessage.class, null );
-    }
-
-    /**
-     * Ensures the {@link AbstractRemoteNode#registerUncorrelatedMessageHandler}
-     * method throws an exception when passed a {@code null} message type.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRegisterUncorrelatedMessageHandler_Type_Null()
-    {
-        remoteNode_.registerUncorrelatedMessageHandler( null, EasyMock.createMock( IMessageHandler.class ) );
-    }
-
-    /**
-     * Ensures the {@link AbstractRemoteNode#registerUncorrelatedMessageHandler}
      * method throws an exception when passed a message type that is present in
      * the message handler collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testRegisterUncorrelatedMessageHandler_Type_Present()
     {
-        remoteNode_.registerUncorrelatedMessageHandler( IMessage.class, EasyMock.createMock( IMessageHandler.class ) );
+        remoteNode_.registerUncorrelatedMessageHandler( IMessage.class, nonNull( EasyMock.createMock( IMessageHandler.class ) ) );
 
-        remoteNode_.registerUncorrelatedMessageHandler( IMessage.class, EasyMock.createMock( IMessageHandler.class ) );
+        remoteNode_.registerUncorrelatedMessageHandler( IMessage.class, nonNull( EasyMock.createMock( IMessageHandler.class ) ) );
     }
 }

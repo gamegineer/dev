@@ -1,6 +1,6 @@
 /*
  * AuthenticatorTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,9 +21,12 @@
 
 package org.gamegineer.table.internal.net.impl.node.common;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.net.TableNetworkException;
 import org.junit.Before;
@@ -32,6 +35,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link Authenticator} class.
  */
+@NonNullByDefault( false )
 public final class AuthenticatorTest
 {
     // ======================================================================
@@ -74,20 +78,17 @@ public final class AuthenticatorTest
      *         If an error occurs.
      */
     private boolean authenticate(
-        /* @NonNull */
+        @NonNull
         final String expectedPassword,
-        /* @NonNull */
+        @NonNull
         final String actualPassword )
         throws TableNetworkException
     {
-        assert expectedPassword != null;
-        assert actualPassword != null;
-
         final byte[] challenge = authenticator_.createChallenge();
         final byte[] salt = authenticator_.createSalt();
-        final byte[] expectedResponse = authenticator_.createResponse( challenge, new SecureString( expectedPassword.toCharArray() ), salt );
+        final byte[] expectedResponse = authenticator_.createResponse( challenge, new SecureString( nonNull( expectedPassword.toCharArray() ) ), salt );
 
-        final byte[] actualResponse = authenticator_.createResponse( challenge, new SecureString( actualPassword.toCharArray() ), salt );
+        final byte[] actualResponse = authenticator_.createResponse( challenge, new SecureString( nonNull( actualPassword.toCharArray() ) ), salt );
 
         return Arrays.equals( expectedResponse, actualResponse );
     }
@@ -143,47 +144,5 @@ public final class AuthenticatorTest
         throws Exception
     {
         assertTrue( authenticate( "", "" ) ); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-
-    /**
-     * Ensures the {@link Authenticator#createResponse} method throws an
-     * exception when passed a {@code null} challenge.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateResponse_Challenge_Null()
-        throws Exception
-    {
-        authenticator_.createResponse( null, new SecureString( "password".toCharArray() ), new byte[ 1 ] ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@link Authenticator#createResponse} method throws an
-     * exception when passed a {@code null} password.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateResponse_Password_Null()
-        throws Exception
-    {
-        authenticator_.createResponse( new byte[ 1 ], null, new byte[ 1 ] );
-    }
-
-    /**
-     * Ensures the {@link Authenticator#createResponse} method throws an
-     * exception when passed a {@code null} salt.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateResponse_Salt_Null()
-        throws Exception
-    {
-        authenticator_.createResponse( new byte[ 1 ], new SecureString( "password".toCharArray() ), null ); //$NON-NLS-1$
     }
 }

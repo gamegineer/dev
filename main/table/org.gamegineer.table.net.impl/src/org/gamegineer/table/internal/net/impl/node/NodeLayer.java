@@ -1,6 +1,6 @@
 /*
  * NodeLayer.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -30,6 +30,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Implementation of {@link INodeLayer}.
@@ -74,11 +75,10 @@ final class NodeLayer
     public <T> Future<T> asyncExec(
         final Callable<T> task )
     {
-        assertArgumentNotNull( task, "task" ); //$NON-NLS-1$
-
         final String playerName = ThreadPlayer.getPlayerName();
-        return executorService_.submit( new Callable<T>()
+        return nonNull( executorService_.submit( new Callable<T>()
         {
+            @Nullable
             @Override
             public T call()
                 throws Exception
@@ -93,7 +93,7 @@ final class NodeLayer
                     ThreadPlayer.setPlayerName( null );
                 }
             }
-        } );
+        } ) );
     }
 
     /*
@@ -103,10 +103,8 @@ final class NodeLayer
     public Future<?> asyncExec(
         final Runnable task )
     {
-        assertArgumentNotNull( task, "task" ); //$NON-NLS-1$
-
         final String playerName = ThreadPlayer.getPlayerName();
-        return executorService_.submit( new Runnable()
+        return nonNull( executorService_.submit( new Runnable()
         {
             @Override
             public void run()
@@ -121,7 +119,7 @@ final class NodeLayer
                     ThreadPlayer.setPlayerName( null );
                 }
             }
-        } );
+        } ) );
     }
 
     /**
@@ -129,15 +127,17 @@ final class NodeLayer
      * 
      * @return The node layer executor service; never {@code null}.
      */
-    /* @NonNull */
     private ExecutorService createExecutorService()
     {
-        return Executors.newSingleThreadExecutor( new ThreadFactory()
+        return nonNull( Executors.newSingleThreadExecutor( new ThreadFactory()
         {
             @Override
             public Thread newThread(
+                @Nullable
                 final Runnable r )
             {
+                assert r != null;
+
                 return new Thread( r, NonNlsMessages.NodeLayer_thread_name )
                 {
                     @Override
@@ -156,7 +156,7 @@ final class NodeLayer
                     }
                 };
             }
-        } );
+        } ) );
     }
 
     /*
@@ -174,7 +174,7 @@ final class NodeLayer
     @Override
     public boolean isNodeLayerThread()
     {
-        return isNodeLayerThread( Thread.currentThread() );
+        return isNodeLayerThread( nonNull( Thread.currentThread() ) );
     }
 
     /*
@@ -184,21 +184,18 @@ final class NodeLayer
     public boolean isNodeLayerThread(
         final Thread thread )
     {
-        assertArgumentNotNull( thread, "thread" ); //$NON-NLS-1$
-
         return thread == nodeLayerThreadRef_.get();
     }
 
     /*
      * @see org.gamegineer.table.internal.net.impl.node.INodeLayer#syncExec(java.util.concurrent.Callable)
      */
+    @Nullable
     @Override
     public <T> T syncExec(
         final Callable<T> task )
         throws ExecutionException, InterruptedException
     {
-        assertArgumentNotNull( task, "task" ); //$NON-NLS-1$
-
         if( isNodeLayerThread() )
         {
             try
@@ -222,8 +219,6 @@ final class NodeLayer
         final Runnable task )
         throws ExecutionException, InterruptedException
     {
-        assertArgumentNotNull( task, "task" ); //$NON-NLS-1$
-
         if( isNodeLayerThread() )
         {
             try

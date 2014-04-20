@@ -1,6 +1,6 @@
 /*
  * ByteBufferUtilsTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,9 +21,11 @@
 
 package org.gamegineer.table.internal.net.impl.transport.tcp;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import java.nio.ByteBuffer;
@@ -31,12 +33,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the {@link ByteBufferUtils} class.
  */
+@NonNullByDefault( false )
 public final class ByteBufferUtilsTest
 {
     // ======================================================================
@@ -68,22 +74,33 @@ public final class ByteBufferUtilsTest
      * remaining.
      * 
      * @param buffer
-     *        The byte buffer; must not be {@code null}.
+     *        The byte buffer; may be {@code null}.
      * @param position
      *        The expected byte buffer position.
      * @param remaining
      *        The expected byte buffer remaining.
      */
     private static void assertByteBuffer(
-        /* @NonNull */
+        @Nullable
         final ByteBuffer buffer,
         final int position,
         final int remaining )
     {
-        assert buffer != null;
-
+        assertNotNull( buffer );
         assertEquals( position, buffer.position() );
         assertEquals( remaining, buffer.remaining() );
+    }
+
+    /**
+     * Gets the fixture byte buffer collection.
+     * 
+     * @return The fixture byte buffer collection; never {@code null}.
+     */
+    @NonNull
+    private List<ByteBuffer> getBuffers()
+    {
+        assertNotNull( buffers_ );
+        return buffers_;
     }
 
     /**
@@ -118,14 +135,15 @@ public final class ByteBufferUtilsTest
     @Test
     public void testDuplicate()
     {
-        final Collection<ByteBuffer> duplicateBuffers = ByteBufferUtils.duplicate( buffers_ );
+        final Collection<ByteBuffer> duplicateBuffers = ByteBufferUtils.duplicate( getBuffers() );
         for( final ByteBuffer duplicateBuffer : duplicateBuffers )
         {
             duplicateBuffer.get();
         }
 
-        for( final ByteBuffer buffer : buffers_ )
+        for( final ByteBuffer buffer : getBuffers() )
         {
+            assertNotNull( buffer );
             assertByteBuffer( buffer, 0, 4 );
         }
     }
@@ -144,8 +162,8 @@ public final class ByteBufferUtilsTest
         final byte[] expectedValue = new byte[] {
             0x00, 0x01
         };
-        final ByteBuffer sourceBuffer = ByteBuffer.wrap( inputValue );
-        final ByteBuffer destinationBuffer = ByteBuffer.allocate( expectedValue.length );
+        final ByteBuffer sourceBuffer = nonNull( ByteBuffer.wrap( inputValue ) );
+        final ByteBuffer destinationBuffer = nonNull( ByteBuffer.allocate( expectedValue.length ) );
 
         ByteBufferUtils.fill( destinationBuffer, sourceBuffer );
         destinationBuffer.flip();
@@ -169,8 +187,8 @@ public final class ByteBufferUtilsTest
         final byte[] expectedValue = new byte[] {
             0x00, 0x01
         };
-        final ByteBuffer sourceBuffer = ByteBuffer.wrap( inputValue );
-        final ByteBuffer destinationBuffer = ByteBuffer.allocate( expectedValue.length );
+        final ByteBuffer sourceBuffer = nonNull( ByteBuffer.wrap( inputValue ) );
+        final ByteBuffer destinationBuffer = nonNull( ByteBuffer.allocate( expectedValue.length ) );
 
         ByteBufferUtils.fill( destinationBuffer, sourceBuffer );
         destinationBuffer.flip();
@@ -193,11 +211,12 @@ public final class ByteBufferUtilsTest
             0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F
         };
 
-        final byte[] actualValue = ByteBufferUtils.get( buffers_, expectedValue.length );
+        final byte[] actualValue = ByteBufferUtils.get( getBuffers(), expectedValue.length );
 
         assertArrayEquals( expectedValue, actualValue );
-        for( final ByteBuffer buffer : buffers_ )
+        for( final ByteBuffer buffer : getBuffers() )
         {
+            assertNotNull( buffer );
             assertByteBuffer( buffer, 4, 0 );
         }
     }
@@ -210,7 +229,7 @@ public final class ByteBufferUtilsTest
     @Test
     public void testGet_Length_GreaterThanRemainingLength()
     {
-        assertNull( ByteBufferUtils.get( buffers_, Integer.MAX_VALUE ) );
+        assertNull( ByteBufferUtils.get( getBuffers(), Integer.MAX_VALUE ) );
     }
 
     /**
@@ -225,13 +244,13 @@ public final class ByteBufferUtilsTest
             0x00, 0x01, 0x02
         };
 
-        final byte[] actualValue = ByteBufferUtils.get( buffers_, expectedValue.length );
+        final byte[] actualValue = ByteBufferUtils.get( getBuffers(), expectedValue.length );
 
         assertArrayEquals( expectedValue, actualValue );
-        assertByteBuffer( buffers_.get( 0 ), 3, 1 );
-        assertByteBuffer( buffers_.get( 1 ), 0, 4 );
-        assertByteBuffer( buffers_.get( 2 ), 0, 4 );
-        assertByteBuffer( buffers_.get( 3 ), 0, 4 );
+        assertByteBuffer( getBuffers().get( 0 ), 3, 1 );
+        assertByteBuffer( getBuffers().get( 1 ), 0, 4 );
+        assertByteBuffer( getBuffers().get( 2 ), 0, 4 );
+        assertByteBuffer( getBuffers().get( 3 ), 0, 4 );
     }
 
     /**
@@ -246,13 +265,13 @@ public final class ByteBufferUtilsTest
             0x00, 0x01, 0x02, 0x03, 0x04, 0x05
         };
 
-        final byte[] actualValue = ByteBufferUtils.get( buffers_, expectedValue.length );
+        final byte[] actualValue = ByteBufferUtils.get( getBuffers(), expectedValue.length );
 
         assertArrayEquals( expectedValue, actualValue );
-        assertByteBuffer( buffers_.get( 0 ), 4, 0 );
-        assertByteBuffer( buffers_.get( 1 ), 2, 2 );
-        assertByteBuffer( buffers_.get( 2 ), 0, 4 );
-        assertByteBuffer( buffers_.get( 3 ), 0, 4 );
+        assertByteBuffer( getBuffers().get( 0 ), 4, 0 );
+        assertByteBuffer( getBuffers().get( 1 ), 2, 2 );
+        assertByteBuffer( getBuffers().get( 2 ), 0, 4 );
+        assertByteBuffer( getBuffers().get( 3 ), 0, 4 );
     }
 
     /**
@@ -264,11 +283,12 @@ public final class ByteBufferUtilsTest
     {
         final byte[] expectedValue = new byte[ 0 ];
 
-        final byte[] actualValue = ByteBufferUtils.get( buffers_, expectedValue.length );
+        final byte[] actualValue = ByteBufferUtils.get( getBuffers(), expectedValue.length );
 
         assertArrayEquals( expectedValue, actualValue );
-        for( final ByteBuffer buffer : buffers_ )
+        for( final ByteBuffer buffer : getBuffers() )
         {
+            assertNotNull( buffer );
             assertByteBuffer( buffer, 0, 4 );
         }
     }
@@ -281,7 +301,7 @@ public final class ByteBufferUtilsTest
     @Test
     public void testHasRemaining_Length_GreaterThanRemainingLength()
     {
-        assertFalse( ByteBufferUtils.hasRemaining( buffers_, 17 ) );
+        assertFalse( ByteBufferUtils.hasRemaining( getBuffers(), 17 ) );
     }
 
     /**
@@ -292,7 +312,7 @@ public final class ByteBufferUtilsTest
     @Test
     public void testHasRemaining_Length_LessThanRemainingLength()
     {
-        assertTrue( ByteBufferUtils.hasRemaining( buffers_, 16 ) );
+        assertTrue( ByteBufferUtils.hasRemaining( getBuffers(), 16 ) );
     }
 
     /**
@@ -303,6 +323,6 @@ public final class ByteBufferUtilsTest
     @Test
     public void testHasRemaining_Buffers_Empty_Length_Zero()
     {
-        assertTrue( ByteBufferUtils.hasRemaining( Collections.<ByteBuffer>emptyList(), 0 ) );
+        assertTrue( ByteBufferUtils.hasRemaining( nonNull( Collections.<ByteBuffer>emptyList() ), 0 ) );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * ThreadPlayer.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.impl.node;
 
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A facade for getting and setting the player associated with the current
@@ -60,7 +61,7 @@ public final class ThreadPlayer
      * @return The name of the player associated with the current thread or
      *         {@code null} if no player is associated with the current thread.
      */
-    /* @Nullable */
+    @Nullable
     public static String getPlayerName()
     {
         return playerName_.get();
@@ -74,7 +75,7 @@ public final class ThreadPlayer
      *        {@code null} if no player is associated with the current thread.
      */
     public static void setPlayerName(
-        /* @Nullable */
+        @Nullable
         final String playerName )
     {
         playerName_.set( playerName );

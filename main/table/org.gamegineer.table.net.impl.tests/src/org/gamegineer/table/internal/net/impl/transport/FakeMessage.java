@@ -1,6 +1,6 @@
 /*
  * FakeMessage.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.transport;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
 
 /**
@@ -69,7 +68,6 @@ public final class FakeMessage
      * @return The message content; never {@code null}. The returned value is a
      *         direct reference to the field and must not be modified.
      */
-    /* @NonNull */
     public byte[] getContent()
     {
         return content_;
@@ -81,16 +79,10 @@ public final class FakeMessage
      * @param content
      *        The message content; must not be {@code null}.No copy is made of
      *        this value and it must not be modified at a later time.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code content} is {@code null}.
      */
     public void setContent(
-        /* @NonNull */
         final byte[] content )
     {
-        assertArgumentNotNull( content, "content" ); //$NON-NLS-1$
-
         content_ = content;
     }
 }

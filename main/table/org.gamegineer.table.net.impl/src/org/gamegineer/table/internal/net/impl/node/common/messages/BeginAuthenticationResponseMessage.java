@@ -1,6 +1,6 @@
 /*
  * BeginAuthenticationResponseMessage.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.impl.node.common.messages;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.impl.transport.AbstractMessage;
 
@@ -80,7 +79,6 @@ public final class BeginAuthenticationResponseMessage
      * 
      * @return The player name; never {@code null}.
      */
-    /* @NonNull */
     public String getPlayerName()
     {
         return playerName_;
@@ -92,7 +90,6 @@ public final class BeginAuthenticationResponseMessage
      * @return The challenge response; never {@code null}. The returned value is
      *         a direct reference to the field and must not be modified.
      */
-    /* @NonNull */
     public byte[] getResponse()
     {
         return response_;
@@ -103,16 +100,10 @@ public final class BeginAuthenticationResponseMessage
      * 
      * @param playerName
      *        The player name; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code playerName} is {@code null}.
      */
     public void setPlayerName(
-        /* @NonNull */
         final String playerName )
     {
-        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
-
         playerName_ = playerName;
     }
 
@@ -125,14 +116,10 @@ public final class BeginAuthenticationResponseMessage
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code response} is empty.
-     * @throws java.lang.NullPointerException
-     *         If {@code response} is {@code null}.
      */
     public void setResponse(
-        /* @NonNull */
         final byte[] response )
     {
-        assertArgumentNotNull( response, "response" ); //$NON-NLS-1$
         assertArgumentLegal( response.length != 0, "response", NonNlsMessages.BeginAuthenticationResponseMessage_setResponse_empty ); //$NON-NLS-1$
 
         response_ = response;

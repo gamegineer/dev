@@ -1,6 +1,6 @@
 /*
  * ITableNetworkListener.java
- * Copyright 2008-2011 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -41,12 +41,8 @@ public interface ITableNetworkListener
      * 
      * @param event
      *        The event describing the table network; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
      */
     public void tableNetworkConnected(
-        /* @NonNull */
         TableNetworkEvent event );
 
     /**
@@ -54,12 +50,8 @@ public interface ITableNetworkListener
      * 
      * @param event
      *        The event describing the table network; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
      */
     public void tableNetworkDisconnected(
-        /* @NonNull */
         TableNetworkDisconnectedEvent event );
 
     /**
@@ -68,11 +60,7 @@ public interface ITableNetworkListener
      * 
      * @param event
      *        The event describing the table network; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
      */
     public void tableNetworkPlayersUpdated(
-        /* @NonNull */
         TableNetworkEvent event );
 }

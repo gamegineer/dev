@@ -1,6 +1,6 @@
 /*
  * ActiveTransportLayer.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -47,9 +47,7 @@ final class ActiveTransportLayer
      *        The transport layer context; must not be {@code null}.
      */
     private ActiveTransportLayer(
-        /* @NonNull */
         final ExecutorService executorService,
-        /* @NonNull */
         final ITransportLayerContext context )
     {
         super( executorService, context );
@@ -80,7 +78,6 @@ final class ActiveTransportLayer
         final int port )
         throws IOException
     {
-        assert hostName != null;
         assert isTransportLayerThread();
 
         final Connector connector = new Connector( this );

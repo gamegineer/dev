@@ -1,6 +1,6 @@
 /*
  * AbstractRemoteNode.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.impl.node;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.io.IOException;
 import java.util.HashMap;
@@ -31,6 +30,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.net.impl.Debug;
 import org.gamegineer.table.internal.net.impl.Loggers;
 import org.gamegineer.table.internal.net.impl.node.common.handlers.ComponentIncrementMessageHandler;
@@ -70,6 +70,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      * The error that caused the connection to the remote node to be closed or
      * {@code null} if the connection to the remote node was closed normally.
      */
+    @Nullable
     private TableNetworkError closeError_;
 
     /**
@@ -91,12 +92,14 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      * The name of the remote player or {@code null} if the player has not yet
      * been authenticated.
      */
+    @Nullable
     private String playerName_;
 
     /**
      * The network service context or {@code null} if the network is not
      * connected.
      */
+    @Nullable
     private IServiceContext serviceContext_;
 
     /** The table associated with the remote node. */
@@ -120,18 +123,11 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      *        The node layer; must not be {@code null}.
      * @param node
      *        The local table network node; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code nodeLayer} or {@code node} is {@code null}.
      */
     protected AbstractRemoteNode(
-        /* @NonNull */
         final INodeLayer nodeLayer,
-        /* @NonNull */
         final LocalNodeType node )
     {
-        assertArgumentNotNull( nodeLayer, "nodeLayer" ); //$NON-NLS-1$
-        assertArgumentNotNull( node, "node" ); //$NON-NLS-1$
         assert nodeLayer.isNodeLayerThread();
 
         closeError_ = null;
@@ -161,7 +157,6 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
     public final void bind(
         final String playerName )
     {
-        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
         assertStateLegal( serviceContext_ != null, NonNlsMessages.AbstractRemoteNode_closed );
         assertStateLegal( playerName_ == null, NonNlsMessages.AbstractRemoteNode_bound );
         assert isNodeLayerThread();
@@ -175,6 +170,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      */
     @Override
     public final void close(
+        @Nullable
         final TableNetworkError error )
     {
         assertStateLegal( serviceContext_ != null, NonNlsMessages.AbstractRemoteNode_closed );
@@ -186,6 +182,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
             closeError_ = error;
         }
 
+        assert serviceContext_ != null;
         serviceContext_.stopService();
     }
 
@@ -201,7 +198,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      *        if the remote node was closed normally.
      */
     protected void closed(
-        /* @Nullable */
+        @Nullable
         @SuppressWarnings( "unused" )
         final TableNetworkError error )
     {
@@ -223,13 +220,10 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      * @return The message extracted from the specified message envelope or
      *         {@code null} if the message envelope contains an unknown message.
      */
-    /* @Nullable */
+    @Nullable
     private static IMessage extractMessage(
-        /* @NonNull */
         final MessageEnvelope messageEnvelope )
     {
-        assert messageEnvelope != null;
-
         try
         {
             return messageEnvelope.getMessage();
@@ -292,6 +286,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
         assert isNodeLayerThread();
 
         assertStateLegal( playerName_ != null, NonNlsMessages.AbstractRemoteNode_playerNotAuthenticated );
+        assert playerName_ != null;
         return playerName_;
     }
 
@@ -312,7 +307,6 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      * @return A reference to this remote node as the type of remote node
      *         expected by the local node; never {@code null}.
      */
-    /* @NonNull */
     protected abstract RemoteNodeType getThisAsRemoteNodeType();
 
     /*
@@ -351,7 +345,6 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
     public final void messageReceived(
         final MessageEnvelope messageEnvelope )
     {
-        assertArgumentNotNull( messageEnvelope, "messageEnvelope" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         final IMessage message = extractMessage( messageEnvelope );
@@ -438,17 +431,11 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      * @throws java.lang.IllegalArgumentException
      *         If an uncorrelated message handler is already registered for the
      *         specified message type.
-     * @throws java.lang.NullPointerException
-     *         If {@code type} or {@code messageHandler} is {@code null}.
      */
     protected final void registerUncorrelatedMessageHandler(
-        /* @NonNull */
         final Class<? extends IMessage> type,
-        /* @NonNull */
         final IMessageHandler messageHandler )
     {
-        assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
-        assertArgumentNotNull( messageHandler, "messageHandler" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         assertArgumentLegal( !uncorrelatedMessageHandlers_.containsKey( type ), "type", NonNlsMessages.AbstractRemoteNode_registerUncorrelatedMessageHandler_messageTypeRegistered ); //$NON-NLS-1$
@@ -469,11 +456,9 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      *         {@link IMessage#NULL_CORRELATION_ID} .
      */
     private void sendErrorMessage(
-        /* @NonNull */
         final TableNetworkError error,
         final int correlationId )
     {
-        assert error != null;
         assert isNodeLayerThread();
 
         final ErrorMessage message = new ErrorMessage();
@@ -489,13 +474,14 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
     @SuppressWarnings( "boxing" )
     public final void sendMessage(
         final IMessage message,
+        @Nullable
         final IMessageHandler messageHandler )
     {
-        assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         assertStateLegal( serviceContext_ != null, NonNlsMessages.AbstractRemoteNode_closed );
         message.setId( getNextMessageId() );
+        assert serviceContext_ != null;
         serviceContext_.sendMessage( message );
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
             String.format( "Sent message '%s' (id=%d, correlation-id=%d)", //$NON-NLS-1$
@@ -516,7 +502,6 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
     public final void started(
         final IServiceContext context )
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         serviceContext_ = context;
@@ -528,6 +513,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      */
     @Override
     public final void stopped(
+        @Nullable
         final Exception exception )
     {
         assert isNodeLayerThread();
@@ -593,14 +579,9 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
             "static-method", "unused"
         } )
         private void handleMessage(
-            /* @NonNull */
             final IRemoteNodeController<?> remoteNodeController,
-            /* @NonNull */
             final ErrorMessage message )
         {
-            assert remoteNodeController != null;
-            assert message != null;
-
             Loggers.getDefaultLogger().warning( NonNlsMessages.ErrorMessageHandler_handleMessage_errorReceived( message.getError() ) );
         }
     }

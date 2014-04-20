@@ -1,6 +1,6 @@
 /*
  * INodeController.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.net.impl.node;
 
 import java.util.Collection;
 import java.util.concurrent.Future;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.net.impl.ITableNetworkController;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.TableNetworkConfiguration;
@@ -54,13 +55,8 @@ public interface INodeController
      * 
      * @return An asynchronous completion token for the operation; never
      *         {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code configuration} is {@code null}.
      */
-    /* @NonNull */
     public Future<Void> beginConnect(
-        /* @NonNull */
         TableNetworkConfiguration configuration );
 
     /**
@@ -74,7 +70,6 @@ public interface INodeController
      * @return An asynchronous completion token for the operation; never
      *         {@code null}.
      */
-    /* @NonNull */
     public Future<Void> beginDisconnect();
 
     /**
@@ -104,14 +99,11 @@ public interface INodeController
      * @throws java.lang.InterruptedException
      *         If this thread is interrupted while waiting for the table network
      *         node to be connected.
-     * @throws java.lang.NullPointerException
-     *         If {@code future} is {@code null}.
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If the connection cannot be established or the table network node
      *         is already connected.
      */
     public void endConnect(
-        /* @NonNull  */
         Future<Void> future )
         throws TableNetworkException, InterruptedException;
 
@@ -130,11 +122,8 @@ public interface INodeController
      * @throws java.lang.InterruptedException
      *         If this thread is interrupted while waiting for the table network
      *         node to be disconnected.
-     * @throws java.lang.NullPointerException
-     *         If {@code future} is {@code null}.
      */
     public void endDisconnect(
-        /* @NonNull */
         Future<Void> future )
         throws InterruptedException;
 
@@ -144,7 +133,7 @@ public interface INodeController
      * @return The player associated with the table network node or {@code null}
      *         if the table network is not connected.
      */
-    /* @Nullable */
+    @Nullable
     public IPlayer getPlayer();
 
     /**
@@ -153,7 +142,6 @@ public interface INodeController
      * @return The collection of players connected to the table network; never
      *         {@code null}.
      */
-    /* @NonNull */
     public Collection<IPlayer> getPlayers();
 
     /**
@@ -167,12 +155,8 @@ public interface INodeController
      * @param playerName
      *        The name of the player to receive control; must not be
      *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code playerName} is {@code null}.
      */
     public void giveControl(
-        /* @NonNull */
         String playerName );
 
     /**

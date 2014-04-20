@@ -1,6 +1,6 @@
 /*
  * AbstractNode.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,8 +22,8 @@
 package org.gamegineer.table.internal.net.impl.node;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -35,6 +35,7 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
 import org.gamegineer.table.core.ComponentPath;
@@ -79,6 +80,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * The local player name or {@code null} if the table network is not
      * connected.
      */
+    @Nullable
     private String localPlayerName_;
 
     /** The node layer. */
@@ -88,6 +90,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * The table network password or {@code null} if the table network is not
      * connected.
      */
+    @Nullable
     private SecureString password_;
 
     /**
@@ -109,6 +112,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * The transport layer or {@code null} if the table network is not
      * connected.
      */
+    @Nullable
     private ITransportLayer transportLayer_;
 
 
@@ -123,20 +127,11 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      *        The node layer; must not be {@code null}.
      * @param tableNetworkController
      *        The table network controller; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code nodeLayer} or {@code tableNetworkController} is
-     *         {@code null}.
      */
     protected AbstractNode(
-        /* @NonNull */
         final INodeLayer nodeLayer,
-        /* @NonNull */
         final ITableNetworkController tableNetworkController )
     {
-        assertArgumentNotNull( nodeLayer, "nodeLayer" ); //$NON-NLS-1$
-        assertArgumentNotNull( tableNetworkController, "tableNetworkController" ); //$NON-NLS-1$
-
         localPlayerName_ = null;
         nodeLayer_ = nodeLayer;
         password_ = null;
@@ -171,12 +166,12 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     public final Future<Void> beginConnect(
         final TableNetworkConfiguration configuration )
     {
-        assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         final Connecter connecter = new Connecter( configuration );
-        return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<Void>()
         {
+            @Nullable
             @Override
             public Void call()
                 throws TableNetworkException
@@ -185,7 +180,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
 
                 return null;
             }
-        } );
+        } ) );
     }
 
     /*
@@ -197,8 +192,9 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         assert isNodeLayerThread();
 
         final Disconnecter disconnecter = new Disconnecter();
-        return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<Void>()
         {
+            @Nullable
             @Override
             public Void call()
             {
@@ -206,7 +202,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
 
                 return null;
             }
-        } );
+        } ) );
     }
 
     /*
@@ -216,7 +212,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     public final void bindRemoteNode(
         final RemoteNodeType remoteNode )
     {
-        assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         assertConnected();
@@ -265,17 +260,14 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * @param configuration
      *        The table network configuration; must not be {@code null}.
      * 
-     * @throws java.lang.NullPointerException
-     *         If {@code configuration} is {@code null}.
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
      */
     protected void connecting(
-        /* @NonNull */
+        @SuppressWarnings( "unused" )
         final TableNetworkConfiguration configuration )
         throws TableNetworkException
     {
-        assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         // do nothing
@@ -299,16 +291,10 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * 
      * @return A decorator for the table manager used by the local network
      *         table; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code tableManager} is {@code null}.
      */
-    /* @NonNull */
     protected ITableManager createTableManagerDecoratorForLocalNetworkTable(
-        /* @NonNull */
         final ITableManager tableManager )
     {
-        assertArgumentNotNull( tableManager, "tableManager" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         return tableManager;
@@ -327,7 +313,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If the transport layer cannot be created.
      */
-    /* @NonNull */
     protected abstract ITransportLayer createTransportLayer()
         throws TableNetworkException;
 
@@ -336,6 +321,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      */
     @Override
     public final void disconnect(
+        @Nullable
         final TableNetworkError error )
     {
         assert isNodeLayerThread();
@@ -420,7 +406,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      *        {@code null} if the table network node was disconnected normally.
      */
     protected void disconnecting(
-        /* @Nullable */
+        @Nullable
         @SuppressWarnings( "unused" )
         final TableNetworkError error )
     {
@@ -471,7 +457,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         final Future<Void> future )
         throws TableNetworkException, InterruptedException
     {
-        assertArgumentNotNull( future, "future" ); //$NON-NLS-1$
         assert !isNodeLayerThread() || future.isDone();
 
         try
@@ -501,7 +486,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         final Future<Void> future )
         throws InterruptedException
     {
-        assertArgumentNotNull( future, "future" ); //$NON-NLS-1$
         assert !isNodeLayerThread() || future.isDone();
 
         try
@@ -523,7 +507,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * 
      * @return The node layer; never {@code null}.
      */
-    /* @NonNull */
     protected final INodeLayer getNodeLayer()
     {
         return nodeLayer_;
@@ -538,6 +521,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         assert isNodeLayerThread();
 
         assertStateLegal( password_ != null, NonNlsMessages.AbstractNode_networkDisconnected );
+        assert password_ != null;
         return new SecureString( password_ );
     }
 
@@ -550,6 +534,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         isNodeLayerThread();
 
         assertStateLegal( localPlayerName_ != null, NonNlsMessages.AbstractNode_networkDisconnected );
+        assert localPlayerName_ != null;
         return localPlayerName_;
     }
 
@@ -562,16 +547,11 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * 
      * @return The bound remote node associated with the specified player or
      *         {@code null} if no remote node is bound for the specified player.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code playerName} is {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     protected final RemoteNodeType getRemoteNode(
-        /* @NonNull */
         final String playerName )
     {
-        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         return remoteNodes_.get( playerName );
@@ -582,7 +562,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * 
      * @return The collection of bound remote nodes; never {@code null}.
      */
-    /* @NonNull */
     protected final Collection<RemoteNodeType> getRemoteNodes()
     {
         assert isNodeLayerThread();
@@ -599,7 +578,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * 
      * @return The table network controller; never {@code null}.
      */
-    /* @NonNull */
     protected final ITableNetworkController getTableNetworkController()
     {
         return tableNetworkController_;
@@ -611,13 +589,14 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * @return The bound table associated with the local table network node;
      *         never {@code null}.
      */
-    /* @NonNull */
     protected final INetworkTable getTable()
     {
         assert isNodeLayerThread();
 
         assert localPlayerName_ != null;
-        return tables_.get( localPlayerName_ );
+        final INetworkTable table = tables_.get( localPlayerName_ );
+        assert table != null;
+        return table;
     }
 
     /**
@@ -625,7 +604,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * 
      * @return The collection of bound tables; never {@code null}.
      */
-    /* @NonNull */
     private Collection<INetworkTable> getTables()
     {
         return new ArrayList<>( tables_.values() );
@@ -673,15 +651,11 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * 
      * @param remoteNode
      *        The remote node that was bound; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code remoteNode} is {@code null}.
      */
     protected void remoteNodeBound(
-        /* @NonNull */
+        @SuppressWarnings( "unused" )
         final RemoteNodeType remoteNode )
     {
-        assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         // do nothing
@@ -701,15 +675,11 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * 
      * @param remoteNode
      *        The remote node that was unbound; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code remoteNode} is {@code null}.
      */
     protected void remoteNodeUnbound(
-        /* @NonNull */
+        @SuppressWarnings( "unused" )
         final RemoteNodeType remoteNode )
     {
-        assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         // do nothing
@@ -722,7 +692,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     public final void unbindRemoteNode(
         final RemoteNodeType remoteNode )
     {
-        assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         assertConnected();
@@ -780,25 +749,22 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          * @throws org.gamegineer.table.net.TableNetworkException
          *         If the table network node cannot be created.
          */
-        /* @NonNull */
         public final T createNode(
-            /* @NonNull */
             final ITableNetworkController tableNetworkController )
             throws TableNetworkException
         {
-            assertArgumentNotNull( tableNetworkController, "tableNetworkController" ); //$NON-NLS-1$
-
             final INodeLayer nodeLayer = new NodeLayer();
             try
             {
-                return nodeLayer.syncExec( new Callable<T>()
+                return nonNull( nodeLayer.syncExec( new Callable<T>()
                 {
+                    @Nullable
                     @Override
                     public T call()
                     {
                         return createNode( nodeLayer, tableNetworkController );
                     }
-                } );
+                } ) );
             }
             catch( final ExecutionException e )
             {
@@ -824,16 +790,9 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          *        The table network controller; must not be {@code null}.
          * 
          * @return A new table network node; never {@code null}.
-         * 
-         * @throws java.lang.NullPointerException
-         *         If {@code nodeLayer} or {@code tableNetworkController} is
-         *         {@code null}.
          */
-        /* @NonNull */
         protected abstract T createNode(
-            /* @NonNull */
             INodeLayer nodeLayer,
-            /* @NonNull */
             ITableNetworkController tableNetworkController );
     }
 
@@ -850,6 +809,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         // ==================================================================
 
         /** The actual service. */
+        @Nullable
         private IService service_;
 
 
@@ -875,7 +835,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          * 
          * @return The actual service; never {@code null}.
          */
-        /* @NonNull */
         protected abstract IService createActualService();
 
         /**
@@ -883,7 +842,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          * 
          * @return The actual service; never {@code null}.
          */
-        /* @NonNull */
         private IService getActualService()
         {
             if( service_ == null )
@@ -891,6 +849,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                 service_ = createActualService();
             }
 
+            assert service_ != null;
             return service_;
         }
 
@@ -973,6 +932,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          */
         @Override
         public void stopped(
+            @Nullable
             final Exception exception )
         {
             try
@@ -1024,6 +984,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          */
         @Override
         public final void transportLayerDisconnected(
+            @Nullable
             final Exception exception )
         {
             try
@@ -1081,10 +1042,8 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          *        The table network configuration; must not be {@code null}.
          */
         Connecter(
-            /* @NonNull */
             final TableNetworkConfiguration configuration )
         {
-            assert configuration != null;
             assert isNodeLayerThread();
 
             configuration_ = configuration;
@@ -1099,7 +1058,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          * Begins an asynchronous operation to disconnect the table network node
          * from the table network.
          */
-        /* @NonNull */
         private void asyncDisconnect()
         {
             nodeLayer_.asyncExec( new Runnable()
@@ -1183,6 +1141,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
             {
                 nodeLayer_.syncExec( new Callable<Void>()
                 {
+                    @Nullable
                     @Override
                     public Void call()
                         throws TableNetworkException
@@ -1266,14 +1225,14 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         {
             try
             {
-                endDisconnect( nodeLayer_.syncExec( new Callable<Future<Void>>()
+                endDisconnect( nonNull( nodeLayer_.syncExec( new Callable<Future<Void>>()
                 {
                     @Override
                     public Future<Void> call()
                     {
                         return beginDisconnect();
                     }
-                } ) );
+                } ) ) );
             }
             catch( final ExecutionException e )
             {
@@ -1295,6 +1254,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         // ==================================================================
 
         /** The transport layer associated with the table network node. */
+        @Nullable
         @SuppressWarnings( "hiding" )
         private final ITransportLayer transportLayer_;
 
@@ -1476,9 +1436,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
             final ComponentPath componentPath,
             final ComponentIncrement componentIncrement )
         {
-            assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
-            assertArgumentNotNull( componentPath, "componentPath" ); //$NON-NLS-1$
-            assertArgumentNotNull( componentIncrement, "componentIncrement" ); //$NON-NLS-1$
             assert isNodeLayerThread();
 
             for( final INetworkTable table : getTables() )
@@ -1506,8 +1463,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
             final INetworkTable sourceTable,
             final Object tableMemento )
         {
-            assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
-            assertArgumentNotNull( tableMemento, "tableMemento" ); //$NON-NLS-1$
             assert isNodeLayerThread();
 
             for( final INetworkTable table : getTables() )

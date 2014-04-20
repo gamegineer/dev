@@ -1,6 +1,6 @@
 /*
  * BeginAuthenticationResponseMessageTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,12 +21,14 @@
 
 package org.gamegineer.table.internal.net.impl.node.common.messages;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the {@link BeginAuthenticationResponseMessage} class.
  */
+@NonNullByDefault( false )
 public final class BeginAuthenticationResponseMessageTest
 {
     // ======================================================================
@@ -68,16 +70,6 @@ public final class BeginAuthenticationResponseMessageTest
     }
 
     /**
-     * Ensures the {@link BeginAuthenticationResponseMessage#setPlayerName}
-     * method throws an exception when passed a {@code null} player name.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetPlayerName_PlayerName_Null()
-    {
-        message_.setPlayerName( null );
-    }
-
-    /**
      * Ensures the {@link BeginAuthenticationResponseMessage#setResponse} method
      * throws an exception when passed an illegal response that is empty.
      */
@@ -85,15 +77,5 @@ public final class BeginAuthenticationResponseMessageTest
     public void testSetResponse_Response_Illegal_Empty()
     {
         message_.setResponse( new byte[ 0 ] );
-    }
-
-    /**
-     * Ensures the {@link BeginAuthenticationResponseMessage#setResponse} method
-     * throws an exception when passed a {@code null} response.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetResponse_Response_Null()
-    {
-        message_.setResponse( null );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * FakeNodeController.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,10 +21,12 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.Future;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.concurrent.SynchronousFuture;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.TableNetworkConfiguration;
@@ -106,6 +108,7 @@ public final class FakeNodeController
     /*
      * @see org.gamegineer.table.internal.net.impl.node.INodeController#getPlayer()
      */
+    @Nullable
     @Override
     public IPlayer getPlayer()
     {
@@ -118,7 +121,7 @@ public final class FakeNodeController
     @Override
     public Collection<IPlayer> getPlayers()
     {
-        return Collections.emptyList();
+        return nonNull( Collections.<IPlayer>emptyList() );
     }
 
     /*

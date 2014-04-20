@@ -1,6 +1,6 @@
 /*
  * Player.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.net.impl;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.EnumSet;
 import java.util.Set;
 import net.jcip.annotations.GuardedBy;
@@ -62,19 +62,13 @@ public final class Player
      * 
      * @param name
      *        The player name; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code name} is {@code null}.
      */
     public Player(
-        /* @NonNull */
         final String name )
     {
-        assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-
         lock_ = new Object();
         name_ = name;
-        roles_ = EnumSet.noneOf( PlayerRole.class );
+        roles_ = nonNull( EnumSet.noneOf( PlayerRole.class ) );
     }
 
 
@@ -91,14 +85,10 @@ public final class Player
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code roles} contains a {@code null} element.
-     * @throws java.lang.NullPointerException
-     *         If {@code roles} is {@code null}.
      */
     public void addRoles(
-        /* @NonNull */
         final Set<PlayerRole> roles )
     {
-        assertArgumentNotNull( roles, "roles" ); //$NON-NLS-1$
         assertArgumentLegal( !roles.contains( null ), "roles" ); //$NON-NLS-1$
 
         synchronized( lock_ )
@@ -124,7 +114,7 @@ public final class Player
     {
         synchronized( lock_ )
         {
-            return EnumSet.copyOf( roles_ );
+            return nonNull( EnumSet.copyOf( roles_ ) );
         }
     }
 
@@ -135,8 +125,6 @@ public final class Player
     public boolean hasRole(
         final PlayerRole role )
     {
-        assertArgumentNotNull( role, "role" ); //$NON-NLS-1$
-
         synchronized( lock_ )
         {
             return roles_.contains( role );
@@ -152,14 +140,10 @@ public final class Player
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code roles} contains a {@code null} element.
-     * @throws java.lang.NullPointerException
-     *         If {@code roles} is {@code null}.
      */
     public void removeRoles(
-        /* @NonNull */
         final Set<PlayerRole> roles )
     {
-        assertArgumentNotNull( roles, "roles" ); //$NON-NLS-1$
         assertArgumentLegal( !roles.contains( null ), "roles" ); //$NON-NLS-1$
 
         synchronized( lock_ )

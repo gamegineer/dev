@@ -1,6 +1,6 @@
 /*
  * PassiveTransportLayer.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.transport.fake;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.Future;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.util.concurrent.SynchronousFuture;
@@ -64,12 +63,11 @@ final class PassiveTransportLayer
      */
     @Override
     public Future<Void> beginOpen(
+        @SuppressWarnings( "unused" )
         final String hostName,
         @SuppressWarnings( "unused" )
         final int port )
     {
-        assertArgumentNotNull( hostName, "hostName" ); //$NON-NLS-1$
-
         return new SynchronousFuture<>();
     }
 
@@ -78,10 +76,9 @@ final class PassiveTransportLayer
      */
     @Override
     public void endClose(
+        @SuppressWarnings( "unused" )
         final Future<Void> future )
     {
-        assertArgumentNotNull( future, "future" ); //$NON-NLS-1$
-
         // do nothing
     }
 
@@ -90,10 +87,9 @@ final class PassiveTransportLayer
      */
     @Override
     public void endOpen(
+        @SuppressWarnings( "unused" )
         final Future<Void> future )
     {
-        assertArgumentNotNull( future, "future" ); //$NON-NLS-1$
-
         // do nothing
     }
 }

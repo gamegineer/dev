@@ -1,6 +1,6 @@
 /*
  * INode.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.net.TableNetworkError;
 
@@ -54,11 +55,8 @@ public interface INode<RemoteNodeType extends IRemoteNode>
      *         already bound to the local table network node.
      * @throws java.lang.IllegalStateException
      *         If the table network is not connected.
-     * @throws java.lang.NullPointerException
-     *         If {@code remoteNode} is {@code null}.
      */
     public void bindRemoteNode(
-        /* @NonNull */
         RemoteNodeType remoteNode );
 
     /**
@@ -70,7 +68,7 @@ public interface INode<RemoteNodeType extends IRemoteNode>
      *        disconnected normally.
      */
     public void disconnect(
-        /* @Nullable */
+        @Nullable
         TableNetworkError error );
 
     /**
@@ -82,7 +80,6 @@ public interface INode<RemoteNodeType extends IRemoteNode>
      * @throws java.lang.IllegalStateException
      *         If the table network is not connected.
      */
-    /* @NonNull */
     public SecureString getPassword();
 
     /**
@@ -94,7 +91,6 @@ public interface INode<RemoteNodeType extends IRemoteNode>
      * @throws java.lang.IllegalStateException
      *         If the table network is not connected.
      */
-    /* @NonNull */
     public String getPlayerName();
 
     /**
@@ -103,7 +99,6 @@ public interface INode<RemoteNodeType extends IRemoteNode>
      * @return The table manager for the local table network node; never
      *         {@code null}.
      */
-    /* @NonNull */
     public ITableManager getTableManager();
 
     /**
@@ -117,10 +112,7 @@ public interface INode<RemoteNodeType extends IRemoteNode>
      *         bound to the local table network node.
      * @throws java.lang.IllegalStateException
      *         If the table network is not connected.
-     * @throws java.lang.NullPointerException
-     *         If {@code remoteNode} is {@code null}.
      */
     public void unbindRemoteNode(
-        /* @NonNull */
         RemoteNodeType remoteNode );
 }

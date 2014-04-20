@@ -1,6 +1,6 @@
 /*
  * RemoteClientNode.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,9 +21,9 @@
 
 package org.gamegineer.table.internal.net.impl.node.server;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Collection;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.net.impl.node.AbstractRemoteNode;
 import org.gamegineer.table.internal.net.impl.node.INodeLayer;
 import org.gamegineer.table.internal.net.impl.node.common.messages.CancelControlRequestMessage;
@@ -60,12 +60,14 @@ final class RemoteClientNode
      * The most-recent challenge used to authenticate the client or {@code null}
      * if an authentication request has not yet been sent.
      */
+    @Nullable
     private byte[] challenge_;
 
     /**
      * The most-recent salt used to authenticate the client or {@code null} if
      * an authentication request has not yet been sent.
      */
+    @Nullable
     private byte[] salt_;
 
 
@@ -80,14 +82,9 @@ final class RemoteClientNode
      *        The node layer; must not be {@code null}.
      * @param localNode
      *        The local table network node; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code nodeLayer} or {@code localNode} is {@code null}.
      */
     RemoteClientNode(
-        /* @NonNull */
         final INodeLayer nodeLayer,
-        /* @NonNull */
         final IServerNode localNode )
     {
         super( nodeLayer, localNode );
@@ -110,6 +107,7 @@ final class RemoteClientNode
     /*
      * @see org.gamegineer.table.internal.net.impl.node.server.IRemoteClientNodeController#getChallenge()
      */
+    @Nullable
     @Override
     public byte[] getChallenge()
     {
@@ -121,6 +119,7 @@ final class RemoteClientNode
     /*
      * @see org.gamegineer.table.internal.net.impl.node.server.IRemoteClientNodeController#getSalt()
      */
+    @Nullable
     @Override
     public byte[] getSalt()
     {
@@ -143,6 +142,7 @@ final class RemoteClientNode
      */
     @Override
     public void setChallenge(
+        @Nullable
         final byte[] challenge )
     {
         assert isNodeLayerThread();
@@ -157,7 +157,6 @@ final class RemoteClientNode
     public void setPlayers(
         final Collection<IPlayer> players )
     {
-        assertArgumentNotNull( players, "players" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         final PlayersMessage message = new PlayersMessage();
@@ -170,6 +169,7 @@ final class RemoteClientNode
      */
     @Override
     public void setSalt(
+        @Nullable
         final byte[] salt )
     {
         assert isNodeLayerThread();

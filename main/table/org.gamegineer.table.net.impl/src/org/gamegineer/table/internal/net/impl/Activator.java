@@ -1,6 +1,6 @@
 /*
  * Activator.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,11 +21,11 @@
 
 package org.gamegineer.table.internal.net.impl;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.core.ITableEnvironmentFactory;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -47,10 +47,12 @@ public final class Activator
 
     /** The bundle context. */
     @GuardedBy( "lock_" )
+    @Nullable
     private BundleContext bundleContext_;
 
     /** The executor service tracker. */
     @GuardedBy( "lock_" )
+    @Nullable
     private ServiceTracker<ExecutorService, ExecutorService> executorServiceTracker_;
 
     /** The instance lock. */
@@ -58,6 +60,7 @@ public final class Activator
 
     /** The table environment factory service tracker. */
     @GuardedBy( "lock_" )
+    @Nullable
     private ServiceTracker<ITableEnvironmentFactory, ITableEnvironmentFactory> tableEnvironmentFactoryTracker_;
 
 
@@ -86,7 +89,6 @@ public final class Activator
      * 
      * @return The bundle context; never {@code null}.
      */
-    /* @NonNull */
     public BundleContext getBundleContext()
     {
         synchronized( lock_ )
@@ -101,7 +103,6 @@ public final class Activator
      * 
      * @return The default instance of the bundle activator; never {@code null}.
      */
-    /* @NonNull */
     public static Activator getDefault()
     {
         final Activator instance = instance_.get();
@@ -114,7 +115,6 @@ public final class Activator
      * 
      * @return The executor service; never {@code null}.
      */
-    /* @NonNull */
     public ExecutorService getExecutorService()
     {
         final ExecutorService executorService;
@@ -128,6 +128,7 @@ public final class Activator
                 executorServiceTracker_.open();
             }
 
+            assert executorServiceTracker_ != null;
             executorService = executorServiceTracker_.getService();
         }
 
@@ -145,7 +146,7 @@ public final class Activator
      * @return The table environment factory service or {@code null} if the
      *         table environment factory service is not available.
      */
-    /* @Nullable */
+    @Nullable
     public ITableEnvironmentFactory getTableEnvironmentFactory()
     {
         synchronized( lock_ )
@@ -158,6 +159,7 @@ public final class Activator
                 tableEnvironmentFactoryTracker_.open();
             }
 
+            assert tableEnvironmentFactoryTracker_ != null;
             return tableEnvironmentFactoryTracker_.getService();
         }
     }
@@ -167,9 +169,13 @@ public final class Activator
      */
     @Override
     public void start(
+        @Nullable
         final BundleContext bundleContext )
     {
-        assertArgumentNotNull( bundleContext, "bundleContext" ); //$NON-NLS-1$
+        if( bundleContext == null )
+        {
+            throw new NullPointerException( "bundleContext" ); //$NON-NLS-1$
+        }
 
         synchronized( lock_ )
         {
@@ -186,9 +192,13 @@ public final class Activator
      */
     @Override
     public void stop(
+        @Nullable
         final BundleContext bundleContext )
     {
-        assertArgumentNotNull( bundleContext, "bundleContext" ); //$NON-NLS-1$
+        if( bundleContext == null )
+        {
+            throw new NullPointerException( "bundleContext" ); //$NON-NLS-1$
+        }
 
         final boolean wasInstanceNonNull = instance_.compareAndSet( this, null );
         assert wasInstanceNonNull;

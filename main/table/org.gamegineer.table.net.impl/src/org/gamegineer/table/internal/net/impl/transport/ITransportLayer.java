@@ -1,6 +1,6 @@
 /*
  * ITransportLayer.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -44,7 +44,6 @@ public interface ITransportLayer
      * @return An asynchronous completion token for the operation; never
      *         {@code null}.
      */
-    /* @NonNull */
     public Future<Void> beginClose();
 
     /**
@@ -63,9 +62,7 @@ public interface ITransportLayer
      * @return An asynchronous completion token for the operation; never
      *         {@code null}.
      */
-    /* @NonNull */
     public Future<Void> beginOpen(
-        /* @NonNull */
         String hostName,
         int port );
 
@@ -85,13 +82,10 @@ public interface ITransportLayer
      * @throws java.lang.InterruptedException
      *         If this thread is interrupted while waiting for the transport
      *         layer to be closed.
-     * @throws java.lang.NullPointerException
-     *         If {@code future} is {@code null}.
      * @throws java.util.concurrent.CancellationException
      *         If the operation is cancelled.
      */
     public void endClose(
-        /* @NonNull */
         Future<Void> future )
         throws InterruptedException;
 
@@ -113,15 +107,12 @@ public interface ITransportLayer
      * @throws java.lang.InterruptedException
      *         If this thread is interrupted while waiting for the transport
      *         layer to be opened.
-     * @throws java.lang.NullPointerException
-     *         If {@code future} is {@code null}.
      * @throws java.util.concurrent.CancellationException
      *         If the operation is cancelled.
      * @throws org.gamegineer.table.internal.net.impl.transport.TransportException
      *         If an error occurs.
      */
     public void endOpen(
-        /* @NonNull */
         Future<Void> future )
         throws TransportException, InterruptedException;
 }

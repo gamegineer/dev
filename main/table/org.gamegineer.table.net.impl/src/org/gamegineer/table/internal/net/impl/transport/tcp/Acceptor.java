@@ -1,6 +1,6 @@
 /*
  * Acceptor.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,6 +29,7 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.logging.Level;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.net.impl.Loggers;
 
 /**
@@ -52,6 +53,7 @@ final class Acceptor
     private boolean isRegistered_;
 
     /** The server socket channel on which incoming connections are accepted. */
+    @Nullable
     private ServerSocketChannel serverChannel_;
 
 
@@ -67,7 +69,6 @@ final class Acceptor
      *        {@code null}.
      */
     Acceptor(
-        /* @NonNull */
         final AbstractTransportLayer transportLayer )
     {
         super( transportLayer );
@@ -89,6 +90,7 @@ final class Acceptor
         final SocketChannel clientChannel;
         try
         {
+            assert serverChannel_ != null;
             clientChannel = serverChannel_.accept();
             if( clientChannel == null )
             {
@@ -125,12 +127,10 @@ final class Acceptor
      *         If an I/O error occurs
      */
     void bind(
-        /* @NonNull */
         final String hostName,
         final int port )
         throws IOException
     {
-        assert hostName != null;
         assert isTransportLayerThread();
         assert getState() == State.PRISTINE;
 
@@ -154,6 +154,7 @@ final class Acceptor
      */
     @Override
     void close(
+        @Nullable
         final Exception exception )
     {
         assert isTransportLayerThread();
@@ -169,6 +170,7 @@ final class Acceptor
 
             try
             {
+                assert serverChannel_ != null;
                 serverChannel_.close();
             }
             catch( final IOException e )
@@ -203,15 +205,11 @@ final class Acceptor
      * @throws java.io.IOException
      *         If an I/O error occurs.
      */
-    /* @NonNull */
     private static ServerSocketChannel createServerSocketChannel(
-        /* @NonNull */
         final String hostName,
         final int port )
         throws IOException
     {
-        assert hostName != null;
-
         final ServerSocketChannel channel = ServerSocketChannel.open();
         channel.configureBlocking( false );
         channel.socket().bind( new InetSocketAddress( hostName, port ) );
@@ -221,6 +219,7 @@ final class Acceptor
     /*
      * @see org.gamegineer.table.internal.net.impl.transport.tcp.AbstractEventHandler#getChannel()
      */
+    @Nullable
     @Override
     SelectableChannel getChannel()
     {

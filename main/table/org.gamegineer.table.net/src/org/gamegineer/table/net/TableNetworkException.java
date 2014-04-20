@@ -1,6 +1,6 @@
 /*
  * TableNetworkException.java
- * Copyright 2008-2011 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,8 @@
 
 package org.gamegineer.table.net;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A checked exception that indicates an error occurred within a table network.
@@ -53,12 +53,8 @@ public final class TableNetworkException
      * @param error
      *        The table network error associated with the exception; must not be
      *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code error} is {@code null}.
      */
     public TableNetworkException(
-        /* @NonNull */
         final TableNetworkError error )
     {
         this( error, error.toString(), null );
@@ -73,14 +69,10 @@ public final class TableNetworkException
      *        {@code null}.
      * @param message
      *        The detail message; may be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code error} is {@code null}.
      */
     public TableNetworkException(
-        /* @NonNull */
         final TableNetworkError error,
-        /* @Nullable */
+        @Nullable
         final String message )
     {
         this( error, message, null );
@@ -95,14 +87,10 @@ public final class TableNetworkException
      *        {@code null}.
      * @param cause
      *        The cause; may be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code error} is {@code null}.
      */
     public TableNetworkException(
-        /* @NonNull */
         final TableNetworkError error,
-        /* @Nullable */
+        @Nullable
         final Throwable cause )
     {
         this( error, error.toString(), cause );
@@ -119,21 +107,15 @@ public final class TableNetworkException
      *        The detail message; may be {@code null}.
      * @param cause
      *        The cause; may be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code error} is {@code null}.
      */
     public TableNetworkException(
-        /* @NonNull */
         final TableNetworkError error,
-        /* @Nullable */
+        @Nullable
         final String message,
-        /* @Nullable */
+        @Nullable
         final Throwable cause )
     {
         super( message, cause );
-
-        assertArgumentNotNull( error, "error" ); //$NON-NLS-1$
 
         error_ = error;
     }
@@ -149,7 +131,6 @@ public final class TableNetworkException
      * @return The table network error associated with the exception; never
      *         {@code null}.
      */
-    /* @NonNull */
     public TableNetworkError getError()
     {
         return error_;

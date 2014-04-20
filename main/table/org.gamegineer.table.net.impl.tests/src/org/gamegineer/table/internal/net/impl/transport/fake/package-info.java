@@ -16,12 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Nov 15, 2013 at 8:22:13 PM.
+ * Created on Apr 19, 2014 at 10:13:24 PM.
  */
 
 /**
- * Provides implementation support classes for the
- * {@code org.gamegineer.table.net.impl} bundle.
+ * Provides classes that define the fake network transport implementation.
  * 
  * <p>
  * This package is only intended for use by members of the
@@ -29,4 +28,4 @@
  * </p>
  */
 @org.eclipse.jdt.annotation.NonNullByDefault
-package org.gamegineer.table.internal.net.impl;
+package org.gamegineer.table.internal.net.impl.transport.fake;

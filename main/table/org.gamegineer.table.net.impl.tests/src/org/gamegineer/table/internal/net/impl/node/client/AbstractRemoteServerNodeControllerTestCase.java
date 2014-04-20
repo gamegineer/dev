@@ -1,6 +1,6 @@
 /*
  * AbstractRemoteServerNodeControllerTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.node.client;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.internal.net.impl.node.AbstractRemoteNodeControllerTestCase;
 
@@ -58,6 +59,6 @@ public abstract class AbstractRemoteServerNodeControllerTestCase<T extends IRemo
     protected final IClientNode createMockLocalNode(
         final IMocksControl mocksControl )
     {
-        return mocksControl.createMock( IClientNode.class );
+        return nonNull( mocksControl.createMock( IClientNode.class ) );
     }
 }

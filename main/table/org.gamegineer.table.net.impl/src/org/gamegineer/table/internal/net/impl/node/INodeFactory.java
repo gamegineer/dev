@@ -1,6 +1,6 @@
 /*
  * INodeFactory.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -44,14 +44,10 @@ public interface INodeFactory
      * @return The control interface for the new local client table network
      *         node; never {@code null}.
      * 
-     * @throws java.lang.NullPointerException
-     *         If {@code tableNetworkController} is {@code null}.
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If the table network node cannot be created.
      */
-    /* @NonNull */
     public INodeController createClientNode(
-        /* @NonNull */
         ITableNetworkController tableNetworkController )
         throws TableNetworkException;
 
@@ -64,14 +60,10 @@ public interface INodeFactory
      * @return The control interface for the new local server table network
      *         node; never {@code null}.
      * 
-     * @throws java.lang.NullPointerException
-     *         If {@code tableNetworkController} is {@code null}.
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If the table network node cannot be created.
      */
-    /* @NonNull */
     public INodeController createServerNode(
-        /* @NonNull */
         ITableNetworkController tableNetworkController )
         throws TableNetworkException;
 }

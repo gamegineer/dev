@@ -1,6 +1,6 @@
 /*
  * TableMessage.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node.common.messages;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.impl.transport.AbstractMessage;
 
@@ -69,7 +68,6 @@ public final class TableMessage
      * 
      * @return The table memento; never {@code null}.
      */
-    /* @NonNull */
     public Object getMemento()
     {
         return memento_;
@@ -80,16 +78,10 @@ public final class TableMessage
      * 
      * @param memento
      *        The table memento; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code memento} is {@code null}.
      */
     public void setMemento(
-        /* @NonNull */
         final Object memento )
     {
-        assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
-
         memento_ = memento;
     }
 }

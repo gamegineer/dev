@@ -1,6 +1,6 @@
 /*
  * GoodbyeMessageHandler.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -71,14 +71,9 @@ public final class GoodbyeMessageHandler
         "static-method", "unused"
     } )
     private void handleMessage(
-        /* @NonNull */
         final IRemoteClientNodeController remoteNodeController,
-        /* @NonNull */
         final GoodbyeMessage message )
     {
-        assert remoteNodeController != null;
-        assert message != null;
-
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Received goodbye message from client" ); //$NON-NLS-1$
         remoteNodeController.close( TableNetworkError.CLIENT_SHUTDOWN );
     }

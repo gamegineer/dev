@@ -1,6 +1,6 @@
 /*
  * ComponentIncrementMessageHandlerTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,10 @@
 
 package org.gamegineer.table.internal.net.impl.node.common.handlers;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.internal.net.impl.node.ComponentIncrement;
 import org.gamegineer.table.internal.net.impl.node.IMessageHandler;
@@ -37,6 +39,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link ComponentIncrementMessageHandler} class.
  */
+@NonNullByDefault( false )
 public final class ComponentIncrementMessageHandlerTest
 {
     // ======================================================================
@@ -95,7 +98,7 @@ public final class ComponentIncrementMessageHandlerTest
     {
         final ComponentPath componentPath = new ComponentPath( new ComponentPath( new ComponentPath( null, 0 ), 1 ), 2 );
         final ComponentIncrement componentIncrement = new ComponentIncrement();
-        final INetworkTable table = mocksControl_.createMock( INetworkTable.class );
+        final INetworkTable table = nonNull( mocksControl_.createMock( INetworkTable.class ) );
         final ITableManager tableManager = mocksControl_.createMock( ITableManager.class );
         tableManager.incrementComponentState( table, componentPath, componentIncrement );
         final INode localNode = mocksControl_.createMock( INode.class );

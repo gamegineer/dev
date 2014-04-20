@@ -1,6 +1,6 @@
 /*
  * ComponentIncrementMessage.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node.common.messages;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.internal.net.impl.node.ComponentIncrement;
@@ -81,7 +80,6 @@ public final class ComponentIncrementMessage
      * @return The incremental change to the state of the component; never
      *         {@code null}.
      */
-    /* @NonNull */
     public ComponentIncrement getIncrement()
     {
         return increment_;
@@ -92,7 +90,6 @@ public final class ComponentIncrementMessage
      * 
      * @return The component path; never {@code null}.
      */
-    /* @NonNull */
     public ComponentPath getPath()
     {
         return path_;
@@ -104,16 +101,10 @@ public final class ComponentIncrementMessage
      * @param increment
      *        The incremental change to the state of the component; must not be
      *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code increment} is {@code null}.
      */
     public void setIncrement(
-        /* @NonNull */
         final ComponentIncrement increment )
     {
-        assertArgumentNotNull( increment, "increment" ); //$NON-NLS-1$
-
         increment_ = increment;
     }
 
@@ -122,16 +113,10 @@ public final class ComponentIncrementMessage
      * 
      * @param path
      *        The component path; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code path} is {@code null}.
      */
     public void setPath(
-        /* @NonNull */
         final ComponentPath path )
     {
-        assertArgumentNotNull( path, "path" ); //$NON-NLS-1$
-
         path_ = path;
     }
 }

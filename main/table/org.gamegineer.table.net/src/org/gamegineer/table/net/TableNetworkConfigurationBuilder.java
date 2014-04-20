@@ -1,6 +1,6 @@
 /*
  * TableNetworkConfigurationBuilder.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.net;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.core.ITable;
@@ -63,16 +62,10 @@ public final class TableNetworkConfigurationBuilder
      * @param localTable
      *        The local table to attach to the table network; must not be
      *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code localTable} is {@code null}.
      */
     public TableNetworkConfigurationBuilder(
-        /* @NonNull */
         final ITable localTable )
     {
-        assertArgumentNotNull( localTable, "localTable" ); //$NON-NLS-1$
-
         hostName_ = "localhost"; //$NON-NLS-1$
         localPlayerName_ = "Player"; //$NON-NLS-1$
         localTable_ = localTable;
@@ -92,17 +85,10 @@ public final class TableNetworkConfigurationBuilder
      *        The name of the table network host; must not be {@code null}.
      * 
      * @return A reference to this builder; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code hostName} is {@code null}.
      */
-    /* @NonNull */
     public TableNetworkConfigurationBuilder setHostName(
-        /* @NonNull */
         final String hostName )
     {
-        assertArgumentNotNull( hostName, "hostName" ); //$NON-NLS-1$
-
         hostName_ = hostName;
 
         return this;
@@ -115,17 +101,10 @@ public final class TableNetworkConfigurationBuilder
      *        The local player name; must not be {@code null}.
      * 
      * @return A reference to this builder; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code localPlayerName} is {@code null}.
      */
-    /* @NonNull */
     public TableNetworkConfigurationBuilder setLocalPlayerName(
-        /* @NonNull */
         final String localPlayerName )
     {
-        assertArgumentNotNull( localPlayerName, "localPlayerName" ); //$NON-NLS-1$
-
         localPlayerName_ = localPlayerName;
 
         return this;
@@ -138,17 +117,10 @@ public final class TableNetworkConfigurationBuilder
      *        The password; must not be {@code null}.
      * 
      * @return A reference to this builder; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code password} is {@code null}.
      */
-    /* @NonNull */
     public TableNetworkConfigurationBuilder setPassword(
-        /* @NonNull */
         final SecureString password )
     {
-        assertArgumentNotNull( password, "password" ); //$NON-NLS-1$
-
         password_ = password;
 
         return this;
@@ -162,7 +134,6 @@ public final class TableNetworkConfigurationBuilder
      * 
      * @return A reference to this builder; never {@code null}.
      */
-    /* @NonNull */
     public TableNetworkConfigurationBuilder setPort(
         final int port )
     {
@@ -177,7 +148,6 @@ public final class TableNetworkConfigurationBuilder
      * 
      * @return A new table network configuration; never {@code null}.
      */
-    /* @NonNull */
     public TableNetworkConfiguration toTableNetworkConfiguration()
     {
         return new TableNetworkConfiguration( hostName_, port_, password_, localPlayerName_, localTable_ );

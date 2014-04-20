@@ -1,6 +1,6 @@
 /*
  * IRemoteNodeController.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.net.impl.transport.IMessage;
 import org.gamegineer.table.net.TableNetworkError;
 
@@ -56,11 +57,8 @@ public interface IRemoteNodeController<LocalNodeType extends INode<?>>
      *         to the local node.
      * @throws java.lang.IllegalStateException
      *         If the remote node is closed or is already bound.
-     * @throws java.lang.NullPointerException
-     *         If {@code playerName} is {@code null}.
      */
     public void bind(
-        /* @NonNull */
         String playerName );
 
     /**
@@ -74,7 +72,7 @@ public interface IRemoteNodeController<LocalNodeType extends INode<?>>
      *         If the remote node is closed.
      */
     public void close(
-        /* @Nullable */
+        @Nullable
         TableNetworkError error );
 
     /**
@@ -82,7 +80,6 @@ public interface IRemoteNodeController<LocalNodeType extends INode<?>>
      * 
      * @return The local table network node; never {@code null}.
      */
-    /* @NonNull */
     public LocalNodeType getLocalNode();
 
     /**
@@ -90,7 +87,6 @@ public interface IRemoteNodeController<LocalNodeType extends INode<?>>
      * 
      * @return The table associated with the remote node; never {@code null}.
      */
-    /* @NonNull */
     public INetworkTable getTable();
 
     /**
@@ -104,12 +100,9 @@ public interface IRemoteNodeController<LocalNodeType extends INode<?>>
      * 
      * @throws java.lang.IllegalStateException
      *         If the remote node is closed.
-     * @throws java.lang.NullPointerException
-     *         If {@code message} is {@code null}.
      */
     public void sendMessage(
-        /* @NonNull */
         IMessage message,
-        /* @Nullable */
+        @Nullable
         IMessageHandler messageHandler );
 }

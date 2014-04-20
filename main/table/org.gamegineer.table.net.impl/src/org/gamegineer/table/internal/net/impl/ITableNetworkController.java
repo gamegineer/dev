@@ -1,6 +1,6 @@
 /*
  * ITableNetworkController.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.net.impl.node.INodeController;
 import org.gamegineer.table.internal.net.impl.transport.ITransportLayerFactory;
 import org.gamegineer.table.net.TableNetworkError;
@@ -58,7 +59,7 @@ public interface ITableNetworkController
      *         to disconnect.
      */
     public void disconnect(
-        /* @Nullable */
+        @Nullable
         TableNetworkError error )
         throws InterruptedException;
 
@@ -67,7 +68,6 @@ public interface ITableNetworkController
      * 
      * @return The table network transport layer factory; never {@code null}.
      */
-    /* @NonNull */
     public ITransportLayerFactory getTransportLayerFactory();
 
     /**

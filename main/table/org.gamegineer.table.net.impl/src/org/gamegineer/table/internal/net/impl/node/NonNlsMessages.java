@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.internal.net.impl.transport.IMessage;
@@ -41,84 +42,84 @@ final class NonNlsMessages
     // --- AbstractMessageHandler -------------------------------------------
 
     /** An unexpected error occurred while handling a message. */
-    public static String AbstractMessageHandler_handleMessage_unexpectedError;
+    public static String AbstractMessageHandler_handleMessage_unexpectedError = ""; //$NON-NLS-1$
 
     /** The message handler received an unexpected message. */
-    public static String AbstractMessageHandler_messageReceived_unexpectedMessage;
+    public static String AbstractMessageHandler_messageReceived_unexpectedMessage = ""; //$NON-NLS-1$
 
     // --- AbstractNode -----------------------------------------------------
 
     /** The remote node is already bound. */
-    public static String AbstractNode_bindRemoteNode_remoteNodeBound;
+    public static String AbstractNode_bindRemoteNode_remoteNodeBound = ""; //$NON-NLS-1$
 
     /** An error occurred while attempting to disconnect the network. */
-    public static String AbstractNode_connect_disconnectError;
+    public static String AbstractNode_connect_disconnectError = ""; //$NON-NLS-1$
 
     /** The network is disconnected. */
-    public static String AbstractNode_networkDisconnected;
+    public static String AbstractNode_networkDisconnected = ""; //$NON-NLS-1$
 
     /** The node layer has been shutdown. */
-    public static String AbstractNode_nodeLayer_shutdown;
+    public static String AbstractNode_nodeLayer_shutdown = ""; //$NON-NLS-1$
 
     /** The remote node is not bound. */
-    public static String AbstractNode_unbindRemoteNode_remoteNodeNotBound;
+    public static String AbstractNode_unbindRemoteNode_remoteNodeNotBound = ""; //$NON-NLS-1$
 
     // --- AbstractRemoteNode -----------------------------------------------
 
     /** The remote node is already bound. */
-    public static String AbstractRemoteNode_bound;
+    public static String AbstractRemoteNode_bound = ""; //$NON-NLS-1$
 
     /** The remote node is closed. */
-    public static String AbstractRemoteNode_closed;
+    public static String AbstractRemoteNode_closed = ""; //$NON-NLS-1$
 
     /** An error occurred while deserializing a message. */
-    public static String AbstractRemoteNode_extractMessage_deserializationError;
+    public static String AbstractRemoteNode_extractMessage_deserializationError = ""; //$NON-NLS-1$
 
     /** The service received an unhandled message. */
-    public static String AbstractRemoteNode_messageReceived_unhandledMessage;
+    public static String AbstractRemoteNode_messageReceived_unhandledMessage = ""; //$NON-NLS-1$
 
     /** The player has not been authenticated. */
-    public static String AbstractRemoteNode_playerNotAuthenticated;
+    public static String AbstractRemoteNode_playerNotAuthenticated = ""; //$NON-NLS-1$
 
     /** The message type is already registered. */
-    public static String AbstractRemoteNode_registerUncorrelatedMessageHandler_messageTypeRegistered;
+    public static String AbstractRemoteNode_registerUncorrelatedMessageHandler_messageTypeRegistered = ""; //$NON-NLS-1$
 
     // --- AbstractRemoteNode.ErrorMessageHandler ---------------------------
 
     /** An uncorrelated error message was received. */
-    public static String ErrorMessageHandler_handleMessage_errorReceived;
+    public static String ErrorMessageHandler_handleMessage_errorReceived = ""; //$NON-NLS-1$
 
     // --- LocalNetworkTable ------------------------------------------------
 
     /** An error occurred during the operation. */
-    public static String LocalNetworkTable_syncExec_error;
+    public static String LocalNetworkTable_syncExec_error = ""; //$NON-NLS-1$
 
     /** The operation was interrupted. */
-    public static String LocalNetworkTable_syncExec_interrupted;
+    public static String LocalNetworkTable_syncExec_interrupted = ""; //$NON-NLS-1$
 
     // --- NetworkTableUtils ------------------------------------------------
 
     /** Failed to set the surface designs. */
-    public static String NetworkTableUtils_incrementComponentState_setSurfaceDesignsFailed;
+    public static String NetworkTableUtils_incrementComponentState_setSurfaceDesignsFailed = ""; //$NON-NLS-1$
 
     /** Failed to set the component state. */
-    public static String NetworkTableUtils_incrementContainerState_setComponentStateFailed;
+    public static String NetworkTableUtils_incrementContainerState_setComponentStateFailed = ""; //$NON-NLS-1$
 
     /** Failed to set the layout. */
-    public static String NetworkTableUtils_incrementContainerState_setLayoutFailed;
+    public static String NetworkTableUtils_incrementContainerState_setLayoutFailed = ""; //$NON-NLS-1$
 
     /** Failed to set the table state. */
-    public static String NetworkTableUtils_setTableState_failed;
+    public static String NetworkTableUtils_setTableState_failed = ""; //$NON-NLS-1$
 
     // --- NodeControllerProxy ----------------------------------------------
 
     /** The operation was interrupted. */
-    public static String NodeControllerProxy_interrupted;
+    public static String NodeControllerProxy_interrupted = ""; //$NON-NLS-1$
 
     // --- NodeLayer --------------------------------------------------------
 
     /** The name of the node layer thread. */
-    public static String NodeLayer_thread_name;
+    public static String NodeLayer_thread_name = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -159,20 +160,17 @@ final class NonNlsMessages
      * @return The formatted message indicating the message handler received an
      *         unexpected message; never {@code null}.
      */
-    /* @NonNull */
     @SuppressWarnings( "boxing" )
     static String AbstractMessageHandler_messageReceived_unexpectedMessage(
-        /* @NonNull */
         final IMessageHandler messageHandler,
-        /* @NonNull */
         final IMessage message )
     {
-        return bind( AbstractMessageHandler_messageReceived_unexpectedMessage, new Object[] {
+        return nonNull( bind( AbstractMessageHandler_messageReceived_unexpectedMessage, new Object[] {
             messageHandler.getClass().getSimpleName(), //
             message.getClass().getSimpleName(), //
             message.getId(), //
             message.getCorrelationId()
-        } );
+        } ) );
     }
 
     // --- AbstractRemoteNode -----------------------------------------------
@@ -187,14 +185,12 @@ final class NonNlsMessages
      * @return The formatted message indicating an error occurred while
      *         deserializing a message; never {@code null}.
      */
-    /* @NonNull */
     @SuppressWarnings( "boxing" )
     static String AbstractRemoteNode_extractMessage_deserializationError(
-        /* @NonNull */
         final MessageEnvelope messageEnvelope )
     {
         final MessageEnvelope.Header header = messageEnvelope.getHeader();
-        return bind( AbstractRemoteNode_extractMessage_deserializationError, header.getId(), header.getCorrelationId() );
+        return nonNull( bind( AbstractRemoteNode_extractMessage_deserializationError, header.getId(), header.getCorrelationId() ) );
     }
 
     /**
@@ -207,17 +203,15 @@ final class NonNlsMessages
      * @return The formatted message indicating the service received an
      *         unhandled message; never {@code null}.
      */
-    /* @NonNull */
     @SuppressWarnings( "boxing" )
     static String AbstractRemoteNode_messageReceived_unhandledMessage(
-        /* @NonNull */
         final IMessage message )
     {
-        return bind( AbstractRemoteNode_messageReceived_unhandledMessage, new Object[] {
+        return nonNull( bind( AbstractRemoteNode_messageReceived_unhandledMessage, new Object[] {
             message.getClass().getSimpleName(), //
             message.getId(), //
             message.getCorrelationId()
-        } );
+        } ) );
     }
 
     // --- AbstractRemoteNode.ErrorMessageHandler ---------------------------
@@ -233,11 +227,9 @@ final class NonNlsMessages
      * @return The formatted message indicating an uncorrelated error message
      *         was received; never {@code null}.
      */
-    /* @NonNull */
     static String ErrorMessageHandler_handleMessage_errorReceived(
-        /* @NonNull */
         final TableNetworkError error )
     {
-        return bind( ErrorMessageHandler_handleMessage_errorReceived, error );
+        return nonNull( bind( ErrorMessageHandler_handleMessage_errorReceived, error ) );
     }
 }

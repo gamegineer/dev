@@ -1,6 +1,6 @@
 /*
  * TableMessageHandler.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -69,14 +69,9 @@ public final class TableMessageHandler
         "static-method", "unused"
     } )
     private void handleMessage(
-        /* @NonNull */
         final IRemoteNodeController<?> remoteNodeController,
-        /* @NonNull */
         final TableMessage message )
     {
-        assert remoteNodeController != null;
-        assert message != null;
-
         remoteNodeController.getLocalNode().getTableManager().setTableState( //
             remoteNodeController.getTable(), //
             message.getMemento() );

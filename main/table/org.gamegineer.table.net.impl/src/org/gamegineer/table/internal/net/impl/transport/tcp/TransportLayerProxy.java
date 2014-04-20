@@ -1,6 +1,6 @@
 /*
  * TransportLayerProxy.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,12 +21,13 @@
 
 package org.gamegineer.table.internal.net.impl.transport.tcp;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.concurrent.SynchronousFuture;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
 import org.gamegineer.table.internal.net.impl.Activator;
@@ -61,11 +62,8 @@ final class TransportLayerProxy
      *        The actual transport layer; must not be {@code null}.
      */
     TransportLayerProxy(
-        /* @NonNull */
         final AbstractTransportLayer transportLayer )
     {
-        assert transportLayer != null;
-
         actualTransportLayer_ = transportLayer;
     }
 
@@ -99,8 +97,9 @@ final class TransportLayerProxy
             return new SynchronousFuture<>();
         }
 
-        return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<Void>()
         {
+            @Nullable
             @Override
             @SuppressWarnings( "synthetic-access" )
             public Void call()
@@ -117,6 +116,7 @@ final class TransportLayerProxy
                         throw TaskUtils.launderThrowable( e.getCause() );
                     }
 
+                    assert closeTaskFuture != null;
                     actualTransportLayer_.endClose( closeTaskFuture );
                 }
                 catch( final InterruptedException e )
@@ -126,7 +126,7 @@ final class TransportLayerProxy
 
                 return null;
             }
-        } );
+        } ) );
     }
 
     /*
@@ -137,8 +137,6 @@ final class TransportLayerProxy
         final String hostName,
         final int port )
     {
-        assertArgumentNotNull( hostName, "hostName" ); //$NON-NLS-1$
-
         final Future<Future<Void>> beginOpenTaskFuture;
         try
         {
@@ -157,8 +155,9 @@ final class TransportLayerProxy
             return new SynchronousFuture<>( new IllegalStateException( NonNlsMessages.TransportLayerProxy_beginOpen_transportLayerClosed, e ) );
         }
 
-        return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<Void>()
         {
+            @Nullable
             @Override
             @SuppressWarnings( "synthetic-access" )
             public Void call()
@@ -176,6 +175,7 @@ final class TransportLayerProxy
                         throw TaskUtils.launderThrowable( e.getCause() );
                     }
 
+                    assert openTaskFuture != null;
                     actualTransportLayer_.endOpen( openTaskFuture );
                 }
                 catch( final InterruptedException e )
@@ -185,7 +185,7 @@ final class TransportLayerProxy
 
                 return null;
             }
-        } );
+        } ) );
     }
 
     /*
@@ -196,8 +196,6 @@ final class TransportLayerProxy
         final Future<Void> future )
         throws InterruptedException
     {
-        assertArgumentNotNull( future, "future" ); //$NON-NLS-1$
-
         try
         {
             future.get();
@@ -216,8 +214,6 @@ final class TransportLayerProxy
         final Future<Void> future )
         throws TransportException, InterruptedException
     {
-        assertArgumentNotNull( future, "future" ); //$NON-NLS-1$
-
         try
         {
             future.get();

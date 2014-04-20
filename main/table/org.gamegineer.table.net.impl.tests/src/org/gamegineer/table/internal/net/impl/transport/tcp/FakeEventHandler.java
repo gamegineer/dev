@@ -1,6 +1,6 @@
 /*
  * FakeEventHandler.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.net.impl.transport.tcp;
 
 import java.nio.channels.SelectableChannel;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Fake implementation of {@link AbstractEventHandler}
@@ -52,7 +53,6 @@ class FakeEventHandler
      *        {@code null}.
      */
     FakeEventHandler(
-        /* @NonNull */
         final AbstractTransportLayer transportLayer )
     {
         this( transportLayer, new FakeSelectableChannel() );
@@ -69,14 +69,10 @@ class FakeEventHandler
      *        The event handler channel; must not be {@code null}.
      */
     FakeEventHandler(
-        /* @NonNull */
         final AbstractTransportLayer transportLayer,
-        /* @NonNull */
         final SelectableChannel channel )
     {
         super( transportLayer );
-
-        assert channel != null;
 
         channel_ = channel;
     }
@@ -91,6 +87,7 @@ class FakeEventHandler
      */
     @Override
     void close(
+        @Nullable
         @SuppressWarnings( "unused" )
         final Exception exception )
     {
@@ -102,6 +99,7 @@ class FakeEventHandler
     /*
      * @see org.gamegineer.table.internal.net.impl.transport.tcp.AbstractEventHandler#getChannel()
      */
+    @Nullable
     @Override
     SelectableChannel getChannel()
     {

@@ -1,6 +1,6 @@
 /*
  * GiveControlMessageHandlerTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.net.impl.node.server.handlers;
 
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.internal.net.impl.node.IMessageHandler;
 import org.gamegineer.table.internal.net.impl.node.common.messages.GiveControlMessage;
 import org.gamegineer.table.internal.net.impl.node.server.IRemoteClientNodeController;
@@ -33,6 +34,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link GiveControlMessageHandler} class.
  */
+@NonNullByDefault( false )
 public final class GiveControlMessageHandlerTest
 {
     // ======================================================================

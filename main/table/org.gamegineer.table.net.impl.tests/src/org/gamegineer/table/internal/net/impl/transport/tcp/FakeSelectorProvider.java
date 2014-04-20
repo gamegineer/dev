@@ -1,6 +1,6 @@
 /*
  * FakeSelectorProvider.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,6 +30,7 @@ import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.AbstractSelector;
 import java.nio.channels.spi.SelectorProvider;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Fake implementation of {@link SelectorProvider}.
@@ -57,6 +58,7 @@ class FakeSelectorProvider
     /*
      * @see java.nio.channels.spi.SelectorProvider#openDatagramChannel()
      */
+    @Nullable
     @Override
     @SuppressWarnings( "unused" )
     public DatagramChannel openDatagramChannel()
@@ -68,9 +70,11 @@ class FakeSelectorProvider
     /*
      * @see java.nio.channels.spi.SelectorProvider#openDatagramChannel(java.net.ProtocolFamily)
      */
+    @Nullable
     @Override
     @SuppressWarnings( "unused" )
     public DatagramChannel openDatagramChannel(
+        @Nullable
         final ProtocolFamily family )
         throws IOException
     {
@@ -80,6 +84,7 @@ class FakeSelectorProvider
     /*
      * @see java.nio.channels.spi.SelectorProvider#openPipe()
      */
+    @Nullable
     @Override
     @SuppressWarnings( "unused" )
     public Pipe openPipe()
@@ -91,6 +96,7 @@ class FakeSelectorProvider
     /*
      * @see java.nio.channels.spi.SelectorProvider#openSelector()
      */
+    @Nullable
     @Override
     @SuppressWarnings( "unused" )
     public AbstractSelector openSelector()
@@ -102,6 +108,7 @@ class FakeSelectorProvider
     /*
      * @see java.nio.channels.spi.SelectorProvider#openServerSocketChannel()
      */
+    @Nullable
     @Override
     @SuppressWarnings( "unused" )
     public ServerSocketChannel openServerSocketChannel()
@@ -113,6 +120,7 @@ class FakeSelectorProvider
     /*
      * @see java.nio.channels.spi.SelectorProvider#openSocketChannel()
      */
+    @Nullable
     @Override
     @SuppressWarnings( "unused" )
     public SocketChannel openSocketChannel()

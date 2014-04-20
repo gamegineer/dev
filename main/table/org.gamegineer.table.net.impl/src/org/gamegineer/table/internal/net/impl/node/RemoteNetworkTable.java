@@ -1,6 +1,6 @@
 /*
  * RemoteNetworkTable.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.internal.net.impl.node.common.messages.ComponentIncrementMessage;
@@ -54,11 +53,8 @@ final class RemoteNetworkTable
      *        table; must not be {@code null}.
      */
     RemoteNetworkTable(
-        /* @NonNull */
         final IRemoteNodeController<?> remoteNodeController )
     {
-        assert remoteNodeController != null;
-
         remoteNodeController_ = remoteNodeController;
     }
 
@@ -84,9 +80,6 @@ final class RemoteNetworkTable
         final ComponentPath componentPath,
         final ComponentIncrement componentIncrement )
     {
-        assertArgumentNotNull( componentPath, "componentPath" ); //$NON-NLS-1$
-        assertArgumentNotNull( componentIncrement, "componentIncrement" ); //$NON-NLS-1$
-
         final ComponentIncrementMessage message = new ComponentIncrementMessage();
         message.setIncrement( componentIncrement );
         message.setPath( componentPath );
@@ -100,8 +93,6 @@ final class RemoteNetworkTable
     public void setTableState(
         final Object tableMemento )
     {
-        assertArgumentNotNull( tableMemento, "tableMemento" ); //$NON-NLS-1$
-
         final TableMessage message = new TableMessage();
         message.setMemento( tableMemento );
         remoteNodeController_.sendMessage( message, null );

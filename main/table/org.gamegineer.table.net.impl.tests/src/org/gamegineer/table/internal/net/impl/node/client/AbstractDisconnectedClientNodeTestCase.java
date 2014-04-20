@@ -1,6 +1,6 @@
 /*
  * AbstractDisconnectedClientNodeTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.node.client;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collections;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
@@ -84,29 +85,7 @@ public abstract class AbstractDisconnectedClientNodeTestCase<T extends IClientNo
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                getNode().setPlayers( Collections.<IPlayer>emptyList() );
-            }
-        } );
-    }
-
-    /**
-     * Ensures the {@link IClientNode#setPlayers} method throws an exception
-     * when passed a {@code null} players collection.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetPlayers_Players_Null()
-        throws Exception
-    {
-        getNodeLayerRunner().run( new Runnable()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                getNode().setPlayers( null );
+                getNode().setPlayers( nonNull( Collections.<IPlayer>emptyList() ) );
             }
         } );
     }

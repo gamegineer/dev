@@ -1,6 +1,6 @@
 /*
  * AbstractPlayerTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,12 +21,15 @@
 
 package org.gamegineer.table.net.test;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 import java.util.EnumSet;
 import java.util.Set;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.PlayerRole;
 import org.junit.Before;
@@ -36,6 +39,7 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IPlayer} interface.
  */
+@NonNullByDefault( false )
 public abstract class AbstractPlayerTestCase
 {
     // ======================================================================
@@ -70,9 +74,21 @@ public abstract class AbstractPlayerTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract IPlayer createPlayer()
         throws Exception;
+
+    /**
+     * Gets the player under test in the fixture.
+     * 
+     * @return The player under test in the fixture; never {@code null}.
+     */
+    @NonNull
+    private IPlayer getPlayer()
+    {
+        assertNotNull( player_ );
+        return player_;
+    }
 
     /**
      * Sets the roles for the specified player.
@@ -81,14 +97,11 @@ public abstract class AbstractPlayerTestCase
      *        The player; must not be {@code null}.
      * @param playerRoles
      *        The collection of player roles; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code player} or {@code playerRoles} is {@code null}.
      */
     protected abstract void setPlayerRoles(
-        /* @NonNull */
+        @NonNull
         IPlayer player,
-        /* @NonNull */
+        @NonNull
         Set<PlayerRole> playerRoles );
 
     /**
@@ -111,7 +124,7 @@ public abstract class AbstractPlayerTestCase
     @Test
     public void testGetName_ReturnValue_NonNull()
     {
-        assertNotNull( player_.getName() );
+        assertNotNull( getPlayer().getName() );
     }
 
     /**
@@ -121,7 +134,7 @@ public abstract class AbstractPlayerTestCase
     @Test
     public void testGetRoles_ReturnValue_Copy()
     {
-        assertNotSame( player_.getRoles(), player_.getRoles() );
+        assertNotSame( getPlayer().getRoles(), getPlayer().getRoles() );
     }
 
     /**
@@ -130,7 +143,7 @@ public abstract class AbstractPlayerTestCase
     @Test
     public void testGetRoles_ReturnValue_NonNull()
     {
-        assertNotNull( player_.getRoles() );
+        assertNotNull( getPlayer().getRoles() );
     }
 
     /**
@@ -140,19 +153,9 @@ public abstract class AbstractPlayerTestCase
     @Test
     public void testHasRole_Role_Absent()
     {
-        setPlayerRoles( player_, EnumSet.complementOf( EnumSet.of( PlayerRole.LOCAL ) ) );
+        setPlayerRoles( getPlayer(), nonNull( EnumSet.complementOf( EnumSet.of( PlayerRole.LOCAL ) ) ) );
 
-        assertFalse( player_.hasRole( PlayerRole.LOCAL ) );
-    }
-
-    /**
-     * Ensures the {@link IPlayer#hasRole} method throws an exception when
-     * passed a {@code null} role.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testHasRole_Role_Null()
-    {
-        player_.hasRole( null );
+        assertFalse( getPlayer().hasRole( PlayerRole.LOCAL ) );
     }
 
     /**
@@ -162,8 +165,8 @@ public abstract class AbstractPlayerTestCase
     @Test
     public void testHasRole_Role_Present()
     {
-        setPlayerRoles( player_, EnumSet.allOf( PlayerRole.class ) );
+        setPlayerRoles( getPlayer(), nonNull( EnumSet.allOf( PlayerRole.class ) ) );
 
-        assertTrue( player_.hasRole( PlayerRole.LOCAL ) );
+        assertTrue( getPlayer().hasRole( PlayerRole.LOCAL ) );
     }
 }

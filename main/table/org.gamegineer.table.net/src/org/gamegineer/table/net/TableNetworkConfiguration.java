@@ -1,6 +1,6 @@
 /*
  * TableNetworkConfiguration.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.net;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.core.ITable;
@@ -72,27 +71,14 @@ public final class TableNetworkConfiguration
      * @param localTable
      *        The local table to attach to the table network; must not be
      *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code hostName}, {@code password}, {@code localPlayerName},
-     *         or {@code localTable} is {@code null},
      */
     public TableNetworkConfiguration(
-        /* @NonNull */
         final String hostName,
         final int port,
-        /* @NonNull */
         final SecureString password,
-        /* @NonNull */
         final String localPlayerName,
-        /* @NonNull */
         final ITable localTable )
     {
-        assertArgumentNotNull( hostName, "hostName" ); //$NON-NLS-1$
-        assertArgumentNotNull( password, "password" ); //$NON-NLS-1$
-        assertArgumentNotNull( localPlayerName, "localPlayerName" ); //$NON-NLS-1$
-        assertArgumentNotNull( localTable, "localTable" ); //$NON-NLS-1$
-
         hostName_ = hostName;
         localPlayerName_ = localPlayerName;
         localTable_ = localTable;
@@ -116,7 +102,6 @@ public final class TableNetworkConfiguration
      * 
      * @return The name of the table network host; never {@code null}.
      */
-    /* @NonNull */
     public String getHostName()
     {
         return hostName_;
@@ -133,7 +118,6 @@ public final class TableNetworkConfiguration
      * 
      * @return The name of the local player; never {@code null}.
      */
-    /* @NonNull */
     public String getLocalPlayerName()
     {
         return localPlayerName_;
@@ -151,7 +135,6 @@ public final class TableNetworkConfiguration
      * @return The local table to attach to the table network; never
      *         {@code null}.
      */
-    /* @NonNull */
     public ITable getLocalTable()
     {
         return localTable_;
@@ -170,7 +153,6 @@ public final class TableNetworkConfiguration
      * @return The password used to authenticate connections to the table
      *         network; never {@code null}.
      */
-    /* @NonNull */
     public SecureString getPassword()
     {
         return new SecureString( password_ );

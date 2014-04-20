@@ -1,6 +1,6 @@
 /*
  * IClientNode.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -46,10 +46,7 @@ public interface IClientNode
      * 
      * @throws java.lang.IllegalStateException
      *         If the table network is not connected.
-     * @throws java.lang.NullPointerException
-     *         If {@code players} is {@code null}.
      */
     public void setPlayers(
-        /* @NonNull */
         Collection<IPlayer> players );
 }

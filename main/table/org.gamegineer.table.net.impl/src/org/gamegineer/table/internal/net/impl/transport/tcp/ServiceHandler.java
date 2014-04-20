@@ -1,6 +1,6 @@
 /*
  * ServiceHandler.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.transport.tcp;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.IOException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
@@ -30,6 +29,7 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.net.impl.Loggers;
 import org.gamegineer.table.internal.net.impl.transport.IMessage;
 import org.gamegineer.table.internal.net.impl.transport.IService;
@@ -50,6 +50,7 @@ final class ServiceHandler
     // ======================================================================
 
     /** The channel associated with the service handler. */
+    @Nullable
     private SocketChannel channel_;
 
     /** The input queue associated with the service handler. */
@@ -97,14 +98,10 @@ final class ServiceHandler
      *        The service; must not be {@code null}.
      */
     ServiceHandler(
-        /* @NonNull */
         final AbstractTransportLayer transportLayer,
-        /* @NonNull */
         final IService service )
     {
         super( transportLayer );
-
-        assert service != null;
 
         final ByteBufferPool byteBufferPool = transportLayer.getDispatcher().getByteBufferPool();
 
@@ -130,6 +127,7 @@ final class ServiceHandler
      */
     @Override
     void close(
+        @Nullable
         final Exception exception )
     {
         assert isTransportLayerThread();
@@ -145,6 +143,7 @@ final class ServiceHandler
 
             try
             {
+                assert channel_ != null;
                 channel_.close();
             }
             catch( final IOException e )
@@ -181,6 +180,7 @@ final class ServiceHandler
 
         if( ((readyOperations_ & SelectionKey.OP_WRITE) != 0) && !outputQueue_.isEmpty() )
         {
+            assert channel_ != null;
             outputQueue_.drainTo( channel_ );
         }
 
@@ -204,16 +204,18 @@ final class ServiceHandler
             return;
         }
 
-        final int bytesRead = inputQueue_.fillFrom( channel_ );
+        final SocketChannel channel = channel_;
+        assert channel != null;
+        final int bytesRead = inputQueue_.fillFrom( channel );
         if( bytesRead == -1 )
         {
             modifyInterestOperations( 0, SelectionKey.OP_READ );
 
-            if( channel_.socket().isConnected() )
+            if( channel.socket().isConnected() )
             {
                 try
                 {
-                    channel_.socket().shutdownInput();
+                    channel.socket().shutdownInput();
                 }
                 catch( final IOException e )
                 {
@@ -229,6 +231,7 @@ final class ServiceHandler
     /*
      * @see org.gamegineer.table.internal.net.impl.transport.tcp.AbstractEventHandler#getChannel()
      */
+    @Nullable
     @Override
     SelectableChannel getChannel()
     {
@@ -285,11 +288,9 @@ final class ServiceHandler
      *         If an I/O error occurs
      */
     void open(
-        /* @NonNull */
         final SocketChannel channel )
         throws IOException
     {
-        assert channel != null;
         assert isTransportLayerThread();
         assert getState() == State.PRISTINE;
 
@@ -385,7 +386,6 @@ final class ServiceHandler
     public void sendMessage(
         final IMessage message )
     {
-        assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
         assert isTransportLayerThread();
 
         try

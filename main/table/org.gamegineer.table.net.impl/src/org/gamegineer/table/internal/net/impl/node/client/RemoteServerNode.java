@@ -1,6 +1,6 @@
 /*
  * RemoteServerNode.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,8 @@
 
 package org.gamegineer.table.internal.net.impl.node.client;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.net.impl.node.AbstractRemoteNode;
 import org.gamegineer.table.internal.net.impl.node.INodeLayer;
 import org.gamegineer.table.internal.net.impl.node.client.handlers.BeginAuthenticationRequestMessageHandler;
@@ -63,14 +63,9 @@ final class RemoteServerNode
      *        The node layer; must not be {@code null}.
      * @param localNode
      *        The local table network node; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code nodeLayer} or {@code localNode} is {@code null}.
      */
     RemoteServerNode(
-        /* @NonNull */
         final INodeLayer nodeLayer,
-        /* @NonNull */
         final IClientNode localNode )
     {
         super( nodeLayer, localNode );
@@ -102,6 +97,7 @@ final class RemoteServerNode
      */
     @Override
     protected void closed(
+        @Nullable
         final TableNetworkError error )
     {
         assert isNodeLayerThread();
@@ -127,7 +123,6 @@ final class RemoteServerNode
     public void giveControl(
         final String playerName )
     {
-        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         final GiveControlMessage message = new GiveControlMessage();

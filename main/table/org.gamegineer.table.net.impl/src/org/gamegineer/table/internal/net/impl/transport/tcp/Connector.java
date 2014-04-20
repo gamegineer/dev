@@ -1,6 +1,6 @@
 /*
  * Connector.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,6 +26,7 @@ import java.net.InetSocketAddress;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SocketChannel;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A connector in the TCP transport layer Acceptor-Connector pattern
@@ -52,7 +53,6 @@ final class Connector
      *        {@code null}.
      */
     Connector(
-        /* @NonNull */
         final AbstractTransportLayer transportLayer )
     {
         super( transportLayer );
@@ -68,6 +68,7 @@ final class Connector
      */
     @Override
     void close(
+        @Nullable
         final Exception exception )
     {
         assert exception == null : "asynchronous connection not supported"; //$NON-NLS-1$
@@ -93,12 +94,10 @@ final class Connector
      *         If an I/O error occurs
      */
     void connect(
-        /* @NonNull */
         final String hostName,
         final int port )
         throws IOException
     {
-        assert hostName != null;
         assert isTransportLayerThread();
         assert getState() == State.PRISTINE;
 
@@ -129,15 +128,11 @@ final class Connector
      * @throws java.io.IOException
      *         If an I/O error occurs.
      */
-    /* @NonNull */
     private static SocketChannel createSocketChannel(
-        /* @NonNull */
         final String hostName,
         final int port )
         throws IOException
     {
-        assert hostName != null;
-
         final InetSocketAddress address = new InetSocketAddress( hostName, port );
         if( address.isUnresolved() )
         {
@@ -154,6 +149,7 @@ final class Connector
     /*
      * @see org.gamegineer.table.internal.net.impl.transport.tcp.AbstractEventHandler#getChannel()
      */
+    @Nullable
     @Override
     SelectableChannel getChannel()
     {

@@ -1,6 +1,6 @@
 /*
  * AbstractDisconnectedServerNodeTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -83,28 +83,6 @@ public abstract class AbstractDisconnectedServerNodeTestCase<T extends IServerNo
             public void run()
             {
                 getNode().isPlayerConnected( "playerName" ); //$NON-NLS-1$
-            }
-        } );
-    }
-
-    /**
-     * Ensures the {@link IServerNode#isPlayerConnected} method throws an
-     * exception when passed a {@code null} player name.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testIsPlayerConnected_PlayerName_Null()
-        throws Exception
-    {
-        getNodeLayerRunner().run( new Runnable()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                getNode().isPlayerConnected( null );
             }
         } );
     }

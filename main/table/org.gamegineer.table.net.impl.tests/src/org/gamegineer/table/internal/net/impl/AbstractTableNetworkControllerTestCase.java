@@ -1,6 +1,6 @@
 /*
  * AbstractTableNetworkControllerTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,8 @@
 package org.gamegineer.table.internal.net.impl;
 
 import static org.junit.Assert.assertNotNull;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,6 +31,7 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link ITableNetworkController} interface.
  */
+@NonNullByDefault( false )
 public abstract class AbstractTableNetworkControllerTestCase
 {
     // ======================================================================
@@ -64,7 +67,7 @@ public abstract class AbstractTableNetworkControllerTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract ITableNetworkController createTableNetworkController()
         throws Exception;
 

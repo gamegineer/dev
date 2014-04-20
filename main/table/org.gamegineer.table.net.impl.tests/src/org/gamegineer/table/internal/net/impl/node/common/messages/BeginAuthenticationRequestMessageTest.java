@@ -1,6 +1,6 @@
 /*
  * BeginAuthenticationRequestMessageTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,12 +21,14 @@
 
 package org.gamegineer.table.internal.net.impl.node.common.messages;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the {@link BeginAuthenticationRequestMessage} class.
  */
+@NonNullByDefault( false )
 public final class BeginAuthenticationRequestMessageTest
 {
     // ======================================================================
@@ -78,16 +80,6 @@ public final class BeginAuthenticationRequestMessageTest
     }
 
     /**
-     * Ensures the {@link BeginAuthenticationRequestMessage#setChallenge} method
-     * throws an exception when passed a {@code null} challenge.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetChallenge_Challenge_Null()
-    {
-        message_.setChallenge( null );
-    }
-
-    /**
      * Ensures the {@link BeginAuthenticationRequestMessage#setSalt} method
      * throws an exception when passed an illegal salt that is empty.
      */
@@ -95,15 +87,5 @@ public final class BeginAuthenticationRequestMessageTest
     public void testSetSalt_Salt_Illegal_Empty()
     {
         message_.setSalt( new byte[ 0 ] );
-    }
-
-    /**
-     * Ensures the {@link BeginAuthenticationRequestMessage#setSalt} method
-     * throws an exception when passed a {@code null} salt.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetSalt_Salt_Null()
-    {
-        message_.setSalt( null );
     }
 }

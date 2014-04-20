@@ -1,6 +1,6 @@
 /*
  * Authenticator.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.node.common;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
@@ -84,7 +84,6 @@ public final class Authenticator
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
      */
-    /* @NonNull */
     @SuppressWarnings( "static-method" )
     public byte[] createChallenge()
         throws TableNetworkException
@@ -107,33 +106,22 @@ public final class Authenticator
      * 
      * @return A new response buffer; never {@code null}.
      * 
-     * @throws java.lang.NullPointerException
-     *         If {@code challenge}, {@code password}, or {@code salt} is
-     *         {@code null}.
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
      */
-    /* @NonNull */
     @SuppressWarnings( "static-method" )
     public byte[] createResponse(
-        /* @NonNull */
         final byte[] challenge,
-        /* @NonNull */
         final SecureString password,
-        /* @NonNull */
         final byte[] salt )
         throws TableNetworkException
     {
-        assertArgumentNotNull( challenge, "challenge" ); //$NON-NLS-1$
-        assertArgumentNotNull( password, "password" ); //$NON-NLS-1$
-        assertArgumentNotNull( salt, "salt" ); //$NON-NLS-1$
-
         try
         {
             final Mac mac = Mac.getInstance( "HmacSHA1" ); //$NON-NLS-1$
             mac.init( createSecretKey( password, salt ) );
             mac.update( challenge );
-            return mac.doFinal();
+            return nonNull( mac.doFinal() );
         }
         catch( final GeneralSecurityException e )
         {
@@ -151,7 +139,6 @@ public final class Authenticator
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
      */
-    /* @NonNull */
     @SuppressWarnings( "static-method" )
     public byte[] createSalt()
         throws TableNetworkException
@@ -174,23 +161,17 @@ public final class Authenticator
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
      */
-    /* @NonNull */
     private static SecretKey createSecretKey(
-        /* @NonNull */
         final SecureString password,
-        /* @NonNull */
         final byte[] salt )
         throws TableNetworkException
     {
-        assert password != null;
-        assert salt != null;
-
         final char[] passwordChars = getPasswordChars( password );
         try
         {
             final KeySpec keySpec = new PBEKeySpec( passwordChars, salt, ITERATION_COUNT, KEY_LENGTH );
             final SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance( "PBKDF2WithHmacSHA1" ); //$NON-NLS-1$
-            return secretKeyFactory.generateSecret( keySpec );
+            return nonNull( secretKeyFactory.generateSecret( keySpec ) );
         }
         catch( final GeneralSecurityException e )
         {
@@ -214,7 +195,6 @@ public final class Authenticator
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
      */
-    /* @NonNull */
     private static byte[] createSecureRandomBytes(
         final int length )
         throws TableNetworkException
@@ -242,13 +222,9 @@ public final class Authenticator
      * 
      * @return The password as a character array; never {@code null}.
      */
-    /* @NonNull */
     private static char[] getPasswordChars(
-        /* @NonNull */
         final SecureString password )
     {
-        assert password != null;
-
-        return (password.length() > 0) ? password.toCharArray() : DEFAULT_PASSWORD.toCharArray();
+        return (password.length() > 0) ? nonNull( password.toCharArray() ) : nonNull( DEFAULT_PASSWORD.toCharArray() );
     }
 }

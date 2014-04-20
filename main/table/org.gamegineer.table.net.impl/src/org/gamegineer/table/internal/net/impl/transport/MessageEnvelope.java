@@ -1,6 +1,6 @@
 /*
  * MessageEnvelope.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.net.impl.transport;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -62,11 +62,8 @@ public final class MessageEnvelope
      *        {@link Header#LENGTH} and the body length decoded from the header.
      */
     private MessageEnvelope(
-        /* @NonNull */
         final byte[] bytes )
     {
-        assert bytes != null;
-
         bytes_ = bytes;
         header_ = new Header( bytes );
         assert bytes.length >= (Header.LENGTH + header_.getBodyLength());
@@ -90,15 +87,10 @@ public final class MessageEnvelope
      *         If the length of {@code bytes} is not exactly equal to the sum of
      *         {@link Header#LENGTH} and the body length decoded from the
      *         header.
-     * @throws java.lang.NullPointerException
-     *         If {@code bytes} is {@code null}.
      */
-    /* @NonNull */
     public static MessageEnvelope fromByteArray(
-        /* @NonNull */
         final byte[] bytes )
     {
-        assertArgumentNotNull( bytes, "bytes" ); //$NON-NLS-1$
         assertArgumentLegal( bytes.length >= Header.LENGTH, "bytes" ); //$NON-NLS-1$
 
         final Header header = new Header( bytes );
@@ -118,17 +110,11 @@ public final class MessageEnvelope
      * @throws java.io.IOException
      *         If the specified message cannot be serialized to the message
      *         envelope.
-     * @throws java.lang.NullPointerException
-     *         If {@code message} is {@code null}.
      */
-    /* @NonNull */
     public static MessageEnvelope fromMessage(
-        /* @NonNull */
         final IMessage message )
         throws IOException
     {
-        assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
-
         final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 
         // reserve space for header
@@ -162,7 +148,6 @@ public final class MessageEnvelope
      * 
      * @return The message envelope header; never {@code null}.
      */
-    /* @NonNull */
     public Header getHeader()
     {
         return header_;
@@ -180,13 +165,12 @@ public final class MessageEnvelope
      * @throws java.lang.ClassNotFoundException
      *         If the class of the message cannot be found.
      */
-    /* @NonNull */
     public IMessage getMessage()
         throws IOException, ClassNotFoundException
     {
         try( final ObjectInputStream stream = ObjectStreams.createPlatformObjectInputStream( new ByteArrayInputStream( bytes_, Header.LENGTH, bytes_.length - Header.LENGTH ) ) )
         {
-            return (IMessage)stream.readObject();
+            return nonNull( (IMessage)stream.readObject() );
         }
     }
 
@@ -197,7 +181,6 @@ public final class MessageEnvelope
      *         {@code null}. The returned array is not a copy and must not be
      *         modified by the caller.
      */
-    /* @NonNull */
     public byte[] toByteArray()
     {
         return bytes_;
@@ -241,10 +224,8 @@ public final class MessageEnvelope
          *        {@link #LENGTH}.
          */
         Header(
-            /* @NonNull */
             final byte[] bytes )
         {
-            assert bytes != null;
             assert bytes.length >= LENGTH;
 
             bytes_ = bytes;
@@ -268,15 +249,10 @@ public final class MessageEnvelope
          * @throws java.lang.IllegalArgumentException
          *         If the length of {@code bytes} is not equal to
          *         {@link #LENGTH}.
-         * @throws java.lang.NullPointerException
-         *         If {@code bytes} is {@code null}.
          */
-        /* @NonNull */
         public static Header fromByteArray(
-            /* @NonNull */
             final byte[] bytes )
         {
-            assertArgumentNotNull( bytes, "bytes" ); //$NON-NLS-1$
             assertArgumentLegal( bytes.length == LENGTH, "bytes" ); //$NON-NLS-1$
 
             return new Header( bytes );
@@ -319,7 +295,6 @@ public final class MessageEnvelope
          *         {@code null}. The returned array is not a copy and must not
          *         be modified by the caller.
          */
-        /* @NonNull */
         public byte[] toByteArray()
         {
             if( bytes_.length == LENGTH )
@@ -372,7 +347,6 @@ public final class MessageEnvelope
          * 
          * @return A reference to this builder; never {@code null}.
          */
-        /* @NonNull */
         public HeaderBuilder setBodyLength(
             final int bodyLength )
         {
@@ -389,7 +363,6 @@ public final class MessageEnvelope
          * 
          * @return A reference to this builder; never {@code null}.
          */
-        /* @NonNull */
         public HeaderBuilder setCorrelationId(
             final int correlationId )
         {
@@ -405,7 +378,6 @@ public final class MessageEnvelope
          * 
          * @return A reference to this builder; never {@code null}.
          */
-        /* @NonNull */
         public HeaderBuilder setId(
             final int id )
         {
@@ -420,7 +392,6 @@ public final class MessageEnvelope
          * 
          * @return A new message envelope header; never {@code null}.
          */
-        /* @NonNull */
         public Header toHeader()
         {
             return new Header( bytes_ );

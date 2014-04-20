@@ -1,6 +1,6 @@
 /*
  * AbstractNodeFactoryTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,8 @@
 package org.gamegineer.table.internal.net.impl.node;
 
 import static org.junit.Assert.assertNotNull;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,6 +31,7 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link INodeFactory} interface.
  */
+@NonNullByDefault( false )
 public abstract class AbstractNodeFactoryTestCase
 {
     // ======================================================================
@@ -64,7 +67,7 @@ public abstract class AbstractNodeFactoryTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract INodeFactory createNodeFactory()
         throws Exception;
 
@@ -83,30 +86,11 @@ public abstract class AbstractNodeFactoryTestCase
     }
 
     /**
-     * Ensures the {@link INodeFactory#createClientNode} method throws an
-     * exception when passed a {@code null} table network controller.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
+     * Placeholder for future interface tests.
      */
-    @Test( expected = NullPointerException.class )
-    public void testCreateClientNode_TableNetworkController_Null()
-        throws Exception
+    @Test
+    public void testDummy()
     {
-        nodeFactory_.createClientNode( null );
-    }
-
-    /**
-     * Ensures the {@link INodeFactory#createServerNode} method throws an
-     * exception when passed a {@code null} table network controller.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateServerNode_TableNetworkController_Null()
-        throws Exception
-    {
-        nodeFactory_.createServerNode( null );
+        // do nothing
     }
 }

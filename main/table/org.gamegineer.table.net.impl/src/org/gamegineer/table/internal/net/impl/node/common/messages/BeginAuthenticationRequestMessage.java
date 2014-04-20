@@ -1,6 +1,6 @@
 /*
  * BeginAuthenticationRequestMessage.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.impl.node.common.messages;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.impl.transport.AbstractMessage;
 
@@ -81,7 +80,6 @@ public final class BeginAuthenticationRequestMessage
      * @return The challenge; never {@code null}. The returned value is a direct
      *         reference to the field and must not be modified.
      */
-    /* @NonNull */
     public byte[] getChallenge()
     {
         return challenge_;
@@ -94,7 +92,6 @@ public final class BeginAuthenticationRequestMessage
      *         {@code null}. The returned value is a direct reference to the
      *         field and must not be modified.
      */
-    /* @NonNull */
     public byte[] getSalt()
     {
         return salt_;
@@ -109,14 +106,10 @@ public final class BeginAuthenticationRequestMessage
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code challenge} is empty.
-     * @throws java.lang.NullPointerException
-     *         If {@code challenge} is {@code null}.
      */
     public void setChallenge(
-        /* @NonNull */
         final byte[] challenge )
     {
-        assertArgumentNotNull( challenge, "challenge" ); //$NON-NLS-1$
         assertArgumentLegal( challenge.length != 0, "challenge", NonNlsMessages.BeginAuthenticationRequestMessage_setChallenge_empty ); //$NON-NLS-1$
 
         challenge_ = challenge;
@@ -132,14 +125,10 @@ public final class BeginAuthenticationRequestMessage
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code salt} is empty.
-     * @throws java.lang.NullPointerException
-     *         If {@code salt} is {@code null}.
      */
     public void setSalt(
-        /* @NonNull */
         final byte[] salt )
     {
-        assertArgumentNotNull( salt, "salt" ); //$NON-NLS-1$
         assertArgumentLegal( salt.length != 0, "salt", NonNlsMessages.BeginAuthenticationRequestMessage_setSalt_empty ); //$NON-NLS-1$
 
         salt_ = salt;

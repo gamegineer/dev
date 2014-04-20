@@ -1,6 +1,6 @@
 /*
  * ClientNode.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.node.client;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -34,6 +34,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.internal.net.impl.ITableNetworkController;
 import org.gamegineer.table.internal.net.impl.Player;
@@ -71,6 +72,7 @@ public final class ClientNode
      * occurred.
      */
     @GuardedBy( "handshakeLock_" )
+    @Nullable
     private TableNetworkError handshakeError_;
 
     /** The handshake lock. */
@@ -101,21 +103,15 @@ public final class ClientNode
      *        The node layer; must not be {@code null}.
      * @param tableNetworkController
      *        The table network controller; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code nodeLayer} or {@code tableNetworkController} is
-     *         {@code null}.
      */
     private ClientNode(
-        /* @NonNull */
         final INodeLayer nodeLayer,
-        /* @NonNull */
         final ITableNetworkController tableNetworkController )
     {
         super( nodeLayer, tableNetworkController );
 
         handshakeLock_ = new ReentrantLock();
-        handshakeCondition_ = handshakeLock_.newCondition();
+        handshakeCondition_ = nonNull( handshakeLock_.newCondition() );
         handshakeError_ = null;
         isHandshakeComplete_ = false;
         players_ = new HashMap<>();
@@ -187,14 +183,13 @@ public final class ClientNode
         final TableNetworkConfiguration configuration )
         throws TableNetworkException
     {
-        assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         super.connecting( configuration );
 
         // Temporarily add local player until we receive the player list from the server
         final Player player = new Player( getPlayerName() );
-        player.addRoles( EnumSet.of( PlayerRole.LOCAL ) );
+        player.addRoles( nonNull( EnumSet.of( PlayerRole.LOCAL ) ) );
         players_.put( player.getName(), player );
     }
 
@@ -205,7 +200,6 @@ public final class ClientNode
     protected ITableManager createTableManagerDecoratorForLocalNetworkTable(
         final ITableManager tableManager )
     {
-        assertArgumentNotNull( tableManager, "tableManager" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         return new ClientTableManagerDecorator( tableManager );
@@ -252,6 +246,7 @@ public final class ClientNode
      */
     @Override
     protected void disconnecting(
+        @Nullable
         final TableNetworkError error )
     {
         assert isNodeLayerThread();
@@ -277,6 +272,7 @@ public final class ClientNode
     /*
      * @see org.gamegineer.table.internal.net.impl.node.INodeController#getPlayer()
      */
+    @Nullable
     @Override
     public IPlayer getPlayer()
     {
@@ -301,7 +297,6 @@ public final class ClientNode
      * 
      * @return The remote node associated with the server; never {@code null}.
      */
-    /* @NonNull */
     private IRemoteServerNode getRemoteServerNode()
     {
         final IRemoteServerNode remoteNode = getRemoteNode( ClientNodeConstants.SERVER_PLAYER_NAME );
@@ -325,7 +320,6 @@ public final class ClientNode
     public void giveControl(
         final String playerName )
     {
-        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         getRemoteServerNode().giveControl( playerName );
@@ -338,7 +332,6 @@ public final class ClientNode
     protected void remoteNodeBound(
         final IRemoteServerNode remoteNode )
     {
-        assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         super.remoteNodeBound( remoteNode );
@@ -370,7 +363,7 @@ public final class ClientNode
      *        handshake completed successfully.
      */
     void setHandshakeComplete(
-        /* @Nullable */
+        @Nullable
         final TableNetworkError error )
     {
         handshakeLock_.lock();
@@ -396,7 +389,6 @@ public final class ClientNode
     public void setPlayers(
         final Collection<IPlayer> players )
     {
-        assertArgumentNotNull( players, "players" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
         assertConnected();
@@ -460,11 +452,8 @@ public final class ClientNode
          *        The decorated table manager; must not be {@code null}.
          */
         ClientTableManagerDecorator(
-            /* @NonNull */
             final ITableManager tableManagerDecoratee )
         {
-            assert tableManagerDecoratee != null;
-
             tableManagerDecoratee_ = tableManagerDecoratee;
         }
 
@@ -482,7 +471,9 @@ public final class ClientNode
             final ComponentPath componentPath,
             final ComponentIncrement componentIncrement )
         {
-            if( getPlayer().hasRole( PlayerRole.EDITOR ) )
+            final IPlayer player = getPlayer();
+            assert player != null;
+            if( player.hasRole( PlayerRole.EDITOR ) )
             {
                 tableManagerDecoratee_.incrementComponentState( sourceTable, componentPath, componentIncrement );
             }
@@ -496,7 +487,9 @@ public final class ClientNode
             final INetworkTable sourceTable,
             final Object tableMemento )
         {
-            if( getPlayer().hasRole( PlayerRole.EDITOR ) )
+            final IPlayer player = getPlayer();
+            assert player != null;
+            if( player.hasRole( PlayerRole.EDITOR ) )
             {
                 tableManagerDecoratee_.setTableState( sourceTable, tableMemento );
             }

@@ -1,6 +1,6 @@
 /*
  * ITransportLayerFactory.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,14 +40,10 @@ public interface ITransportLayerFactory
      * 
      * @return A new active transport layer; never {@code null}.
      * 
-     * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
      * @throws org.gamegineer.table.internal.net.impl.transport.TransportException
      *         If the transport layer cannot be created.
      */
-    /* @NonNull */
     public ITransportLayer createActiveTransportLayer(
-        /* @NonNull */
         ITransportLayerContext context )
         throws TransportException;
 
@@ -59,14 +55,10 @@ public interface ITransportLayerFactory
      * 
      * @return A new passive transport layer; never {@code null}.
      * 
-     * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
      * @throws org.gamegineer.table.internal.net.impl.transport.TransportException
      *         If the transport layer cannot be created.
      */
-    /* @NonNull */
     public ITransportLayer createPassiveTransportLayer(
-        /* @NonNull */
         ITransportLayerContext context )
         throws TransportException;
 }

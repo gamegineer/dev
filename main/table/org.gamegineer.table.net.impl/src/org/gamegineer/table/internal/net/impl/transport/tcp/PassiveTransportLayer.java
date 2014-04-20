@@ -1,6 +1,6 @@
 /*
  * PassiveTransportLayer.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.net.impl.transport.ITransportLayerContext;
 
 /**
@@ -39,6 +40,7 @@ final class PassiveTransportLayer
     // ======================================================================
 
     /** The acceptor that receives passive connections. */
+    @Nullable
     private Acceptor acceptor_;
 
 
@@ -55,9 +57,7 @@ final class PassiveTransportLayer
      *        The transport layer context; must not be {@code null}.
      */
     private PassiveTransportLayer(
-        /* @NonNull */
         final ExecutorService executorService,
-        /* @NonNull */
         final ITransportLayerContext context )
     {
         super( executorService, context );
@@ -94,7 +94,6 @@ final class PassiveTransportLayer
         final int port )
         throws IOException
     {
-        assert hostName != null;
         assert isTransportLayerThread();
 
         acceptor_ = new Acceptor( this );

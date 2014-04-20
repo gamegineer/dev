@@ -1,6 +1,6 @@
 /*
  * InputQueue.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,6 +27,7 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.Deque;
 import java.util.LinkedList;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.net.impl.transport.MessageEnvelope;
 
 /**
@@ -67,11 +68,8 @@ final class InputQueue
      *        {@code null}.
      */
     InputQueue(
-        /* @NonNull */
         final ByteBufferPool bufferPool )
     {
-        assert bufferPool != null;
-
         bufferPool_ = bufferPool;
         bufferQueue_ = new LinkedList<>();
     }
@@ -87,7 +85,7 @@ final class InputQueue
      * @return The message envelope removed from the queue or {@code null} if no
      *         message envelope is available.
      */
-    /* @Nullable */
+    @Nullable
     MessageEnvelope dequeueMessageEnvelope()
     {
         final ByteBuffer lastBuffer = bufferQueue_.peekLast();
@@ -138,12 +136,9 @@ final class InputQueue
      *         If an I/O error occurs.
      */
     int fillFrom(
-        /* @NonNull */
         final ReadableByteChannel channel )
         throws IOException
     {
-        assert channel != null;
-
         // WRITE ORIENTATION                        READ ORIENTATION (default)
         //
         // |*|*|*|*|-|-|-|-|     ==== flip ===>     |*|*|*|*|-|-|-|-|
