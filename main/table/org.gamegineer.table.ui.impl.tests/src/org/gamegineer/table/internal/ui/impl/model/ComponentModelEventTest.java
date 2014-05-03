@@ -1,6 +1,6 @@
 /*
  * ComponentModelEventTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.ui.impl.model;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.test.TestTableEnvironments;
 import org.gamegineer.table.ui.test.TestComponents;
@@ -32,6 +33,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link ComponentModelEvent} class.
  */
+@NonNullByDefault( false )
 public final class ComponentModelEventTest
 {
     // ======================================================================
@@ -70,16 +72,6 @@ public final class ComponentModelEventTest
     {
         final TableEnvironmentModel tableEnvironmentModel = new TableEnvironmentModel( TestTableEnvironments.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
         event_ = new ComponentModelEvent( new ComponentModel( tableEnvironmentModel, TestComponents.createUniqueComponent( tableEnvironmentModel.getTableEnvironment() ) ) );
-    }
-
-    /**
-     * Ensures the {@link ComponentModelEvent#ComponentModelEvent} constructor
-     * throws an exception when passed a {@code null} source.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testConstructor_Source_Null()
-    {
-        new ComponentModelEvent( null );
     }
 
     /**

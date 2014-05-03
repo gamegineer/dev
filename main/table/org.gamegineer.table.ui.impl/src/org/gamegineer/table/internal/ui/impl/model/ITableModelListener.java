@@ -1,6 +1,6 @@
 /*
  * ITableModelListener.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,12 +40,8 @@ public interface ITableModelListener
      * 
      * @param event
      *        The event describing the table model; must not be {@code null} .
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
      */
     public void tableChanged(
-        /* @NonNull */
         TableModelEvent event );
 
     /**
@@ -53,12 +49,8 @@ public interface ITableModelListener
      * 
      * @param event
      *        The event describing the table model; must not be {@code null} .
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
      */
     public void tableModelDirtyFlagChanged(
-        /* @NonNull */
         TableModelEvent event );
 
     /**
@@ -66,12 +58,8 @@ public interface ITableModelListener
      * 
      * @param event
      *        The event describing the table model; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
      */
     public void tableModelFileChanged(
-        /* @NonNull */
         TableModelEvent event );
 
     /**
@@ -79,12 +67,8 @@ public interface ITableModelListener
      * 
      * @param event
      *        The event describing the table model; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
      */
     public void tableModelFocusChanged(
-        /* @NonNull */
         TableModelEvent event );
 
     /**
@@ -92,12 +76,8 @@ public interface ITableModelListener
      * 
      * @param event
      *        The event describing the table model; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
      */
     public void tableModelHoverChanged(
-        /* @NonNull */
         TableModelEvent event );
 
     /**
@@ -105,11 +85,7 @@ public interface ITableModelListener
      * 
      * @param event
      *        The event describing the table model; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
      */
     public void tableModelOriginOffsetChanged(
-        /* @NonNull */
         TableModelEvent event );
 }

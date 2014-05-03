@@ -1,6 +1,6 @@
 /*
  * Converters.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,10 +21,10 @@
 
 package org.gamegineer.table.internal.ui.impl.databinding.conversion;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.core.databinding.conversion.Converter;
 import org.eclipse.core.databinding.conversion.IConverter;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A collection of useful methods for working with data binding converters.
@@ -40,12 +40,14 @@ public final class Converters
      * A data binding converter from values of type {@link Integer#TYPE} to
      * values of type {@link String}.
      */
+    @Nullable
     private static IConverter primitiveIntegerToStringConverter_ = null;
 
     /**
      * A data binding converter from values of type {@link String} to values of
      * type {@link Integer#TYPE}
      */
+    @Nullable
     private static IConverter stringToPrimitiveIntegerConverter_ = null;
 
 
@@ -72,7 +74,6 @@ public final class Converters
      * @return A data binding converter from values of type {@link Integer#TYPE}
      *         to values of type {@link String}; never {@code null}.
      */
-    /* @NonNull */
     public static IConverter getPrimitiveIntegerToStringConverter()
     {
         if( primitiveIntegerToStringConverter_ == null )
@@ -80,6 +81,7 @@ public final class Converters
             primitiveIntegerToStringConverter_ = new PrimitiveIntegerToStringConverter();
         }
 
+        assert primitiveIntegerToStringConverter_ != null;
         return primitiveIntegerToStringConverter_;
     }
 
@@ -90,7 +92,6 @@ public final class Converters
      * @return A data binding converter from values of type {@link String} to
      *         values of type {@link Integer#TYPE}; never {@code null}.
      */
-    /* @NonNull */
     public static IConverter getStringToPrimitiveIntegerConverter()
     {
         if( stringToPrimitiveIntegerConverter_ == null )
@@ -98,6 +99,7 @@ public final class Converters
             stringToPrimitiveIntegerConverter_ = new StringToPrimitiveIntegerConverter();
         }
 
+        assert stringToPrimitiveIntegerConverter_ != null;
         return stringToPrimitiveIntegerConverter_;
     }
 
@@ -112,24 +114,18 @@ public final class Converters
      *        The replacement exception message; must not be {@code null}.
      * 
      * @return The decorated converter; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code converter} or {@code exceptionMessage} is {@code null}.
      */
-    /* @NonNull */
     public static IConverter withExceptionMessage(
-        /* @NonNull */
         final IConverter converter,
-        /* @NonNull */
         final String exceptionMessage )
     {
-        assertArgumentNotNull( converter, "converter" ); //$NON-NLS-1$
-        assertArgumentNotNull( exceptionMessage, "exceptionMessage" ); //$NON-NLS-1$
-
-        return new Converter( converter.getFromType(), converter.getToType() )
+        @SuppressWarnings( "null" )
+        final IConverter decorator = new Converter( converter.getFromType(), converter.getToType() )
         {
+            @Nullable
             @Override
             public Object convert(
+                @Nullable
                 final Object fromObject )
             {
                 try
@@ -142,5 +138,6 @@ public final class Converters
                 }
             }
         };
+        return decorator;
     }
 }

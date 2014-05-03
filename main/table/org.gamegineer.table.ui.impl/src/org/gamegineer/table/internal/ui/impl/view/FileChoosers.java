@@ -1,6 +1,6 @@
 /*
  * FileChoosers.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,6 +25,7 @@ import java.io.File;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.ui.impl.util.swing.JFileChooser;
 
 /**
@@ -57,9 +58,8 @@ final class FileChoosers
      * 
      * @return The table file chooser; never {@code null}.
      */
-    /* @NonNull */
     static JFileChooser getTableFileChooser(
-        /* @Nullable */
+        @Nullable
         final File file )
     {
         final JFileChooser fileChooser = new JFileChooser( file );

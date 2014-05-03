@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,7 +38,7 @@ final class NonNlsMessages
     // --- TextUtils --------------------------------------------------------
 
     /** The maximum length is negative. */
-    public static String TextUtils_shortenPath_maxLengthNegative;
+    public static String TextUtils_shortenPath_maxLengthNegative = ""; //$NON-NLS-1$
 
 
     // ======================================================================

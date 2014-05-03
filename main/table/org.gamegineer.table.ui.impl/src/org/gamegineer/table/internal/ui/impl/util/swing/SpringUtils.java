@@ -1,6 +1,6 @@
 /*
  * SpringUtils.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.util.swing;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Component;
 import java.awt.Container;
 import javax.swing.Spring;
@@ -80,12 +81,8 @@ public final class SpringUtils
      *        The horizontal spacing between grid cells.
      * @param verticalSpacing
      *        The vertical spacing between grid cells.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code parent} is {@code null}.
      */
     public static void buildCompactGrid(
-        /* @NonNull */
         final Container parent,
         final int rows,
         final int columns,
@@ -166,12 +163,8 @@ public final class SpringUtils
      *        The horizontal spacing between grid cells.
      * @param verticalSpacing
      *        The vertical spacing between grid cells.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code parent} is {@code null}.
      */
     public static void buildGrid(
-        /* @NonNull */
         final Container parent,
         final int rows,
         final int columns,
@@ -264,9 +257,7 @@ public final class SpringUtils
      * @return The layout constraints for the specified grid cell; never
      *         {@code null}.
      */
-    /* @NonNull */
     private static SpringLayout.Constraints getGridCellConstraints(
-        /* @NonNull */
         final Container parent,
         final int row,
         final int column,
@@ -274,6 +265,6 @@ public final class SpringUtils
     {
         final SpringLayout layout = (SpringLayout)parent.getLayout();
         final Component component = parent.getComponent( row * columns + column );
-        return layout.getConstraints( component );
+        return nonNull( layout.getConstraints( component ) );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * ComponentModel.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.ui.impl.model;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Point;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -31,6 +30,7 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.expressions.EvaluationContext;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.IComponent;
@@ -76,6 +76,7 @@ public class ComponentModel
 
     /** The model parent or {@code null} if this model has no parent. */
     @GuardedBy( "getLock()" )
+    @Nullable
     private IComponentModelParent parent_;
 
     /** The table environment model associated with this model. */
@@ -97,13 +98,9 @@ public class ComponentModel
      *        .
      */
     ComponentModel(
-        /* @NonNull */
         final TableEnvironmentModel tableEnvironmentModel,
-        /* @NonNull */
         final IComponent component )
     {
-        assert tableEnvironmentModel != null;
-        assert component != null;
         assert tableEnvironmentModel.getTableEnvironment().equals( component.getTableEnvironment() );
 
         component_ = component;
@@ -130,14 +127,10 @@ public class ComponentModel
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is already a registered component model
      *         listener.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
      */
     public final void addComponentModelListener(
-        /* @NonNull */
         final IComponentModelListener listener )
     {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.ComponentModel_addComponentModelListener_listener_registered ); //$NON-NLS-1$
     }
 
@@ -274,11 +267,8 @@ public class ComponentModel
      *        The event notification; must not be {@code null}.
      */
     final void fireEventNotification(
-        /* @NonNull */
         final Runnable eventNotification )
     {
-        assert eventNotification != null;
-
         tableEnvironmentModel_.fireEventNotification( eventNotification );
     }
 
@@ -291,7 +281,6 @@ public class ComponentModel
      * 
      * @return The component associated with this model; never {@code null}.
      */
-    /* @NonNull */
     public IComponent getComponent()
     {
         return component_;
@@ -309,13 +298,9 @@ public class ComponentModel
      *         interface is returned if a component strategy user interface is
      *         not registered for the specified component strategy.
      */
-    /* @NonNull */
     private static IComponentStrategyUI getComponentStrategyUI(
-        /* @NonNull */
         final IComponentStrategy componentStrategy )
     {
-        assert componentStrategy != null;
-
         try
         {
             return ComponentStrategyUIRegistry.getComponentStrategyUI( componentStrategy.getId() );
@@ -345,7 +330,6 @@ public class ComponentModel
      * 
      * @return The table environment model lock; never {@code null}.
      */
-    /* @NonNull */
     final ITableEnvironmentModelLock getLock()
     {
         return tableEnvironmentModel_.getLock();
@@ -356,7 +340,7 @@ public class ComponentModel
      * 
      * @return The model parent or {@code null} if this model has no parent.
      */
-    /* @Nullable */
+    @Nullable
     public final IComponentModelParent getParent()
     {
         getLock().lock();
@@ -377,7 +361,7 @@ public class ComponentModel
      *         or {@code null} if the component model is not associated with a
      *         table model.
      */
-    /* @Nullable */
+    @Nullable
     public final ComponentPath getPath()
     {
         getLock().lock();
@@ -397,7 +381,6 @@ public class ComponentModel
      * @return The table environment model associated with this model; never
      *         {@code null}.
      */
-    /* @NonNull */
     public final TableEnvironmentModel getTableEnvironmentModel()
     {
         return tableEnvironmentModel_;
@@ -423,13 +406,9 @@ public class ComponentModel
      */
     @GuardedBy( "getLock()" )
     boolean hitTest(
-        /* @NonNull */
         final Point location,
-        /* @NonNull */
         final List<ComponentModel> componentModels )
     {
-        assert location != null;
-        assert componentModels != null;
         assert getLock().isHeldByCurrentThread();
 
         if( component_.getBounds().contains( location ) )
@@ -454,11 +433,8 @@ public class ComponentModel
      *        The model parent; must not be {@code null}.
      */
     void initialize(
-        /* @NonNull */
         final IComponentModelParent parent )
     {
-        assert parent != null;
-
         getLock().lock();
         try
         {
@@ -536,10 +512,8 @@ public class ComponentModel
      */
     @GuardedBy( "getLock()" )
     final boolean isSameOrDescendantOf(
-        /* @NonNull */
         final ComponentModel componentModel )
     {
-        assert componentModel != null;
         assert getLock().isHeldByCurrentThread();
 
         if( this == componentModel )
@@ -566,14 +540,10 @@ public class ComponentModel
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is not a registered component model listener.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
      */
     public final void removeComponentModelListener(
-        /* @NonNull */
         final IComponentModelListener listener )
     {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.ComponentModel_removeComponentModelListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
@@ -685,10 +655,9 @@ public class ComponentModel
          */
         @Override
         public void componentBoundsChanged(
+            @SuppressWarnings( "unused" )
             final ComponentEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             fireEventNotification( new Runnable()
             {
                 @Override
@@ -705,10 +674,9 @@ public class ComponentModel
          */
         @Override
         public void componentOrientationChanged(
+            @SuppressWarnings( "unused" )
             final ComponentEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             fireEventNotification( new Runnable()
             {
                 @Override
@@ -725,10 +693,9 @@ public class ComponentModel
          */
         @Override
         public void componentSurfaceDesignChanged(
+            @SuppressWarnings( "unused" )
             final ComponentEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             fireEventNotification( new Runnable()
             {
                 @Override

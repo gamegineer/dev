@@ -1,6 +1,6 @@
 /*
  * FileHistoryMenuItemGroupContentProvider.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.view;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -62,11 +63,8 @@ final class FileHistoryMenuItemGroupContentProvider
      *        The main model; must not be {@code null}.
      */
     FileHistoryMenuItemGroupContentProvider(
-        /* @NonNull */
         final MainModel mainModel )
     {
-        assert mainModel != null;
-
         mainModel_ = mainModel;
     }
 
@@ -93,7 +91,7 @@ final class FileHistoryMenuItemGroupContentProvider
         final Collection<MenuItemDescriptor> menuItemDescriptors = new ArrayList<>();
         for( int index = 0, size = files.size(); index < size; ++index )
         {
-            final String path = files.get( index ).getAbsolutePath();
+            final String path = nonNull( files.get( index ).getAbsolutePath() );
             final String fileName = fileNames.get( index );
             final String label;
             if( Collections.frequency( fileNames, fileName ) > 1 )

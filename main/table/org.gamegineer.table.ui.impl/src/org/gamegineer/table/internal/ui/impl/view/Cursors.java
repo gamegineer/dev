@@ -1,6 +1,6 @@
 /*
  * Cursors.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.view;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.AWTException;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -95,19 +96,11 @@ final class Cursors
      * 
      * @return A new cursor; never {@code null}.
      */
-    /* @NonNull */
     private static Cursor createCursor(
-        /* @NonNull */
         final String path,
-        /* @NonNull */
         final Point hotSpot,
-        /* @NonNull */
         final String name )
     {
-        assert path != null;
-        assert hotSpot != null;
-        assert name != null;
-
         final ImageIcon cursorIcon = Activator.getDefault().getBundleImages().getIcon( path );
         assert cursorIcon != null;
 
@@ -133,7 +126,7 @@ final class Cursors
             cursorImage = image;
         }
 
-        return toolkit.createCustomCursor( cursorImage, hotSpot, name );
+        return nonNull( toolkit.createCustomCursor( cursorImage, hotSpot, name ) );
     }
 
     /**
@@ -141,17 +134,16 @@ final class Cursors
      * 
      * @return The invalid cursor; never {@code null}.
      */
-    /* @NonNull */
     private static Cursor createInvalidCursor()
     {
         try
         {
-            return Cursor.getSystemCustomCursor( "Invalid.32x32" ); //$NON-NLS-1$
+            return nonNull( Cursor.getSystemCustomCursor( "Invalid.32x32" ) ); //$NON-NLS-1$
         }
         catch( final AWTException e )
         {
             Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.Cursors_createInvalidCursor_failed, e );
-            return Cursor.getDefaultCursor();
+            return nonNull( Cursor.getDefaultCursor() );
         }
     }
 
@@ -160,10 +152,9 @@ final class Cursors
      * 
      * @return The default cursor; never {@code null}.
      */
-    /* @NonNull */
     static Cursor getDefaultCursor()
     {
-        return Cursor.getDefaultCursor();
+        return nonNull( Cursor.getDefaultCursor() );
     }
 
     /**
@@ -171,7 +162,6 @@ final class Cursors
      * 
      * @return The grab cursor; never {@code null}.
      */
-    /* @NonNull */
     static Cursor getGrabCursor()
     {
         return grabCursor_;
@@ -182,7 +172,6 @@ final class Cursors
      * 
      * @return The hand cursor; never {@code null}.
      */
-    /* @NonNull */
     static Cursor getHandCursor()
     {
         return handCursor_;
@@ -193,7 +182,6 @@ final class Cursors
      * 
      * @return The invalid cursor; never {@code null}.
      */
-    /* @NonNull */
     static Cursor getInvalidCursor()
     {
         return invalidCursor_;

@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,10 +38,10 @@ final class NonNlsMessages
     // --- HostTableNetworkWizard -------------------------------------------
 
     /** An error occurred while executing the finish task. */
-    public static String HostTableNetworkWizard_finish_error;
+    public static String HostTableNetworkWizard_finish_error = ""; //$NON-NLS-1$
 
     /** Interrupted while waiting for the finish task to complete. */
-    public static String HostTableNetworkWizard_finish_interrupted;
+    public static String HostTableNetworkWizard_finish_interrupted = ""; //$NON-NLS-1$
 
 
     // ======================================================================

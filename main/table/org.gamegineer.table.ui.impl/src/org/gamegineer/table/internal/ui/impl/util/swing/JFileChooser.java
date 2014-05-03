@@ -1,6 +1,6 @@
 /*
  * JFileChooser.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,6 +27,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A specialization of {@code JFileChooser} that provides standard features that
@@ -66,7 +67,7 @@ public final class JFileChooser
      *        directory.
      */
     public JFileChooser(
-        /* @Nullable */
+        @Nullable
         final File currentDirectory )
     {
         super( currentDirectory );
@@ -84,9 +85,9 @@ public final class JFileChooser
      *        system view.
      */
     public JFileChooser(
-        /* @Nullable */
+        @Nullable
         final File currentDirectory,
-        /* @Nullable */
+        @Nullable
         final FileSystemView fileSystemView )
     {
         super( currentDirectory, fileSystemView );
@@ -102,7 +103,7 @@ public final class JFileChooser
      *        system view.
      */
     public JFileChooser(
-        /* @Nullable */
+        @Nullable
         final FileSystemView fileSystemView )
     {
         super( fileSystemView );
@@ -117,7 +118,7 @@ public final class JFileChooser
      *        directory.
      */
     public JFileChooser(
-        /* @Nullable */
+        @Nullable
         final String currentDirectoryPath )
     {
         super( currentDirectoryPath );
@@ -135,9 +136,9 @@ public final class JFileChooser
      *        system view.
      */
     public JFileChooser(
-        /* @Nullable */
+        @Nullable
         final String currentDirectoryPath,
-        /* @Nullable */
+        @Nullable
         final FileSystemView fileSystemView )
     {
         super( currentDirectoryPath, fileSystemView );
@@ -214,11 +215,8 @@ public final class JFileChooser
      *         otherwise {@code false}.
      */
     private boolean confirmOverwriteFile(
-        /* @NonNull */
         final File file )
     {
-        assert file != null;
-
         return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog( //
             this, //
             NlsMessages.JFileChooser_confirmOverwriteFile_message( file ), //
@@ -234,11 +232,8 @@ public final class JFileChooser
      *        The file that was not found; must not be {@code null}.
      */
     private void warnFileNotFound(
-        /* @NonNull */
         final File file )
     {
-        assert file != null;
-
         JOptionPane.showMessageDialog( //
             this, //
             NlsMessages.JFileChooser_warnFileNotFound_message( file ), //

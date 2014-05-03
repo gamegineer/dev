@@ -1,6 +1,6 @@
 /*
  * NlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.dialogs.about;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.internal.ui.impl.Branding;
@@ -39,24 +40,24 @@ final class NlsMessages
     // --- AboutDialog ------------------------------------------------------
 
     /** The license button mnemonic. */
-    public static String AboutDialog_licenseButton_mnemonic;
+    public static String AboutDialog_licenseButton_mnemonic = ""; //$NON-NLS-1$
 
     /** The license button text. */
-    public static String AboutDialog_licenseButton_text;
+    public static String AboutDialog_licenseButton_text = ""; //$NON-NLS-1$
 
     /** The message label text. */
-    public static String AboutDialog_messageLabel_text;
+    public static String AboutDialog_messageLabel_text = ""; //$NON-NLS-1$
 
     /** The dialog title. */
-    public static String AboutDialog_title;
+    public static String AboutDialog_title = ""; //$NON-NLS-1$
 
     // --- LicenseDialog ----------------------------------------------------
 
     /** The license text area text. */
-    public static String LicenseDialog_licenseTextArea_text;
+    public static String LicenseDialog_licenseTextArea_text = ""; //$NON-NLS-1$
 
     /** The dialog title. */
-    public static String LicenseDialog_title;
+    public static String LicenseDialog_title = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -91,10 +92,9 @@ final class NlsMessages
      * @return The formatted message for the message label text; never
      *         {@code null}.
      */
-    /* @NonNull */
     static String AboutDialog_messageLabel_text()
     {
-        return bind( AboutDialog_messageLabel_text, Branding.getName(), Branding.getVersion() );
+        return nonNull( bind( AboutDialog_messageLabel_text, Branding.getName(), Branding.getVersion() ) );
     }
 
     /**
@@ -102,9 +102,8 @@ final class NlsMessages
      * 
      * @return The formatted message for the dialog title; never {@code null}.
      */
-    /* @NonNull */
     static String AboutDialog_title()
     {
-        return bind( AboutDialog_title, Branding.getName() );
+        return nonNull( bind( AboutDialog_title, Branding.getName() ) );
     }
 }

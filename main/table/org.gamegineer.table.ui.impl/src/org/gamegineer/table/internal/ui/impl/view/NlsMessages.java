@@ -1,6 +1,6 @@
 /*
  * NlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.view;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayList;
 import java.util.List;
 import net.jcip.annotations.ThreadSafe;
@@ -44,337 +45,337 @@ final class NlsMessages
     // --- CancelTableNetworkControlRequestAction ---------------------------
 
     /** The cancel table network control request action mnemonic. */
-    public static String CancelTableNetworkControlRequestAction_mnemonic;
+    public static String CancelTableNetworkControlRequestAction_mnemonic = ""; //$NON-NLS-1$
 
     /** The cancel table network control request action text. */
-    public static String CancelTableNetworkControlRequestAction_text;
+    public static String CancelTableNetworkControlRequestAction_text = ""; //$NON-NLS-1$
 
     // --- ComponentPopupMenu -----------------------------------------------
 
     /** The Add Component menu mnemonic. */
-    public static String ComponentPopupMenu_addComponent_mnemonic;
+    public static String ComponentPopupMenu_addComponent_mnemonic = ""; //$NON-NLS-1$
 
     /** The Add Component menu text. */
-    public static String ComponentPopupMenu_addComponent_text;
+    public static String ComponentPopupMenu_addComponent_text = ""; //$NON-NLS-1$
 
     // --- ContainerPopupMenu -----------------------------------------------
 
     /** The Add Component menu mnemonic. */
-    public static String ContainerPopupMenu_addComponent_mnemonic;
+    public static String ContainerPopupMenu_addComponent_mnemonic = ""; //$NON-NLS-1$
 
     /** The Add Component menu text. */
-    public static String ContainerPopupMenu_addComponent_text;
+    public static String ContainerPopupMenu_addComponent_text = ""; //$NON-NLS-1$
 
     /** The Layout menu mnemonic. */
-    public static String ContainerPopupMenu_layout_mnemonic;
+    public static String ContainerPopupMenu_layout_mnemonic = ""; //$NON-NLS-1$
 
     /** The Layout menu text. */
-    public static String ContainerPopupMenu_layout_text;
+    public static String ContainerPopupMenu_layout_text = ""; //$NON-NLS-1$
 
     // --- DebugTraceTableAction --------------------------------------------
 
     /** The debug trace table action accelerator. */
-    public static String DebugTraceTableAction_accelerator;
+    public static String DebugTraceTableAction_accelerator = ""; //$NON-NLS-1$
 
     // --- DebugTraceTableModelAction ---------------------------------------
 
     /** The debug trace table model action accelerator. */
-    public static String DebugTraceTableModelAction_accelerator;
+    public static String DebugTraceTableModelAction_accelerator = ""; //$NON-NLS-1$
 
     // --- DisconnectTableNetworkAction -------------------------------------
 
     /** The disconnect table network action mnemonic. */
-    public static String DisconnectTableNetworkAction_mnemonic;
+    public static String DisconnectTableNetworkAction_mnemonic = ""; //$NON-NLS-1$
 
     /** The disconnect table network action text. */
-    public static String DisconnectTableNetworkAction_text;
+    public static String DisconnectTableNetworkAction_text = ""; //$NON-NLS-1$
 
     // --- DisplayHelpAction ------------------------------------------------
 
     /** The display help action mnemonic. */
-    public static String DisplayHelpAction_mnemonic;
+    public static String DisplayHelpAction_mnemonic = ""; //$NON-NLS-1$
 
     /** The display help action text. */
-    public static String DisplayHelpAction_text;
+    public static String DisplayHelpAction_text = ""; //$NON-NLS-1$
 
     // --- ExitAction -------------------------------------------------------
 
     /** The exit action mnemonic. */
-    public static String ExitAction_mnemonic;
+    public static String ExitAction_mnemonic = ""; //$NON-NLS-1$
 
     /** The exit action text. */
-    public static String ExitAction_text;
+    public static String ExitAction_text = ""; //$NON-NLS-1$
 
     // --- FileChoosers -----------------------------------------------------
 
     /** The table file filter. */
-    public static String FileChoosers_fileFilter_table;
+    public static String FileChoosers_fileFilter_table = ""; //$NON-NLS-1$
 
     // --- FlipComponentAction ----------------------------------------------
 
     /** The flip component action accelerator. */
-    public static String FlipComponentAction_accelerator;
+    public static String FlipComponentAction_accelerator = ""; //$NON-NLS-1$
 
     /** The flip component action mnemonic. */
-    public static String FlipComponentAction_mnemonic;
+    public static String FlipComponentAction_mnemonic = ""; //$NON-NLS-1$
 
     /** The flip component action text. */
-    public static String FlipComponentAction_text;
+    public static String FlipComponentAction_text = ""; //$NON-NLS-1$
 
     // --- GiveTableNetworkControlAction ------------------------------------
 
     /** The give table network control action mnemonic. */
-    public static String GiveTableNetworkControlAction_mnemonic;
+    public static String GiveTableNetworkControlAction_mnemonic = ""; //$NON-NLS-1$
 
     /** The give table network control action text. */
-    public static String GiveTableNetworkControlAction_text;
+    public static String GiveTableNetworkControlAction_text = ""; //$NON-NLS-1$
 
     // --- HostTableNetworkAction -------------------------------------------
 
     /** The host table network action mnemonic. */
-    public static String HostTableNetworkAction_mnemonic;
+    public static String HostTableNetworkAction_mnemonic = ""; //$NON-NLS-1$
 
     /** The host table network action text. */
-    public static String HostTableNetworkAction_text;
+    public static String HostTableNetworkAction_text = ""; //$NON-NLS-1$
 
     // --- JoinTableNetworkAction -------------------------------------------
 
     /** The join table network action mnemonic. */
-    public static String JoinTableNetworkAction_mnemonic;
+    public static String JoinTableNetworkAction_mnemonic = ""; //$NON-NLS-1$
 
     /** The join table network action text. */
-    public static String JoinTableNetworkAction_text;
+    public static String JoinTableNetworkAction_text = ""; //$NON-NLS-1$
 
     // --- MainFrame --------------------------------------------------------
 
     /** The Confirm Save Dirty Table dialog message. */
-    public static String MainFrame_confirmSaveDirtyTable_message;
+    public static String MainFrame_confirmSaveDirtyTable_message = ""; //$NON-NLS-1$
 
     /** An error occurred while opening the table. */
-    public static String MainFrame_openTable_error;
+    public static String MainFrame_openTable_error = ""; //$NON-NLS-1$
 
     /** An error occurred while saving the table. */
-    public static String MainFrame_saveTable_error;
+    public static String MainFrame_saveTable_error = ""; //$NON-NLS-1$
 
     /** The frame title. */
-    public static String MainFrame_title;
+    public static String MainFrame_title = ""; //$NON-NLS-1$
 
     /** The name of an untitled table. */
-    public static String MainFrame_untitledTable;
+    public static String MainFrame_untitledTable = ""; //$NON-NLS-1$
 
     // --- MainView ---------------------------------------------------------
 
     /** The table network was disconnected due to a generic error. */
-    public static String MainView_tableNetworkDisconnected_error_generic;
+    public static String MainView_tableNetworkDisconnected_error_generic = ""; //$NON-NLS-1$
 
     /** The table network was disconnected due to a server shutdown. */
-    public static String MainView_tableNetworkDisconnected_error_serverShutdown;
+    public static String MainView_tableNetworkDisconnected_error_serverShutdown = ""; //$NON-NLS-1$
 
     /** The table network was disconnected due to a transport error. */
-    public static String MainView_tableNetworkDisconnected_error_transportError;
+    public static String MainView_tableNetworkDisconnected_error_transportError = ""; //$NON-NLS-1$
 
     /**
      * The table network was disconnected due to an unexpected peer termination.
      */
-    public static String MainView_tableNetworkDisconnected_error_unexpectedPeerTermination;
+    public static String MainView_tableNetworkDisconnected_error_unexpectedPeerTermination = ""; //$NON-NLS-1$
 
     // --- MenuBarView ------------------------------------------------------
 
     /** The Add Component menu mnemonic. */
-    public static String MenuBarView_addComponent_mnemonic;
+    public static String MenuBarView_addComponent_mnemonic = ""; //$NON-NLS-1$
 
     /** The Add Component menu text. */
-    public static String MenuBarView_addComponent_text;
+    public static String MenuBarView_addComponent_text = ""; //$NON-NLS-1$
 
     /** The File menu mnemonic. */
-    public static String MenuBarView_file_mnemonic;
+    public static String MenuBarView_file_mnemonic = ""; //$NON-NLS-1$
 
     /** The File menu text. */
-    public static String MenuBarView_file_text;
+    public static String MenuBarView_file_text = ""; //$NON-NLS-1$
 
     /** The Help menu mnemonic. */
-    public static String MenuBarView_help_mnemonic;
+    public static String MenuBarView_help_mnemonic = ""; //$NON-NLS-1$
 
     /** The Help menu text. */
-    public static String MenuBarView_help_text;
+    public static String MenuBarView_help_text = ""; //$NON-NLS-1$
 
     /** The Layout menu mnemonic. */
-    public static String MenuBarView_layout_mnemonic;
+    public static String MenuBarView_layout_mnemonic = ""; //$NON-NLS-1$
 
     /** The Layout menu text. */
-    public static String MenuBarView_layout_text;
+    public static String MenuBarView_layout_text = ""; //$NON-NLS-1$
 
     /** The Network menu mnemonic. */
-    public static String MenuBarView_network_mnemonic;
+    public static String MenuBarView_network_mnemonic = ""; //$NON-NLS-1$
 
     /** The Network menu text. */
-    public static String MenuBarView_network_text;
+    public static String MenuBarView_network_text = ""; //$NON-NLS-1$
 
     /** The Table menu mnemonic. */
-    public static String MenuBarView_table_mnemonic;
+    public static String MenuBarView_table_mnemonic = ""; //$NON-NLS-1$
 
     /** The Table menu text. */
-    public static String MenuBarView_table_text;
+    public static String MenuBarView_table_text = ""; //$NON-NLS-1$
 
     /** The View menu mnemonic. */
-    public static String MenuBarView_view_mnemonic;
+    public static String MenuBarView_view_mnemonic = ""; //$NON-NLS-1$
 
     /** The View menu text. */
-    public static String MenuBarView_view_text;
+    public static String MenuBarView_view_text = ""; //$NON-NLS-1$
 
     // --- OpenAboutDialogAction --------------------------------------------
 
     /** The open about dialog action mnemonic. */
-    public static String OpenAboutDialogAction_mnemonic;
+    public static String OpenAboutDialogAction_mnemonic = ""; //$NON-NLS-1$
 
     /** The open about dialog action text. */
-    public static String OpenAboutDialogAction_text;
+    public static String OpenAboutDialogAction_text = ""; //$NON-NLS-1$
 
     // --- OpenNewTableAction -----------------------------------------------
 
     /** The open new table action accelerator. */
-    public static String OpenNewTableAction_accelerator;
+    public static String OpenNewTableAction_accelerator = ""; //$NON-NLS-1$
 
     /** The open new table action mnemonic. */
-    public static String OpenNewTableAction_mnemonic;
+    public static String OpenNewTableAction_mnemonic = ""; //$NON-NLS-1$
 
     /** The open new table action text. */
-    public static String OpenNewTableAction_text;
+    public static String OpenNewTableAction_text = ""; //$NON-NLS-1$
 
     // --- OpenTableAction --------------------------------------------------
 
     /** The open table action accelerator. */
-    public static String OpenTableAction_accelerator;
+    public static String OpenTableAction_accelerator = ""; //$NON-NLS-1$
 
     /** The open table action mnemonic. */
-    public static String OpenTableAction_mnemonic;
+    public static String OpenTableAction_mnemonic = ""; //$NON-NLS-1$
 
     /** The open table action text. */
-    public static String OpenTableAction_text;
+    public static String OpenTableAction_text = ""; //$NON-NLS-1$
 
     // --- RemoveAllComponentsAction ----------------------------------------
 
     /** The remove all components action accelerator. */
-    public static String RemoveAllComponentsAction_accelerator;
+    public static String RemoveAllComponentsAction_accelerator = ""; //$NON-NLS-1$
 
     /** The remove all components action mnemonic. */
-    public static String RemoveAllComponentsAction_mnemonic;
+    public static String RemoveAllComponentsAction_mnemonic = ""; //$NON-NLS-1$
 
     /** The remove all components action text. */
-    public static String RemoveAllComponentsAction_text;
+    public static String RemoveAllComponentsAction_text = ""; //$NON-NLS-1$
 
     // --- RemoveComponentAction --------------------------------------------
 
     /** The remove component action accelerator. */
-    public static String RemoveComponentAction_accelerator;
+    public static String RemoveComponentAction_accelerator = ""; //$NON-NLS-1$
 
     /** The remove component action mnemonic. */
-    public static String RemoveComponentAction_mnemonic;
+    public static String RemoveComponentAction_mnemonic = ""; //$NON-NLS-1$
 
     /** The remove component action text. */
-    public static String RemoveComponentAction_text;
+    public static String RemoveComponentAction_text = ""; //$NON-NLS-1$
 
     // --- RequestTableNetworkControlAction ---------------------------------
 
     /** The request table network control action mnemonic. */
-    public static String RequestTableNetworkControlAction_mnemonic;
+    public static String RequestTableNetworkControlAction_mnemonic = ""; //$NON-NLS-1$
 
     /** The request table network control action text. */
-    public static String RequestTableNetworkControlAction_text;
+    public static String RequestTableNetworkControlAction_text = ""; //$NON-NLS-1$
 
     // --- ResetTableOriginAction -------------------------------------------
 
     /** The reset table origin action mnemonic. */
-    public static String ResetTableOriginAction_mnemonic;
+    public static String ResetTableOriginAction_mnemonic = ""; //$NON-NLS-1$
 
     /** The reset table origin action text. */
-    public static String ResetTableOriginAction_text;
+    public static String ResetTableOriginAction_text = ""; //$NON-NLS-1$
 
     // --- SaveTableAction --------------------------------------------------
 
     /** The save table action accelerator. */
-    public static String SaveTableAction_accelerator;
+    public static String SaveTableAction_accelerator = ""; //$NON-NLS-1$
 
     /** The save table action mnemonic. */
-    public static String SaveTableAction_mnemonic;
+    public static String SaveTableAction_mnemonic = ""; //$NON-NLS-1$
 
     /** The save table action text. */
-    public static String SaveTableAction_text;
+    public static String SaveTableAction_text = ""; //$NON-NLS-1$
 
     // --- SaveTableAsAction ------------------------------------------------
 
     /** The save table as action mnemonic. */
-    public static String SaveTableAsAction_mnemonic;
+    public static String SaveTableAsAction_mnemonic = ""; //$NON-NLS-1$
 
     /** The save table as action text. */
-    public static String SaveTableAsAction_text;
+    public static String SaveTableAsAction_text = ""; //$NON-NLS-1$
 
     // --- SetAccordianDownContainerLayoutAction ----------------------------
 
     /** The set accordian down container layout action mnemonic. */
-    public static String SetAccordianDownContainerLayoutAction_mnemonic;
+    public static String SetAccordianDownContainerLayoutAction_mnemonic = ""; //$NON-NLS-1$
 
     /** The set accordian down container layout action text. */
-    public static String SetAccordianDownContainerLayoutAction_text;
+    public static String SetAccordianDownContainerLayoutAction_text = ""; //$NON-NLS-1$
 
     // --- SetAccordianLeftContainerLayoutAction ----------------------------
 
     /** The set accordian left container layout action mnemonic. */
-    public static String SetAccordianLeftContainerLayoutAction_mnemonic;
+    public static String SetAccordianLeftContainerLayoutAction_mnemonic = ""; //$NON-NLS-1$
 
     /** The set accordian left container layout action text. */
-    public static String SetAccordianLeftContainerLayoutAction_text;
+    public static String SetAccordianLeftContainerLayoutAction_text = ""; //$NON-NLS-1$
 
     // --- SetAccordianRightContainerLayoutAction ---------------------------
 
     /** The set accordian right container layout action mnemonic. */
-    public static String SetAccordianRightContainerLayoutAction_mnemonic;
+    public static String SetAccordianRightContainerLayoutAction_mnemonic = ""; //$NON-NLS-1$
 
     /** The set accordian right container layout action text. */
-    public static String SetAccordianRightContainerLayoutAction_text;
+    public static String SetAccordianRightContainerLayoutAction_text = ""; //$NON-NLS-1$
 
     // --- SetAccordianUpContainerLayoutAction ------------------------------
 
     /** The set accordian up container layout action mnemonic. */
-    public static String SetAccordianUpContainerLayoutAction_mnemonic;
+    public static String SetAccordianUpContainerLayoutAction_mnemonic = ""; //$NON-NLS-1$
 
     /** The set accordian up container layout action text. */
-    public static String SetAccordianUpContainerLayoutAction_text;
+    public static String SetAccordianUpContainerLayoutAction_text = ""; //$NON-NLS-1$
 
     // --- SetStackedContainerLayoutAction ----------------------------------
 
     /** The set stacked container layout action mnemonic. */
-    public static String SetStackedContainerLayoutAction_mnemonic;
+    public static String SetStackedContainerLayoutAction_mnemonic = ""; //$NON-NLS-1$
 
     /** The set stacked container layout action text. */
-    public static String SetStackedContainerLayoutAction_text;
+    public static String SetStackedContainerLayoutAction_text = ""; //$NON-NLS-1$
 
     // --- TableNetworkPlayerView -------------------------------------------
 
     /** The text for the players label. */
-    public static String TableNetworkPlayerView_playersLabel_text;
+    public static String TableNetworkPlayerView_playersLabel_text = ""; //$NON-NLS-1$
 
     /** The text for the editor role in the players list. */
-    public static String TableNetworkPlayerView_playersList_role_editor;
+    public static String TableNetworkPlayerView_playersList_role_editor = ""; //$NON-NLS-1$
 
     /** The text for the host role in the players list. */
-    public static String TableNetworkPlayerView_playersList_role_host;
+    public static String TableNetworkPlayerView_playersList_role_host = ""; //$NON-NLS-1$
 
     /** The text for the local role in the players list. */
-    public static String TableNetworkPlayerView_playersList_role_local;
+    public static String TableNetworkPlayerView_playersList_role_local = ""; //$NON-NLS-1$
 
     // --- TablePopupMenu ---------------------------------------------------
 
     /** The Add Component menu mnemonic. */
-    public static String TablePopupMenu_addComponent_mnemonic;
+    public static String TablePopupMenu_addComponent_mnemonic = ""; //$NON-NLS-1$
 
     /** The Add Component menu text. */
-    public static String TablePopupMenu_addComponent_text;
+    public static String TablePopupMenu_addComponent_text = ""; //$NON-NLS-1$
 
     // --- ViewUtils --------------------------------------------------------
 
     /** The name of the default component surface design user interface. */
-    public static String ViewUtils_defaultComponentSurfaceDesignUI_name;
+    public static String ViewUtils_defaultComponentSurfaceDesignUI_name = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -413,12 +414,10 @@ final class NlsMessages
      * @return The formatted message for the Confirm Save Dirty Table dialog
      *         message; never {@code null}.
      */
-    /* @NonNull */
     static String MainFrame_confirmSaveDirtyTable_message(
-        /* @NonNull */
         final String tableName )
     {
-        return bind( MainFrame_confirmSaveDirtyTable_message, tableName );
+        return nonNull( bind( MainFrame_confirmSaveDirtyTable_message, tableName ) );
     }
 
     /**
@@ -429,12 +428,10 @@ final class NlsMessages
      * 
      * @return The formatted message for the frame title; never {@code null}.
      */
-    /* @NonNull */
     static String MainFrame_title(
-        /* @NonNull */
         final String tableName )
     {
-        return bind( MainFrame_title, tableName, Branding.getName() );
+        return nonNull( bind( MainFrame_title, tableName, Branding.getName() ) );
     }
 
     // --- MainView ---------------------------------------------------------
@@ -449,9 +446,7 @@ final class NlsMessages
      * @return The formatted message for the table network disconnected message;
      *         never {@code null}.
      */
-    /* @NonNull */
     static String MainView_tableNetworkDisconnected_error(
-        /* @NonNull */
         final TableNetworkError error )
     {
         switch( error )
@@ -466,7 +461,7 @@ final class NlsMessages
                 return MainView_tableNetworkDisconnected_error_unexpectedPeerTermination;
 
             default:
-                return bind( MainView_tableNetworkDisconnected_error_generic, error );
+                return nonNull( bind( MainView_tableNetworkDisconnected_error_generic, error ) );
         }
     }
 
@@ -478,10 +473,9 @@ final class NlsMessages
      * @return The formatted text for the open about dialog action; never
      *         {@code null}.
      */
-    /* @NonNull */
     static String OpenAboutDialogAction_text()
     {
-        return bind( OpenAboutDialogAction_text, Branding.getName() );
+        return nonNull( bind( OpenAboutDialogAction_text, Branding.getName() ) );
     }
 
     // --- TableNetworkPlayerView -------------------------------------------
@@ -496,9 +490,7 @@ final class NlsMessages
      * @return The formatted text for the specified role in the players list;
      *         never {@code null}.
      */
-    /* @NonNull */
     static String TableNetworkPlayerView_playersList_role(
-        /* @NonNull */
         final PlayerRole playerRole )
     {
         switch( playerRole )
@@ -527,9 +519,7 @@ final class NlsMessages
      * @return The formatted text for an element in the players list; never
      *         {@code null}.
      */
-    /* @NonNull */
     static String TableNetworkPlayerView_playersList_text(
-        /* @NonNull */
         final IPlayer player )
     {
         final StringBuilder sb = new StringBuilder();
@@ -555,7 +545,9 @@ final class NlsMessages
 
             for( int index = 0, size = annotatedRoles.size(); index < size; ++index )
             {
-                sb.append( TableNetworkPlayerView_playersList_role( annotatedRoles.get( index ) ) );
+                final PlayerRole annotatedRole = annotatedRoles.get( index );
+                assert annotatedRole != null;
+                sb.append( TableNetworkPlayerView_playersList_role( annotatedRole ) );
                 if( index < (size - 1) )
                 {
                     sb.append( ", " ); //$NON-NLS-1$
@@ -565,6 +557,6 @@ final class NlsMessages
             sb.append( ")" ); //$NON-NLS-1$
         }
 
-        return sb.toString();
+        return nonNull( sb.toString() );
     }
 }

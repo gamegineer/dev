@@ -1,6 +1,6 @@
 /*
  * ComponentPrototypesExtensionPointFacade.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -72,16 +72,16 @@ final class ComponentPrototypesExtensionPointFacade
      *         If {@code configurationElement} does not represent a legal
      *         component prototype.
      */
-    /* @NonNull */
     static ComponentPrototype createComponentPrototype(
-        /* @NonNull */
         final IConfigurationElement configurationElement )
     {
         try
         {
             final Method method = ComponentPrototypesExtensionPoint.class.getDeclaredMethod( "createComponentPrototype", IConfigurationElement.class ); //$NON-NLS-1$
             method.setAccessible( true );
-            return (ComponentPrototype)method.invoke( null, configurationElement );
+            final ComponentPrototype componentPrototype = (ComponentPrototype)method.invoke( null, configurationElement );
+            assert componentPrototype != null;
+            return componentPrototype;
         }
         catch( final InvocationTargetException e )
         {
@@ -113,16 +113,16 @@ final class ComponentPrototypesExtensionPointFacade
      *         If {@code configurationElement} does not represent a legal
      *         component prototype category.
      */
-    /* @NonNull */
     static ComponentPrototypeCategory createComponentPrototypeCategory(
-        /* @NonNull */
         final IConfigurationElement configurationElement )
     {
         try
         {
             final Method method = ComponentPrototypesExtensionPoint.class.getDeclaredMethod( "createComponentPrototypeCategory", IConfigurationElement.class ); //$NON-NLS-1$
             method.setAccessible( true );
-            return (ComponentPrototypeCategory)method.invoke( null, configurationElement );
+            final ComponentPrototypeCategory componentPrototypeCategory = (ComponentPrototypeCategory)method.invoke( null, configurationElement );
+            assert componentPrototypeCategory != null;
+            return componentPrototypeCategory;
         }
         catch( final InvocationTargetException e )
         {

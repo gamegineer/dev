@@ -1,6 +1,6 @@
 /*
  * TableModel.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.ui.impl.model;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.io.File;
@@ -41,6 +41,7 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.expressions.EvaluationContext;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.common.persistence.serializable.ObjectStreams;
 import org.gamegineer.table.core.ComponentPath;
@@ -77,10 +78,12 @@ public final class TableModel
             final ComponentModel componentModel2 )
         {
             assert componentModel1.getLock().isHeldByCurrentThread();
-            assert componentModel1.getPath() != null;
-            assert componentModel2.getPath() != null;
 
-            return componentModel1.getPath().compareTo( componentModel2.getPath() );
+            final ComponentPath componentPath1 = componentModel1.getPath();
+            assert componentPath1 != null;
+            final ComponentPath componentPath2 = componentModel2.getPath();
+            assert componentPath2 != null;
+            return componentPath1.compareTo( componentPath2 );
         }
     };
 
@@ -93,6 +96,7 @@ public final class TableModel
 
     /** The file to which the model was last saved. */
     @GuardedBy( "getLock()" )
+    @Nullable
     private File file_;
 
     /**
@@ -100,6 +104,7 @@ public final class TableModel
      * component has the focus.
      */
     @GuardedBy( "getLock()" )
+    @Nullable
     private ComponentModel focusedComponentModel_;
 
     /**
@@ -107,6 +112,7 @@ public final class TableModel
      * component has the hover.
      */
     @GuardedBy( "getLock()" )
+    @Nullable
     private ComponentModel hoveredComponentModel_;
 
     /** The collection of table model listeners. */
@@ -146,17 +152,11 @@ public final class TableModel
      *        {@code null}.
      */
     TableModel(
-        /* @NonNull */
         final TableEnvironmentModel tableEnvironmentModel,
-        /* @NonNull */
         final ITable table,
-        /* @NonNull */
         final ITableNetwork tableNetwork )
     {
-        assert tableEnvironmentModel != null;
-        assert table != null;
         assert tableEnvironmentModel.getTableEnvironment().equals( table.getTableEnvironment() );
-        assert tableNetwork != null;
 
         file_ = null;
         focusedComponentModel_ = null;
@@ -190,14 +190,10 @@ public final class TableModel
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is already a registered table model listener.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
      */
     public void addTableModelListener(
-        /* @NonNull */
         final ITableModelListener listener )
     {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.TableModel_addTableModelListener_listener_registered ); //$NON-NLS-1$
     }
 
@@ -208,11 +204,8 @@ public final class TableModel
      *        The event notification; must not be {@code null}.
      */
     private void fireEventNotification(
-        /* @NonNull */
         final Runnable eventNotification )
     {
-        assert eventNotification != null;
-
         tableEnvironmentModel_.fireEventNotification( eventNotification );
     }
 
@@ -345,6 +338,7 @@ public final class TableModel
     /*
      * @see org.gamegineer.table.internal.ui.impl.model.IComponentModelParent#getChildPath(org.gamegineer.table.internal.ui.impl.model.ComponentModel)
      */
+    @Nullable
     @Override
     public ComponentPath getChildPath(
         final ComponentModel componentModel )
@@ -363,17 +357,11 @@ public final class TableModel
      * 
      * @return The component model in this table model at the specified path or
      *         {@code null} if no component model exists at the specified path.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code path} is {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     public ComponentModel getComponentModel(
-        /* @NonNull */
         final ComponentPath path )
     {
-        assertArgumentNotNull( path, "path" ); //$NON-NLS-1$
-
         final List<ComponentPath> paths = path.toList();
         final ComponentPath tabletopPath = paths.get( 0 );
         if( tabletopPath.getIndex() != 0 )
@@ -388,7 +376,7 @@ public final class TableModel
         getLock().lock();
         try
         {
-            return tabletopModel_.getComponentModel( paths.subList( 1, paths.size() ) );
+            return tabletopModel_.getComponentModel( nonNull( paths.subList( 1, paths.size() ) ) );
         }
         finally
         {
@@ -412,17 +400,10 @@ public final class TableModel
      *         specified location; never {@code null}. The component models are
      *         returned in order from the bottom-most component model to the
      *         top-most component model; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code location} is {@code null}.
      */
-    /* @NonNull */
     public List<ComponentModel> getComponentModels(
-        /* @NonNull */
         final Point location )
     {
-        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
-
         final List<ComponentModel> componentModels = new ArrayList<>();
 
         getLock().lock();
@@ -461,7 +442,7 @@ public final class TableModel
      * @return The file to which this model was last saved or {@code null} if
      *         this model has not yet been saved.
      */
-    /* @Nullable */
+    @Nullable
     public File getFile()
     {
         getLock().lock();
@@ -484,13 +465,9 @@ public final class TableModel
      * @return The top-most focusable component model at the specified location
      *         or {@code null} if no focusable component model is at that
      *         location.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code location} is {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     public ComponentModel getFocusableComponentModel(
-        /* @NonNull */
         final Point location )
     {
         return getFocusableComponentModel( location, null );
@@ -516,19 +493,13 @@ public final class TableModel
      * 
      * @return The focusable component model at the specified location or
      *         {@code null} if no focusable component model is at that location.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code location} is {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     public ComponentModel getFocusableComponentModel(
-        /* @NonNull */
         final Point location,
-        /* @Nullable */
+        @Nullable
         final ComponentModelVector searchVector )
     {
-        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
-
         ComponentModel focusableComponentModel = null;
 
         getLock().lock();
@@ -583,7 +554,7 @@ public final class TableModel
      * @return The focused component model or {@code null} if no component model
      *         has the focus.
      */
-    /* @Nullable */
+    @Nullable
     public ComponentModel getFocusedComponentModel()
     {
         getLock().lock();
@@ -603,7 +574,7 @@ public final class TableModel
      * @return The hovered component model or {@code null} if no component model
      *         has the hover.
      */
-    /* @Nullable */
+    @Nullable
     public ComponentModel getHoveredComponentModel()
     {
         getLock().lock();
@@ -622,7 +593,6 @@ public final class TableModel
      * 
      * @return The table environment model lock; never {@code null}.
      */
-    /* @NonNull */
     private ITableEnvironmentModelLock getLock()
     {
         return tableEnvironmentModel_.getLock();
@@ -642,15 +612,10 @@ public final class TableModel
      * @return The next search index.
      */
     private static int getNextSearchIndex(
-        /* @NonNull */
         final List<ComponentModel> componentModels,
         final int index,
-        /* @NonNull */
         final ComponentAxis searchAxis )
     {
-        assert componentModels != null;
-        assert searchAxis != null;
-
         switch( searchAxis )
         {
             case PRECEDING:
@@ -671,7 +636,6 @@ public final class TableModel
      * @return The offset of the table origin relative to the view origin in
      *         table coordinates; never {@code null}.
      */
-    /* @NonNull */
     public Dimension getOriginOffset()
     {
         getLock().lock();
@@ -688,6 +652,7 @@ public final class TableModel
     /*
      * @see org.gamegineer.table.internal.ui.impl.model.IComponentModelParent#getParent()
      */
+    @Nullable
     @Override
     public IComponentModelParent getParent()
     {
@@ -699,7 +664,6 @@ public final class TableModel
      * 
      * @return The table associated with this model; never {@code null}.
      */
-    /* @NonNull */
     public ITable getTable()
     {
         return table_;
@@ -711,7 +675,6 @@ public final class TableModel
      * @return The table environment model associated with this model; never
      *         {@code null}.
      */
-    /* @NonNull */
     public TableEnvironmentModel getTableEnvironmentModel()
     {
         return tableEnvironmentModel_;
@@ -720,6 +683,7 @@ public final class TableModel
     /*
      * @see org.gamegineer.table.internal.ui.impl.model.IComponentModelParent#getTableModel()
      */
+    @Nullable
     @Override
     public TableModel getTableModel()
     {
@@ -731,7 +695,6 @@ public final class TableModel
      * 
      * @return The table network associated with this model; never {@code null}.
      */
-    /* @NonNull */
     public ITableNetwork getTableNetwork()
     {
         return tableNetwork_;
@@ -759,7 +722,6 @@ public final class TableModel
      * 
      * @return The tabletop model; never {@code null}.
      */
-    /* @NonNull */
     public ContainerModel getTabletopModel()
     {
         return tabletopModel_;
@@ -852,12 +814,9 @@ public final class TableModel
      *         If an error occurs while opening the file.
      */
     void open(
-        /* @NonNull */
         final File file )
         throws ModelException
     {
-        assert file != null;
-
         getLock().lock();
         try
         {
@@ -903,17 +862,15 @@ public final class TableModel
      * @throws org.gamegineer.table.internal.ui.impl.model.ModelException
      *         If an error occurs while reading the file.
      */
-    /* @NonNull */
     private static Object readTableMemento(
-        /* @NonNull */
         final File file )
         throws ModelException
     {
-        assert file != null;
-
         try( final ObjectInputStream inputStream = ObjectStreams.createPlatformObjectInputStream( new FileInputStream( file ) ) )
         {
-            return inputStream.readObject();
+            final Object tableMemento = inputStream.readObject();
+            assert tableMemento != null;
+            return tableMemento;
         }
         catch( final ClassNotFoundException e )
         {
@@ -933,14 +890,10 @@ public final class TableModel
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is not a registered table model listener.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
      */
     public void removeTableModelListener(
-        /* @NonNull */
         final ITableModelListener listener )
     {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.TableModel_removeTableModelListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
@@ -955,12 +908,9 @@ public final class TableModel
      *         If an error occurs while saving the file.
      */
     void save(
-        /* @NonNull */
         final File file )
         throws ModelException
     {
-        assert file != null;
-
         getLock().lock();
         try
         {
@@ -994,7 +944,7 @@ public final class TableModel
      *        component model should have the focus.
      */
     public void setFocus(
-        /* @Nullable */
+        @Nullable
         final ComponentModel componentModel )
     {
         final boolean componentModelFocusChanged;
@@ -1057,7 +1007,7 @@ public final class TableModel
      *        component model should have the hover.
      */
     public void setHover(
-        /* @Nullable */
+        @Nullable
         final ComponentModel componentModel )
     {
         final boolean componentModelHoverChanged;
@@ -1119,16 +1069,10 @@ public final class TableModel
      * @param originOffset
      *        The offset of the table origin relative to the view origin in
      *        table coordinates; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code originOffset} is {@code null}.
      */
     public void setOriginOffset(
-        /* @NonNull */
         final Dimension originOffset )
     {
-        assertArgumentNotNull( originOffset, "originOffset" ); //$NON-NLS-1$
-
         getLock().lock();
         try
         {
@@ -1164,15 +1108,10 @@ public final class TableModel
      *         If an error occurs while reading the file or setting the memento.
      */
     private static void setTableMemento(
-        /* @NonNull */
         final ITable table,
-        /* @NonNull */
         final File file )
         throws ModelException
     {
-        assert table != null;
-        assert file != null;
-
         try
         {
             table.setMemento( readTableMemento( file ) );
@@ -1196,15 +1135,10 @@ public final class TableModel
      *         If an error occurs while writing the file.
      */
     private static void writeTableMemento(
-        /* @NonNull */
         final File file,
-        /* @NonNull */
         final Object memento )
         throws ModelException
     {
-        assert file != null;
-        assert memento != null;
-
         try( final ObjectOutputStream outputStream = ObjectStreams.createPlatformObjectOutputStream( new FileOutputStream( file ) ) )
         {
             outputStream.writeObject( memento );
@@ -1250,10 +1184,9 @@ public final class TableModel
          */
         @Override
         public void componentChanged(
+            @SuppressWarnings( "unused" )
             final ComponentModelEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             fireEventNotification( new Runnable()
             {
                 @Override
@@ -1270,10 +1203,9 @@ public final class TableModel
          */
         @Override
         public void componentModelFocusChanged(
+            @SuppressWarnings( "unused" )
             final ComponentModelEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             fireEventNotification( new Runnable()
             {
                 @Override
@@ -1289,10 +1221,9 @@ public final class TableModel
          */
         @Override
         public void componentModelHoverChanged(
+            @SuppressWarnings( "unused" )
             final ComponentModelEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             fireEventNotification( new Runnable()
             {
                 @Override
@@ -1353,10 +1284,9 @@ public final class TableModel
          */
         @Override
         public void tableNetworkConnected(
+            @SuppressWarnings( "unused" )
             final TableNetworkEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             fireEventNotification( new Runnable()
             {
                 @Override
@@ -1372,10 +1302,9 @@ public final class TableModel
          */
         @Override
         public void tableNetworkDisconnected(
+            @SuppressWarnings( "unused" )
             final TableNetworkDisconnectedEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             fireEventNotification( new Runnable()
             {
                 @Override
@@ -1391,10 +1320,9 @@ public final class TableModel
          */
         @Override
         public void tableNetworkPlayersUpdated(
+            @SuppressWarnings( "unused" )
             final TableNetworkEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             fireEventNotification( new Runnable()
             {
                 @Override

@@ -1,6 +1,6 @@
 /*
  * Branding.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,10 +21,12 @@
 
 package org.gamegineer.table.internal.ui.impl;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Image;
 import java.util.Collections;
 import java.util.List;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.app.BrandingUtils;
 import org.gamegineer.common.core.app.IBranding;
 import org.gamegineer.common.ui.app.BrandingUIUtils;
@@ -58,7 +60,7 @@ public final class Branding
      * @return The default application branding service or {@code null} if no
      *         application branding service is available.
      */
-    /* @Nullable */
+    @Nullable
     public static IBranding getDefault()
     {
         return Activator.getDefault().getBranding();
@@ -69,13 +71,16 @@ public final class Branding
      * 
      * @return The branding name; never {@code null}.
      */
-    /* @NonNull */
     public static String getName()
     {
         final IBranding branding = getDefault();
         if( branding != null )
         {
-            return branding.getName();
+            final String name = branding.getName();
+            if( name != null )
+            {
+                return name;
+            }
         }
 
         return NlsMessages.Branding_name_default;
@@ -86,7 +91,6 @@ public final class Branding
      * 
      * @return The branding version; never {@code null}.
      */
-    /* @NonNull */
     public static Version getVersion()
     {
         final IBranding branding = getDefault();
@@ -95,7 +99,7 @@ public final class Branding
             return BrandingUtils.getVersion( branding );
         }
 
-        return Version.emptyVersion;
+        return nonNull( Version.emptyVersion );
     }
 
     /**
@@ -104,7 +108,6 @@ public final class Branding
      * @return The collection of window images associated with the branding;
      *         never {@code null}.
      */
-    /* @NonNull */
     public static List<Image> getWindowImages()
     {
         final IBranding branding = getDefault();
@@ -113,6 +116,6 @@ public final class Branding
             return BrandingUIUtils.getWindowImages( branding );
         }
 
-        return Collections.<Image>emptyList();
+        return nonNull( Collections.<Image>emptyList() );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * JComponents.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -56,12 +56,8 @@ public final class JComponents
      * 
      * @param component
      *        The component; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code component} is {@code null}.
      */
     public static <T extends JComponent> void freezeHeight(
-        /* @NonNull */
         final T component )
     {
         final Dimension preferredSize = component.getPreferredSize();

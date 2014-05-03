@@ -1,6 +1,6 @@
 /*
  * MainModelListener.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.model;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 
 /**
@@ -58,8 +57,9 @@ public class MainModelListener
      */
     @Override
     public void mainModelStateChanged(
+        @SuppressWarnings( "unused" )
         final MainModelEvent event )
     {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        // do nothing
     }
 }

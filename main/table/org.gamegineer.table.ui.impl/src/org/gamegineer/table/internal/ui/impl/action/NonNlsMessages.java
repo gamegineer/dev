@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,39 +38,39 @@ final class NonNlsMessages
     // --- ActionMediator ---------------------------------------------------
 
     /** An action listener is already bound. */
-    public static String ActionMediator_bindActionListener_alreadyBound;
+    public static String ActionMediator_bindActionListener_alreadyBound = ""; //$NON-NLS-1$
 
     /** A should enable predicate is already bound. */
-    public static String ActionMediator_bindShouldEnablePredicate_alreadyBound;
+    public static String ActionMediator_bindShouldEnablePredicate_alreadyBound = ""; //$NON-NLS-1$
 
     /** A should select predicate is already bound. */
-    public static String ActionMediator_bindShouldSelectPredicate_alreadyBound;
+    public static String ActionMediator_bindShouldSelectPredicate_alreadyBound = ""; //$NON-NLS-1$
 
     /** The action has no attachments. */
-    public static String ActionMediator_unbind_noAttachments;
+    public static String ActionMediator_unbind_noAttachments = ""; //$NON-NLS-1$
 
     /** The action has no predicates. */
-    public static String ActionMediator_update_noPredicates;
+    public static String ActionMediator_update_noPredicates = ""; //$NON-NLS-1$
 
     // --- BasicAction ------------------------------------------------------
 
     /** The action listener is already registered. */
-    public static String BasicAction_addActionListener_listener_registered;
+    public static String BasicAction_addActionListener_listener_registered = ""; //$NON-NLS-1$
 
     /** The should enable predicate is already registered. */
-    public static String BasicAction_addShouldEnablePredicate_predicate_registered;
+    public static String BasicAction_addShouldEnablePredicate_predicate_registered = ""; //$NON-NLS-1$
 
     /** The should select predicate is already registered. */
-    public static String BasicAction_addShouldSelectPredicate_predicate_registered;
+    public static String BasicAction_addShouldSelectPredicate_predicate_registered = ""; //$NON-NLS-1$
 
     /** The action listener is not registered. */
-    public static String BasicAction_removeActionListener_listener_notRegistered;
+    public static String BasicAction_removeActionListener_listener_notRegistered = ""; //$NON-NLS-1$
 
     /** The should enable predicate is not registered. */
-    public static String BasicAction_removeShouldEnablePredicate_predicate_notRegistered;
+    public static String BasicAction_removeShouldEnablePredicate_predicate_notRegistered = ""; //$NON-NLS-1$
 
     /** The should select predicate is not registered. */
-    public static String BasicAction_removeShouldSelectPredicate_predicate_notRegistered;
+    public static String BasicAction_removeShouldSelectPredicate_predicate_notRegistered = ""; //$NON-NLS-1$
 
     // ======================================================================
     // Constructors

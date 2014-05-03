@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.model;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.EventObject;
 import net.jcip.annotations.ThreadSafe;
 
@@ -51,12 +52,8 @@ public class ContainerModelEvent
      * @param source
      *        The container model that fired the event; must not be {@code null}
      *        .
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code source} is {@code null}.
      */
     public ContainerModelEvent(
-        /* @NonNull */
         final ContainerModel source )
     {
         super( source );
@@ -72,9 +69,8 @@ public class ContainerModelEvent
      * 
      * @return The container model that fired the event; never {@code null}.
      */
-    /* @NonNull */
     public final ContainerModel getContainerModel()
     {
-        return (ContainerModel)getSource();
+        return nonNull( (ContainerModel)getSource() );
     }
 }

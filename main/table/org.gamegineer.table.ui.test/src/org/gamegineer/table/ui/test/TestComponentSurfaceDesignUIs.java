@@ -1,6 +1,6 @@
 /*
  * TestComponentSurfaceDesignUIs.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.ui.test;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import javax.swing.Icon;
 import net.jcip.annotations.ThreadSafe;
 import org.easymock.EasyMock;
@@ -62,17 +62,10 @@ public final class TestComponentSurfaceDesignUIs
      * 
      * @return A new component surface design user interface; never {@code null}
      *         .
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code componentSurfaceDesignUI} is {@code null}.
      */
-    /* @NonNull */
     public static ComponentSurfaceDesignUI cloneComponentSurfaceDesignUI(
-        /* @NonNull */
         final ComponentSurfaceDesignUI componentSurfaceDesignUI )
     {
-        assertArgumentNotNull( componentSurfaceDesignUI, "componentSurfaceDesignUI" ); //$NON-NLS-1$
-
         return new ComponentSurfaceDesignUI( componentSurfaceDesignUI.getId(), componentSurfaceDesignUI.getName(), componentSurfaceDesignUI.getIcon() );
     }
 
@@ -85,18 +78,11 @@ public final class TestComponentSurfaceDesignUIs
      * 
      * @return A new component surface design user interface; never {@code null}
      *         .
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code componentSurfaceDesign} is {@code null}.
      */
-    /* @NonNull */
     public static ComponentSurfaceDesignUI createComponentSurfaceDesignUI(
-        /* @NonNull */
         final ComponentSurfaceDesign componentSurfaceDesign )
     {
-        assertArgumentNotNull( componentSurfaceDesign, "componentSurfaceDesign" ); //$NON-NLS-1$
-
-        return new ComponentSurfaceDesignUI( componentSurfaceDesign.getId(), componentSurfaceDesign.getId().toString(), EasyMock.createMock( Icon.class ) );
+        return new ComponentSurfaceDesignUI( componentSurfaceDesign.getId(), componentSurfaceDesign.getId().toString(), nonNull( EasyMock.createMock( Icon.class ) ) );
     }
 
     /**
@@ -106,7 +92,6 @@ public final class TestComponentSurfaceDesignUIs
      * @return A new component surface design user interface; never {@code null}
      *         .
      */
-    /* @NonNull */
     public static ComponentSurfaceDesignUI createUniqueComponentSurfaceDesignUI()
     {
         return createComponentSurfaceDesignUI( TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );

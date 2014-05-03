@@ -1,6 +1,6 @@
 /*
  * StringToPrimitiveIntegerConverter.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.ui.impl.databinding.conversion;
 
 import net.jcip.annotations.Immutable;
 import org.eclipse.core.databinding.conversion.Converter;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A data binding converter from values of type {@link String} to values of type
@@ -53,9 +54,11 @@ public final class StringToPrimitiveIntegerConverter
     /*
      * @see org.eclipse.core.databinding.conversion.IConverter#convert(java.lang.Object)
      */
+    @Nullable
     @Override
     @SuppressWarnings( "boxing" )
     public Object convert(
+        @Nullable
         final Object fromObject )
     {
         return Integer.parseInt( (String)fromObject );

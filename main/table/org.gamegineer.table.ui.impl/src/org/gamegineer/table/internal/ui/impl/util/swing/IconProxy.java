@@ -1,6 +1,6 @@
 /*
  * IconProxy.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,13 +21,13 @@
 
 package org.gamegineer.table.internal.ui.impl.util.swing;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.net.URL;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Implementation of {@link Icon} to support lazy loading.
@@ -46,6 +46,7 @@ public final class IconProxy
     // ======================================================================
 
     /** The underlying icon. */
+    @Nullable
     private Icon icon_;
 
     /** The icon URL. */
@@ -61,16 +62,10 @@ public final class IconProxy
      * 
      * @param url
      *        The icon URL; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code url} is {@code null}.
      */
     public IconProxy(
-        /* @NonNull */
         final URL url )
     {
-        assertArgumentNotNull( url, "url" ); //$NON-NLS-1$
-
         icon_ = null;
         url_ = url;
     }
@@ -86,9 +81,9 @@ public final class IconProxy
     @Override
     public int getIconHeight()
     {
-        load();
+        final Icon icon = load();
 
-        return icon_.getIconHeight();
+        return icon.getIconHeight();
     }
 
     /*
@@ -97,20 +92,25 @@ public final class IconProxy
     @Override
     public int getIconWidth()
     {
-        load();
+        final Icon icon = load();
 
-        return icon_.getIconWidth();
+        return icon.getIconWidth();
     }
 
     /**
      * Loads the underlying icon if necessary.
+     * 
+     * @return The underlying icon; never {@code null}.
      */
-    private void load()
+    private Icon load()
     {
         if( icon_ == null )
         {
             icon_ = new ImageIcon( url_ );
         }
+
+        assert icon_ != null;
+        return icon_;
     }
 
     /*
@@ -118,13 +118,15 @@ public final class IconProxy
      */
     @Override
     public void paintIcon(
+        @Nullable
         final Component c,
+        @Nullable
         final Graphics g,
         final int x,
         final int y )
     {
-        load();
+        final Icon icon = load();
 
-        icon_.paintIcon( c, g, x, y );
+        icon.paintIcon( c, g, x, y );
     }
 }

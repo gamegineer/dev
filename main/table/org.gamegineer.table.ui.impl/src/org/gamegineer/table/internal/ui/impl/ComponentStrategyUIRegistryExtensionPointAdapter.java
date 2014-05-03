@@ -1,6 +1,6 @@
 /*
  * ComponentStrategyUIRegistryExtensionPointAdapter.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -80,8 +80,6 @@ public final class ComponentStrategyUIRegistryExtensionPointAdapter
     protected IComponentStrategyUI createObject(
         final IConfigurationElement configurationElement )
     {
-        assertArgumentNotNull( configurationElement, "configurationElement" ); //$NON-NLS-1$
-
         final String idString = configurationElement.getAttribute( ATTR_ID );
         if( idString == null )
         {
@@ -95,7 +93,7 @@ public final class ComponentStrategyUIRegistryExtensionPointAdapter
         final IComponentStrategyUI componentStrategyUI;
         try
         {
-            componentStrategyUI = (IComponentStrategyUI)configurationElement.createExecutableExtension( ATTR_CLASS_NAME );
+            componentStrategyUI = nonNull( (IComponentStrategyUI)configurationElement.createExecutableExtension( ATTR_CLASS_NAME ) );
         }
         catch( final CoreException e )
         {

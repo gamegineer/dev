@@ -1,6 +1,6 @@
 /*
  * DebugUtils.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.util;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.List;
 import net.jcip.annotations.NotThreadSafe;
 import net.jcip.annotations.ThreadSafe;
@@ -61,16 +61,10 @@ public final class DebugUtils
      * 
      * @param table
      *        The table; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code table} is {@code null}.
      */
     public static void trace(
-        /* @NonNull */
         final ITable table )
     {
-        assertArgumentNotNull( table, "table" ); //$NON-NLS-1$
-
         final TableTracer tableTracer = new TableTracer();
         tableTracer.trace( table );
     }
@@ -80,16 +74,10 @@ public final class DebugUtils
      * 
      * @param tableModel
      *        The table model; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code tableModel} is {@code null}.
      */
     public static void trace(
-        /* @NonNull */
         final TableModel tableModel )
     {
-        assertArgumentNotNull( tableModel, "tableModel" ); //$NON-NLS-1$
-
         final TableModelTracer tableModelTracer = new TableModelTracer();
         tableModelTracer.trace( tableModel );
 
@@ -146,13 +134,9 @@ public final class DebugUtils
          * 
          * @return The formatted component; never {@code null}.
          */
-        /* @NonNull */
         private String format(
-            /* @NonNull */
             final IComponent component )
         {
-            assert component != null;
-
             stringBuilder_.setLength( 0 );
 
             for( int index = 0; index < indentLevel_; ++index )
@@ -160,7 +144,9 @@ public final class DebugUtils
                 stringBuilder_.append( INDENT );
             }
 
-            final List<ComponentPath> componentPaths = component.getPath().toList();
+            final ComponentPath componentPath = component.getPath();
+            assert componentPath != null;
+            final List<ComponentPath> componentPaths = componentPath.toList();
             for( int index = 0, size = componentPaths.size(); index < size; ++index )
             {
                 stringBuilder_.append( componentPaths.get( index ).getIndex() );
@@ -173,7 +159,7 @@ public final class DebugUtils
             stringBuilder_.append( " : " ); //$NON-NLS-1$
             stringBuilder_.append( component.getSurfaceDesign( component.getOrientation() ).getId() );
 
-            return stringBuilder_.toString();
+            return nonNull( stringBuilder_.toString() );
         }
 
         /**
@@ -183,11 +169,8 @@ public final class DebugUtils
          *        The table; must not be {@code null}.
          */
         void trace(
-            /* @NonNull */
             final ITable table )
         {
-            assert table != null;
-
             table.getTableEnvironment().getLock().lock();
             try
             {
@@ -206,11 +189,8 @@ public final class DebugUtils
          *        The component; must not be {@code null}.
          */
         private void trace(
-            /* @NonNull */
             final IComponent component )
         {
-            assert component != null;
-
             Debug.getDefault().trace( Debug.OPTION_DEFAULT, format( component ) );
 
             if( component instanceof IContainer )
@@ -219,6 +199,7 @@ public final class DebugUtils
 
                 for( final IComponent childComponent : ((IContainer)component).getComponents() )
                 {
+                    assert childComponent != null;
                     trace( childComponent );
                 }
 
@@ -273,13 +254,9 @@ public final class DebugUtils
          * 
          * @return The formatted component model; never {@code null}.
          */
-        /* @NonNull */
         private String format(
-            /* @NonNull */
             final ComponentModel componentModel )
         {
-            assert componentModel != null;
-
             stringBuilder_.setLength( 0 );
 
             for( int index = 0; index < indentLevel_; ++index )
@@ -287,7 +264,9 @@ public final class DebugUtils
                 stringBuilder_.append( INDENT );
             }
 
-            final List<ComponentPath> componentPaths = componentModel.getPath().toList();
+            final ComponentPath componentPath = componentModel.getPath();
+            assert componentPath != null;
+            final List<ComponentPath> componentPaths = componentPath.toList();
             for( int index = 0, size = componentPaths.size(); index < size; ++index )
             {
                 stringBuilder_.append( componentPaths.get( index ).getIndex() );
@@ -300,7 +279,7 @@ public final class DebugUtils
             stringBuilder_.append( " : " ); //$NON-NLS-1$
             stringBuilder_.append( componentModel.getComponent().getSurfaceDesign( componentModel.getComponent().getOrientation() ).getId() );
 
-            return stringBuilder_.toString();
+            return nonNull( stringBuilder_.toString() );
         }
 
         /**
@@ -310,11 +289,8 @@ public final class DebugUtils
          *        The table model; must not be {@code null}.
          */
         void trace(
-            /* @NonNull */
             final TableModel tableModel )
         {
-            assert tableModel != null;
-
             tableModel.getTableEnvironmentModel().getLock().lock();
             try
             {
@@ -333,11 +309,8 @@ public final class DebugUtils
          *        The component model; must not be {@code null}.
          */
         private void trace(
-            /* @NonNull */
             final ComponentModel componentModel )
         {
-            assert componentModel != null;
-
             Debug.getDefault().trace( Debug.OPTION_DEFAULT, format( componentModel ) );
 
             if( componentModel instanceof ContainerModel )
@@ -346,6 +319,7 @@ public final class DebugUtils
 
                 for( final ComponentModel childComponentModel : ((ContainerModel)componentModel).getComponentModels() )
                 {
+                    assert childComponentModel != null;
                     trace( childComponentModel );
                 }
 

@@ -1,6 +1,6 @@
 /*
  * DefaultComponentStrategyUIFactory.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.strategies;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.IComponentStrategy;
 import org.gamegineer.table.core.IContainerStrategy;
@@ -59,17 +58,10 @@ public final class DefaultComponentStrategyUIFactory
      * 
      * @return A default component strategy user interface for the specified
      *         component strategy; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code componentStrategy} is {@code null}.
      */
-    /* @NonNull */
     public static IComponentStrategyUI createDefaultComponentStrategyUI(
-        /* @NonNull */
         final IComponentStrategy componentStrategy )
     {
-        assertArgumentNotNull( componentStrategy, "componentStrategy" ); //$NON-NLS-1$
-
         return (componentStrategy instanceof IContainerStrategy) //
             ? new DefaultContainerStrategyUI( componentStrategy.getId() ) //
             : new DefaultComponentStrategyUI( componentStrategy.getId() );

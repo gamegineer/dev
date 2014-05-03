@@ -1,6 +1,6 @@
 /*
  * MenuBarView.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -59,11 +59,8 @@ final class MenuBarView
      *        The model associated with this view; must not be {@code null}.
      */
     MenuBarView(
-        /* @NonNull */
         final MainModel model )
     {
-        assert model != null;
-
         model_ = model;
         menuBar_ = createMenuBar();
     }
@@ -78,7 +75,6 @@ final class MenuBarView
      * 
      * @return The add component menu; never {@code null}.
      */
-    /* @NonNull */
     private JMenu createAddComponentMenu()
     {
         final JMenu menu = new JMenu( NlsMessages.MenuBarView_addComponent_text );
@@ -92,7 +88,6 @@ final class MenuBarView
      * 
      * @return The file menu; never {@code null}.
      */
-    /* @NonNull */
     private JMenu createFileMenu()
     {
         final JMenu menu = createTopLevelMenu( NlsMessages.MenuBarView_file_text );
@@ -113,7 +108,6 @@ final class MenuBarView
      * 
      * @return The help menu; never {@code null}.
      */
-    /* @NonNull */
     private static JMenu createHelpMenu()
     {
         final JMenu menu = createTopLevelMenu( NlsMessages.MenuBarView_help_text );
@@ -129,7 +123,6 @@ final class MenuBarView
      * 
      * @return The layout menu; never {@code null}.
      */
-    /* @NonNull */
     private static JMenu createLayoutMenu()
     {
         final JMenu menu = new JMenu( NlsMessages.MenuBarView_layout_text );
@@ -148,7 +141,6 @@ final class MenuBarView
      * 
      * @return The network menu; never {@code null}.
      */
-    /* @NonNull */
     private static JMenu createNetworkMenu()
     {
         final JMenu menu = createTopLevelMenu( NlsMessages.MenuBarView_network_text );
@@ -168,7 +160,6 @@ final class MenuBarView
      * 
      * @return The menu bar; never {@code null}.
      */
-    /* @NonNull */
     private JMenuBar createMenuBar()
     {
         final JMenuBar menuBar = new JMenuBar();
@@ -185,7 +176,6 @@ final class MenuBarView
      * 
      * @return The table menu; never {@code null}.
      */
-    /* @NonNull */
     private JMenu createTableMenu()
     {
         final JMenu menu = createTopLevelMenu( NlsMessages.MenuBarView_table_text );
@@ -209,13 +199,9 @@ final class MenuBarView
      * 
      * @return A new top-level menu; never {@code null}.
      */
-    /* @NonNull */
     private static JMenu createTopLevelMenu(
-        /* @NonNull */
         final String text )
     {
-        assert text != null;
-
         final JMenu menu = new JMenu( text );
         menu.addMenuListener( MenuUtils.getDefaultMenuListener() );
         return menu;
@@ -239,7 +225,6 @@ final class MenuBarView
      * 
      * @return The menu bar; never {@code null}.
      */
-    /* @NonNull */
     JMenuBar getMenuBar()
     {
         return menuBar_;

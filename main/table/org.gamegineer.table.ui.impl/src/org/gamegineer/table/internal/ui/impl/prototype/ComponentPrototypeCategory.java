@@ -1,6 +1,6 @@
 /*
  * ComponentPrototypeCategory.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.prototype;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -75,18 +76,11 @@ final class ComponentPrototypeCategory
      *        ancestor.
      */
     ComponentPrototypeCategory(
-        /* @NonNull */
         final String id,
-        /* @NonNull */
         final String name,
         final int mnemonic,
-        /* @NonNull */
         final List<String> parentPath )
     {
-        assert id != null;
-        assert name != null;
-        assert parentPath != null;
-
         id_ = id;
         mnemonic_ = mnemonic;
         name_ = name;
@@ -112,20 +106,14 @@ final class ComponentPrototypeCategory
      * @return An immutable view of the specified component prototype category
      *         path; never {@code null}.
      */
-    /* @NonNull */
     private static List<String> createPath(
-        /* @NonNull */
         final List<String> parentPath,
-        /* @NonNull */
         final String id )
     {
-        assert parentPath != null;
-        assert id != null;
-
         final List<String> path = new ArrayList<>( parentPath.size() + 1 );
         path.addAll( parentPath );
         path.add( id );
-        return Collections.unmodifiableList( path );
+        return nonNull( Collections.unmodifiableList( path ) );
     }
 
     /**
@@ -133,7 +121,6 @@ final class ComponentPrototypeCategory
      * 
      * @return The component prototype category identifier; never {@code null}.
      */
-    /* @NonNull */
     String getId()
     {
         return id_;
@@ -154,7 +141,6 @@ final class ComponentPrototypeCategory
      * 
      * @return The component prototype category name; never {@code null}.
      */
-    /* @NonNull */
     String getName()
     {
         return name_;
@@ -166,7 +152,6 @@ final class ComponentPrototypeCategory
      * @return An immutable view of the component prototype category path; never
      *         {@code null}.
      */
-    /* @NonNull */
     List<String> getPath()
     {
         return path_;

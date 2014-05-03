@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.net.URL;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
@@ -40,12 +41,12 @@ final class NonNlsMessages
     // --- Activator --------------------------------------------------------
 
     /** An error occurred while saving the user preferences. */
-    public static String Activator_saveUserPreferenecs_error;
+    public static String Activator_saveUserPreferenecs_error = ""; //$NON-NLS-1$
 
     // --- BundleImages -----------------------------------------------------
 
     /** An error occurred while reading the image. */
-    public static String BundleImages_getImage_readError;
+    public static String BundleImages_getImage_readError = ""; //$NON-NLS-1$
 
     // --- ComponentStrategyUIRegistryExtensionPointAdapter -----------------
 
@@ -53,41 +54,41 @@ final class NonNlsMessages
      * An error occurred while creating the component strategy user interface of
      * a component strategy user interface configuration element.
      */
-    public static String ComponentStrategyUIRegistryExtensionPointAdapter_createObject_createComponentStrategyUIError;
+    public static String ComponentStrategyUIRegistryExtensionPointAdapter_createObject_createComponentStrategyUIError = ""; //$NON-NLS-1$
 
     /** The component strategy identifier is missing. */
-    public static String ComponentStrategyUIRegistryExtensionPointAdapter_createObject_missingId;
+    public static String ComponentStrategyUIRegistryExtensionPointAdapter_createObject_missingId = ""; //$NON-NLS-1$
 
     // --- ComponentSurfaceDesignUIRegistryExtensionPointAdapter ------------
 
     /** The bundle hosting the component surface design icon was not found. */
-    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconBundleNotFound;
+    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconBundleNotFound = ""; //$NON-NLS-1$
 
     /** The component surface design icon file was not found. */
-    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconFileNotFound;
+    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconFileNotFound = ""; //$NON-NLS-1$
 
     /** The component surface design icon path is missing. */
-    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_missingIconPath;
+    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_missingIconPath = ""; //$NON-NLS-1$
 
     /** The component surface design identifier is missing. */
-    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_missingId;
+    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_missingId = ""; //$NON-NLS-1$
 
     /** The component surface design name is missing. */
-    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_missingName;
+    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_missingName = ""; //$NON-NLS-1$
 
     // --- TableRunner ------------------------------------------------------
 
     /** The frame window could not be opened. */
-    public static String TableRunner_openFrame_error;
+    public static String TableRunner_openFrame_error = ""; //$NON-NLS-1$
 
     /** The table environment factory service is not available. */
-    public static String TableRunner_openFrame_tableEnvironmentFactoryNotAvailable;
+    public static String TableRunner_openFrame_tableEnvironmentFactoryNotAvailable = ""; //$NON-NLS-1$
 
     /** The table network factory service is not available. */
-    public static String TableRunner_openFrame_tableNetworkFactoryNotAvailable;
+    public static String TableRunner_openFrame_tableNetworkFactoryNotAvailable = ""; //$NON-NLS-1$
 
     /** The runner is already running or has already finished. */
-    public static String TableRunner_state_notPristine;
+    public static String TableRunner_state_notPristine = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -126,12 +127,10 @@ final class NonNlsMessages
      * @return The formatted message indicating an error occurred while reading
      *         the specified image; never {@code null}.
      */
-    /* @NonNull */
     static String BundleImages_getImage_readError(
-        /* @NonNull */
         final URL imageUrl )
     {
-        return bind( BundleImages_getImage_readError, imageUrl );
+        return nonNull( bind( BundleImages_getImage_readError, imageUrl ) );
     }
 
     // --- ComponentSurfaceDesignUIRegistryExtensionPointAdapter ------------
@@ -146,12 +145,10 @@ final class NonNlsMessages
      * @return The formatted message indicating the bundle hosting the component
      *         surface design icon file was not found; never {@code null}.
      */
-    /* @NonNull */
     static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconBundleNotFound(
-        /* @NonNull */
         final String name )
     {
-        return bind( ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconBundleNotFound, name );
+        return nonNull( bind( ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconBundleNotFound, name ) );
     }
 
     /**
@@ -168,13 +165,10 @@ final class NonNlsMessages
      * @return The formatted message indicating the component surface design
      *         icon file was not found; never {@code null}.
      */
-    /* @NonNull */
     static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconFileNotFound(
-        /* @NonNull */
         final Bundle bundle,
-        /* @NonNull */
         final String path )
     {
-        return bind( ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconFileNotFound, bundle.getSymbolicName(), path );
+        return nonNull( bind( ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconFileNotFound, bundle.getSymbolicName(), path ) );
     }
 }

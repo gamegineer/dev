@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.util.swing;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -31,6 +30,7 @@ import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A decorator for the {@link ListModel} interface that ensures its elements are
@@ -72,12 +72,8 @@ public final class SortedListModel<E>
      * 
      * @param listModel
      *        The unsorted list model; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code listModel} is {@code null}.
      */
     public SortedListModel(
-        /* @NonNull */
         final ListModel<E> listModel )
     {
         this( listModel, null );
@@ -92,18 +88,12 @@ public final class SortedListModel<E>
      * @param comparator
      *        The comparator used to sort the list model or {@code null} to use
      *        the default comparator.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code listModel} is {@code null}.
      */
     public SortedListModel(
-        /* @NonNull */
         final ListModel<E> listModel,
-        /* @Nullable */
+        @Nullable
         final Comparator<E> comparator )
     {
-        assertArgumentNotNull( listModel, "listModel" ); //$NON-NLS-1$
-
         comparator_ = (comparator != null) ? comparator : createDefaultComparator();
         sortedEntries_ = new ArrayList<>( listModel.getSize() );
         unsortedListModel_ = listModel;
@@ -123,7 +113,6 @@ public final class SortedListModel<E>
      * 
      * @return A default comparator; never {@code null}.
      */
-    /* @NonNull */
     private Comparator<E> createDefaultComparator()
     {
         return new Comparator<E>()
@@ -142,6 +131,7 @@ public final class SortedListModel<E>
     /*
      * @see javax.swing.ListModel#getElementAt(int)
      */
+    @Nullable
     @Override
     public E getElementAt(
         final int index )
@@ -162,11 +152,8 @@ public final class SortedListModel<E>
      *         which the specified entry should be inserted.
      */
     private int getInsertionIndex(
-        /* @NonNull */
         final Entry entry )
     {
-        assert entry != null;
-
         int sortedIndex = Collections.binarySearch( sortedEntries_, entry );
         if( sortedIndex < 0 )
         {
@@ -208,22 +195,31 @@ public final class SortedListModel<E>
         {
             @Override
             public void contentsChanged(
+                @Nullable
                 final ListDataEvent event )
             {
+                assert event != null;
+
                 unsortedContentsChanged( event );
             }
 
             @Override
             public void intervalAdded(
+                @Nullable
                 final ListDataEvent event )
             {
+                assert event != null;
+
                 unsortedIntervalAdded( event );
             }
 
             @Override
             public void intervalRemoved(
+                @Nullable
                 final ListDataEvent event )
             {
+                assert event != null;
+
                 unsortedIntervalRemoved( event );
             }
         };
@@ -253,11 +249,9 @@ public final class SortedListModel<E>
      */
     @SuppressWarnings( "boxing" )
     private void unsortedContentsChanged(
-        /* @NonNull */
+        @SuppressWarnings( "unused" )
         final ListDataEvent event )
     {
-        assert event != null;
-
         Collections.sort( sortedEntries_ );
         fireContentsChanged( ListDataEvent.CONTENTS_CHANGED, 0, sortedEntries_.size() - 1 );
     }
@@ -271,11 +265,8 @@ public final class SortedListModel<E>
      */
     @SuppressWarnings( "boxing" )
     private void unsortedIntervalAdded(
-        /* @NonNull */
         final ListDataEvent event )
     {
-        assert event != null;
-
         final int beginUnsortedIndex = event.getIndex0();
         final int endUnsortedIndex = event.getIndex1();
         final int elementsAdded = endUnsortedIndex - beginUnsortedIndex + 1;
@@ -312,11 +303,8 @@ public final class SortedListModel<E>
      */
     @SuppressWarnings( "boxing" )
     private void unsortedIntervalRemoved(
-        /* @NonNull */
         final ListDataEvent event )
     {
-        assert event != null;
-
         final int beginUnsortedIndex = event.getIndex0();
         final int endUnsortedIndex = event.getIndex1();
         final int elementsRemoved = endUnsortedIndex - beginUnsortedIndex + 1;

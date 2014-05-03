@@ -1,6 +1,6 @@
 /*
  * ComponentSurfaceDesignUI.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.ui;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import javax.swing.Icon;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
@@ -59,22 +59,12 @@ public final class ComponentSurfaceDesignUI
      *        The component surface design name; must not be {@code null}.
      * @param icon
      *        The component surface design icon; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code id}, {@code name}, or {@code icon} is {@code null}.
      */
     public ComponentSurfaceDesignUI(
-        /* @NonNull */
         final ComponentSurfaceDesignId id,
-        /* @NonNull */
         final String name,
-        /* @NonNull */
         final Icon icon )
     {
-        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
-        assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentNotNull( icon, "icon" ); //$NON-NLS-1$
-
         id_ = id;
         name_ = name;
         icon_ = icon;
@@ -90,7 +80,6 @@ public final class ComponentSurfaceDesignUI
      * 
      * @return The component surface design icon; never {@code null}.
      */
-    /* @NonNull */
     public Icon getIcon()
     {
         return icon_;
@@ -101,7 +90,6 @@ public final class ComponentSurfaceDesignUI
      * 
      * @return The component surface design identifier; never {@code null}.
      */
-    /* @NonNull */
     public ComponentSurfaceDesignId getId()
     {
         return id_;
@@ -112,7 +100,6 @@ public final class ComponentSurfaceDesignUI
      * 
      * @return The component surface design name; never {@code null}.
      */
-    /* @NonNull */
     public String getName()
     {
         return name_;
@@ -133,6 +120,6 @@ public final class ComponentSurfaceDesignUI
         sb.append( ", name_=" ); //$NON-NLS-1$
         sb.append( name_ );
         sb.append( "]" ); //$NON-NLS-1$
-        return sb.toString();
+        return nonNull( sb.toString() );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * ComponentPrototypeFactoryException.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.table.ui.prototype;
 
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A checked exception that indicates a component prototype factory could not
@@ -61,7 +62,7 @@ public final class ComponentPrototypeFactoryException
      *        The detail message; may be {@code null}.
      */
     public ComponentPrototypeFactoryException(
-        /* @Nullable */
+        @Nullable
         final String message )
     {
         super( message );
@@ -76,7 +77,7 @@ public final class ComponentPrototypeFactoryException
      *        The cause; may be {@code null}.
      */
     public ComponentPrototypeFactoryException(
-        /* @Nullable */
+        @Nullable
         final Throwable cause )
     {
         super( cause );
@@ -93,9 +94,9 @@ public final class ComponentPrototypeFactoryException
      *        The cause; may be {@code null}.
      */
     public ComponentPrototypeFactoryException(
-        /* @Nullable */
+        @Nullable
         final String message,
-        /* @Nullable */
+        @Nullable
         final Throwable cause )
     {
         super( message, cause );

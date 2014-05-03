@@ -1,6 +1,6 @@
 /*
  * NlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.util.swing;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.File;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
@@ -39,13 +40,13 @@ final class NlsMessages
     // --- JFileChooser -----------------------------------------------------
 
     /** The Confirm Overwrite File dialog message. */
-    public static String JFileChooser_confirmOverwriteFile_message;
+    public static String JFileChooser_confirmOverwriteFile_message = ""; //$NON-NLS-1$
 
     /** The Confirm Overwrite File dialog title. */
-    public static String JFileChooser_confirmOverwriteFile_title;
+    public static String JFileChooser_confirmOverwriteFile_title = ""; //$NON-NLS-1$
 
     /** The Warn File Not Found dialog message. */
-    public static String JFileChooser_warnFileNotFound_message;
+    public static String JFileChooser_warnFileNotFound_message = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -83,12 +84,10 @@ final class NlsMessages
      * @return The formatted message for the Confirm Overwrite File dialog
      *         message; never {@code null}.
      */
-    /* @NonNull */
     static String JFileChooser_confirmOverwriteFile_message(
-        /* @NonNull */
         final File file )
     {
-        return bind( JFileChooser_confirmOverwriteFile_message, file.getName() );
+        return nonNull( bind( JFileChooser_confirmOverwriteFile_message, file.getName() ) );
     }
 
     /**
@@ -100,11 +99,9 @@ final class NlsMessages
      * @return The formatted message for the Warn File Not Found dialog message;
      *         never {@code null}.
      */
-    /* @NonNull */
     static String JFileChooser_warnFileNotFound_message(
-        /* @NonNull */
         final File file )
     {
-        return bind( JFileChooser_warnFileNotFound_message, file.getName() );
+        return nonNull( bind( JFileChooser_warnFileNotFound_message, file.getName() ) );
     }
 }

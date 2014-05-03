@@ -1,6 +1,6 @@
 /*
  * TableRunner.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -41,6 +40,7 @@ import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.core.ITableEnvironmentFactory;
 import org.gamegineer.table.internal.ui.impl.view.MainFrame;
 import org.gamegineer.table.net.ITableNetworkFactory;
@@ -68,6 +68,7 @@ public final class TableRunner
      * This reference must only be manipulated from the Swing event-dispatching
      * thread.
      */
+    @Nullable
     private MainFrame frame_;
 
     /** A reference to the table result. */
@@ -89,16 +90,10 @@ public final class TableRunner
      * 
      * @param advisor
      *        The table advisor; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code advisor} is {@code null}.
      */
     public TableRunner(
-        /* @NonNull */
         final ITableAdvisor advisor )
     {
-        assertArgumentNotNull( advisor, "advisor" ); //$NON-NLS-1$
-
         advisor_ = advisor;
         frame_ = null;
         resultRef_ = new AtomicReference<>( TableResult.OK );
@@ -144,7 +139,9 @@ public final class TableRunner
             closeFrameAsyncAndWait();
         }
 
-        return resultRef_.get();
+        final TableResult result = resultRef_.get();
+        assert result != null;
+        return result;
     }
 
     /**
@@ -158,11 +155,12 @@ public final class TableRunner
     {
         assert SwingUtilities.isEventDispatchThread();
 
-        if( frame_ != null )
+        final MainFrame frame = frame_;
+        if( frame != null )
         {
-            if( frame_.isDisplayable() )
+            if( frame.isDisplayable() )
             {
-                frame_.dispose();
+                frame.dispose();
             }
             frame_ = null;
         }
@@ -222,6 +220,7 @@ public final class TableRunner
                 @Override
                 @SuppressWarnings( "synthetic-access" )
                 public void windowClosed(
+                    @Nullable
                     @SuppressWarnings( "unused" )
                     final WindowEvent event )
                 {
@@ -229,10 +228,10 @@ public final class TableRunner
                     stop( TableResult.OK );
                 }
             };
-            frame_ = new MainFrame( tableEnvironmentFactory, tableNetworkFactory );
-            frame_.addWindowListener( windowListener );
-            frame_.setDefaultCloseOperation( WindowConstants.DISPOSE_ON_CLOSE );
-            frame_.setVisible( true );
+            final MainFrame frame = frame_ = new MainFrame( tableEnvironmentFactory, tableNetworkFactory );
+            frame.addWindowListener( windowListener );
+            frame.setDefaultCloseOperation( WindowConstants.DISPOSE_ON_CLOSE );
+            frame.setVisible( true );
 
             start();
         }
@@ -273,7 +272,7 @@ public final class TableRunner
      *         should exit immediately; otherwise {@code null} to indicate the
      *         runner should continue running.
      */
-    /* @Nullable */
+    @Nullable
     private TableResult processCommandLineArguments()
     {
         try
@@ -330,11 +329,9 @@ public final class TableRunner
      *        The table result; must not be {@code null}.
      */
     private void stop(
-        /* @NonNull */
         final TableResult result )
     {
         assert SwingUtilities.isEventDispatchThread();
-        assert result != null;
 
         resultRef_.set( result );
         stateRef_.set( State.STOPPING );

@@ -1,6 +1,6 @@
 /*
  * TableView.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.view;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -57,6 +57,7 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.common.ui.window.WindowConstants;
 import org.gamegineer.common.ui.wizard.IWizard;
@@ -136,9 +137,11 @@ final class TableView
     private final MouseInputListener mouseInputListener_;
 
     /** The table model listener for this view. */
+    @Nullable
     private ITableModelListener tableModelListener_;
 
     /** The tabletop view. */
+    @Nullable
     private ContainerView tabletopView_;
 
     /**
@@ -159,15 +162,14 @@ final class TableView
      *        The model associated with this view; must not be {@code null}.
      */
     TableView(
-        /* @NonNull */
         final TableModel model )
     {
-        assert model != null;
-
         actionMediator_ = new ActionMediator();
         backgroundPaint_ = createBackgroundPaint();
         inputHandlers_ = createInputHandlers();
-        inputHandler_ = inputHandlers_.get( DefaultInputHandler.class );
+        final AbstractInputHandler defaultInputHandler = inputHandlers_.get( DefaultInputHandler.class );
+        assert defaultInputHandler != null;
+        inputHandler_ = defaultInputHandler;
         keyListener_ = createKeyListener();
         model_ = model;
         mouseInputListener_ = createMouseInputListener();
@@ -191,11 +193,8 @@ final class TableView
      *        must not be {@code null}.
      */
     private void addComponent(
-        /* @NonNull */
         final IComponentPrototypeFactory componentPrototypeFactory )
     {
-        assert componentPrototypeFactory != null;
-
         getTableEnvironmentModelLock().lock();
         try
         {
@@ -211,7 +210,9 @@ final class TableView
                 }
                 else
                 {
-                    focusedComponent.getContainer().addComponents( components );
+                    final IContainer focusedComponentContainer = focusedComponent.getContainer();
+                    assert focusedComponentContainer != null;
+                    focusedComponentContainer.addComponents( components );
                 }
             }
             else
@@ -280,11 +281,8 @@ final class TableView
      *        The action; must not be {@code null}.
      */
     private void bindActionInput(
-        /* @NonNull */
         final BasicAction action )
     {
-        assert action != null;
-
         getInputMap().put( action.getAccelerator(), action.getId() );
         getActionMap().put( action.getId(), action );
     }
@@ -302,9 +300,14 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
+                @Nullable
                 final ActionEvent event )
             {
-                setContainerLayout( ContainerLayoutId.fromString( event.getActionCommand() ) );
+                assert event != null;
+
+                final String encodedContainerLayoutId = event.getActionCommand();
+                assert encodedContainerLayoutId != null;
+                setContainerLayout( ContainerLayoutId.fromString( encodedContainerLayoutId ) );
             }
         };
         actionMediator_.bindActionListener( Actions.getAddComponentAction(), new ActionListener()
@@ -312,8 +315,11 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
+                @Nullable
                 final ActionEvent event )
             {
+                assert event != null;
+
                 final IComponentPrototypeFactory componentPrototypeFactory = ComponentPrototypeUtils.getComponentPrototypeFactory( event );
                 if( componentPrototypeFactory != null )
                 {
@@ -326,6 +332,7 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
@@ -337,6 +344,7 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
@@ -348,6 +356,7 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
@@ -359,6 +368,7 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
@@ -370,6 +380,7 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
@@ -381,6 +392,7 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
@@ -392,6 +404,7 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
@@ -403,6 +416,7 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
@@ -414,6 +428,7 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
@@ -425,6 +440,7 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
@@ -436,6 +452,7 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
@@ -447,6 +464,7 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
@@ -614,7 +632,9 @@ final class TableView
                         return false;
                     }
 
-                    return containerModel.getComponent().getLayout().getId().equals( ContainerLayoutId.fromString( (String)obj.getValue( Action.ACTION_COMMAND_KEY ) ) );
+                    final String encodedContainerLayoutId = (String)obj.getValue( Action.ACTION_COMMAND_KEY );
+                    assert encodedContainerLayoutId != null;
+                    return containerModel.getComponent().getLayout().getId().equals( ContainerLayoutId.fromString( encodedContainerLayoutId ) );
                 }
                 finally
                 {
@@ -646,11 +666,8 @@ final class TableView
      *        The point; must not be {@code null}.
      */
     private void convertPointFromTable(
-        /* @NonNull */
         final Point point )
     {
-        assert point != null;
-
         final Dimension originOffset = model_.getOriginOffset();
         point.translate( originOffset.width, originOffset.height );
     }
@@ -663,11 +680,8 @@ final class TableView
      *        The point; must not be {@code null}.
      */
     private void convertPointToTable(
-        /* @NonNull */
         final Point point )
     {
-        assert point != null;
-
         final Dimension originOffset = model_.getOriginOffset();
         point.translate( -originOffset.width, -originOffset.height );
     }
@@ -680,11 +694,8 @@ final class TableView
      *        The rectangle; must not be {@code null}.
      */
     private void convertRectangleFromTable(
-        /* @NonNull */
         final Rectangle rect )
     {
-        assert rect != null;
-
         final Dimension originOffset = model_.getOriginOffset();
         rect.translate( originOffset.width, originOffset.height );
     }
@@ -694,7 +705,6 @@ final class TableView
      * 
      * @return The background paint; never {@code null}.
      */
-    /* @NonNull */
     private static Paint createBackgroundPaint()
     {
         final BufferedImage image = Activator.getDefault().getBundleImages().getImage( BundleImages.BACKGROUND_GREEN_FELT );
@@ -712,7 +722,6 @@ final class TableView
      * @return The collection of input handler singletons for the view; never
      *         {@code null}.
      */
-    /* @NonNull */
     private Map<Class<? extends AbstractInputHandler>, AbstractInputHandler> createInputHandlers()
     {
         final Map<Class<? extends AbstractInputHandler>, AbstractInputHandler> inputHandlers = new HashMap<>();
@@ -729,7 +738,6 @@ final class TableView
      * 
      * @return The key listener for the view; never {@code null}.
      */
-    /* @NonNull */
     private KeyListener createKeyListener()
     {
         @SuppressWarnings( "synthetic-access" )
@@ -737,15 +745,21 @@ final class TableView
         {
             @Override
             public void keyPressed(
+                @Nullable
                 final KeyEvent event )
             {
+                assert event != null;
+
                 inputHandler_.keyPressed( event );
             }
 
             @Override
             public void keyReleased(
+                @Nullable
                 final KeyEvent event )
             {
+                assert event != null;
+
                 if( event.getKeyCode() == KeyEvent.VK_CONTEXT_MENU )
                 {
                     setInputHandler( PopupMenuInputHandler.class, event );
@@ -756,8 +770,11 @@ final class TableView
 
             @Override
             public void keyTyped(
+                @Nullable
                 final KeyEvent event )
             {
+                assert event != null;
+
                 inputHandler_.keyTyped( event );
             }
         };
@@ -769,7 +786,6 @@ final class TableView
      * 
      * @return The mouse input listener for the view; never {@code null}.
      */
-    /* @NonNull */
     private MouseInputListener createMouseInputListener()
     {
         @SuppressWarnings( "synthetic-access" )
@@ -777,6 +793,7 @@ final class TableView
         {
             @Override
             public void mouseDragged(
+                @Nullable
                 final MouseEvent event )
             {
                 inputHandler_.mouseDragged( event );
@@ -784,6 +801,7 @@ final class TableView
 
             @Override
             public void mouseMoved(
+                @Nullable
                 final MouseEvent event )
             {
                 inputHandler_.mouseMoved( event );
@@ -791,6 +809,7 @@ final class TableView
 
             @Override
             public void mousePressed(
+                @Nullable
                 final MouseEvent event )
             {
                 inputHandler_.mousePressed( event );
@@ -798,6 +817,7 @@ final class TableView
 
             @Override
             public void mouseReleased(
+                @Nullable
                 final MouseEvent event )
             {
                 inputHandler_.mouseReleased( event );
@@ -880,7 +900,7 @@ final class TableView
      * @return The model associated with the focused component or {@code null}
      *         if no component has the focus.
      */
-    /* @Nullable */
+    @Nullable
     private ComponentModel getFocusedComponentModel()
     {
         return model_.getFocusedComponentModel();
@@ -892,7 +912,7 @@ final class TableView
      * @return The model associated with the focused container or {@code null}
      *         if no container has the focus.
      */
-    /* @Nullable */
+    @Nullable
     private ContainerModel getFocusedContainerModel()
     {
         final ComponentModel componentModel = getFocusedComponentModel();
@@ -907,7 +927,7 @@ final class TableView
      *         model if no component has the focus; or {@code null} if a
      *         non-container component has the focus.
      */
-    /* @Nullable */
+    @Nullable
     private ContainerModel getFocusedContainerModelOrTabletopModel()
     {
         final ComponentModel componentModel = getFocusedComponentModel();
@@ -928,10 +948,9 @@ final class TableView
      * 
      * @return The mouse location in table coordinates; never {@code null}.
      */
-    /* @NonNull */
     private Point getMouseLocation()
     {
-        final Point location = MouseInfo.getPointerInfo().getLocation();
+        final Point location = nonNull( MouseInfo.getPointerInfo().getLocation() );
         SwingUtilities.convertPointFromScreen( location, this );
         convertPointToTable( location );
         return location;
@@ -942,7 +961,6 @@ final class TableView
      * 
      * @return The table environment model lock; never {@code null}.
      */
-    /* @NonNull */
     private ITableEnvironmentModelLock getTableEnvironmentModelLock()
     {
         return model_.getTableEnvironmentModel().getLock();
@@ -1007,8 +1025,11 @@ final class TableView
      */
     @Override
     protected void paintChildren(
+        @Nullable
         final Graphics g )
     {
+        assert g != null;
+
         super.paintChildren( g );
 
         final Graphics2D g2d = (Graphics2D)g;
@@ -1021,11 +1042,12 @@ final class TableView
         g2d.setPaint( backgroundPaint_ );
         g2d.fillRect( -originOffset.width, -originOffset.height, getWidth(), getHeight() );
 
-        if( tabletopView_ != null )
+        final ContainerView tabletopView = tabletopView_;
+        if( tabletopView != null )
         {
-            if( clipBounds.intersects( tabletopView_.getComponentModel().getComponent().getBounds() ) )
+            if( clipBounds.intersects( tabletopView.getComponentModel().getComponent().getBounds() ) )
             {
-                tabletopView_.paint( this, g );
+                tabletopView.paint( this, g );
             }
         }
 
@@ -1033,11 +1055,11 @@ final class TableView
         final ComponentModel focusedComponentModel = model_.getFocusedComponentModel();
         if( (hoveredComponentModel != null) && (hoveredComponentModel != focusedComponentModel) )
         {
-            paintComponentBorder( g, hoveredComponentModel, Color.YELLOW );
+            paintComponentBorder( g, hoveredComponentModel, nonNull( Color.YELLOW ) );
         }
         if( focusedComponentModel != null )
         {
-            paintComponentBorder( g, focusedComponentModel, Color.GREEN );
+            paintComponentBorder( g, focusedComponentModel, nonNull( Color.GREEN ) );
         }
     }
 
@@ -1052,17 +1074,10 @@ final class TableView
      *        The border color; must not be {@code null}.
      */
     private static void paintComponentBorder(
-        /* @NonNull */
         final Graphics g,
-        /* @NonNull */
         final ComponentModel componentModel,
-        /* @NonNull */
         final Color color )
     {
-        assert g != null;
-        assert componentModel != null;
-        assert color != null;
-
         final Rectangle componentBounds = componentModel.getComponent().getBounds();
         final Color oldColor = g.getColor();
         g.setColor( color );
@@ -1126,7 +1141,9 @@ final class TableView
         removeMouseMotionListener( mouseInputListener_ );
         removeMouseListener( mouseInputListener_ );
         removeKeyListener( keyListener_ );
-        model_.removeTableModelListener( tableModelListener_ );
+        final ITableModelListener tableModelListener = tableModelListener_;
+        assert tableModelListener != null;
+        model_.removeTableModelListener( tableModelListener );
         tableModelListener_ = null;
         actionMediator_.unbindAll();
 
@@ -1140,11 +1157,8 @@ final class TableView
      *        The region of the table to repaint in table coordinates.
      */
     void repaintTable(
-        /* @NonNull */
         final Rectangle region )
     {
-        assert region != null;
-
         final Rectangle viewRegion = new Rectangle( region );
         viewRegion.grow( PADDING.width, PADDING.height ); // ensure there is enough room to draw border if necessary
         convertRectangleFromTable( viewRegion );
@@ -1174,11 +1188,8 @@ final class TableView
      *        The identifier of the container layout; must not be {@code null}.
      */
     private void setContainerLayout(
-        /* @NonNull */
         final ContainerLayoutId layoutId )
     {
-        assert layoutId != null;
-
         getTableEnvironmentModelLock().lock();
         try
         {
@@ -1212,16 +1223,14 @@ final class TableView
      *        may be {@code null} if no input event triggered the activation.
      */
     private void setInputHandler(
-        /* @NonNUll */
         final Class<? extends AbstractInputHandler> handlerClass,
-        /* @Nullable */
+        @Nullable
         final InputEvent event )
     {
-        assert handlerClass != null;
-
         inputHandler_.deactivate();
-        inputHandler_ = inputHandlers_.get( handlerClass );
-        assert inputHandler_ != null;
+        final AbstractInputHandler inputHandler = inputHandlers_.get( handlerClass );
+        assert inputHandler != null;
+        inputHandler_ = inputHandler;
         inputHandler_.activate( event );
     }
 
@@ -1281,7 +1290,7 @@ final class TableView
          *        be {@code null} if no input event triggered the activation.
          */
         void activate(
-            /* @Nullable */
+            @Nullable
             @SuppressWarnings( "unused" )
             final InputEvent event )
         {
@@ -1299,9 +1308,9 @@ final class TableView
          * @return A search vector from the focused component model or
          *         {@code null} if no component model has the focus.
          */
-        /* @Nullable */
+        @Nullable
         protected final ComponentModelVector createSearchVectorFromFocusedComponentModel(
-            /* @Nullable */
+            @Nullable
             final InputEvent event )
         {
             final ComponentModel focusedComponentModel = model_.getFocusedComponentModel();
@@ -1355,14 +1364,13 @@ final class TableView
          * 
          * @return The mouse location in table coordinates; never {@code null}.
          */
-        /* @NonNull */
         protected final Point getMouseLocation(
-            /* @Nullable */
+            @Nullable
             final InputEvent event )
         {
             if( event instanceof MouseEvent )
             {
-                final Point location = ((MouseEvent)event).getPoint();
+                final Point location = nonNull( ((MouseEvent)event).getPoint() );
                 convertPointToTable( location );
                 return location;
             }
@@ -1378,6 +1386,7 @@ final class TableView
          */
         @Override
         public void keyPressed(
+            @Nullable
             @SuppressWarnings( "unused" )
             final KeyEvent event )
         {
@@ -1392,6 +1401,7 @@ final class TableView
          */
         @Override
         public void keyReleased(
+            @Nullable
             @SuppressWarnings( "unused" )
             final KeyEvent event )
         {
@@ -1406,6 +1416,7 @@ final class TableView
          */
         @Override
         public void keyTyped(
+            @Nullable
             @SuppressWarnings( "unused" )
             final KeyEvent event )
         {
@@ -1419,6 +1430,7 @@ final class TableView
          */
         @Override
         public void mouseReleased(
+            @Nullable
             @SuppressWarnings( "unused" )
             final MouseEvent event )
         {
@@ -1455,6 +1467,7 @@ final class TableView
          */
         @Override
         void activate(
+            @Nullable
             final InputEvent event )
         {
             updateHover( event );
@@ -1466,6 +1479,7 @@ final class TableView
          */
         @Override
         public void keyPressed(
+            @Nullable
             final KeyEvent event )
         {
             updateHover( event );
@@ -1476,6 +1490,7 @@ final class TableView
          */
         @Override
         public void keyReleased(
+            @Nullable
             final KeyEvent event )
         {
             updateHover( event );
@@ -1486,6 +1501,7 @@ final class TableView
          */
         @Override
         public void mouseMoved(
+            @Nullable
             final MouseEvent event )
         {
             updateHover( event );
@@ -1497,8 +1513,11 @@ final class TableView
          */
         @Override
         public void mousePressed(
+            @Nullable
             final MouseEvent event )
         {
+            assert event != null;
+
             updateFocus( event );
 
             if( event.isPopupTrigger() )
@@ -1523,8 +1542,11 @@ final class TableView
          */
         @Override
         public void mouseReleased(
+            @Nullable
             final MouseEvent event )
         {
+            assert event != null;
+
             if( event.isPopupTrigger() )
             {
                 setInputHandler( PopupMenuInputHandler.class, event );
@@ -1541,7 +1563,7 @@ final class TableView
          *        available.
          */
         private void updateCursor(
-            /* @Nullable */
+            @Nullable
             final InputEvent event )
         {
             final ComponentModel componentModel = model_.getFocusableComponentModel( getMouseLocation( event ) );
@@ -1568,11 +1590,8 @@ final class TableView
          *        The mouse event; must not be {@code null}.
          */
         private void updateFocus(
-            /* @NonNull */
             final MouseEvent event )
         {
-            assert event != null;
-
             if( SwingUtilities.isLeftMouseButton( event ) || SwingUtilities.isRightMouseButton( event ) )
             {
                 final Point mouseLocation = getMouseLocation( event );
@@ -1604,7 +1623,7 @@ final class TableView
          *        available.
          */
         private void updateHover(
-            /* @Nullable */
+            @Nullable
             final InputEvent event )
         {
             getTableEnvironmentModelLock().lock();
@@ -1668,6 +1687,7 @@ final class TableView
          */
         @Override
         void activate(
+            @Nullable
             final InputEvent event )
         {
             originalLocation_.setLocation( getMouseLocation( event ) );
@@ -1684,11 +1704,8 @@ final class TableView
          *         {@code false}.
          */
         private boolean canBeginDrag(
-            /* @NonNUll */
             final Point location )
         {
-            assert location != null;
-
             final Rectangle rect = new Rectangle( originalLocation_ );
             rect.grow( DRAG_THRESHOLD, DRAG_THRESHOLD );
             return !rect.contains( location );
@@ -1708,6 +1725,7 @@ final class TableView
          */
         @Override
         public void mouseDragged(
+            @Nullable
             final MouseEvent event )
         {
             final Point location = getMouseLocation( event );
@@ -1736,8 +1754,11 @@ final class TableView
          */
         @Override
         public void mouseReleased(
+            @Nullable
             final MouseEvent event )
         {
+            assert event != null;
+
             if( updateFocusOnMouseReleased_ )
             {
                 updateFocus( event );
@@ -1758,11 +1779,8 @@ final class TableView
          *        The mouse event; must not be {@code null}.
          */
         private void updateFocus(
-            /* @NonNull */
             final MouseEvent event )
         {
-            assert event != null;
-
             if( SwingUtilities.isLeftMouseButton( event ) )
             {
                 getTableEnvironmentModelLock().lock();
@@ -1791,9 +1809,11 @@ final class TableView
         // ==================================================================
 
         /** The drag context. */
+        @Nullable
         private IDragContext dragContext_;
 
         /** The drag strategy. */
+        @Nullable
         private DragStrategy dragStrategy_;
 
 
@@ -1821,6 +1841,7 @@ final class TableView
          */
         @Override
         void activate(
+            @Nullable
             final InputEvent event )
         {
             getTableEnvironmentModelLock().lock();
@@ -1830,7 +1851,7 @@ final class TableView
                 if( focusedComponentModel != null )
                 {
                     final IDragSource dragSource = model_.getTable().getExtension( IDragSource.class );
-                    if( dragSource != null )
+                    if( (dragSource != null) && (event != null) )
                     {
                         dragContext_ = dragSource.beginDrag( getMouseLocation( event ), focusedComponentModel.getComponent(), new DragStrategyFactory( event ) );
                         if( dragContext_ == null )
@@ -1870,8 +1891,11 @@ final class TableView
          */
         @Override
         public void keyPressed(
+            @Nullable
             final KeyEvent event )
         {
+            assert event != null;
+
             if( dragStrategy_ != null )
             {
                 dragStrategy_.setInputEvent( event );
@@ -1883,8 +1907,11 @@ final class TableView
          */
         @Override
         public void keyReleased(
+            @Nullable
             final KeyEvent event )
         {
+            assert event != null;
+
             if( dragStrategy_ != null )
             {
                 dragStrategy_.setInputEvent( event );
@@ -1896,6 +1923,7 @@ final class TableView
          */
         @Override
         public void mouseDragged(
+            @Nullable
             final MouseEvent event )
         {
             assert dragContext_ != null;
@@ -1908,6 +1936,7 @@ final class TableView
          */
         @Override
         public void mouseReleased(
+            @Nullable
             final MouseEvent event )
         {
             if( SwingUtilities.isLeftMouseButton( event ) )
@@ -1962,17 +1991,10 @@ final class TableView
              *        not be {@code null}.
              */
             DragStrategy(
-                /* @NonNull */
                 final IComponent component,
-                /* @NonNull */
                 final IDragStrategy successorDragStrategy,
-                /* @NonNull */
                 final InputEvent inputEvent )
             {
-                assert component != null;
-                assert successorDragStrategy != null;
-                assert inputEvent != null;
-
                 dragComponent = component;
                 inputEvent_ = inputEvent;
                 successorDragStrategy_ = successorDragStrategy;
@@ -2006,7 +2028,7 @@ final class TableView
             {
                 if( inputEvent_.isControlDown() )
                 {
-                    return Collections.singletonList( dragComponent );
+                    return nonNull( Collections.singletonList( dragComponent ) );
                 }
                 else if( inputEvent_.isAltDown() )
                 {
@@ -2017,7 +2039,7 @@ final class TableView
                     assert componentPath != null;
                     final int fromIndex = inputEvent_.isShiftDown() ? 0 : componentPath.getIndex();
                     final int toIndex = inputEvent_.isShiftDown() ? componentPath.getIndex() + 1 : components.size();
-                    return components.subList( fromIndex, toIndex );
+                    return nonNull( components.subList( fromIndex, toIndex ) );
                 }
 
                 return successorDragStrategy_.getDragComponents();
@@ -2030,11 +2052,8 @@ final class TableView
              *        The input event; must not be {@code null}.
              */
             void setInputEvent(
-                /* @NonNull */
                 final InputEvent inputEvent )
             {
-                assert inputEvent != null;
-
                 inputEvent_ = inputEvent;
             }
         }
@@ -2071,11 +2090,8 @@ final class TableView
              *        by this factory; must not be {@code null}.
              */
             DragStrategyFactory(
-                /* @NonNull */
                 final InputEvent inputEvent )
             {
-                assert inputEvent != null;
-
                 inputEvent_ = inputEvent;
             }
 
@@ -2092,9 +2108,6 @@ final class TableView
                 final IComponent component,
                 final IDragStrategy successorDragStrategy )
             {
-                assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
-                assertArgumentNotNull( successorDragStrategy, "successorDragStrategy" ); //$NON-NLS-1$
-
                 assert dragStrategy_ == null;
                 dragStrategy_ = new DragStrategy( component, successorDragStrategy, inputEvent_ );
                 return dragStrategy_;
@@ -2148,6 +2161,7 @@ final class TableView
          */
         @Override
         void activate(
+            @Nullable
             final InputEvent event )
         {
             final Point location = getMouseLocation( event );
@@ -2173,6 +2187,7 @@ final class TableView
          */
         @Override
         public void mouseDragged(
+            @Nullable
             final MouseEvent event )
         {
             final Point location = getMouseLocation( event );
@@ -2186,6 +2201,7 @@ final class TableView
          */
         @Override
         public void mouseReleased(
+            @Nullable
             final MouseEvent event )
         {
             if( SwingUtilities.isMiddleMouseButton( event ) )
@@ -2228,31 +2244,24 @@ final class TableView
          */
         @Override
         void activate(
+            @Nullable
             final InputEvent event )
         {
             final Point location = getMouseLocation( event );
-            final JPopupMenu menu = getPopupMenu( location );
+            final JPopupMenu menu = getPopupMenu();
             menu.addPopupMenuListener( this );
             convertPointFromTable( location );
             menu.show( TableView.this, location.x, location.y );
         }
 
         /**
-         * Gets the popup menu associated with the specified location.
+         * Gets the popup menu based on the current view state.
          * 
-         * @param location
-         *        The location; must not be {@code null}.
-         * 
-         * @return The popup menu associated with the specified location; never
+         * @return The popup menu based on the current view state; never
          *         {@code null}.
          */
-        /* @NonNull */
-        private JPopupMenu getPopupMenu(
-            /* @NonNull */
-            final Point location )
+        private JPopupMenu getPopupMenu()
         {
-            assert location != null;
-
             final ComponentModel componentModel = getFocusedComponentModel();
             if( componentModel != null )
             {
@@ -2272,6 +2281,7 @@ final class TableView
          */
         @Override
         public void popupMenuCanceled(
+            @Nullable
             @SuppressWarnings( "unused" )
             final PopupMenuEvent event )
         {
@@ -2283,6 +2293,7 @@ final class TableView
          */
         @Override
         public void popupMenuWillBecomeInvisible(
+            @Nullable
             @SuppressWarnings( "unused" )
             final PopupMenuEvent event )
         {
@@ -2294,6 +2305,7 @@ final class TableView
          */
         @Override
         public void popupMenuWillBecomeVisible(
+            @Nullable
             @SuppressWarnings( "unused" )
             final PopupMenuEvent event )
         {
@@ -2330,10 +2342,9 @@ final class TableView
          */
         @Override
         public void tableModelOriginOffsetChanged(
+            @SuppressWarnings( "unused" )
             final TableModelEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override

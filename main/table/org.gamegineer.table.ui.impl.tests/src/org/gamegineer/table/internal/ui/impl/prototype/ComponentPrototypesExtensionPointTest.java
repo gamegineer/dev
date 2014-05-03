@@ -1,6 +1,6 @@
 /*
  * ComponentPrototypesExtensionPointTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,22 +21,25 @@
 
 package org.gamegineer.table.internal.ui.impl.prototype;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.swing.Action;
-import javax.swing.JMenu;
 import javax.swing.KeyStroke;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the {@link ComponentPrototypesExtensionPoint} class.
  */
+@NonNullByDefault( false )
 public final class ComponentPrototypesExtensionPointTest
 {
     // ======================================================================
@@ -44,15 +47,19 @@ public final class ComponentPrototypesExtensionPointTest
     // ======================================================================
 
     /** The default component prototype category attribute value. */
+    @NonNull
     private static final String DEFAULT_COMPONENT_PROTOTYPE_ATTR_CATEGORY = "category"; //$NON-NLS-1$
 
     /** The default component prototype mnemonic attribute value. */
+    @NonNull
     private static final String DEFAULT_COMPONENT_PROTOTYPE_ATTR_MNEMONIC = "M"; //$NON-NLS-1$
 
     /** The default component prototype name attribute value. */
+    @NonNull
     private static final String DEFAULT_COMPONENT_PROTOTYPE_ATTR_NAME = "name"; //$NON-NLS-1$
 
     /** The default component prototype factory class attribute value. */
+    @NonNull
     private static final String DEFAULT_COMPONENT_PROTOTYPE_FACTORY_ATTR_CLASS = "class"; //$NON-NLS-1$
 
     /** The mocks control for use in the fixture. */
@@ -91,15 +98,15 @@ public final class ComponentPrototypesExtensionPointTest
      * @return A new component prototype configuration element; never
      *         {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private IConfigurationElement createComponentPrototypeConfigurationElement(
-        /* @Nullable */
+        @Nullable
         final String category,
-        /* @Nullable */
+        @Nullable
         final String mnemonic,
-        /* @Nullable */
+        @Nullable
         final String name,
-        /* @Nullable */
+        @Nullable
         final String factoryClass )
     {
         final IConfigurationElement configurationElement = mocksControl_.createMock( IConfigurationElement.class );
@@ -140,15 +147,15 @@ public final class ComponentPrototypesExtensionPointTest
      * @return A new component prototype category configuration element; never
      *         {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private IConfigurationElement createComponentPrototypeCategoryConfigurationElement(
-        /* @Nullable */
+        @Nullable
         final String id,
-        /* @Nullable */
+        @Nullable
         final String mnemonic,
-        /* @Nullable */
+        @Nullable
         final String name,
-        /* @Nullable */
+        @Nullable
         final String parentCategory )
     {
         final IConfigurationElement configurationElement = mocksControl_.createMock( IConfigurationElement.class );
@@ -168,9 +175,9 @@ public final class ComponentPrototypesExtensionPointTest
      * 
      * @return The encoded category path; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private static String encodeCategoryPath(
-        /* @NonNull */
+        @NonNull
         final List<String> path )
     {
         assert path != null;
@@ -189,7 +196,7 @@ public final class ComponentPrototypesExtensionPointTest
             sb.delete( sb.length() - separator.length(), sb.length() );
         }
 
-        return sb.toString();
+        return nonNull( sb.toString() );
     }
 
     /**
@@ -203,37 +210,6 @@ public final class ComponentPrototypesExtensionPointTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-    }
-
-    /**
-     * Ensures the {@link ComponentPrototypesExtensionPoint#buildMenu} method
-     * throws an exception when passed a {@code null} evaluation context
-     * provider.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testBuildMenu_EvaluationContextProvider_Null()
-    {
-        ComponentPrototypesExtensionPoint.buildMenu( new JMenu(), EasyMock.createMock( Action.class ), null );
-    }
-
-    /**
-     * Ensures the {@link ComponentPrototypesExtensionPoint#buildMenu} method
-     * throws an exception when passed a {@code null} menu item action.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testBuildMenu_MenuItemAction_Null()
-    {
-        ComponentPrototypesExtensionPoint.buildMenu( new JMenu(), null, EasyMock.createMock( IEvaluationContextProvider.class ) );
-    }
-
-    /**
-     * Ensures the {@link ComponentPrototypesExtensionPoint#buildMenu} method
-     * throws an exception when passed a {@code null} root menu.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testBuildMenu_RootMenu_Null()
-    {
-        ComponentPrototypesExtensionPoint.buildMenu( null, EasyMock.createMock( Action.class ), EasyMock.createMock( IEvaluationContextProvider.class ) );
     }
 
     /**
@@ -427,7 +403,7 @@ public final class ComponentPrototypesExtensionPointTest
         final String encodedExpectedMnemonic = "1"; //$NON-NLS-1$
         final int expectedMnemonic = KeyStroke.getKeyStroke( encodedExpectedMnemonic ).getKeyCode();
         final String expectedName = "name"; //$NON-NLS-1$
-        final List<String> parentPath = Arrays.asList( "ancestor1Id", "ancestor2Id", "ancestor3Id" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        final List<String> parentPath = nonNull( Arrays.asList( "ancestor1Id", "ancestor2Id", "ancestor3Id" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         final List<String> expectedPath = new ArrayList<>( parentPath );
         expectedPath.add( expectedId );
         final IConfigurationElement configurationElement = createComponentPrototypeCategoryConfigurationElement( expectedId, encodedExpectedMnemonic, expectedName, encodeCategoryPath( parentPath ) );

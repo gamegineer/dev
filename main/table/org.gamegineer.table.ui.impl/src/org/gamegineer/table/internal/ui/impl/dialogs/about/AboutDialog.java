@@ -1,6 +1,6 @@
 /*
  * AboutDialog.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.dialogs.about;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Image;
@@ -35,6 +36,7 @@ import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 import javax.swing.text.View;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.ui.dialog.AbstractDialog;
 import org.gamegineer.common.ui.dialog.DialogConstants;
 import org.gamegineer.table.internal.ui.impl.Branding;
@@ -65,7 +67,7 @@ public final class AboutDialog
      *        The parent shell or {@code null} to create a top-level shell.
      */
     public AboutDialog(
-        /* @Nullable */
+        @Nullable
         final Window parentShell )
     {
         super( parentShell );
@@ -103,7 +105,9 @@ public final class AboutDialog
     {
         super.contentRealized();
 
-        getButton( DialogConstants.OK_BUTTON_ID ).requestFocusInWindow();
+        final JButton okButton = getButton( DialogConstants.OK_BUTTON_ID );
+        assert okButton != null;
+        okButton.requestFocusInWindow();
     }
 
     /*
@@ -143,7 +147,7 @@ public final class AboutDialog
         containerLayout.putConstraint( SpringLayout.WEST, messageLabel, convertWidthInDlusToPixels( 10 ), SpringLayout.EAST, applicationIconLabel );
         final int preferredMessageLabelWidth = convertWidthInCharsToPixels( 70 );
         containerLayout.getConstraints( messageLabel ).setWidth( Spring.constant( 0, preferredMessageLabelWidth, Integer.MAX_VALUE ) );
-        containerLayout.getConstraints( messageLabel ).setHeight( Spring.constant( 0, getPreferredHtmlHeight( messageLabel.getText(), preferredMessageLabelWidth ), Integer.MAX_VALUE ) );
+        containerLayout.getConstraints( messageLabel ).setHeight( Spring.constant( 0, getPreferredHtmlHeight( nonNull( messageLabel.getText() ), preferredMessageLabelWidth ), Integer.MAX_VALUE ) );
 
         containerLayout.putConstraint( SpringLayout.EAST, container, 0, SpringLayout.EAST, messageLabel );
         containerLayout.putConstraint( SpringLayout.SOUTH, container, 0, SpringLayout.SOUTH, messageLabel );
@@ -156,7 +160,7 @@ public final class AboutDialog
      * 
      * @return The application icon or {@code null} if no icon is available.
      */
-    /* @Nullable */
+    @Nullable
     private static Icon getApplicationIcon()
     {
         final int preferredSize = 32;
@@ -185,11 +189,9 @@ public final class AboutDialog
      * @return The preferred height in pixels.
      */
     private static int getPreferredHtmlHeight(
-        /* @NonNull */
         final String htmlText,
         final int preferredWidth )
     {
-        assert htmlText != null;
         assert preferredWidth > 0;
 
         final JLabel label = new JLabel( htmlText );

@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.model;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.EventObject;
 import net.jcip.annotations.ThreadSafe;
 
@@ -48,12 +49,8 @@ public final class TableModelEvent
      * 
      * @param source
      *        The table model that fired the event; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code source} is {@code null}.
      */
     public TableModelEvent(
-        /* @NonNull */
         final TableModel source )
     {
         super( source );
@@ -69,9 +66,8 @@ public final class TableModelEvent
      * 
      * @return The table model that fired the event; never {@code null}.
      */
-    /* @NonNull */
     public TableModel getTableModel()
     {
-        return (TableModel)getSource();
+        return nonNull( (TableModel)getSource() );
     }
 }

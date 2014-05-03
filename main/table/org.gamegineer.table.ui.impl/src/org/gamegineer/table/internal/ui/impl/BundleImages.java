@@ -1,6 +1,6 @@
 /*
  * BundleImages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -32,6 +31,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -105,11 +105,8 @@ public final class BundleImages
      *        The bundle context; must not be {@code null}.
      */
     BundleImages(
-        /* @NonNull */
         final BundleContext bundleContext )
     {
-        assert bundleContext != null;
-
         bundleContext_ = bundleContext;
         images_ = new HashMap<>();
         lock_ = new Object();
@@ -138,13 +135,9 @@ public final class BundleImages
      *        The bundle-relative path of the icon; must not be {@code null}.
      * 
      * @return The icon or {@code null} if no such icon exists.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code path} is {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     public ImageIcon getIcon(
-        /* @NonNull */
         final String path )
     {
         final BufferedImage image = getImage( path );
@@ -158,17 +151,11 @@ public final class BundleImages
      *        The bundle-relative path of the image; must not be {@code null}.
      * 
      * @return The image or {@code null} if no such image exists.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code path} is {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     public BufferedImage getImage(
-        /* @NonNull */
         final String path )
     {
-        assertArgumentNotNull( path, "path" ); //$NON-NLS-1$
-
         synchronized( lock_ )
         {
             BufferedImage image = images_.get( path );

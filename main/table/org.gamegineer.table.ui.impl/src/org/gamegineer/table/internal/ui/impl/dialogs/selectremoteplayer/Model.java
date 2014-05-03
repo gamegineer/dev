@@ -1,6 +1,6 @@
 /*
  * Model.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,12 +21,14 @@
 
 package org.gamegineer.table.internal.ui.impl.dialogs.selectremoteplayer;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.ui.impl.model.TableModel;
 import org.gamegineer.table.internal.ui.impl.util.Comparators;
 import org.gamegineer.table.internal.ui.impl.util.swing.SortedListModel;
@@ -44,6 +46,7 @@ final class Model
     // ======================================================================
 
     /** The remote player. */
+    @Nullable
     private IPlayer remotePlayer_;
 
     /** The table model. */
@@ -61,11 +64,8 @@ final class Model
      *        The table model; must not be {@code null}.
      */
     Model(
-        /* @NonNull */
         final TableModel tableModel )
     {
-        assert tableModel != null;
-
         remotePlayer_ = null;
         tableModel_ = tableModel;
     }
@@ -80,7 +80,7 @@ final class Model
      * 
      * @return The remote player or {@code null} if not specified.
      */
-    /* @Nullable */
+    @Nullable
     public IPlayer getRemotePlayer()
     {
         return remotePlayer_;
@@ -91,7 +91,6 @@ final class Model
      * 
      * @return A validator for the remote player field; never {@code null}.
      */
-    /* @NonNull */
     @SuppressWarnings( "static-method" )
     IValidator getRemotePlayerValidator()
     {
@@ -99,15 +98,16 @@ final class Model
         {
             @Override
             public IStatus validate(
+                @Nullable
                 final Object value )
             {
                 final IPlayer remotePlayer = (IPlayer)value;
                 if( remotePlayer == null )
                 {
-                    return ValidationStatus.error( NlsMessages.Model_remotePlayer_notSelected );
+                    return nonNull( ValidationStatus.error( NlsMessages.Model_remotePlayer_notSelected ) );
                 }
 
-                return ValidationStatus.ok();
+                return nonNull( ValidationStatus.ok() );
             }
         };
     }
@@ -117,7 +117,6 @@ final class Model
      * 
      * @return The collection of remote players; never {@code null}.
      */
-    /* @NonNull */
     ListModel<IPlayer> getRemotePlayers()
     {
         final ITableNetwork tableNetwork = tableModel_.getTableNetwork();
@@ -141,7 +140,7 @@ final class Model
      *        The remote player or {@code null} if not specified.
      */
     public void setRemotePlayer(
-        /* @Nullable */
+        @Nullable
         final IPlayer remotePlayer )
     {
         remotePlayer_ = remotePlayer;

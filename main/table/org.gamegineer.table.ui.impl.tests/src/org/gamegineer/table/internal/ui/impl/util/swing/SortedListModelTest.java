@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.ui.impl.util.swing;
 
 import static org.junit.Assert.assertEquals;
-import java.text.Collator;
 import java.util.Comparator;
 import javax.swing.DefaultListModel;
 import net.jcip.annotations.Immutable;
@@ -48,28 +47,6 @@ public final class SortedListModelTest
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Ensures the
-     * {@link SortedListModel#SortedListModel(javax.swing.ListModel)}
-     * constructor throws an exception when passed a {@code null} list model.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_ListModel_Null()
-    {
-        new SortedListModel<>( null );
-    }
-
-    /**
-     * Ensures the
-     * {@link SortedListModel#SortedListModel(javax.swing.ListModel, Comparator)}
-     * constructor throws an exception when passed a {@code null} list model.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructorFromComparator_ListModel_Null()
-    {
-        new SortedListModel<>( null, Collator.getInstance() );
-    }
 
     /**
      * Ensures the {@link SortedListModel#getElementAt} method returns the

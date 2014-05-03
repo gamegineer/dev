@@ -1,6 +1,6 @@
 /*
  * OptionDialogs.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,10 +21,10 @@
 
 package org.gamegineer.table.internal.ui.impl.util;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Component;
 import javax.swing.JOptionPane;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.ui.impl.Branding;
 
 /**
@@ -59,18 +59,12 @@ public final class OptionDialogs
      *        The dialog message; must not be {@code null}.
      * 
      * @return The option selected by the user.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code message} is {@code null}.
      */
     public static int showConfirmDialog(
-        /* @Nullable */
+        @Nullable
         final Component parentComponent,
-        /* @NonNull */
         final String message )
     {
-        assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
-
         return JOptionPane.showConfirmDialog( parentComponent, message, Branding.getName(), JOptionPane.YES_NO_CANCEL_OPTION );
     }
 
@@ -81,18 +75,12 @@ public final class OptionDialogs
      *        The parent component of the dialog; may be {@code null}.
      * @param message
      *        The dialog message; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code message} is {@code null}.
      */
     public static void showErrorMessageDialog(
-        /* @Nullable */
+        @Nullable
         final Component parentComponent,
-        /* @NonNull */
         final String message )
     {
-        assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
-
         JOptionPane.showMessageDialog( parentComponent, message, Branding.getName(), JOptionPane.ERROR_MESSAGE );
     }
 }

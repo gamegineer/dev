@@ -1,6 +1,6 @@
 /*
  * MenuUtils.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,6 +26,7 @@ import javax.swing.event.MenuListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A collection of useful methods for menus.
@@ -65,13 +66,13 @@ final class MenuUtils
      * 
      * @return The default menu listener; never {@code null}.
      */
-    /* @NonNull */
     private static MenuListener createDefaultMenuListener()
     {
         return new MenuListener()
         {
             @Override
             public void menuCanceled(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final MenuEvent event )
             {
@@ -80,6 +81,7 @@ final class MenuUtils
 
             @Override
             public void menuDeselected(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final MenuEvent event )
             {
@@ -88,6 +90,7 @@ final class MenuUtils
 
             @Override
             public void menuSelected(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final MenuEvent event )
             {
@@ -101,13 +104,13 @@ final class MenuUtils
      * 
      * @return The default popup menu listener; never {@code null}.
      */
-    /* @NonNull */
     private static PopupMenuListener createDefaultPopupMenuListener()
     {
         return new PopupMenuListener()
         {
             @Override
             public void popupMenuCanceled(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final PopupMenuEvent event )
             {
@@ -116,6 +119,7 @@ final class MenuUtils
 
             @Override
             public void popupMenuWillBecomeInvisible(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final PopupMenuEvent event )
             {
@@ -124,6 +128,7 @@ final class MenuUtils
 
             @Override
             public void popupMenuWillBecomeVisible(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final PopupMenuEvent event )
             {
@@ -142,7 +147,6 @@ final class MenuUtils
      * 
      * @return The default menu listener; never {@code null}.
      */
-    /* @NonNull */
     static MenuListener getDefaultMenuListener()
     {
         return DEFAULT_MENU_LISTENER;
@@ -158,7 +162,6 @@ final class MenuUtils
      * 
      * @return The default popup menu listener; never {@code null}.
      */
-    /* @NonNull */
     static PopupMenuListener getDefaultPopupMenuListener()
     {
         return DEFAULT_POPUP_MENU_LISTENER;

@@ -1,6 +1,6 @@
 /*
  * FramePreferences.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,6 +25,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.osgi.service.prefs.Preferences;
 
 /**
@@ -54,6 +55,7 @@ public final class FramePreferences
 
     /** The frame location or {@code null} if not defined. */
     @GuardedBy( "lock_" )
+    @Nullable
     private Point location_;
 
     /** The instance lock. */
@@ -61,10 +63,12 @@ public final class FramePreferences
 
     /** The frame size or {@code null} if not defined. */
     @GuardedBy( "lock_" )
+    @Nullable
     private Dimension size_;
 
     /** The frame state or {@code null} if not defined. */
     @GuardedBy( "lock_" )
+    @Nullable
     private Integer state_;
 
 
@@ -94,7 +98,7 @@ public final class FramePreferences
      * @return The frame location or {@code null} if the frame location is not
      *         defined.
      */
-    /* @Nullable */
+    @Nullable
     public Point getLocation()
     {
         synchronized( lock_ )
@@ -108,7 +112,7 @@ public final class FramePreferences
      * 
      * @return The frame size or {@code null} if the frame size is not defined.
      */
-    /* @Nullable */
+    @Nullable
     public Dimension getSize()
     {
         synchronized( lock_ )
@@ -123,7 +127,7 @@ public final class FramePreferences
      * @return The frame state or {@code null} if the frame state is not
      *         defined.
      */
-    /* @Nullable */
+    @Nullable
     public Integer getState()
     {
         synchronized( lock_ )
@@ -138,14 +142,10 @@ public final class FramePreferences
      * @param preferences
      *        The preferences node; must not be {@code null}.
      */
-    /* @NonNull */
     @SuppressWarnings( "boxing" )
     void load(
-        /* @NonNull */
         final Preferences preferences )
     {
-        assert preferences != null;
-
         synchronized( lock_ )
         {
             final int x = preferences.getInt( KEY_X, Integer.MIN_VALUE );
@@ -183,17 +183,15 @@ public final class FramePreferences
      */
     @SuppressWarnings( "boxing" )
     void save(
-        /* @NonNull */
         final Preferences preferences )
     {
-        assert preferences != null;
-
         synchronized( lock_ )
         {
-            if( location_ != null )
+            final Point location = location_;
+            if( location != null )
             {
-                preferences.putInt( KEY_X, location_.x );
-                preferences.putInt( KEY_Y, location_.y );
+                preferences.putInt( KEY_X, location.x );
+                preferences.putInt( KEY_Y, location.y );
             }
             else
             {
@@ -201,10 +199,11 @@ public final class FramePreferences
                 preferences.remove( KEY_Y );
             }
 
-            if( size_ != null )
+            final Dimension size = size_;
+            if( size != null )
             {
-                preferences.putInt( KEY_WIDTH, size_.width );
-                preferences.putInt( KEY_HEIGHT, size_.height );
+                preferences.putInt( KEY_WIDTH, size.width );
+                preferences.putInt( KEY_HEIGHT, size.height );
             }
             else
             {
@@ -212,9 +211,10 @@ public final class FramePreferences
                 preferences.remove( KEY_HEIGHT );
             }
 
-            if( state_ != null )
+            final Integer state = state_;
+            if( state != null )
             {
-                preferences.putInt( KEY_STATE, state_ );
+                preferences.putInt( KEY_STATE, state );
             }
             else
             {
@@ -231,7 +231,7 @@ public final class FramePreferences
      *        defined.
      */
     public void setLocation(
-        /* @Nullable */
+        @Nullable
         final Point location )
     {
         synchronized( lock_ )
@@ -247,7 +247,7 @@ public final class FramePreferences
      *        The frame size or {@code null} if the frame size is not defined.
      */
     public void setSize(
-        /* @Nullable */
+        @Nullable
         final Dimension size )
     {
         synchronized( lock_ )
@@ -263,7 +263,7 @@ public final class FramePreferences
      *        The frame state or {@code null} if the frame state is not defined.
      */
     public void setState(
-        /* @Nullable */
+        @Nullable
         final Integer state )
     {
         synchronized( lock_ )

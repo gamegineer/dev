@@ -1,6 +1,6 @@
 /*
  * ContainerPopupMenu.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -59,11 +59,8 @@ final class ContainerPopupMenu
      *        The model associated with the menu; must not be {@code null}.
      */
     ContainerPopupMenu(
-        /* @NonNull */
         final ContainerModel model )
     {
-        assert model != null;
-
         model_ = model;
 
         initializeComponent();
@@ -79,7 +76,6 @@ final class ContainerPopupMenu
      * 
      * @return The add component menu; never {@code null}.
      */
-    /* @NonNull */
     private JMenu createAddComponentMenu()
     {
         final JMenu menu = new JMenu( NlsMessages.ContainerPopupMenu_addComponent_text );
@@ -93,7 +89,6 @@ final class ContainerPopupMenu
      * 
      * @return The layout menu; never {@code null}.
      */
-    /* @NonNull */
     private static JMenu createLayoutMenu()
     {
         final JMenu menu = new JMenu( NlsMessages.ContainerPopupMenu_layout_text );

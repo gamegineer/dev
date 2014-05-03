@@ -1,6 +1,6 @@
 /*
  * ComponentStrategyUIRegistryExtensionPointAdapterTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -61,7 +62,7 @@ public final class ComponentStrategyUIRegistryExtensionPointAdapterTest
         final IMocksControl mocksControl )
         throws Exception
     {
-        final IComponentStrategyUI expectedObject = mocksControl.createMock( IComponentStrategyUI.class );
+        final IComponentStrategyUI expectedObject = nonNull( mocksControl.createMock( IComponentStrategyUI.class ) );
         EasyMock.expect( configurationElement.getAttribute( "id" ) ).andReturn( "expected-id" ); //$NON-NLS-1$ //$NON-NLS-2$
         EasyMock.expect( configurationElement.createExecutableExtension( "className" ) ).andReturn( expectedObject ); //$NON-NLS-1$
         return expectedObject;

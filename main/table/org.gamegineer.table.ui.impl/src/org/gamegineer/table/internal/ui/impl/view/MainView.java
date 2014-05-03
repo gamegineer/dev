@@ -1,6 +1,6 @@
 /*
  * MainView.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.view;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.BorderLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -29,6 +28,7 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.ui.layout.PixelConverter;
 import org.gamegineer.table.internal.ui.impl.model.IMainModelListener;
 import org.gamegineer.table.internal.ui.impl.model.MainModel;
@@ -53,18 +53,21 @@ final class MainView
     private static final long serialVersionUID = 8895515474498086806L;
 
     /** The main model listener for this view. */
+    @Nullable
     private IMainModelListener mainModelListener_;
 
     /** The model associated with this view. */
     private final MainModel model_;
 
     /** The split pane used to layout the component views. */
+    @Nullable
     private JSplitPane splitPane_;
 
     /** The default size of the split pane divider. */
     private int splitPaneDividerSize_;
 
     /** The table network listener for this view. */
+    @Nullable
     private ITableNetworkListener tableNetworkListener_;
 
     /** The table network player view. */
@@ -85,11 +88,8 @@ final class MainView
      *        The model associated with this view; must not be {@code null}.
      */
     MainView(
-        /* @NonNull */
         final MainModel model )
     {
-        assert model != null;
-
         mainModelListener_ = null;
         model_ = model;
         splitPane_ = null;
@@ -114,10 +114,10 @@ final class MainView
     {
         super.addNotify();
 
-        mainModelListener_ = new MainModelListener();
-        model_.addMainModelListener( mainModelListener_ );
-        tableNetworkListener_ = new TableNetworkListener();
-        model_.getTableModel().getTableNetwork().addTableNetworkListener( tableNetworkListener_ );
+        final IMainModelListener mainModelListener = mainModelListener_ = new MainModelListener();
+        model_.addMainModelListener( mainModelListener );
+        final ITableNetworkListener tableNetworkListener = tableNetworkListener_ = new TableNetworkListener();
+        model_.getTableModel().getTableNetwork().addTableNetworkListener( tableNetworkListener );
     }
 
     /**
@@ -128,14 +128,14 @@ final class MainView
         setLayout( new BorderLayout() );
         setOpaque( true );
 
-        splitPane_ = new JSplitPane( JSplitPane.HORIZONTAL_SPLIT );
-        splitPane_.setBorder( BorderFactory.createEmptyBorder() );
-        splitPaneDividerSize_ = splitPane_.getDividerSize();
-        splitPane_.setDividerSize( 0 );
-        splitPane_.setResizeWeight( 1.0 );
-        splitPane_.setLeftComponent( tableView_ );
-        splitPane_.setRightComponent( tableNetworkPlayerView_ );
-        add( splitPane_, BorderLayout.CENTER );
+        final JSplitPane splitPane = splitPane_ = new JSplitPane( JSplitPane.HORIZONTAL_SPLIT );
+        splitPane.setBorder( BorderFactory.createEmptyBorder() );
+        splitPaneDividerSize_ = splitPane.getDividerSize();
+        splitPane.setDividerSize( 0 );
+        splitPane.setResizeWeight( 1.0 );
+        splitPane.setLeftComponent( tableView_ );
+        splitPane.setRightComponent( tableNetworkPlayerView_ );
+        add( splitPane, BorderLayout.CENTER );
 
         tableNetworkPlayerView_.setVisible( false );
     }
@@ -146,9 +146,13 @@ final class MainView
     @Override
     public void removeNotify()
     {
-        model_.getTableModel().getTableNetwork().removeTableNetworkListener( tableNetworkListener_ );
+        final ITableNetworkListener tableNetworkListener = tableNetworkListener_;
+        assert tableNetworkListener != null;
+        model_.getTableModel().getTableNetwork().removeTableNetworkListener( tableNetworkListener );
         tableNetworkListener_ = null;
-        model_.removeMainModelListener( mainModelListener_ );
+        final IMainModelListener mainModelListener = mainModelListener_;
+        assert mainModelListener != null;
+        model_.removeMainModelListener( mainModelListener );
         mainModelListener_ = null;
 
         super.removeNotify();
@@ -166,8 +170,10 @@ final class MainView
     {
         final PixelConverter pixelConverter = new PixelConverter( this );
         tableNetworkPlayerView_.setVisible( isVisible );
-        splitPane_.setDividerSize( isVisible ? splitPaneDividerSize_ : 0 );
-        splitPane_.setDividerLocation( isVisible ? (getWidth() - Math.max( pixelConverter.convertWidthInCharsToPixels( 40 ), tableNetworkPlayerView_.getPreferredSize().width )) : 0 );
+        final JSplitPane splitPane = splitPane_;
+        assert splitPane != null;
+        splitPane.setDividerSize( isVisible ? splitPaneDividerSize_ : 0 );
+        splitPane.setDividerLocation( isVisible ? (getWidth() - Math.max( pixelConverter.convertWidthInCharsToPixels( 40 ), tableNetworkPlayerView_.getPreferredSize().width )) : 0 );
         validate();
     }
 
@@ -223,10 +229,9 @@ final class MainView
          */
         @Override
         public void tableNetworkConnected(
+            @SuppressWarnings( "unused" )
             final TableNetworkEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override
@@ -245,8 +250,6 @@ final class MainView
         public void tableNetworkDisconnected(
             final TableNetworkDisconnectedEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override

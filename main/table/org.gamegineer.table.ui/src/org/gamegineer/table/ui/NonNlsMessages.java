@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.ui;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.core.ComponentStrategyId;
@@ -40,23 +41,23 @@ final class NonNlsMessages
     // --- ComponentStrategyUIRegistry --------------------------------------
 
     /** The component strategy user interface registry is not available. */
-    public static String ComponentStrategyUIRegistry_getComponentStrategyUI_componentStrategyUIRegistryNotAvailable;
+    public static String ComponentStrategyUIRegistry_getComponentStrategyUI_componentStrategyUIRegistryNotAvailable = ""; //$NON-NLS-1$
 
     /** The component strategy identifier is not registered. */
-    public static String ComponentStrategyUIRegistry_getComponentStrategyUI_unknownComponentStrategyId;
+    public static String ComponentStrategyUIRegistry_getComponentStrategyUI_unknownComponentStrategyId = ""; //$NON-NLS-1$
 
     // --- ComponentSurfaceDesignUIRegistry ---------------------------------
 
     /** The component surface design user interface registry is not available. */
-    public static String ComponentSurfaceDesignUIRegistry_getComponentSurfaceDesignUI_componentSurfaceDesignUIRegistryNotAvailable;
+    public static String ComponentSurfaceDesignUIRegistry_getComponentSurfaceDesignUI_componentSurfaceDesignUIRegistryNotAvailable = ""; //$NON-NLS-1$
 
     /** The component surface design identifier is not registered. */
-    public static String ComponentSurfaceDesignUIRegistry_getComponentSurfaceDesignUI_unknownComponentSurfaceDesignId;
+    public static String ComponentSurfaceDesignUIRegistry_getComponentSurfaceDesignUI_unknownComponentSurfaceDesignId = ""; //$NON-NLS-1$
 
     // --- TableAdvisor -----------------------------------------------------
 
     /** The application argument collection contains a {@code null} element. */
-    public static String TableAdvisor_ctor_appArgs_containsNullElement;
+    public static String TableAdvisor_ctor_appArgs_containsNullElement = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -95,12 +96,10 @@ final class NonNlsMessages
      * @return The formatted message indicating the component strategy
      *         identifier is not registered; never {@code null}.
      */
-    /* @NonNull */
     static String ComponentStrategyUIRegistry_getComponentStrategyUI_unknownComponentStrategyId(
-        /* @NonNull */
         final ComponentStrategyId componentStrategyId )
     {
-        return bind( ComponentStrategyUIRegistry_getComponentStrategyUI_unknownComponentStrategyId, componentStrategyId );
+        return nonNull( bind( ComponentStrategyUIRegistry_getComponentStrategyUI_unknownComponentStrategyId, componentStrategyId ) );
     }
 
     // --- ComponentSurfaceDesignUIRegistry ---------------------------------
@@ -115,11 +114,9 @@ final class NonNlsMessages
      * @return The formatted message indicating the component surface design
      *         identifier is not registered; never {@code null}.
      */
-    /* @NonNull */
     static String ComponentSurfaceDesignUIRegistry_getComponentSurfaceDesignUI_unknownComponentSurfaceDesignId(
-        /* @NonNull */
         final ComponentSurfaceDesignId componentSurfaceDesignId )
     {
-        return bind( ComponentSurfaceDesignUIRegistry_getComponentSurfaceDesignUI_unknownComponentSurfaceDesignId, componentSurfaceDesignId );
+        return nonNull( bind( ComponentSurfaceDesignUIRegistry_getComponentSurfaceDesignUI_unknownComponentSurfaceDesignId, componentSurfaceDesignId ) );
     }
 }

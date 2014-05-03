@@ -1,6 +1,6 @@
 /*
  * IComponentModelParent.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.ui.impl.model;
 
 import org.eclipse.core.expressions.EvaluationContext;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.core.ComponentPath;
 
 /**
@@ -44,9 +45,8 @@ interface IComponentModelParent
      *         associated table model or {@code null} if this component model
      *         parent is not associated with a table model.
      */
-    /* @NonNull */
+    @Nullable
     ComponentPath getChildPath(
-        /* @NonNull */
         ComponentModel componentModel );
 
     /**
@@ -59,7 +59,6 @@ interface IComponentModelParent
      * 
      * @return An evaluation context; never {@code null}.
      */
-    /* @NonNull */
     EvaluationContext getEvaluationContext();
 
     /**
@@ -68,7 +67,7 @@ interface IComponentModelParent
      * @return The parent of this component model parent or {@code null} if this
      *         component model parent has no parent.
      */
-    /* @Nullable */
+    @Nullable
     IComponentModelParent getParent();
 
     /**
@@ -78,6 +77,6 @@ interface IComponentModelParent
      *         {@code null} if this component model parent is not associated
      *         with a table model.
      */
-    /* @Nullable */
+    @Nullable
     TableModel getTableModel();
 }

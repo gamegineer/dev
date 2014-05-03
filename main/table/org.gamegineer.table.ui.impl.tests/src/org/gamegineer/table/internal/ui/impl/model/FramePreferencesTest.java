@@ -1,6 +1,6 @@
 /*
  * FramePreferencesTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,14 +22,17 @@
 package org.gamegineer.table.internal.ui.impl.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import java.awt.Dimension;
 import java.awt.Point;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the {@link FramePreferences} class.
  */
+@NonNullByDefault( false )
 public final class FramePreferencesTest
 {
     // ======================================================================
@@ -80,6 +83,7 @@ public final class FramePreferencesTest
         framePreferences_.setLocation( expectedLocation );
 
         final Point location = framePreferences_.getLocation();
+        assertNotNull( location );
         location.x = location.y = 1;
         final Point actualLocation = framePreferences_.getLocation();
 
@@ -97,6 +101,7 @@ public final class FramePreferencesTest
         framePreferences_.setSize( expectedSize );
 
         final Dimension size = framePreferences_.getSize();
+        assertNotNull( size );
         size.width = size.height = 1;
         final Dimension actualSize = framePreferences_.getSize();
 

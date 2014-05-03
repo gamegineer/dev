@@ -1,6 +1,6 @@
 /*
  * ContainerView.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.view;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -30,6 +29,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.ui.impl.model.ComponentModel;
 import org.gamegineer.table.internal.ui.impl.model.ContainerModel;
 import org.gamegineer.table.internal.ui.impl.model.ContainerModelContentChangedEvent;
@@ -54,6 +54,7 @@ final class ContainerView
     private final List<ComponentView> componentViews_;
 
     /** The container model listener for this view. */
+    @Nullable
     private IContainerModelListener containerModelListener_;
 
 
@@ -68,7 +69,6 @@ final class ContainerView
      *        The model associated with this view; must not be {@code null}.
      */
     ContainerView(
-        /* @NonNull */
         final ContainerModel containerModel )
     {
         super( containerModel );
@@ -91,11 +91,9 @@ final class ContainerView
      *        The index of the added component model; must not be negative.
      */
     private void componentModelAdded(
-        /* @NonNull */
         final ComponentModel componentModel,
         final int componentModelIndex )
     {
-        assert componentModel != null;
         assert componentModelIndex >= 0;
 
         if( isInitialized() )
@@ -145,11 +143,9 @@ final class ContainerView
      *        The component model index; must not be negative.
      */
     private void createComponentView(
-        /* @NonNull */
         final ComponentModel componentModel,
         final int componentModelIndex )
     {
-        assert componentModel != null;
         assert componentModelIndex >= 0;
         assert isInitialized();
 
@@ -197,13 +193,13 @@ final class ContainerView
     {
         super.initialize( tableView );
 
-        containerModelListener_ = new ContainerModelListener();
+        final IContainerModelListener containerModelListener = containerModelListener_ = new ContainerModelListener();
 
         final List<ComponentModel> componentModels;
         getTableEnvironmentModelLock().lock();
         try
         {
-            getComponentModel().addContainerModelListener( containerModelListener_ );
+            getComponentModel().addContainerModelListener( containerModelListener );
             componentModels = getComponentModel().getComponentModels();
         }
         finally
@@ -214,6 +210,7 @@ final class ContainerView
         int componentModelIndex = 0;
         for( final ComponentModel componentModel : componentModels )
         {
+            assert componentModel != null;
             createComponentView( componentModel, componentModelIndex++ );
         }
 
@@ -255,7 +252,9 @@ final class ContainerView
             deleteComponentView( index );
         }
 
-        getComponentModel().removeContainerModelListener( containerModelListener_ );
+        final IContainerModelListener containerModelListener = containerModelListener_;
+        assert containerModelListener != null;
+        getComponentModel().removeContainerModelListener( containerModelListener );
         containerModelListener_ = null;
 
         super.uninitialize();
@@ -298,8 +297,6 @@ final class ContainerView
         public void componentModelAdded(
             final ContainerModelContentChangedEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override
@@ -317,8 +314,6 @@ final class ContainerView
         public void componentModelRemoved(
             final ContainerModelContentChangedEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override
@@ -334,10 +329,9 @@ final class ContainerView
          */
         @Override
         public void containerLayoutChanged(
+            @SuppressWarnings( "unused" )
             final ContainerModelEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override

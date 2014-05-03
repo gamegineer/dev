@@ -1,6 +1,6 @@
 /*
  * BasicAction.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.ui.impl.action;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -30,6 +29,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.IPredicate;
 
 /**
@@ -69,16 +69,10 @@ public class BasicAction
      * 
      * @param id
      *        The action identifier; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
      */
     public BasicAction(
-        /* @NonNull */
         final Object id )
     {
-        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
-
         actionListeners_ = new CopyOnWriteArrayList<>();
         shouldEnablePredicates_ = new CopyOnWriteArrayList<>();
         shouldSelectPredicates_ = new CopyOnWriteArrayList<>();
@@ -96,6 +90,7 @@ public class BasicAction
      */
     @Override
     public final void actionPerformed(
+        @Nullable
         final ActionEvent event )
     {
         for( final ActionListener listener : actionListeners_ )
@@ -112,14 +107,10 @@ public class BasicAction
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is already a registered action listener.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
      */
     public final void addActionListener(
-        /* @NonNull */
         final ActionListener listener )
     {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( actionListeners_.addIfAbsent( listener ), "listener", NonNlsMessages.BasicAction_addActionListener_listener_registered ); //$NON-NLS-1$
     }
 
@@ -132,14 +123,10 @@ public class BasicAction
      * @throws java.lang.IllegalArgumentException
      *         If {@code predicate} is already a registered should enable
      *         predicate.
-     * @throws java.lang.NullPointerException
-     *         If {@code predicate} is {@code null}.
      */
     public final void addShouldEnablePredicate(
-        /* @NonNull */
         final IPredicate<Action> predicate )
     {
-        assertArgumentNotNull( predicate, "predicate" ); //$NON-NLS-1$
         assertArgumentLegal( shouldEnablePredicates_.addIfAbsent( predicate ), "predicate", NonNlsMessages.BasicAction_addShouldEnablePredicate_predicate_registered ); //$NON-NLS-1$
     }
 
@@ -152,14 +139,10 @@ public class BasicAction
      * @throws java.lang.IllegalArgumentException
      *         If {@code predicate} is already a registered should select
      *         predicate.
-     * @throws java.lang.NullPointerException
-     *         If {@code predicate} is {@code null}.
      */
     public final void addShouldSelectPredicate(
-        /* @NonNull */
         final IPredicate<Action> predicate )
     {
-        assertArgumentNotNull( predicate, "predicate" ); //$NON-NLS-1$
         assertArgumentLegal( shouldSelectPredicates_.addIfAbsent( predicate ), "predicate", NonNlsMessages.BasicAction_addShouldSelectPredicate_predicate_registered ); //$NON-NLS-1$
     }
 
@@ -169,7 +152,7 @@ public class BasicAction
      * @return The action accelerator or {@code null} if no accelerator is
      *         defined.
      */
-    /* @Nullable */
+    @Nullable
     public final KeyStroke getAccelerator()
     {
         return (KeyStroke)getValue( ACCELERATOR_KEY );
@@ -180,10 +163,11 @@ public class BasicAction
      * 
      * @return The action identifier; never {@code null}.
      */
-    /* @NonNull */
     public final Object getId()
     {
-        return getValue( ID_KEY );
+        final Object id = getValue( ID_KEY );
+        assert id != null;
+        return id;
     }
 
     /**
@@ -194,14 +178,10 @@ public class BasicAction
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is not a registered action listener.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
      */
     public final void removeActionListener(
-        /* @NonNull */
         final ActionListener listener )
     {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( actionListeners_.remove( listener ), "listener", NonNlsMessages.BasicAction_removeActionListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
@@ -213,14 +193,10 @@ public class BasicAction
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code predicate} is not a registered should enable predicate.
-     * @throws java.lang.NullPointerException
-     *         If {@code predicate} is {@code null}.
      */
     public final void removeShouldEnablePredicate(
-        /* @NonNull */
         final IPredicate<Action> predicate )
     {
-        assertArgumentNotNull( predicate, "predicate" ); //$NON-NLS-1$
         assertArgumentLegal( shouldEnablePredicates_.remove( predicate ), "predicate", NonNlsMessages.BasicAction_removeShouldEnablePredicate_predicate_notRegistered ); //$NON-NLS-1$
     }
 
@@ -232,14 +208,10 @@ public class BasicAction
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code predicate} is not a registered should select predicate.
-     * @throws java.lang.NullPointerException
-     *         If {@code predicate} is {@code null}.
      */
     public final void removeShouldSelectPredicate(
-        /* @NonNull */
         final IPredicate<Action> predicate )
     {
-        assertArgumentNotNull( predicate, "predicate" ); //$NON-NLS-1$
         assertArgumentLegal( shouldSelectPredicates_.remove( predicate ), "predicate", NonNlsMessages.BasicAction_removeShouldSelectPredicate_predicate_notRegistered ); //$NON-NLS-1$
     }
 

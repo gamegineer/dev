@@ -1,6 +1,6 @@
 /*
  * ContainerModelContentChangedEventTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,8 @@
 package org.gamegineer.table.internal.ui.impl.model;
 
 import static org.junit.Assert.assertNotNull;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.test.TestTableEnvironments;
 import org.gamegineer.table.ui.test.TestComponents;
@@ -31,6 +33,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link ContainerModelContentChangedEvent} class.
  */
+@NonNullByDefault( false )
 public final class ContainerModelContentChangedEventTest
 {
     // ======================================================================
@@ -66,10 +69,10 @@ public final class ContainerModelContentChangedEventTest
      * 
      * @return A new unique component model; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private ComponentModel createUniqueComponentModel()
     {
-        return new ComponentModel( tableEnvironmentModel_, TestComponents.createUniqueComponent( tableEnvironmentModel_.getTableEnvironment() ) );
+        return new ComponentModel( getTableEnvironmentModel(), TestComponents.createUniqueComponent( getTableEnvironmentModel().getTableEnvironment() ) );
     }
 
     /**
@@ -77,10 +80,22 @@ public final class ContainerModelContentChangedEventTest
      * 
      * @return A new unique container model; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private ContainerModel createUniqueContainerModel()
     {
-        return new ContainerModel( tableEnvironmentModel_, TestComponents.createUniqueContainer( tableEnvironmentModel_.getTableEnvironment() ) );
+        return new ContainerModel( getTableEnvironmentModel(), TestComponents.createUniqueContainer( getTableEnvironmentModel().getTableEnvironment() ) );
+    }
+
+    /**
+     * Gets the fixture table environment model.
+     * 
+     * @return The fixture table environment model; never {@code null}.
+     */
+    @NonNull
+    private TableEnvironmentModel getTableEnvironmentModel()
+    {
+        assertNotNull( tableEnvironmentModel_ );
+        return tableEnvironmentModel_;
     }
 
     /**
@@ -100,18 +115,6 @@ public final class ContainerModelContentChangedEventTest
     /**
      * Ensures the
      * {@link ContainerModelContentChangedEvent#ContainerModelContentChangedEvent}
-     * constructor throws an exception when passed a {@code null} component
-     * model.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_ComponentModel_Null()
-    {
-        new ContainerModelContentChangedEvent( createUniqueContainerModel(), null, 0 );
-    }
-
-    /**
-     * Ensures the
-     * {@link ContainerModelContentChangedEvent#ContainerModelContentChangedEvent}
      * constructor throws an exception when passed an illegal component model
      * index that is negative.
      */
@@ -119,17 +122,6 @@ public final class ContainerModelContentChangedEventTest
     public void testConstructor_ComponentModelIndex_Illegal_Negative()
     {
         new ContainerModelContentChangedEvent( createUniqueContainerModel(), createUniqueComponentModel(), -1 );
-    }
-
-    /**
-     * Ensures the
-     * {@link ContainerModelContentChangedEvent#ContainerModelContentChangedEvent}
-     * constructor throws an exception when passed a {@code null} source.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testConstructor_Source_Null()
-    {
-        new ContainerModelContentChangedEvent( null, createUniqueComponentModel(), 0 );
     }
 
     /**

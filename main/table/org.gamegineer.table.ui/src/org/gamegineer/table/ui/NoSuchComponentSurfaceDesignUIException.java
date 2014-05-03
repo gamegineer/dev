@@ -1,6 +1,6 @@
 /*
  * NoSuchComponentSurfaceDesignUIException.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.table.ui;
 
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A checked exception that indicates a component surface design user interface
@@ -61,7 +62,7 @@ public final class NoSuchComponentSurfaceDesignUIException
      *        The detail message; may be {@code null}.
      */
     public NoSuchComponentSurfaceDesignUIException(
-        /* @Nullable */
+        @Nullable
         final String message )
     {
         super( message );
@@ -76,7 +77,7 @@ public final class NoSuchComponentSurfaceDesignUIException
      *        The cause; may be {@code null}.
      */
     public NoSuchComponentSurfaceDesignUIException(
-        /* @Nullable */
+        @Nullable
         final Throwable cause )
     {
         super( cause );
@@ -93,9 +94,9 @@ public final class NoSuchComponentSurfaceDesignUIException
      *        The cause; may be {@code null}.
      */
     public NoSuchComponentSurfaceDesignUIException(
-        /* @Nullable */
+        @Nullable
         final String message,
-        /* @Nullable */
+        @Nullable
         final Throwable cause )
     {
         super( message, cause );

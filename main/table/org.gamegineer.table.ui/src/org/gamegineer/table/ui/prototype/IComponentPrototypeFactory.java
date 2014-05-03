@@ -1,6 +1,6 @@
 /*
  * IComponentPrototypeFactory.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -49,14 +49,10 @@ public interface IComponentPrototypeFactory
      * 
      * @return A new component prototype; never {@code null}.
      * 
-     * @throws java.lang.NullPointerException
-     *         If {@code tableEnvironment} is {@code null}.
      * @throws org.gamegineer.table.ui.prototype.ComponentPrototypeFactoryException
      *         If the component prototype cannot be created.
      */
-    /* @NonNull */
     public List<IComponent> createComponentPrototype(
-        /* @NonNull */
         ITableEnvironment tableEnvironment )
         throws ComponentPrototypeFactoryException;
 }

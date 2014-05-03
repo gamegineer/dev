@@ -1,6 +1,6 @@
 /*
  * TestComponents.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -68,13 +68,8 @@ public final class TestComponents
      *        be {@code null}.
      * 
      * @return A new component; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code tableEnvironment} is {@code null}.
      */
-    /* @NonNull */
     public static IComponent createUniqueComponent(
-        /* @NonNull */
         final ITableEnvironment tableEnvironment )
     {
         return createUniqueComponent( tableEnvironment, TestComponentStrategyUIs.NULL_COMPONENT_STRATEGY_UI );
@@ -92,16 +87,9 @@ public final class TestComponents
      *        The component strategy user interface; must not be {@code null}.
      * 
      * @return A new component; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code tableEnvironment} or {@code componentStrategyUI} is
-     *         {@code null}.
      */
-    /* @NonNull */
     public static IComponent createUniqueComponent(
-        /* @NonNull */
         final ITableEnvironment tableEnvironment,
-        /* @NonNull */
         final IComponentStrategyUI componentStrategyUI )
     {
         final IComponent component = org.gamegineer.table.core.test.TestComponents.createUniqueComponent( tableEnvironment );
@@ -120,13 +108,8 @@ public final class TestComponents
      *        be {@code null}.
      * 
      * @return A new container; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code tableEnvironment} is {@code null}.
      */
-    /* @NonNull */
     public static IContainer createUniqueContainer(
-        /* @NonNull */
         final ITableEnvironment tableEnvironment )
     {
         return createUniqueContainer( tableEnvironment, TestComponentStrategyUIs.NULL_CONTAINER_STRATEGY_UI );
@@ -144,16 +127,9 @@ public final class TestComponents
      *        The container strategy user interface; must not be {@code null}.
      * 
      * @return A new container; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code tableEnvironment} or {@code containerStrategyUI} is
-     *         {@code null}.
      */
-    /* @NonNull */
     public static IContainer createUniqueContainer(
-        /* @NonNull */
         final ITableEnvironment tableEnvironment,
-        /* @NonNull */
         final IContainerStrategyUI containerStrategyUI )
     {
         final IContainer container = org.gamegineer.table.core.test.TestComponents.createUniqueContainer( tableEnvironment );

@@ -1,6 +1,6 @@
 /*
  * TextUtils.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.ui.impl.util.swing;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,16 +79,11 @@ public final class TextUtils
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code maxLength} is negative.
-     * @throws java.lang.NullPointerException
-     *         If {@code path} is {@code null}.
      */
-    /* @NonNull */
     public static String shortenPath(
-        /* @NonNull */
         final String path,
         final int maxLength )
     {
-        assertArgumentNotNull( path, "path" ); //$NON-NLS-1$
         assertArgumentLegal( maxLength >= 0, "maxLength", NonNlsMessages.TextUtils_shortenPath_maxLengthNegative ); //$NON-NLS-1$
 
         if( path.length() <= maxLength )
@@ -122,6 +117,6 @@ public final class TextUtils
             pathComponents.remove( midIndex );
         }
 
-        return sb.toString();
+        return nonNull( sb.toString() );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * MainPage.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.wizards.jointablenetwork;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Component;
 import java.awt.Container;
 import javax.swing.JLabel;
@@ -28,11 +29,13 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SpringLayout;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.ui.databinding.swing.ComponentProperties;
 import org.gamegineer.common.ui.databinding.wizard.WizardPageDataBindingAdapter;
 import org.gamegineer.common.ui.dialog.DialogConstants;
@@ -52,23 +55,17 @@ final class MainPage
     // Fields
     // ======================================================================
 
+    /** The page controls. */
+    @Nullable
+    private Controls controls_;
+
     /** The page data binding adapter. */
+    @Nullable
     private WizardPageDataBindingAdapter dataBindingAdapter_;
 
     /** The page data binding context. */
+    @Nullable
     private DataBindingContext dataBindingContext_;
-
-    /** The host name text field widget. */
-    private JTextField hostNameTextField_;
-
-    /** The password field widget. */
-    private JPasswordField passwordField_;
-
-    /** The player name text field widget. */
-    private JTextField playerNameTextField_;
-
-    /** The port text field widget. */
-    private JTextField portTextField_;
 
 
     // ======================================================================
@@ -80,14 +77,11 @@ final class MainPage
      */
     MainPage()
     {
-        super( MainPage.class.getName() );
+        super( nonNull( MainPage.class.getName() ) );
 
+        controls_ = null;
         dataBindingAdapter_ = null;
         dataBindingContext_ = null;
-        hostNameTextField_ = null;
-        passwordField_ = null;
-        playerNameTextField_ = null;
-        portTextField_ = null;
 
         setTitle( NlsMessages.MainPage_title );
         setDescription( NlsMessages.MainPage_description );
@@ -112,38 +106,40 @@ final class MainPage
         final JLabel playerNameLabel = new JLabel( NlsMessages.MainPage_playerNameLabel_text );
         playerNameLabel.setDisplayedMnemonic( KeyStroke.getKeyStroke( NlsMessages.MainPage_playerNameLabel_mnemonic ).getKeyCode() );
         container.add( playerNameLabel );
-        playerNameTextField_ = new JTextField();
-        JComponents.freezeHeight( playerNameTextField_ );
-        container.add( playerNameTextField_ );
-        playerNameLabel.setLabelFor( playerNameTextField_ );
+        final JTextField playerNameTextField = new JTextField();
+        JComponents.freezeHeight( playerNameTextField );
+        container.add( playerNameTextField );
+        playerNameLabel.setLabelFor( playerNameTextField );
 
         final JLabel hostNameLabel = new JLabel( NlsMessages.MainPage_hostNameLabel_text );
         hostNameLabel.setDisplayedMnemonic( KeyStroke.getKeyStroke( NlsMessages.MainPage_hostNameLabel_mnemonic ).getKeyCode() );
         container.add( hostNameLabel );
-        hostNameTextField_ = new JTextField();
-        JComponents.freezeHeight( hostNameTextField_ );
-        container.add( hostNameTextField_ );
-        hostNameLabel.setLabelFor( hostNameTextField_ );
+        final JTextField hostNameTextField = new JTextField();
+        JComponents.freezeHeight( hostNameTextField );
+        container.add( hostNameTextField );
+        hostNameLabel.setLabelFor( hostNameTextField );
 
         final JLabel portLabel = new JLabel( NlsMessages.MainPage_portLabel_text );
         portLabel.setDisplayedMnemonic( KeyStroke.getKeyStroke( NlsMessages.MainPage_portLabel_mnemonic ).getKeyCode() );
         container.add( portLabel );
-        portTextField_ = new JTextField();
-        JComponents.freezeHeight( portTextField_ );
-        container.add( portTextField_ );
-        portLabel.setLabelFor( portTextField_ );
+        final JTextField portTextField = new JTextField();
+        JComponents.freezeHeight( portTextField );
+        container.add( portTextField );
+        portLabel.setLabelFor( portTextField );
 
         final JLabel passwordLabel = new JLabel( NlsMessages.MainPage_passwordLabel_text );
         passwordLabel.setDisplayedMnemonic( KeyStroke.getKeyStroke( NlsMessages.MainPage_passwordLabel_mnemonic ).getKeyCode() );
         container.add( passwordLabel );
-        passwordField_ = new JPasswordField();
-        JComponents.freezeHeight( passwordField_ );
-        container.add( passwordField_ );
-        passwordLabel.setLabelFor( passwordField_ );
+        final JPasswordField passwordField = new JPasswordField();
+        JComponents.freezeHeight( passwordField );
+        container.add( passwordField );
+        passwordLabel.setLabelFor( passwordField );
 
         final int horizontalSpacing = convertWidthInDlusToPixels( DialogConstants.HORIZONTAL_SPACING );
         final int verticalSpacing = convertHeightInDlusToPixels( DialogConstants.VERTICAL_SPACING );
         SpringUtils.buildCompactGrid( container, 4, 2, 0, 0, horizontalSpacing, verticalSpacing );
+
+        controls_ = new Controls( hostNameTextField, passwordField, playerNameTextField, portTextField );
 
         createDataBindings();
 
@@ -155,35 +151,38 @@ final class MainPage
      */
     private void createDataBindings()
     {
-        final Model model = ((JoinTableNetworkWizard)getWizard()).getModel();
-        dataBindingContext_ = new DataBindingContext();
+        final JoinTableNetworkWizard wizard = (JoinTableNetworkWizard)getWizard();
+        assert wizard != null;
+        final Model model = wizard.getModel();
+        final Controls controls = getControls();
+        final DataBindingContext dataBindingContext = dataBindingContext_ = new DataBindingContext();
 
-        final IObservableValue playerNameTargetValue = ComponentProperties.text().observe( playerNameTextField_ );
+        final IObservableValue playerNameTargetValue = ComponentProperties.text().observe( controls.playerNameTextField );
         final IObservableValue playerNameModelValue = PojoProperties.value( "playerName" ).observe( model ); //$NON-NLS-1$
         final UpdateValueStrategy playerNameTargetToModelStrategy = new UpdateValueStrategy();
         playerNameTargetToModelStrategy.setBeforeSetValidator( model.getPlayerNameValidator() );
-        dataBindingContext_.bindValue( playerNameTargetValue, playerNameModelValue, playerNameTargetToModelStrategy, null );
+        dataBindingContext.bindValue( playerNameTargetValue, playerNameModelValue, playerNameTargetToModelStrategy, null );
 
-        final IObservableValue hostNameTargetValue = ComponentProperties.text().observe( hostNameTextField_ );
+        final IObservableValue hostNameTargetValue = ComponentProperties.text().observe( controls.hostNameTextField );
         final IObservableValue hostNameModelValue = PojoProperties.value( "hostName" ).observe( model ); //$NON-NLS-1$
         final UpdateValueStrategy hostNameTargetToModelStrategy = new UpdateValueStrategy();
         hostNameTargetToModelStrategy.setBeforeSetValidator( model.getHostNameValidator() );
-        dataBindingContext_.bindValue( hostNameTargetValue, hostNameModelValue, hostNameTargetToModelStrategy, null );
+        dataBindingContext.bindValue( hostNameTargetValue, hostNameModelValue, hostNameTargetToModelStrategy, null );
 
-        final IObservableValue portTargetValue = ComponentProperties.text().observe( portTextField_ );
+        final IObservableValue portTargetValue = ComponentProperties.text().observe( controls.portTextField );
         final UpdateValueStrategy portModelToTargetStrategy = new UpdateValueStrategy();
         portModelToTargetStrategy.setConverter( Converters.getPrimitiveIntegerToStringConverter() );
         final IObservableValue portModelValue = PojoProperties.value( "port" ).observe( model ); //$NON-NLS-1$
         final UpdateValueStrategy portTargetToModelStrategy = new UpdateValueStrategy();
         portTargetToModelStrategy.setConverter( Converters.withExceptionMessage( Converters.getStringToPrimitiveIntegerConverter(), NlsMessages.MainPage_port_illegal ) );
         portTargetToModelStrategy.setBeforeSetValidator( model.getPortValidator() );
-        dataBindingContext_.bindValue( portTargetValue, portModelValue, portTargetToModelStrategy, portModelToTargetStrategy );
+        dataBindingContext.bindValue( portTargetValue, portModelValue, portTargetToModelStrategy, portModelToTargetStrategy );
 
-        final IObservableValue passwordTargetValue = ComponentProperties.password().observe( passwordField_ );
+        final IObservableValue passwordTargetValue = ComponentProperties.password().observe( controls.passwordField );
         final IObservableValue passwordModelValue = PojoProperties.value( "password" ).observe( model ); //$NON-NLS-1$
-        dataBindingContext_.bindValue( passwordTargetValue, passwordModelValue );
+        dataBindingContext.bindValue( passwordTargetValue, passwordModelValue );
 
-        dataBindingAdapter_ = new WizardPageDataBindingAdapter( this, dataBindingContext_ );
+        dataBindingAdapter_ = new WizardPageDataBindingAdapter( this, dataBindingContext );
     }
 
     /*
@@ -205,5 +204,72 @@ final class MainPage
         }
 
         super.dispose();
+    }
+
+    /**
+     * Gets the page controls.
+     * 
+     * @return The page controls; never {@code null}.
+     */
+    private Controls getControls()
+    {
+        assert controls_ != null;
+        return controls_;
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * The page controls.
+     */
+    @Immutable
+    private static final class Controls
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The host name text field widget. */
+        final JTextField hostNameTextField;
+
+        /** The password field widget. */
+        final JPasswordField passwordField;
+
+        /** The player name text field widget. */
+        final JTextField playerNameTextField;
+
+        /** The port text field widget. */
+        final JTextField portTextField;
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code Controls} class.
+         * 
+         * @param hostNameTextField
+         *        The host name text field widget; must not be {@code null}.
+         * @param passwordField
+         *        The password field widget; must not be {@code null}.
+         * @param playerNameTextField
+         *        The player name text field widget; must not be {@code null}.
+         * @param portTextField
+         *        The port text field widget; must not be {@code null}.
+         */
+        Controls(
+            final JTextField hostNameTextField,
+            final JPasswordField passwordField,
+            final JTextField playerNameTextField,
+            final JTextField portTextField )
+        {
+            this.hostNameTextField = hostNameTextField;
+            this.passwordField = passwordField;
+            this.playerNameTextField = playerNameTextField;
+            this.portTextField = portTextField;
+        }
     }
 }

@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.view;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -38,6 +38,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.common.ui.databinding.swing.SwingRealm;
 import org.gamegineer.common.ui.help.IHelpSystem;
@@ -78,12 +79,14 @@ public final class MainFrame
     private final ActionMediator actionMediator_;
 
     /** The asynchronous completion token for the action updater task. */
+    @Nullable
     private Future<?> actionUpdaterTaskFuture_;
 
     /** Indicates an action update is required. */
     private final AtomicBoolean isActionUpdateRequired_;
 
     /** The main model listener for this view. */
+    @Nullable
     private IMainModelListener mainModelListener_;
 
     /** The main view. */
@@ -99,6 +102,7 @@ public final class MainFrame
     private final MultiThreadedTableEnvironmentContext tableEnvironmentContext_;
 
     /** The table model listener for this view. */
+    @Nullable
     private ITableModelListener tableModelListener_;
 
 
@@ -113,20 +117,11 @@ public final class MainFrame
      *        The table environment factory; must not be {@code null}.
      * @param tableNetworkFactory
      *        The table network factory; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code tableEnvironmentFactory} or {@code tableNetworkFactory}
-     *         is {@code null}.
      */
     public MainFrame(
-        /* @NonNull */
         final ITableEnvironmentFactory tableEnvironmentFactory,
-        /* @NonNull */
         final ITableNetworkFactory tableNetworkFactory )
     {
-        assertArgumentNotNull( tableEnvironmentFactory, "tableEnvironmentFactory" ); //$NON-NLS-1$
-        assertArgumentNotNull( tableNetworkFactory, "tableNetworkFactory" ); //$NON-NLS-1$
-
         actionMediator_ = new ActionMediator();
         actionUpdaterTaskFuture_ = null;
         isActionUpdateRequired_ = new AtomicBoolean( false );
@@ -162,10 +157,10 @@ public final class MainFrame
         bindActions();
         startActionUpdater();
 
-        mainModelListener_ = new MainModelListener();
-        model_.addMainModelListener( mainModelListener_ );
-        tableModelListener_ = new TableModelListener();
-        model_.getTableModel().addTableModelListener( tableModelListener_ );
+        final IMainModelListener mainModelListener = mainModelListener_ = new MainModelListener();
+        model_.addMainModelListener( mainModelListener );
+        final ITableModelListener tableModelListener = tableModelListener_ = new TableModelListener();
+        model_.getTableModel().addTableModelListener( tableModelListener );
     }
 
     /**
@@ -177,6 +172,7 @@ public final class MainFrame
         {
             @Override
             public void actionPerformed(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
@@ -192,6 +188,7 @@ public final class MainFrame
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
@@ -206,6 +203,7 @@ public final class MainFrame
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
@@ -217,6 +215,7 @@ public final class MainFrame
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
@@ -228,9 +227,14 @@ public final class MainFrame
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
+                @Nullable
                 final ActionEvent event )
             {
-                openTable( event.getActionCommand() );
+                assert event != null;
+
+                final String fileName = event.getActionCommand();
+                assert fileName != null;
+                openTable( fileName );
             }
         } );
         actionMediator_.bindActionListener( Actions.getSaveTableAction(), new ActionListener()
@@ -238,6 +242,7 @@ public final class MainFrame
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
@@ -249,6 +254,7 @@ public final class MainFrame
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
@@ -261,6 +267,7 @@ public final class MainFrame
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final Action obj )
             {
@@ -272,6 +279,7 @@ public final class MainFrame
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final Action obj )
             {
@@ -339,9 +347,10 @@ public final class MainFrame
     /**
      * Gets the file associated with the table.
      * 
-     * @return The file associated with the table; never {@code null}.
+     * @return The file associated with the table or {@code null} if no file is
+     *         associated with the table.
      */
-    /* @NonNull */
+    @Nullable
     private File getTableFile()
     {
         return model_.getTableModel().getFile();
@@ -352,7 +361,6 @@ public final class MainFrame
      * 
      * @return The name of the table; never {@code null}.
      */
-    /* @NonNull */
     private String getTableName()
     {
         final File file = getTableFile();
@@ -361,7 +369,7 @@ public final class MainFrame
             return NlsMessages.MainFrame_untitledTable;
         }
 
-        return file.getName();
+        return nonNull( file.getName() );
     }
 
     /**
@@ -465,11 +473,8 @@ public final class MainFrame
      *        file name.
      */
     private void openTable(
-        /* @NonNull */
         final String fileName )
     {
-        assert fileName != null;
-
         if( !confirmSaveDirtyTable() )
         {
             return;
@@ -484,7 +489,7 @@ public final class MainFrame
                 return;
             }
 
-            file = fileChooser.getSelectedFile();
+            file = nonNull( fileChooser.getSelectedFile() );
         }
         else
         {
@@ -507,8 +512,11 @@ public final class MainFrame
      */
     @Override
     protected void processWindowEvent(
+        @Nullable
         final WindowEvent event )
     {
+        assert event != null;
+
         switch( event.getID() )
         {
             case WindowEvent.WINDOW_CLOSED:
@@ -535,9 +543,13 @@ public final class MainFrame
     @Override
     public void removeNotify()
     {
-        model_.getTableModel().removeTableModelListener( tableModelListener_ );
+        final ITableModelListener tableModelListener = tableModelListener_;
+        assert tableModelListener != null;
+        model_.getTableModel().removeTableModelListener( tableModelListener );
         tableModelListener_ = null;
-        model_.removeMainModelListener( mainModelListener_ );
+        final IMainModelListener mainModelListener = mainModelListener_;
+        assert mainModelListener != null;
+        model_.removeMainModelListener( mainModelListener );
         mainModelListener_ = null;
 
         stopActionUpdater();
@@ -592,11 +604,12 @@ public final class MainFrame
                 return false;
             }
 
-            file = fileChooser.getSelectedFile();
+            file = nonNull( fileChooser.getSelectedFile() );
         }
         else
         {
             file = getTableFile();
+            assert file != null;
         }
 
         try
@@ -714,10 +727,9 @@ public final class MainFrame
          */
         @Override
         public void mainModelStateChanged(
+            @SuppressWarnings( "unused" )
             final MainModelEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             isActionUpdateRequired_.set( true );
         }
     }
@@ -751,10 +763,9 @@ public final class MainFrame
          */
         @Override
         public void tableModelFileChanged(
+            @SuppressWarnings( "unused" )
             final TableModelEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override

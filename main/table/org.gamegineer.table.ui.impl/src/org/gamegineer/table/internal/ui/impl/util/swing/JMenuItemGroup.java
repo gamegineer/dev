@@ -1,6 +1,6 @@
 /*
  * JMenuItemGroup.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.util.swing;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.util.Collection;
@@ -33,6 +33,7 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A menu item group whose menu items are generated each time before its parent
@@ -87,17 +88,10 @@ public final class JMenuItemGroup
      *        must not be {@code null}.
      */
     public JMenuItemGroup(
-        /* @NonNull */
         final JMenu menu,
-        /* @NonNull */
         final Action action,
-        /* @NonNull */
         final IContentProvider contentProvider )
     {
-        assertArgumentNotNull( menu, "menu" ); //$NON-NLS-1$
-        assertArgumentNotNull( action, "action" ); //$NON-NLS-1$
-        assertArgumentNotNull( contentProvider, "contentProvider" ); //$NON-NLS-1$
-
         action_ = action;
         contentProvider_ = contentProvider;
 
@@ -105,6 +99,7 @@ public final class JMenuItemGroup
         {
             @Override
             public void menuCanceled(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final MenuEvent event )
             {
@@ -113,6 +108,7 @@ public final class JMenuItemGroup
 
             @Override
             public void menuDeselected(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final MenuEvent event )
             {
@@ -122,9 +118,12 @@ public final class JMenuItemGroup
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void menuSelected(
+                @Nullable
                 final MenuEvent event )
             {
-                updateMenuItems( (JMenu)event.getSource() );
+                assert event != null;
+
+                updateMenuItems( nonNull( (JMenu)event.getSource() ) );
             }
         } );
     }
@@ -142,11 +141,8 @@ public final class JMenuItemGroup
      */
     @SuppressWarnings( "boxing" )
     private void updateMenuItems(
-        /* @NonNull */
         final JMenu menu )
     {
-        assert menu != null;
-
         int beginIndex = -1, endIndex = -1;
         for( int index = 0; index < menu.getMenuComponentCount(); ++index )
         {
@@ -223,7 +219,6 @@ public final class JMenuItemGroup
          * @return A collection of menu item descriptors for the group; never
          *         {@code null}.
          */
-        /* @NonNull */
         public Collection<MenuItemDescriptor> getMenuItemDescriptors();
     }
 
@@ -238,9 +233,11 @@ public final class JMenuItemGroup
         // ==================================================================
 
         /** The menu item action command. */
+        @Nullable
         private final String actionCommand_;
 
         /** The menu item text. */
+        @Nullable
         private final String text_;
 
 
@@ -258,9 +255,9 @@ public final class JMenuItemGroup
          *        The menu item action command; may be {@code null}.
          */
         public MenuItemDescriptor(
-            /* @Nullable */
+            @Nullable
             final String text,
-            /* @Nullable */
+            @Nullable
             final String actionCommand )
         {
             text_ = text;
@@ -277,7 +274,7 @@ public final class JMenuItemGroup
          * 
          * @return The menu item action command; may be {@code null}.
          */
-        /* @Nullable */
+        @Nullable
         public String getActionCommand()
         {
             return actionCommand_;
@@ -288,7 +285,7 @@ public final class JMenuItemGroup
          * 
          * @return The menu item text; may be {@code null}.
          */
-        /* @Nullable */
+        @Nullable
         public String getText()
         {
             return text_;

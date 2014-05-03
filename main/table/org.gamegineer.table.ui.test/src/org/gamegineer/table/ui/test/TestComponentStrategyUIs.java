@@ -1,6 +1,6 @@
 /*
  * TestComponentStrategyUIs.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.ui.test;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ComponentStrategies;
@@ -73,17 +72,10 @@ public final class TestComponentStrategyUIs
      *        {@code null}.
      * 
      * @return A new component strategy user interface; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code componentStrategyUI} is {@code null}.
      */
-    /* @NonNull */
     public static IComponentStrategyUI cloneComponentStrategyUI(
-        /* @NonNull */
         final IComponentStrategyUI componentStrategyUI )
     {
-        assertArgumentNotNull( componentStrategyUI, "componentStrategyUI" ); //$NON-NLS-1$
-
         return (componentStrategyUI instanceof IContainerStrategyUI) //
             ? createContainerStrategyUIDecorator( (IContainerStrategyUI)componentStrategyUI, componentStrategyUI.getId() ) //
             : createComponentStrategyUIDecorator( componentStrategyUI, componentStrategyUI.getId() );
@@ -97,13 +89,8 @@ public final class TestComponentStrategyUIs
      *        The component strategy identifier; must not be {@code null}.
      * 
      * @return A new component strategy user interface; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
      */
-    /* @NonNull */
     public static IComponentStrategyUI createComponentStrategyUI(
-        /* @NonNull */
         final ComponentStrategyId id )
     {
         return createComponentStrategyUI( id, NULL_COMPONENT_STRATEGY_UI );
@@ -121,20 +108,11 @@ public final class TestComponentStrategyUIs
      *        be delegated; must not be {@code null}.
      * 
      * @return A new component strategy user interface; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code id} or {@code componentStrategyUI} is {@code null}.
      */
-    /* @NonNull */
     public static IComponentStrategyUI createComponentStrategyUI(
-        /* @NonNull */
         final ComponentStrategyId id,
-        /* @NonNull */
         final IComponentStrategyUI componentStrategyUI )
     {
-        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
-        assertArgumentNotNull( componentStrategyUI, "componentStrategyUI" ); //$NON-NLS-1$
-
         return registerComponentStrategyUI( createComponentStrategyUIDecorator( componentStrategyUI, id ) );
     }
 
@@ -151,16 +129,10 @@ public final class TestComponentStrategyUIs
      * @return A decorator for the specified component strategy user interface;
      *         never {@code null}.
      */
-    /* @NonNull */
     private static IComponentStrategyUI createComponentStrategyUIDecorator(
-        /* @NonNull */
         final IComponentStrategyUI componentStrategyUI,
-        /* @NonNull */
         final ComponentStrategyId componentStrategyId )
     {
-        assert componentStrategyUI != null;
-        assert componentStrategyId != null;
-
         return new IComponentStrategyUI()
         {
             @Override
@@ -185,13 +157,8 @@ public final class TestComponentStrategyUIs
      *        The component strategy identifier; must not be {@code null}.
      * 
      * @return A new container strategy user interface; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
      */
-    /* @NonNull */
     public static IContainerStrategyUI createContainerStrategyUI(
-        /* @NonNull */
         final ComponentStrategyId id )
     {
         return createContainerStrategyUI( id, NULL_CONTAINER_STRATEGY_UI );
@@ -209,20 +176,11 @@ public final class TestComponentStrategyUIs
      *        be delegated; must not be {@code null}.
      * 
      * @return A new container strategy user interface; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code id} or {@code containerStrategyUI} is {@code null}.
      */
-    /* @NonNull */
     public static IContainerStrategyUI createContainerStrategyUI(
-        /* @NonNull */
         final ComponentStrategyId id,
-        /* @NonNull */
         final IContainerStrategyUI containerStrategyUI )
     {
-        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
-        assertArgumentNotNull( containerStrategyUI, "containerStrategyUI" ); //$NON-NLS-1$
-
         return registerComponentStrategyUI( createContainerStrategyUIDecorator( containerStrategyUI, id ) );
     }
 
@@ -239,16 +197,10 @@ public final class TestComponentStrategyUIs
      * @return A decorator for the specified container strategy user interface;
      *         never {@code null}.
      */
-    /* @NonNull */
     private static IContainerStrategyUI createContainerStrategyUIDecorator(
-        /* @NonNull */
         final IContainerStrategyUI containerStrategyUI,
-        /* @NonNull */
         final ComponentStrategyId componentStrategyId )
     {
-        assert containerStrategyUI != null;
-        assert componentStrategyId != null;
-
         return new IContainerStrategyUI()
         {
             @Override
@@ -278,13 +230,9 @@ public final class TestComponentStrategyUIs
      * @return The registered component strategy user interface; never
      *         {@code null}.
      */
-    /* @NonNull */
     private static <T extends IComponentStrategyUI> T registerComponentStrategyUI(
-        /* @NonNull */
         final T componentStrategyUI )
     {
-        assert componentStrategyUI != null;
-
         final IComponentStrategyUIRegistry componentStrategyUIRegistry = Activator.getDefault().getComponentStrategyUIRegistry();
         assert componentStrategyUIRegistry != null;
         componentStrategyUIRegistry.registerObject( componentStrategyUI );

@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.view;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.File;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
@@ -40,48 +41,48 @@ final class NonNlsMessages
     // --- ComponentView ----------------------------------------------------
 
     /** The component surface design user interface is not available. */
-    public static String ComponentView_getComponentSurfaceDesignUI_notAvailable;
+    public static String ComponentView_getComponentSurfaceDesignUI_notAvailable = ""; //$NON-NLS-1$
 
     // --- Cursors ----------------------------------------------------------
 
     /** Failed to create the system invalid cursor. */
-    public static String Cursors_createInvalidCursor_failed;
+    public static String Cursors_createInvalidCursor_failed = ""; //$NON-NLS-1$
 
     /** The name of the grab cursor. */
-    public static String Cursors_grab_name;
+    public static String Cursors_grab_name = ""; //$NON-NLS-1$
 
     /** The name of the hand cursor. */
-    public static String Cursors_hand_name;
+    public static String Cursors_hand_name = ""; //$NON-NLS-1$
 
     // --- MainFrame --------------------------------------------------------
 
     /** An error occurred within the action updater task. */
-    public static String MainFrame_actionUpdater_error;
+    public static String MainFrame_actionUpdater_error = ""; //$NON-NLS-1$
 
     /** An error occurred while opening the table. */
-    public static String MainFrame_openTable_error;
+    public static String MainFrame_openTable_error = ""; //$NON-NLS-1$
 
     /** An error occurred while saving the table. */
-    public static String MainFrame_saveTable_error;
+    public static String MainFrame_saveTable_error = ""; //$NON-NLS-1$
 
     // --- TableView --------------------------------------------------------
 
     /** An error occurred while adding a new component to the table. */
-    public static String TableView_addComponent_error;
+    public static String TableView_addComponent_error = ""; //$NON-NLS-1$
 
     /** The drag source extension is not available. */
-    public static String TableView_draggingComponent_dragSourceNotAvailable;
+    public static String TableView_draggingComponent_dragSourceNotAvailable = ""; //$NON-NLS-1$
 
     /** An error occurred while setting the container layout. */
-    public static String TableView_setContainerLayout_error;
+    public static String TableView_setContainerLayout_error = ""; //$NON-NLS-1$
 
     // --- ViewUtils --------------------------------------------------------
 
     /** Interrupted while waiting for the table network to disconnect. */
-    public static String ViewUtils_disconnectTableNetwork_interrupted;
+    public static String ViewUtils_disconnectTableNetwork_interrupted = ""; //$NON-NLS-1$
 
     /** Timed out while waiting for the table network to disconnect. */
-    public static String ViewUtils_disconnectTableNetwork_timedOut;
+    public static String ViewUtils_disconnectTableNetwork_timedOut = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -120,12 +121,10 @@ final class NonNlsMessages
      * @return The formatted message indicating the component surface design
      *         user interface is not available; never {@code null}.
      */
-    /* @NonNull */
     static String ComponentView_getComponentSurfaceDesignUI_notAvailable(
-        /* @NonNull */
         final ComponentSurfaceDesignId componentSurfaceDesignId )
     {
-        return bind( ComponentView_getComponentSurfaceDesignUI_notAvailable, componentSurfaceDesignId );
+        return nonNull( bind( ComponentView_getComponentSurfaceDesignUI_notAvailable, componentSurfaceDesignId ) );
     }
 
     // --- MainFrame --------------------------------------------------------
@@ -140,12 +139,10 @@ final class NonNlsMessages
      * @return The formatted message that indicates an error occurred while
      *         opening the table; never {@code null}.
      */
-    /* @NonNull */
     static String MainFrame_openTable_error(
-        /* @NonNull */
         final File file )
     {
-        return bind( MainFrame_openTable_error, file.getAbsolutePath() );
+        return nonNull( bind( MainFrame_openTable_error, file.getAbsolutePath() ) );
     }
 
     /**
@@ -158,11 +155,9 @@ final class NonNlsMessages
      * @return The formatted message that indicates an error occurred while
      *         saving the table; never {@code null}.
      */
-    /* @NonNull */
     static String MainFrame_saveTable_error(
-        /* @NonNull */
         final File file )
     {
-        return bind( MainFrame_saveTable_error, file.getAbsolutePath() );
+        return nonNull( bind( MainFrame_saveTable_error, file.getAbsolutePath() ) );
     }
 }

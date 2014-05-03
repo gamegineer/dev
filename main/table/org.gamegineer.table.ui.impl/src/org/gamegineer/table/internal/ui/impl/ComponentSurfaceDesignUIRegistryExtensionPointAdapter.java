@@ -1,6 +1,6 @@
 /*
  * ComponentSurfaceDesignUIRegistryExtensionPointAdapter.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.net.URL;
 import javax.swing.Icon;
 import net.jcip.annotations.ThreadSafe;
@@ -92,8 +92,6 @@ public final class ComponentSurfaceDesignUIRegistryExtensionPointAdapter
     protected ComponentSurfaceDesignUI createObject(
         final IConfigurationElement configurationElement )
     {
-        assertArgumentNotNull( configurationElement, "configurationElement" ); //$NON-NLS-1$
-
         final String idString = configurationElement.getAttribute( ATTR_ID );
         if( idString == null )
         {
@@ -115,7 +113,7 @@ public final class ComponentSurfaceDesignUIRegistryExtensionPointAdapter
         final Bundle bundle = ContributorFactoryOSGi.resolve( configurationElement.getContributor() );
         if( bundle == null )
         {
-            throw new IllegalArgumentException( NonNlsMessages.ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconBundleNotFound( configurationElement.getNamespaceIdentifier() ) );
+            throw new IllegalArgumentException( NonNlsMessages.ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconBundleNotFound( nonNull( configurationElement.getNamespaceIdentifier() ) ) );
         }
         final URL iconUrl = FileLocator.find( bundle, new Path( iconPath ), null );
         if( iconUrl == null )

@@ -1,6 +1,6 @@
 /*
  * ComponentPrototypeFactoryProxy.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,11 +21,11 @@
 
 package org.gamegineer.table.internal.ui.impl.prototype;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.List;
 import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.ITableEnvironment;
 import org.gamegineer.table.ui.prototype.ComponentPrototypeFactoryException;
@@ -51,6 +51,7 @@ final class ComponentPrototypeFactoryProxy
      * {@code null} if the component prototype factory delegate has not yet been
      * created.
      */
+    @Nullable
     private IComponentPrototypeFactory delegate_;
 
     /**
@@ -78,14 +79,9 @@ final class ComponentPrototypeFactoryProxy
      *        extension; must not be {@code null}.
      */
     ComponentPrototypeFactoryProxy(
-        /* @NonNull */
         final IConfigurationElement configurationElement,
-        /* @NonNull */
         final String propertyName )
     {
-        assert configurationElement != null;
-        assert propertyName != null;
-
         configurationElement_ = configurationElement;
         delegate_ = null;
         propertyName_ = propertyName;
@@ -104,8 +100,6 @@ final class ComponentPrototypeFactoryProxy
         final ITableEnvironment tableEnvironment )
         throws ComponentPrototypeFactoryException
     {
-        assertArgumentNotNull( tableEnvironment, "tableEnvironment" ); //$NON-NLS-1$
-
         return getDelegate().createComponentPrototype( tableEnvironment );
     }
 
@@ -119,7 +113,6 @@ final class ComponentPrototypeFactoryProxy
      * @throws org.gamegineer.table.ui.prototype.ComponentPrototypeFactoryException
      *         If the component prototype factory delegate is not available.
      */
-    /* @NonNull */
     private IComponentPrototypeFactory getDelegate()
         throws ComponentPrototypeFactoryException
     {
@@ -135,6 +128,7 @@ final class ComponentPrototypeFactoryProxy
             }
         }
 
+        assert delegate_ != null;
         return delegate_;
     }
 }

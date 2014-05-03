@@ -1,6 +1,6 @@
 /*
  * ComponentPrototypeUtils.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,10 +21,10 @@
 
 package org.gamegineer.table.internal.ui.impl.prototype;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.event.ActionEvent;
 import javax.swing.JComponent;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.ui.prototype.IComponentPrototypeFactory;
 
 /**
@@ -70,17 +70,11 @@ public final class ComponentPrototypeUtils
      * @return The component prototype factory for the Swing component
      *         associated with the specified event or {@code null} if not
      *         specified.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     public static IComponentPrototypeFactory getComponentPrototypeFactory(
-        /* @NonNull */
         final ActionEvent event )
     {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
         final Object source = event.getSource();
         if( source instanceof JComponent )
         {
@@ -103,14 +97,9 @@ public final class ComponentPrototypeUtils
      *        The component prototype factory; must not be {@code null}.
      */
     static void setComponentPrototypeFactory(
-        /* @NonNull */
         final JComponent uiComponent,
-        /* @NonNull */
         final IComponentPrototypeFactory componentPrototypeFactory )
     {
-        assert uiComponent != null;
-        assert componentPrototypeFactory != null;
-
         uiComponent.putClientProperty( CLIENT_PROPERTY_COMPONENT_PROTOTYPE_FACTORY, componentPrototypeFactory );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * ComponentViewFactory.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -56,13 +56,9 @@ final class ComponentViewFactory
      * @return A new component view for the specified component model; never
      *         {@code null}.
      */
-    /* @NonNull */
     static ComponentView createComponentView(
-        /* @NonNull */
         final ComponentModel componentModel )
     {
-        assert componentModel != null;
-
         if( componentModel instanceof ContainerModel )
         {
             return createContainerView( (ContainerModel)componentModel );
@@ -80,13 +76,9 @@ final class ComponentViewFactory
      * @return A new container view for the specified container model; never
      *         {@code null}.
      */
-    /* @NonNull */
     static ContainerView createContainerView(
-        /* @NonNull */
         final ContainerModel containerModel )
     {
-        assert containerModel != null;
-
         return new ContainerView( containerModel );
     }
 }

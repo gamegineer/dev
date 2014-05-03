@@ -1,6 +1,6 @@
 /*
  * DefaultComponentStrategyUIFactoryTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -79,16 +79,5 @@ public final class DefaultComponentStrategyUIFactoryTest
 
         assertNotNull( actualValue );
         assertTrue( actualValue instanceof IContainerStrategyUI );
-    }
-
-    /**
-     * Ensures the
-     * {@link DefaultComponentStrategyUIFactory#createDefaultComponentStrategyUI}
-     * method throws an exception when passed a {@code null} component strategy.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateDefaultComponentStrategyUI_ComponentStrategy_Null()
-    {
-        DefaultComponentStrategyUIFactory.createDefaultComponentStrategyUI( null );
     }
 }

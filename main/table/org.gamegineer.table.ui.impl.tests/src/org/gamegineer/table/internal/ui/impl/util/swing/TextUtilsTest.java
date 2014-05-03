@@ -1,6 +1,6 @@
 /*
  * TextUtilsTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.util.swing;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import java.io.File;
 import org.junit.Test;
@@ -55,14 +56,10 @@ public final class TextUtilsTest
      * 
      * @return The normalized file system path; never {@code null}.
      */
-    /* @NonNull */
     private static String normalizePath(
-        /* @NonNull */
         final String path )
     {
-        assert path != null;
-
-        return path.replace( '\\', File.separatorChar );
+        return nonNull( path.replace( '\\', File.separatorChar ) );
     }
 
     /**
@@ -171,15 +168,5 @@ public final class TextUtilsTest
     public void testShortenPath_MaxLength_Negative()
     {
         TextUtils.shortenPath( "path", -1 ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@link TextUtils#shortenPath} method throws an exception when
-     * passed a {@code null} path.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testShortenPath_Path_Null()
-    {
-        TextUtils.shortenPath( null, 0 );
     }
 }

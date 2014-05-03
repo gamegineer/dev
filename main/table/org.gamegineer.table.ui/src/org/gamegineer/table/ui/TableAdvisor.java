@@ -1,6 +1,6 @@
 /*
  * TableAdvisor.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 package org.gamegineer.table.ui;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -55,17 +55,13 @@ public final class TableAdvisor
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code appArgs} contains a {@code null} element.
-     * @throws java.lang.NullPointerException
-     *         If {@code appArgs} is {@code null}.
      */
     public TableAdvisor(
-        /* @NonNull */
         final List<String> appArgs )
     {
-        assertArgumentNotNull( appArgs, "appArgs" ); //$NON-NLS-1$
         assertArgumentLegal( !appArgs.contains( null ), "appArgs", NonNlsMessages.TableAdvisor_ctor_appArgs_containsNullElement ); //$NON-NLS-1$
 
-        appArgs_ = Collections.unmodifiableList( new ArrayList<>( appArgs ) );
+        appArgs_ = nonNull( Collections.unmodifiableList( new ArrayList<>( appArgs ) ) );
     }
 
 

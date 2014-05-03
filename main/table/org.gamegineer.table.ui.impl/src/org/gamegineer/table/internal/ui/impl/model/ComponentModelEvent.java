@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.model;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.EventObject;
 import net.jcip.annotations.ThreadSafe;
 
@@ -49,12 +50,8 @@ public final class ComponentModelEvent
      * @param source
      *        The component model that fired the event; must not be {@code null}
      *        .
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code source} is {@code null}.
      */
     public ComponentModelEvent(
-        /* @NonNull */
         final ComponentModel source )
     {
         super( source );
@@ -70,9 +67,8 @@ public final class ComponentModelEvent
      * 
      * @return The component model that fired the event; never {@code null}.
      */
-    /* @NonNull */
     public ComponentModel getComponentModel()
     {
-        return (ComponentModel)getSource();
+        return nonNull( (ComponentModel)getSource() );
     }
 }

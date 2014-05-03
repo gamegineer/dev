@@ -1,6 +1,6 @@
 /*
  * ComponentPrototypeMenuBuilder.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.prototype;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -31,6 +32,7 @@ import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.ui.impl.Loggers;
 
 /**
@@ -68,11 +70,8 @@ final class ComponentPrototypeMenuBuilder
      *        The action used for all menu items; must not be {@code null}.
      */
     ComponentPrototypeMenuBuilder(
-        /* @NonNull */
         final Action menuItemAction )
     {
-        assert menuItemAction != null;
-
         menuItemAction_ = menuItemAction;
         menuItemCollections_ = new HashMap<>();
         rootMenuDescriptor_ = new MenuDescriptor( null );
@@ -91,11 +90,8 @@ final class ComponentPrototypeMenuBuilder
      *        {@code null}.
      */
     void addComponentPrototype(
-        /* @NonNull */
         final ComponentPrototype componentPrototype )
     {
-        assert componentPrototype != null;
-
         Collection<JMenuItem> menuItems = menuItemCollections_.get( componentPrototype.getCategoryId() );
         if( menuItems == null )
         {
@@ -118,11 +114,8 @@ final class ComponentPrototypeMenuBuilder
      *        {@code null}.
      */
     void addComponentPrototypeCategory(
-        /* @NonNull */
         final ComponentPrototypeCategory componentPrototypeCategory )
     {
-        assert componentPrototypeCategory != null;
-
         final MenuDescriptor menuDescriptor = rootMenuDescriptor_.getDescendantMenuDescriptor( componentPrototypeCategory.getPath() );
         final JMenu menu = new JMenu( componentPrototypeCategory.getName() );
         menu.setMnemonic( componentPrototypeCategory.getMnemonic() );
@@ -137,11 +130,8 @@ final class ComponentPrototypeMenuBuilder
      *        The root menu; must not be {@code null}.
      */
     void buildMenu(
-        /* @NonNull */
         final JMenu rootMenu )
     {
-        assert rootMenu != null;
-
         rootMenu.removeAll();
         rootMenuDescriptor_.setMenu( rootMenu );
         buildMenu( rootMenuDescriptor_ );
@@ -158,11 +148,8 @@ final class ComponentPrototypeMenuBuilder
      *         it should be excluded.
      */
     private boolean buildMenu(
-        /* @NonNull */
         final MenuDescriptor menuDescriptor )
     {
-        assert menuDescriptor != null;
-
         final JMenu menu = menuDescriptor.getMenu();
         if( menu == null )
         {
@@ -216,18 +203,14 @@ final class ComponentPrototypeMenuBuilder
      *        identifiers; must not be {@code null}.
      */
     private static void collectAllComponentPrototypeCategoryIds(
-        /* @NonNull */
         final MenuDescriptor menuDescriptor,
-        /* @NonNull */
         final Collection<String> ids )
     {
-        assert menuDescriptor != null;
-        assert ids != null;
-
         ids.add( menuDescriptor.getId() );
 
         for( final MenuDescriptor childMenuDescriptor : menuDescriptor.getChildMenuDescriptors() )
         {
+            assert childMenuDescriptor != null;
             collectAllComponentPrototypeCategoryIds( childMenuDescriptor, ids );
         }
     }
@@ -258,9 +241,11 @@ final class ComponentPrototypeMenuBuilder
          * The component prototype category identifier associated with the menu
          * or {@code null} if the root menu.
          */
+        @Nullable
         private final String id_;
 
         /** The menu or {@code null} if the menu has not yet been set. */
+        @Nullable
         private JMenu menu_;
 
 
@@ -276,7 +261,7 @@ final class ComponentPrototypeMenuBuilder
          *        the menu or {@code null} if the root menu.
          */
         MenuDescriptor(
-            /* @Nullable */
+            @Nullable
             final String id )
         {
             childMenuDescriptors_ = new LinkedHashMap<>();
@@ -304,13 +289,9 @@ final class ComponentPrototypeMenuBuilder
          * @return The child menu descriptor associated with the specified
          *         component prototype category identifier; never {@code null}.
          */
-        /* @NonNull */
         private MenuDescriptor getChildMenuDescriptor(
-            /* @NonNull */
             final String id )
         {
-            assert id != null;
-
             MenuDescriptor childMenuDescriptor = childMenuDescriptors_.get( id );
             if( childMenuDescriptor == null )
             {
@@ -328,10 +309,9 @@ final class ComponentPrototypeMenuBuilder
          *         The returned collection is not a copy and must not be
          *         modified by the caller.
          */
-        /* @NonNull */
         Collection<MenuDescriptor> getChildMenuDescriptors()
         {
-            return childMenuDescriptors_.values();
+            return nonNull( childMenuDescriptors_.values() );
         }
 
         /**
@@ -350,21 +330,20 @@ final class ComponentPrototypeMenuBuilder
          *         component prototype category identifier path; never
          *         {@code null}.
          */
-        /* @NonNull */
         MenuDescriptor getDescendantMenuDescriptor(
-            /* @NonNull */
             final List<String> idPath )
         {
-            assert idPath != null;
             assert !idPath.isEmpty();
 
-            final MenuDescriptor menuDescriptor = getChildMenuDescriptor( idPath.get( 0 ) );
+            final String childPath = idPath.get( 0 );
+            assert childPath != null;
+            final MenuDescriptor menuDescriptor = getChildMenuDescriptor( childPath );
             if( idPath.size() == 1 )
             {
                 return menuDescriptor;
             }
 
-            return menuDescriptor.getDescendantMenuDescriptor( idPath.subList( 1, idPath.size() ) );
+            return menuDescriptor.getDescendantMenuDescriptor( nonNull( idPath.subList( 1, idPath.size() ) ) );
         }
 
         /**
@@ -374,7 +353,7 @@ final class ComponentPrototypeMenuBuilder
          * @return The component prototype category identifier associated with
          *         the menu or {@code null} if the root menu.
          */
-        /* @Nullable */
+        @Nullable
         String getId()
         {
             return id_;
@@ -385,7 +364,7 @@ final class ComponentPrototypeMenuBuilder
          * 
          * @return The menu or {@code null} if the menu has not yet been set.
          */
-        /* @Nullable */
+        @Nullable
         JMenu getMenu()
         {
             return menu_;
@@ -402,10 +381,8 @@ final class ComponentPrototypeMenuBuilder
          *        The menu; must not be {@code null}.
          */
         void setMenu(
-            /* @NonNull */
             final JMenu menu )
         {
-            assert menu != null;
             assert menu_ == null;
 
             menu_ = menu;

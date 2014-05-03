@@ -1,6 +1,6 @@
 /*
  * ComponentModelVector.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.model;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 
 /**
@@ -54,19 +53,11 @@ public final class ComponentModelVector
      * @param direction
      *        The component axis along which the vector is directed; must not be
      *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code origin} or {@code axis} is {@code null}.
      */
     public ComponentModelVector(
-        /* @NonNull */
         final ComponentModel origin,
-        /* @NonNull */
         final ComponentAxis direction )
     {
-        assertArgumentNotNull( origin, "origin" ); //$NON-NLS-1$
-        assertArgumentNotNull( direction, "direction" ); //$NON-NLS-1$
-
         direction_ = direction;
         origin_ = origin;
     }
@@ -82,7 +73,6 @@ public final class ComponentModelVector
      * @return The component axis along which the vector is directed; never
      *         {@code null}.
      */
-    /* @NonNull */
     public ComponentAxis getDirection()
     {
         return direction_;
@@ -94,7 +84,6 @@ public final class ComponentModelVector
      * @return The component model that represents the vector origin; never
      *         {@code null}.
      */
-    /* @NonNull */
     public ComponentModel getOrigin()
     {
         return origin_;

@@ -1,6 +1,6 @@
 /*
  * HostTableNetworkWizard.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.wizards.hosttablenetwork;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
@@ -30,6 +29,7 @@ import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
 import org.gamegineer.common.ui.operation.RunnableTask;
 import org.gamegineer.common.ui.wizard.AbstractWizard;
+import org.gamegineer.common.ui.wizard.IWizardContainer;
 import org.gamegineer.table.internal.ui.impl.Loggers;
 import org.gamegineer.table.internal.ui.impl.model.TableModel;
 import org.gamegineer.table.internal.ui.impl.util.OptionDialogs;
@@ -69,16 +69,10 @@ public final class HostTableNetworkWizard
      * @param tableModel
      *        The table model associated with the wizard; must not be
      *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code tableModel} is {@code null}.
      */
     public HostTableNetworkWizard(
-        /* @NonNull */
         final TableModel tableModel )
     {
-        assertArgumentNotNull( tableModel, "tableModel" ); //$NON-NLS-1$
-
         connectionState_ = ConnectionState.DISCONNECTED;
         model_ = new Model();
         tableModel_ = tableModel;
@@ -117,7 +111,6 @@ public final class HostTableNetworkWizard
      * 
      * @return The wizard model; never {@code null}.
      */
-    /* @NonNull */
     Model getModel()
     {
         return model_;
@@ -128,7 +121,6 @@ public final class HostTableNetworkWizard
      * 
      * @return The table network configuration; never {@code null}.
      */
-    /* @NonNull */
     private TableNetworkConfiguration getTableNetworkConfiguration()
     {
         final TableNetworkConfigurationBuilder configurationBuilder = new TableNetworkConfigurationBuilder( tableModel_.getTable() );
@@ -150,7 +142,9 @@ public final class HostTableNetworkWizard
             final ITableNetwork tableNetwork = tableModel_.getTableNetwork();
             final TableNetworkConfiguration configuration = getTableNetworkConfiguration();
             connectionState_ = ConnectionState.CONNECTING;
-            getContainer().executeTask( new RunnableTask<ConnectionState, Void>()
+            final IWizardContainer container = getContainer();
+            assert container != null;
+            container.executeTask( new RunnableTask<ConnectionState, Void>()
             {
                 @Override
                 protected ConnectionState doInBackground()
@@ -172,7 +166,7 @@ public final class HostTableNetworkWizard
                         newState = get();
                         if( newState == ConnectionState.CONNECTED )
                         {
-                            getContainer().finish();
+                            container.finish();
                         }
                     }
                     catch( final CancellationException e )
@@ -199,6 +193,7 @@ public final class HostTableNetworkWizard
                     }
                     finally
                     {
+                        assert newState != null;
                         connectionState_ = newState;
                     }
                 }
@@ -215,17 +210,16 @@ public final class HostTableNetworkWizard
      *        The error message; must not be {@code null}.
      */
     private void showErrorMessageDialogLater(
-        /* @NonNull */
         final String message )
     {
-        assert message != null;
-
         SwingUtilities.invokeLater( new Runnable()
         {
             @Override
             public void run()
             {
-                OptionDialogs.showErrorMessageDialog( getContainer().getShell(), message );
+                final IWizardContainer container = getContainer();
+                assert container != null;
+                OptionDialogs.showErrorMessageDialog( container.getShell(), message );
             }
         } );
     }

@@ -1,6 +1,6 @@
 /*
  * ContainerModel.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.ui.impl.model;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +31,7 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ContainerEvent;
@@ -86,9 +87,7 @@ public final class ContainerModel
      *        .
      */
     ContainerModel(
-        /* @NonNull */
         final TableEnvironmentModel tableEnvironmentModel,
-        /* @NonNull */
         final IContainer container )
     {
         super( tableEnvironmentModel, container );
@@ -114,14 +113,10 @@ public final class ContainerModel
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is already a registered container model
      *         listener.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
      */
     public void addContainerModelListener(
-        /* @NonNull */
         final IContainerModelListener listener )
     {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.ContainerModel_addContainerModelListener_listener_registered ); //$NON-NLS-1$
     }
 
@@ -136,13 +131,10 @@ public final class ContainerModel
      * @return The component model that was created; never {@code null}.
      */
     @GuardedBy( "getLock()" )
-    /* @NonNull */
     private ComponentModel createComponentModel(
-        /* @NonNull */
         final IComponent component,
         final int componentIndex )
     {
-        assert component != null;
         assert componentIndex >= 0;
         assert getLock().isHeldByCurrentThread();
 
@@ -200,11 +192,9 @@ public final class ContainerModel
      *        The index of the added component; must not be negative.
      */
     private void fireComponentModelAdded(
-        /* @NonNull */
         final ComponentModel componentModel,
         final int componentModelIndex )
     {
-        assert componentModel != null;
         assert componentModelIndex >= 0;
         assert !getLock().isHeldByCurrentThread();
 
@@ -231,11 +221,9 @@ public final class ContainerModel
      *        The index of the removed component; must not be negative.
      */
     private void fireComponentModelRemoved(
-        /* @NonNull */
         final ComponentModel componentModel,
         final int componentModelIndex )
     {
-        assert componentModel != null;
         assert componentModelIndex >= 0;
         assert !getLock().isHeldByCurrentThread();
 
@@ -277,11 +265,11 @@ public final class ContainerModel
     /*
      * @see org.gamegineer.table.internal.ui.impl.model.IComponentModelParent#getChildPath(org.gamegineer.table.internal.ui.impl.model.ComponentModel)
      */
+    @Nullable
     @Override
     public ComponentPath getChildPath(
         final ComponentModel componentModel )
     {
-        assert componentModel != null;
         assert getLock().isHeldByCurrentThread();
 
         final ComponentPath path = getPath();
@@ -317,12 +305,10 @@ public final class ContainerModel
      *         path.
      */
     @GuardedBy( "getLock()" )
-    /* @Nullable */
+    @Nullable
     ComponentModel getComponentModel(
-        /* @NonNull */
         final List<ComponentPath> paths )
     {
-        assert paths != null;
         assert !paths.isEmpty();
         assert getLock().isHeldByCurrentThread();
 
@@ -336,7 +322,7 @@ public final class ContainerModel
             }
             else if( componentModel instanceof ContainerModel )
             {
-                return ((ContainerModel)componentModel).getComponentModel( paths.subList( 1, paths.size() ) );
+                return ((ContainerModel)componentModel).getComponentModel( nonNull( paths.subList( 1, paths.size() ) ) );
             }
         }
 
@@ -353,7 +339,7 @@ public final class ContainerModel
      *         specified index is not a legal component model index.
      */
     @GuardedBy( "getLock()" )
-    /* @Nullable */
+    @Nullable
     private ComponentModel getComponentModel(
         final int componentModelIndex )
     {
@@ -389,7 +375,6 @@ public final class ContainerModel
      *         component at the bottom of the container to the component at the
      *         top of the container.
      */
-    /* @NonNull */
     public List<ComponentModel> getComponentModels()
     {
         getLock().lock();
@@ -406,6 +391,7 @@ public final class ContainerModel
     /*
      * @see org.gamegineer.table.internal.ui.impl.model.IComponentModelParent#getTableModel()
      */
+    @Nullable
     @Override
     public TableModel getTableModel()
     {
@@ -421,8 +407,6 @@ public final class ContainerModel
         final Point location,
         final List<ComponentModel> componentModels )
     {
-        assert location != null;
-        assert componentModels != null;
         assert getLock().isHeldByCurrentThread();
 
         if( super.hitTest( location, componentModels ) )
@@ -455,6 +439,7 @@ public final class ContainerModel
             int componentIndex = 0;
             for( final IComponent component : getComponent().getComponents() )
             {
+                assert component != null;
                 createComponentModel( component, componentIndex++ );
             }
         }
@@ -472,14 +457,10 @@ public final class ContainerModel
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is not a registered container model listener.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
      */
     public void removeContainerModelListener(
-        /* @NonNull */
         final IContainerModelListener listener )
     {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.ContainerModel_removeContainerModelListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
@@ -536,10 +517,9 @@ public final class ContainerModel
          */
         @Override
         public void componentChanged(
+            @SuppressWarnings( "unused" )
             final ComponentModelEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             fireEventNotification( new Runnable()
             {
                 @Override
@@ -555,10 +535,9 @@ public final class ContainerModel
          */
         @Override
         public void componentModelFocusChanged(
+            @SuppressWarnings( "unused" )
             final ComponentModelEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             fireEventNotification( new Runnable()
             {
                 @Override
@@ -574,10 +553,9 @@ public final class ContainerModel
          */
         @Override
         public void componentModelHoverChanged(
+            @SuppressWarnings( "unused" )
             final ComponentModelEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             fireEventNotification( new Runnable()
             {
                 @Override
@@ -620,8 +598,6 @@ public final class ContainerModel
         public void componentAdded(
             final ContainerContentChangedEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             final ComponentModel componentModel;
 
             getLock().lock();
@@ -652,8 +628,6 @@ public final class ContainerModel
         public void componentRemoved(
             final ContainerContentChangedEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             final ComponentModel componentModel;
 
             getLock().lock();
@@ -703,10 +677,9 @@ public final class ContainerModel
          */
         @Override
         public void containerLayoutChanged(
+            @SuppressWarnings( "unused" )
             final ContainerEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             fireEventNotification( new Runnable()
             {
                 @Override

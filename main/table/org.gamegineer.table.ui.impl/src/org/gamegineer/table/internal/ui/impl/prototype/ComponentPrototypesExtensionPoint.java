@@ -1,6 +1,6 @@
 /*
  * ComponentPrototypesExtensionPoint.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.ui.impl.prototype;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -40,6 +40,7 @@ import org.eclipse.core.expressions.ExpressionTagNames;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.ui.impl.Activator;
 import org.gamegineer.table.internal.ui.impl.Loggers;
 import org.gamegineer.table.ui.prototype.IComponentPrototypeFactory;
@@ -136,27 +137,17 @@ public final class ComponentPrototypesExtensionPoint
      *        The action used for all menu items; must not be {@code null}.
      * @param evaluationContextProvider
      *        The evaluation context provider; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code rootMenu}, {@code menuItemAction}, or
-     *         {@code evaluationContextProvider} is {@code null}.
      */
     public static void buildMenu(
-        /* @NonNull */
         final JMenu rootMenu,
-        /* @NonNull */
         final Action menuItemAction,
-        /* @NonNull */
         final IEvaluationContextProvider evaluationContextProvider )
     {
-        assertArgumentNotNull( rootMenu, "rootMenu" ); //$NON-NLS-1$
-        assertArgumentNotNull( menuItemAction, "menuItemAction" ); //$NON-NLS-1$
-        assertArgumentNotNull( evaluationContextProvider, "evaluationContextProvider" ); //$NON-NLS-1$
-
         rootMenu.addMenuListener( new MenuListener()
         {
             @Override
             public void menuCanceled(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final MenuEvent event )
             {
@@ -165,6 +156,7 @@ public final class ComponentPrototypesExtensionPoint
 
             @Override
             public void menuDeselected(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final MenuEvent event )
             {
@@ -174,9 +166,12 @@ public final class ComponentPrototypesExtensionPoint
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void menuSelected(
+                @Nullable
                 final MenuEvent event )
             {
-                buildMenuInternal( (JMenu)event.getSource(), menuItemAction, evaluationContextProvider );
+                assert event != null;
+
+                buildMenuInternal( nonNull( (JMenu)event.getSource() ), menuItemAction, evaluationContextProvider );
             }
         } );
     }
@@ -192,17 +187,10 @@ public final class ComponentPrototypesExtensionPoint
      *        The evaluation context provider; must not be {@code null}.
      */
     private static void buildMenuInternal(
-        /* @NonNull */
         final JMenu rootMenu,
-        /* @NonNull */
         final Action menuItemAction,
-        /* @NonNull */
         final IEvaluationContextProvider evaluationContextProvider )
     {
-        assert rootMenu != null;
-        assert menuItemAction != null;
-        assert evaluationContextProvider != null;
-
         final ComponentPrototypeMenuBuilder menuBuilder = new ComponentPrototypeMenuBuilder( menuItemAction );
 
         final IExtensionRegistry extensionRegistry = Activator.getDefault().getExtensionRegistry();
@@ -255,20 +243,18 @@ public final class ComponentPrototypesExtensionPoint
      *         If {@code configurationElement} does not represent a legal
      *         component prototype.
      */
-    /* @NonNull */
     private static ComponentPrototype createComponentPrototype(
-        /* @NonNull */
         final IConfigurationElement configurationElement )
     {
-        assert configurationElement != null;
-
         final String categoryId = configurationElement.getAttribute( COMPONENT_PROTOTYPE_ATTR_CATEGORY );
 
         final String name = configurationElement.getAttribute( COMPONENT_PROTOTYPE_ATTR_NAME );
         assertArgumentLegal( name != null, "configurationElement", NonNlsMessages.ComponentPrototypesExtensionPoint_createComponentPrototype_missingName ); //$NON-NLS-1$
+        assert name != null;
 
         final String encodedMnemonic = configurationElement.getAttribute( COMPONENT_PROTOTYPE_ATTR_MNEMONIC );
         assertArgumentLegal( encodedMnemonic != null, "configurationElement", NonNlsMessages.ComponentPrototypesExtensionPoint_createComponentPrototype_missingMnemonic ); //$NON-NLS-1$
+        assert encodedMnemonic != null;
         final int mnemonic = decodeMnemonic( encodedMnemonic );
 
         final IConfigurationElement[] factoryConfigurationElements = configurationElement.getChildren( COMPONENT_PROTOTYPE_FACTORY_ELEM_NAME );
@@ -292,21 +278,20 @@ public final class ComponentPrototypesExtensionPoint
      *         If {@code configurationElement} does not represent a legal
      *         component prototype category.
      */
-    /* @NonNull */
     private static ComponentPrototypeCategory createComponentPrototypeCategory(
-        /* @NonNull */
         final IConfigurationElement configurationElement )
     {
-        assert configurationElement != null;
-
         final String id = configurationElement.getAttribute( COMPONENT_PROTOTYPE_CATEGORY_ATTR_ID );
         assertArgumentLegal( id != null, "configurationElement", NonNlsMessages.ComponentPrototypesExtensionPoint_createComponentPrototypeCategory_missingId ); //$NON-NLS-1$
+        assert id != null;
 
         final String name = configurationElement.getAttribute( COMPONENT_PROTOTYPE_CATEGORY_ATTR_NAME );
         assertArgumentLegal( name != null, "configurationElement", NonNlsMessages.ComponentPrototypesExtensionPoint_createComponentPrototypeCategory_missingName ); //$NON-NLS-1$
+        assert name != null;
 
         final String encodedMnemonic = configurationElement.getAttribute( COMPONENT_PROTOTYPE_CATEGORY_ATTR_MNEMONIC );
         assertArgumentLegal( encodedMnemonic != null, "configurationElement", NonNlsMessages.ComponentPrototypesExtensionPoint_createComponentPrototypeCategory_missingMnemonic ); //$NON-NLS-1$
+        assert encodedMnemonic != null;
         final int mnemonic = decodeMnemonic( encodedMnemonic );
 
         final String encodedParentCategoryPath = configurationElement.getAttribute( COMPONENT_PROTOTYPE_CATEGORY_ATTR_PARENT_CATEGORY );
@@ -323,17 +308,16 @@ public final class ComponentPrototypesExtensionPoint
      * 
      * @return The decoded category path; never {@code null}.
      */
-    /* @NonNull */
     private static List<String> decodeCategoryPath(
-        /* @Nullable */
+        @Nullable
         final String source )
     {
         if( source == null )
         {
-            return Collections.emptyList();
+            return nonNull( Collections.<String>emptyList() );
         }
 
-        return Arrays.asList( source.split( CATEGORY_PATH_SEPARATOR ) );
+        return nonNull( Arrays.asList( source.split( CATEGORY_PATH_SEPARATOR ) ) );
     }
 
     /**
@@ -348,11 +332,8 @@ public final class ComponentPrototypesExtensionPoint
      *         If {@code source} does not represent a legal mnemonic.
      */
     private static int decodeMnemonic(
-        /* @NonNull */
         final String source )
     {
-        assert source != null;
-
         final KeyStroke keyStroke = KeyStroke.getKeyStroke( source );
         if( keyStroke == null )
         {
@@ -374,14 +355,9 @@ public final class ComponentPrototypesExtensionPoint
      *         otherwise {@code false}.
      */
     private static boolean isConfigurationElementEnabled(
-        /* @NonNull */
         final IConfigurationElement configurationElement,
-        /* @NonNull */
         final IEvaluationContextProvider evaluationContextProvider )
     {
-        assert configurationElement != null;
-        assert evaluationContextProvider != null;
-
         try
         {
             final IConfigurationElement[] enablementConfigurationElements = configurationElement.getChildren( ExpressionTagNames.ENABLEMENT );

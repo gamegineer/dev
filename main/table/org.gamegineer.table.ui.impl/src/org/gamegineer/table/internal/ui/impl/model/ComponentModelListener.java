@@ -1,6 +1,6 @@
 /*
  * ComponentModelListener.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.model;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 
 /**
@@ -58,9 +57,10 @@ public class ComponentModelListener
      */
     @Override
     public void componentBoundsChanged(
+        @SuppressWarnings( "unused" )
         final ComponentModelEvent event )
     {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        // do nothing
     }
 
     /**
@@ -70,9 +70,10 @@ public class ComponentModelListener
      */
     @Override
     public void componentChanged(
+        @SuppressWarnings( "unused" )
         final ComponentModelEvent event )
     {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        // do nothing
     }
 
     /**
@@ -82,9 +83,10 @@ public class ComponentModelListener
      */
     @Override
     public void componentModelFocusChanged(
+        @SuppressWarnings( "unused" )
         final ComponentModelEvent event )
     {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        // do nothing
     }
 
     /**
@@ -94,9 +96,10 @@ public class ComponentModelListener
      */
     @Override
     public void componentModelHoverChanged(
+        @SuppressWarnings( "unused" )
         final ComponentModelEvent event )
     {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        // do nothing
     }
 
     /**
@@ -106,9 +109,10 @@ public class ComponentModelListener
      */
     @Override
     public void componentOrientationChanged(
+        @SuppressWarnings( "unused" )
         final ComponentModelEvent event )
     {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        // do nothing
     }
 
     /**
@@ -118,8 +122,9 @@ public class ComponentModelListener
      */
     @Override
     public void componentSurfaceDesignChanged(
+        @SuppressWarnings( "unused" )
         final ComponentModelEvent event )
     {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        // do nothing
     }
 }

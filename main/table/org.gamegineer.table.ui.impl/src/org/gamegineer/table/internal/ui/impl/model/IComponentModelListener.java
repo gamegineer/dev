@@ -1,6 +1,6 @@
 /*
  * IComponentModelListener.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -41,12 +41,8 @@ public interface IComponentModelListener
      * @param event
      *        The event describing the component model; must not be {@code null}
      *        .
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
      */
     public void componentBoundsChanged(
-        /* @NonNull */
         ComponentModelEvent event );
 
     /**
@@ -56,12 +52,8 @@ public interface IComponentModelListener
      * @param event
      *        The event describing the component model; must not be {@code null}
      *        .
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
      */
     public void componentChanged(
-        /* @NonNull */
         ComponentModelEvent event );
 
     /**
@@ -70,12 +62,8 @@ public interface IComponentModelListener
      * @param event
      *        The event describing the component model; must not be {@code null}
      *        .
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
      */
     public void componentModelFocusChanged(
-        /* @NonNull */
         ComponentModelEvent event );
 
     /**
@@ -84,12 +72,8 @@ public interface IComponentModelListener
      * @param event
      *        The event describing the component model; must not be {@code null}
      *        .
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
      */
     public void componentModelHoverChanged(
-        /* @NonNull */
         ComponentModelEvent event );
 
     /**
@@ -99,12 +83,8 @@ public interface IComponentModelListener
      * @param event
      *        The event describing the component model; must not be {@code null}
      *        .
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
      */
     public void componentOrientationChanged(
-        /* @NonNull */
         ComponentModelEvent event );
 
     /**
@@ -114,11 +94,7 @@ public interface IComponentModelListener
      * @param event
      *        The event describing the component model; must not be {@code null}
      *        .
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
      */
     public void componentSurfaceDesignChanged(
-        /* @NonNull */
         ComponentModelEvent event );
 }

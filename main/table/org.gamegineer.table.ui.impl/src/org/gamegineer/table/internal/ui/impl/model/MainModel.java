@@ -1,6 +1,6 @@
 /*
  * MainModel.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.ui.impl.model;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.File;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
@@ -59,16 +58,10 @@ public final class MainModel
      * 
      * @param tableModel
      *        The table model; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code tableModel} is {@code null}.
      */
     public MainModel(
-        /* @NonNull */
         final TableModel tableModel )
     {
-        assertArgumentNotNull( tableModel, "tableModel" ); //$NON-NLS-1$
-
         listeners_ = new CopyOnWriteArrayList<>();
         preferencesModel_ = new PreferencesModel();
         tableModel_ = tableModel;
@@ -89,14 +82,10 @@ public final class MainModel
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is already a registered main model listener.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
      */
     public void addMainModelListener(
-        /* @NonNull */
         final IMainModelListener listener )
     {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.MainModel_addMainModelListener_listener_registered ); //$NON-NLS-1$
     }
 
@@ -124,7 +113,6 @@ public final class MainModel
      * 
      * @return The preferences model; never {@code null}.
      */
-    /* @NonNull */
     public PreferencesModel getPreferencesModel()
     {
         return preferencesModel_;
@@ -135,7 +123,6 @@ public final class MainModel
      * 
      * @return The table model; never {@code null}.
      */
-    /* @NonNull */
     public TableModel getTableModel()
     {
         return tableModel_;
@@ -164,18 +151,13 @@ public final class MainModel
      *        The file from which the table will be opened; must not be
      *        {@code null}.
      * 
-     * @throws java.lang.NullPointerException
-     *         If {@code file} is {@code null}.
      * @throws org.gamegineer.table.internal.ui.impl.model.ModelException
      *         If an error occurs while opening the file.
      */
     public void openTable(
-        /* @NonNull */
         final File file )
         throws ModelException
     {
-        assertArgumentNotNull( file, "file" ); //$NON-NLS-1$
-
         try
         {
             tableModel_.open( file );
@@ -197,14 +179,10 @@ public final class MainModel
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is not a registered main model listener.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
      */
     public void removeMainModelListener(
-        /* @NonNull */
         final IMainModelListener listener )
     {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.MainModel_removeMainModelListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
@@ -223,18 +201,13 @@ public final class MainModel
      *        The file to which the table will be saved; must not be
      *        {@code null}.
      * 
-     * @throws java.lang.NullPointerException
-     *         If {@code file} is {@code null}.
      * @throws org.gamegineer.table.internal.ui.impl.model.ModelException
      *         If an error occurs while saving the file.
      */
     public void saveTable(
-        /* @NonNull */
         final File file )
         throws ModelException
     {
-        assertArgumentNotNull( file, "file" ); //$NON-NLS-1$
-
         try
         {
             tableModel_.save( file );
@@ -282,10 +255,9 @@ public final class MainModel
          */
         @Override
         public void tableChanged(
+            @SuppressWarnings( "unused" )
             final TableModelEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             fireMainModelStateChanged();
         }
 
@@ -294,10 +266,9 @@ public final class MainModel
          */
         @Override
         public void tableModelDirtyFlagChanged(
+            @SuppressWarnings( "unused" )
             final TableModelEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             fireMainModelStateChanged();
         }
 
@@ -306,10 +277,9 @@ public final class MainModel
          */
         @Override
         public void tableModelFileChanged(
+            @SuppressWarnings( "unused" )
             final TableModelEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             fireMainModelStateChanged();
         }
 
@@ -318,10 +288,9 @@ public final class MainModel
          */
         @Override
         public void tableModelFocusChanged(
+            @SuppressWarnings( "unused" )
             final TableModelEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             fireMainModelStateChanged();
         }
     }

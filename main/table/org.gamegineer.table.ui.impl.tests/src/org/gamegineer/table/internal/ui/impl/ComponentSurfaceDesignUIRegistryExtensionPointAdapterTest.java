@@ -1,6 +1,6 @@
 /*
  * ComponentSurfaceDesignUIRegistryExtensionPointAdapterTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -30,6 +31,7 @@ import org.easymock.IMocksControl;
 import org.eclipse.core.runtime.ContributorFactoryOSGi;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IContributor;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.registry.test.AbstractAbstractRegistryExtensionPointAdapterTestCase;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.internal.ui.impl.util.swing.IconProxy;
@@ -64,7 +66,9 @@ public final class ComponentSurfaceDesignUIRegistryExtensionPointAdapterTest
      */
     @Override
     protected void assertObjectEquals(
+        @Nullable
         final ComponentSurfaceDesignUI expected,
+        @Nullable
         final ComponentSurfaceDesignUI actual )
     {
         if( expected == null )
@@ -99,7 +103,7 @@ public final class ComponentSurfaceDesignUIRegistryExtensionPointAdapterTest
         EasyMock.expect( configurationElement.getAttribute( "name" ) ).andReturn( name ).anyTimes(); //$NON-NLS-1$
         EasyMock.expect( configurationElement.getAttribute( "icon" ) ).andReturn( iconPath ).anyTimes(); //$NON-NLS-1$
         EasyMock.expect( configurationElement.getContributor() ).andReturn( contributor ).anyTimes();
-        return new ComponentSurfaceDesignUI( id, name, mocksControl.createMock( Icon.class ) );
+        return new ComponentSurfaceDesignUI( id, name, nonNull( mocksControl.createMock( Icon.class ) ) );
     }
 
     /*

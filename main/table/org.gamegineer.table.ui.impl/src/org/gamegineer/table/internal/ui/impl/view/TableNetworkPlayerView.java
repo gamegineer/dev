@@ -1,6 +1,6 @@
 /*
  * TableNetworkPlayerView.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.view;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.util.Collection;
@@ -37,6 +37,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.ui.layout.PixelConverter;
 import org.gamegineer.table.internal.ui.impl.Activator;
 import org.gamegineer.table.internal.ui.impl.BundleImages;
@@ -70,6 +71,7 @@ final class TableNetworkPlayerView
     private final DefaultListModel<IPlayer> playerListModel_;
 
     /** The table network listener for this view. */
+    @Nullable
     private ITableNetworkListener tableNetworkListener_;
 
 
@@ -84,11 +86,8 @@ final class TableNetworkPlayerView
      *        The model associated with this view; must not be {@code null}.
      */
     TableNetworkPlayerView(
-        /* @NonNull */
         final TableModel model )
     {
-        assert model != null;
-
         model_ = model;
         playerListModel_ = new DefaultListModel<>();
         tableNetworkListener_ = null;
@@ -109,8 +108,8 @@ final class TableNetworkPlayerView
     {
         super.addNotify();
 
-        tableNetworkListener_ = new TableNetworkListener();
-        model_.getTableNetwork().addTableNetworkListener( tableNetworkListener_ );
+        final ITableNetworkListener tableNetworkListener = tableNetworkListener_ = new TableNetworkListener();
+        model_.getTableNetwork().addTableNetworkListener( tableNetworkListener );
     }
 
     /**
@@ -144,11 +143,8 @@ final class TableNetworkPlayerView
      *        be {@code null}.
      */
     private void refreshPlayerList(
-        /* @NonNull */
         final Collection<IPlayer> players )
     {
-        assert players != null;
-
         playerListModel_.clear();
         for( final IPlayer player : players )
         {
@@ -162,7 +158,9 @@ final class TableNetworkPlayerView
     @Override
     public void removeNotify()
     {
-        model_.getTableNetwork().removeTableNetworkListener( tableNetworkListener_ );
+        final ITableNetworkListener tableNetworkListener = tableNetworkListener_;
+        assert tableNetworkListener != null;
+        model_.getTableNetwork().removeTableNetworkListener( tableNetworkListener );
         tableNetworkListener_ = null;
 
         super.removeNotify();
@@ -208,9 +206,15 @@ final class TableNetworkPlayerView
         PlayerListCellRenderer()
         {
             final BundleImages bundleImages = Activator.getDefault().getBundleImages();
-            editorRoleIcon_ = bundleImages.getIcon( BundleImages.ROLE_EDITOR );
-            editorRequesterRoleIcon_ = bundleImages.getIcon( BundleImages.ROLE_EDITOR_REQUESTER );
-            noRolesIcon_ = bundleImages.getIcon( BundleImages.ROLE_NONE );
+            final Icon editorRoleIcon = bundleImages.getIcon( BundleImages.ROLE_EDITOR );
+            assert editorRoleIcon != null;
+            editorRoleIcon_ = editorRoleIcon;
+            final Icon editorRequesterRoleIcon = bundleImages.getIcon( BundleImages.ROLE_EDITOR_REQUESTER );
+            assert editorRequesterRoleIcon != null;
+            editorRequesterRoleIcon_ = editorRequesterRoleIcon;
+            final Icon noRolesIcon = bundleImages.getIcon( BundleImages.ROLE_NONE );
+            assert noRolesIcon != null;
+            noRolesIcon_ = noRolesIcon;
         }
 
 
@@ -223,12 +227,16 @@ final class TableNetworkPlayerView
          */
         @Override
         public Component getListCellRendererComponent(
+            @Nullable
             final JList<?> list,
+            @Nullable
             final Object value,
             final int index,
             final boolean isSelected,
             final boolean cellHasFocus )
         {
+            assert value != null;
+
             final IPlayer player = (IPlayer)value;
             final JLabel label = (JLabel)super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
             label.setText( NlsMessages.TableNetworkPlayerView_playersList_text( player ) );
@@ -244,13 +252,9 @@ final class TableNetworkPlayerView
          * 
          * @return The icon for the specified player; never {@code null}.
          */
-        /* @NonNull */
         private Icon getPlayerIcon(
-            /* @NonNull */
             final IPlayer player )
         {
-            assert player != null;
-
             if( player.hasRole( PlayerRole.EDITOR ) )
             {
                 return editorRoleIcon_;
@@ -295,8 +299,6 @@ final class TableNetworkPlayerView
         public void tableNetworkConnected(
             final TableNetworkEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override
@@ -312,16 +314,15 @@ final class TableNetworkPlayerView
          */
         @Override
         public void tableNetworkDisconnected(
+            @SuppressWarnings( "unused" )
             final TableNetworkDisconnectedEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override
                 public void run()
                 {
-                    refreshPlayerList( Collections.<IPlayer>emptyList() );
+                    refreshPlayerList( nonNull( Collections.<IPlayer>emptyList() ) );
                 }
             } );
         }
@@ -333,8 +334,6 @@ final class TableNetworkPlayerView
         public void tableNetworkPlayersUpdated(
             final TableNetworkEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override

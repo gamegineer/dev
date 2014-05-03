@@ -1,6 +1,6 @@
 /*
  * NlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,24 +38,24 @@ final class NlsMessages
     // --- Model ------------------------------------------------------------
 
     /** A remote player is not selected. */
-    public static String Model_remotePlayer_notSelected;
+    public static String Model_remotePlayer_notSelected = ""; //$NON-NLS-1$
 
     // --- SelectRemotePlayerDialog -----------------------------------------
 
     /** The dialog banner title. */
-    public static String SelectRemotePlayerDialog_bannerTitle;
+    public static String SelectRemotePlayerDialog_bannerTitle = ""; //$NON-NLS-1$
 
     /** The dialog description. */
-    public static String SelectRemotePlayerDialog_description;
+    public static String SelectRemotePlayerDialog_description = ""; //$NON-NLS-1$
 
     /** The remote players label mnemonic. */
-    public static String SelectRemotePlayerDialog_remotePlayersLabel_mnemonic;
+    public static String SelectRemotePlayerDialog_remotePlayersLabel_mnemonic = ""; //$NON-NLS-1$
 
     /** The remote players label text. */
-    public static String SelectRemotePlayerDialog_remotePlayersLabel_text;
+    public static String SelectRemotePlayerDialog_remotePlayersLabel_text = ""; //$NON-NLS-1$
 
     /** The dialog title. */
-    public static String SelectRemotePlayerDialog_title;
+    public static String SelectRemotePlayerDialog_title = ""; //$NON-NLS-1$
 
 
     // ======================================================================

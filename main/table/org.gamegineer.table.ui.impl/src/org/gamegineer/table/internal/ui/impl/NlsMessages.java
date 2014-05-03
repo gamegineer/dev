@@ -1,6 +1,6 @@
 /*
  * NlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,17 +38,17 @@ final class NlsMessages
     // --- Branding ---------------------------------------------------------
 
     /** The default application branding name. */
-    public static String Branding_name_default;
+    public static String Branding_name_default = ""; //$NON-NLS-1$
 
     // --- CommandLineOptions -----------------------------------------------
 
     /** The description for the "help" option. */
-    public static String CommandLineOptions_help_description;
+    public static String CommandLineOptions_help_description = ""; //$NON-NLS-1$
 
     // --- TableRunner ------------------------------------------------------
 
     /** The command line usage message. */
-    public static String TableRunner_cli_usage;
+    public static String TableRunner_cli_usage = ""; //$NON-NLS-1$
 
 
     // ======================================================================

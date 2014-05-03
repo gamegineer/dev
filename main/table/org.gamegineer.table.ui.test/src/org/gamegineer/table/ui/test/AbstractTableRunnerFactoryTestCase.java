@@ -1,6 +1,6 @@
 /*
  * AbstractTableRunnerFactoryTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,11 @@
 
 package org.gamegineer.table.ui.test;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertNotNull;
 import java.util.Collections;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.ui.ITableRunnerFactory;
 import org.gamegineer.table.ui.TableAdvisor;
 import org.junit.Before;
@@ -32,6 +35,7 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link ITableRunnerFactory} interface.
  */
+@NonNullByDefault( false )
 public abstract class AbstractTableRunnerFactoryTestCase
 {
     // ======================================================================
@@ -67,7 +71,7 @@ public abstract class AbstractTableRunnerFactoryTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract ITableRunnerFactory createTableRunnerFactory()
         throws Exception;
 
@@ -86,22 +90,12 @@ public abstract class AbstractTableRunnerFactoryTestCase
     }
 
     /**
-     * Ensures the {@link ITableRunnerFactory#createTableRunner} method throws
-     * an exception when passed a {@code null} advisor.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateTableRunner_Advisor_Null()
-    {
-        tableRunnerFactory_.createTableRunner( null );
-    }
-
-    /**
      * Ensures the {@link ITableRunnerFactory#createTableRunner} method does not
      * return {@code null}.
      */
     @Test
     public void testCreateTableRunner_ReturnValue_NonNull()
     {
-        assertNotNull( tableRunnerFactory_.createTableRunner( new TableAdvisor( Collections.<String>emptyList() ) ) );
+        assertNotNull( tableRunnerFactory_.createTableRunner( new TableAdvisor( nonNull( Collections.<String>emptyList() ) ) ) );
     }
 }

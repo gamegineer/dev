@@ -1,6 +1,6 @@
 /*
  * MainModelEventTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.ui.impl.model;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.test.TestTableEnvironments;
 import org.gamegineer.table.net.test.TestTableNetworks;
@@ -32,6 +33,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link MainModelEvent} class.
  */
+@NonNullByDefault( false )
 public final class MainModelEventTest
 {
     // ======================================================================
@@ -70,16 +72,6 @@ public final class MainModelEventTest
     {
         final TableEnvironmentModel tableEnvironmentModel = new TableEnvironmentModel( TestTableEnvironments.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
         event_ = new MainModelEvent( new MainModel( new TableModel( tableEnvironmentModel, tableEnvironmentModel.getTableEnvironment().createTable(), TestTableNetworks.createTableNetwork() ) ) );
-    }
-
-    /**
-     * Ensures the {@link MainModelEvent#MainModelEvent} constructor throws an
-     * exception when passed a {@code null} source.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testConstructor_Source_Null()
-    {
-        new MainModelEvent( null );
     }
 
     /**

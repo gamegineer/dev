@@ -1,6 +1,6 @@
 /*
  * FileHistoryPreferences.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -89,11 +89,8 @@ public final class FileHistoryPreferences
      *        The file; must not be {@code null}.
      */
     void addFile(
-        /* @NonNull */
         final File file )
     {
-        assert file != null;
-
         synchronized( lock_ )
         {
             files_.put( file, file );
@@ -106,7 +103,6 @@ public final class FileHistoryPreferences
      * @return The collection of files in the history; never {@code null}. The
      *         collection is ordered from the oldest file to the newest file.
      */
-    /* @NonNull */
     public List<File> getFiles()
     {
         synchronized( lock_ )
@@ -122,11 +118,8 @@ public final class FileHistoryPreferences
      *        The preferences node; must not be {@code null}.
      */
     void load(
-        /* @NonNull */
         final Preferences preferences )
     {
-        assert preferences != null;
-
         synchronized( lock_ )
         {
             files_.clear();
@@ -153,11 +146,8 @@ public final class FileHistoryPreferences
      *        The file; must not be {@code null}.
      */
     void removeFile(
-        /* @NonNull */
         final File file )
     {
-        assert file != null;
-
         synchronized( lock_ )
         {
             files_.remove( file );
@@ -171,11 +161,8 @@ public final class FileHistoryPreferences
      *        The preferences node; must not be {@code null}.
      */
     void save(
-        /* @NonNull */
         final Preferences preferences )
     {
-        assert preferences != null;
-
         synchronized( lock_ )
         {
             int index = 0;

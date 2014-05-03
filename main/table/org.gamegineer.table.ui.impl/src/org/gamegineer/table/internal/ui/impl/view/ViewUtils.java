@@ -1,6 +1,6 @@
 /*
  * ViewUtils.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -37,6 +37,7 @@ import java.util.logging.Level;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.internal.ui.impl.Activator;
@@ -115,13 +116,9 @@ final class ViewUtils
      * @return A default component surface design user interface for the
      *         specified component surface design; never {@code null}.
      */
-    /* @NonNull */
     static ComponentSurfaceDesignUI createDefaultComponentSurfaceDesignUI(
-        /* @NonNull */
         final ComponentSurfaceDesign componentSurfaceDesign )
     {
-        assert componentSurfaceDesign != null;
-
         return new ComponentSurfaceDesignUI( //
             componentSurfaceDesign.getId(), //
             NlsMessages.ViewUtils_defaultComponentSurfaceDesignUI_name, //
@@ -137,13 +134,9 @@ final class ViewUtils
      * 
      * @return A new missing icon for the specified size; never {@code null}.
      */
-    /* @NonNull */
     private static Icon createMissingIcon(
-        /* @NonNull */
         final Dimension size )
     {
-        assert size != null;
-
         final int height = size.height;
         final int width = size.width;
         return new Icon()
@@ -162,12 +155,16 @@ final class ViewUtils
 
             @Override
             public void paintIcon(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final Component c,
+                @Nullable
                 final Graphics g,
                 final int x,
                 final int y )
             {
+                assert g != null;
+
                 g.setColor( Color.WHITE );
                 g.fillRect( x, y, width, height );
                 g.setColor( Color.BLACK );
@@ -196,14 +193,9 @@ final class ViewUtils
      *        The table network to be disconnected; must not be {@code null}.
      */
     static void disconnectTableNetwork(
-        /* @NonNull */
         final Component component,
-        /* @NonNull */
         final ITableNetwork tableNetwork )
     {
-        assert component != null;
-        assert tableNetwork != null;
-
         final Cursor oldCursor = component.getCursor();
         component.setCursor( Cursor.getPredefinedCursor( Cursor.WAIT_CURSOR ) );
         try
@@ -256,13 +248,9 @@ final class ViewUtils
      * 
      * @return The missing icon for the specified size; never {@code null}.
      */
-    /* @NonNull */
     private static Icon getMissingIcon(
-        /* @NonNull */
         final Dimension size )
     {
-        assert size != null;
-
         Icon missingIcon = missingIcons_.get( size );
         if( missingIcon == null )
         {

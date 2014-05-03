@@ -1,6 +1,6 @@
 /*
  * ActionMediatorTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,11 +21,14 @@
 
 package org.gamegineer.table.internal.ui.impl.action;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Action;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.util.IPredicate;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,6 +36,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link ActionMediator} class.
  */
+@NonNullByDefault( false )
 public final class ActionMediatorTest
 {
     // ======================================================================
@@ -67,7 +71,7 @@ public final class ActionMediatorTest
      * 
      * @return An action event suitable for testing; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private static ActionEvent createActionEvent()
     {
         return new ActionEvent( new Object(), 0, "" ); //$NON-NLS-1$
@@ -78,7 +82,7 @@ public final class ActionMediatorTest
      * 
      * @return A new basic action suitable for testing; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private static BasicAction createBasicAction()
     {
         return new BasicAction( "id" ); //$NON-NLS-1$
@@ -100,16 +104,6 @@ public final class ActionMediatorTest
 
     /**
      * Ensures the {@link ActionMediator#bindActionListener} method throws an
-     * exception when passed a {@code null} action.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testBindActionListener_Action_Null()
-    {
-        mediator_.bindActionListener( null, mocksControl_.createMock( ActionListener.class ) );
-    }
-
-    /**
-     * Ensures the {@link ActionMediator#bindActionListener} method throws an
      * exception when a listener is already bound to the action.
      * 
      */
@@ -117,20 +111,10 @@ public final class ActionMediatorTest
     public void testBindActionListener_Listener_Bound()
     {
         final BasicAction action = createBasicAction();
-        final ActionListener listener = mocksControl_.createMock( ActionListener.class );
+        final ActionListener listener = nonNull( mocksControl_.createMock( ActionListener.class ) );
         mediator_.bindActionListener( action, listener );
 
         mediator_.bindActionListener( action, listener );
-    }
-
-    /**
-     * Ensures the {@link ActionMediator#bindActionListener} method throws an
-     * exception when passed a {@code null} listener.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testBindActionListener_Listener_Null()
-    {
-        mediator_.bindActionListener( createBasicAction(), (ActionListener)null );
     }
 
     /**
@@ -153,16 +137,6 @@ public final class ActionMediatorTest
 
     /**
      * Ensures the {@link ActionMediator#bindShouldEnablePredicate} method
-     * throws an exception when passed a {@code null} action.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testBindShouldEnablePredicate_Action_Null()
-    {
-        mediator_.bindShouldEnablePredicate( null, mocksControl_.createMock( IPredicate.class ) );
-    }
-
-    /**
-     * Ensures the {@link ActionMediator#bindShouldEnablePredicate} method
      * throws an exception when a predicate is already bound to the action.
      * 
      */
@@ -170,20 +144,10 @@ public final class ActionMediatorTest
     public void testBindShouldEnablePredicate_Predicate_Bound()
     {
         final BasicAction action = createBasicAction();
-        final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
+        final IPredicate<Action> predicate = nonNull( mocksControl_.createMock( IPredicate.class ) );
         mediator_.bindShouldEnablePredicate( action, predicate );
 
         mediator_.bindShouldEnablePredicate( action, predicate );
-    }
-
-    /**
-     * Ensures the {@link ActionMediator#bindShouldEnablePredicate} method
-     * throws an exception when passed a {@code null} predicate.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testBindShouldEnablePredicate_Predicate_Null()
-    {
-        mediator_.bindShouldEnablePredicate( createBasicAction(), (IPredicate<Action>)null );
     }
 
     /**
@@ -223,18 +187,6 @@ public final class ActionMediatorTest
         mocksControl_.verify();
     }
 
-    //
-
-    /**
-     * Ensures the {@link ActionMediator#bindShouldSelectPredicate} method
-     * throws an exception when passed a {@code null} action.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testBindShouldSelectPredicate_Action_Null()
-    {
-        mediator_.bindShouldSelectPredicate( null, mocksControl_.createMock( IPredicate.class ) );
-    }
-
     /**
      * Ensures the {@link ActionMediator#bindShouldSelectPredicate} method
      * throws an exception when a predicate is already bound to the action.
@@ -244,20 +196,10 @@ public final class ActionMediatorTest
     public void testBindShouldSelectPredicate_Predicate_Bound()
     {
         final BasicAction action = createBasicAction();
-        final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
+        final IPredicate<Action> predicate = nonNull( mocksControl_.createMock( IPredicate.class ) );
         mediator_.bindShouldSelectPredicate( action, predicate );
 
         mediator_.bindShouldSelectPredicate( action, predicate );
-    }
-
-    /**
-     * Ensures the {@link ActionMediator#bindShouldSelectPredicate} method
-     * throws an exception when passed a {@code null} predicate.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testBindShouldSelectPredicate_Predicate_Null()
-    {
-        mediator_.bindShouldSelectPredicate( createBasicAction(), (IPredicate<Action>)null );
     }
 
     /**
@@ -308,16 +250,6 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@link ActionMediator#unbind} method throws an exception when
-     * passed a {@code null} action.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testUnbind_Action_Null()
-    {
-        mediator_.unbind( null );
-    }
-
-    /**
      * Ensures the {@link ActionMediator#unbind} method unbinds all action
      * listeners from the action.
      */
@@ -325,7 +257,7 @@ public final class ActionMediatorTest
     public void testUnbind_UnbindsActionListeners()
     {
         final BasicAction action = createBasicAction();
-        final ActionListener listener = mocksControl_.createMock( ActionListener.class );
+        final ActionListener listener = nonNull( mocksControl_.createMock( ActionListener.class ) );
         mocksControl_.replay();
         mediator_.bindActionListener( action, listener );
 
@@ -405,9 +337,9 @@ public final class ActionMediatorTest
     public void testUnbindAll_UnbindsActionListeners()
     {
         final BasicAction action1 = createBasicAction();
-        final ActionListener listener1 = mocksControl_.createMock( ActionListener.class );
+        final ActionListener listener1 = nonNull( mocksControl_.createMock( ActionListener.class ) );
         final BasicAction action2 = createBasicAction();
-        final ActionListener listener2 = mocksControl_.createMock( ActionListener.class );
+        final ActionListener listener2 = nonNull( mocksControl_.createMock( ActionListener.class ) );
         mocksControl_.replay();
         mediator_.bindActionListener( action1, listener1 );
         mediator_.bindActionListener( action2, listener2 );

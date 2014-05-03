@@ -1,6 +1,6 @@
 /*
  * AbstractTableRunnerTestCase.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,6 +29,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
 import org.gamegineer.table.ui.ITableRunner;
 import org.gamegineer.table.ui.TableResult;
@@ -39,6 +41,7 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link ITableRunner} interface.
  */
+@NonNullByDefault( false )
 public abstract class AbstractTableRunnerTestCase
 {
     // ======================================================================
@@ -74,7 +77,7 @@ public abstract class AbstractTableRunnerTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    /* @NonNull */
+    @NonNull
     protected abstract ITableRunner createTableRunner()
         throws Exception;
 

@@ -1,6 +1,6 @@
 /*
  * ComponentPrototypeFactoryProxyAsComponentPrototypeFactoryTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.prototype;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import org.easymock.EasyMock;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.gamegineer.table.ui.prototype.IComponentPrototypeFactory;
@@ -58,6 +59,6 @@ public final class ComponentPrototypeFactoryProxyAsComponentPrototypeFactoryTest
     @Override
     protected IComponentPrototypeFactory createComponentPrototypeFactory()
     {
-        return new ComponentPrototypeFactoryProxy( EasyMock.createMock( IConfigurationElement.class ), "className" ); //$NON-NLS-1$
+        return new ComponentPrototypeFactoryProxy( nonNull( EasyMock.createMock( IConfigurationElement.class ) ), "className" ); //$NON-NLS-1$
     }
 }

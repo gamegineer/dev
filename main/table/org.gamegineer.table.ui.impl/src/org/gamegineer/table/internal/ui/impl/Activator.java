@@ -1,6 +1,6 @@
 /*
  * Activator.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,13 +21,13 @@
 
 package org.gamegineer.table.internal.ui.impl;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.app.IBranding;
 import org.gamegineer.common.ui.help.IHelpSystem;
 import org.gamegineer.table.core.ITableEnvironmentFactory;
@@ -57,34 +57,42 @@ public final class Activator
 
     /** The application branding service tracker. */
     @GuardedBy( "lock_" )
+    @Nullable
     private ServiceTracker<IBranding, IBranding> brandingTracker_;
 
     /** The bundle context. */
     @GuardedBy( "lock_" )
+    @Nullable
     private BundleContext bundleContext_;
 
     /** The bundle image manager. */
     @GuardedBy( "lock_" )
+    @Nullable
     private BundleImages bundleImages_;
 
     /** The component strategy user interface registry service tracker. */
     @GuardedBy( "lock_" )
+    @Nullable
     private ServiceTracker<IComponentStrategyUIRegistry, IComponentStrategyUIRegistry> componentStrategyUIRegistryTracker_;
 
     /** The component surface design user interface registry service tracker. */
     @GuardedBy( "lock_" )
+    @Nullable
     private ServiceTracker<IComponentSurfaceDesignUIRegistry, IComponentSurfaceDesignUIRegistry> componentSurfaceDesignUIRegistryTracker_;
 
     /** The executor service tracker. */
     @GuardedBy( "lock_" )
+    @Nullable
     private ServiceTracker<ExecutorService, ExecutorService> executorServiceTracker_;
 
     /** The extension registry service tracker. */
     @GuardedBy( "lock_" )
+    @Nullable
     private ServiceTracker<IExtensionRegistry, IExtensionRegistry> extensionRegistryTracker_;
 
     /** The help system service tracker. */
     @GuardedBy( "lock_" )
+    @Nullable
     private ServiceTracker<IHelpSystem, IHelpSystem> helpSystemTracker_;
 
     /** The instance lock. */
@@ -92,14 +100,17 @@ public final class Activator
 
     /** The preferences service tracker. */
     @GuardedBy( "lock_" )
+    @Nullable
     private ServiceTracker<PreferencesService, PreferencesService> preferencesServiceTracker_;
 
     /** The table environment factory service tracker. */
     @GuardedBy( "lock_" )
+    @Nullable
     private ServiceTracker<ITableEnvironmentFactory, ITableEnvironmentFactory> tableEnvironmentFactoryTracker_;
 
     /** The table network factory service tracker. */
     @GuardedBy( "lock_" )
+    @Nullable
     private ServiceTracker<ITableNetworkFactory, ITableNetworkFactory> tableNetworkFactoryTracker_;
 
 
@@ -137,7 +148,7 @@ public final class Activator
      * @return The application branding service or {@code null} if no
      *         application branding service is available.
      */
-    /* @Nullable */
+    @Nullable
     public IBranding getBranding()
     {
         synchronized( lock_ )
@@ -150,6 +161,7 @@ public final class Activator
                 brandingTracker_.open();
             }
 
+            assert brandingTracker_ != null;
             return brandingTracker_.getService();
         }
     }
@@ -159,7 +171,6 @@ public final class Activator
      * 
      * @return The bundle context; never {@code null}.
      */
-    /* @NonNull */
     public BundleContext getBundleContext()
     {
         synchronized( lock_ )
@@ -174,7 +185,6 @@ public final class Activator
      * 
      * @return The bundle image manager; never {@code null}.
      */
-    /* @NonNull */
     public BundleImages getBundleImages()
     {
         synchronized( lock_ )
@@ -186,6 +196,7 @@ public final class Activator
                 bundleImages_ = new BundleImages( bundleContext_ );
             }
 
+            assert bundleImages_ != null;
             return bundleImages_;
         }
     }
@@ -197,7 +208,7 @@ public final class Activator
      *         {@code null} if no component strategy user interface registry
      *         service is available.
      */
-    /* @Nullable */
+    @Nullable
     public IComponentStrategyUIRegistry getComponentStrategyUIRegistry()
     {
         synchronized( lock_ )
@@ -210,6 +221,7 @@ public final class Activator
                 componentStrategyUIRegistryTracker_.open();
             }
 
+            assert componentStrategyUIRegistryTracker_ != null;
             return componentStrategyUIRegistryTracker_.getService();
         }
     }
@@ -221,7 +233,7 @@ public final class Activator
      *         {@code null} if no component surface design user interface
      *         registry service is available.
      */
-    /* @Nullable */
+    @Nullable
     public IComponentSurfaceDesignUIRegistry getComponentSurfaceDesignUIRegistry()
     {
         synchronized( lock_ )
@@ -234,6 +246,7 @@ public final class Activator
                 componentSurfaceDesignUIRegistryTracker_.open();
             }
 
+            assert componentSurfaceDesignUIRegistryTracker_ != null;
             return componentSurfaceDesignUIRegistryTracker_.getService();
         }
     }
@@ -243,7 +256,6 @@ public final class Activator
      * 
      * @return The default instance of the bundle activator; never {@code null}.
      */
-    /* @NonNull */
     public static Activator getDefault()
     {
         final Activator instance = instance_.get();
@@ -256,7 +268,6 @@ public final class Activator
      * 
      * @return The executor service; never {@code null}.
      */
-    /* @NonNull */
     public ExecutorService getExecutorService()
     {
         final ExecutorService executorService;
@@ -270,6 +281,7 @@ public final class Activator
                 executorServiceTracker_.open();
             }
 
+            assert executorServiceTracker_ != null;
             executorService = executorServiceTracker_.getService();
         }
 
@@ -286,7 +298,7 @@ public final class Activator
      * 
      * @return The extension registry service; never {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     public IExtensionRegistry getExtensionRegistry()
     {
         synchronized( lock_ )
@@ -299,6 +311,7 @@ public final class Activator
                 extensionRegistryTracker_.open();
             }
 
+            assert extensionRegistryTracker_ != null;
             return extensionRegistryTracker_.getService();
         }
     }
@@ -309,7 +322,7 @@ public final class Activator
      * @return The help system service or {@code null} if no help system service
      *         is available.
      */
-    /* @Nullable */
+    @Nullable
     public IHelpSystem getHelpSystem()
     {
         synchronized( lock_ )
@@ -322,6 +335,7 @@ public final class Activator
                 helpSystemTracker_.open();
             }
 
+            assert helpSystemTracker_ != null;
             return helpSystemTracker_.getService();
         }
     }
@@ -332,7 +346,7 @@ public final class Activator
      * @return The preferences service or {@code null} if no preferences service
      *         is available.
      */
-    /* @Nullable */
+    @Nullable
     public PreferencesService getPreferencesService()
     {
         synchronized( lock_ )
@@ -345,6 +359,7 @@ public final class Activator
                 preferencesServiceTracker_.open();
             }
 
+            assert preferencesServiceTracker_ != null;
             return preferencesServiceTracker_.getService();
         }
     }
@@ -355,7 +370,7 @@ public final class Activator
      * @return The table environment factory service or {@code null} if the
      *         table environment factory service is not available.
      */
-    /* @Nullable */
+    @Nullable
     public ITableEnvironmentFactory getTableEnvironmentFactory()
     {
         synchronized( lock_ )
@@ -368,6 +383,7 @@ public final class Activator
                 tableEnvironmentFactoryTracker_.open();
             }
 
+            assert tableEnvironmentFactoryTracker_ != null;
             return tableEnvironmentFactoryTracker_.getService();
         }
     }
@@ -378,7 +394,7 @@ public final class Activator
      * @return The table network factory service or {@code null} if the table
      *         network factory service is not available.
      */
-    /* @Nullable */
+    @Nullable
     public ITableNetworkFactory getTableNetworkFactory()
     {
         synchronized( lock_ )
@@ -391,6 +407,7 @@ public final class Activator
                 tableNetworkFactoryTracker_.open();
             }
 
+            assert tableNetworkFactoryTracker_ != null;
             return tableNetworkFactoryTracker_.getService();
         }
     }
@@ -401,7 +418,7 @@ public final class Activator
      * @return The root node from the user preferences for this bundle or
      *         {@code null} if no preferences service is available.
      */
-    /* @Nullable */
+    @Nullable
     public Preferences getUserPreferences()
     {
         final PreferencesService preferencesService = getPreferencesService();
@@ -424,17 +441,11 @@ public final class Activator
      * @return The node for the specified type from the user preferences for
      *         this bundle or {@code null} if no preferences service is
      *         available.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code type} is {@code null}.
      */
-    /* @Nullable */
+    @Nullable
     public Preferences getUserPreferences(
-        /* @NonNull */
         final Class<?> type )
     {
-        assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
-
         final Preferences userPreferences = getUserPreferences();
         if( userPreferences == null )
         {
@@ -468,9 +479,13 @@ public final class Activator
      */
     @Override
     public void start(
+        @Nullable
         final BundleContext bundleContext )
     {
-        assertArgumentNotNull( bundleContext, "bundleContext" ); //$NON-NLS-1$
+        if( bundleContext == null )
+        {
+            throw new NullPointerException( "bundleContext" ); //$NON-NLS-1$
+        }
 
         synchronized( lock_ )
         {
@@ -487,9 +502,13 @@ public final class Activator
      */
     @Override
     public void stop(
+        @Nullable
         final BundleContext bundleContext )
     {
-        assertArgumentNotNull( bundleContext, "bundleContext" ); //$NON-NLS-1$
+        if( bundleContext == null )
+        {
+            throw new NullPointerException( "bundleContext" ); //$NON-NLS-1$
+        }
 
         saveUserPreferences();
 

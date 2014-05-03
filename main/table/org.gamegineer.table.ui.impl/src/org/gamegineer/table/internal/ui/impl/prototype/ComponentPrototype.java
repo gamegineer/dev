@@ -1,6 +1,6 @@
 /*
  * ComponentPrototype.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.ui.impl.prototype;
 
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.ui.prototype.IComponentPrototypeFactory;
 
 /**
@@ -38,6 +39,7 @@ final class ComponentPrototype
      * The component prototype category identifier or {@code null} if the
      * component prototype has no category.
      */
+    @Nullable
     private final String categoryId_;
 
     /** The component prototype factory. */
@@ -68,17 +70,12 @@ final class ComponentPrototype
      *        The component prototype factory; must not be {@code null}.
      */
     ComponentPrototype(
-        /* @NonNull */
         final String name,
         final int mnemonic,
-        /* @Nullable */
+        @Nullable
         final String categoryId,
-        /* @NonNull */
         final IComponentPrototypeFactory componentPrototypeFactory )
     {
-        assert name != null;
-        assert componentPrototypeFactory != null;
-
         categoryId_ = categoryId;
         componentPrototypeFactory_ = componentPrototypeFactory;
         mnemonic_ = mnemonic;
@@ -96,7 +93,7 @@ final class ComponentPrototype
      * @return The component prototype category identifier or {@code null} if
      *         the component prototype has no category.
      */
-    /* @Nullable */
+    @Nullable
     String getCategoryId()
     {
         return categoryId_;
@@ -107,7 +104,6 @@ final class ComponentPrototype
      * 
      * @return The component prototype factory; never {@code null}.
      */
-    /* @NonNull */
     IComponentPrototypeFactory getFactory()
     {
         return componentPrototypeFactory_;
@@ -128,7 +124,6 @@ final class ComponentPrototype
      * 
      * @return The component prototype name; never {@code null}.
      */
-    /* @NonNull */
     String getName()
     {
         return name_;

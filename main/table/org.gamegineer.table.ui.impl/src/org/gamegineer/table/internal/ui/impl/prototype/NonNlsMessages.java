@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.prototype;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collection;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -40,50 +41,50 @@ final class NonNlsMessages
     // --- ComponentPrototypeFactoryProxy -----------------------------------
 
     /** An error occurred while creating the component prototype factory. */
-    public static String ComponentPrototypeFactoryProxy_getDelegate_createError;
+    public static String ComponentPrototypeFactoryProxy_getDelegate_createError = ""; //$NON-NLS-1$
 
     // --- ComponentPrototypeMenuBuilder ------------------------------------
 
     /** The component prototype categories are orphans. */
-    public static String ComponentPrototypeMenuBuilder_buildMenu_orphanedCategories;
+    public static String ComponentPrototypeMenuBuilder_buildMenu_orphanedCategories = ""; //$NON-NLS-1$
 
     // --- ComponentPrototypesExtensionPoint --------------------------------
 
     /** The component prototype category configuration element is illegal. */
-    public static String ComponentPrototypesExtensionPoint_buildMenu_illegalComponentPrototypeCategoryConfigurationElement;
+    public static String ComponentPrototypesExtensionPoint_buildMenu_illegalComponentPrototypeCategoryConfigurationElement = ""; //$NON-NLS-1$
 
     /** The component prototype configuration element is illegal. */
-    public static String ComponentPrototypesExtensionPoint_buildMenu_illegalComponentPrototypeConfigurationElement;
+    public static String ComponentPrototypesExtensionPoint_buildMenu_illegalComponentPrototypeConfigurationElement = ""; //$NON-NLS-1$
 
     /** The component prototype factory is missing. */
-    public static String ComponentPrototypesExtensionPoint_createComponentPrototype_missingFactory;
+    public static String ComponentPrototypesExtensionPoint_createComponentPrototype_missingFactory = ""; //$NON-NLS-1$
 
     /** The component prototype mnemonic is missing. */
-    public static String ComponentPrototypesExtensionPoint_createComponentPrototype_missingMnemonic;
+    public static String ComponentPrototypesExtensionPoint_createComponentPrototype_missingMnemonic = ""; //$NON-NLS-1$
 
     /** The component prototype name is missing. */
-    public static String ComponentPrototypesExtensionPoint_createComponentPrototype_missingName;
+    public static String ComponentPrototypesExtensionPoint_createComponentPrototype_missingName = ""; //$NON-NLS-1$
 
     /** The component prototype category identifier is missing. */
-    public static String ComponentPrototypesExtensionPoint_createComponentPrototypeCategory_missingId;
+    public static String ComponentPrototypesExtensionPoint_createComponentPrototypeCategory_missingId = ""; //$NON-NLS-1$
 
     /** The component prototype category mnemonic is missing. */
-    public static String ComponentPrototypesExtensionPoint_createComponentPrototypeCategory_missingMnemonic;
+    public static String ComponentPrototypesExtensionPoint_createComponentPrototypeCategory_missingMnemonic = ""; //$NON-NLS-1$
 
     /** The component prototype category name is missing. */
-    public static String ComponentPrototypesExtensionPoint_createComponentPrototypeCategory_missingName;
+    public static String ComponentPrototypesExtensionPoint_createComponentPrototypeCategory_missingName = ""; //$NON-NLS-1$
 
     /** The source does not represent a legal mnemonic. */
-    public static String ComponentPrototypesExtensionPoint_decodeMnemonic_illegalSource;
+    public static String ComponentPrototypesExtensionPoint_decodeMnemonic_illegalSource = ""; //$NON-NLS-1$
 
     /**
      * An error occurred while evaluating the configuration element enablement
      * expression.
      */
-    public static String ComponentPrototypesExtensionPoint_isConfigurationElementEnabled_error;
+    public static String ComponentPrototypesExtensionPoint_isConfigurationElementEnabled_error = ""; //$NON-NLS-1$
 
     /** The configuration element enablement expression could not be converted. */
-    public static String ComponentPrototypesExtensionPoint_isConfigurationElementEnabled_unconvertable;
+    public static String ComponentPrototypesExtensionPoint_isConfigurationElementEnabled_unconvertable = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -123,12 +124,10 @@ final class NonNlsMessages
      * @return The formatted message indicating an error occurred while creating
      *         the component prototype factory; never {@code null}.
      */
-    /* @NonNull */
     static String ComponentPrototypeFactoryProxy_getDelegate_createError(
-        /* @NonNull */
         final IConfigurationElement configurationElement )
     {
-        return bind( ComponentPrototypeFactoryProxy_getDelegate_createError, configurationElement.getNamespaceIdentifier(), configurationElement.getName() );
+        return nonNull( bind( ComponentPrototypeFactoryProxy_getDelegate_createError, configurationElement.getNamespaceIdentifier(), configurationElement.getName() ) );
     }
 
     // --- ComponentPrototypeMenuBuilder ------------------------------------
@@ -144,11 +143,9 @@ final class NonNlsMessages
      * @return The formatted message indicating the component prototype
      *         categories are orphans; never {@code null}.
      */
-    /* @NonNull */
     static String ComponentPrototypeMenuBuilder_buildMenu_orphanedCategories(
-        /* @NonNull */
         final Collection<String> componentPrototypeCategoryIds )
     {
-        return bind( ComponentPrototypeMenuBuilder_buildMenu_orphanedCategories, componentPrototypeCategoryIds );
+        return nonNull( bind( ComponentPrototypeMenuBuilder_buildMenu_orphanedCategories, componentPrototypeCategoryIds ) );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * PreferencesModel.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.model;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.ui.impl.Activator;
 import org.gamegineer.table.internal.ui.impl.Loggers;
@@ -72,7 +73,6 @@ public final class PreferencesModel
      * 
      * @return The file history preferences; never {@code null}.
      */
-    /* @NonNull */
     public FileHistoryPreferences getFileHistoryPreferences()
     {
         return fileHistoryPreferences_;
@@ -83,7 +83,6 @@ public final class PreferencesModel
      * 
      * @return The frame window preferences; never {@code null}.
      */
-    /* @NonNull */
     public FramePreferences getFramePreferences()
     {
         return framePreferences_;
@@ -101,8 +100,8 @@ public final class PreferencesModel
             return;
         }
 
-        fileHistoryPreferences_.load( preferences.node( NODE_FILE_HISTORY ) );
-        framePreferences_.load( preferences.node( NODE_FRAME ) );
+        fileHistoryPreferences_.load( nonNull( preferences.node( NODE_FILE_HISTORY ) ) );
+        framePreferences_.load( nonNull( preferences.node( NODE_FRAME ) ) );
     }
 
     /**
@@ -117,7 +116,7 @@ public final class PreferencesModel
             return;
         }
 
-        fileHistoryPreferences_.save( preferences.node( NODE_FILE_HISTORY ) );
-        framePreferences_.save( preferences.node( NODE_FRAME ) );
+        fileHistoryPreferences_.save( nonNull( preferences.node( NODE_FILE_HISTORY ) ) );
+        framePreferences_.save( nonNull( preferences.node( NODE_FRAME ) ) );
     }
 }

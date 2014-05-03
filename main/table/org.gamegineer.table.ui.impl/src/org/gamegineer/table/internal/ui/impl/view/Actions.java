@@ -1,6 +1,6 @@
 /*
  * Actions.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.view;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -173,7 +174,6 @@ final class Actions
      * 
      * @return The collection of actions; never {@code null}.
      */
-    /* @NonNull */
     @SuppressWarnings( "boxing" )
     private static Map<Object, BasicAction> createActions()
     {
@@ -424,7 +424,23 @@ final class Actions
             actionMap.put( action.getId(), action );
         }
 
-        return Collections.unmodifiableMap( actionMap );
+        return nonNull( Collections.unmodifiableMap( actionMap ) );
+    }
+
+    /**
+     * Gets the action with the specified identifier.
+     * 
+     * @param id
+     *        The action identifier; must not be {@code null}.
+     * 
+     * @return The action; never {@code null}.
+     */
+    private static BasicAction getAction(
+        final Object id )
+    {
+        final BasicAction action = actions_.get( id );
+        assert action != null;
+        return action;
     }
 
     /**
@@ -432,10 +448,9 @@ final class Actions
      * 
      * @return The add component action; never {@code null}.
      */
-    /* @NonNull */
     static BasicAction getAddComponentAction()
     {
-        return actions_.get( ADD_COMPONENT_ACTION_ID );
+        return getAction( ADD_COMPONENT_ACTION_ID );
     }
 
     /**
@@ -444,10 +459,9 @@ final class Actions
      * @return The cancel table network control request action; never
      *         {@code null}.
      */
-    /* @NonNull */
     static BasicAction getCancelTableNetworkControlRequestAction()
     {
-        return actions_.get( CANCEL_TABLE_NETWORK_CONTROL_REQUEST_ID );
+        return getAction( CANCEL_TABLE_NETWORK_CONTROL_REQUEST_ID );
     }
 
     /**
@@ -455,10 +469,9 @@ final class Actions
      * 
      * @return The debug trace table action; never {@code null}.
      */
-    /* @NonNull */
     static BasicAction getDebugTraceTableAction()
     {
-        return actions_.get( DEBUG_TRACE_TABLE_ACTION_ID );
+        return getAction( DEBUG_TRACE_TABLE_ACTION_ID );
     }
 
     /**
@@ -466,10 +479,9 @@ final class Actions
      * 
      * @return The debug trace table model action; never {@code null}.
      */
-    /* @NonNull */
     static BasicAction getDebugTraceTableModelAction()
     {
-        return actions_.get( DEBUG_TRACE_TABLE_MODEL_ACTION_ID );
+        return getAction( DEBUG_TRACE_TABLE_MODEL_ACTION_ID );
     }
 
     /**
@@ -477,10 +489,9 @@ final class Actions
      * 
      * @return The disconnect table network action; never {@code null}.
      */
-    /* @NonNull */
     static BasicAction getDisconnectTableNetworkAction()
     {
-        return actions_.get( DISCONNECT_TABLE_NETWORK_ACTION_ID );
+        return getAction( DISCONNECT_TABLE_NETWORK_ACTION_ID );
     }
 
     /**
@@ -488,10 +499,9 @@ final class Actions
      * 
      * @return The display help action; never {@code null}.
      */
-    /* @NonNull */
     static BasicAction getDisplayHelpAction()
     {
-        return actions_.get( DISPLAY_HELP_ACTION_ID );
+        return getAction( DISPLAY_HELP_ACTION_ID );
     }
 
     /**
@@ -499,10 +509,9 @@ final class Actions
      * 
      * @return The exit action; never {@code null}.
      */
-    /* @NonNull */
     static BasicAction getExitAction()
     {
-        return actions_.get( EXIT_ACTION_ID );
+        return getAction( EXIT_ACTION_ID );
     }
 
     /**
@@ -510,10 +519,9 @@ final class Actions
      * 
      * @return The flip component action; never {@code null}.
      */
-    /* @NonNull */
     static BasicAction getFlipComponentAction()
     {
-        return actions_.get( FLIP_COMPONENT_ACTION_ID );
+        return getAction( FLIP_COMPONENT_ACTION_ID );
     }
 
     /**
@@ -521,10 +529,9 @@ final class Actions
      * 
      * @return The give table network control action; never {@code null}.
      */
-    /* @NonNull */
     static BasicAction getGiveTableNetworkControlAction()
     {
-        return actions_.get( GIVE_TABLE_NETWORK_CONTROL_ID );
+        return getAction( GIVE_TABLE_NETWORK_CONTROL_ID );
     }
 
     /**
@@ -532,10 +539,9 @@ final class Actions
      * 
      * @return The host table network action; never {@code null}.
      */
-    /* @NonNull */
     static BasicAction getHostTableNetworkAction()
     {
-        return actions_.get( HOST_TABLE_NETWORK_ACTION_ID );
+        return getAction( HOST_TABLE_NETWORK_ACTION_ID );
     }
 
     /**
@@ -543,10 +549,9 @@ final class Actions
      * 
      * @return The join table network action; never {@code null}.
      */
-    /* @NonNull */
     static BasicAction getJoinTableNetworkAction()
     {
-        return actions_.get( JOIN_TABLE_NETWORK_ACTION_ID );
+        return getAction( JOIN_TABLE_NETWORK_ACTION_ID );
     }
 
     /**
@@ -554,10 +559,9 @@ final class Actions
      * 
      * @return The open about dialog action; never {@code null}.
      */
-    /* @NonNull */
     static BasicAction getOpenAboutDialogAction()
     {
-        return actions_.get( OPEN_ABOUT_DIALOG_ACTION_ID );
+        return getAction( OPEN_ABOUT_DIALOG_ACTION_ID );
     }
 
     /**
@@ -565,10 +569,9 @@ final class Actions
      * 
      * @return The open new table action; never {@code null}.
      */
-    /* @NonNull */
     static BasicAction getOpenNewTableAction()
     {
-        return actions_.get( OPEN_NEW_TABLE_ACTION_ID );
+        return getAction( OPEN_NEW_TABLE_ACTION_ID );
     }
 
     /**
@@ -576,10 +579,9 @@ final class Actions
      * 
      * @return The open table action; never {@code null}.
      */
-    /* @NonNull */
     static BasicAction getOpenTableAction()
     {
-        return actions_.get( OPEN_TABLE_ACTION_ID );
+        return getAction( OPEN_TABLE_ACTION_ID );
     }
 
     /**
@@ -587,10 +589,9 @@ final class Actions
      * 
      * @return The remove all components action; never {@code null}.
      */
-    /* @NonNull */
     static BasicAction getRemoveAllComponentsAction()
     {
-        return actions_.get( REMOVE_ALL_COMPONENTS_ACTION_ID );
+        return getAction( REMOVE_ALL_COMPONENTS_ACTION_ID );
     }
 
     /**
@@ -598,10 +599,9 @@ final class Actions
      * 
      * @return The remove component action; never {@code null}.
      */
-    /* @NonNull */
     static BasicAction getRemoveComponentAction()
     {
-        return actions_.get( REMOVE_COMPONENT_ACTION_ID );
+        return getAction( REMOVE_COMPONENT_ACTION_ID );
     }
 
     /**
@@ -609,10 +609,9 @@ final class Actions
      * 
      * @return The request table network control action; never {@code null}.
      */
-    /* @NonNull */
     static BasicAction getRequestTableNetworkControlAction()
     {
-        return actions_.get( REQUEST_TABLE_NETWORK_CONTROL_ID );
+        return getAction( REQUEST_TABLE_NETWORK_CONTROL_ID );
     }
 
     /**
@@ -620,10 +619,9 @@ final class Actions
      * 
      * @return The reset table origin action; never {@code null}.
      */
-    /* @NonNull */
     static BasicAction getResetTableOriginAction()
     {
-        return actions_.get( RESET_TABLE_ORIGIN_ACTION_ID );
+        return getAction( RESET_TABLE_ORIGIN_ACTION_ID );
     }
 
     /**
@@ -631,10 +629,9 @@ final class Actions
      * 
      * @return The save table action; never {@code null}.
      */
-    /* @NonNull */
     static BasicAction getSaveTableAction()
     {
-        return actions_.get( SAVE_TABLE_ACTION_ID );
+        return getAction( SAVE_TABLE_ACTION_ID );
     }
 
     /**
@@ -642,10 +639,9 @@ final class Actions
      * 
      * @return The save table as action; never {@code null}.
      */
-    /* @NonNull */
     static BasicAction getSaveTableAsAction()
     {
-        return actions_.get( SAVE_TABLE_AS_ACTION_ID );
+        return getAction( SAVE_TABLE_AS_ACTION_ID );
     }
 
     /**
@@ -654,10 +650,9 @@ final class Actions
      * @return The set accordian down container layout action; never
      *         {@code null}.
      */
-    /* @NonNull */
     static BasicAction getSetAccordianDownContainerLayoutAction()
     {
-        return actions_.get( SET_ACCORDIAN_DOWN_CONTAINER_LAYOUT_ACTION_ID );
+        return getAction( SET_ACCORDIAN_DOWN_CONTAINER_LAYOUT_ACTION_ID );
     }
 
     /**
@@ -666,10 +661,9 @@ final class Actions
      * @return The set accordian left container layout action; never
      *         {@code null}.
      */
-    /* @NonNull */
     static BasicAction getSetAccordianLeftContainerLayoutAction()
     {
-        return actions_.get( SET_ACCORDIAN_LEFT_CONTAINER_LAYOUT_ACTION_ID );
+        return getAction( SET_ACCORDIAN_LEFT_CONTAINER_LAYOUT_ACTION_ID );
     }
 
     /**
@@ -678,10 +672,9 @@ final class Actions
      * @return The set accordian right container layout action; never
      *         {@code null}.
      */
-    /* @NonNull */
     static BasicAction getSetAccordianRightContainerLayoutAction()
     {
-        return actions_.get( SET_ACCORDIAN_RIGHT_CONTAINER_LAYOUT_ACTION_ID );
+        return getAction( SET_ACCORDIAN_RIGHT_CONTAINER_LAYOUT_ACTION_ID );
     }
 
     /**
@@ -689,10 +682,9 @@ final class Actions
      * 
      * @return The set accordian up container layout action; never {@code null}.
      */
-    /* @NonNull */
     static BasicAction getSetAccordianUpContainerLayoutAction()
     {
-        return actions_.get( SET_ACCORDIAN_UP_CONTAINER_LAYOUT_ACTION_ID );
+        return getAction( SET_ACCORDIAN_UP_CONTAINER_LAYOUT_ACTION_ID );
     }
 
     /**
@@ -700,10 +692,9 @@ final class Actions
      * 
      * @return The set stacked container layout action; never {@code null}.
      */
-    /* @NonNull */
     static BasicAction getSetStackedContainerLayoutAction()
     {
-        return actions_.get( SET_STACKED_CONTAINER_LAYOUT_ACTION_ID );
+        return getAction( SET_STACKED_CONTAINER_LAYOUT_ACTION_ID );
     }
 
     /**

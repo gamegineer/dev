@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.model;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.EventObject;
 import net.jcip.annotations.ThreadSafe;
 
@@ -48,12 +49,8 @@ public final class MainModelEvent
      * 
      * @param source
      *        The main model that fired the event; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code source} is {@code null}.
      */
     public MainModelEvent(
-        /* @NonNull */
         final MainModel source )
     {
         super( source );
@@ -69,9 +66,8 @@ public final class MainModelEvent
      * 
      * @return The main model that fired the event; never {@code null}.
      */
-    /* @NonNull */
     public MainModel getMainModel()
     {
-        return (MainModel)getSource();
+        return nonNull( (MainModel)getSource() );
     }
 }

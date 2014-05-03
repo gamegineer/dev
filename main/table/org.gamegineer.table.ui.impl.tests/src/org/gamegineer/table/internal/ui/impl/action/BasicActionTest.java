@@ -1,6 +1,6 @@
 /*
  * BasicActionTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,11 +21,14 @@
 
 package org.gamegineer.table.internal.ui.impl.action;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Action;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.util.IPredicate;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,6 +36,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link BasicAction} class.
  */
+@NonNullByDefault( false )
 public final class BasicActionTest
 {
     // ======================================================================
@@ -67,7 +71,7 @@ public final class BasicActionTest
      * 
      * @return An action event suitable for testing; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private static ActionEvent createActionEvent()
     {
         return new ActionEvent( new Object(), 0, "" ); //$NON-NLS-1$
@@ -106,23 +110,13 @@ public final class BasicActionTest
 
     /**
      * Ensures the {@link BasicAction#addActionListener} method throws an
-     * exception when passed a {@code null} listener.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testAddActionListener_Listener_Null()
-    {
-        action_.addActionListener( null );
-    }
-
-    /**
-     * Ensures the {@link BasicAction#addActionListener} method throws an
      * exception when passed a listener that is present in the action listener
      * collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddActionListener_Listener_Present()
     {
-        final ActionListener listener = mocksControl_.createMock( ActionListener.class );
+        final ActionListener listener = nonNull( mocksControl_.createMock( ActionListener.class ) );
         action_.addActionListener( listener );
 
         action_.addActionListener( listener );
@@ -148,23 +142,13 @@ public final class BasicActionTest
 
     /**
      * Ensures the {@link BasicAction#addShouldEnablePredicate} method throws an
-     * exception when passed a {@code null} predicate.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testAddShouldEnablePredicate_Predicate_Null()
-    {
-        action_.addShouldEnablePredicate( null );
-    }
-
-    /**
-     * Ensures the {@link BasicAction#addShouldEnablePredicate} method throws an
      * exception when passed a predicate that is present in the should enable
      * predicate collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddShouldEnablePredicate_Predicate_Present()
     {
-        final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
+        final IPredicate<Action> predicate = nonNull( mocksControl_.createMock( IPredicate.class ) );
         action_.addShouldEnablePredicate( predicate );
 
         action_.addShouldEnablePredicate( predicate );
@@ -190,36 +174,16 @@ public final class BasicActionTest
 
     /**
      * Ensures the {@link BasicAction#addShouldSelectPredicate} method throws an
-     * exception when passed a {@code null} predicate.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testAddShouldSelectPredicate_Predicate_Null()
-    {
-        action_.addShouldSelectPredicate( null );
-    }
-
-    /**
-     * Ensures the {@link BasicAction#addShouldSelectPredicate} method throws an
      * exception when passed a predicate that is present in the should select
      * predicate collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddShouldSelectPredicate_Predicate_Present()
     {
-        final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
+        final IPredicate<Action> predicate = nonNull( mocksControl_.createMock( IPredicate.class ) );
         action_.addShouldSelectPredicate( predicate );
 
         action_.addShouldSelectPredicate( predicate );
-    }
-
-    /**
-     * Ensures the {@link BasicAction#BasicAction} constructor throws an
-     * exception when passed a {@code null} identifier.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_Id_Null()
-    {
-        new BasicAction( null );
     }
 
     /**
@@ -230,17 +194,7 @@ public final class BasicActionTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveActionListener_Listener_Absent()
     {
-        action_.removeActionListener( mocksControl_.createMock( ActionListener.class ) );
-    }
-
-    /**
-     * Ensures the {@link BasicAction#removeActionListener} method throws an
-     * exception when passed a {@code null} listener.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRemoveActionListener_Listener_Null()
-    {
-        action_.removeActionListener( null );
+        action_.removeActionListener( nonNull( mocksControl_.createMock( ActionListener.class ) ) );
     }
 
     /**
@@ -250,7 +204,7 @@ public final class BasicActionTest
     @Test
     public void testRemoveActionListener_Listener_Present()
     {
-        final ActionListener listener = mocksControl_.createMock( ActionListener.class );
+        final ActionListener listener = nonNull( mocksControl_.createMock( ActionListener.class ) );
         mocksControl_.replay();
         action_.addActionListener( listener );
 
@@ -268,17 +222,7 @@ public final class BasicActionTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveShouldEnablePredicate_Predicate_Absent()
     {
-        action_.removeShouldEnablePredicate( mocksControl_.createMock( IPredicate.class ) );
-    }
-
-    /**
-     * Ensures the {@link BasicAction#removeShouldEnablePredicate} method throws
-     * an exception when passed a {@code null} predicate.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRemoveShouldEnablePredicate_Predicate_Null()
-    {
-        action_.removeShouldEnablePredicate( null );
+        action_.removeShouldEnablePredicate( nonNull( mocksControl_.createMock( IPredicate.class ) ) );
     }
 
     /**
@@ -289,7 +233,7 @@ public final class BasicActionTest
     @Test
     public void testRemoveShouldEnablePredicate_Predicate_Present()
     {
-        final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
+        final IPredicate<Action> predicate = nonNull( mocksControl_.createMock( IPredicate.class ) );
         mocksControl_.replay();
         action_.addShouldEnablePredicate( predicate );
 
@@ -307,17 +251,7 @@ public final class BasicActionTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveShouldSelectPredicate_Predicate_Absent()
     {
-        action_.removeShouldSelectPredicate( mocksControl_.createMock( IPredicate.class ) );
-    }
-
-    /**
-     * Ensures the {@link BasicAction#removeShouldSelectPredicate} method throws
-     * an exception when passed a {@code null} predicate.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRemoveShouldSelectPredicate_Predicate_Null()
-    {
-        action_.removeShouldSelectPredicate( null );
+        action_.removeShouldSelectPredicate( nonNull( mocksControl_.createMock( IPredicate.class ) ) );
     }
 
     /**
@@ -328,7 +262,7 @@ public final class BasicActionTest
     @Test
     public void testRemoveShouldSelectPredicate_Predicate_Present()
     {
-        final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
+        final IPredicate<Action> predicate = nonNull( mocksControl_.createMock( IPredicate.class ) );
         mocksControl_.replay();
         action_.addShouldSelectPredicate( predicate );
 

@@ -1,6 +1,6 @@
 /*
  * IContainerModelListener.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,12 +40,8 @@ public interface IContainerModelListener
      * @param event
      *        The event describing the added component model; must not be
      *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
      */
     public void componentModelAdded(
-        /* @NonNull */
         ContainerModelContentChangedEvent event );
 
     /**
@@ -55,12 +51,8 @@ public interface IContainerModelListener
      * @param event
      *        The event describing the removed component model; must not be
      *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
      */
     public void componentModelRemoved(
-        /* @NonNull */
         ContainerModelContentChangedEvent event );
 
     /**
@@ -70,11 +62,7 @@ public interface IContainerModelListener
      * @param event
      *        The event describing the container model; must not be {@code null}
      *        .
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
      */
     public void containerLayoutChanged(
-        /* @NonNull */
         ContainerModelEvent event );
 }

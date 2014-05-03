@@ -1,6 +1,6 @@
 /*
  * ContainerModelAsContainerModelTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -98,14 +98,9 @@ public final class ContainerModelAsContainerModelTest
      *        {@code null}.
      */
     private static void fireContainerModelEvent(
-        /* @NonNull */
         final ContainerModel containerModel,
-        /* @NonNull */
         final String methodName )
     {
-        assert containerModel != null;
-        assert methodName != null;
-
         try
         {
             final Method method = ContainerModel.class.getDeclaredMethod( methodName );
@@ -129,14 +124,9 @@ public final class ContainerModelAsContainerModelTest
      *        {@code null}.
      */
     private static void fireContainerModelEventWithComponentModelAndInteger(
-        /* @NonNull */
         final ContainerModel containerModel,
-        /* @NonNull */
         final String methodName )
     {
-        assert containerModel != null;
-        assert methodName != null;
-
         try
         {
             final Method method = ContainerModel.class.getDeclaredMethod( methodName, ComponentModel.class, int.class );

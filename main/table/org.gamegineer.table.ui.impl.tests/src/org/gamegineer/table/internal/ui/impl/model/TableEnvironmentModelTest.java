@@ -1,6 +1,6 @@
 /*
  * TableEnvironmentModelTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.internal.ui.impl.model;
 
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.ITableEnvironment;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.test.TestTableEnvironments;
@@ -32,6 +34,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link TableEnvironmentModel} class.
  */
+@NonNullByDefault( false )
 public final class TableEnvironmentModelTest
 {
     // ======================================================================
@@ -64,7 +67,7 @@ public final class TableEnvironmentModelTest
      * 
      * @return A new table environment; never {@code null}.
      */
-    /* @NonNull */
+    @NonNull
     private static ITableEnvironment createTableEnvironment()
     {
         return TestTableEnvironments.createTableEnvironment( new SingleThreadedTableEnvironmentContext() );
@@ -84,17 +87,6 @@ public final class TableEnvironmentModelTest
     }
 
     /**
-     * Ensures the {@link TableEnvironmentModel#TableEnvironmentModel}
-     * constructor throws an exception when passed a {@code null} table
-     * environment.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_TableEnvironment_Null()
-    {
-        new TableEnvironmentModel( null );
-    }
-
-    /**
      * Ensures the {@link TableEnvironmentModel#createComponentModel} method
      * throws an exception when passed an illegal component that was created by
      * a different table environment.
@@ -105,16 +97,6 @@ public final class TableEnvironmentModelTest
         final ITableEnvironment otherTableEnvironment = createTableEnvironment();
 
         tableEnvironmentModel_.createComponentModel( TestComponents.createUniqueComponent( otherTableEnvironment ) );
-    }
-
-    /**
-     * Ensures the {@link TableEnvironmentModel#createComponentModel} method
-     * throws an exception when passed a {@code null} component.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateComponentModel_Component_Null()
-    {
-        tableEnvironmentModel_.createComponentModel( null );
     }
 
     /**
@@ -131,16 +113,6 @@ public final class TableEnvironmentModelTest
     }
 
     /**
-     * Ensures the {@link TableEnvironmentModel#createContainerModel} method
-     * throws an exception when passed a {@code null} container.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateContainerModel_Container_Null()
-    {
-        tableEnvironmentModel_.createContainerModel( null );
-    }
-
-    /**
      * Ensures the {@link TableEnvironmentModel#createTableModel} method throws
      * an exception when passed an illegal table that was created by a different
      * table environment.
@@ -151,25 +123,5 @@ public final class TableEnvironmentModelTest
         final ITableEnvironment otherTableEnvironment = createTableEnvironment();
 
         tableEnvironmentModel_.createTableModel( otherTableEnvironment.createTable(), TestTableNetworks.createTableNetwork() );
-    }
-
-    /**
-     * Ensures the {@link TableEnvironmentModel#createTableModel} method throws
-     * an exception when passed a {@code null} table.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateTableModel_Table_Null()
-    {
-        tableEnvironmentModel_.createTableModel( null, TestTableNetworks.createTableNetwork() );
-    }
-
-    /**
-     * Ensures the {@link TableEnvironmentModel#createTableModel} method throws
-     * an exception when passed a {@code null} table network.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateTableModel_TableNetwork_Null()
-    {
-        tableEnvironmentModel_.createTableModel( tableEnvironmentModel_.getTableEnvironment().createTable(), null );
     }
 }

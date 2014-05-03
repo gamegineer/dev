@@ -1,6 +1,6 @@
 /*
  * Model.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,10 +21,12 @@
 
 package org.gamegineer.table.internal.ui.impl.wizards.jointablenetwork;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.net.TableNetworkConstants;
 
@@ -84,7 +86,6 @@ final class Model
      * 
      * @return The host name; never {@code null}.
      */
-    /* @NonNull */
     public String getHostName()
     {
         return hostName_;
@@ -95,7 +96,6 @@ final class Model
      * 
      * @return A validator for the host name field; never {@code null}.
      */
-    /* @NonNull */
     @SuppressWarnings( "static-method" )
     IValidator getHostNameValidator()
     {
@@ -103,15 +103,16 @@ final class Model
         {
             @Override
             public IStatus validate(
+                @Nullable
                 final Object value )
             {
                 final String hostName = (String)value;
                 if( (hostName == null) || hostName.isEmpty() )
                 {
-                    return ValidationStatus.error( NlsMessages.Model_hostName_empty );
+                    return nonNull( ValidationStatus.error( NlsMessages.Model_hostName_empty ) );
                 }
 
-                return ValidationStatus.ok();
+                return nonNull( ValidationStatus.ok() );
             }
         };
     }
@@ -121,7 +122,6 @@ final class Model
      * 
      * @return The password; never {@code null}.
      */
-    /* @NonNull */
     public SecureString getPassword()
     {
         return password_;
@@ -132,7 +132,6 @@ final class Model
      * 
      * @return The player name; never {@code null}.
      */
-    /* @NonNull */
     public String getPlayerName()
     {
         return playerName_;
@@ -143,7 +142,6 @@ final class Model
      * 
      * @return A validator for the player name field; never {@code null}.
      */
-    /* @NonNull */
     @SuppressWarnings( "static-method" )
     IValidator getPlayerNameValidator()
     {
@@ -151,15 +149,16 @@ final class Model
         {
             @Override
             public IStatus validate(
+                @Nullable
                 final Object value )
             {
                 final String playerName = (String)value;
                 if( (playerName == null) || playerName.isEmpty() )
                 {
-                    return ValidationStatus.error( NlsMessages.Model_playerName_empty );
+                    return nonNull( ValidationStatus.error( NlsMessages.Model_playerName_empty ) );
                 }
 
-                return ValidationStatus.ok();
+                return nonNull( ValidationStatus.ok() );
             }
         };
     }
@@ -179,7 +178,6 @@ final class Model
      * 
      * @return A validator for the port field; never {@code null}.
      */
-    /* @NonNull */
     @SuppressWarnings( "static-method" )
     IValidator getPortValidator()
     {
@@ -188,15 +186,16 @@ final class Model
             @Override
             @SuppressWarnings( "boxing" )
             public IStatus validate(
+                @Nullable
                 final Object value )
             {
-                final int port = (Integer)value;
-                if( (port < 1) || (port > 65535) )
+                final Integer port = (Integer)value;
+                if( (port == null) || (port < 1) || (port > 65535) )
                 {
-                    return ValidationStatus.error( NlsMessages.Model_port_outOfRange );
+                    return nonNull( ValidationStatus.error( NlsMessages.Model_port_outOfRange ) );
                 }
 
-                return ValidationStatus.ok();
+                return nonNull( ValidationStatus.ok() );
             }
         };
     }
@@ -208,11 +207,8 @@ final class Model
      *        The host name; must not be {@code null}.
      */
     public void setHostName(
-        /* @NonNull */
         final String hostName )
     {
-        assert hostName != null;
-
         hostName_ = hostName;
     }
 
@@ -223,11 +219,8 @@ final class Model
      *        The password; must not be {@code null}.
      */
     public void setPassword(
-        /* @NonNull */
         final SecureString password )
     {
-        assert password != null;
-
         password_.dispose();
         password_ = password;
     }
@@ -239,11 +232,8 @@ final class Model
      *        The player name; must not be {@code null}.
      */
     public void setPlayerName(
-        /* @NonNull */
         final String playerName )
     {
-        assert playerName != null;
-
         playerName_ = playerName;
     }
 

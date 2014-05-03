@@ -1,6 +1,6 @@
 /*
  * LicenseDialog.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,6 +28,7 @@ import java.awt.Window;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.ui.dialog.AbstractDialog;
 import org.gamegineer.common.ui.dialog.DialogConstants;
 
@@ -49,7 +50,7 @@ final class LicenseDialog
      *        The parent shell or {@code null} to create a top-level shell.
      */
     public LicenseDialog(
-        /* @Nullable */
+        @Nullable
         final Window parentShell )
     {
         super( parentShell );

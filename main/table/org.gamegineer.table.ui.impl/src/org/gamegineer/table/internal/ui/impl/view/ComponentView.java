@@ -1,6 +1,6 @@
 /*
  * ComponentView.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.view;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -30,6 +29,7 @@ import java.util.logging.Level;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.internal.ui.impl.Loggers;
 import org.gamegineer.table.internal.ui.impl.model.ComponentModel;
@@ -57,12 +57,14 @@ class ComponentView
     private final ComponentModel componentModel_;
 
     /** The component model listener for this view. */
+    @Nullable
     private IComponentModelListener componentModelListener_;
 
     /** The dirty bounds of this view in table coordinates. */
     private final Rectangle dirtyBounds_;
 
     /** The table view that owns this view. */
+    @Nullable
     private TableView tableView_;
 
 
@@ -77,11 +79,8 @@ class ComponentView
      *        The model associated with this view; must not be {@code null}.
      */
     ComponentView(
-        /* @NonNull */
         final ComponentModel componentModel )
     {
-        assert componentModel != null;
-
         componentModel_ = componentModel;
         componentModelListener_ = null;
         dirtyBounds_ = new Rectangle();
@@ -160,7 +159,6 @@ class ComponentView
      * 
      * @return The model associated with this view; never {@code null}.
      */
-    /* @NonNull */
     ComponentModel getComponentModel()
     {
         return componentModel_;
@@ -175,13 +173,9 @@ class ComponentView
      * @return The user interface for the active component surface design; never
      *         {@code null}.
      */
-    /* @NonNull */
     private static ComponentSurfaceDesignUI getComponentSurfaceDesignUI(
-        /* @NonNull */
         final ComponentSurfaceDesign componentSurfaceDesign )
     {
-        assert componentSurfaceDesign != null;
-
         try
         {
             return ComponentSurfaceDesignUIRegistry.getComponentSurfaceDesignUI( componentSurfaceDesign.getId() );
@@ -199,7 +193,6 @@ class ComponentView
      * 
      * @return The table environment model lock; never {@code null}.
      */
-    /* @NonNull */
     final ITableEnvironmentModelLock getTableEnvironmentModelLock()
     {
         return componentModel_.getTableEnvironmentModel().getLock();
@@ -215,9 +208,9 @@ class ComponentView
      * 
      * @return The table view that owns this view; never {@code null}.
      */
-    /* @NonNull */
     final TableView getTableView()
     {
+        assert tableView_ != null;
         return tableView_;
     }
 
@@ -233,10 +226,8 @@ class ComponentView
      *        The table view that owns this view; must not be {@code null}.
      */
     void initialize(
-        /* @NonNull */
         final TableView tableView )
     {
-        assert tableView != null;
         assert !isInitialized();
 
         tableView_ = tableView;
@@ -273,13 +264,9 @@ class ComponentView
      *        The graphics context in which to paint; must not be {@code null}.
      */
     void paint(
-        /* @NonNull */
         final Component component,
-        /* @NonNull */
         final Graphics g )
     {
-        assert component != null;
-        assert g != null;
         assert isInitialized();
 
         final Rectangle bounds;
@@ -323,7 +310,7 @@ class ComponentView
     {
         assert isInitialized();
 
-        tableView_.repaintTable( dirtyBounds_ );
+        getTableView().repaintTable( dirtyBounds_ );
     }
 
     /**
@@ -340,7 +327,9 @@ class ComponentView
 
         repaint();
 
-        componentModel_.removeComponentModelListener( componentModelListener_ );
+        final IComponentModelListener componentModelListener = componentModelListener_;
+        assert componentModelListener != null;
+        componentModel_.removeComponentModelListener( componentModelListener );
         componentModelListener_ = null;
         tableView_ = null;
     }
@@ -380,10 +369,9 @@ class ComponentView
          */
         @Override
         public void componentBoundsChanged(
+            @SuppressWarnings( "unused" )
             final ComponentModelEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override
@@ -399,10 +387,9 @@ class ComponentView
          */
         @Override
         public void componentModelFocusChanged(
+            @SuppressWarnings( "unused" )
             final ComponentModelEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override
@@ -418,10 +405,9 @@ class ComponentView
          */
         @Override
         public void componentModelHoverChanged(
+            @SuppressWarnings( "unused" )
             final ComponentModelEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override
@@ -437,10 +423,9 @@ class ComponentView
          */
         @Override
         public void componentOrientationChanged(
+            @SuppressWarnings( "unused" )
             final ComponentModelEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override
@@ -456,10 +441,9 @@ class ComponentView
          */
         @Override
         public void componentSurfaceDesignChanged(
+            @SuppressWarnings( "unused" )
             final ComponentModelEvent event )
         {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
             SwingUtilities.invokeLater( new Runnable()
             {
                 @Override

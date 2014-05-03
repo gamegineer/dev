@@ -1,6 +1,6 @@
 /*
  * TableEnvironmentModel.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,12 +22,13 @@
 package org.gamegineer.table.internal.ui.impl.model;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
@@ -71,16 +72,10 @@ public final class TableEnvironmentModel
      * @param tableEnvironment
      *        The table environment associated with this model; must not be
      *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code tableEnvironment} is {@code null}.
      */
     public TableEnvironmentModel(
-        /* @NonNull */
         final ITableEnvironment tableEnvironment )
     {
-        assertArgumentNotNull( tableEnvironment, "tableEnvironment" ); //$NON-NLS-1$
-
         eventNotifications_ = new ThreadLocal<Queue<Runnable>>()
         {
             @Override
@@ -94,7 +89,7 @@ public final class TableEnvironmentModel
             @Override
             protected Boolean initialValue()
             {
-                return Boolean.FALSE;
+                return nonNull( Boolean.FALSE );
             }
         };
         lock_ = new TableEnvironmentModelLock();
@@ -129,15 +124,10 @@ public final class TableEnvironmentModel
      * @throws java.lang.IllegalArgumentException
      *         If {@code component} was created by a table environment other
      *         than the table environment associated with this model.
-     * @throws java.lang.NullPointerException
-     *         If {@code component} is {@code null}.
      */
-    /* @NonNull */
     public ComponentModel createComponentModel(
-        /* @NonNull */
         final IComponent component )
     {
-        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
         assertArgumentLegal( tableEnvironment_.equals( component.getTableEnvironment() ), "component", NonNlsMessages.TableEnvironmentModel_createComponentModel_componentCreatedByDifferentTableEnvironment ); //$NON-NLS-1$
 
         if( component instanceof IContainer )
@@ -160,15 +150,10 @@ public final class TableEnvironmentModel
      * @throws java.lang.IllegalArgumentException
      *         If {@code container} was created by a table environment other
      *         than the table environment associated with this model.
-     * @throws java.lang.NullPointerException
-     *         If {@code container} is {@code null}.
      */
-    /* @NonNull */
     public ContainerModel createContainerModel(
-        /* @NonNull */
         final IContainer container )
     {
-        assertArgumentNotNull( container, "container" ); //$NON-NLS-1$
         assertArgumentLegal( tableEnvironment_.equals( container.getTableEnvironment() ), "container", NonNlsMessages.TableEnvironmentModel_createContainerModel_containerCreatedByDifferentTableEnvironment ); //$NON-NLS-1$
 
         return new ContainerModel( this, container );
@@ -187,19 +172,12 @@ public final class TableEnvironmentModel
      * @throws java.lang.IllegalArgumentException
      *         If {@code table} was created by a table environment other than
      *         the table environment associated with this model.
-     * @throws java.lang.NullPointerException
-     *         If {@code table} or {@code tableNetwork} is {@code null}.
      */
-    /* @NonNull */
     public TableModel createTableModel(
-        /* @NonNull */
         final ITable table,
-        /* @NonNull */
         final ITableNetwork tableNetwork )
     {
-        assertArgumentNotNull( table, "table" ); //$NON-NLS-1$
         assertArgumentLegal( tableEnvironment_.equals( table.getTableEnvironment() ), "table", NonNlsMessages.TableEnvironmentModel_createTableModel_tableCreatedByDifferentTableEnvironment ); //$NON-NLS-1$
-        assertArgumentNotNull( tableNetwork, "tableNetwork" ); //$NON-NLS-1$
 
         return new TableModel( this, table, tableNetwork );
     }
@@ -219,11 +197,8 @@ public final class TableEnvironmentModel
      *        The event notification; must not be {@code null}.
      */
     void fireEventNotification(
-        /* @NonNull */
         final Runnable eventNotification )
     {
-        assert eventNotification != null;
-
         if( canFireEventNotifications() )
         {
             eventNotification.run();
@@ -262,7 +237,6 @@ public final class TableEnvironmentModel
      * 
      * @return The table environment model lock; never {@code null}.
      */
-    /* @NonNull */
     public ITableEnvironmentModelLock getLock()
     {
         return lock_;
@@ -274,7 +248,6 @@ public final class TableEnvironmentModel
      * @return The table environment associated with this model; never
      *         {@code null}.
      */
-    /* @NonNull */
     public ITableEnvironment getTableEnvironment()
     {
         return tableEnvironment_;
@@ -344,7 +317,7 @@ public final class TableEnvironmentModel
         @Override
         public Condition newCondition()
         {
-            return tableEnvironment_.getLock().newCondition();
+            return nonNull( tableEnvironment_.getLock().newCondition() );
         }
 
         /*
@@ -362,6 +335,7 @@ public final class TableEnvironmentModel
         @Override
         public boolean tryLock(
             final long time,
+            @Nullable
             final TimeUnit unit )
             throws InterruptedException
         {

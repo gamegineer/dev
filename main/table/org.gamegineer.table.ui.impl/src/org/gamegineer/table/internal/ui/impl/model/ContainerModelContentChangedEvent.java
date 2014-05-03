@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.ui.impl.model;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 
 /**
  * An event used to notify listeners that the content of a container model has
@@ -63,21 +62,15 @@ public final class ContainerModelContentChangedEvent
      *        The index of the component model associated with the event.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code source} is {@code null} or if
-     *         {@code componentModelIndex} is negative.
-     * @throws java.lang.NullPointerException
-     *         If {@code componentModel} is {@code null}.
+     *         If {@code componentModelIndex} is negative.
      */
     public ContainerModelContentChangedEvent(
-        /* @NonNull */
         final ContainerModel source,
-        /* @NonNull */
         final ComponentModel componentModel,
         final int componentModelIndex )
     {
         super( source );
 
-        assertArgumentNotNull( componentModel, "componentModel" ); //$NON-NLS-1$
         assertArgumentLegal( componentModelIndex >= 0, "componentModelIndex", NonNlsMessages.ContainerModelContentChangedEvent_ctor_componentModelIndex_negative ); //$NON-NLS-1$
 
         componentModel_ = componentModel;
@@ -95,7 +88,6 @@ public final class ContainerModelContentChangedEvent
      * @return The component model associated with the event; never {@code null}
      *         .
      */
-    /* @NonNull */
     public ComponentModel getComponentModel()
     {
         return componentModel_;
