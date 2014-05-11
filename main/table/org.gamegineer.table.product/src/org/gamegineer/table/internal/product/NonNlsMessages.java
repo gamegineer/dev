@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.product;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.ui.TableResult;
@@ -40,22 +41,22 @@ final class NonNlsMessages
     // --- Application ------------------------------------------------------
 
     /** The application was cancelled. */
-    public static String Application_start_cancelled;
+    public static String Application_start_cancelled = ""; //$NON-NLS-1$
 
     /** The application is starting. */
-    public static String Application_start_starting;
+    public static String Application_start_starting = ""; //$NON-NLS-1$
 
     /** The application has stopped. */
-    public static String Application_start_stopped;
+    public static String Application_start_stopped = ""; //$NON-NLS-1$
 
     /** The table runner factory service is not available. */
-    public static String Application_start_tableRunnerFactoryNotAvailable;
+    public static String Application_start_tableRunnerFactoryNotAvailable = ""; //$NON-NLS-1$
 
     /** Failed to cancel the application task. */
-    public static String Application_stop_cancelFailed;
+    public static String Application_stop_cancelFailed = ""; //$NON-NLS-1$
 
     /** Attempting to stop the application. */
-    public static String Application_stop_stopping;
+    public static String Application_stop_stopping = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -93,12 +94,10 @@ final class NonNlsMessages
      * @return The formatted message indicating the application is starting;
      *         never {@code null}.
      */
-    /* @NonNull */
     static String Application_start_starting(
-        /* @NonNull */
         final Version version )
     {
-        return bind( Application_start_starting, version.toString() );
+        return nonNull( bind( Application_start_starting, version.toString() ) );
     }
 
     /**
@@ -110,11 +109,9 @@ final class NonNlsMessages
      * @return The formatted message indicating the application has stopped;
      *         never {@code null}.
      */
-    /* @NonNull */
     static String Application_start_stopped(
-        /* @NonNull */
         final TableResult result )
     {
-        return bind( Application_start_stopped, result.toString() );
+        return nonNull( bind( Application_start_stopped, result.toString() ) );
     }
 }

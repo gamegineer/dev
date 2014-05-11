@@ -1,6 +1,6 @@
 /*
  * Application.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.product;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -33,6 +33,7 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.app.BrandingUtils;
 import org.gamegineer.common.core.app.IBranding;
 import org.gamegineer.table.ui.ITableAdvisor;
@@ -89,13 +90,9 @@ public final class Application
      * 
      * @return A table advisor; never {@code null}.
      */
-    /* @NonNull */
     private static ITableAdvisor createTableAdvisor(
-        /* @NonNull */
         final IApplicationContext context )
     {
-        assert context != null;
-
         final List<String> applicationArguments = parseApplicationArguments( (String[])context.getArguments().get( IApplicationContext.APPLICATION_ARGS ) );
         return new TableAdvisor( applicationArguments );
     }
@@ -108,17 +105,16 @@ public final class Application
      * 
      * @return The collection of application arguments; never {@code null}.
      */
-    /* @NonNull */
     private static List<String> parseApplicationArguments(
-        /* @Nullable */
+        @Nullable
         final String[] applicationArgumentsArray )
     {
         if( (applicationArgumentsArray == null) || (applicationArgumentsArray.length == 0) )
         {
-            return Collections.emptyList();
+            return nonNull( Collections.<String>emptyList() );
         }
 
-        return Arrays.asList( applicationArgumentsArray );
+        return nonNull( Arrays.asList( applicationArgumentsArray ) );
     }
 
     /**
@@ -129,13 +125,9 @@ public final class Application
      * 
      * @return The branding service; never {@code null}.
      */
-    /* @NonNull */
     private IBranding publishBranding(
-        /* @NonNull */
         final IApplicationContext context )
     {
-        assert context != null;
-
         final IBranding branding = new Branding( context );
         brandingServiceRegistrationRef_.set( Activator.getDefault().getBundleContext().registerService( IBranding.class, branding, null ) );
         return branding;
@@ -146,10 +138,11 @@ public final class Application
      */
     @Override
     public Object start(
+        @Nullable
         final IApplicationContext context )
         throws Exception
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
+        assert context != null;
 
         final IBranding branding = publishBranding( context );
         Loggers.getDefaultLogger().info( NonNlsMessages.Application_start_starting( BrandingUtils.getVersion( branding ) ) );
@@ -172,11 +165,12 @@ public final class Application
             try
             {
                 result = future.get();
+                assert result != null;
             }
             catch( final CancellationException e )
             {
                 Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.Application_start_cancelled, e );
-                result = TableResult.OK;
+                result = nonNull( TableResult.OK );
             }
 
             Loggers.getDefaultLogger().info( NonNlsMessages.Application_start_stopped( result ) );
@@ -216,16 +210,10 @@ public final class Application
      * @return The Equinox application exit object corresponding to the
      *         specified table result; never {@code null}.
      */
-    /* @NonNull */
     private static Object toApplicationExitObject(
-        /* @NonNull */
         final TableResult result )
     {
-        assert result != null;
-
-        @SuppressWarnings( "boxing" )
-        final Integer exitCode = result.getExitCode();
-        return exitCode;
+        return nonNull( Integer.valueOf( result.getExitCode() ) );
     }
 
     /**
@@ -271,11 +259,8 @@ public final class Application
          *        The application context; must not be {@code null}.
          */
         Branding(
-            /* @NonNull */
             final IApplicationContext context )
         {
-            assert context != null;
-
             context_ = context;
         }
 
@@ -287,6 +272,7 @@ public final class Application
         /*
          * @see org.gamegineer.common.core.app.IBranding#getApplication()
          */
+        @Nullable
         @Override
         public String getApplication()
         {
@@ -296,6 +282,7 @@ public final class Application
         /*
          * @see org.gamegineer.common.core.app.IBranding#getBundle()
          */
+        @Nullable
         @Override
         public Bundle getBundle()
         {
@@ -305,6 +292,7 @@ public final class Application
         /*
          * @see org.gamegineer.common.core.app.IBranding#getDescription()
          */
+        @Nullable
         @Override
         public String getDescription()
         {
@@ -317,12 +305,15 @@ public final class Application
         @Override
         public String getId()
         {
-            return context_.getBrandingId();
+            final String id = context_.getBrandingId();
+            assert id != null;
+            return id;
         }
 
         /*
          * @see org.gamegineer.common.core.app.IBranding#getName()
          */
+        @Nullable
         @Override
         public String getName()
         {
@@ -332,12 +323,11 @@ public final class Application
         /*
          * @see org.gamegineer.common.core.app.IBranding#getProperty(java.lang.String)
          */
+        @Nullable
         @Override
         public String getProperty(
             final String name )
         {
-            assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-
             return context_.getBrandingProperty( name );
         }
     }
