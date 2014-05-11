@@ -1,6 +1,6 @@
 /*
  * CardStrategy.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,12 +21,13 @@
 
 package org.gamegineer.cards.internal.core.impl.strategies;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.cards.core.CardOrientation;
 import org.gamegineer.cards.core.CardSurfaceDesignIds;
 import org.gamegineer.cards.core.CardsComponentStrategyIds;
@@ -52,7 +53,7 @@ final class CardStrategy
     // ======================================================================
 
     /** The collection of supported card orientations. */
-    private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( CardOrientation.values( CardOrientation.class ) ) );
+    private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = nonNull( Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( CardOrientation.values( CardOrientation.class ) ) ) );
 
 
     // ======================================================================
@@ -93,12 +94,11 @@ final class CardStrategy
     /*
      * @see org.gamegineer.table.core.AbstractComponentStrategy#getExtension(java.lang.Class)
      */
+    @Nullable
     @Override
     public <T> T getExtension(
         final Class<T> type )
     {
-        assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
-
         if( type == IDragStrategyFactory.class )
         {
             return type.cast( DragStrategyFactory.INSTANCE );
@@ -148,11 +148,8 @@ final class CardStrategy
          *        begin; must not be {@code null}.
          */
         DragStrategy(
-            /* @NonNull */
             final IComponent component )
         {
-            assert component != null;
-
             component_ = component;
         }
 
@@ -168,8 +165,6 @@ final class CardStrategy
         public boolean canDrop(
             final IContainer dropContainer )
         {
-            assertArgumentNotNull( dropContainer, "dropContainer" ); //$NON-NLS-1$
-
             return CardsComponentStrategyIds.CARD_PILE.equals( dropContainer.getStrategy().getId() );
         }
 
@@ -184,7 +179,7 @@ final class CardStrategy
             final List<IComponent> components = container.getComponents();
             final ComponentPath componentPath = component_.getPath();
             assert componentPath != null;
-            return components.subList( componentPath.getIndex(), components.size() );
+            return nonNull( components.subList( componentPath.getIndex(), components.size() ) );
         }
     }
 
@@ -225,11 +220,9 @@ final class CardStrategy
         @Override
         public IDragStrategy createDragStrategy(
             final IComponent component,
+            @SuppressWarnings( "unused" )
             final IDragStrategy successorDragStrategy )
         {
-            assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
-            assertArgumentNotNull( successorDragStrategy, "successorDragStrategy" ); //$NON-NLS-1$
-
             return isContainedWithinCardPile( component ) //
                 ? new DragStrategy( component ) //
                 : new DefaultDragStrategy( component );
@@ -246,11 +239,8 @@ final class CardStrategy
          *         within a card pile; otherwise {@code false}.
          */
         private static boolean isContainedWithinCardPile(
-            /* @NonNull */
             final IComponent component )
         {
-            assert component != null;
-
             final IContainer container = component.getContainer();
             return (container != null) && CardsComponentStrategyIds.CARD_PILE.equals( container.getStrategy().getId() );
         }

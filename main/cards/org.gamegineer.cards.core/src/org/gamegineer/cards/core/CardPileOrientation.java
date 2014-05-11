@@ -1,6 +1,6 @@
 /*
  * CardPileOrientation.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -56,11 +56,8 @@ public final class CardPileOrientation
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code ordinal} is negative.
-     * @throws java.lang.NullPointerException
-     *         If {@code name} is {@code null}.
      */
     private CardPileOrientation(
-        /* @NonNull */
         final String name,
         final int ordinal )
     {

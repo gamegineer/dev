@@ -21,7 +21,9 @@
 
 package org.gamegineer.cards.internal.core.impl.strategies;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.core.ComponentStrategyId;
 
@@ -39,10 +41,10 @@ final class NonNlsMessages
     // --- ComponentStrategyExtensionFactory --------------------------------
 
     /** The component strategy identifier is unknown. */
-    public static String ComponentStrategyExtensionFactory_create_unknownId;
+    public static String ComponentStrategyExtensionFactory_create_unknownId = ""; //$NON-NLS-1$
 
     /** The component strategy identifier is missing. */
-    public static String ComponentStrategyExtensionFactory_setInitializationData_missingId;
+    public static String ComponentStrategyExtensionFactory_setInitializationData_missingId = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -76,16 +78,15 @@ final class NonNlsMessages
      * is unknown.
      * 
      * @param componentStrategyId
-     *        The component strategy identifier; must not be {@code null}.
+     *        The component strategy identifier; may be {@code null}.
      * 
      * @return The formatted message indicating the component strategy
      *         identifier is unknown; never {@code null}.
      */
-    /* @NonNull */
     static String ComponentStrategyExtensionFactory_create_unknownId(
-        /* @NonNull */
+        @Nullable
         final ComponentStrategyId componentStrategyId )
     {
-        return bind( ComponentStrategyExtensionFactory_create_unknownId, componentStrategyId );
+        return nonNull( bind( ComponentStrategyExtensionFactory_create_unknownId, componentStrategyId ) );
     }
 }
