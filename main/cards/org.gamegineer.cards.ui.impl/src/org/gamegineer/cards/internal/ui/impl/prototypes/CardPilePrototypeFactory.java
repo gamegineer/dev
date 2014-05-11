@@ -1,6 +1,6 @@
 /*
  * CardPilePrototypeFactory.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.cards.internal.ui.impl.prototypes;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.cards.core.CardPileOrientation;
 import org.gamegineer.cards.core.CardsComponentStrategyIds;
 import org.gamegineer.cards.internal.ui.impl.BundleConstants;
@@ -61,6 +62,7 @@ public final class CardPilePrototypeFactory
     private static final String PARAM_NAME_BASE_DESIGN_ID = "baseDesign"; //$NON-NLS-1$
 
     /** The identifier of the component surface design of the card pile base. */
+    @Nullable
     private ComponentSurfaceDesignId baseDesignId_;
 
 
@@ -89,13 +91,12 @@ public final class CardPilePrototypeFactory
         final ITableEnvironment tableEnvironment )
         throws ComponentPrototypeFactoryException
     {
-        assertArgumentNotNull( tableEnvironment, "tableEnvironment" ); //$NON-NLS-1$
-
         try
         {
             final IComponent cardPile = tableEnvironment.createContainer( ComponentStrategyRegistry.getContainerStrategy( CardsComponentStrategyIds.CARD_PILE ) );
+            assert baseDesignId_ != null;
             cardPile.setSurfaceDesign( CardPileOrientation.BASE, ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( baseDesignId_ ) );
-            return Collections.singletonList( cardPile );
+            return nonNull( Collections.singletonList( cardPile ) );
         }
         catch( final NoSuchComponentStrategyException e )
         {
@@ -112,10 +113,13 @@ public final class CardPilePrototypeFactory
      */
     @Override
     public void setInitializationData(
+        @Nullable
         @SuppressWarnings( "unused" )
         final IConfigurationElement config,
+        @Nullable
         @SuppressWarnings( "unused" )
         final String propertyName,
+        @Nullable
         final Object data )
         throws CoreException
     {

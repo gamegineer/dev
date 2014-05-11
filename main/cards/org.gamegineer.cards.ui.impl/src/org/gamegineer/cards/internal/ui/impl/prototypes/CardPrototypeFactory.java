@@ -1,6 +1,6 @@
 /*
  * CardPrototypeFactory.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.cards.internal.ui.impl.prototypes;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.cards.core.CardOrientation;
 import org.gamegineer.cards.core.CardsComponentStrategyIds;
 import org.gamegineer.cards.internal.ui.impl.BundleConstants;
@@ -67,9 +68,11 @@ public final class CardPrototypeFactory
     private static final String PARAM_NAME_FACE_DESIGN_ID = "faceDesign"; //$NON-NLS-1$
 
     /** The identifier of the component surface design of the card back. */
+    @Nullable
     private ComponentSurfaceDesignId backDesignId_;
 
     /** The identifier of the component surface design of the card face. */
+    @Nullable
     private ComponentSurfaceDesignId faceDesignId_;
 
 
@@ -99,14 +102,14 @@ public final class CardPrototypeFactory
         final ITableEnvironment tableEnvironment )
         throws ComponentPrototypeFactoryException
     {
-        assertArgumentNotNull( tableEnvironment, "tableEnvironment" ); //$NON-NLS-1$
-
         try
         {
             final IComponent card = tableEnvironment.createComponent( ComponentStrategyRegistry.getComponentStrategy( CardsComponentStrategyIds.CARD ) );
+            assert backDesignId_ != null;
             card.setSurfaceDesign( CardOrientation.BACK, ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( backDesignId_ ) );
+            assert faceDesignId_ != null;
             card.setSurfaceDesign( CardOrientation.FACE, ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( faceDesignId_ ) );
-            return Collections.singletonList( card );
+            return nonNull( Collections.singletonList( card ) );
         }
         catch( final NoSuchComponentStrategyException e )
         {
@@ -123,10 +126,13 @@ public final class CardPrototypeFactory
      */
     @Override
     public void setInitializationData(
+        @Nullable
         @SuppressWarnings( "unused" )
         final IConfigurationElement config,
+        @Nullable
         @SuppressWarnings( "unused" )
         final String propertyName,
+        @Nullable
         final Object data )
         throws CoreException
     {

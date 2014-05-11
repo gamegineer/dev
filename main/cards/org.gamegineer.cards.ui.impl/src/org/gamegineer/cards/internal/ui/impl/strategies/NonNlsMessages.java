@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,9 @@
 
 package org.gamegineer.cards.internal.ui.impl.strategies;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.core.ComponentStrategyId;
 
@@ -39,10 +41,10 @@ final class NonNlsMessages
     // --- ComponentStrategyUIExtensionFactory ------------------------------
 
     /** The component strategy identifier is unknown. */
-    public static String ComponentStrategyUIExtensionFactory_create_unknownId;
+    public static String ComponentStrategyUIExtensionFactory_create_unknownId = ""; //$NON-NLS-1$
 
     /** The component strategy identifier is missing. */
-    public static String ComponentStrategyUIExtensionFactory_setInitializationData_missingId;
+    public static String ComponentStrategyUIExtensionFactory_setInitializationData_missingId = ""; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -76,16 +78,15 @@ final class NonNlsMessages
      * is unknown.
      * 
      * @param componentStrategyId
-     *        The component strategy identifier; must not be {@code null}.
+     *        The component strategy identifier; may be {@code null}.
      * 
      * @return The formatted message indicating the component strategy
      *         identifier is unknown; never {@code null}.
      */
-    /* @NonNull */
     static String ComponentStrategyUIExtensionFactory_create_unknownId(
-        /* @NonNull */
+        @Nullable
         final ComponentStrategyId componentStrategyId )
     {
-        return bind( ComponentStrategyUIExtensionFactory_create_unknownId, componentStrategyId );
+        return nonNull( bind( ComponentStrategyUIExtensionFactory_create_unknownId, componentStrategyId ) );
     }
 }
