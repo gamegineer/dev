@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.core.impl.layouts;
 
 import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.core.ContainerLayoutId;
 
@@ -82,12 +83,13 @@ final class NonNlsMessages
      * unknown.
      * 
      * @param containerLayoutId
-     *        The container layout identifier; must not be {@code null}.
+     *        The container layout identifier; may be {@code null}.
      * 
      * @return The formatted message indicating the container layout identifier
      *         is unknown; never {@code null}.
      */
     static String ContainerLayoutExtensionFactory_create_unknownId(
+        @Nullable
         final ContainerLayoutId containerLayoutId )
     {
         return nonNull( bind( ContainerLayoutExtensionFactory_create_unknownId, containerLayoutId ) );

@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.core.impl.strategies;
 
 import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.core.ComponentStrategyId;
 
@@ -77,12 +78,13 @@ final class NonNlsMessages
      * is unknown.
      * 
      * @param componentStrategyId
-     *        The component strategy identifier; must not be {@code null}.
+     *        The component strategy identifier; may be {@code null}.
      * 
      * @return The formatted message indicating the component strategy
      *         identifier is unknown; never {@code null}.
      */
     static String ComponentStrategyExtensionFactory_create_unknownId(
+        @Nullable
         final ComponentStrategyId componentStrategyId )
     {
         return nonNull( bind( ComponentStrategyExtensionFactory_create_unknownId, componentStrategyId ) );

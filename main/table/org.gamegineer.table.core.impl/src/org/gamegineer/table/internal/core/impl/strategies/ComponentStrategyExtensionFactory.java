@@ -99,7 +99,6 @@ public final class ComponentStrategyExtensionFactory
         final IComponentStrategy componentStrategy = COMPONENT_STRATEGIES.get( componentStrategyId_ );
         if( componentStrategy == null )
         {
-            assert componentStrategyId_ != null;
             throw new CoreException( new Status( Status.ERROR, BundleConstants.SYMBOLIC_NAME, NonNlsMessages.ComponentStrategyExtensionFactory_create_unknownId( componentStrategyId_ ) ) );
         }
 

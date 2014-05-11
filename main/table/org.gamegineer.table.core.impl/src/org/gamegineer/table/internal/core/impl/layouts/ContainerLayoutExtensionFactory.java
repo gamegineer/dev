@@ -103,7 +103,6 @@ public final class ContainerLayoutExtensionFactory
         final IContainerLayout containerLayout = CONTAINER_LAYOUTS.get( containerLayoutId_ );
         if( containerLayout == null )
         {
-            assert containerLayoutId_ != null;
             throw new CoreException( new Status( Status.ERROR, BundleConstants.SYMBOLIC_NAME, NonNlsMessages.ContainerLayoutExtensionFactory_create_unknownId( containerLayoutId_ ) ) );
         }
 
