@@ -114,14 +114,4 @@ public abstract class AbstractTableEnvironmentContextTestCase<TableEnvironmentCo
     {
         tableEnvironmentContext_.fireEventNotification( nonNull( EasyMock.createMock( Runnable.class ) ) );
     }
-
-    /**
-     * Ensures the {@link ITableEnvironmentContext#getLock} method does not
-     * return {@code null}.
-     */
-    @Test
-    public void testGetLock_ReturnValue_NonNull()
-    {
-        assertNotNull( tableEnvironmentContext_.getLock() );
-    }
 }

@@ -22,26 +22,14 @@
 package org.gamegineer.table.core;
 
 import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
-import static org.junit.Assert.assertNotNull;
 import org.easymock.EasyMock;
-import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the {@link ContainerContentChangedEvent} class.
  */
-@NonNullByDefault( false )
 public final class ContainerContentChangedEventTest
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The container content changed event under test in the fixture. */
-    private ContainerContentChangedEvent event_;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -60,19 +48,6 @@ public final class ContainerContentChangedEventTest
     // ======================================================================
 
     /**
-     * Sets up the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Before
-    public void setUp()
-        throws Exception
-    {
-        event_ = new ContainerContentChangedEvent( nonNull( EasyMock.createMock( IContainer.class ) ), new ComponentPath( null, 0 ), nonNull( EasyMock.createMock( IComponent.class ) ), 0 );
-    }
-
-    /**
      * Ensures the
      * {@link ContainerContentChangedEvent#ContainerContentChangedEvent}
      * constructor throws an exception when passed an illegal component index
@@ -82,15 +57,5 @@ public final class ContainerContentChangedEventTest
     public void testConstructor_ComponentIndex_Illegal_Negative()
     {
         new ContainerContentChangedEvent( nonNull( EasyMock.createMock( IContainer.class ) ), new ComponentPath( null, 0 ), nonNull( EasyMock.createMock( IComponent.class ) ), -1 );
-    }
-
-    /**
-     * Ensures the {@link ContainerContentChangedEvent#getComponent} method does
-     * not return {@code null}.
-     */
-    @Test
-    public void testGetComponent_ReturnValue_NonNull()
-    {
-        assertNotNull( event_.getComponent() );
     }
 }

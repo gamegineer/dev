@@ -22,7 +22,6 @@
 package org.gamegineer.table.core;
 
 import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import org.easymock.EasyMock;
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -70,16 +69,6 @@ public final class ComponentEventTest
         throws Exception
     {
         event_ = new ComponentEvent( nonNull( EasyMock.createMock( IComponent.class ) ), new ComponentPath( null, 0 ) );
-    }
-
-    /**
-     * Ensures the {@link ComponentEvent#getComponent} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testGetComponent_ReturnValue_NonNull()
-    {
-        assertNotNull( event_.getComponent() );
     }
 
     /**

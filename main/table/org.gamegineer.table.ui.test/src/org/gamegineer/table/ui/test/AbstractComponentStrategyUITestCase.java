@@ -104,12 +104,11 @@ public abstract class AbstractComponentStrategyUITestCase<ComponentStrategyUITyp
     }
 
     /**
-     * Ensures the {@link IComponentStrategyUI#getId} method does not return
-     * {@code null}.
+     * Placeholder for future interface tests.
      */
     @Test
-    public void testGetId_ReturnValue_NonNull()
+    public void testDummy()
     {
-        assertNotNull( componentStrategyUI_.getId() );
+        // do nothing
     }
 }

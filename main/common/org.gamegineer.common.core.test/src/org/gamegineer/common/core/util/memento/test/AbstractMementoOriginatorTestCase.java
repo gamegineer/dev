@@ -137,16 +137,6 @@ public abstract class AbstractMementoOriginatorTestCase
     }
 
     /**
-     * Ensures the {@link IMementoOriginator#createMemento} method does not
-     * return {@code null}.
-     */
-    @Test
-    public void testCreateMemento_ReturnValue_NonNull()
-    {
-        assertNotNull( mementoOriginator_.createMemento() );
-    }
-
-    /**
      * Ensures the {@link IMementoOriginator#createMemento} and
      * {@link IMementoOriginator#setMemento} methods can save and restore the
      * state of the memento originator.

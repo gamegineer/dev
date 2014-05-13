@@ -314,48 +314,6 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
     }
 
     /**
-     * Ensures the {@link INode#getPassword} method does not return {@code null}
-     * .
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test
-    public void testGetPassword_ReturnValue_NonNull()
-        throws Exception
-    {
-        nodeLayerRunner_.run( new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                assertNotNull( getNode().getPassword() );
-            }
-        } );
-    }
-
-    /**
-     * Ensures the {@link INode#getPlayerName} method does not return
-     * {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test
-    public void testGetPlayerName_ReturnValue_NonNull()
-        throws Exception
-    {
-        nodeLayerRunner_.run( new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                assertNotNull( getNode().getPlayerName() );
-            }
-        } );
-    }
-
-    /**
      * Ensures the {@link INode#unbindRemoteNode} method throws an exception
      * when the remote node is absent from the bound remote nodes collection.
      * 

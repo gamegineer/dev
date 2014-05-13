@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.model;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
@@ -72,16 +71,6 @@ public final class ContainerModelEventTest
     {
         final TableEnvironmentModel tableEnvironmentModel = new TableEnvironmentModel( TestTableEnvironments.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
         event_ = new ContainerModelEvent( new ContainerModel( tableEnvironmentModel, TestComponents.createUniqueContainer( tableEnvironmentModel.getTableEnvironment() ) ) );
-    }
-
-    /**
-     * Ensures the {@link ContainerModelEvent#getContainerModel} method does not
-     * return {@code null} .
-     */
-    @Test
-    public void testGetContainerModel_ReturnValue_NonNull()
-    {
-        assertNotNull( event_.getContainerModel() );
     }
 
     /**

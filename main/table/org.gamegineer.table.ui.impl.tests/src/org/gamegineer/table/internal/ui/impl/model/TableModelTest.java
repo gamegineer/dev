@@ -531,16 +531,6 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@link TableModel#getComponentModels} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testGetComponentModels_ReturnValue_NonNull()
-    {
-        assertNotNull( tableModel_.getComponentModels( new Point( Integer.MIN_VALUE, Integer.MIN_VALUE ) ) );
-    }
-
-    /**
      * Ensures the {@link TableModel#getFocusableComponentModel} method returns
      * the expected component model when a focusable component model exists at
      * the specified location.
@@ -805,26 +795,6 @@ public final class TableModelTest
         final Dimension actualOriginOffset = tableModel_.getOriginOffset();
 
         assertEquals( expectedOriginOffset, actualOriginOffset );
-    }
-
-    /**
-     * Ensures the {@link TableModel#getOriginOffset} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testGetOriginOffset_ReturnValue_NonNull()
-    {
-        assertNotNull( tableModel_.getOriginOffset() );
-    }
-
-    /**
-     * Ensures the {@link TableModel#getTable} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testGetTable_ReturnValue_NonNull()
-    {
-        assertNotNull( tableModel_.getTable() );
     }
 
     /**

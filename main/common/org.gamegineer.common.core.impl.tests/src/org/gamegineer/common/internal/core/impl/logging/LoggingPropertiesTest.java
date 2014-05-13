@@ -102,20 +102,6 @@ public final class LoggingPropertiesTest
     }
 
     /**
-     * Ensures the {@link LoggingProperties#getAncestorLoggerNames} method does
-     * not return {@code null} when there are no ancestors for the specified
-     * logger.
-     */
-    @Test
-    public void testGetAncestorLoggerNames_ReturnValue_NonNull()
-    {
-        final List<String> names = LoggingProperties.getAncestorLoggerNames( getProperties(), "z" ); //$NON-NLS-1$
-
-        assertNotNull( names );
-        assertTrue( names.isEmpty() );
-    }
-
-    /**
      * Ensures the {@link LoggingProperties#getAncestorLoggerNames} method
      * returns a non-empty name collection in order from nearest ancestor to
      * furthest ancestor.

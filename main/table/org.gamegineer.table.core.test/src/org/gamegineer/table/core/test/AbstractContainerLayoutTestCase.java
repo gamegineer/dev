@@ -87,12 +87,11 @@ public abstract class AbstractContainerLayoutTestCase
     }
 
     /**
-     * Ensures the {@link IContainerLayout#getId} method does not return
-     * {@code null}.
+     * Placeholder for future interface tests.
      */
     @Test
-    public void testGetId_ReturnValue_NonNull()
+    public void testDummy()
     {
-        assertNotNull( layout_.getId() );
+        // do nothing
     }
 }

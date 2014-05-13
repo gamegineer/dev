@@ -316,26 +316,4 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
             }
         } );
     }
-
-    /**
-     * Ensures the {@link INodeController#getPlayers} method does not return
-     * {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test
-    public void testGetPlayers_ReturnValue_NonNull()
-        throws Exception
-    {
-        nodeLayerRunner_.run( new Runnable()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                assertNotNull( nodeController_.getPlayers() );
-            }
-        } );
-    }
 }

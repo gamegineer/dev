@@ -102,16 +102,6 @@ public abstract class AbstractLoggingServiceTestCase
     }
 
     /**
-     * Ensures the {@link ILoggingService#getLogger(Bundle)} method does not
-     * return {@code null}.
-     */
-    @Test
-    public void testGetLoggerFromBundle_ReturnValue_NonNull()
-    {
-        assertNotNull( service_.getLogger( getBundle() ) );
-    }
-
-    /**
      * Ensures the {@link ILoggingService#getLogger(Bundle, String)} method
      * returns the default logger when passed an empty name.
      */
@@ -133,15 +123,5 @@ public abstract class AbstractLoggingServiceTestCase
         final Bundle bundle = getBundle();
 
         assertSame( service_.getLogger( bundle ), service_.getLogger( bundle, null ) );
-    }
-
-    /**
-     * Ensures the {@link ILoggingService#getLogger(Bundle, String)} method does
-     * not return {@code null}.
-     */
-    @Test
-    public void testGetLoggerFromBundleAndName_ReturnValue_NonNull()
-    {
-        assertNotNull( service_.getLogger( getBundle(), "name" ) ); //$NON-NLS-1$
     }
 }

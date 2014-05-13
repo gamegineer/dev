@@ -348,34 +348,4 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
 
         assertEquals( expectedComponentsSize, components.size() );
     }
-
-    /**
-     * Ensures the {@link ITable#getComponents} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testGetComponents_ReturnValue_NonNull()
-    {
-        assertNotNull( table_.getComponents( new Point( Integer.MIN_VALUE, Integer.MIN_VALUE ) ) );
-    }
-
-    /**
-     * Ensures the {@link ITable#getTableEnvironment} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testGetTableEnvironment_ReturnValue_NonNull()
-    {
-        assertNotNull( table_.getTableEnvironment() );
-    }
-
-    /**
-     * Ensures the {@link ITable#getTabletop} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testGetTabletop_ReturnValue_NonNull()
-    {
-        assertNotNull( table_.getTabletop() );
-    }
 }

@@ -87,12 +87,11 @@ public abstract class AbstractDragStrategyTestCase
     }
 
     /**
-     * Ensures the {@link IDragStrategy#getDragComponents} method does not
-     * return {@code null}.
+     * Placeholder for future interface tests.
      */
     @Test
-    public void testGetDragComponents_ReturnValue_NonNull()
+    public void testDummy()
     {
-        assertNotNull( dragStrategy_.getDragComponents() );
+        // do nothing
     }
 }

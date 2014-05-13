@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.impl.node.server;
 
 import org.gamegineer.table.internal.net.impl.node.AbstractRemoteNodeTestCase;
-import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
@@ -44,19 +43,5 @@ public abstract class AbstractRemoteClientNodeTestCase<T extends IRemoteClientNo
      */
     protected AbstractRemoteClientNodeTestCase()
     {
-    }
-
-
-    // ======================================================================
-    // Methods
-    // ======================================================================
-
-    /**
-     * Placeholder for future interface tests.
-     */
-    @Test
-    public void testDummy()
-    {
-        // do nothing
     }
 }

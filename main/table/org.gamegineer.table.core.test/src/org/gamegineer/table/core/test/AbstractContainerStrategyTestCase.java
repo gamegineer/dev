@@ -21,9 +21,7 @@
 
 package org.gamegineer.table.core.test;
 
-import static org.junit.Assert.assertNotNull;
 import org.gamegineer.table.core.IContainerStrategy;
-import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
@@ -61,15 +59,5 @@ public abstract class AbstractContainerStrategyTestCase<ContainerStrategyType ex
     protected final ContainerStrategyType getContainerStrategy()
     {
         return getComponentStrategy();
-    }
-
-    /**
-     * Ensures the {@link IContainerStrategy#getDefaultLayout} method does not
-     * return {@code null}.
-     */
-    @Test
-    public void testGetDefaultLayout_ReturnValue_NonNull()
-    {
-        assertNotNull( getContainerStrategy().getDefaultLayout() );
     }
 }

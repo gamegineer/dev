@@ -40,9 +40,6 @@ public final class ContainerModelContentChangedEventTest
     // Fields
     // ======================================================================
 
-    /** The container model content changed event under test in the fixture. */
-    private ContainerModelContentChangedEvent event_;
-
     /** The table environment model for use in the fixture. */
     private TableEnvironmentModel tableEnvironmentModel_;
 
@@ -109,7 +106,6 @@ public final class ContainerModelContentChangedEventTest
         throws Exception
     {
         tableEnvironmentModel_ = new TableEnvironmentModel( TestTableEnvironments.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
-        event_ = new ContainerModelContentChangedEvent( createUniqueContainerModel(), createUniqueComponentModel(), 0 );
     }
 
     /**
@@ -122,15 +118,5 @@ public final class ContainerModelContentChangedEventTest
     public void testConstructor_ComponentModelIndex_Illegal_Negative()
     {
         new ContainerModelContentChangedEvent( createUniqueContainerModel(), createUniqueComponentModel(), -1 );
-    }
-
-    /**
-     * Ensures the {@link ContainerModelContentChangedEvent#getComponentModel}
-     * method does not return {@code null}.
-     */
-    @Test
-    public void testGetComponentModel_ReturnValue_NonNull()
-    {
-        assertNotNull( event_.getComponentModel() );
     }
 }

@@ -86,12 +86,11 @@ public abstract class AbstractTableNetworkControllerTestCase
     }
 
     /**
-     * Ensures the {@link ITableNetworkController#getTransportLayerFactory}
-     * method does not return {@code null}.
+     * Placeholder for future interface tests.
      */
     @Test
-    public void testGetTransportLayerFactory_ReturnValue_NonNull()
+    public void testDummy()
     {
-        assertNotNull( tableNetworkController_.getTransportLayerFactory() );
+        // do nothing
     }
 }

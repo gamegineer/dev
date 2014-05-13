@@ -22,7 +22,6 @@
 package org.gamegineer.table.core;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 /**
@@ -45,18 +44,6 @@ public final class ContainerLayoutIdTest
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Ensures the {@link ContainerLayoutId#toString} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testToString_ReturnValue_NonNull()
-    {
-        final ContainerLayoutId id = ContainerLayoutId.fromString( "id" ); //$NON-NLS-1$
-
-        assertNotNull( id.toString() );
-    }
 
     /**
      * Ensures the {@link ContainerLayoutId#toString} method returns the same

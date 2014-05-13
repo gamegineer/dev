@@ -119,12 +119,11 @@ public abstract class AbstractAbstractComponentStrategyTestCase<ComponentStrateg
     }
 
     /**
-     * Ensures the {@link AbstractComponentStrategy#getDefaultSurfaceDesignId}
-     * method does not return {@code null}.
+     * Placeholder for future interface tests.
      */
     @Test
-    public void testGetDefaultSurfaceDesignId_ReturnValue_NonNull()
+    public void testDummy()
     {
-        assertNotNull( getDefaultSurfaceDesignId( getComponentStrategy() ) );
+        // do nothing
     }
 }

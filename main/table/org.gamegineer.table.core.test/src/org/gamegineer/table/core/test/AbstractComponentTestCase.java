@@ -451,16 +451,6 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IComponent#getBounds} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testGetBounds_ReturnValue_NonNull()
-    {
-        assertNotNull( getComponent().getBounds() );
-    }
-
-    /**
      * Ensures the {@link IComponent#getBounds} method returns the correct value
      * after a translation.
      */
@@ -493,16 +483,6 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IComponent#getLocation} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testGetLocation_ReturnValue_NonNull()
-    {
-        assertNotNull( getComponent().getLocation() );
-    }
-
-    /**
      * Ensures the {@link IComponent#getLocation} method returns the correct
      * value after a translation.
      */
@@ -518,16 +498,6 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IComponent#getOrientation} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testGetOrientation_ReturnValue_NonNull()
-    {
-        assertNotNull( getComponent().getOrientation() );
-    }
-
-    /**
      * Ensures the {@link IComponent#getOrigin} method returns a copy of the
      * origin.
      */
@@ -540,16 +510,6 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
         origin.setLocation( 1010, 2020 );
 
         assertEquals( expectedOrigin, getComponent().getOrigin() );
-    }
-
-    /**
-     * Ensures the {@link IComponent#getOrigin} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testGetOrigin_ReturnValue_NonNull()
-    {
-        assertNotNull( getComponent().getOrigin() );
     }
 
     /**
@@ -667,16 +627,6 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IComponent#getSize} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testGetSize_ReturnValue_NonNull()
-    {
-        assertNotNull( getComponent().getSize() );
-    }
-
-    /**
      * Ensures the {@link IComponent#getSize} method returns the correct value
      * after a translation.
      */
@@ -690,16 +640,6 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
         final Dimension actualSize = getComponent().getSize();
 
         assertEquals( expectedSize, actualSize );
-    }
-
-    /**
-     * Ensures the {@link IComponent#getStrategy} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testGetStrategy_ReturnValue_NonNull()
-    {
-        assertNotNull( getComponent().getStrategy() );
     }
 
     /**
@@ -723,16 +663,6 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IComponent#getSupportedOrientations} method does not
-     * return {@code null}.
-     */
-    @Test
-    public void testGetSupportedOrientations_ReturnValue_NonNull()
-    {
-        assertNotNull( getComponent().getSupportedOrientations() );
-    }
-
-    /**
      * Ensures the {@link IComponent#getSurfaceDesign} method throws an
      * exception when passed an illegal orientation.
      */
@@ -740,20 +670,6 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testGetSurfaceDesign_Orientation_Illegal()
     {
         getComponent().getSurfaceDesign( createIllegalOrientation() );
-    }
-
-    /**
-     * Ensures the {@link IComponent#getSurfaceDesign} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testGetSurfaceDesign_ReturnValue_NonNull()
-    {
-        for( final ComponentOrientation orientation : getComponent().getSupportedOrientations() )
-        {
-            assert orientation != null;
-            assertNotNull( getComponent().getSurfaceDesign( orientation ) );
-        }
     }
 
     /**
@@ -786,16 +702,6 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IComponent#getSurfaceDesigns} method does not return
-     * {@code null} .
-     */
-    @Test
-    public void testGetSurfaceDesigns_ReturnValue_NonNull()
-    {
-        assertNotNull( getComponent().getSurfaceDesigns() );
-    }
-
-    /**
      * Ensures the {@link IComponent#getSurfaceDesigns} method returns a
      * collection whose values are not {@code null}.
      */
@@ -806,16 +712,6 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
         {
             assertNotNull( surfaceDesign );
         }
-    }
-
-    /**
-     * Ensures the {@link IComponent#getTableEnvironment} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testGetTableEnvironment_ReturnValue_NonNull()
-    {
-        assertNotNull( getComponent().getTableEnvironment() );
     }
 
     /**

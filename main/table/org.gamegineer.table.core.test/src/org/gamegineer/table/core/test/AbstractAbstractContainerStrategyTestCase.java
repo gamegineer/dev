@@ -21,10 +21,8 @@
 
 package org.gamegineer.table.core.test;
 
-import static org.junit.Assert.assertNotNull;
 import org.gamegineer.table.core.AbstractContainerStrategy;
 import org.gamegineer.table.core.ContainerLayoutId;
-import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that extend the
@@ -76,14 +74,4 @@ public abstract class AbstractAbstractContainerStrategyTestCase<ContainerStrateg
      */
     protected abstract ContainerLayoutId getDefaultLayoutId(
         ContainerStrategyType containerStrategy );
-
-    /**
-     * Ensures the {@link AbstractContainerStrategy#getDefaultLayoutId} method
-     * does not return {@code null}.
-     */
-    @Test
-    public void testGetDefaultLayoutId_ReturnValue_NonNull()
-    {
-        assertNotNull( getDefaultLayoutId( getContainerStrategy() ) );
-    }
 }

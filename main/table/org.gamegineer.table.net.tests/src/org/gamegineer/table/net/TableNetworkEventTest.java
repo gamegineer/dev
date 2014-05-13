@@ -82,14 +82,4 @@ public final class TableNetworkEventTest
     {
         assertSame( event_.getTableNetwork(), event_.getSource() );
     }
-
-    /**
-     * Ensures the {@link TableNetworkEvent#getTableNetwork} method does not
-     * return {@code null}.
-     */
-    @Test
-    public void testGetTableNetwork_ReturnValue_NonNull()
-    {
-        assertNotNull( event_.getTableNetwork() );
-    }
 }

@@ -87,12 +87,11 @@ public abstract class AbstractTableNetworkFactoryTestCase
     }
 
     /**
-     * Ensures the {@link ITableNetworkFactory#createTableNetwork} method does
-     * not return {@code null}.
+     * Placeholder for future interface tests.
      */
     @Test
-    public void testCreateTableNetwork_ReturnValue_NonNull()
+    public void testDummy()
     {
-        assertNotNull( tableNetworkFactory_.createTableNetwork() );
+        // do nothing
     }
 }

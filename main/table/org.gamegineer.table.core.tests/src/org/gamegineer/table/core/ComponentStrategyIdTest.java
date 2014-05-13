@@ -22,7 +22,6 @@
 package org.gamegineer.table.core;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 /**
@@ -45,18 +44,6 @@ public final class ComponentStrategyIdTest
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Ensures the {@link ComponentStrategyId#toString} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testToString_ReturnValue_NonNull()
-    {
-        final ComponentStrategyId id = ComponentStrategyId.fromString( "id" ); //$NON-NLS-1$
-
-        assertNotNull( id.toString() );
-    }
 
     /**
      * Ensures the {@link ComponentStrategyId#toString} method returns the same

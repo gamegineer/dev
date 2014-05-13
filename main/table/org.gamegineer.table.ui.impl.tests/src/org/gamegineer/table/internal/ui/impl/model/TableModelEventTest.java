@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.model;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
@@ -82,15 +81,5 @@ public final class TableModelEventTest
     public void testGetSource_ReturnValue_SameTableModel()
     {
         assertSame( event_.getTableModel(), event_.getSource() );
-    }
-
-    /**
-     * Ensures the {@link TableModelEvent#getTableModel} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testGetTableModel_ReturnValue_NonNull()
-    {
-        assertNotNull( event_.getTableModel() );
     }
 }

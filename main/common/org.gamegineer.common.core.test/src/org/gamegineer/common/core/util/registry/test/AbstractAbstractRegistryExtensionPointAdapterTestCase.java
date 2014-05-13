@@ -274,18 +274,6 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
 
     /**
      * Ensures the
-     * {@link AbstractRegistryExtensionPointAdapter#getExtensionPointId} method
-     * does not return {@code null}.
-     */
-    @Test
-    public void testGetExtensionPointId_ReturnValue_NonNull()
-    {
-        assertNotNull( registryExtensionPointAdapter_ );
-        assertNotNull( getExtensionPointId( registryExtensionPointAdapter_ ) );
-    }
-
-    /**
-     * Ensures the
      * {@link AbstractRegistryExtensionPointAdapter#removed(IExtension[])}
      * method unregisters all objects associated with the specified extensions
      * from the object registry.

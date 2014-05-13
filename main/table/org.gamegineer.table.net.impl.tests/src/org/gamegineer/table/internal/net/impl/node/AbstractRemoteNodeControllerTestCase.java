@@ -226,16 +226,6 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     }
 
     /**
-     * Ensures the {@link IRemoteNodeController#getLocalNode} method does not
-     * return {@code null}.
-     */
-    @Test
-    public void testGetLocalNode_ReturnValue_NonNull()
-    {
-        assertNotNull( getRemoteNodeController().getLocalNode() );
-    }
-
-    /**
      * Ensures the {@link IRemoteNodeController#sendMessage} method throws an
      * exception when the remote node is closed.
      */

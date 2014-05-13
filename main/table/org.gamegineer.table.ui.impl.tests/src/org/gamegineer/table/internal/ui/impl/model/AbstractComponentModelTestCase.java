@@ -412,16 +412,6 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     }
 
     /**
-     * Ensures the {@link ComponentModel#getComponent} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testGetComponent_ReturnValue_NonNull()
-    {
-        assertNotNull( componentModel_.getComponent() );
-    }
-
-    /**
      * Ensures the {@link ComponentModel#removeComponentModelListener} method
      * throws an exception when passed a listener that is absent from the
      * component model listener collection.

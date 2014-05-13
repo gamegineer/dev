@@ -119,15 +119,6 @@ public abstract class AbstractPlayerTestCase
     }
 
     /**
-     * Ensures the {@link IPlayer#getName} method does not return {@code null}.
-     */
-    @Test
-    public void testGetName_ReturnValue_NonNull()
-    {
-        assertNotNull( getPlayer().getName() );
-    }
-
-    /**
      * Ensures the {@link IPlayer#getRoles} method returns a copy of the roles
      * collection.
      */
@@ -135,15 +126,6 @@ public abstract class AbstractPlayerTestCase
     public void testGetRoles_ReturnValue_Copy()
     {
         assertNotSame( getPlayer().getRoles(), getPlayer().getRoles() );
-    }
-
-    /**
-     * Ensures the {@link IPlayer#getRoles} method does not return {@code null}.
-     */
-    @Test
-    public void testGetRoles_ReturnValue_NonNull()
-    {
-        assertNotNull( getPlayer().getRoles() );
     }
 
     /**

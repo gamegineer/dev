@@ -96,14 +96,4 @@ public abstract class AbstractTableAdvisorTestCase
     {
         assertImmutableCollection( advisor_.getApplicationArguments() );
     }
-
-    /**
-     * Ensures the {@link ITableAdvisor#getApplicationArguments} method does not
-     * return {@code null}.
-     */
-    @Test
-    public void testGetApplicationArguments_ReturnValue_NonNull()
-    {
-        assertNotNull( advisor_.getApplicationArguments() );
-    }
 }

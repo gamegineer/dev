@@ -905,26 +905,6 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IContainer#getComponents} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testGetComponents_ReturnValue_NonNull()
-    {
-        assertNotNull( getContainer().getComponents() );
-    }
-
-    /**
-     * Ensures the {@link IContainer#getLayout} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testGetLayout_ReturnValue_NonNull()
-    {
-        assertNotNull( getContainer().getLayout() );
-    }
-
-    /**
      * Ensures the {@link IContainer#removeAllComponents} method does not fire a
      * component removed event when the container is empty.
      */

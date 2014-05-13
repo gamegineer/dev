@@ -241,16 +241,6 @@ public abstract class AbstractTableNetworkTestCase
     }
 
     /**
-     * Ensures the {@link ITableNetwork#getPlayers} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testGetPlayers_ReturnValue_NonNull()
-    {
-        assertNotNull( getTableNetwork().getPlayers() );
-    }
-
-    /**
      * Ensures the {@link ITableNetwork#host} method throws an exception when
      * the network is connected.
      * 

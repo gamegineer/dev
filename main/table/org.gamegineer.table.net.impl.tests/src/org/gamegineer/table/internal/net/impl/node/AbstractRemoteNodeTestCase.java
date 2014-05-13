@@ -101,22 +101,11 @@ public abstract class AbstractRemoteNodeTestCase<T extends IRemoteNode>
     }
 
     /**
-     * Ensures the {@link IRemoteNode#getPlayerName} method does not return
-     * {@code null}.
+     * Placeholder for future interface tests.
      */
     @Test
-    public void testGetPlayerName_ReturnValue_NonNull()
+    public void testDummy()
     {
-        assertNotNull( remoteNode_.getPlayerName() );
-    }
-
-    /**
-     * Ensures the {@link IRemoteNode#getTable} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testGetTable_ReturnValue_NonNull()
-    {
-        assertNotNull( remoteNode_.getTable() );
+        // do nothing
     }
 }

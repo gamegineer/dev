@@ -149,26 +149,6 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     }
 
     /**
-     * Ensures the {@link IComponentStrategy#getDefaultLocation} method does not
-     * return {@code null}.
-     */
-    @Test
-    public void testGetDefaultLocation_ReturnValue_NonNull()
-    {
-        assertNotNull( componentStrategy_.getDefaultLocation() );
-    }
-
-    /**
-     * Ensures the {@link IComponentStrategy#getDefaultOrientation} method does
-     * not return {@code null}.
-     */
-    @Test
-    public void testGetDefaultOrientation_ReturnValue_NonNull()
-    {
-        assertNotNull( componentStrategy_.getDefaultOrientation() );
-    }
-
-    /**
      * Ensures the {@link IComponentStrategy#getDefaultOrigin} method returns a
      * copy of the default origin.
      */
@@ -181,16 +161,6 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
         origin.setLocation( 1010, 2020 );
 
         assertEquals( expectedOrigin, componentStrategy_.getDefaultOrigin() );
-    }
-
-    /**
-     * Ensures the {@link IComponentStrategy#getDefaultOrigin} method does not
-     * return {@code null}.
-     */
-    @Test
-    public void testGetDefaultOrigin_ReturnValue_NonNull()
-    {
-        assertNotNull( componentStrategy_.getDefaultOrigin() );
     }
 
     /**
@@ -225,16 +195,6 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
 
     /**
      * Ensures the {@link IComponentStrategy#getDefaultSurfaceDesigns} method
-     * does not return {@code null}.
-     */
-    @Test
-    public void testGetDefaultSurfaceDesigns_ReturnValue_NonNull()
-    {
-        assertNotNull( componentStrategy_.getDefaultSurfaceDesigns() );
-    }
-
-    /**
-     * Ensures the {@link IComponentStrategy#getDefaultSurfaceDesigns} method
      * returns a collection whose values are not {@code null}.
      */
     @Test
@@ -244,16 +204,6 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
         {
             assertNotNull( surfaceDesign );
         }
-    }
-
-    /**
-     * Ensures the {@link IComponentStrategy#getId} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testGetId_ReturnValue_NonNull()
-    {
-        assertNotNull( componentStrategy_.getId() );
     }
 
     /**
@@ -274,15 +224,5 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     public void testGetSupportedOrientations_ReturnValue_NonEmpty()
     {
         assertFalse( componentStrategy_.getSupportedOrientations().isEmpty() );
-    }
-
-    /**
-     * Ensures the {@link IComponentStrategy#getSupportedOrientations} method
-     * does not return {@code null}.
-     */
-    @Test
-    public void testGetSupportedOrientations_ReturnValue_NonNull()
-    {
-        assertNotNull( componentStrategy_.getSupportedOrientations() );
     }
 }

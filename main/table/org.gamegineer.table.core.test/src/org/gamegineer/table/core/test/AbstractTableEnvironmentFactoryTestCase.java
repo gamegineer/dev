@@ -21,12 +21,9 @@
 
 package org.gamegineer.table.core.test;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertNotNull;
-import org.easymock.EasyMock;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.gamegineer.table.core.ITableEnvironmentContext;
 import org.gamegineer.table.core.ITableEnvironmentFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -90,12 +87,11 @@ public abstract class AbstractTableEnvironmentFactoryTestCase
     }
 
     /**
-     * Ensures the {@link ITableEnvironmentFactory#createTableEnvironment}
-     * method does not return {@code null}.
+     * Placeholder for future interface tests.
      */
     @Test
-    public void testCreateTableEnvironment_ReturnValue_NonNull()
+    public void testDummy()
     {
-        assertNotNull( tableEnvironmentFactory_.createTableEnvironment( nonNull( EasyMock.createMock( ITableEnvironmentContext.class ) ) ) );
+        // do nothing
     }
 }
