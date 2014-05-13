@@ -41,9 +41,6 @@ final class NonNlsMessages
     /** The default message for an illegal argument exception. */
     public static String Assert_assertArgumentLegal_defaultMessage = ""; //$NON-NLS-1$
 
-    /** The default message for a null pointer exception. */
-    public static String Assert_assertArgumentNotNull_defaultMessage = ""; //$NON-NLS-1$
-
     /** The default parameter name for exception messages. */
     public static String Assert_defaultParamName = ""; //$NON-NLS-1$
 

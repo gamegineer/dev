@@ -1,6 +1,6 @@
 /*
  * AssertTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2014 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -134,96 +134,6 @@ public final class AssertTest
     public void testAssertArgumentLegalWithParamNameAndMessage_ParamName_Null()
     {
         Assert.assertArgumentLegal( true, null, "message" ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@link Assert#assertArgumentNotNull(Object)} method does not
-     * throw an exception if the argument is not {@code null}.
-     */
-    @Test
-    public void testAssertArgumentNotNull_Object_NotNull()
-    {
-        Assert.assertArgumentNotNull( new Object() );
-    }
-
-    /**
-     * Ensures the {@link Assert#assertArgumentNotNull(Object)} method throws an
-     * exception if the argument is {@code null}.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testAssertArgumentNotNull_Object_Null()
-    {
-        Assert.assertArgumentNotNull( null );
-    }
-
-    /**
-     * Ensures the {@link Assert#assertArgumentNotNull(Object, String)} method
-     * does not throw an exception if the parameter name is {@code null}.
-     */
-    @Test
-    public void testAssertArgumentNotNullWithParamName_ParamName_Null()
-    {
-        Assert.assertArgumentNotNull( new Object(), null );
-    }
-
-    /**
-     * Ensures the {@link Assert#assertArgumentNotNull(Object, String)} method
-     * does not throw an exception if the argument is not {@code null}.
-     */
-    @Test
-    public void testAssertArgumentNotNullWithParamName_Object_NotNull()
-    {
-        Assert.assertArgumentNotNull( new Object(), "paramName" ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@link Assert#assertArgumentNotNull(Object, String)} method
-     * throws an exception if the argument is {@code null}.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testAssertArgumentNotNullWithParamName_Object_Null()
-    {
-        Assert.assertArgumentNotNull( null, "paramName" ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@link Assert#assertArgumentNotNull(Object, String, String)}
-     * method does not throw an exception if the message is {@code null}.
-     */
-    @Test
-    public void testAssertArgumentNotNullWithParamNameAndMessage_Message_Null()
-    {
-        Assert.assertArgumentNotNull( new Object(), "paramName", null ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@link Assert#assertArgumentNotNull(Object, String, String)}
-     * method does not throw an exception if the parameter name is {@code null}.
-     */
-    @Test
-    public void testAssertArgumentNotNullWithParamNameAndMessage_ParamName_Null()
-    {
-        Assert.assertArgumentNotNull( new Object(), null, "message" ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@link Assert#assertArgumentNotNull(Object, String, String)}
-     * method does not throw an exception if the argument is not {@code null}.
-     */
-    @Test
-    public void testAssertArgumentNotNullWithParamNameAndMessage_Object_NotNull()
-    {
-        Assert.assertArgumentNotNull( new Object(), "paramName", "message" ); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-
-    /**
-     * Ensures the {@link Assert#assertArgumentNotNull(Object, String, String)}
-     * method throws an exception if the argument is {@code null}.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testAssertArgumentNotNullWithParamNameAndMessage_Object_Null()
-    {
-        Assert.assertArgumentNotNull( null, "paramName", "message" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**

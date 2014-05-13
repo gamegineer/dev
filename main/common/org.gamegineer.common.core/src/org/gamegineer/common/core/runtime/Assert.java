@@ -31,15 +31,15 @@ import org.eclipse.jdt.annotation.Nullable;
  * The purpose of this class is to encapsulate the most common types of runtime
  * assertions (such as null pointer checks and invalid argument checks) in a
  * single easy-to-call method. For example, instead of typing the following to
- * ensure the method argument {@code value} is not {@code null}:
+ * ensure the method argument {@code value} is legal:
  * </p>
  * 
  * <p>
  * 
  * <pre>
- * if( value == null )
+ * if( value.length() != 5 )
  * {
- *     throw new NullPointerException( &quot;value&quot; );
+ *     throw new IllegalArgumentException( &quot;value&quot; );
  * }
  * </pre>
  * 
@@ -52,7 +52,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * <p>
  * 
  * <pre>
- * Assert.assertArgumentNotNull( value, &quot;value&quot; );
+ * Assert.assertArgumentLegal( value.length() != 5, &quot;value&quot; );
  * </pre>
  * 
  * </p>
@@ -149,75 +149,6 @@ public final class Assert
             final String displayParamName = (paramName != null) ? paramName : NonNlsMessages.Assert_defaultParamName;
             final String displayMessage = (message != null) ? message : NonNlsMessages.Assert_assertArgumentLegal_defaultMessage;
             throw new IllegalArgumentException( NonNlsMessages.Assert_message( displayParamName, displayMessage ) );
-        }
-    }
-
-    /**
-     * Asserts the specified argument is not {@code null}.
-     * 
-     * @param object
-     *        The argument to test; may be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code object} is {@code null}.
-     */
-    public static void assertArgumentNotNull(
-        @Nullable
-        final Object object )
-    {
-        assertArgumentNotNull( object, null, null );
-    }
-
-    /**
-     * Asserts the specified argument is not {@code null}.
-     * 
-     * @param object
-     *        The argument to test; may be {@code null}.
-     * @param paramName
-     *        The name of the associated parameter; may be {@code null}. This
-     *        value should not be localized.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code object} is {@code null}.
-     */
-    public static void assertArgumentNotNull(
-        @Nullable
-        final Object object,
-        @Nullable
-        final String paramName )
-    {
-        assertArgumentNotNull( object, paramName, null );
-    }
-
-    /**
-     * Asserts the specified argument is not {@code null}.
-     * 
-     * @param object
-     *        The argument to test; may be {@code null}.
-     * @param paramName
-     *        The name of the associated parameter; may be {@code null}. This
-     *        value should not be localized.
-     * @param message
-     *        The message to include in the exception; may be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code expression} is {@code false}.
-     * @throws java.lang.NullPointerException
-     *         If {@code object} is {@code null}.
-     */
-    public static void assertArgumentNotNull(
-        @Nullable
-        final Object object,
-        @Nullable
-        final String paramName,
-        @Nullable
-        final String message )
-    {
-        if( object == null )
-        {
-            final String displayParamName = (paramName != null) ? paramName : NonNlsMessages.Assert_defaultParamName;
-            final String displayMessage = (message != null) ? message : NonNlsMessages.Assert_assertArgumentNotNull_defaultMessage;
-            throw new NullPointerException( NonNlsMessages.Assert_message( displayParamName, displayMessage ) );
         }
     }
 
