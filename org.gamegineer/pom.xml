@@ -50,8 +50,8 @@
 		<url>http://sourceforge.net/apps/trac/gamegineer/wiki/</url>
 	</issueManagement>
 	<ciManagement>
-		<system>CruiseControl</system>
-		<url>http://${g8r-ci-authority}/dashboard/</url>
+		<system>Jenkins</system>
+		<url>http://${g8r-ci-authority}/</url>
 	</ciManagement>
 	<distributionManagement>
 		<repository>
