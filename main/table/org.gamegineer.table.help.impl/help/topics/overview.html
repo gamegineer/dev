@@ -1,105 +1,105 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<title>Gamegineer overview</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<link rel="stylesheet" type="text/css" href="platform:/plugin/org.gamegineer.common.ui/help/styles/book.css" media="all" />
-	</head>
-	<body>
-		<h1>Gamegineer overview</h1>
-		<p>
-			Gamegineer provides a virtual tabletop for playing traditional board and card games over the Internet.  The foundation of Gamegineer is the Equinox OSGi core framework, which provides other developers with opportunities to extend the Gamegineer tabletop to support new games and features not originally envisioned.
-		</p>
-		<h2>General usage</h2>
-		<p>
-			All commands are available from the main menu at the top of the screen.  Context-sensitive commands are available from a popup menu that is activated using the appropriate keyboard and/or mouse trigger of your operating system (e.g. right-clicking the mouse on Windows).
-		</p>
-		<p>
-			The table consists of a collection of components.  Some components can act as a container for other components and are referred to simply as containers.  A new empty table can be created using the <b>New</b> command.  A table can be saved for later use using the <b>Save</b> and <b>Save As</b> commands.  A previously saved table can be loaded using the <b>Open</b> command or by selecting a previously-loaded file from the <b>Most Recently Used</b> file list.
-		</p>
-		<p>
-			A component can be given the input focus by left-clicking it with the mouse.  A green border will appear around the component to indicate it has the input focus.  Most commands will be executed in the context of the focused component.  If multiple components are under the cursor, repeatedly left-clicking the mouse will move the focus to the next lower component.  Holding down the SHIFT key when left-clicking the mouse will move the focus to the next higher component.  The component that would receive the focus by left-clicking the mouse at the current location will have a yellow highlight and a yellow border around it.
-		</p>
-		<p>
-			Components can be moved by left-clicking (thus giving them the input focus) and dragging them.  To move a deeply nested component, it may be first necessary to repeatedly left-click the mouse, as described above, in order to cycle the input focus to the desired component.  Dragging a container will also drag all of its child components.  Dragging certain components may also drag other components along with it (e.g. dragging a card will drag all cards above it in the container).  Most components can be dropped on any other container, including the tabletop itself.  However, some components restrict the type of container on which they can be dropped.  If a component cannot be dropped at the current location, it will be returned to its original container.
-		</p>
-		<p>
-			You can override the default drag-and-drop behavior by using the keyboard.  Press one of the key combinations below before beginning to drag a component to obtain the specified behavior:
-		</p>
-		<table>
-			<thead>
-				<tr>
-					<th>Key Combination</th>
-					<th>Behavior</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>CTRL</td>
-					<td>
-						Only drags the focused component.
-					</td>
-				</tr>
-				<tr>
-					<td>ALT</td>
-					<td>
-						Drags the focused component and all its siblings with a higher z-order.
-					</td>
-				</tr>
-				<tr>
-					<td>SHIFT+ALT</td>
-					<td>
-						Drags the focused component and all its siblings with a lower z-order.
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<p>
-			Press one of the key combinations below before dropping the components being dragged to obtain the specified behavior:
-		</p>
-		<table>
-			<thead>
-				<tr>
-					<th>Key Combination</th>
-					<th>Behavior</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>CTRL</td>
-					<td>
-						Always drops the dragged components on the container under the mouse.
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<p>
-			The entire table can be panned by middle-clicking the mouse and dragging.  The <b>Reset Table Origin</b> command will reset the table origin to the window origin.
-		</p>
-		<p>
-			Use the <b>Add</b> command to add a component to the focused container (or the tabletop if no component currently has the focus).  Some components restrict the containers to which they can be added.  Thus, not all component types may appear on the <b>Add</b> menu depending on the type of the focused container.
-		</p>
-		<p>
-			The <b>Remove</b> command removes the focused component.  Removing a container will remove all of its child components, as well.  The <b>Remove All</b> command removes all the child components from the focused container but not the container itself.  If no component has the input focus when executing the <b>Remove All</b> command, the tabletop components will be removed, effectively clearing the entire table.
-		</p>
-		<p>
-			The <b>Flip</b> command will invert the orientation of the focused component.  Note that some components only support a single orientation and flipping them will have no observable effect.
-		</p>
-		<p>
-			The <b>Layout</b> command will change the arrangement of the components in the focused container.
-		</p>
-		<h2>Network usage</h2>
-		<p>
-			Use the <b>Host</b> command to host a table on the network.  Enter the name of the local network interface card and the TCP port on which to listen for connections.  Specify the name by which you wish to be known to the other players connected to the table.  You may optionally require each remote player that connects to your table to provide a password.
-		</p>
-		<p>
-			Use the <b>Join</b> command to join a hosted table on the network.  Enter the name and TCP port of the host.  Specify the name by which you wish to be known to the other players connected to the table.  Enter the password required by the host to join the table or leave it blank if no password is required.
-		</p>
-		<p>
-			A single player can control the network table at one time.  This player is known as the editor and has a red flag next to their name in the player list.  To request control of the table from the current editor, use the <b>Request Control</b> command.  Any player who has requested control will have a gray flag next to their name in the player list.  To cancel a previous request for control, use the <b>Cancel Control Request</b> command.
-		</p>
-		<p>
-			The editor may transfer control to any other player in the network.  Use the <b>Give Control</b> command to select a player to which control will be given.  After executing the command, the new player will become the editor.
-		</p>
-	</body>
+    <head>
+        <title>Gamegineer overview</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="platform:/plugin/org.gamegineer.common.ui/help/styles/book.css" media="all" />
+    </head>
+    <body>
+        <h1>Gamegineer overview</h1>
+        <p>
+            Gamegineer provides a virtual tabletop for playing traditional board and card games over the Internet.  The foundation of Gamegineer is the Equinox OSGi core framework, which provides other developers with opportunities to extend the Gamegineer tabletop to support new games and features not originally envisioned.
+        </p>
+        <h2>General usage</h2>
+        <p>
+            All commands are available from the main menu at the top of the screen.  Context-sensitive commands are available from a popup menu that is activated using the appropriate keyboard and/or mouse trigger of your operating system (e.g. right-clicking the mouse on Windows).
+        </p>
+        <p>
+            The table consists of a collection of components.  Some components can act as a container for other components and are referred to simply as containers.  A new empty table can be created using the <b>New</b> command.  A table can be saved for later use using the <b>Save</b> and <b>Save As</b> commands.  A previously saved table can be loaded using the <b>Open</b> command or by selecting a previously-loaded file from the <b>Most Recently Used</b> file list.
+        </p>
+        <p>
+            A component can be given the input focus by left-clicking it with the mouse.  A green border will appear around the component to indicate it has the input focus.  Most commands will be executed in the context of the focused component.  If multiple components are under the cursor, repeatedly left-clicking the mouse will move the focus to the next lower component.  Holding down the SHIFT key when left-clicking the mouse will move the focus to the next higher component.  The component that would receive the focus by left-clicking the mouse at the current location will have a yellow highlight and a yellow border around it.
+        </p>
+        <p>
+            Components can be moved by left-clicking (thus giving them the input focus) and dragging them.  To move a deeply nested component, it may be first necessary to repeatedly left-click the mouse, as described above, in order to cycle the input focus to the desired component.  Dragging a container will also drag all of its child components.  Dragging certain components may also drag other components along with it (e.g. dragging a card will drag all cards above it in the container).  Most components can be dropped on any other container, including the tabletop itself.  However, some components restrict the type of container on which they can be dropped.  If a component cannot be dropped at the current location, it will be returned to its original container.
+        </p>
+        <p>
+            You can override the default drag-and-drop behavior by using the keyboard.  Press one of the key combinations below before beginning to drag a component to obtain the specified behavior:
+        </p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Key Combination</th>
+                    <th>Behavior</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>CTRL</td>
+                    <td>
+                        Only drags the focused component.
+                    </td>
+                </tr>
+                <tr>
+                    <td>ALT</td>
+                    <td>
+                        Drags the focused component and all its siblings with a higher z-order.
+                    </td>
+                </tr>
+                <tr>
+                    <td>SHIFT+ALT</td>
+                    <td>
+                        Drags the focused component and all its siblings with a lower z-order.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p>
+            Press one of the key combinations below before dropping the components being dragged to obtain the specified behavior:
+        </p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Key Combination</th>
+                    <th>Behavior</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>CTRL</td>
+                    <td>
+                        Always drops the dragged components on the container under the mouse.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p>
+            The entire table can be panned by middle-clicking the mouse and dragging.  The <b>Reset Table Origin</b> command will reset the table origin to the window origin.
+        </p>
+        <p>
+            Use the <b>Add</b> command to add a component to the focused container (or the tabletop if no component currently has the focus).  Some components restrict the containers to which they can be added.  Thus, not all component types may appear on the <b>Add</b> menu depending on the type of the focused container.
+        </p>
+        <p>
+            The <b>Remove</b> command removes the focused component.  Removing a container will remove all of its child components, as well.  The <b>Remove All</b> command removes all the child components from the focused container but not the container itself.  If no component has the input focus when executing the <b>Remove All</b> command, the tabletop components will be removed, effectively clearing the entire table.
+        </p>
+        <p>
+            The <b>Flip</b> command will invert the orientation of the focused component.  Note that some components only support a single orientation and flipping them will have no observable effect.
+        </p>
+        <p>
+            The <b>Layout</b> command will change the arrangement of the components in the focused container.
+        </p>
+        <h2>Network usage</h2>
+        <p>
+            Use the <b>Host</b> command to host a table on the network.  Enter the name of the local network interface card and the TCP port on which to listen for connections.  Specify the name by which you wish to be known to the other players connected to the table.  You may optionally require each remote player that connects to your table to provide a password.
+        </p>
+        <p>
+            Use the <b>Join</b> command to join a hosted table on the network.  Enter the name and TCP port of the host.  Specify the name by which you wish to be known to the other players connected to the table.  Enter the password required by the host to join the table or leave it blank if no password is required.
+        </p>
+        <p>
+            A single player can control the network table at one time.  This player is known as the editor and has a red flag next to their name in the player list.  To request control of the table from the current editor, use the <b>Request Control</b> command.  Any player who has requested control will have a gray flag next to their name in the player list.  To cancel a previous request for control, use the <b>Cancel Control Request</b> command.
+        </p>
+        <p>
+            The editor may transfer control to any other player in the network.  Use the <b>Give Control</b> command to select a player to which control will be given.  After executing the command, the new player will become the editor.
+        </p>
+    </body>
 </html>
