@@ -30,9 +30,9 @@
 	</modules>
 
 	<scm>
-		<developerConnection>scm:https://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/org.gamegineer.main</developerConnection>
-		<tag>HEAD</tag>
-		<url>http://svn.code.sf.net/p/gamegineer/code/dev/trunk/main/org.gamegineer.main</url>
+		<connection>scm:git:git://github.com/gamegineer/dev.git/main/org.gamegineer.main</connection>
+		<developerConnection>scm:git:ssh://git@github.com/gamegineer/dev.git/main/org.gamegineer.main</developerConnection>
+		<url>https://github.com/gamegineer/dev/tree/master/main/org.gamegineer.main</url>
 	</scm>
 	<distributionManagement>
 		<site>
