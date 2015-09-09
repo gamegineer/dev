@@ -32,7 +32,7 @@
 		<developer>
 			<id>s_soloff</id>
 			<name>Steven Soloff</name>
-			<email>s_soloff@users.sourceforge.net</email>
+			<email>s_soloff@yahoo.com</email>
 			<roles>
 				<role>developer</role>
 			</roles>
@@ -41,13 +41,14 @@
 	</developers>
 
 	<scm>
-		<developerConnection>scm:https://svn.code.sf.net/p/gamegineer/code/dev/trunk/org.gamegineer</developerConnection>
+		<connection>scm:git:git://github.com/gamegineer/dev.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com:gamegineer/dev.git</developerConnection>
 		<tag>HEAD</tag>
-		<url>http://svn.code.sf.net/p/gamegineer/code/dev/trunk/org.gamegineer</url>
+		<url>https://github.com/gamegineer/dev</url>
 	</scm>
 	<issueManagement>
-		<system>Trac</system>
-		<url>http://sourceforge.net/apps/trac/gamegineer/wiki/</url>
+		<system>Allura</system>
+		<url>http://sourceforge.net/p/gamegineer/tickets/</url>
 	</issueManagement>
 	<ciManagement>
 		<system>Jenkins</system>
