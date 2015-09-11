@@ -1,6 +1,6 @@
 /*
  * TableModel.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -74,9 +74,13 @@ public final class TableModel
     {
         @Override
         public int compare(
+            @Nullable
             final ComponentModel componentModel1,
+            @Nullable
             final ComponentModel componentModel2 )
         {
+            assert componentModel1 != null;
+            assert componentModel2 != null;
             assert componentModel1.getLock().isHeldByCurrentThread();
 
             final ComponentPath componentPath1 = componentModel1.getPath();

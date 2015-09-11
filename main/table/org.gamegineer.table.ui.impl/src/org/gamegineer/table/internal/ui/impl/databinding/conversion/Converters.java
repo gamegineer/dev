@@ -1,6 +1,6 @@
 /*
  * Converters.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -119,7 +119,6 @@ public final class Converters
         final IConverter converter,
         final String exceptionMessage )
     {
-        @SuppressWarnings( "null" )
         final IConverter decorator = new Converter( converter.getFromType(), converter.getToType() )
         {
             @Nullable

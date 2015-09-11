@@ -1,6 +1,6 @@
 /*
  * ExecutorService.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -309,6 +309,7 @@ public final class ExecutorService
     @Nullable
     @Override
     public <T> Future<T> submit(
+        @Nullable
         final Callable<T> task )
     {
         assert task != null;
@@ -336,7 +337,9 @@ public final class ExecutorService
     @Nullable
     @Override
     public <T> Future<T> submit(
+        @Nullable
         final Runnable task,
+        @Nullable
         final T result )
     {
         assert task != null;

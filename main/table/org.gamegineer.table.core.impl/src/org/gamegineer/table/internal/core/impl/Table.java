@@ -1,6 +1,6 @@
 /*
  * Table.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -62,9 +62,13 @@ final class Table
     {
         @Override
         public int compare(
+            @Nullable
             final IComponent component1,
+            @Nullable
             final IComponent component2 )
         {
+            assert component1 != null;
+            assert component2 != null;
             assert component1.getTableEnvironment().getLock().isHeldByCurrentThread();
             final ComponentPath componentPath1 = component1.getPath();
             assert componentPath1 != null;

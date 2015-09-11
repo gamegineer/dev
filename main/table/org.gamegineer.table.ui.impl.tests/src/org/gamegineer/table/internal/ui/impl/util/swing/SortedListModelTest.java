@@ -1,6 +1,6 @@
 /*
  * SortedListModelTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,6 +25,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Comparator;
 import javax.swing.DefaultListModel;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Test;
 
 /**
@@ -70,9 +71,14 @@ public final class SortedListModelTest
         {
             @Override
             public int compare(
+                @Nullable
                 final FakeElement o1,
+                @Nullable
                 final FakeElement o2 )
             {
+                assert o1 != null;
+                assert o2 != null;
+
                 return o1.value - o2.value;
             }
         } );

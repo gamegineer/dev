@@ -1,6 +1,6 @@
 /*
  * TableView.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -482,6 +482,7 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final Action obj )
             {
@@ -498,6 +499,7 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final Action obj )
             {
@@ -514,6 +516,7 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final Action obj )
             {
@@ -539,6 +542,7 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final Action obj )
             {
@@ -550,6 +554,7 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final Action obj )
             {
@@ -561,6 +566,7 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final Action obj )
             {
@@ -573,6 +579,7 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final Action obj )
             {
@@ -587,6 +594,7 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final Action obj )
             {
@@ -603,6 +611,7 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
+                @Nullable
                 @SuppressWarnings( "unused" )
                 final Action obj )
             {
@@ -621,8 +630,11 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
+                @Nullable
                 final Action obj )
             {
+                assert obj != null;
+
                 getTableEnvironmentModelLock().lock();
                 try
                 {

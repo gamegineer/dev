@@ -1,6 +1,6 @@
 /*
  * ComponentPath.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -98,8 +98,11 @@ public final class ComponentPath
      */
     @Override
     public int compareTo(
+        @Nullable
         final ComponentPath other )
     {
+        assert other != null;
+
         final int parentPathCompareResult = ComparableUtils.compareTo( parentPath_, other.parentPath_ );
         if( parentPathCompareResult != 0 )
         {
