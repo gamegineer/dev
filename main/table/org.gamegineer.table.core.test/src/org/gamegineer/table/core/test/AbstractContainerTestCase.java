@@ -1,6 +1,6 @@
 /*
  * AbstractContainerTestCase.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -73,7 +73,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
 
     /** The timeout for all tests in the fixture. */
     @Rule
-    public final Timeout TIMEOUT = new Timeout( 1000 );
+    public final Timeout TIMEOUT = Timeout.millis( 1000L );
 
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
