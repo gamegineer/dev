@@ -1,1 +1,1 @@
-@java -jar plugins\org.eclipse.equinox.launcher_1.2.0.v20110502.jar
+@java -jar plugins\org.eclipse.equinox.launcher_1.3.100.v20150511-1540.jar
