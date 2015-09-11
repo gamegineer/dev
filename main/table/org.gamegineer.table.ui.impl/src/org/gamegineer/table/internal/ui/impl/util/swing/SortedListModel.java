@@ -396,7 +396,10 @@ public final class SortedListModel<E>
             @Nullable
             final Entry other )
         {
-            assert other != null;
+            if( other == null )
+            {
+                throw new NullPointerException( "other" ); //$NON-NLS-1$
+            }
 
             final Object element = unsortedListModel_.getElementAt( index_ );
             final Object otherElement = unsortedListModel_.getElementAt( other.getIndex() );

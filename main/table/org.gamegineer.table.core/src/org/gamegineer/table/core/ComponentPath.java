@@ -101,8 +101,11 @@ public final class ComponentPath
         @Nullable
         final ComponentPath other )
     {
-        assert other != null;
-
+        if( other == null )
+        {
+            throw new NullPointerException( "other" ); //$NON-NLS-1$
+        }
+        
         final int parentPathCompareResult = ComparableUtils.compareTo( parentPath_, other.parentPath_ );
         if( parentPathCompareResult != 0 )
         {
