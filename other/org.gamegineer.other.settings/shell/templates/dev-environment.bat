@@ -3,7 +3,7 @@
 REM =========================================================================
 REM
 REM dev-environment.bat
-REM Copyright 2008-2014 Gamegineer contributors and others.
+REM Copyright 2008-2015 Gamegineer contributors and others.
 REM All rights reserved.
 REM
 REM This is a sample development environment setup script required for a
@@ -24,7 +24,7 @@ REM
 REM Home directories of all build tools.
 REM
 SET ANT_HOME=C:\Program Files\apache-ant-1.9.2
-SET ECLIPSE_HOME=C:\Program Files\eclipse-4.3.2
+SET ECLIPSE_HOME=C:\Program Files\eclipse-4.5.0
 SET JAVA_HOME=C:\Program Files\Java\jdk1.7.0_51
 SET MAVEN_HOME=C:\Program Files\apache-maven-3.1.1
 SET SVN_HOME=C:\Program Files\Subversion
