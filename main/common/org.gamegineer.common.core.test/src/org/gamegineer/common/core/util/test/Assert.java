@@ -1,6 +1,6 @@
 /*
  * Assert.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -167,7 +167,7 @@ public final class Assert
         }
 
         @SuppressWarnings( "unchecked" )
-        final IEqualityComparator<Object> equalityComparator = (IEqualityComparator<Object>)adapterManager.getAdapter( obj, IEqualityComparator.class );
+        final IEqualityComparator<Object> equalityComparator = adapterManager.getAdapter( obj, IEqualityComparator.class );
         return equalityComparator;
     }
 }
