@@ -27,7 +27,6 @@ SET ANT_HOME=C:\Program Files\apache-ant-1.9.2
 SET ECLIPSE_HOME=C:\Program Files\eclipse-4.5.0
 SET JAVA_HOME=C:\Program Files\Java\jdk1.7.0_51
 SET MAVEN_HOME=C:\Program Files\apache-maven-3.1.1
-SET SVN_HOME=C:\Program Files\Subversion
 
 REM
 REM Build tool options.
@@ -42,7 +41,7 @@ REM -------------------------------------------------------------------------
 REM
 REM Update path to include all build-related binaries.
 REM
-SET PATH=%JAVA_HOME%\bin;%ANT_HOME%\bin;%MAVEN_HOME%\bin;%ECLIPSE_HOME%;%SVN_HOME%\bin;%PATH%
+SET PATH=%JAVA_HOME%\bin;%ANT_HOME%\bin;%MAVEN_HOME%\bin;%ECLIPSE_HOME%;%PATH%
 
 REM
 REM Create useful macros.
