@@ -1,6 +1,6 @@
 /*
  * AbstractTransportLayerTestCase.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -120,7 +120,7 @@ public abstract class AbstractTransportLayerTestCase
             transportLayer_.endOpen( future );
             fail( "expected IllegalStateException" ); //$NON-NLS-1$
         }
-        catch( final IllegalStateException e )
+        catch( @SuppressWarnings( "unused" ) final IllegalStateException e )
         {
             // expected
         }
@@ -141,7 +141,7 @@ public abstract class AbstractTransportLayerTestCase
         {
             transportLayer_.endOpen( transportLayer_.beginOpen( "localhost", 8888 ) ); //$NON-NLS-1$
         }
-        catch( final TransportException e )
+        catch( @SuppressWarnings( "unused" ) final TransportException e )
         {
             // ignore transport layer errors
         }
@@ -152,7 +152,7 @@ public abstract class AbstractTransportLayerTestCase
             transportLayer_.endOpen( future );
             fail( "expected IllegalStateException" ); //$NON-NLS-1$
         }
-        catch( final IllegalStateException e )
+        catch( @SuppressWarnings( "unused" ) final IllegalStateException e )
         {
             // expected
         }

@@ -1,6 +1,6 @@
 /*
  * ServiceHandler.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -217,7 +217,7 @@ final class ServiceHandler
                 {
                     channel.socket().shutdownInput();
                 }
-                catch( final IOException e )
+                catch( @SuppressWarnings( "unused" ) final IOException e )
                 {
                     // ignore
                 }

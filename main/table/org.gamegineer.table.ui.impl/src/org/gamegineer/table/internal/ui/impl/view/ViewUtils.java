@@ -210,7 +210,7 @@ final class ViewUtils
                     {
                         tableNetwork.disconnect();
                     }
-                    catch( final InterruptedException e )
+                    catch( @SuppressWarnings( "unused" ) final InterruptedException e )
                     {
                         Thread.currentThread().interrupt();
                     }

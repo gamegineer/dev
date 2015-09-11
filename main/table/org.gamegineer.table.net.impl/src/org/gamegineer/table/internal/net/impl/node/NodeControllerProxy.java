@@ -1,6 +1,6 @@
 /*
  * NodeControllerProxy.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -98,7 +98,7 @@ final class NodeControllerProxy
                 }
             } );
         }
-        catch( final RejectedExecutionException e )
+        catch( @SuppressWarnings( "unused" ) final RejectedExecutionException e )
         {
             return new SynchronousFuture<>( new TableNetworkException( TableNetworkError.ILLEGAL_CONNECTION_STATE ) );
         }
@@ -126,7 +126,7 @@ final class NodeControllerProxy
                     assert connectTaskFuture != null;
                     actualNodeController_.endConnect( connectTaskFuture );
                 }
-                catch( final InterruptedException e )
+                catch( @SuppressWarnings( "unused" ) final InterruptedException e )
                 {
                     Thread.currentThread().interrupt();
                 }
@@ -155,7 +155,7 @@ final class NodeControllerProxy
                 }
             } );
         }
-        catch( final RejectedExecutionException e )
+        catch( @SuppressWarnings( "unused" ) final RejectedExecutionException e )
         {
             // Silently ignore request when node layer is disconnected
             return new SynchronousFuture<>();
@@ -183,7 +183,7 @@ final class NodeControllerProxy
                     assert disconnectTaskFuture != null;
                     actualNodeController_.endDisconnect( disconnectTaskFuture );
                 }
-                catch( final InterruptedException e )
+                catch( @SuppressWarnings( "unused" ) final InterruptedException e )
                 {
                     Thread.currentThread().interrupt();
                 }

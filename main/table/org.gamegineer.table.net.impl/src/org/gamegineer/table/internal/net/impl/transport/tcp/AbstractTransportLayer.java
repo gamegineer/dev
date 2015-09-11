@@ -1,6 +1,6 @@
 /*
  * AbstractTransportLayer.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -203,7 +203,7 @@ abstract class AbstractTransportLayer
                         throw TaskUtils.launderThrowable( e.getCause() );
                     }
                 }
-                catch( final InterruptedException e )
+                catch( @SuppressWarnings( "unused" ) final InterruptedException e )
                 {
                     Thread.currentThread().interrupt();
                 }
@@ -275,7 +275,7 @@ abstract class AbstractTransportLayer
 
                     throw TaskUtils.launderThrowable( cause );
                 }
-                catch( final InterruptedException e )
+                catch( @SuppressWarnings( "unused" ) final InterruptedException e )
                 {
                     Thread.currentThread().interrupt();
                 }
@@ -521,7 +521,7 @@ abstract class AbstractTransportLayer
         {
             throw TaskUtils.launderThrowable( e.getCause() );
         }
-        catch( final InterruptedException e )
+        catch( @SuppressWarnings( "unused" ) final InterruptedException e )
         {
             Thread.currentThread().interrupt();
         }
@@ -615,7 +615,7 @@ abstract class AbstractTransportLayer
             {
                 throw TaskUtils.launderThrowable( e.getCause() );
             }
-            catch( final InterruptedException e )
+            catch( @SuppressWarnings( "unused" ) final InterruptedException e )
             {
                 Thread.currentThread().interrupt();
                 throw new TransportException( NonNlsMessages.AbstractTransportLayer_createTransportLayer_interrupted );

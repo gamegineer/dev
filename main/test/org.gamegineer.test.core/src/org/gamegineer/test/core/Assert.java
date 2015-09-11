@@ -1,6 +1,6 @@
 /*
  * Assert.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -62,7 +62,7 @@ public final class Assert
             c.add( null );
             fail( "Expected collection to be immutable." ); //$NON-NLS-1$
         }
-        catch( final UnsupportedOperationException e )
+        catch( @SuppressWarnings( "unused" ) final UnsupportedOperationException e )
         {
             // expected
         }
@@ -82,7 +82,7 @@ public final class Assert
             m.put( null, null );
             fail( "Expected map to be immutable." ); //$NON-NLS-1$
         }
-        catch( final UnsupportedOperationException e )
+        catch( @SuppressWarnings( "unused" ) final UnsupportedOperationException e )
         {
             // expected
         }

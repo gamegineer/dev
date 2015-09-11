@@ -1,6 +1,6 @@
 /*
  * TableModelTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -106,7 +106,7 @@ public final class TableModelTest
         }
         catch( final IOException e )
         {
-            throw new AssertionError( "Failed to create temporary file." ); //$NON-NLS-1$
+            throw new AssertionError( "Failed to create temporary file.", e ); //$NON-NLS-1$
         }
     }
 

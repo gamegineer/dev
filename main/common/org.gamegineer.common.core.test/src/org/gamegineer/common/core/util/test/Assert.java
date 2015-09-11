@@ -138,7 +138,7 @@ public final class Assert
                 return true;
             }
         }
-        catch( final ClassCastException e )
+        catch( @SuppressWarnings( "unused" ) final ClassCastException e )
         {
             return false;
         }

@@ -1,6 +1,6 @@
 /*
  * TableRunner.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -128,7 +128,7 @@ public final class TableRunner
 
             stopLatch_.await();
         }
-        catch( final InterruptedException e )
+        catch( @SuppressWarnings( "unused" ) final InterruptedException e )
         {
             Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Table runner cancelled" ); //$NON-NLS-1$
         }

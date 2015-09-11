@@ -1,6 +1,6 @@
 /*
  * AbstractNode.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -342,7 +342,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                 {
                     tableNetworkController_.disconnect( error );
                 }
-                catch( final InterruptedException e )
+                catch( @SuppressWarnings( "unused" ) final InterruptedException e )
                 {
                     Thread.currentThread().interrupt();
                 }
@@ -998,7 +998,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                         {
                             getTableNetworkController().disconnect( (exception != null) ? TableNetworkError.TRANSPORT_ERROR : null );
                         }
-                        catch( final InterruptedException e )
+                        catch( @SuppressWarnings( "unused" ) final InterruptedException e )
                         {
                             Thread.currentThread().interrupt();
                         }
@@ -1315,7 +1315,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                 closeTransportLayer();
                 disconnected();
             }
-            catch( final InterruptedException e )
+            catch( @SuppressWarnings( "unused" ) final InterruptedException e )
             {
                 Thread.currentThread().interrupt();
             }

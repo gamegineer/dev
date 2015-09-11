@@ -1,6 +1,6 @@
 /*
  * AbstractTableRunnerTestCase.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -122,7 +122,7 @@ public abstract class AbstractTableRunnerTestCase
                     {
                         firstTask.get( 500L, TimeUnit.MILLISECONDS );
                     }
-                    catch( final TimeoutException e )
+                    catch( @SuppressWarnings( "unused" ) final TimeoutException e )
                     {
                         // ignored
                     }
@@ -131,7 +131,7 @@ public abstract class AbstractTableRunnerTestCase
                     {
                         secondTask.get( 500L, TimeUnit.MILLISECONDS );
                     }
-                    catch( final TimeoutException e )
+                    catch( @SuppressWarnings( "unused" ) final TimeoutException e )
                     {
                         // ignored
                     }

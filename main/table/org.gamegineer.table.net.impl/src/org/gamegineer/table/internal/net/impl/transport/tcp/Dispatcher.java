@@ -1,6 +1,6 @@
 /*
  * Dispatcher.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -243,7 +243,7 @@ final class Dispatcher
                     {
                         throw TaskUtils.launderThrowable( e.getCause() );
                     }
-                    catch( final InterruptedException e )
+                    catch( @SuppressWarnings( "unused" ) final InterruptedException e )
                     {
                         Thread.currentThread().interrupt();
                     }
@@ -617,7 +617,7 @@ final class Dispatcher
                 waitForEventDispatchTaskToShutdown();
                 closeDispatcher();
             }
-            catch( final InterruptedException e )
+            catch( @SuppressWarnings( "unused" ) final InterruptedException e )
             {
                 Thread.currentThread().interrupt();
             }
@@ -711,7 +711,7 @@ final class Dispatcher
             {
                 eventDispatchTaskFuture_.get( 10, TimeUnit.SECONDS );
             }
-            catch( final CancellationException e )
+            catch( @SuppressWarnings( "unused" ) final CancellationException e )
             {
                 // do nothing
             }
