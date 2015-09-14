@@ -25,7 +25,7 @@ REM Home directories of all build tools.
 REM
 SET ANT_HOME=C:\Program Files\apache-ant-1.9.6
 SET ECLIPSE_HOME=C:\Program Files\eclipse-4.5.0
-SET JAVA_HOME=C:\Program Files\Java\jdk1.7.0_51
+SET JAVA_HOME=C:\Program Files\Java\jdk1.8.0_60
 SET MAVEN_HOME=C:\Program Files\apache-maven-3.3.3
 
 REM
