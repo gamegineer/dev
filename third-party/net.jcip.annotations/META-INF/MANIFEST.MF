@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ClassPath: lib/jcip-annotations.jar
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-SymbolicName: net.jcip.annotations
 Bundle-Vendor: %bundleVendor
 Bundle-Version: 1.0.0
