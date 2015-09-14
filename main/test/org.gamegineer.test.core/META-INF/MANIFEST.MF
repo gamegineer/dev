@@ -3,7 +3,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.gamegineer.test.internal.core.Activator
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-SymbolicName: org.gamegineer.test.core
 Bundle-Vendor: %bundleVendor
 Bundle-Version: 0.17.0.qualifier

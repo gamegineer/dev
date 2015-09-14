@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-Localization: OSGI-INF/l10n/fragment-tests
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-SymbolicName: org.gamegineer.cards.core.impl.tests
 Bundle-Vendor: %bundleVendor
 Bundle-Version: 0.17.0.qualifier
