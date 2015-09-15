@@ -369,7 +369,7 @@ public final class MainFrame
             return NlsMessages.MainFrame_untitledTable;
         }
 
-        return nonNull( file.getName() );
+        return file.getName();
     }
 
     /**
