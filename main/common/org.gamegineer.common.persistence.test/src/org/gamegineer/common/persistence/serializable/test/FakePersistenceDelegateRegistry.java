@@ -1,6 +1,6 @@
 /*
  * FakePersistenceDelegateRegistry.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.common.persistence.serializable.test;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -73,7 +72,7 @@ public final class FakePersistenceDelegateRegistry
     public IPersistenceDelegate getPersistenceDelegate(
         final Class<?> type )
     {
-        return getPersistenceDelegate( nonNull( type.getName() ) );
+        return getPersistenceDelegate( type.getName() );
     }
 
     /*

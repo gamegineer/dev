@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import java.util.Collections;
@@ -83,7 +82,7 @@ public final class AbstractLoggingComponentFactoryTest
         throws Exception
     {
         componentProperties_ = new Hashtable<>();
-        componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_TYPE_NAME, nonNull( Object.class.getName() ) );
+        componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_TYPE_NAME, Object.class.getName() );
         componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_INSTANCE_NAME, "instanceName" ); //$NON-NLS-1$
         componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_LOGGING_PROPERTIES, Collections.<@NonNull String, @NonNull String>emptyMap() );
 

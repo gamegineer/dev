@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertNotNull;
 import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNull;
@@ -123,7 +122,7 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     {
         factory_ = createLoggingComponentFactory();
         assertNotNull( factory_ );
-        component_ = factory_.createLoggingComponent( nonNull( getLoggingComponentType().getName() ) );
+        component_ = factory_.createLoggingComponent( getLoggingComponentType().getName() );
         assertNotNull( component_ );
     }
 

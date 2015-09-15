@@ -1,6 +1,6 @@
 /*
  * ObjectInputStream.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -126,7 +126,7 @@ public final class ObjectInputStream
         {
             if( object != null )
             {
-                final IPersistenceDelegate delegate = persistenceDelegateRegistry_.getPersistenceDelegate( nonNull( object.getClass().getName() ) );
+                final IPersistenceDelegate delegate = persistenceDelegateRegistry_.getPersistenceDelegate( object.getClass().getName() );
                 final Object resolvedObject = (delegate != null) ? delegate.resolveObject( object ) : super.resolveObject( object );
                 if( object != resolvedObject )
                 {

@@ -53,7 +53,7 @@ public final class LoggerConfigurationTest
 
     /** The class name of the filter used in the fixture. */
     @NonNull
-    private static final String FILTER_CLASS_NAME = nonNull( FakeFilter.class.getName() );
+    private static final String FILTER_CLASS_NAME = FakeFilter.class.getName();
 
     /** The instance name of the filter used in the fixture. */
     @NonNull
@@ -61,7 +61,7 @@ public final class LoggerConfigurationTest
 
     /** The class name of the handler used in the fixture. */
     @NonNull
-    private static final String HANDLER_CLASS_NAME = nonNull( FakeHandler.class.getName() );
+    private static final String HANDLER_CLASS_NAME = FakeHandler.class.getName();
 
     /** The instance name of the first handler used in the fixture. */
     @NonNull

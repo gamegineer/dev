@@ -22,7 +22,6 @@
 package org.gamegineer.common.internal.persistence.impl.serializable;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -129,7 +128,7 @@ public final class PersistenceDelegateRegistry
     public IPersistenceDelegate getPersistenceDelegate(
         final Class<?> type )
     {
-        return getPersistenceDelegate( nonNull( type.getName() ) );
+        return getPersistenceDelegate( type.getName() );
     }
 
     /*
@@ -168,7 +167,7 @@ public final class PersistenceDelegateRegistry
     {
         synchronized( lock_ )
         {
-            registerPersistenceDelegate( nonNull( type.getName() ), persistenceDelegate );
+            registerPersistenceDelegate( type.getName(), persistenceDelegate );
         }
     }
 
@@ -255,7 +254,7 @@ public final class PersistenceDelegateRegistry
     {
         synchronized( lock_ )
         {
-            unregisterPersistenceDelegate( nonNull( type.getName() ), persistenceDelegate );
+            unregisterPersistenceDelegate( type.getName(), persistenceDelegate );
         }
     }
 

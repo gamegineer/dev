@@ -1,6 +1,6 @@
 /*
  * AbstractPersistenceDelegate.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.persistence.serializable;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.IOException;
 import java.io.ObjectStreamClass;
 import net.jcip.annotations.Immutable;
@@ -101,7 +100,7 @@ public abstract class AbstractPersistenceDelegate
         final ObjectStreamClass desc )
         throws IOException, ClassNotFoundException
     {
-        return nonNull( Class.forName( desc.getName(), false, getClass().getClassLoader() ) );
+        return Class.forName( desc.getName(), false, getClass().getClassLoader() );
     }
 
     /**

@@ -1,6 +1,6 @@
 /*
  * MainPage.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -77,7 +77,7 @@ final class MainPage
      */
     MainPage()
     {
-        super( nonNull( MainPage.class.getName() ) );
+        super( MainPage.class.getName() );
 
         controls_ = null;
         dataBindingAdapter_ = null;

@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.persistence.serializable.test;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -144,7 +143,7 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
         final IPersistenceDelegate expectedPersistenceDelegate = new FakePersistenceDelegate();
         persistenceDelegateRegistry_.registerPersistenceDelegate( expectedType, expectedPersistenceDelegate );
 
-        final IPersistenceDelegate actualPersistenceDelegate = persistenceDelegateRegistry_.getPersistenceDelegate( nonNull( expectedType.getName() ) );
+        final IPersistenceDelegate actualPersistenceDelegate = persistenceDelegateRegistry_.getPersistenceDelegate( expectedType.getName() );
 
         assertSame( expectedPersistenceDelegate, actualPersistenceDelegate );
     }
@@ -159,7 +158,7 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
         final Set<String> typeNames = persistenceDelegateRegistry_.getTypeNames();
         final int expectedTypeNamesSize = typeNames.size();
 
-        typeNames.add( nonNull( Object.class.getName() ) );
+        typeNames.add( Object.class.getName() );
 
         assertEquals( expectedTypeNamesSize, persistenceDelegateRegistry_.getTypeNames().size() );
     }

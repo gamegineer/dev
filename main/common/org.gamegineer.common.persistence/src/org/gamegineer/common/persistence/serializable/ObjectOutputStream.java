@@ -1,6 +1,6 @@
 /*
  * ObjectOutputStream.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.persistence.serializable;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.IOException;
 import java.io.OutputStream;
 import net.jcip.annotations.NotThreadSafe;
@@ -96,7 +95,7 @@ public final class ObjectOutputStream
     {
         if( cl != null )
         {
-            final IPersistenceDelegate delegate = persistenceDelegateRegistry_.getPersistenceDelegate( nonNull( cl.getName() ) );
+            final IPersistenceDelegate delegate = persistenceDelegateRegistry_.getPersistenceDelegate( cl.getName() );
             if( delegate != null )
             {
                 delegate.annotateClass( this, cl );
@@ -127,7 +126,7 @@ public final class ObjectOutputStream
         {
             if( object != null )
             {
-                final IPersistenceDelegate delegate = persistenceDelegateRegistry_.getPersistenceDelegate( nonNull( object.getClass().getName() ) );
+                final IPersistenceDelegate delegate = persistenceDelegateRegistry_.getPersistenceDelegate( object.getClass().getName() );
                 final Object replacedObject = (delegate != null) ? delegate.replaceObject( object ) : super.replaceObject( object );
                 if( object != replacedObject )
                 {
