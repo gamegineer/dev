@@ -1,6 +1,6 @@
 /*
  * Assert.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -34,8 +34,6 @@ import org.eclipse.jdt.annotation.Nullable;
  * ensure the method argument {@code value} is legal:
  * </p>
  * 
- * <p>
- * 
  * <pre>
  * if( value.length() != 5 )
  * {
@@ -43,19 +41,13 @@ import org.eclipse.jdt.annotation.Nullable;
  * }
  * </pre>
  * 
- * </p>
- * 
  * <p>
  * you can instead make the following call:
  * </p>
  * 
- * <p>
- * 
  * <pre>
  * Assert.assertArgumentLegal( value.length() != 5, &quot;value&quot; );
  * </pre>
- * 
- * </p>
  * 
  * <p>
  * to obtain the same result.
