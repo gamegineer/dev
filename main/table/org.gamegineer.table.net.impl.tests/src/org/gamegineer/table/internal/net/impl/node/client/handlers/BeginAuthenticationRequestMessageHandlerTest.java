@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.impl.node.client.handlers;
 
 import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import org.easymock.Capture;
@@ -103,7 +102,7 @@ public final class BeginAuthenticationRequestMessageHandlerTest
         throws Exception
     {
         final String playerName = "playerName"; //$NON-NLS-1$
-        final SecureString password = new SecureString( nonNull( "password".toCharArray() ) ); //$NON-NLS-1$
+        final SecureString password = new SecureString( "password".toCharArray() ); //$NON-NLS-1$
         final IClientNode localNode = mocksControl_.createMock( IClientNode.class );
         EasyMock.expect( localNode.getPlayerName() ).andReturn( playerName );
         EasyMock.expect( localNode.getPassword() ).andReturn( new SecureString( password ) );

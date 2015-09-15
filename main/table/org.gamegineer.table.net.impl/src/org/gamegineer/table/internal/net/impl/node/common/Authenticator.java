@@ -1,6 +1,6 @@
 /*
  * Authenticator.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -225,6 +225,6 @@ public final class Authenticator
     private static char[] getPasswordChars(
         final SecureString password )
     {
-        return (password.length() > 0) ? nonNull( password.toCharArray() ) : nonNull( DEFAULT_PASSWORD.toCharArray() );
+        return (password.length() > 0) ? password.toCharArray() : DEFAULT_PASSWORD.toCharArray();
     }
 }

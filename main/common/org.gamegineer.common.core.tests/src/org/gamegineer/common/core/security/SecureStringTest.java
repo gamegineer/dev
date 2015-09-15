@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.core.security;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import org.eclipse.jdt.annotation.DefaultLocation;
@@ -70,7 +69,7 @@ public final class SecureStringTest
     public void setUp()
         throws Exception
     {
-        secureString_ = new SecureString( nonNull( "password".toCharArray() ) ); //$NON-NLS-1$
+        secureString_ = new SecureString( "password".toCharArray() ); //$NON-NLS-1$
     }
 
     /**
@@ -102,8 +101,8 @@ public final class SecureStringTest
     @Test
     public void testClearCharArray_Value_Cleared()
     {
-        final char[] value = nonNull( "password".toCharArray() ); //$NON-NLS-1$
-        final char[] expectedValue = nonNull( "\0\0\0\0\0\0\0\0".toCharArray() ); //$NON-NLS-1$
+        final char[] value = "password".toCharArray(); //$NON-NLS-1$
+        final char[] expectedValue = "\0\0\0\0\0\0\0\0".toCharArray(); //$NON-NLS-1$
 
         SecureString.clearCharArray( value );
 
@@ -118,7 +117,7 @@ public final class SecureStringTest
     @Test( expected = IndexOutOfBoundsException.class )
     public void testConstructorFromValueAndOffsetAndLength_Length_OutOfBounds()
     {
-        new SecureString( nonNull( "password".toCharArray() ), 0, 100 ); //$NON-NLS-1$
+        new SecureString( "password".toCharArray(), 0, 100 ); //$NON-NLS-1$
     }
 
     /**
@@ -129,7 +128,7 @@ public final class SecureStringTest
     @Test( expected = IndexOutOfBoundsException.class )
     public void testConstructorFromValueAndOffsetAndLength_Offset_OutOfBounds()
     {
-        new SecureString( nonNull( "password".toCharArray() ), -1, 1 ); //$NON-NLS-1$
+        new SecureString( "password".toCharArray(), -1, 1 ); //$NON-NLS-1$
     }
 
     /**

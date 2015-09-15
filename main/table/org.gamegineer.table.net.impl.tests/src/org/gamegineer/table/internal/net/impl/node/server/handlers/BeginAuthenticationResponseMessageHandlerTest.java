@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.impl.node.server.handlers;
 
 import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
@@ -106,7 +105,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         throws Exception
     {
         final String playerName = "playerName"; //$NON-NLS-1$
-        final SecureString password = new SecureString( nonNull( "password".toCharArray() ) ); //$NON-NLS-1$
+        final SecureString password = new SecureString( "password".toCharArray() ); //$NON-NLS-1$
         final byte[] challenge = new byte[] {
             1, 2, 3, 4
         };
@@ -151,7 +150,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         throws Exception
     {
         final String playerName = "playerName"; //$NON-NLS-1$
-        final SecureString password = new SecureString( nonNull( "password".toCharArray() ) ); //$NON-NLS-1$
+        final SecureString password = new SecureString( "password".toCharArray() ); //$NON-NLS-1$
         final byte[] challenge = new byte[] {
             1, 2, 3, 4
         };
@@ -198,7 +197,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         throws Exception
     {
         final String playerName = "playerName"; //$NON-NLS-1$
-        final SecureString password = new SecureString( nonNull( "password".toCharArray() ) ); //$NON-NLS-1$
+        final SecureString password = new SecureString( "password".toCharArray() ); //$NON-NLS-1$
         final byte[] challenge = new byte[] {
             1, 2, 3, 4
         };

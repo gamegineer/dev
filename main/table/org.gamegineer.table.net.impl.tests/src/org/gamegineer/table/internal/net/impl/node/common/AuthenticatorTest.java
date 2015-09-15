@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node.common;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
@@ -84,9 +83,9 @@ public final class AuthenticatorTest
     {
         final byte[] challenge = authenticator_.createChallenge();
         final byte[] salt = authenticator_.createSalt();
-        final byte[] expectedResponse = authenticator_.createResponse( challenge, new SecureString( nonNull( expectedPassword.toCharArray() ) ), salt );
+        final byte[] expectedResponse = authenticator_.createResponse( challenge, new SecureString( expectedPassword.toCharArray() ), salt );
 
-        final byte[] actualResponse = authenticator_.createResponse( challenge, new SecureString( nonNull( actualPassword.toCharArray() ) ), salt );
+        final byte[] actualResponse = authenticator_.createResponse( challenge, new SecureString( actualPassword.toCharArray() ), salt );
 
         return Arrays.equals( expectedResponse, actualResponse );
     }

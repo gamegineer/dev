@@ -1,6 +1,6 @@
 /*
  * SecureStringAsEquatableTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.core.security;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.gamegineer.test.core.AbstractEquatableTestCase;
@@ -56,7 +55,7 @@ public final class SecureStringAsEquatableTest
     @Override
     protected SecureString createReferenceInstance()
     {
-        return new SecureString( nonNull( "password".toCharArray() ) ); //$NON-NLS-1$
+        return new SecureString( "password".toCharArray() ); //$NON-NLS-1$
     }
 
     /*
@@ -66,7 +65,7 @@ public final class SecureStringAsEquatableTest
     protected Collection<SecureString> createUnequalInstances()
     {
         final Collection<SecureString> others = new ArrayList<>();
-        others.add( new SecureString( nonNull( "PASSWORD".toCharArray() ) ) ); //$NON-NLS-1$
+        others.add( new SecureString( "PASSWORD".toCharArray() ) ); //$NON-NLS-1$
         return others;
     }
 }

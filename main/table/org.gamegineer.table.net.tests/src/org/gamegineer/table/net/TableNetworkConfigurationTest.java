@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.net;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertArrayEquals;
 import org.easymock.EasyMock;
 import org.gamegineer.common.core.security.SecureString;
@@ -57,7 +56,7 @@ public final class TableNetworkConfigurationTest
     @Test
     public void testConstructor_Password_Copy()
     {
-        final char[] expectedPassword = nonNull( "password".toCharArray() ); //$NON-NLS-1$
+        final char[] expectedPassword = "password".toCharArray(); //$NON-NLS-1$
         final SecureString password = new SecureString( expectedPassword );
         final TableNetworkConfiguration configuration = new TableNetworkConfiguration( "hostName", 0, password, "localPlayerName", EasyMock.createMock( ITable.class ) ); //$NON-NLS-1$ //$NON-NLS-2$
         password.dispose();
@@ -74,7 +73,7 @@ public final class TableNetworkConfigurationTest
     @Test
     public void testGetPassword_ReturnValue_Copy()
     {
-        final char[] expectedPassword = nonNull( "password".toCharArray() ); //$NON-NLS-1$
+        final char[] expectedPassword = "password".toCharArray(); //$NON-NLS-1$
         final TableNetworkConfiguration configuration = new TableNetworkConfiguration( "hostName", 0, new SecureString( expectedPassword ), "localPlayerName", EasyMock.createMock( ITable.class ) ); //$NON-NLS-1$ //$NON-NLS-2$
         final SecureString password = configuration.getPassword();
         password.dispose();
