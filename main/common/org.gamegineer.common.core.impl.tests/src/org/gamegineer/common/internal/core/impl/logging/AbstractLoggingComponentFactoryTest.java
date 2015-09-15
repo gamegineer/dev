@@ -104,7 +104,7 @@ public final class AbstractLoggingComponentFactoryTest
         final ServiceRegistration<ComponentFactory> serviceRegistration = FakeFilter.registerComponentFactory();
         try
         {
-            final String name = nonNull( String.format( "%1$s.name", FakeFilter.class.getName() ) ); //$NON-NLS-1$
+            final String name = String.format( "%1$s.name", FakeFilter.class.getName() ); //$NON-NLS-1$
 
             final Filter component = AbstractLoggingComponentFactory.createNamedLoggingComponent( Filter.class, name, null );
 

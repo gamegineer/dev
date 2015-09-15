@@ -1,6 +1,6 @@
 /*
  * TestContainerLayouts.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.core.test;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Point;
 import java.util.concurrent.atomic.AtomicLong;
 import net.jcip.annotations.Immutable;
@@ -169,7 +168,7 @@ public final class TestContainerLayouts
     @SuppressWarnings( "boxing" )
     private static ContainerLayoutId getUniqueContainerLayoutId()
     {
-        return ContainerLayoutId.fromString( nonNull( String.format( "container-layout-%1$d", nextContainerLayoutId_.incrementAndGet() ) ) ); //$NON-NLS-1$
+        return ContainerLayoutId.fromString( String.format( "container-layout-%1$d", nextContainerLayoutId_.incrementAndGet() ) ); //$NON-NLS-1$
     }
 
     /**

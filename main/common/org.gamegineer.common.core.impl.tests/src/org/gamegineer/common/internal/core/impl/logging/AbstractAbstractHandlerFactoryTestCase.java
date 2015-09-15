@@ -86,7 +86,7 @@ public abstract class AbstractAbstractHandlerFactoryTestCase<F extends @NonNull 
     private String getLoggingPropertyKey(
         final String propertyName )
     {
-        return nonNull( String.format( "%1$s.%2$s.%3$s", getLoggingComponentType().getName(), DEFAULT_INSTANCE_NAME, propertyName ) ); //$NON-NLS-1$
+        return String.format( "%1$s.%2$s.%3$s", getLoggingComponentType().getName(), DEFAULT_INSTANCE_NAME, propertyName ); //$NON-NLS-1$
     }
 
     /**
@@ -155,7 +155,7 @@ public abstract class AbstractAbstractHandlerFactoryTestCase<F extends @NonNull 
         final ServiceRegistration<ComponentFactory> serviceRegistration = FakeFilter.registerComponentFactory();
         try
         {
-            final String value = nonNull( String.format( "%1$s.filterName", FakeFilter.class.getName() ) ); //$NON-NLS-1$
+            final String value = String.format( "%1$s.filterName", FakeFilter.class.getName() ); //$NON-NLS-1$
             final String key = getLoggingPropertyKey( LoggingServiceConstants.PROPERTY_HANDLER_FILTER );
             final Map<String, String> loggingProperties = Collections.singletonMap( key, value );
             final T handler = getLoggingComponent();
@@ -196,7 +196,7 @@ public abstract class AbstractAbstractHandlerFactoryTestCase<F extends @NonNull 
     @Test
     public void testConfigureLoggingComponent_Formatter_Legal()
     {
-        final String value = nonNull( String.format( "%1$s.formatterName", FakeFormatter.class.getName() ) ); //$NON-NLS-1$
+        final String value = String.format( "%1$s.formatterName", FakeFormatter.class.getName() ); //$NON-NLS-1$
         final String key = getLoggingPropertyKey( LoggingServiceConstants.PROPERTY_HANDLER_FORMATTER );
         final Map<String, String> loggingProperties = Collections.singletonMap( key, value );
         final T handler = getLoggingComponent();

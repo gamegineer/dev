@@ -1,6 +1,6 @@
 /*
  * TestComponentStrategies.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.core.test;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Point;
 import java.util.Collection;
 import java.util.Map;
@@ -247,7 +246,7 @@ public final class TestComponentStrategies
     @SuppressWarnings( "boxing" )
     private static ComponentStrategyId getUniqueComponentStrategyId()
     {
-        return ComponentStrategyId.fromString( nonNull( String.format( "component-strategy-%1$d", nextComponentStrategyId_.incrementAndGet() ) ) ); //$NON-NLS-1$
+        return ComponentStrategyId.fromString( String.format( "component-strategy-%1$d", nextComponentStrategyId_.incrementAndGet() ) ); //$NON-NLS-1$
     }
 
     /**

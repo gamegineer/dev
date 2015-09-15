@@ -118,8 +118,8 @@ public final class LoggerConfigurationTest
         final Map<String, String> properties = new HashMap<>();
 
         // Logger with all properties configured
-        properties.put( "logger.default.filter", nonNull( String.format( "%1$s.%2$s", FILTER_CLASS_NAME, FILTER_INSTANCE_NAME ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
-        properties.put( "logger.default.handlers", nonNull( String.format( "%1$s.%2$s, %1$s.%3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_1, HANDLER_INSTANCE_NAME_2 ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties.put( "logger.default.filter", String.format( "%1$s.%2$s", FILTER_CLASS_NAME, FILTER_INSTANCE_NAME ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties.put( "logger.default.handlers", String.format( "%1$s.%2$s, %1$s.%3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_1, HANDLER_INSTANCE_NAME_2 ) ); //$NON-NLS-1$ //$NON-NLS-2$
         properties.put( "logger.default.level", nonNull( Level.SEVERE.getName() ) ); //$NON-NLS-1$
         properties.put( "logger.default.useParentHandlers", "true" ); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -127,7 +127,7 @@ public final class LoggerConfigurationTest
         properties.put( "logger.illegalFilter.filter", "A_NAME_WITHOUT_A_DOT" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // Logger with an illegal handler
-        properties.put( "logger.illegalHandler.handlers", nonNull( String.format( "%1$s.%2$s, %3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_1, "A_NAME_WITHOUT_A_DOT" ) ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        properties.put( "logger.illegalHandler.handlers", String.format( "%1$s.%2$s, %3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_1, "A_NAME_WITHOUT_A_DOT" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
         // Logger with no filter
         properties.put( "logger.noFilter.level", nonNull( Level.INFO.getName() ) ); //$NON-NLS-1$
@@ -136,13 +136,13 @@ public final class LoggerConfigurationTest
         properties.put( "logger.noHandlers.level", nonNull( Level.INFO.getName() ) ); //$NON-NLS-1$
 
         // Filter
-        properties.put( nonNull( String.format( "%1$s.%2$s.%3$s", FILTER_CLASS_NAME, FILTER_INSTANCE_NAME, FakeFilter.PROPERTY_FAKE_BOOLEAN_PROPERTY ) ), nonNull( Boolean.toString( false ) ) ); //$NON-NLS-1$
+        properties.put( String.format( "%1$s.%2$s.%3$s", FILTER_CLASS_NAME, FILTER_INSTANCE_NAME, FakeFilter.PROPERTY_FAKE_BOOLEAN_PROPERTY ), nonNull( Boolean.toString( false ) ) ); //$NON-NLS-1$
 
         // Handler 1
-        properties.put( nonNull( String.format( "%1$s.%2$s.%3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_1, LoggingServiceConstants.PROPERTY_HANDLER_LEVEL ) ), nonNull( Level.SEVERE.getName() ) ); //$NON-NLS-1$
+        properties.put( String.format( "%1$s.%2$s.%3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_1, LoggingServiceConstants.PROPERTY_HANDLER_LEVEL ), nonNull( Level.SEVERE.getName() ) ); //$NON-NLS-1$
 
         // Handler 2
-        properties.put( nonNull( String.format( "%1$s.%2$s.%3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_2, LoggingServiceConstants.PROPERTY_HANDLER_LEVEL ) ), nonNull( Level.WARNING.getName() ) ); //$NON-NLS-1$
+        properties.put( String.format( "%1$s.%2$s.%3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_2, LoggingServiceConstants.PROPERTY_HANDLER_LEVEL ), nonNull( Level.WARNING.getName() ) ); //$NON-NLS-1$
 
         properties_ = properties;
         config_ = new LoggerConfiguration( "logger.default", properties ); //$NON-NLS-1$
@@ -156,7 +156,7 @@ public final class LoggerConfigurationTest
     public void testConstructor_Properties_Copy()
     {
         final String loggerName = "logger.default"; //$NON-NLS-1$
-        final String propertyName = nonNull( String.format( "%1$s.%2$s", loggerName, LoggingServiceConstants.PROPERTY_LOGGER_LEVEL ) ); //$NON-NLS-1$
+        final String propertyName = String.format( "%1$s.%2$s", loggerName, LoggingServiceConstants.PROPERTY_LOGGER_LEVEL ); //$NON-NLS-1$
         final Map<String, String> properties = new HashMap<>();
         properties.put( propertyName, nonNull( Level.SEVERE.getName() ) );
 

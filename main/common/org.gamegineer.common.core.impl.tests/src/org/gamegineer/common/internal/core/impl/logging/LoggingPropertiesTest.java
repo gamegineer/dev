@@ -165,7 +165,7 @@ public final class LoggingPropertiesTest
         final String instanceName = "b"; //$NON-NLS-1$
         final String propertyName = "p1"; //$NON-NLS-1$
         final String propertyValue = "value"; //$NON-NLS-1$
-        final Map<String, String> properties = nonNull( Collections.singletonMap( nonNull( String.format( "%1$s.%2$s.%3$s", type.getName(), instanceName, propertyName ) ), propertyValue ) ); //$NON-NLS-1$
+        final Map<String, String> properties = nonNull( Collections.singletonMap( String.format( "%1$s.%2$s.%3$s", type.getName(), instanceName, propertyName ), propertyValue ) ); //$NON-NLS-1$
 
         assertEquals( propertyValue, LoggingProperties.getProperty( properties, type, instanceName, propertyName ) );
     }

@@ -1,6 +1,6 @@
 /*
  * TestComponentSurfaceDesigns.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.core.test;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.concurrent.atomic.AtomicLong;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
@@ -117,7 +116,7 @@ public final class TestComponentSurfaceDesigns
     @SuppressWarnings( "boxing" )
     private static ComponentSurfaceDesignId getUniqueComponentSurfaceDesignId()
     {
-        return ComponentSurfaceDesignId.fromString( nonNull( String.format( "component-surface-design-%1$d", nextComponentSurfaceDesignId_.incrementAndGet() ) ) ); //$NON-NLS-1$
+        return ComponentSurfaceDesignId.fromString( String.format( "component-surface-design-%1$d", nextComponentSurfaceDesignId_.incrementAndGet() ) ); //$NON-NLS-1$
     }
 
     /**
