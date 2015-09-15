@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -233,7 +232,7 @@ public abstract class AbstractAbstractHandlerFactoryTestCase<F extends @NonNull 
     {
         final Level value = Level.SEVERE;
         final String key = getLoggingPropertyKey( LoggingServiceConstants.PROPERTY_HANDLER_LEVEL );
-        final Map<String, String> loggingProperties = Collections.singletonMap( key, nonNull( value.getName() ) );
+        final Map<String, String> loggingProperties = Collections.singletonMap( key, value.getName() );
         final T handler = getLoggingComponent();
 
         getLoggingComponentFactory().configureLoggingComponent( handler, DEFAULT_INSTANCE_NAME, loggingProperties );
