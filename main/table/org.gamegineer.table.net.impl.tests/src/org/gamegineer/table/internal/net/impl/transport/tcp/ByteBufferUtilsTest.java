@@ -323,6 +323,6 @@ public final class ByteBufferUtilsTest
     @Test
     public void testHasRemaining_Buffers_Empty_Length_Zero()
     {
-        assertTrue( ByteBufferUtils.hasRemaining( nonNull( Collections.<@NonNull ByteBuffer>emptyList() ), 0 ) );
+        assertTrue( ByteBufferUtils.hasRemaining( Collections.<@NonNull ByteBuffer>emptyList(), 0 ) );
     }
 }

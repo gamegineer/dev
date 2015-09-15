@@ -1,6 +1,6 @@
 /*
  * Actions.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.view;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -424,7 +423,7 @@ final class Actions
             actionMap.put( action.getId(), action );
         }
 
-        return nonNull( Collections.unmodifiableMap( actionMap ) );
+        return Collections.unmodifiableMap( actionMap );
     }
 
     /**

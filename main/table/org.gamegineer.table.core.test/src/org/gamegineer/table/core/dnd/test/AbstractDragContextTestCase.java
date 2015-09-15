@@ -436,7 +436,7 @@ public abstract class AbstractDragContextTestCase
                     @Override
                     public List<IComponent> getDragComponents()
                     {
-                        return nonNull( Collections.singletonList( component ) );
+                        return Collections.singletonList( component );
                     }
                 };
             }

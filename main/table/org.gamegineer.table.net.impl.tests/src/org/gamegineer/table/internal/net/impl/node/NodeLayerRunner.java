@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.impl.node;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.Callable;
@@ -142,7 +141,7 @@ public final class NodeLayerRunner
         final Callable<V> task )
         throws Exception
     {
-        return run( task, nonNull( Collections.<Class<? extends Exception>>emptyList() ) );
+        return run( task, Collections.<@NonNull Class<? extends Exception>>emptyList() );
     }
 
     /**
@@ -170,7 +169,7 @@ public final class NodeLayerRunner
         final Class<? extends Exception> exceptionType )
         throws Exception
     {
-        return run( task, nonNull( Collections.<Class<? extends Exception>>singletonList( exceptionType ) ) );
+        return run( task, Collections.singletonList( exceptionType ) );
     }
 
     /**

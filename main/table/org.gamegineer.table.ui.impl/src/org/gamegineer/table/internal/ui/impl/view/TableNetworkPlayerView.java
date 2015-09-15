@@ -1,6 +1,6 @@
 /*
  * TableNetworkPlayerView.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.view;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.util.Collection;
@@ -37,6 +36,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.ui.layout.PixelConverter;
 import org.gamegineer.table.internal.ui.impl.Activator;
@@ -322,7 +322,7 @@ final class TableNetworkPlayerView
                 @Override
                 public void run()
                 {
-                    refreshPlayerList( nonNull( Collections.<IPlayer>emptyList() ) );
+                    refreshPlayerList( Collections.<@NonNull IPlayer>emptyList() );
                 }
             } );
         }

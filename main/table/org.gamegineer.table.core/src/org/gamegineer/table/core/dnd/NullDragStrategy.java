@@ -1,6 +1,6 @@
 /*
  * NullDragStrategy.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,10 +21,10 @@
 
 package org.gamegineer.table.core.dnd;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collections;
 import java.util.List;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.NonNull;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 
@@ -76,6 +76,6 @@ public final class NullDragStrategy
     @Override
     public List<IComponent> getDragComponents()
     {
-        return nonNull( Collections.<IComponent>emptyList() );
+        return Collections.<@NonNull IComponent>emptyList();
     }
 }

@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.Future;
@@ -122,7 +121,7 @@ public final class FakeNodeController
     @Override
     public Collection<IPlayer> getPlayers()
     {
-        return nonNull( Collections.<@NonNull IPlayer>emptyList() );
+        return Collections.<@NonNull IPlayer>emptyList();
     }
 
     /*

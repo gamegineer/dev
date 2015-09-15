@@ -1,6 +1,6 @@
 /*
  * TabletopStrategy.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.core.impl.strategies;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.Collection;
@@ -53,7 +52,7 @@ final class TabletopStrategy
     private static final ComponentSurfaceDesignId DEFAULT_SURFACE_DESIGN_ID = ComponentSurfaceDesignId.fromString( "org.gamegineer.table.tabletopSurfaceDesigns.default" ); //$NON-NLS-1$
 
     /** The collection of supported tabletop orientations. */
-    private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = nonNull( Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( TabletopOrientation.values( TabletopOrientation.class ) ) ) );
+    private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( TabletopOrientation.values( TabletopOrientation.class ) ) );
 
 
     // ======================================================================

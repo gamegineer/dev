@@ -182,7 +182,7 @@ final class Table
             getLock().unlock();
         }
 
-        return nonNull( Collections.unmodifiableMap( memento ) );
+        return Collections.unmodifiableMap( memento );
     }
 
     /**

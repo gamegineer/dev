@@ -1,6 +1,6 @@
 /*
  * ComponentPrototypesExtensionPoint.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,6 +40,7 @@ import org.eclipse.core.expressions.ExpressionTagNames;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.ui.impl.Activator;
 import org.gamegineer.table.internal.ui.impl.Loggers;
@@ -314,7 +315,7 @@ public final class ComponentPrototypesExtensionPoint
     {
         if( source == null )
         {
-            return nonNull( Collections.<String>emptyList() );
+            return Collections.<@NonNull String>emptyList();
         }
 
         return nonNull( Arrays.asList( source.split( CATEGORY_PATH_SEPARATOR ) ) );

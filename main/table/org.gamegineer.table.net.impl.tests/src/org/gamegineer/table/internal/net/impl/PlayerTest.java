@@ -97,7 +97,7 @@ public final class PlayerTest
     @Test( expected = IllegalArgumentException.class )
     public void testAddRoles_Roles_Illegal_ContainsNullElement()
     {
-        player_.addRoles( nonNull( Collections.<PlayerRole>singleton( null ) ) );
+        player_.addRoles( Collections.<PlayerRole>singleton( null ) );
     }
 
     /**
@@ -123,6 +123,6 @@ public final class PlayerTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveRoles_Roles_Illegal_ContainsNullElement()
     {
-        player_.removeRoles( nonNull( Collections.<PlayerRole>singleton( null ) ) );
+        player_.removeRoles( Collections.<PlayerRole>singleton( null ) );
     }
 }

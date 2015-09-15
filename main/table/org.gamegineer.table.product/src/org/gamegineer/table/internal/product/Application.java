@@ -111,7 +111,7 @@ public final class Application
     {
         if( (applicationArgumentsArray == null) || (applicationArgumentsArray.length == 0) )
         {
-            return nonNull( Collections.<@NonNull String>emptyList() );
+            return Collections.<@NonNull String>emptyList();
         }
 
         return nonNull( Arrays.asList( applicationArgumentsArray ) );

@@ -518,7 +518,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test( expected = IllegalArgumentException.class )
     public void testAddComponents_Components_Illegal_ContainsNullElement()
     {
-        getContainer().addComponents( nonNull( Collections.<IComponent>singletonList( null ) ) );
+        getContainer().addComponents( Collections.<IComponent>singletonList( null ) );
     }
 
     /**
@@ -534,7 +534,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         mocksControl_.replay();
         component.addComponentListener( listener );
 
-        getContainer().addComponents( nonNull( Collections.singletonList( component ) ) );
+        getContainer().addComponents( Collections.singletonList( component ) );
 
         mocksControl_.verify();
     }
@@ -556,7 +556,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
 
         do
         {
-            getContainer().addComponents( nonNull( Collections.singletonList( createUniqueComponent() ) ) );
+            getContainer().addComponents( Collections.singletonList( createUniqueComponent() ) );
 
         } while( originalContainerBounds.equals( getContainer().getBounds() ) );
 
@@ -652,7 +652,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test( expected = IllegalArgumentException.class )
     public void testAddComponentsAtIndex_Components_Illegal_ContainsNullElement()
     {
-        getContainer().addComponents( nonNull( Collections.<IComponent>singletonList( null ) ), 0 );
+        getContainer().addComponents( Collections.<IComponent>singletonList( null ), 0 );
     }
 
     /**
@@ -668,7 +668,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         mocksControl_.replay();
         component.addComponentListener( listener );
 
-        getContainer().addComponents( nonNull( Collections.singletonList( component ) ), 0 );
+        getContainer().addComponents( Collections.singletonList( component ), 0 );
 
         mocksControl_.verify();
     }
@@ -690,7 +690,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
 
         do
         {
-            getContainer().addComponents( nonNull( Collections.singletonList( createUniqueComponent() ) ), getContainer().getComponentCount() );
+            getContainer().addComponents( Collections.singletonList( createUniqueComponent() ), getContainer().getComponentCount() );
 
         } while( originalContainerBounds.equals( getContainer().getBounds() ) );
 

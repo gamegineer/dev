@@ -1,6 +1,6 @@
 /*
  * PersistenceDelegateRegistry.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -33,6 +33,7 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.internal.persistence.impl.Debug;
 import org.gamegineer.common.internal.persistence.impl.Loggers;
@@ -109,7 +110,7 @@ public final class PersistenceDelegateRegistry
         final Object propertyValue = persistenceDelegateReference.getProperty( PersistenceDelegateRegistryConstants.PROPERTY_DELEGATORS );
         if( propertyValue instanceof String )
         {
-            return nonNull( Collections.singleton( (String)propertyValue ) );
+            return Collections.singleton( (String)propertyValue );
         }
         else if( propertyValue instanceof String[] )
         {
@@ -117,7 +118,7 @@ public final class PersistenceDelegateRegistry
         }
 
         Loggers.getDefaultLogger().warning( NonNlsMessages.PersistenceDelegateRegistry_getDelegatorTypeNames_noDelegators( persistenceDelegateReference ) );
-        return nonNull( Collections.<String>emptySet() );
+        return Collections.<@NonNull String>emptySet();
     }
 
     /*
@@ -361,7 +362,7 @@ public final class PersistenceDelegateRegistry
             final Set<String> typeNames,
             final PersistenceDelegateProxy persistenceDelegateProxy )
         {
-            this.typeNames = nonNull( Collections.unmodifiableSet( new HashSet<>( typeNames ) ) );
+            this.typeNames = Collections.unmodifiableSet( new HashSet<>( typeNames ) );
             this.persistenceDelegateProxy = persistenceDelegateProxy;
         }
     }

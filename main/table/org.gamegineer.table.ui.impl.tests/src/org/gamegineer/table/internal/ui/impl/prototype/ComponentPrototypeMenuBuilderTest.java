@@ -34,6 +34,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import org.easymock.EasyMock;
 import org.eclipse.jdt.annotation.DefaultLocation;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.ui.impl.action.BasicAction;
@@ -213,7 +214,7 @@ public final class ComponentPrototypeMenuBuilderTest
         componentPrototypeMenuItem.setMnemonic( componentPrototypeMnemonic );
         categoryMenu.add( componentPrototypeMenuItem );
 
-        componentPrototypeMenuBuilder_.addComponentPrototypeCategory( new ComponentPrototypeCategory( categoryId, categoryName, categoryMnemonic, nonNull( Collections.<String>emptyList() ) ) );
+        componentPrototypeMenuBuilder_.addComponentPrototypeCategory( new ComponentPrototypeCategory( categoryId, categoryName, categoryMnemonic, Collections.<@NonNull String>emptyList() ) );
         componentPrototypeMenuBuilder_.addComponentPrototype( new ComponentPrototype( componentPrototypeName, componentPrototypeMnemonic, categoryId, componentPrototypeFactory ) );
         componentPrototypeMenuBuilder_.buildMenu( getActualRootMenu() );
 
@@ -242,7 +243,7 @@ public final class ComponentPrototypeMenuBuilderTest
         categoryMenu.add( componentPrototypeMenuItem );
 
         componentPrototypeMenuBuilder_.addComponentPrototype( new ComponentPrototype( componentPrototypeName, componentPrototypeMnemonic, categoryId, componentPrototypeFactory ) );
-        componentPrototypeMenuBuilder_.addComponentPrototypeCategory( new ComponentPrototypeCategory( categoryId, categoryName, categoryMnemonic, nonNull( Collections.<String>emptyList() ) ) );
+        componentPrototypeMenuBuilder_.addComponentPrototypeCategory( new ComponentPrototypeCategory( categoryId, categoryName, categoryMnemonic, Collections.<@NonNull String>emptyList() ) );
         componentPrototypeMenuBuilder_.buildMenu( getActualRootMenu() );
 
         assertMenuEquals( expectedRootMenu_, getActualRootMenu() );
@@ -379,7 +380,7 @@ public final class ComponentPrototypeMenuBuilderTest
         menuItem.setMnemonic( componentPrototypeMnemonic );
         menu.add( menuItem );
 
-        componentPrototypeMenuBuilder_.addComponentPrototypeCategory( new ComponentPrototypeCategory( id, name, mnemonic, nonNull( Collections.<String>emptyList() ) ) );
+        componentPrototypeMenuBuilder_.addComponentPrototypeCategory( new ComponentPrototypeCategory( id, name, mnemonic, Collections.<@NonNull String>emptyList() ) );
         componentPrototypeMenuBuilder_.addComponentPrototype( new ComponentPrototype( componentPrototypeName, componentPrototypeMnemonic, id, componentPrototypeFactory ) );
         componentPrototypeMenuBuilder_.buildMenu( getActualRootMenu() );
 

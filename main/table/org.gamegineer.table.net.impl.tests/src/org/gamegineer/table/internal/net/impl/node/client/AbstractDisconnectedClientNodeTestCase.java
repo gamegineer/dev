@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node.client;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collections;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
@@ -86,7 +85,7 @@ public abstract class AbstractDisconnectedClientNodeTestCase<T extends @NonNull 
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                getNode().setPlayers( nonNull( Collections.<@NonNull IPlayer>emptyList() ) );
+                getNode().setPlayers( Collections.<@NonNull IPlayer>emptyList() );
             }
         } );
     }

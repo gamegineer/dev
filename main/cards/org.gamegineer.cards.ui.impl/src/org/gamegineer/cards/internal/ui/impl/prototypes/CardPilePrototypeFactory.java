@@ -1,6 +1,6 @@
 /*
  * CardPilePrototypeFactory.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.cards.internal.ui.impl.prototypes;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -96,7 +95,7 @@ public final class CardPilePrototypeFactory
             final IComponent cardPile = tableEnvironment.createContainer( ComponentStrategyRegistry.getContainerStrategy( CardsComponentStrategyIds.CARD_PILE ) );
             assert baseDesignId_ != null;
             cardPile.setSurfaceDesign( CardPileOrientation.BASE, ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( baseDesignId_ ) );
-            return nonNull( Collections.singletonList( cardPile ) );
+            return Collections.singletonList( cardPile );
         }
         catch( final NoSuchComponentStrategyException e )
         {

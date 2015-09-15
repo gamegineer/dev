@@ -324,7 +324,7 @@ final class NodeControllerProxy
         {
             Thread.currentThread().interrupt();
             Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.NodeControllerProxy_interrupted, e );
-            return nonNull( Collections.<@NonNull IPlayer>emptyList() );
+            return Collections.<@NonNull IPlayer>emptyList();
         }
     }
 

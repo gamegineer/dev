@@ -21,13 +21,13 @@
 
 package org.gamegineer.table.internal.net.impl.transport.tcp;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
 
@@ -145,7 +145,7 @@ final class TransportLayerRunner
         final Callable<V> task )
         throws Exception
     {
-        return run( task, nonNull( Collections.<Class<? extends Exception>>emptyList() ) );
+        return run( task, Collections.<@NonNull Class<? extends Exception>>emptyList() );
     }
 
     /**
@@ -173,7 +173,7 @@ final class TransportLayerRunner
         final Class<? extends Exception> exceptionType )
         throws Exception
     {
-        return run( task, nonNull( Collections.<Class<? extends Exception>>singletonList( exceptionType ) ) );
+        return run( task, Collections.singletonList( exceptionType ) );
     }
 
     /**

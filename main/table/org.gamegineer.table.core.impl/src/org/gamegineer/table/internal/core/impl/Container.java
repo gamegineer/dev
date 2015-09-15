@@ -127,7 +127,7 @@ final class Container
     public void addComponent(
         final IComponent component )
     {
-        addComponents( nonNull( Collections.singletonList( component ) ), null );
+        addComponents( Collections.singletonList( component ), null );
     }
 
     /*
@@ -138,7 +138,7 @@ final class Container
         final IComponent component,
         final int index )
     {
-        addComponents( nonNull( Collections.singletonList( component ) ), new Integer( index ) );
+        addComponents( Collections.singletonList( component ), new Integer( index ) );
     }
 
     /*

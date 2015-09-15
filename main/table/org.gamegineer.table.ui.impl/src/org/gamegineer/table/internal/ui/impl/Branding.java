@@ -1,6 +1,6 @@
 /*
  * Branding.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,6 +26,7 @@ import java.awt.Image;
 import java.util.Collections;
 import java.util.List;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.app.BrandingUtils;
 import org.gamegineer.common.core.app.IBranding;
@@ -116,6 +117,6 @@ public final class Branding
             return BrandingUIUtils.getWindowImages( branding );
         }
 
-        return nonNull( Collections.<Image>emptyList() );
+        return Collections.<@NonNull Image>emptyList();
     }
 }

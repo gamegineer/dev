@@ -1,6 +1,6 @@
 /*
  * BrandingUIUtils.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.ui.app;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -32,6 +31,7 @@ import java.util.List;
 import java.util.logging.Level;
 import javax.imageio.ImageIO;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.app.IBranding;
 import org.gamegineer.common.internal.ui.Loggers;
@@ -107,13 +107,13 @@ public final class BrandingUIUtils
         final Bundle brandingBundle = branding.getBundle();
         if( brandingBundle == null )
         {
-            return nonNull( Collections.<Image>emptyList() );
+            return Collections.<@NonNull Image>emptyList();
         }
 
         final String windowImagePaths = branding.getProperty( BrandingUIConstants.WINDOW_IMAGES );
         if( windowImagePaths == null )
         {
-            return nonNull( Collections.<Image>emptyList() );
+            return Collections.<@NonNull Image>emptyList();
         }
 
         final List<Image> windowImages = new ArrayList<>();

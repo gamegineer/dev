@@ -85,7 +85,7 @@ public final class AbstractLoggingComponentFactoryTest
         componentProperties_ = new Hashtable<>();
         componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_TYPE_NAME, nonNull( Object.class.getName() ) );
         componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_INSTANCE_NAME, "instanceName" ); //$NON-NLS-1$
-        componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_LOGGING_PROPERTIES, nonNull( Collections.<@NonNull String, @NonNull String>emptyMap() ) );
+        componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_LOGGING_PROPERTIES, Collections.<@NonNull String, @NonNull String>emptyMap() );
 
         factory_ = new AbstractLoggingComponentFactory<Object>( Object.class )
         {

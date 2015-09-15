@@ -1,6 +1,6 @@
 /*
  * ObjectStreams.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.persistence.serializable;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -29,6 +28,7 @@ import java.util.Collections;
 import java.util.Set;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.internal.persistence.Activator;
 import org.gamegineer.common.internal.persistence.Loggers;
@@ -186,7 +186,7 @@ public final class ObjectStreams
         @Override
         public Set<String> getTypeNames()
         {
-            return nonNull( Collections.<String>emptySet() );
+            return Collections.<@NonNull String>emptySet();
         }
 
         /*

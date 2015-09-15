@@ -1,6 +1,6 @@
 /*
  * PlayersMessage.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,13 +21,13 @@
 
 package org.gamegineer.table.internal.net.impl.node.common.messages;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 import org.gamegineer.table.internal.net.impl.Player;
 import org.gamegineer.table.internal.net.impl.transport.AbstractMessage;
 import org.gamegineer.table.net.IPlayer;
@@ -74,8 +74,8 @@ public final class PlayersMessage
      */
     public PlayersMessage()
     {
-        playerNames_ = nonNull( Collections.<String>emptyList() );
-        playerRoles_ = nonNull( Collections.<Set<PlayerRole>>emptyList() );
+        playerNames_ = Collections.<@NonNull String>emptyList();
+        playerRoles_ = Collections.<@NonNull Set<PlayerRole>>emptyList();
     }
 
 

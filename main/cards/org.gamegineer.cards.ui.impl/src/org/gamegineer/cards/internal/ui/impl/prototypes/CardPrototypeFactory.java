@@ -1,6 +1,6 @@
 /*
  * CardPrototypeFactory.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.cards.internal.ui.impl.prototypes;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -109,7 +108,7 @@ public final class CardPrototypeFactory
             card.setSurfaceDesign( CardOrientation.BACK, ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( backDesignId_ ) );
             assert faceDesignId_ != null;
             card.setSurfaceDesign( CardOrientation.FACE, ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( faceDesignId_ ) );
-            return nonNull( Collections.singletonList( card ) );
+            return Collections.singletonList( card );
         }
         catch( final NoSuchComponentStrategyException e )
         {

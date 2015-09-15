@@ -1,6 +1,6 @@
 /*
  * ContainerLayoutExtensionFactory.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.core.impl.layouts;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -77,7 +76,7 @@ public final class ContainerLayoutExtensionFactory
         containerLayouts.put( InternalContainerLayouts.ACCORDIAN_RIGHT.getId(), InternalContainerLayouts.ACCORDIAN_RIGHT );
         containerLayouts.put( InternalContainerLayouts.ACCORDIAN_UP.getId(), InternalContainerLayouts.ACCORDIAN_UP );
         containerLayouts.put( InternalContainerLayouts.STACKED.getId(), InternalContainerLayouts.STACKED );
-        CONTAINER_LAYOUTS = nonNull( Collections.unmodifiableMap( containerLayouts ) );
+        CONTAINER_LAYOUTS = Collections.unmodifiableMap( containerLayouts );
     }
 
     /**

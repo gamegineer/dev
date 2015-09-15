@@ -881,7 +881,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test
     public void testSetSurfaceDesigns_SurfaceDesigns_Empty()
     {
-        getComponent().setSurfaceDesigns( nonNull( Collections.<@NonNull ComponentOrientation, @NonNull ComponentSurfaceDesign>emptyMap() ) );
+        getComponent().setSurfaceDesigns( Collections.<@NonNull ComponentOrientation, @NonNull ComponentSurfaceDesign>emptyMap() );
     }
 
     /**
@@ -892,6 +892,6 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test( expected = IllegalArgumentException.class )
     public void testSetSurfaceDesigns_SurfaceDesigns_Illegal_ContainsUnsupportedOrientation()
     {
-        getComponent().setSurfaceDesigns( nonNull( Collections.singletonMap( createIllegalOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() ) ) );
+        getComponent().setSurfaceDesigns( Collections.singletonMap( createIllegalOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() ) );
     }
 }

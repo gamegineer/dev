@@ -581,7 +581,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends @No
         @Override
         public Collection<IPlayer> getPlayers()
         {
-            return nonNull( Collections.<@NonNull IPlayer>emptyList() );
+            return Collections.<@NonNull IPlayer>emptyList();
         }
 
         /*

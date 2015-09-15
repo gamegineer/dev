@@ -2040,7 +2040,7 @@ final class TableView
             {
                 if( inputEvent_.isControlDown() )
                 {
-                    return nonNull( Collections.singletonList( dragComponent ) );
+                    return Collections.singletonList( dragComponent );
                 }
                 else if( inputEvent_.isAltDown() )
                 {
