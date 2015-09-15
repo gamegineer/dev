@@ -1,6 +1,6 @@
 /*
  * JMenuItemGroup.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.util.swing;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.util.Collection;
@@ -123,7 +122,7 @@ public final class JMenuItemGroup
             {
                 assert event != null;
 
-                updateMenuItems( nonNull( (JMenu)event.getSource() ) );
+                updateMenuItems( (JMenu)event.getSource() );
             }
         } );
     }

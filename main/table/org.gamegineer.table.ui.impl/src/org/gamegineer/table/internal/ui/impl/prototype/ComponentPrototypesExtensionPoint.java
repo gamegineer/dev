@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.ui.impl.prototype;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -172,7 +171,7 @@ public final class ComponentPrototypesExtensionPoint
             {
                 assert event != null;
 
-                buildMenuInternal( nonNull( (JMenu)event.getSource() ), menuItemAction, evaluationContextProvider );
+                buildMenuInternal( (JMenu)event.getSource(), menuItemAction, evaluationContextProvider );
             }
         } );
     }
