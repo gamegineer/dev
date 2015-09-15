@@ -136,7 +136,7 @@ public final class LoggerConfigurationTest
         properties.put( "logger.noHandlers.level", nonNull( Level.INFO.getName() ) ); //$NON-NLS-1$
 
         // Filter
-        properties.put( String.format( "%1$s.%2$s.%3$s", FILTER_CLASS_NAME, FILTER_INSTANCE_NAME, FakeFilter.PROPERTY_FAKE_BOOLEAN_PROPERTY ), nonNull( Boolean.toString( false ) ) ); //$NON-NLS-1$
+        properties.put( String.format( "%1$s.%2$s.%3$s", FILTER_CLASS_NAME, FILTER_INSTANCE_NAME, FakeFilter.PROPERTY_FAKE_BOOLEAN_PROPERTY ), Boolean.toString( false ) ); //$NON-NLS-1$
 
         // Handler 1
         properties.put( String.format( "%1$s.%2$s.%3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_1, LoggingServiceConstants.PROPERTY_HANDLER_LEVEL ), nonNull( Level.SEVERE.getName() ) ); //$NON-NLS-1$

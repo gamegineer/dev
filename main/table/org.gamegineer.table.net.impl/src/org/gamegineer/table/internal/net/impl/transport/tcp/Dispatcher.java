@@ -758,15 +758,15 @@ final class Dispatcher
                         {
                             if( eventHandlers_.isEmpty() )
                             {
-                                return nonNull( Boolean.TRUE );
+                                return Boolean.TRUE;
                             }
                             else if( (System.currentTimeMillis() - startTime) >= eventHandlerShutdownTimeout_ )
                             {
                                 closeOrphanedEventHandlers();
-                                return nonNull( Boolean.TRUE );
+                                return Boolean.TRUE;
                             }
 
-                            return nonNull( Boolean.FALSE );
+                            return Boolean.FALSE;
                         }
                     } );
                     assert areEventHandlersClosed != null;
