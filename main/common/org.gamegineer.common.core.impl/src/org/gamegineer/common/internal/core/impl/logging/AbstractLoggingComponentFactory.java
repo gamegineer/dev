@@ -200,8 +200,8 @@ public abstract class AbstractLoggingComponentFactory<T>
     {
         final int index = name.lastIndexOf( '.' );
         assertArgumentLegal( index != -1, "name", NonNlsMessages.AbstractLoggingComponentFactory_createNamedLoggingComponent_nameNoDots ); //$NON-NLS-1$
-        final String typeName = nonNull( name.substring( 0, index ) );
-        final String instanceName = nonNull( name.substring( index + 1 ) );
+        final String typeName = name.substring( 0, index );
+        final String instanceName = name.substring( index + 1 );
 
         final ServiceReference<ComponentFactory> serviceReference = findComponentFactory( typeName, type );
         final ComponentFactory factory = Activator.getDefault().getBundleContext().getService( serviceReference );
