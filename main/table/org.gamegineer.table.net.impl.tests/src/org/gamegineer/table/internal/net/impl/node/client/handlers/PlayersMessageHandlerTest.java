@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.impl.node.client.handlers;
 
 import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -115,10 +114,10 @@ public final class PlayersMessageHandlerTest
     public void testHandleMessage_PlayersMessage()
         throws Exception
     {
-        final Collection<IPlayer> players = nonNull( Arrays.asList( //
+        final Collection<IPlayer> players = Arrays.asList( //
             createMockPlayer( "player1" ), //$NON-NLS-1$
             createMockPlayer( "player2" ), //$NON-NLS-1$
-            createMockPlayer( "player3" ) ) ); //$NON-NLS-1$
+            createMockPlayer( "player3" ) ); //$NON-NLS-1$
         final IClientNode localNode = mocksControl_.createMock( IClientNode.class );
         EasyMock.expect( localNode.getPlayerName() ).andReturn( "player1" ).anyTimes(); //$NON-NLS-1$
         localNode.setPlayers( assumeNonNull( EasyMock.<Collection<IPlayer>>notNull() ) );

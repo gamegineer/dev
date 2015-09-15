@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.prototype;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -398,7 +397,7 @@ public final class ComponentPrototypesExtensionPointTest
         final String encodedExpectedMnemonic = "1"; //$NON-NLS-1$
         final int expectedMnemonic = KeyStroke.getKeyStroke( encodedExpectedMnemonic ).getKeyCode();
         final String expectedName = "name"; //$NON-NLS-1$
-        final List<String> parentPath = nonNull( Arrays.asList( "ancestor1Id", "ancestor2Id", "ancestor3Id" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        final List<String> parentPath = Arrays.asList( "ancestor1Id", "ancestor2Id", "ancestor3Id" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         final List<String> expectedPath = new ArrayList<>( parentPath );
         expectedPath.add( expectedId );
         final IConfigurationElement configurationElement = createComponentPrototypeCategoryConfigurationElement( expectedId, encodedExpectedMnemonic, expectedName, encodeCategoryPath( parentPath ) );

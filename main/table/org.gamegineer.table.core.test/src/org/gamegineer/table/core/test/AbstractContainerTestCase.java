@@ -472,7 +472,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         final IComponent component1 = createUniqueComponent();
         final IComponent component2 = createUniqueComponent();
 
-        getContainer().addComponents( nonNull( Arrays.asList( component1, component2 ) ) );
+        getContainer().addComponents( Arrays.asList( component1, component2 ) );
 
         final List<IComponent> components = getContainer().getComponents();
         assertSame( component1, components.get( 0 ) );
@@ -492,7 +492,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         final TableEnvironmentType otherTableEnvironment = createTableEnvironment();
         final IComponent otherComponent = createUniqueComponent( otherTableEnvironment );
 
-        getContainer().addComponents( nonNull( Arrays.asList( createUniqueComponent(), otherComponent ) ) );
+        getContainer().addComponents( Arrays.asList( createUniqueComponent(), otherComponent ) );
     }
 
     /**
@@ -507,7 +507,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         final IComponent component = createUniqueComponent();
         otherContainer.addComponent( component );
 
-        getContainer().addComponents( nonNull( Arrays.asList( createUniqueComponent(), component ) ) );
+        getContainer().addComponents( Arrays.asList( createUniqueComponent(), component ) );
     }
 
     /**
@@ -582,7 +582,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         mocksControl_.replay();
         getContainer().addContainerListener( listener );
 
-        getContainer().addComponents( nonNull( Arrays.asList( component1, component2 ) ) );
+        getContainer().addComponents( Arrays.asList( component1, component2 ) );
 
         mocksControl_.verify();
         assertSame( getContainer(), eventCapture1.getValue().getContainer() );
@@ -608,7 +608,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         getContainer().addComponent( component4 );
         final List<IComponent> expectedValue = Arrays.asList( component1, component2, component3, component4 );
 
-        getContainer().addComponents( nonNull( Arrays.asList( component2, component3 ) ), 1 );
+        getContainer().addComponents( Arrays.asList( component2, component3 ), 1 );
 
         assertEquals( expectedValue, getContainer().getComponents() );
         assertSame( getContainer(), component2.getContainer() );
@@ -626,7 +626,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         final TableEnvironmentType otherTableEnvironment = createTableEnvironment();
         final IComponent otherComponent = createUniqueComponent( otherTableEnvironment );
 
-        getContainer().addComponents( nonNull( Arrays.asList( createUniqueComponent(), otherComponent ) ), 0 );
+        getContainer().addComponents( Arrays.asList( createUniqueComponent(), otherComponent ), 0 );
     }
 
     /**
@@ -641,7 +641,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         final IComponent component = createUniqueComponent();
         otherContainer.addComponent( component );
 
-        getContainer().addComponents( nonNull( Arrays.asList( createUniqueComponent(), component ) ), 0 );
+        getContainer().addComponents( Arrays.asList( createUniqueComponent(), component ), 0 );
     }
 
     /**
@@ -716,7 +716,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         mocksControl_.replay();
         getContainer().addContainerListener( listener );
 
-        getContainer().addComponents( nonNull( Arrays.asList( component1, component2 ) ), 1 );
+        getContainer().addComponents( Arrays.asList( component1, component2 ), 1 );
 
         mocksControl_.verify();
         assertSame( getContainer(), eventCapture1.getValue().getContainer() );
@@ -735,7 +735,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test( expected = IndexOutOfBoundsException.class )
     public void testAddComponentsAtIndex_Index_OutOfBounds_GreaterThanComponentCount()
     {
-        getContainer().addComponents( nonNull( Arrays.asList( createUniqueComponent() ) ), getContainer().getComponentCount() + 1 );
+        getContainer().addComponents( Arrays.asList( createUniqueComponent() ), getContainer().getComponentCount() + 1 );
     }
 
     /**
@@ -746,7 +746,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test( expected = IndexOutOfBoundsException.class )
     public void testAddComponentsAtIndex_Index_OutOfBounds_LessThanZero()
     {
-        getContainer().addComponents( nonNull( Arrays.asList( createUniqueComponent() ) ), -1 );
+        getContainer().addComponents( Arrays.asList( createUniqueComponent() ), -1 );
     }
 
     /**
@@ -976,7 +976,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test
     public void testRemoveAllComponents_NotEmpty_FiresComponentRemovedEvent()
     {
-        final List<IComponent> components = nonNull( Arrays.asList( createUniqueComponent(), createUniqueComponent() ) );
+        final List<IComponent> components = Arrays.asList( createUniqueComponent(), createUniqueComponent() );
         getContainer().addComponents( components );
         final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
         final Capture<ContainerContentChangedEvent> eventCapture1 = new Capture<>();

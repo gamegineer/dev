@@ -318,7 +318,7 @@ public final class ComponentPrototypesExtensionPoint
             return Collections.<@NonNull String>emptyList();
         }
 
-        return nonNull( Arrays.asList( source.split( CATEGORY_PATH_SEPARATOR ) ) );
+        return Arrays.asList( source.split( CATEGORY_PATH_SEPARATOR ) );
     }
 
     /**

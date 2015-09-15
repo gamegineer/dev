@@ -114,7 +114,7 @@ public final class Application
             return Collections.<@NonNull String>emptyList();
         }
 
-        return nonNull( Arrays.asList( applicationArgumentsArray ) );
+        return Arrays.asList( applicationArgumentsArray );
     }
 
     /**
