@@ -213,7 +213,7 @@ public final class Application
     private static Object toApplicationExitObject(
         final TableResult result )
     {
-        return nonNull( Integer.valueOf( result.getExitCode() ) );
+        return Integer.valueOf( result.getExitCode() );
     }
 
     /**

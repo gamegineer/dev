@@ -132,7 +132,7 @@ public final class SingleThreadedTableEnvironmentContextTest
             {
                 tableEnvironmentContext_.getLock().lock();
                 tableEnvironmentContext_.getLock().unlock(); // should not fire eventNotification2
-                eventNotificationCallHistory.add( nonNull( Integer.valueOf( 1 ) ) );
+                eventNotificationCallHistory.add( Integer.valueOf( 1 ) );
             }
         };
         final Runnable eventNotification2 = new Runnable()
@@ -140,7 +140,7 @@ public final class SingleThreadedTableEnvironmentContextTest
             @Override
             public void run()
             {
-                eventNotificationCallHistory.add( nonNull( Integer.valueOf( 2 ) ) );
+                eventNotificationCallHistory.add( Integer.valueOf( 2 ) );
             }
         };
 
