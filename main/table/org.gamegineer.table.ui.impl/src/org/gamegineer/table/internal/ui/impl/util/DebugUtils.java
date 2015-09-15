@@ -1,6 +1,6 @@
 /*
  * DebugUtils.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.util;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.List;
 import net.jcip.annotations.NotThreadSafe;
 import net.jcip.annotations.ThreadSafe;
@@ -159,7 +158,7 @@ public final class DebugUtils
             stringBuilder_.append( " : " ); //$NON-NLS-1$
             stringBuilder_.append( component.getSurfaceDesign( component.getOrientation() ).getId() );
 
-            return nonNull( stringBuilder_.toString() );
+            return stringBuilder_.toString();
         }
 
         /**
@@ -279,7 +278,7 @@ public final class DebugUtils
             stringBuilder_.append( " : " ); //$NON-NLS-1$
             stringBuilder_.append( componentModel.getComponent().getSurfaceDesign( componentModel.getComponent().getOrientation() ).getId() );
 
-            return nonNull( stringBuilder_.toString() );
+            return stringBuilder_.toString();
         }
 
         /**

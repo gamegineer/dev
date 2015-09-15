@@ -1,6 +1,6 @@
 /*
  * FrameworkLogHandler.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.core.logging;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.logging.ErrorManager;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
@@ -222,7 +221,7 @@ public final class FrameworkLogHandler
                 sb.append( record.getSourceMethodName() );
             }
             sb.append( "]" ); //$NON-NLS-1$
-            return nonNull( sb.toString() );
+            return sb.toString();
         }
     }
 }

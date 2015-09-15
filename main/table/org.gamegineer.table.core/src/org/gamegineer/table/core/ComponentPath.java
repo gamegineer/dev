@@ -22,7 +22,6 @@
 package org.gamegineer.table.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -212,6 +211,6 @@ public final class ComponentPath
         }
 
         sb.append( "]" ); //$NON-NLS-1$
-        return nonNull( sb.toString() );
+        return sb.toString();
     }
 }

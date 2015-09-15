@@ -1,6 +1,6 @@
 /*
  * TextUtils.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.ui.impl.util.swing;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -117,6 +116,6 @@ public final class TextUtils
             pathComponents.remove( midIndex );
         }
 
-        return nonNull( sb.toString() );
+        return sb.toString();
     }
 }

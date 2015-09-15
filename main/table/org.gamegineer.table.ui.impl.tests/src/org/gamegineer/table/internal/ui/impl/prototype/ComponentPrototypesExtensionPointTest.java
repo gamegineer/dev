@@ -191,7 +191,7 @@ public final class ComponentPrototypesExtensionPointTest
             sb.delete( sb.length() - separator.length(), sb.length() );
         }
 
-        return nonNull( sb.toString() );
+        return sb.toString();
     }
 
     /**
