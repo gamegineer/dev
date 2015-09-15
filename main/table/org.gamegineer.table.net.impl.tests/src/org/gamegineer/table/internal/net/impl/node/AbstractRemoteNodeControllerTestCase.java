@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.impl.node;
 
 import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertNotNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
@@ -154,7 +153,7 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends @NonNull IR
     public void setUp()
         throws Exception
     {
-        final IMocksControl nodeMocksControl = nodeMocksControl_ = nonNull( EasyMock.createNiceControl() );
+        final IMocksControl nodeMocksControl = nodeMocksControl_ = EasyMock.createNiceControl();
         final LocalNodeType node = createMockLocalNode( nodeMocksControl );
         nodeMocksControl_.replay();
 
@@ -197,7 +196,7 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends @NonNull IR
     public void testBind_PlayerName_Bound()
         throws Exception
     {
-        final IMocksControl nodeMocksControl = nonNull( EasyMock.createControl() );
+        final IMocksControl nodeMocksControl = EasyMock.createControl();
         final LocalNodeType node = createMockLocalNode( nodeMocksControl );
         node.bindRemoteNode( assumeNonNull( EasyMock.<RemoteNodeType>notNull() ) );
         EasyMock.expectLastCall().andThrow( new IllegalArgumentException() );

@@ -1,7 +1,13 @@
 class org/easymock/EasyMock
+createControl
+ ()Lorg/easymock/IMocksControl;
+ ()L1org/easymock/IMocksControl;
 createMock
  <T:Ljava/lang/Object;>(Ljava/lang/Class<TT;>;)TT;
  <T:Ljava/lang/Object;>(Ljava/lang/Class<TT;>;)T1T;
+createNiceControl
+ ()Lorg/easymock/IMocksControl;
+ ()L1org/easymock/IMocksControl;
 createNiceMock
  <T:Ljava/lang/Object;>(Ljava/lang/Class<TT;>;)TT;
  <T:Ljava/lang/Object;>(Ljava/lang/Class<TT;>;)T1T;
