@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.core;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +87,7 @@ public final class SingleThreadedTableEnvironmentContextTest
     @Test
     public void testFireEventNotification_Locked_DoesNotFireEventNotification()
     {
-        final Runnable eventNotification = nonNull( mocksControl_.createMock( Runnable.class ) );
+        final Runnable eventNotification = mocksControl_.createMock( Runnable.class );
         mocksControl_.replay();
 
         tableEnvironmentContext_.getLock().lock();
@@ -104,7 +103,7 @@ public final class SingleThreadedTableEnvironmentContextTest
     @Test
     public void testTableEnvironmentLock_Unlock_Locked_DoesNotFirePendingEventNotifications()
     {
-        final Runnable eventNotification = nonNull( mocksControl_.createMock( Runnable.class ) );
+        final Runnable eventNotification = mocksControl_.createMock( Runnable.class );
         mocksControl_.replay();
 
         tableEnvironmentContext_.getLock().lock();

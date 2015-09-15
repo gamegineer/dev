@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.impl.node.client.handlers;
 
 import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.jdt.annotation.DefaultLocation;
@@ -112,7 +111,7 @@ public final class HelloResponseMessageHandlerTest
     @Test
     public void testHandleMessage_HelloResponseMessage_SupportedChosenProtocolVersion()
     {
-        final IRemoteServerNodeController remoteNodeController = nonNull( mocksControl_.createMock( IRemoteServerNodeController.class ) );
+        final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
         mocksControl_.replay();
 
         final HelloResponseMessage message = new HelloResponseMessage();

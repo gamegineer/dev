@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.action;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Action;
@@ -109,7 +108,7 @@ public final class ActionMediatorTest
     public void testBindActionListener_Listener_Bound()
     {
         final BasicAction action = createBasicAction();
-        final ActionListener listener = nonNull( mocksControl_.createMock( ActionListener.class ) );
+        final ActionListener listener = mocksControl_.createMock( ActionListener.class );
         mediator_.bindActionListener( action, listener );
 
         mediator_.bindActionListener( action, listener );
@@ -142,7 +141,7 @@ public final class ActionMediatorTest
     public void testBindShouldEnablePredicate_Predicate_Bound()
     {
         final BasicAction action = createBasicAction();
-        final IPredicate<Action> predicate = nonNull( mocksControl_.createMock( IPredicate.class ) );
+        final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
         mediator_.bindShouldEnablePredicate( action, predicate );
 
         mediator_.bindShouldEnablePredicate( action, predicate );
@@ -194,7 +193,7 @@ public final class ActionMediatorTest
     public void testBindShouldSelectPredicate_Predicate_Bound()
     {
         final BasicAction action = createBasicAction();
-        final IPredicate<Action> predicate = nonNull( mocksControl_.createMock( IPredicate.class ) );
+        final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
         mediator_.bindShouldSelectPredicate( action, predicate );
 
         mediator_.bindShouldSelectPredicate( action, predicate );
@@ -255,7 +254,7 @@ public final class ActionMediatorTest
     public void testUnbind_UnbindsActionListeners()
     {
         final BasicAction action = createBasicAction();
-        final ActionListener listener = nonNull( mocksControl_.createMock( ActionListener.class ) );
+        final ActionListener listener = mocksControl_.createMock( ActionListener.class );
         mocksControl_.replay();
         mediator_.bindActionListener( action, listener );
 
@@ -335,9 +334,9 @@ public final class ActionMediatorTest
     public void testUnbindAll_UnbindsActionListeners()
     {
         final BasicAction action1 = createBasicAction();
-        final ActionListener listener1 = nonNull( mocksControl_.createMock( ActionListener.class ) );
+        final ActionListener listener1 = mocksControl_.createMock( ActionListener.class );
         final BasicAction action2 = createBasicAction();
-        final ActionListener listener2 = nonNull( mocksControl_.createMock( ActionListener.class ) );
+        final ActionListener listener2 = mocksControl_.createMock( ActionListener.class );
         mocksControl_.replay();
         mediator_.bindActionListener( action1, listener1 );
         mediator_.bindActionListener( action2, listener2 );

@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node.server;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import org.easymock.IMocksControl;
 import org.eclipse.jdt.annotation.NonNull;
 import org.gamegineer.table.internal.net.impl.node.AbstractRemoteNodeControllerTestCase;
@@ -60,6 +59,6 @@ public abstract class AbstractRemoteClientNodeControllerTestCase<T extends @NonN
     protected final IServerNode createMockLocalNode(
         final IMocksControl mocksControl )
     {
-        return nonNull( mocksControl.createMock( IServerNode.class ) );
+        return mocksControl.createMock( IServerNode.class );
     }
 }

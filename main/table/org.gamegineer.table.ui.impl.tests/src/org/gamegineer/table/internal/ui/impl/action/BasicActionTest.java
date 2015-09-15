@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.action;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Action;
@@ -115,7 +114,7 @@ public final class BasicActionTest
     @Test( expected = IllegalArgumentException.class )
     public void testAddActionListener_Listener_Present()
     {
-        final ActionListener listener = nonNull( mocksControl_.createMock( ActionListener.class ) );
+        final ActionListener listener = mocksControl_.createMock( ActionListener.class );
         action_.addActionListener( listener );
 
         action_.addActionListener( listener );
@@ -147,7 +146,7 @@ public final class BasicActionTest
     @Test( expected = IllegalArgumentException.class )
     public void testAddShouldEnablePredicate_Predicate_Present()
     {
-        final IPredicate<Action> predicate = nonNull( mocksControl_.createMock( IPredicate.class ) );
+        final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
         action_.addShouldEnablePredicate( predicate );
 
         action_.addShouldEnablePredicate( predicate );
@@ -179,7 +178,7 @@ public final class BasicActionTest
     @Test( expected = IllegalArgumentException.class )
     public void testAddShouldSelectPredicate_Predicate_Present()
     {
-        final IPredicate<Action> predicate = nonNull( mocksControl_.createMock( IPredicate.class ) );
+        final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
         action_.addShouldSelectPredicate( predicate );
 
         action_.addShouldSelectPredicate( predicate );
@@ -193,7 +192,7 @@ public final class BasicActionTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveActionListener_Listener_Absent()
     {
-        action_.removeActionListener( nonNull( mocksControl_.createMock( ActionListener.class ) ) );
+        action_.removeActionListener( mocksControl_.createMock( ActionListener.class ) );
     }
 
     /**
@@ -203,7 +202,7 @@ public final class BasicActionTest
     @Test
     public void testRemoveActionListener_Listener_Present()
     {
-        final ActionListener listener = nonNull( mocksControl_.createMock( ActionListener.class ) );
+        final ActionListener listener = mocksControl_.createMock( ActionListener.class );
         mocksControl_.replay();
         action_.addActionListener( listener );
 
@@ -221,7 +220,7 @@ public final class BasicActionTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveShouldEnablePredicate_Predicate_Absent()
     {
-        action_.removeShouldEnablePredicate( nonNull( mocksControl_.createMock( IPredicate.class ) ) );
+        action_.removeShouldEnablePredicate( mocksControl_.createMock( IPredicate.class ) );
     }
 
     /**
@@ -232,7 +231,7 @@ public final class BasicActionTest
     @Test
     public void testRemoveShouldEnablePredicate_Predicate_Present()
     {
-        final IPredicate<Action> predicate = nonNull( mocksControl_.createMock( IPredicate.class ) );
+        final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
         mocksControl_.replay();
         action_.addShouldEnablePredicate( predicate );
 
@@ -250,7 +249,7 @@ public final class BasicActionTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveShouldSelectPredicate_Predicate_Absent()
     {
-        action_.removeShouldSelectPredicate( nonNull( mocksControl_.createMock( IPredicate.class ) ) );
+        action_.removeShouldSelectPredicate( mocksControl_.createMock( IPredicate.class ) );
     }
 
     /**
@@ -261,7 +260,7 @@ public final class BasicActionTest
     @Test
     public void testRemoveShouldSelectPredicate_Predicate_Present()
     {
-        final IPredicate<Action> predicate = nonNull( mocksControl_.createMock( IPredicate.class ) );
+        final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
         mocksControl_.replay();
         action_.addShouldSelectPredicate( predicate );
 

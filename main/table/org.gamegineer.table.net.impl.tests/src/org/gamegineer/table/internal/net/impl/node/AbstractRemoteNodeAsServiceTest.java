@@ -1,6 +1,6 @@
 /*
  * AbstractRemoteNodeAsServiceTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.internal.net.impl.transport.AbstractServiceTestCase;
@@ -59,7 +58,7 @@ public final class AbstractRemoteNodeAsServiceTest
     private static INode<IRemoteNode> createMockLocalNode()
     {
         final IMocksControl mocksControl = EasyMock.createControl();
-        final INode<IRemoteNode> localNode = nonNull( mocksControl.createMock( INode.class ) );
+        final INode<IRemoteNode> localNode = mocksControl.createMock( INode.class );
         mocksControl.replay();
         return localNode;
     }

@@ -1,6 +1,6 @@
 /*
  * ComponentSurfaceDesignUIRegistryExtensionPointAdapterTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -103,7 +102,7 @@ public final class ComponentSurfaceDesignUIRegistryExtensionPointAdapterTest
         EasyMock.expect( configurationElement.getAttribute( "name" ) ).andReturn( name ).anyTimes(); //$NON-NLS-1$
         EasyMock.expect( configurationElement.getAttribute( "icon" ) ).andReturn( iconPath ).anyTimes(); //$NON-NLS-1$
         EasyMock.expect( configurationElement.getContributor() ).andReturn( contributor ).anyTimes();
-        return new ComponentSurfaceDesignUI( id, name, nonNull( mocksControl.createMock( Icon.class ) ) );
+        return new ComponentSurfaceDesignUI( id, name, mocksControl.createMock( Icon.class ) );
     }
 
     /*

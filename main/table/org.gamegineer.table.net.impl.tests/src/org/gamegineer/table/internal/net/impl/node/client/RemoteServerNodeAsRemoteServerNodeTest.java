@@ -1,6 +1,6 @@
 /*
  * RemoteServerNodeAsRemoteServerNodeTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node.client;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.internal.net.impl.node.INodeLayer;
@@ -59,7 +58,7 @@ public final class RemoteServerNodeAsRemoteServerNodeTest
     private static IClientNode createMockLocalNode()
     {
         final IMocksControl mocksControl = EasyMock.createNiceControl();
-        final IClientNode localNode = nonNull( mocksControl.createMock( IClientNode.class ) );
+        final IClientNode localNode = mocksControl.createMock( IClientNode.class );
         mocksControl.replay();
         return localNode;
     }

@@ -1,6 +1,6 @@
 /*
  * ContainerLayoutRegistryExtensionPointAdapterTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.core.impl;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -62,7 +61,7 @@ public final class ContainerLayoutRegistryExtensionPointAdapterTest
         final IMocksControl mocksControl )
         throws Exception
     {
-        final IContainerLayout expectedObject = nonNull( mocksControl.createMock( IContainerLayout.class ) );
+        final IContainerLayout expectedObject = mocksControl.createMock( IContainerLayout.class );
         EasyMock.expect( configurationElement.getAttribute( "id" ) ).andReturn( "expected-id" ); //$NON-NLS-1$ //$NON-NLS-2$
         EasyMock.expect( configurationElement.createExecutableExtension( "className" ) ).andReturn( expectedObject ); //$NON-NLS-1$
         return expectedObject;

@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node.common.handlers;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.jdt.annotation.DefaultLocation;
@@ -95,7 +94,7 @@ public final class TableMessageHandlerTest
         throws Exception
     {
         final Object tableMemento = new Object();
-        final INetworkTable table = nonNull( mocksControl_.createMock( INetworkTable.class ) );
+        final INetworkTable table = mocksControl_.createMock( INetworkTable.class );
         final ITableManager tableManager = mocksControl_.createMock( ITableManager.class );
         tableManager.setTableState( table, tableMemento );
         final INode localNode = mocksControl_.createMock( INode.class );

@@ -22,7 +22,6 @@
 package org.gamegineer.table.core.test;
 
 import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -757,7 +756,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test( expected = IllegalArgumentException.class )
     public void testAddContainerListener_Listener_Present()
     {
-        final IContainerListener listener = nonNull( mocksControl_.createMock( IContainerListener.class ) );
+        final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
         getContainer().addContainerListener( listener );
 
         getContainer().addContainerListener( listener );
@@ -901,7 +900,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test
     public void testRemoveAllComponents_Empty_DoesNotFireComponentRemovedEvent()
     {
-        final IContainerListener listener = nonNull( mocksControl_.createMock( IContainerListener.class ) );
+        final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
         mocksControl_.replay();
         getContainer().addContainerListener( listener );
 
@@ -1240,7 +1239,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveContainerListener_Listener_Absent()
     {
-        getContainer().removeContainerListener( nonNull( mocksControl_.createMock( IContainerListener.class ) ) );
+        getContainer().removeContainerListener( mocksControl_.createMock( IContainerListener.class ) );
     }
 
     /**

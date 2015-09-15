@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.impl.node;
 
 import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
@@ -79,7 +78,7 @@ public final class AbstractRemoteNodeTest
     private static INode<IRemoteNode> createMockLocalNode()
     {
         final IMocksControl mocksControl = EasyMock.createControl();
-        final INode<IRemoteNode> localNode = nonNull( mocksControl.createMock( INode.class ) );
+        final INode<IRemoteNode> localNode = mocksControl.createMock( INode.class );
         mocksControl.replay();
         return localNode;
     }
@@ -150,7 +149,7 @@ public final class AbstractRemoteNodeTest
     public void testMessageReceived_MessageEnvelope_ErrorMessage_Uncorrelated()
         throws Exception
     {
-        final IServiceContext serviceContext = nonNull( mocksControl_.createMock( IServiceContext.class ) );
+        final IServiceContext serviceContext = mocksControl_.createMock( IServiceContext.class );
         final ErrorMessage message = new ErrorMessage();
         message.setId( IMessage.MINIMUM_ID );
         message.setCorrelationId( IMessage.NULL_CORRELATION_ID );
@@ -176,7 +175,7 @@ public final class AbstractRemoteNodeTest
     public void testMessageReceived_MessageEnvelope_UnhandledMessage_Correlated_Error()
         throws Exception
     {
-        final IServiceContext serviceContext = nonNull( mocksControl_.createMock( IServiceContext.class ) );
+        final IServiceContext serviceContext = mocksControl_.createMock( IServiceContext.class );
         final ErrorMessage message = new ErrorMessage();
         message.setId( IMessage.MINIMUM_ID );
         message.setCorrelationId( IMessage.MINIMUM_ID );

@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.impl.node;
 
 import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
@@ -94,7 +93,7 @@ public final class AbstractMessageHandlerTest
     @Test
     public void testHandleMessage_Message_Supported()
     {
-        final IRemoteNodeController<@NonNull ?> remoteNodeController = nonNull( mocksControl_.createMock( IRemoteNodeController.class ) );
+        final IRemoteNodeController<@NonNull ?> remoteNodeController = mocksControl_.createMock( IRemoteNodeController.class );
         final IMessage message = new FakeMessage();
         mocksControl_.replay();
 

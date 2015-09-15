@@ -22,7 +22,6 @@
 package org.gamegineer.table.net.test;
 
 import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;
@@ -172,7 +171,7 @@ public abstract class AbstractTableNetworkTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testAddTableNetworkListener_Listener_Present()
     {
-        final ITableNetworkListener listener = nonNull( mocksControl_.createMock( ITableNetworkListener.class ) );
+        final ITableNetworkListener listener = mocksControl_.createMock( ITableNetworkListener.class );
         getTableNetwork().addTableNetworkListener( listener );
 
         getTableNetwork().addTableNetworkListener( listener );
@@ -211,7 +210,7 @@ public abstract class AbstractTableNetworkTestCase
     public void testDisconnect_Disconnected_DoesNotFireDisconnectedEvent()
         throws Exception
     {
-        final ITableNetworkListener listener = nonNull( mocksControl_.createMock( ITableNetworkListener.class ) );
+        final ITableNetworkListener listener = mocksControl_.createMock( ITableNetworkListener.class );
         mocksControl_.replay();
         getTableNetwork().addTableNetworkListener( listener );
 
@@ -318,7 +317,7 @@ public abstract class AbstractTableNetworkTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveTableNetworkListener_Listener_Absent()
     {
-        getTableNetwork().removeTableNetworkListener( nonNull( mocksControl_.createMock( ITableNetworkListener.class ) ) );
+        getTableNetwork().removeTableNetworkListener( mocksControl_.createMock( ITableNetworkListener.class ) );
     }
 
     /**
