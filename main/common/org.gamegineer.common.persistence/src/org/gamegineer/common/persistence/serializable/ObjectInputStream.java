@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.persistence.serializable;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectStreamClass;
@@ -101,7 +100,7 @@ public final class ObjectInputStream
     {
         if( desc != null )
         {
-            final IPersistenceDelegate delegate = persistenceDelegateRegistry_.getPersistenceDelegate( nonNull( desc.getName() ) );
+            final IPersistenceDelegate delegate = persistenceDelegateRegistry_.getPersistenceDelegate( desc.getName() );
             if( delegate != null )
             {
                 return delegate.resolveClass( this, desc );
