@@ -1,6 +1,6 @@
 /*
  * PassiveTransportLayerAsTransportLayerTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.transport.tcp;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.impl.transport.AbstractTransportLayerTestCase;
 import org.gamegineer.table.internal.net.impl.transport.ITransportLayer;
@@ -58,6 +57,6 @@ public final class PassiveTransportLayerAsTransportLayerTest
     protected ITransportLayer createTransportLayer()
         throws Exception
     {
-        return new TransportLayerProxy( new PassiveTransportLayer.Factory().createTransportLayer( nonNull( EasyMock.createMock( ITransportLayerContext.class ) ) ) );
+        return new TransportLayerProxy( new PassiveTransportLayer.Factory().createTransportLayer( EasyMock.createMock( ITransportLayerContext.class ) ) );
     }
 }

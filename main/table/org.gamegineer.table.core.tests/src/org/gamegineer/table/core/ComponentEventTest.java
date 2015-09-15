@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.core;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertSame;
 import org.easymock.EasyMock;
 import org.eclipse.jdt.annotation.DefaultLocation;
@@ -69,7 +68,7 @@ public final class ComponentEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new ComponentEvent( nonNull( EasyMock.createMock( IComponent.class ) ), new ComponentPath( null, 0 ) );
+        event_ = new ComponentEvent( EasyMock.createMock( IComponent.class ), new ComponentPath( null, 0 ) );
     }
 
     /**

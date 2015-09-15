@@ -1,6 +1,6 @@
 /*
  * ContainerContentChangedEventTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.core;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import org.easymock.EasyMock;
 import org.junit.Test;
 
@@ -56,6 +55,6 @@ public final class ContainerContentChangedEventTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_ComponentIndex_Illegal_Negative()
     {
-        new ContainerContentChangedEvent( nonNull( EasyMock.createMock( IContainer.class ) ), new ComponentPath( null, 0 ), nonNull( EasyMock.createMock( IComponent.class ) ), -1 );
+        new ContainerContentChangedEvent( EasyMock.createMock( IContainer.class ), new ComponentPath( null, 0 ), EasyMock.createMock( IComponent.class ), -1 );
     }
 }

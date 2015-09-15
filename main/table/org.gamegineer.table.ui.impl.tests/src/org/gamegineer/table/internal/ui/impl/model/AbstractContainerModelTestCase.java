@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.ui.impl.model;
 
 import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -198,7 +197,7 @@ public abstract class AbstractContainerModelTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testAddContainerModelListener_Listener_Present()
     {
-        final IContainerModelListener listener = nonNull( EasyMock.createMock( IContainerModelListener.class ) );
+        final IContainerModelListener listener = EasyMock.createMock( IContainerModelListener.class );
         getContainerModel().addContainerModelListener( listener );
 
         getContainerModel().addContainerModelListener( listener );
@@ -485,7 +484,7 @@ public abstract class AbstractContainerModelTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveContainerModelListener_Listener_Absent()
     {
-        getContainerModel().removeContainerModelListener( nonNull( EasyMock.createMock( IContainerModelListener.class ) ) );
+        getContainerModel().removeContainerModelListener( EasyMock.createMock( IContainerModelListener.class ) );
     }
 
     /**

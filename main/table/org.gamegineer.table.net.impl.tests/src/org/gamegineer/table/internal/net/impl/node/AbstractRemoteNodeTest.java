@@ -284,8 +284,8 @@ public final class AbstractRemoteNodeTest
     @Test( expected = IllegalArgumentException.class )
     public void testRegisterUncorrelatedMessageHandler_Type_Present()
     {
-        remoteNode_.registerUncorrelatedMessageHandler( IMessage.class, nonNull( EasyMock.createMock( IMessageHandler.class ) ) );
+        remoteNode_.registerUncorrelatedMessageHandler( IMessage.class, EasyMock.createMock( IMessageHandler.class ) );
 
-        remoteNode_.registerUncorrelatedMessageHandler( IMessage.class, nonNull( EasyMock.createMock( IMessageHandler.class ) ) );
+        remoteNode_.registerUncorrelatedMessageHandler( IMessage.class, EasyMock.createMock( IMessageHandler.class ) );
     }
 }

@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.prototype;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -207,7 +206,7 @@ public final class ComponentPrototypeMenuBuilderTest
         final JMenu categoryMenu = new JMenu( categoryName );
         categoryMenu.setMnemonic( categoryMnemonic );
         expectedRootMenu_.add( categoryMenu );
-        final IComponentPrototypeFactory componentPrototypeFactory = nonNull( EasyMock.createMock( IComponentPrototypeFactory.class ) );
+        final IComponentPrototypeFactory componentPrototypeFactory = EasyMock.createMock( IComponentPrototypeFactory.class );
         final int componentPrototypeMnemonic = KeyEvent.VK_2;
         final String componentPrototypeName = "componentPrototypeName"; //$NON-NLS-1$
         final JMenuItem componentPrototypeMenuItem = new JMenu( componentPrototypeName );
@@ -235,7 +234,7 @@ public final class ComponentPrototypeMenuBuilderTest
         final JMenu categoryMenu = new JMenu( categoryName );
         categoryMenu.setMnemonic( categoryMnemonic );
         expectedRootMenu_.add( categoryMenu );
-        final IComponentPrototypeFactory componentPrototypeFactory = nonNull( EasyMock.createMock( IComponentPrototypeFactory.class ) );
+        final IComponentPrototypeFactory componentPrototypeFactory = EasyMock.createMock( IComponentPrototypeFactory.class );
         final int componentPrototypeMnemonic = KeyEvent.VK_2;
         final String componentPrototypeName = "componentPrototypeName"; //$NON-NLS-1$
         final JMenuItem componentPrototypeMenuItem = new JMenu( componentPrototypeName );
@@ -257,7 +256,7 @@ public final class ComponentPrototypeMenuBuilderTest
     @Test
     public void testAddComponentPrototype_MissingCategory()
     {
-        final IComponentPrototypeFactory componentPrototypeFactory = nonNull( EasyMock.createMock( IComponentPrototypeFactory.class ) );
+        final IComponentPrototypeFactory componentPrototypeFactory = EasyMock.createMock( IComponentPrototypeFactory.class );
         final int mnemonic = KeyEvent.VK_1;
         final String name = "name"; //$NON-NLS-1$
 
@@ -274,7 +273,7 @@ public final class ComponentPrototypeMenuBuilderTest
     @Test
     public void testAddComponentPrototype_Root()
     {
-        final IComponentPrototypeFactory componentPrototypeFactory = nonNull( EasyMock.createMock( IComponentPrototypeFactory.class ) );
+        final IComponentPrototypeFactory componentPrototypeFactory = EasyMock.createMock( IComponentPrototypeFactory.class );
         final int mnemonic = KeyEvent.VK_1;
         final String name = "name"; //$NON-NLS-1$
         final JMenuItem menuItem = new JMenu( name );
@@ -308,7 +307,7 @@ public final class ComponentPrototypeMenuBuilderTest
         final JMenu menu2 = new JMenu( name2 );
         menu2.setMnemonic( mnemonic2 );
         menu1.add( menu2 );
-        final IComponentPrototypeFactory componentPrototypeFactory = nonNull( EasyMock.createMock( IComponentPrototypeFactory.class ) );
+        final IComponentPrototypeFactory componentPrototypeFactory = EasyMock.createMock( IComponentPrototypeFactory.class );
         final int componentPrototypeMnemonic = KeyEvent.VK_3;
         final String componentPrototypeName = "componentPrototypeName"; //$NON-NLS-1$
         final JMenuItem menuItem = new JMenu( componentPrototypeName );
@@ -344,7 +343,7 @@ public final class ComponentPrototypeMenuBuilderTest
         final JMenu menu2 = new JMenu( name2 );
         menu2.setMnemonic( mnemonic2 );
         menu1.add( menu2 );
-        final IComponentPrototypeFactory componentPrototypeFactory = nonNull( EasyMock.createMock( IComponentPrototypeFactory.class ) );
+        final IComponentPrototypeFactory componentPrototypeFactory = EasyMock.createMock( IComponentPrototypeFactory.class );
         final int componentPrototypeMnemonic = KeyEvent.VK_3;
         final String componentPrototypeName = "componentPrototypeName"; //$NON-NLS-1$
         final JMenuItem menuItem = new JMenu( componentPrototypeName );
@@ -373,7 +372,7 @@ public final class ComponentPrototypeMenuBuilderTest
         final JMenu menu = new JMenu( name );
         menu.setMnemonic( mnemonic );
         expectedRootMenu_.add( menu );
-        final IComponentPrototypeFactory componentPrototypeFactory = nonNull( EasyMock.createMock( IComponentPrototypeFactory.class ) );
+        final IComponentPrototypeFactory componentPrototypeFactory = EasyMock.createMock( IComponentPrototypeFactory.class );
         final int componentPrototypeMnemonic = KeyEvent.VK_2;
         final String componentPrototypeName = "componentPrototypeName"; //$NON-NLS-1$
         final JMenuItem menuItem = new JMenu( componentPrototypeName );

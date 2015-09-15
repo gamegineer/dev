@@ -22,7 +22,6 @@
 package org.gamegineer.table.core.test;
 
 import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.gamegineer.table.core.test.Assert.assertComponentEquals;
 import static org.gamegineer.test.core.Assert.assertImmutableCollection;
 import static org.junit.Assert.assertEquals;
@@ -327,7 +326,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test( expected = IllegalArgumentException.class )
     public void testAddComponentListener_Listener_Present()
     {
-        final IComponentListener listener = nonNull( EasyMock.createMock( IComponentListener.class ) );
+        final IComponentListener listener = EasyMock.createMock( IComponentListener.class );
         getComponent().addComponentListener( listener );
 
         getComponent().addComponentListener( listener );
@@ -707,7 +706,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveComponentListener_Listener_Absent()
     {
-        getComponent().removeComponentListener( nonNull( EasyMock.createMock( IComponentListener.class ) ) );
+        getComponent().removeComponentListener( EasyMock.createMock( IComponentListener.class ) );
     }
 
     /**

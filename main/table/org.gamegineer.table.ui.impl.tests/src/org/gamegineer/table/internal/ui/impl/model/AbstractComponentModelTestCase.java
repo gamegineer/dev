@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.ui.impl.model;
 
 import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Point;
 import org.easymock.EasyMock;
@@ -212,7 +211,7 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     @Test( expected = IllegalArgumentException.class )
     public void testAddComponentModelListener_Listener_Present()
     {
-        final IComponentModelListener listener = nonNull( EasyMock.createMock( IComponentModelListener.class ) );
+        final IComponentModelListener listener = EasyMock.createMock( IComponentModelListener.class );
         componentModel_.addComponentModelListener( listener );
 
         componentModel_.addComponentModelListener( listener );
@@ -415,7 +414,7 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveComponentModelListener_Listener_Absent()
     {
-        componentModel_.removeComponentModelListener( nonNull( EasyMock.createMock( IComponentModelListener.class ) ) );
+        componentModel_.removeComponentModelListener( EasyMock.createMock( IComponentModelListener.class ) );
     }
 
     /**

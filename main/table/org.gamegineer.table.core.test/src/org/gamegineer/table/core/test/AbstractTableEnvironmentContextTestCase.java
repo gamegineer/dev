@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.core.test;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertNotNull;
 import org.easymock.EasyMock;
 import org.eclipse.jdt.annotation.DefaultLocation;
@@ -110,6 +109,6 @@ public abstract class AbstractTableEnvironmentContextTestCase<TableEnvironmentCo
     @Test( expected = IllegalStateException.class )
     public void testFireEventNotification_ThrowsExceptionWhenLockNotHeld()
     {
-        tableEnvironmentContext_.fireEventNotification( nonNull( EasyMock.createMock( Runnable.class ) ) );
+        tableEnvironmentContext_.fireEventNotification( EasyMock.createMock( Runnable.class ) );
     }
 }

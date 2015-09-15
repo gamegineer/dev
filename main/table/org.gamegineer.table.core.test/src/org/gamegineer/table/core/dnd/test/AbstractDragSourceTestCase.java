@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.core.dnd.test;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -150,7 +149,7 @@ public abstract class AbstractDragSourceTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testBeginDrag_Component_Illegal_NoContainer()
     {
-        dragSource_.beginDrag( new Point( 0, 0 ), table_.getTabletop(), nonNull( EasyMock.createMock( IDragStrategyFactory.class ) ) );
+        dragSource_.beginDrag( new Point( 0, 0 ), table_.getTabletop(), EasyMock.createMock( IDragStrategyFactory.class ) );
     }
 
     /**
@@ -160,7 +159,7 @@ public abstract class AbstractDragSourceTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testBeginDrag_Component_Illegal_NotExistsInTable()
     {
-        dragSource_.beginDrag( new Point( 0, 0 ), createUniqueComponent(), nonNull( EasyMock.createMock( IDragStrategyFactory.class ) ) );
+        dragSource_.beginDrag( new Point( 0, 0 ), createUniqueComponent(), EasyMock.createMock( IDragStrategyFactory.class ) );
     }
 
     /**

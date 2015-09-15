@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.core.test;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Dimension;
 import org.easymock.EasyMock;
@@ -134,6 +133,6 @@ public abstract class AbstractAbstractContainerLayoutTestCase<ContainerLayoutTyp
     @Test( expected = IllegalArgumentException.class )
     public void testGetComponentOffsetAt_Index_Illegal_Negative()
     {
-        getComponentOffsetAt( getContainerLayout(), nonNull( EasyMock.createMock( IContainer.class ) ), -1 );
+        getComponentOffsetAt( getContainerLayout(), EasyMock.createMock( IContainer.class ), -1 );
     }
 }

@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import java.util.Collection;
 import java.util.Collections;
@@ -179,7 +178,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends @No
     public void testConnect_TransportLayerOpenFailure_DoesNotInvokeConnected()
         throws Exception
     {
-        final MockNode node = new MockNode.Factory().createNode( nonNull( EasyMock.createMock( ITableNetworkController.class ) ) );
+        final MockNode node = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
         node.setTransportLayer( createFailingTransportLayer() );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
 
@@ -204,7 +203,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends @No
     public void testConnect_TransportLayerOpenFailure_InvokesConnecting()
         throws Exception
     {
-        final MockNode node = new MockNode.Factory().createNode( nonNull( EasyMock.createMock( ITableNetworkController.class ) ) );
+        final MockNode node = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
         node.setTransportLayer( createFailingTransportLayer() );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
 
@@ -229,7 +228,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends @No
     public void testConnect_TransportLayerOpenFailure_InvokesDispose()
         throws Exception
     {
-        final MockNode node = new MockNode.Factory().createNode( nonNull( EasyMock.createMock( ITableNetworkController.class ) ) );
+        final MockNode node = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
         node.setTransportLayer( createFailingTransportLayer() );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
 
@@ -254,7 +253,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends @No
     public void testConnect_TransportLayerOpenSuccess_InvokesConnected()
         throws Exception
     {
-        final MockNode node = new MockNode.Factory().createNode( nonNull( EasyMock.createMock( ITableNetworkController.class ) ) );
+        final MockNode node = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
         node.setTransportLayer( createSuccessfulTransportLayer() );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
 
@@ -274,7 +273,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends @No
     public void testConnect_TransportLayerOpenSuccess_InvokesConnecting()
         throws Exception
     {
-        final MockNode node = new MockNode.Factory().createNode( nonNull( EasyMock.createMock( ITableNetworkController.class ) ) );
+        final MockNode node = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
         node.setTransportLayer( createSuccessfulTransportLayer() );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
 
@@ -295,7 +294,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends @No
     public void testDisconnect_TransportLayerOpen_InvokesDisconnected()
         throws Exception
     {
-        final MockNode node = new MockNode.Factory().createNode( nonNull( EasyMock.createMock( ITableNetworkController.class ) ) );
+        final MockNode node = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
         node.setTransportLayer( createSuccessfulTransportLayer() );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
         nodeLayerRunner.connect( createTableNetworkConfiguration() );
@@ -317,7 +316,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends @No
     public void testDisconnect_TransportLayerOpen_InvokesDisconnecting()
         throws Exception
     {
-        final MockNode node = new MockNode.Factory().createNode( nonNull( EasyMock.createMock( ITableNetworkController.class ) ) );
+        final MockNode node = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
         node.setTransportLayer( createSuccessfulTransportLayer() );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
         nodeLayerRunner.connect( createTableNetworkConfiguration() );
@@ -590,7 +589,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends @No
         @Override
         public ITableManager getTableManager()
         {
-            return nonNull( EasyMock.createMock( ITableManager.class ) );
+            return EasyMock.createMock( ITableManager.class );
         }
 
         /*

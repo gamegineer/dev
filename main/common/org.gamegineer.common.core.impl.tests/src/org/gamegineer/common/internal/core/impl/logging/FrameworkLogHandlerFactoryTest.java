@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import org.easymock.EasyMock;
 import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -80,9 +79,9 @@ public final class FrameworkLogHandlerFactoryTest
     @Test( expected = IllegalStateException.class )
     public void testBindFrameworkLog_ServiceAlreadyBound()
     {
-        factory_.bindFrameworkLog( nonNull( EasyMock.createMock( FrameworkLog.class ) ) );
+        factory_.bindFrameworkLog( EasyMock.createMock( FrameworkLog.class ) );
 
-        factory_.bindFrameworkLog( nonNull( EasyMock.createMock( FrameworkLog.class ) ) );
+        factory_.bindFrameworkLog( EasyMock.createMock( FrameworkLog.class ) );
     }
 
     /**
@@ -93,8 +92,8 @@ public final class FrameworkLogHandlerFactoryTest
     @Test( expected = IllegalStateException.class )
     public void testUnbindFrameworkLog_DifferentServiceBound()
     {
-        factory_.bindFrameworkLog( nonNull( EasyMock.createMock( FrameworkLog.class ) ) );
+        factory_.bindFrameworkLog( EasyMock.createMock( FrameworkLog.class ) );
 
-        factory_.unbindFrameworkLog( nonNull( EasyMock.createMock( FrameworkLog.class ) ) );
+        factory_.unbindFrameworkLog( EasyMock.createMock( FrameworkLog.class ) );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * TableNetworkConfigurationTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -59,7 +59,7 @@ public final class TableNetworkConfigurationTest
     {
         final char[] expectedPassword = nonNull( "password".toCharArray() ); //$NON-NLS-1$
         final SecureString password = new SecureString( expectedPassword );
-        final TableNetworkConfiguration configuration = new TableNetworkConfiguration( "hostName", 0, password, "localPlayerName", nonNull( EasyMock.createMock( ITable.class ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        final TableNetworkConfiguration configuration = new TableNetworkConfiguration( "hostName", 0, password, "localPlayerName", EasyMock.createMock( ITable.class ) ); //$NON-NLS-1$ //$NON-NLS-2$
         password.dispose();
 
         final char[] actualPassword = configuration.getPassword().toCharArray();
@@ -75,7 +75,7 @@ public final class TableNetworkConfigurationTest
     public void testGetPassword_ReturnValue_Copy()
     {
         final char[] expectedPassword = nonNull( "password".toCharArray() ); //$NON-NLS-1$
-        final TableNetworkConfiguration configuration = new TableNetworkConfiguration( "hostName", 0, new SecureString( expectedPassword ), "localPlayerName", nonNull( EasyMock.createMock( ITable.class ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        final TableNetworkConfiguration configuration = new TableNetworkConfiguration( "hostName", 0, new SecureString( expectedPassword ), "localPlayerName", EasyMock.createMock( ITable.class ) ); //$NON-NLS-1$ //$NON-NLS-2$
         final SecureString password = configuration.getPassword();
         password.dispose();
 

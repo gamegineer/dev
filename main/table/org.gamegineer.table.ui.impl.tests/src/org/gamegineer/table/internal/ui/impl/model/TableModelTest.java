@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.ui.impl.model;
 
 import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -311,7 +310,7 @@ public final class TableModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testAddTableModelListener_Listener_Present()
     {
-        final ITableModelListener listener = nonNull( EasyMock.createMock( ITableModelListener.class ) );
+        final ITableModelListener listener = EasyMock.createMock( ITableModelListener.class );
         tableModel_.addTableModelListener( listener );
 
         tableModel_.addTableModelListener( listener );
@@ -1086,7 +1085,7 @@ public final class TableModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveTableModelListener_Listener_Absent()
     {
-        tableModel_.removeTableModelListener( nonNull( EasyMock.createMock( ITableModelListener.class ) ) );
+        tableModel_.removeTableModelListener( EasyMock.createMock( ITableModelListener.class ) );
     }
 
     /**

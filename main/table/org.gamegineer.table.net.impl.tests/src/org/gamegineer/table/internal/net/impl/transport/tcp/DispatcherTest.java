@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.transport.tcp;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.nio.channels.ClosedChannelException;
@@ -122,7 +121,7 @@ public final class DispatcherTest
     public void setUp()
         throws Exception
     {
-        final AbstractTransportLayer transportLayer = transportLayer_ = new FakeTransportLayer.Factory().createTransportLayer( nonNull( EasyMock.createMock( ITransportLayerContext.class ) ) );
+        final AbstractTransportLayer transportLayer = transportLayer_ = new FakeTransportLayer.Factory().createTransportLayer( EasyMock.createMock( ITransportLayerContext.class ) );
         transportLayerRunner_ = new TransportLayerRunner( transportLayer );
 
         transportLayerRunner_.run( new Callable<@Nullable Void>()

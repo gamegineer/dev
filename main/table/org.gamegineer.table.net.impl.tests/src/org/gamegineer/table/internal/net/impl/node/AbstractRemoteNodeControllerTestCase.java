@@ -225,6 +225,6 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends @NonNull IR
     @Test( expected = IllegalStateException.class )
     public void testSendMessage_Closed()
     {
-        getRemoteNodeController().sendMessage( nonNull( EasyMock.createMock( IMessage.class ) ), EasyMock.createMock( IMessageHandler.class ) );
+        getRemoteNodeController().sendMessage( EasyMock.createMock( IMessage.class ), EasyMock.createMock( IMessageHandler.class ) );
     }
 }

@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.net;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import org.easymock.EasyMock;
@@ -70,7 +69,7 @@ public final class TableNetworkEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new TableNetworkEvent( nonNull( EasyMock.createMock( ITableNetwork.class ) ) );
+        event_ = new TableNetworkEvent( EasyMock.createMock( ITableNetwork.class ) );
         assertNotNull( event_ );
     }
 

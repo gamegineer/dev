@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -115,7 +114,7 @@ public final class AbstractNodeTest
         final MultiThreadedTableEnvironmentContext tableEnvironmentContext = tableEnvironmentContext_ = new MultiThreadedTableEnvironmentContext();
         table_ = TestTableEnvironments.createTableEnvironment( tableEnvironmentContext ).createTable();
 
-        final AbstractNode<@NonNull ?> node = node_ = new MockNode.Factory().createNode( nonNull( EasyMock.createMock( ITableNetworkController.class ) ) );
+        final AbstractNode<@NonNull ?> node = node_ = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
         nodeLayerRunner_ = new NodeLayerRunner( node );
     }
 
@@ -176,7 +175,7 @@ public final class AbstractNodeTest
                 };
             }
         };
-        final MockNode node = nodeFactory.createNode( nonNull( EasyMock.createMock( ITableNetworkController.class ) ) );
+        final MockNode node = nodeFactory.createNode( EasyMock.createMock( ITableNetworkController.class ) );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
 
         nodeLayerRunner.connect( configuration );
@@ -222,7 +221,7 @@ public final class AbstractNodeTest
                 };
             }
         };
-        final MockNode node = nodeFactory.createNode( nonNull( EasyMock.createMock( ITableNetworkController.class ) ) );
+        final MockNode node = nodeFactory.createNode( EasyMock.createMock( ITableNetworkController.class ) );
         final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
         nodeLayerRunner.connect( configuration );
 
@@ -309,7 +308,7 @@ public final class AbstractNodeTest
         @Override
         protected ITransportLayer createTransportLayer()
         {
-            return new FakeTransportLayerFactory().createActiveTransportLayer( nonNull( EasyMock.createNiceMock( ITransportLayerContext.class ) ) );
+            return new FakeTransportLayerFactory().createActiveTransportLayer( EasyMock.createNiceMock( ITransportLayerContext.class ) );
         }
 
         /*
@@ -336,7 +335,7 @@ public final class AbstractNodeTest
         @Override
         public ITableManager getTableManager()
         {
-            return nonNull( EasyMock.createMock( ITableManager.class ) );
+            return EasyMock.createMock( ITableManager.class );
         }
 
         /*
