@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.core.impl;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 
@@ -236,7 +235,7 @@ final class NonNlsMessages
     static String MementoUtils_attribute_absent(
         final String attributeName )
     {
-        return nonNull( bind( MementoUtils_attribute_absent, attributeName ) );
+        return bind( MementoUtils_attribute_absent, attributeName );
     }
 
     /**
@@ -252,7 +251,7 @@ final class NonNlsMessages
     static String MementoUtils_attributeValue_null(
         final String attributeName )
     {
-        return nonNull( bind( MementoUtils_attributeValue_null, attributeName ) );
+        return bind( MementoUtils_attributeValue_null, attributeName );
     }
 
     /**
@@ -268,6 +267,6 @@ final class NonNlsMessages
     static String MementoUtils_attributeValue_wrongType(
         final String attributeName )
     {
-        return nonNull( bind( MementoUtils_attributeValue_wrongType, attributeName ) );
+        return bind( MementoUtils_attributeValue_wrongType, attributeName );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.model;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.File;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
@@ -242,7 +241,7 @@ final class NonNlsMessages
     static String TableModel_readTableMemento_error(
         final File file )
     {
-        return nonNull( bind( TableModel_readTableMemento_error, file.getAbsolutePath() ) );
+        return bind( TableModel_readTableMemento_error, file.getAbsolutePath() );
     }
 
     /**
@@ -259,6 +258,6 @@ final class NonNlsMessages
     static String TableModel_writeTableMemento_error(
         final File file )
     {
-        return nonNull( bind( TableModel_writeTableMemento_error, file.getAbsolutePath() ) );
+        return bind( TableModel_writeTableMemento_error, file.getAbsolutePath() );
     }
 }

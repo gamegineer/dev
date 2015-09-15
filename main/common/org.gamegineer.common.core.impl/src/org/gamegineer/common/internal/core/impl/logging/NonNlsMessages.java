@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 
@@ -106,7 +105,7 @@ final class NonNlsMessages
     static String AbstractLoggingComponentFactory_createLoggingComponent_failed(
         final String typeName )
     {
-        return nonNull( bind( AbstractLoggingComponentFactory_createLoggingComponent_failed, typeName ) );
+        return bind( AbstractLoggingComponentFactory_createLoggingComponent_failed, typeName );
     }
 
     /**
@@ -123,7 +122,7 @@ final class NonNlsMessages
     static String AbstractLoggingComponentFactory_findComponentFactory_noComponentFactoryAvailable(
         final String typeName )
     {
-        return nonNull( bind( AbstractLoggingComponentFactory_findComponentFactory_noComponentFactoryAvailable, typeName ) );
+        return bind( AbstractLoggingComponentFactory_findComponentFactory_noComponentFactoryAvailable, typeName );
     }
 
     /**
@@ -138,6 +137,6 @@ final class NonNlsMessages
     static String AbstractLoggingComponentFactory_getComponentProperty_illegalPropertyValue(
         final String propertyName )
     {
-        return nonNull( bind( AbstractLoggingComponentFactory_getComponentProperty_illegalPropertyValue, propertyName ) );
+        return bind( AbstractLoggingComponentFactory_getComponentProperty_illegalPropertyValue, propertyName );
     }
 }

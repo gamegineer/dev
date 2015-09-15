@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.product;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.ui.TableResult;
@@ -97,7 +96,7 @@ final class NonNlsMessages
     static String Application_start_starting(
         final Version version )
     {
-        return nonNull( bind( Application_start_starting, version.toString() ) );
+        return bind( Application_start_starting, version.toString() );
     }
 
     /**
@@ -112,6 +111,6 @@ final class NonNlsMessages
     static String Application_start_stopped(
         final TableResult result )
     {
-        return nonNull( bind( Application_start_stopped, result.toString() ) );
+        return bind( Application_start_stopped, result.toString() );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.ui;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.core.ComponentStrategyId;
@@ -99,7 +98,7 @@ final class NonNlsMessages
     static String ComponentStrategyUIRegistry_getComponentStrategyUI_unknownComponentStrategyId(
         final ComponentStrategyId componentStrategyId )
     {
-        return nonNull( bind( ComponentStrategyUIRegistry_getComponentStrategyUI_unknownComponentStrategyId, componentStrategyId ) );
+        return bind( ComponentStrategyUIRegistry_getComponentStrategyUI_unknownComponentStrategyId, componentStrategyId );
     }
 
     // --- ComponentSurfaceDesignUIRegistry ---------------------------------
@@ -117,6 +116,6 @@ final class NonNlsMessages
     static String ComponentSurfaceDesignUIRegistry_getComponentSurfaceDesignUI_unknownComponentSurfaceDesignId(
         final ComponentSurfaceDesignId componentSurfaceDesignId )
     {
-        return nonNull( bind( ComponentSurfaceDesignUIRegistry_getComponentSurfaceDesignUI_unknownComponentSurfaceDesignId, componentSurfaceDesignId ) );
+        return bind( ComponentSurfaceDesignUIRegistry_getComponentSurfaceDesignUI_unknownComponentSurfaceDesignId, componentSurfaceDesignId );
     }
 }

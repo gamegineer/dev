@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.cards.internal.ui.impl.prototypes;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 
@@ -109,7 +108,7 @@ final class NonNlsMessages
     static String CardPilePrototypeFactory_setInitializationData_parameterNotSpecified(
         final String parameterName )
     {
-        return nonNull( bind( CardPilePrototypeFactory_setInitializationData_parameterNotSpecified, parameterName ) );
+        return bind( CardPilePrototypeFactory_setInitializationData_parameterNotSpecified, parameterName );
     }
 
     // --- CardPrototypeFactory ---------------------------------------------
@@ -127,7 +126,7 @@ final class NonNlsMessages
     static String CardPrototypeFactory_setInitializationData_parameterNotSpecified(
         final String parameterName )
     {
-        return nonNull( bind( CardPrototypeFactory_setInitializationData_parameterNotSpecified, parameterName ) );
+        return bind( CardPrototypeFactory_setInitializationData_parameterNotSpecified, parameterName );
     }
 
     // --- DeckPrototypeFactory ---------------------------------------------
@@ -145,6 +144,6 @@ final class NonNlsMessages
     static String DeckPrototypeFactory_setInitializationData_parameterNotSpecified(
         final String parameterName )
     {
-        return nonNull( bind( DeckPrototypeFactory_setInitializationData_parameterNotSpecified, parameterName ) );
+        return bind( DeckPrototypeFactory_setInitializationData_parameterNotSpecified, parameterName );
     }
 }

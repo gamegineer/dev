@@ -1,6 +1,6 @@
 /*
  * NlsMessages.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.util.swing;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.File;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
@@ -87,7 +86,7 @@ final class NlsMessages
     static String JFileChooser_confirmOverwriteFile_message(
         final File file )
     {
-        return nonNull( bind( JFileChooser_confirmOverwriteFile_message, file.getName() ) );
+        return bind( JFileChooser_confirmOverwriteFile_message, file.getName() );
     }
 
     /**
@@ -102,6 +101,6 @@ final class NlsMessages
     static String JFileChooser_warnFileNotFound_message(
         final File file )
     {
-        return nonNull( bind( JFileChooser_warnFileNotFound_message, file.getName() ) );
+        return bind( JFileChooser_warnFileNotFound_message, file.getName() );
     }
 }

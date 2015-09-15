@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.core;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 
@@ -158,7 +157,7 @@ final class NonNlsMessages
     static String ComponentStrategyRegistry_getComponentStrategy_unknownComponentStrategyId(
         final ComponentStrategyId componentStrategyId )
     {
-        return nonNull( bind( ComponentStrategyRegistry_getComponentStrategy_unknownComponentStrategyId, componentStrategyId ) );
+        return bind( ComponentStrategyRegistry_getComponentStrategy_unknownComponentStrategyId, componentStrategyId );
     }
 
     /**
@@ -175,7 +174,7 @@ final class NonNlsMessages
     static String ComponentStrategyRegistry_getContainerStrategy_notContainerStrategy(
         final ComponentStrategyId componentStrategyId )
     {
-        return nonNull( bind( ComponentStrategyRegistry_getContainerStrategy_notContainerStrategy, componentStrategyId ) );
+        return bind( ComponentStrategyRegistry_getContainerStrategy_notContainerStrategy, componentStrategyId );
     }
 
     // --- ComponentSurfaceDesignRegistry -----------------------------------
@@ -193,7 +192,7 @@ final class NonNlsMessages
     static String ComponentSurfaceDesignRegistry_getComponentSurfaceDesign_unknownComponentSurfaceDesignId(
         final ComponentSurfaceDesignId componentSurfaceDesignId )
     {
-        return nonNull( bind( ComponentSurfaceDesignRegistry_getComponentSurfaceDesign_unknownComponentSurfaceDesignId, componentSurfaceDesignId ) );
+        return bind( ComponentSurfaceDesignRegistry_getComponentSurfaceDesign_unknownComponentSurfaceDesignId, componentSurfaceDesignId );
     }
 
     // --- ContainerLayoutRegistry ------------------------------------------
@@ -211,6 +210,6 @@ final class NonNlsMessages
     static String ContainerLayoutRegistry_getContainerLayout_unknownContainerLayoutId(
         final ContainerLayoutId containerLayoutId )
     {
-        return nonNull( bind( ContainerLayoutRegistry_getContainerLayout_unknownContainerLayoutId, containerLayoutId ) );
+        return bind( ContainerLayoutRegistry_getContainerLayout_unknownContainerLayoutId, containerLayoutId );
     }
 }

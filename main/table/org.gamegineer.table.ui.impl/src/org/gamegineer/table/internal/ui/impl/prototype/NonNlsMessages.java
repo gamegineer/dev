@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.prototype;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collection;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -128,7 +127,7 @@ final class NonNlsMessages
     static String ComponentPrototypeFactoryProxy_getDelegate_createError(
         final IConfigurationElement configurationElement )
     {
-        return nonNull( bind( ComponentPrototypeFactoryProxy_getDelegate_createError, configurationElement.getNamespaceIdentifier(), configurationElement.getName() ) );
+        return bind( ComponentPrototypeFactoryProxy_getDelegate_createError, configurationElement.getNamespaceIdentifier(), configurationElement.getName() );
     }
 
     // --- ComponentPrototypeMenuBuilder ------------------------------------
@@ -147,6 +146,6 @@ final class NonNlsMessages
     static String ComponentPrototypeMenuBuilder_buildMenu_orphanedCategories(
         final Collection<@Nullable String> componentPrototypeCategoryIds )
     {
-        return nonNull( bind( ComponentPrototypeMenuBuilder_buildMenu_orphanedCategories, componentPrototypeCategoryIds ) );
+        return bind( ComponentPrototypeMenuBuilder_buildMenu_orphanedCategories, componentPrototypeCategoryIds );
     }
 }

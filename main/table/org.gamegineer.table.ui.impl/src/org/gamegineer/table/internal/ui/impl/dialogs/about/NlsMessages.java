@@ -1,6 +1,6 @@
 /*
  * NlsMessages.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.dialogs.about;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.internal.ui.impl.Branding;
@@ -94,7 +93,7 @@ final class NlsMessages
      */
     static String AboutDialog_messageLabel_text()
     {
-        return nonNull( bind( AboutDialog_messageLabel_text, Branding.getName(), Branding.getVersion() ) );
+        return bind( AboutDialog_messageLabel_text, Branding.getName(), Branding.getVersion() );
     }
 
     /**
@@ -104,6 +103,6 @@ final class NlsMessages
      */
     static String AboutDialog_title()
     {
-        return nonNull( bind( AboutDialog_title, Branding.getName() ) );
+        return bind( AboutDialog_title, Branding.getName() );
     }
 }

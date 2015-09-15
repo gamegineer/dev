@@ -1,6 +1,6 @@
 /*
  * NlsMessages.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.internal.ui.impl.help;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.osgi.util.NLS;
@@ -82,6 +81,6 @@ final class NlsMessages
         @Nullable
         final String name )
     {
-        return nonNull( bind( HelpSystem_masterHelpSet_title, name ) );
+        return bind( HelpSystem_masterHelpSet_title, name );
     }
 }

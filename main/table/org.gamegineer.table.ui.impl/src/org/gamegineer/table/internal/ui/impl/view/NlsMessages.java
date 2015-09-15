@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.view;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayList;
 import java.util.List;
 import net.jcip.annotations.ThreadSafe;
@@ -417,7 +416,7 @@ final class NlsMessages
     static String MainFrame_confirmSaveDirtyTable_message(
         final String tableName )
     {
-        return nonNull( bind( MainFrame_confirmSaveDirtyTable_message, tableName ) );
+        return bind( MainFrame_confirmSaveDirtyTable_message, tableName );
     }
 
     /**
@@ -431,7 +430,7 @@ final class NlsMessages
     static String MainFrame_title(
         final String tableName )
     {
-        return nonNull( bind( MainFrame_title, tableName, Branding.getName() ) );
+        return bind( MainFrame_title, tableName, Branding.getName() );
     }
 
     // --- MainView ---------------------------------------------------------
@@ -461,7 +460,7 @@ final class NlsMessages
                 return MainView_tableNetworkDisconnected_error_unexpectedPeerTermination;
 
             default:
-                return nonNull( bind( MainView_tableNetworkDisconnected_error_generic, error ) );
+                return bind( MainView_tableNetworkDisconnected_error_generic, error );
         }
     }
 
@@ -475,7 +474,7 @@ final class NlsMessages
      */
     static String OpenAboutDialogAction_text()
     {
-        return nonNull( bind( OpenAboutDialogAction_text, Branding.getName() ) );
+        return bind( OpenAboutDialogAction_text, Branding.getName() );
     }
 
     // --- TableNetworkPlayerView -------------------------------------------

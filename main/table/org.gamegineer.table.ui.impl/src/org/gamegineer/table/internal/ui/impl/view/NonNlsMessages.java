@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.view;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.File;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
@@ -124,7 +123,7 @@ final class NonNlsMessages
     static String ComponentView_getComponentSurfaceDesignUI_notAvailable(
         final ComponentSurfaceDesignId componentSurfaceDesignId )
     {
-        return nonNull( bind( ComponentView_getComponentSurfaceDesignUI_notAvailable, componentSurfaceDesignId ) );
+        return bind( ComponentView_getComponentSurfaceDesignUI_notAvailable, componentSurfaceDesignId );
     }
 
     // --- MainFrame --------------------------------------------------------
@@ -142,7 +141,7 @@ final class NonNlsMessages
     static String MainFrame_openTable_error(
         final File file )
     {
-        return nonNull( bind( MainFrame_openTable_error, file.getAbsolutePath() ) );
+        return bind( MainFrame_openTable_error, file.getAbsolutePath() );
     }
 
     /**
@@ -158,6 +157,6 @@ final class NonNlsMessages
     static String MainFrame_saveTable_error(
         final File file )
     {
-        return nonNull( bind( MainFrame_saveTable_error, file.getAbsolutePath() ) );
+        return bind( MainFrame_saveTable_error, file.getAbsolutePath() );
     }
 }

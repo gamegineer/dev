@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.ui.databinding.swing;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 
@@ -95,7 +94,7 @@ final class NonNlsMessages
     static String ComponentProperties_password_unsupportedComponent(
         final Object source )
     {
-        return nonNull( bind( ComponentProperties_password_unsupportedComponent, source ) );
+        return bind( ComponentProperties_password_unsupportedComponent, source );
     }
 
     /**
@@ -112,7 +111,7 @@ final class NonNlsMessages
     static String ComponentProperties_singleSelectionValue_unsupportedComponent(
         final Object source )
     {
-        return nonNull( bind( ComponentProperties_singleSelectionValue_unsupportedComponent, source ) );
+        return bind( ComponentProperties_singleSelectionValue_unsupportedComponent, source );
     }
 
     /**
@@ -128,6 +127,6 @@ final class NonNlsMessages
     static String ComponentProperties_text_unsupportedComponent(
         final Object source )
     {
-        return nonNull( bind( ComponentProperties_text_unsupportedComponent, source ) );
+        return bind( ComponentProperties_text_unsupportedComponent, source );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.internal.net.impl.transport.IMessage;
@@ -165,12 +164,12 @@ final class NonNlsMessages
         final IMessageHandler messageHandler,
         final IMessage message )
     {
-        return nonNull( bind( AbstractMessageHandler_messageReceived_unexpectedMessage, new Object[] {
+        return bind( AbstractMessageHandler_messageReceived_unexpectedMessage, new Object[] {
             messageHandler.getClass().getSimpleName(), //
             message.getClass().getSimpleName(), //
             message.getId(), //
             message.getCorrelationId()
-        } ) );
+        } );
     }
 
     // --- AbstractRemoteNode -----------------------------------------------
@@ -190,7 +189,7 @@ final class NonNlsMessages
         final MessageEnvelope messageEnvelope )
     {
         final MessageEnvelope.Header header = messageEnvelope.getHeader();
-        return nonNull( bind( AbstractRemoteNode_extractMessage_deserializationError, header.getId(), header.getCorrelationId() ) );
+        return bind( AbstractRemoteNode_extractMessage_deserializationError, header.getId(), header.getCorrelationId() );
     }
 
     /**
@@ -207,11 +206,11 @@ final class NonNlsMessages
     static String AbstractRemoteNode_messageReceived_unhandledMessage(
         final IMessage message )
     {
-        return nonNull( bind( AbstractRemoteNode_messageReceived_unhandledMessage, new Object[] {
+        return bind( AbstractRemoteNode_messageReceived_unhandledMessage, new Object[] {
             message.getClass().getSimpleName(), //
             message.getId(), //
             message.getCorrelationId()
-        } ) );
+        } );
     }
 
     // --- AbstractRemoteNode.ErrorMessageHandler ---------------------------
@@ -230,6 +229,6 @@ final class NonNlsMessages
     static String ErrorMessageHandler_handleMessage_errorReceived(
         final TableNetworkError error )
     {
-        return nonNull( bind( ErrorMessageHandler_handleMessage_errorReceived, error ) );
+        return bind( ErrorMessageHandler_handleMessage_errorReceived, error );
     }
 }

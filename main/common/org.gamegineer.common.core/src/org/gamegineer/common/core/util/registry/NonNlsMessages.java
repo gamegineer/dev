@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.core.util.registry;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.osgi.util.NLS;
@@ -102,7 +101,7 @@ final class NonNlsMessages
     static String AbstractRegistry_registerObject_object_registered(
         final Object id )
     {
-        return nonNull( bind( AbstractRegistry_registerObject_object_registered, id ) );
+        return bind( AbstractRegistry_registerObject_object_registered, id );
     }
 
     /**
@@ -118,7 +117,7 @@ final class NonNlsMessages
     static String AbstractRegistry_unregisterObject_object_unregistered(
         final Object id )
     {
-        return nonNull( bind( AbstractRegistry_unregisterObject_object_unregistered, id ) );
+        return bind( AbstractRegistry_unregisterObject_object_unregistered, id );
     }
 
     // --- AbstractRegistryExtensionPointAdapter ----------------------------
@@ -136,6 +135,6 @@ final class NonNlsMessages
     static String AbstractRegistryExtensionPointAdapter_registerObject_parseError(
         final IConfigurationElement configurationElement )
     {
-        return nonNull( bind( AbstractRegistryExtensionPointAdapter_registerObject_parseError, configurationElement.getDeclaringExtension().getUniqueIdentifier(), configurationElement.getContributor().getName() ) );
+        return bind( AbstractRegistryExtensionPointAdapter_registerObject_parseError, configurationElement.getDeclaringExtension().getUniqueIdentifier(), configurationElement.getContributor().getName() );
     }
 }

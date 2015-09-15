@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.internal.persistence.impl.serializable;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
@@ -107,7 +106,7 @@ final class NonNlsMessages
     static String PersistenceDelegateRegistry_getDelegatorTypeNames_noDelegators(
         final ServiceReference<IPersistenceDelegate> persistenceDelegateReference )
     {
-        return nonNull( bind( PersistenceDelegateRegistry_getDelegatorTypeNames_noDelegators, persistenceDelegateReference ) );
+        return bind( PersistenceDelegateRegistry_getDelegatorTypeNames_noDelegators, persistenceDelegateReference );
     }
 
     /**
@@ -124,7 +123,7 @@ final class NonNlsMessages
     static String PersistenceDelegateRegistry_registerPersistenceDelegate_type_registered(
         final String typeName )
     {
-        return nonNull( bind( PersistenceDelegateRegistry_registerPersistenceDelegate_type_registered, typeName ) );
+        return bind( PersistenceDelegateRegistry_registerPersistenceDelegate_type_registered, typeName );
     }
 
     /**
@@ -146,7 +145,7 @@ final class NonNlsMessages
         final String typeName,
         final ServiceReference<IPersistenceDelegate> persistenceDelegateReference )
     {
-        return nonNull( bind( PersistenceDelegateRegistry_registerPersistenceDelegateFromServiceReference_registrationFailed, persistenceDelegateReference, typeName ) );
+        return bind( PersistenceDelegateRegistry_registerPersistenceDelegateFromServiceReference_registrationFailed, persistenceDelegateReference, typeName );
     }
 
     /**
@@ -163,6 +162,6 @@ final class NonNlsMessages
     static String PersistenceDelegateRegistry_unregisterPersistenceDelegate_type_unregistered(
         final String typeName )
     {
-        return nonNull( bind( PersistenceDelegateRegistry_unregisterPersistenceDelegate_type_unregistered, typeName ) );
+        return bind( PersistenceDelegateRegistry_unregisterPersistenceDelegate_type_unregistered, typeName );
     }
 }

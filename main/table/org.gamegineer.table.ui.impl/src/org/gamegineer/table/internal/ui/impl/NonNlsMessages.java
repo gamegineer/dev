@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.net.URL;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
@@ -130,7 +129,7 @@ final class NonNlsMessages
     static String BundleImages_getImage_readError(
         final URL imageUrl )
     {
-        return nonNull( bind( BundleImages_getImage_readError, imageUrl ) );
+        return bind( BundleImages_getImage_readError, imageUrl );
     }
 
     // --- ComponentSurfaceDesignUIRegistryExtensionPointAdapter ------------
@@ -148,7 +147,7 @@ final class NonNlsMessages
     static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconBundleNotFound(
         final String name )
     {
-        return nonNull( bind( ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconBundleNotFound, name ) );
+        return bind( ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconBundleNotFound, name );
     }
 
     /**
@@ -169,6 +168,6 @@ final class NonNlsMessages
         final Bundle bundle,
         final String path )
     {
-        return nonNull( bind( ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconFileNotFound, bundle.getSymbolicName(), path ) );
+        return bind( ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconFileNotFound, bundle.getSymbolicName(), path );
     }
 }
