@@ -1,6 +1,6 @@
 /*
  * MultiThreadedTableEnvironmentContextTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.core;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 import java.util.concurrent.CountDownLatch;
@@ -28,7 +29,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.easymock.EasyMock;
 import org.easymock.IAnswer;
 import org.easymock.IMocksControl;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +39,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link MultiThreadedTableEnvironmentContext} class.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public final class MultiThreadedTableEnvironmentContextTest
 {
     // ======================================================================
@@ -106,17 +109,17 @@ public final class MultiThreadedTableEnvironmentContextTest
     public void testFireEventNotification_EventNotificationFiredOnDifferentThread()
         throws Exception
     {
-        final Thread testThread = Thread.currentThread();
+        final Thread testThread = nonNull( Thread.currentThread() );
         final AtomicReference<Thread> eventNotificationThreadReference = new AtomicReference<>();
         final CountDownLatch countDownLatch = new CountDownLatch( 1 );
         final Runnable eventNotification = mocksControl_.createMock( Runnable.class );
         eventNotification.run();
-        EasyMock.expectLastCall().andAnswer( new IAnswer<Void>()
+        EasyMock.expectLastCall().andAnswer( new IAnswer<@Nullable Void>()
         {
             @Override
-            public Void answer()
+            public @Nullable Void answer()
             {
-                eventNotificationThreadReference.set( Thread.currentThread() );
+                eventNotificationThreadReference.set( nonNull( Thread.currentThread() ) );
                 countDownLatch.countDown();
                 return null;
             }

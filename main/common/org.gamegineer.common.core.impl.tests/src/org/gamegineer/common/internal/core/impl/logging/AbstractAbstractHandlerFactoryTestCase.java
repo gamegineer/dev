@@ -1,6 +1,6 @@
 /*
  * AbstractAbstractHandlerFactoryTestCase.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -31,6 +31,7 @@ import java.util.logging.Filter;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
+import org.eclipse.jdt.annotation.NonNull;
 import org.gamegineer.common.core.logging.LoggingServiceConstants;
 import org.junit.Test;
 import org.osgi.framework.ServiceRegistration;
@@ -45,7 +46,7 @@ import org.osgi.service.component.ComponentFactory;
  * @param <T>
  *        The type of the handler.
  */
-public abstract class AbstractAbstractHandlerFactoryTestCase<F extends AbstractHandlerFactory<T>, T extends Handler>
+public abstract class AbstractAbstractHandlerFactoryTestCase<F extends @NonNull AbstractHandlerFactory<T>, T extends @NonNull Handler>
     extends AbstractAbstractLoggingComponentFactoryTestCase<F, T>
 {
     // ======================================================================
@@ -154,7 +155,7 @@ public abstract class AbstractAbstractHandlerFactoryTestCase<F extends AbstractH
         final ServiceRegistration<ComponentFactory> serviceRegistration = FakeFilter.registerComponentFactory();
         try
         {
-            final String value = String.format( "%1$s.filterName", FakeFilter.class.getName() ); //$NON-NLS-1$
+            final String value = nonNull( String.format( "%1$s.filterName", FakeFilter.class.getName() ) ); //$NON-NLS-1$
             final String key = getLoggingPropertyKey( LoggingServiceConstants.PROPERTY_HANDLER_FILTER );
             final Map<String, String> loggingProperties = Collections.singletonMap( key, value );
             final T handler = getLoggingComponent();
@@ -195,7 +196,7 @@ public abstract class AbstractAbstractHandlerFactoryTestCase<F extends AbstractH
     @Test
     public void testConfigureLoggingComponent_Formatter_Legal()
     {
-        final String value = String.format( "%1$s.formatterName", FakeFormatter.class.getName() ); //$NON-NLS-1$
+        final String value = nonNull( String.format( "%1$s.formatterName", FakeFormatter.class.getName() ) ); //$NON-NLS-1$
         final String key = getLoggingPropertyKey( LoggingServiceConstants.PROPERTY_HANDLER_FORMATTER );
         final Map<String, String> loggingProperties = Collections.singletonMap( key, value );
         final T handler = getLoggingComponent();
@@ -232,7 +233,7 @@ public abstract class AbstractAbstractHandlerFactoryTestCase<F extends AbstractH
     {
         final Level value = Level.SEVERE;
         final String key = getLoggingPropertyKey( LoggingServiceConstants.PROPERTY_HANDLER_LEVEL );
-        final Map<String, String> loggingProperties = Collections.singletonMap( key, value.getName() );
+        final Map<String, String> loggingProperties = Collections.singletonMap( key, nonNull( value.getName() ) );
         final T handler = getLoggingComponent();
 
         getLoggingComponentFactory().configureLoggingComponent( handler, DEFAULT_INSTANCE_NAME, loggingProperties );

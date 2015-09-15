@@ -1,6 +1,6 @@
 /*
  * ComponentPrototypesExtensionPointTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,6 +30,7 @@ import javax.swing.KeyStroke;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
@@ -39,7 +40,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link ComponentPrototypesExtensionPoint} class.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public final class ComponentPrototypesExtensionPointTest
 {
     // ======================================================================
@@ -98,7 +99,6 @@ public final class ComponentPrototypesExtensionPointTest
      * @return A new component prototype configuration element; never
      *         {@code null}.
      */
-    @NonNull
     private IConfigurationElement createComponentPrototypeConfigurationElement(
         @Nullable
         final String category,
@@ -147,7 +147,6 @@ public final class ComponentPrototypesExtensionPointTest
      * @return A new component prototype category configuration element; never
      *         {@code null}.
      */
-    @NonNull
     private IConfigurationElement createComponentPrototypeCategoryConfigurationElement(
         @Nullable
         final String id,
@@ -175,13 +174,9 @@ public final class ComponentPrototypesExtensionPointTest
      * 
      * @return The encoded category path; never {@code null}.
      */
-    @NonNull
     private static String encodeCategoryPath(
-        @NonNull
         final List<String> path )
     {
-        assert path != null;
-
         final StringBuilder sb = new StringBuilder();
         final String separator = "/"; //$NON-NLS-1$
 

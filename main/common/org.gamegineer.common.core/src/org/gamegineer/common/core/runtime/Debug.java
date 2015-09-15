@@ -1,6 +1,6 @@
 /*
  * Debug.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -343,9 +343,8 @@ public abstract class Debug
             @Nullable
             @SuppressWarnings( "unused" )
             final String option,
-            @Nullable
             @SuppressWarnings( "unused" )
-            final Object[] methodArguments )
+            final Object @Nullable[] methodArguments )
         {
             warn();
         }

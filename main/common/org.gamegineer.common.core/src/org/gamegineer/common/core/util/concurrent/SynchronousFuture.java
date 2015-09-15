@@ -1,6 +1,6 @@
 /*
  * SynchronousFuture.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,6 +25,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -35,7 +37,8 @@ import org.eclipse.jdt.annotation.Nullable;
  *        The type of the operation result.
  */
 @Immutable
-public final class SynchronousFuture<V>
+@NonNullByDefault( {} )
+public final class SynchronousFuture<@Nullable V>
     implements Future<V>
 {
     // ======================================================================
@@ -43,11 +46,9 @@ public final class SynchronousFuture<V>
     // ======================================================================
 
     /** The operation exception or {@code null} if no exception occurred. */
-    @Nullable
     private final Throwable exception_;
 
     /** The operation result. */
-    @Nullable
     private final V result_;
 
 
@@ -72,7 +73,6 @@ public final class SynchronousFuture<V>
      *        The operation result; may be {@code null}.
      */
     public SynchronousFuture(
-        @Nullable
         final V result )
     {
         this( result, null );
@@ -86,6 +86,7 @@ public final class SynchronousFuture<V>
      *        The operation exception; must not be {@code null}.
      */
     public SynchronousFuture(
+        @NonNull
         final Throwable exception )
     {
         this( null, exception );
@@ -100,9 +101,7 @@ public final class SynchronousFuture<V>
      *        The operation exception; may be {@code null}.
      */
     private SynchronousFuture(
-        @Nullable
         final V result,
-        @Nullable
         final Throwable exception )
     {
         exception_ = exception;
@@ -128,7 +127,6 @@ public final class SynchronousFuture<V>
     /*
      * @see java.util.concurrent.Future#get()
      */
-    @Nullable
     @Override
     public V get()
         throws ExecutionException
@@ -144,12 +142,10 @@ public final class SynchronousFuture<V>
     /*
      * @see java.util.concurrent.Future#get(long, java.util.concurrent.TimeUnit)
      */
-    @Nullable
     @Override
     public V get(
         @SuppressWarnings( "unused" )
         final long timeout,
-        @Nullable
         @SuppressWarnings( "unused" )
         final TimeUnit unit )
         throws ExecutionException

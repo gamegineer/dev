@@ -1,6 +1,6 @@
 /*
  * AbstractNodeControllerTestCase.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,8 +29,10 @@ import java.util.Collection;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import org.easymock.EasyMock;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.MultiThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.test.TestTableEnvironments;
@@ -49,8 +51,8 @@ import org.junit.Test;
  * @param <T>
  *        The type of the table network node controller.
  */
-@NonNullByDefault( false )
-public abstract class AbstractNodeControllerTestCase<T extends INodeController>
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
+public abstract class AbstractNodeControllerTestCase<T extends @NonNull INodeController>
 {
     // ======================================================================
     // Fields
@@ -95,7 +97,6 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @NonNull
     protected abstract T createNodeController()
         throws Exception;
 
@@ -110,7 +111,6 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
      * @return The new node layer runner for the specified table network node
      *         controller; never {@code null}.
      */
-    @NonNull
     protected abstract NodeLayerRunner createNodeLayerRunner(
         @NonNull
         T nodeController );
@@ -120,7 +120,6 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
      * 
      * @return A new table network configuration; never {@code null}.
      */
-    @NonNull
     protected final TableNetworkConfiguration createTableNetworkConfiguration()
     {
         assertNotNull( table_ );
@@ -133,7 +132,6 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
      * @return The table network node controller under test in the fixture;
      *         never {@code null}.
      */
-    @NonNull
     protected final T getNodeController()
     {
         assertNotNull( nodeController_ );
@@ -183,11 +181,11 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
         throws Exception
     {
         final TableNetworkConfiguration configuration = createTableNetworkConfiguration();
-        final Future<Void> connectFuture1 = nodeLayerRunner_.run( new Callable<Future<Void>>()
+        final Future<@Nullable Void> connectFuture1 = nodeLayerRunner_.run( new Callable<Future<@Nullable Void>>()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
-            public Future<Void> call()
+            public Future<@Nullable Void> call()
             {
                 return nodeController_.beginConnect( configuration );
             }
@@ -195,11 +193,11 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
         assertNotNull( connectFuture1 );
         nodeController_.endConnect( connectFuture1 );
 
-        final Future<Void> connectFuture2 = nodeLayerRunner_.run( new Callable<Future<Void>>()
+        final Future<@Nullable Void> connectFuture2 = nodeLayerRunner_.run( new Callable<Future<@Nullable Void>>()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
-            public Future<Void> call()
+            public Future<@Nullable Void> call()
             {
                 return nodeController_.beginConnect( configuration );
             }
@@ -219,11 +217,11 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     public void testDisconnect_Disconnected_DoesNothing()
         throws Exception
     {
-        final Future<Void> disconnectFuture = nodeLayerRunner_.run( new Callable<Future<Void>>()
+        final Future<@Nullable Void> disconnectFuture = nodeLayerRunner_.run( new Callable<Future<@Nullable Void>>()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
-            public Future<Void> call()
+            public Future<@Nullable Void> call()
             {
                 return nodeController_.beginDisconnect();
             }
@@ -243,11 +241,11 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     public void testGetPlayer_Connected()
         throws Exception
     {
-        final Future<Void> connectFuture = nodeLayerRunner_.run( new Callable<Future<Void>>()
+        final Future<@Nullable Void> connectFuture = nodeLayerRunner_.run( new Callable<Future<@Nullable Void>>()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
-            public Future<Void> call()
+            public Future<@Nullable Void> call()
                 throws Exception
             {
                 return nodeController_.beginConnect( createTableNetworkConfiguration() );

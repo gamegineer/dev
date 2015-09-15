@@ -1,6 +1,6 @@
 /*
  * AbstractEquatableTestCase.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 import java.util.Collections;
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +44,7 @@ import org.junit.Test;
  * @param <T>
  *        The type of the equatable class.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public abstract class AbstractEquatableTestCase<T>
 {
     // ======================================================================
@@ -85,7 +85,6 @@ public abstract class AbstractEquatableTestCase<T>
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @NonNull
     protected abstract T createReferenceInstance()
         throws Exception;
 
@@ -105,7 +104,6 @@ public abstract class AbstractEquatableTestCase<T>
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @NonNull
     protected abstract Collection<T> createUnequalInstances()
         throws Exception;
 

@@ -1,6 +1,6 @@
 /*
  * NullAnalysis.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ package org.gamegineer.common.core.runtime;
 
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -75,16 +76,16 @@ public final class NullAnalysis
      *         fact be {@code null} at runtime.
      */
     @SuppressWarnings( "null" )
-    public static <T> T assumeNonNull(
-        @Nullable
-        final T value )
+    public static <T> @NonNull T assumeNonNull(
+        final @Nullable T value )
     {
         if( value != null )
         {
             return value;
         }
 
-        final AtomicReference<T> nullReference = new AtomicReference<>( null );
+        // NB: This is a hack to return null from a @NonNull-annotated method return type
+        final AtomicReference<T> nullReference = new AtomicReference<>( /* null */ );
         return nullReference.get();
     }
 
@@ -111,9 +112,9 @@ public final class NullAnalysis
      * @throws java.lang.AssertionError
      *         If {@code value} is {@code null}.
      */
-    public static <T> T nonNull(
-        @Nullable
-        final T value )
+    @SuppressWarnings( "null" )
+    public static <T> @NonNull T nonNull(
+        final @Nullable T value )
     {
         assert value != null;
         return value;

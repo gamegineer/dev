@@ -1,6 +1,6 @@
 /*
  * AbstractLoggingServiceTestCase.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@ package org.gamegineer.common.core.logging.test;
 import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.logging.ILoggingService;
 import org.gamegineer.common.internal.core.test.Activator;
@@ -36,7 +36,7 @@ import org.osgi.framework.Bundle;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link ILoggingService} interface.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public abstract class AbstractLoggingServiceTestCase
 {
     // ======================================================================
@@ -72,7 +72,6 @@ public abstract class AbstractLoggingServiceTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @NonNull
     protected abstract ILoggingService createLoggingService()
         throws Exception;
 
@@ -81,7 +80,6 @@ public abstract class AbstractLoggingServiceTestCase
      * 
      * @return The associated bundle; never {@code null}.
      */
-    @NonNull
     private static Bundle getBundle()
     {
         return nonNull( Activator.getDefault().getBundleContext().getBundle() );

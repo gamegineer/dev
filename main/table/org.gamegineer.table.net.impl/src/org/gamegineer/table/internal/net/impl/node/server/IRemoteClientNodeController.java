@@ -1,6 +1,6 @@
 /*
  * IRemoteClientNodeController.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.node.server;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.net.impl.node.IRemoteNodeController;
 
@@ -30,7 +31,7 @@ import org.gamegineer.table.internal.net.impl.node.IRemoteNodeController;
  * @noextend This interface is not intended to be extended by clients.
  */
 public interface IRemoteClientNodeController
-    extends IRemoteNodeController<IServerNode>
+    extends IRemoteNodeController<@NonNull IServerNode>
 {
     // ======================================================================
     // Methods
@@ -43,8 +44,7 @@ public interface IRemoteClientNodeController
      *         {@code null} if an authentication request has not yet been sent.
      *         Callers must not modify the returned array.
      */
-    @Nullable
-    public byte[] getChallenge();
+    public byte @Nullable[] getChallenge();
 
     /**
      * Gets the most-recent salt used to authenticate the client.
@@ -53,8 +53,7 @@ public interface IRemoteClientNodeController
      *         {@code null} if an authentication request has not yet been sent.
      *         Callers must not modify the returned array.
      */
-    @Nullable
-    public byte[] getSalt();
+    public byte @Nullable[] getSalt();
 
     /**
      * Sets the challenge used to authenticate the client.
@@ -65,8 +64,7 @@ public interface IRemoteClientNodeController
      *        after passing it to this method.
      */
     public void setChallenge(
-        @Nullable
-        byte[] challenge );
+        byte @Nullable[] challenge );
 
     /**
      * Sets the salt used to authenticate the client.
@@ -77,6 +75,5 @@ public interface IRemoteClientNodeController
      *        passing it to this method.
      */
     public void setSalt(
-        @Nullable
-        byte[] salt );
+        byte @Nullable[] salt );
 }

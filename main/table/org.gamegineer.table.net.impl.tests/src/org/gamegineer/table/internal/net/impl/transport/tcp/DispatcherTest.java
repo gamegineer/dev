@@ -1,6 +1,6 @@
 /*
  * DispatcherTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,8 +32,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 import org.easymock.EasyMock;
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.net.impl.transport.ITransportLayerContext;
 import org.junit.After;
 import org.junit.Before;
@@ -42,7 +43,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link Dispatcher} class.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public final class DispatcherTest
 {
     // ======================================================================
@@ -85,11 +86,11 @@ public final class DispatcherTest
         throws Exception
     {
         // Invoke beginClose() on transport layer thread
-        final Future<Void> dispatcherCloseFuture = transportLayerRunner_.run( new Callable<Future<Void>>()
+        final Future<@Nullable Void> dispatcherCloseFuture = transportLayerRunner_.run( new Callable<Future<@Nullable Void>>()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
-            public Future<Void> call()
+            public Future<@Nullable Void> call()
             {
                 return dispatcher_.beginClose();
             }
@@ -105,7 +106,6 @@ public final class DispatcherTest
      * 
      * @return The fixture transport layer; never {@code null}.
      */
-    @NonNull
     private AbstractTransportLayer getTransportLayer()
     {
         assertNotNull( transportLayer_ );
@@ -125,11 +125,11 @@ public final class DispatcherTest
         final AbstractTransportLayer transportLayer = transportLayer_ = new FakeTransportLayer.Factory().createTransportLayer( nonNull( EasyMock.createMock( ITransportLayerContext.class ) ) );
         transportLayerRunner_ = new TransportLayerRunner( transportLayer );
 
-        transportLayerRunner_.run( new Callable<Void>()
+        transportLayerRunner_.run( new Callable<@Nullable Void>()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
-            public Void call()
+            public @Nullable Void call()
             {
                 dispatcher_ = new Dispatcher( transportLayer );
                 dispatcher_.setEventHandlerShutdownTimeout( 500L );
@@ -164,11 +164,11 @@ public final class DispatcherTest
         throws Exception
     {
         final AtomicReference<AbstractEventHandler> eventHandlerRef = new AtomicReference<>();
-        transportLayerRunner_.run( new Callable<Void>()
+        transportLayerRunner_.run( new Callable<@Nullable Void>()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
-            public Void call()
+            public @Nullable Void call()
                 throws Exception
             {
                 dispatcher_.open();
@@ -186,10 +186,10 @@ public final class DispatcherTest
             }
         } );
         closeDispatcher();
-        transportLayerRunner_.run( new Callable<Void>()
+        transportLayerRunner_.run( new Callable<@Nullable Void>()
         {
             @Override
-            public Void call()
+            public @Nullable Void call()
             {
                 final AbstractEventHandler eventHandler = eventHandlerRef.get();
                 assertEquals( State.CLOSED, eventHandler.getState() );
@@ -211,21 +211,21 @@ public final class DispatcherTest
         throws Exception
     {
         transportLayerRunner_.run( //
-            new Callable<Void>()
+            new Callable<@Nullable Void>()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
-                public Void call()
+                public @Nullable Void call()
                     throws Exception
                 {
                     final SelectableChannel channel = new FakeSelectableChannel()
                     {
                         @Override
                         @SuppressWarnings( "unused" )
-                        public SelectionKey register(
-                            final Selector selector,
+                        public @Nullable SelectionKey register(
+                            final @Nullable Selector selector,
                             final int ops,
-                            final Object attachment )
+                            final @Nullable Object attachment )
                             throws ClosedChannelException
                         {
                             throw new ClosedChannelException();

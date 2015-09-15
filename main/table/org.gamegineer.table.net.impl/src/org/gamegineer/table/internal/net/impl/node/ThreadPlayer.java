@@ -1,6 +1,6 @@
 /*
  * ThreadPlayer.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -36,7 +36,7 @@ public final class ThreadPlayer
     // ======================================================================
 
     /** The name of the player associated with the current thread. */
-    private static final ThreadLocal<String> playerName_ = new ThreadLocal<>();
+    private static final ThreadLocal<@Nullable String> playerName_ = new ThreadLocal<>();
 
 
     // ======================================================================

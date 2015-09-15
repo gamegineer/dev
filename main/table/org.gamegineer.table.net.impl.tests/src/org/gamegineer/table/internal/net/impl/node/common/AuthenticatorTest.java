@@ -1,6 +1,6 @@
 /*
  * AuthenticatorTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@ import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.net.TableNetworkException;
@@ -35,7 +35,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link Authenticator} class.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public final class AuthenticatorTest
 {
     // ======================================================================
@@ -78,9 +78,7 @@ public final class AuthenticatorTest
      *         If an error occurs.
      */
     private boolean authenticate(
-        @NonNull
         final String expectedPassword,
-        @NonNull
         final String actualPassword )
         throws TableNetworkException
     {

@@ -25,6 +25,7 @@ import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.NonNull;
 import org.gamegineer.table.internal.net.impl.Loggers;
 import org.gamegineer.table.internal.net.impl.node.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.impl.transport.IMessage;
@@ -37,7 +38,7 @@ import org.gamegineer.table.net.TableNetworkError;
  *        The type of the remote node control interface.
  */
 @Immutable
-public abstract class AbstractMessageHandler<RemoteNodeControllerType extends IRemoteNodeController<?>>
+public abstract class AbstractMessageHandler<RemoteNodeControllerType extends IRemoteNodeController<@NonNull ?>>
     implements IMessageHandler
 {
     // ======================================================================
@@ -87,7 +88,7 @@ public abstract class AbstractMessageHandler<RemoteNodeControllerType extends IR
      */
     @Override
     public final void handleMessage(
-        final IRemoteNodeController<?> remoteNodeController,
+        final IRemoteNodeController<@NonNull ?> remoteNodeController,
         final IMessage message )
     {
         try

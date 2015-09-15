@@ -1,6 +1,6 @@
 /*
  * RemoteClientNode.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -60,15 +60,13 @@ final class RemoteClientNode
      * The most-recent challenge used to authenticate the client or {@code null}
      * if an authentication request has not yet been sent.
      */
-    @Nullable
-    private byte[] challenge_;
+    private byte @Nullable[] challenge_;
 
     /**
      * The most-recent salt used to authenticate the client or {@code null} if
      * an authentication request has not yet been sent.
      */
-    @Nullable
-    private byte[] salt_;
+    private byte @Nullable[] salt_;
 
 
     // ======================================================================
@@ -107,9 +105,8 @@ final class RemoteClientNode
     /*
      * @see org.gamegineer.table.internal.net.impl.node.server.IRemoteClientNodeController#getChallenge()
      */
-    @Nullable
     @Override
-    public byte[] getChallenge()
+    public byte @Nullable[] getChallenge()
     {
         assert isNodeLayerThread();
 
@@ -119,9 +116,8 @@ final class RemoteClientNode
     /*
      * @see org.gamegineer.table.internal.net.impl.node.server.IRemoteClientNodeController#getSalt()
      */
-    @Nullable
     @Override
-    public byte[] getSalt()
+    public byte @Nullable[] getSalt()
     {
         assert isNodeLayerThread();
 
@@ -142,8 +138,7 @@ final class RemoteClientNode
      */
     @Override
     public void setChallenge(
-        @Nullable
-        final byte[] challenge )
+        final byte @Nullable[] challenge )
     {
         assert isNodeLayerThread();
 
@@ -169,8 +164,7 @@ final class RemoteClientNode
      */
     @Override
     public void setSalt(
-        @Nullable
-        final byte[] salt )
+        final byte @Nullable[] salt )
     {
         assert isNodeLayerThread();
 

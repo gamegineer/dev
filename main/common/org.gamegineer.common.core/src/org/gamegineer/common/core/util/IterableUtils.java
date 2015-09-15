@@ -1,6 +1,6 @@
 /*
  * IterableUtils.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import net.jcip.annotations.ThreadSafe;
-import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 
 /**
  * A collection of useful methods for working with instances of {@link Iterable}
@@ -67,6 +67,7 @@ public final class IterableUtils
     {
         return new Iterable<T>()
         {
+            @NonNullByDefault( {} )
             @Override
             public Iterator<T> iterator()
             {
@@ -80,7 +81,6 @@ public final class IterableUtils
                         return iterator_.hasPrevious();
                     }
 
-                    @Nullable
                     @Override
                     public T next()
                     {

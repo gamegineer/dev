@@ -23,7 +23,6 @@ package org.gamegineer.test.core;
 
 import static org.junit.Assert.fail;
 import java.util.Collection;
-import java.util.Map;
 import net.jcip.annotations.ThreadSafe;
 
 /**
@@ -51,36 +50,22 @@ public final class Assert
     /**
      * Asserts that the specified collection is immutable.
      * 
+     * @param <T> The type of the collection elements. 
+     * 
      * @param c
      *        The collection to be tested; must not be {@code null}.
+     * @param prototype 
+     *        A prototype value that is legal to add to the collection; must
+     *        not be {@code null}. 
      */
-    public static void assertImmutableCollection(
-        final Collection<?> c )
+    public static <T> void assertImmutableCollection(
+        final Collection<T> c,
+        final T prototype )
     {
         try
         {
-            c.add( null );
+            c.add( prototype );
             fail( "Expected collection to be immutable." ); //$NON-NLS-1$
-        }
-        catch( @SuppressWarnings( "unused" ) final UnsupportedOperationException e )
-        {
-            // expected
-        }
-    }
-
-    /**
-     * Asserts that the specified map is immutable.
-     * 
-     * @param m
-     *        The map to be tested; must not be {@code null}.
-     */
-    public static void assertImmutableMap(
-        final Map<?, ?> m )
-    {
-        try
-        {
-            m.put( null, null );
-            fail( "Expected map to be immutable." ); //$NON-NLS-1$
         }
         catch( @SuppressWarnings( "unused" ) final UnsupportedOperationException e )
         {

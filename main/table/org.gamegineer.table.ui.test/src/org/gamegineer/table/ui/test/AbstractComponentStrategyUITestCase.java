@@ -1,6 +1,6 @@
 /*
  * AbstractComponentStrategyUITestCase.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 package org.gamegineer.table.ui.test;
 
 import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.ui.IComponentStrategyUI;
 import org.junit.Before;
@@ -35,7 +35,7 @@ import org.junit.Test;
  * @param <ComponentStrategyUIType>
  *        The type of the component strategy user interface.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public abstract class AbstractComponentStrategyUITestCase<ComponentStrategyUIType extends IComponentStrategyUI>
 {
     // ======================================================================
@@ -72,7 +72,6 @@ public abstract class AbstractComponentStrategyUITestCase<ComponentStrategyUITyp
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @NonNull
     protected abstract ComponentStrategyUIType createComponentStrategyUI()
         throws Exception;
 
@@ -82,7 +81,6 @@ public abstract class AbstractComponentStrategyUITestCase<ComponentStrategyUITyp
      * @return The component strategy user interface under test in the fixture;
      *         never {@code null}.
      */
-    @NonNull
     protected final ComponentStrategyUIType getComponentStrategyUI()
     {
         assertNotNull( componentStrategyUI_ );

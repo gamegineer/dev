@@ -1,6 +1,6 @@
 /*
  * AbstractContainerModelTestCase.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.IComponent;
@@ -43,7 +43,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link ContainerModel} class.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public abstract class AbstractContainerModelTestCase
     extends AbstractComponentModelTestCase<ContainerModel>
 {
@@ -78,7 +78,6 @@ public abstract class AbstractContainerModelTestCase
      * 
      * @return A new component; never {@code null}.
      */
-    @NonNull
     private IComponent createUniqueComponent()
     {
         return TestComponents.createUniqueComponent( getTableEnvironmentModel().getTableEnvironment() );
@@ -90,7 +89,6 @@ public abstract class AbstractContainerModelTestCase
      * 
      * @return A new container; never {@code null}.
      */
-    @NonNull
     private IContainer createUniqueContainer()
     {
         return TestComponents.createUniqueContainer( getTableEnvironmentModel().getTableEnvironment() );
@@ -111,7 +109,6 @@ public abstract class AbstractContainerModelTestCase
      *        The container model; must not be {@code null}.
      */
     protected abstract void fireComponentModelAddedEvent(
-        @NonNull
         ContainerModel containerModel );
 
     /**
@@ -129,7 +126,6 @@ public abstract class AbstractContainerModelTestCase
      *        The container model; must not be {@code null}.
      */
     protected abstract void fireComponentModelRemovedEvent(
-        @NonNull
         ContainerModel containerModel );
 
     /**
@@ -147,7 +143,6 @@ public abstract class AbstractContainerModelTestCase
      *        The container model; must not be {@code null}.
      */
     protected abstract void fireContainerLayoutChangedEvent(
-        @NonNull
         ContainerModel containerModel );
 
     /**
@@ -156,7 +151,6 @@ public abstract class AbstractContainerModelTestCase
      * @return The container model under test in the fixture; never {@code null}
      *         .
      */
-    @NonNull
     protected final ContainerModel getContainerModel()
     {
         return getComponentModel();

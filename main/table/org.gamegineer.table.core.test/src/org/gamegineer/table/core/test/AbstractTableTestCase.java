@@ -1,6 +1,6 @@
 /*
  * AbstractTableTestCase.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,7 +30,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.List;
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.gamegineer.common.core.util.memento.test.AbstractMementoOriginatorTestCase;
@@ -53,7 +53,7 @@ import org.junit.Test;
  * @param <TableType>
  *        The type of the table.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableEnvironment, TableType extends ITable>
     extends AbstractMementoOriginatorTestCase
 {
@@ -123,9 +123,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @NonNull
     protected abstract TableType createTable(
-        @NonNull
         TableEnvironmentType tableEnvironment )
         throws Exception;
 
@@ -134,7 +132,6 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
      * 
      * @return The table environment for use in the fixture; never {@code null}.
      */
-    @NonNull
     protected final TableEnvironmentType createTableEnvironment()
     {
         return createTableEnvironment( new SingleThreadedTableEnvironmentContext() );
@@ -149,9 +146,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
      * 
      * @return The table environment for use in the fixture; never {@code null}.
      */
-    @NonNull
     protected abstract TableEnvironmentType createTableEnvironment(
-        @NonNull
         final ITableEnvironmentContext context );
 
     /**
@@ -160,7 +155,6 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
      * 
      * @return A new component; never {@code null}.
      */
-    @NonNull
     private IComponent createUniqueComponent()
     {
         assertNotNull( tableEnvironment_ );
@@ -173,7 +167,6 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
      * 
      * @return A new container; never {@code null}.
      */
-    @NonNull
     private IContainer createUniqueContainer()
     {
         assertNotNull( tableEnvironment_ );

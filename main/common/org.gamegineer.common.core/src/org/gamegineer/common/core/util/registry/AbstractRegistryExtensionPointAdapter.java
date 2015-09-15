@@ -1,6 +1,6 @@
 /*
  * AbstractRegistryExtensionPointAdapter.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -119,8 +119,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
      */
     @Override
     public final void added(
-        @Nullable
-        final IExtension[] extensions )
+        final IExtension @Nullable[] extensions )
     {
         assert extensions != null;
 
@@ -139,9 +138,8 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
      */
     @Override
     public final void added(
-        @Nullable
         @SuppressWarnings( "unused" )
-        final IExtensionPoint[] extensionPoints )
+        final IExtensionPoint @Nullable[] extensionPoints )
     {
         // do nothing
     }
@@ -320,8 +318,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
      */
     @Override
     public final void removed(
-        @Nullable
-        final IExtension[] extensions )
+        final IExtension @Nullable[] extensions )
     {
         assert extensions != null;
 
@@ -337,9 +334,8 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
      */
     @Override
     public final void removed(
-        @Nullable
         @SuppressWarnings( "unused" )
-        final IExtensionPoint[] extensionPoints )
+        final IExtensionPoint @Nullable[] extensionPoints )
     {
         // do nothing
     }

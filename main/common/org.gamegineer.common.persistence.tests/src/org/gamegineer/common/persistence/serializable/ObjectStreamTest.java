@@ -1,6 +1,6 @@
 /*
  * ObjectStreamTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -34,8 +34,9 @@ import java.util.Date;
 import org.easymock.EasyMock;
 import org.easymock.IAnswer;
 import org.easymock.IMocksControl;
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,7 +44,7 @@ import org.junit.Test;
  * A fixture for testing the interaction between the {@link ObjectInputStream}
  * and {@link ObjectOutputStream} classes.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public final class ObjectStreamTest
 {
     // ======================================================================
@@ -82,9 +83,7 @@ public final class ObjectStreamTest
      * @throws java.io.IOException
      *         If an I/O error occurs.
      */
-    @NonNull
     private ObjectInputStream createObjectInputStream(
-        @NonNull
         final InputStream is )
         throws IOException
     {
@@ -104,9 +103,7 @@ public final class ObjectStreamTest
      * @throws java.io.IOException
      *         If an I/O error occurs.
      */
-    @NonNull
     private ObjectOutputStream createObjectOutputStream(
-        @NonNull
         final OutputStream os )
         throws IOException
     {
@@ -126,10 +123,10 @@ public final class ObjectStreamTest
     {
         final IMocksControl mocksControl = EasyMock.createControl();
         persistenceDelegateRegistry_ = mocksControl.createMock( IPersistenceDelegateRegistry.class );
-        EasyMock.expect( persistenceDelegateRegistry_.getPersistenceDelegate( assumeNonNull( EasyMock.<String>notNull() ) ) ).andAnswer( new IAnswer<IPersistenceDelegate>()
+        EasyMock.expect( persistenceDelegateRegistry_.getPersistenceDelegate( assumeNonNull( EasyMock.<String>notNull() ) ) ).andAnswer( new IAnswer<@Nullable IPersistenceDelegate>()
         {
             @Override
-            public IPersistenceDelegate answer()
+            public @Nullable IPersistenceDelegate answer()
             {
                 final String typeName = (String)EasyMock.getCurrentArguments()[ 0 ];
                 if( typeName.equals( FakeNonSerializableClass.class.getName() ) )

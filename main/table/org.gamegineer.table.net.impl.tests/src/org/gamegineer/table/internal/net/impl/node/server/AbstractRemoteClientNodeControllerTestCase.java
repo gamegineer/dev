@@ -1,6 +1,6 @@
 /*
  * AbstractRemoteClientNodeControllerTestCase.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.net.impl.node.server;
 
 import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import org.easymock.IMocksControl;
+import org.eclipse.jdt.annotation.NonNull;
 import org.gamegineer.table.internal.net.impl.node.AbstractRemoteNodeControllerTestCase;
 
 /**
@@ -32,8 +33,8 @@ import org.gamegineer.table.internal.net.impl.node.AbstractRemoteNodeControllerT
  * @param <T>
  *        The type of the remote client node controller.
  */
-public abstract class AbstractRemoteClientNodeControllerTestCase<T extends IRemoteClientNodeController>
-    extends AbstractRemoteNodeControllerTestCase<T, IServerNode, IRemoteClientNode>
+public abstract class AbstractRemoteClientNodeControllerTestCase<T extends @NonNull IRemoteClientNodeController>
+    extends AbstractRemoteNodeControllerTestCase<T, @NonNull IServerNode, @NonNull IRemoteClientNode>
 {
     // ======================================================================
     // Constructors

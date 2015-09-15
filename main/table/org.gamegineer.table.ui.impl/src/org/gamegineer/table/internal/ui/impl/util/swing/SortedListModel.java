@@ -30,6 +30,7 @@ import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -136,7 +137,7 @@ public final class SortedListModel<E>
     /*
      * @see javax.swing.ListModel#getElementAt(int)
      */
-    @Nullable
+    @NonNullByDefault( {} )
     @Override
     public E getElementAt(
         final int index )
@@ -403,7 +404,7 @@ public final class SortedListModel<E>
 
             final Object element = unsortedListModel_.getElementAt( index_ );
             final Object otherElement = unsortedListModel_.getElementAt( other.getIndex() );
-            return ((Comparator<Object>)comparator_).compare( element, otherElement );
+            return ((Comparator<@Nullable Object>)comparator_).compare( element, otherElement );
         }
 
         /**

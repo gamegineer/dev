@@ -1,6 +1,6 @@
 /*
  * FakeSocketChannel.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,12 +29,15 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.SelectorProvider;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.NotThreadSafe;
-import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 
 /**
  * Fake implementation of {@link SocketChannel}.
  */
+@NonNullByDefault( {} )
 @NotThreadSafe
 class FakeSocketChannel
     extends SocketChannel
@@ -60,6 +63,7 @@ class FakeSocketChannel
      *        The selector provider; must not be {@code null}.
      */
     FakeSocketChannel(
+        @NonNull
         final SelectorProvider provider )
     {
         super( provider );
@@ -73,11 +77,9 @@ class FakeSocketChannel
     /*
      * @see java.nio.channels.SocketChannel#bind(java.net.SocketAddress)
      */
-    @Nullable
     @Override
     @SuppressWarnings( "unused" )
     public SocketChannel bind(
-        @Nullable
         final SocketAddress local )
         throws IOException
     {
@@ -90,7 +92,6 @@ class FakeSocketChannel
     @Override
     @SuppressWarnings( "unused" )
     public boolean connect(
-        @Nullable
         final SocketAddress remote )
         throws IOException
     {
@@ -111,7 +112,6 @@ class FakeSocketChannel
     /*
      * @see java.nio.channels.NetworkChannel#getLocalAddress()
      */
-    @Nullable
     @Override
     @SuppressWarnings( "unused" )
     public SocketAddress getLocalAddress()
@@ -123,7 +123,6 @@ class FakeSocketChannel
     /*
      * @see java.nio.channels.SocketChannel#getRemoteAddress()
      */
-    @Nullable
     @Override
     @SuppressWarnings( "unused" )
     public SocketAddress getRemoteAddress()
@@ -135,15 +134,16 @@ class FakeSocketChannel
     /*
      * @see java.nio.channels.NetworkChannel#getOption(java.net.SocketOption)
      */
-    @Nullable
     @Override
     @SuppressWarnings( "unused" )
     public <T> T getOption(
-        @Nullable
         final SocketOption<T> name )
         throws IOException
     {
-        return null;
+        // NB: This is a hack to return null for the unconstrained type T until we
+        // can annotate NetworkChannel#getOption as returning @Nullable T.
+        final AtomicReference<T> ref = new AtomicReference<>( /* null */ );
+        return ref.get();
     }
 
     /*
@@ -193,7 +193,6 @@ class FakeSocketChannel
     @Override
     @SuppressWarnings( "unused" )
     public int read(
-        @Nullable
         final ByteBuffer dst )
         throws IOException
     {
@@ -206,7 +205,6 @@ class FakeSocketChannel
     @Override
     @SuppressWarnings( "unused" )
     public long read(
-        @Nullable
         final ByteBuffer[] dsts,
         final int offset,
         final int length )
@@ -218,13 +216,10 @@ class FakeSocketChannel
     /*
      * @see java.nio.channels.SocketChannel#setOption(java.net.SocketOption, java.lang.Object)
      */
-    @Nullable
     @Override
     @SuppressWarnings( "unused" )
     public <T> SocketChannel setOption(
-        @Nullable
         final SocketOption<T> name,
-        @Nullable
         final T value )
         throws IOException
     {
@@ -234,7 +229,6 @@ class FakeSocketChannel
     /*
      * @see java.nio.channels.SocketChannel#shutdownInput()
      */
-    @Nullable
     @Override
     @SuppressWarnings( "unused" )
     public SocketChannel shutdownInput()
@@ -246,7 +240,6 @@ class FakeSocketChannel
     /*
      * @see java.nio.channels.SocketChannel#shutdownOutput()
      */
-    @Nullable
     @Override
     @SuppressWarnings( "unused" )
     public SocketChannel shutdownOutput()
@@ -258,7 +251,6 @@ class FakeSocketChannel
     /*
      * @see java.nio.channels.SocketChannel#socket()
      */
-    @Nullable
     @Override
     public Socket socket()
     {
@@ -268,7 +260,6 @@ class FakeSocketChannel
     /*
      * @see java.nio.channels.NetworkChannel#supportedOptions()
      */
-    @Nullable
     @Override
     public Set<SocketOption<?>> supportedOptions()
     {
@@ -281,7 +272,6 @@ class FakeSocketChannel
     @Override
     @SuppressWarnings( "unused" )
     public int write(
-        @Nullable
         final ByteBuffer src )
         throws IOException
     {
@@ -294,7 +284,6 @@ class FakeSocketChannel
     @Override
     @SuppressWarnings( "unused" )
     public long write(
-        @Nullable
         final ByteBuffer[] srcs,
         final int offset,
         final int length )

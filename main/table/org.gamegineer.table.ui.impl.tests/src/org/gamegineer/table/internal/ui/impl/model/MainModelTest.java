@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
@@ -41,7 +41,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link MainModel} class.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public final class MainModelTest
 {
     // ======================================================================
@@ -76,7 +76,6 @@ public final class MainModelTest
      * 
      * @return A temporary file; never {@code null}.
      */
-    @NonNull
     private static File createTemporaryFile()
     {
         try

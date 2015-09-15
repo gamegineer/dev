@@ -1,6 +1,6 @@
 /*
  * INodeController.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -56,7 +56,7 @@ public interface INodeController
      * @return An asynchronous completion token for the operation; never
      *         {@code null}.
      */
-    public Future<Void> beginConnect(
+    public Future<@Nullable Void> beginConnect(
         TableNetworkConfiguration configuration );
 
     /**
@@ -70,7 +70,7 @@ public interface INodeController
      * @return An asynchronous completion token for the operation; never
      *         {@code null}.
      */
-    public Future<Void> beginDisconnect();
+    public Future<@Nullable Void> beginDisconnect();
 
     /**
      * Cancels the current network table control request made by the active
@@ -104,7 +104,7 @@ public interface INodeController
      *         is already connected.
      */
     public void endConnect(
-        Future<Void> future )
+        Future<@Nullable Void> future )
         throws TableNetworkException, InterruptedException;
 
     /**
@@ -124,7 +124,7 @@ public interface INodeController
      *         node to be disconnected.
      */
     public void endDisconnect(
-        Future<Void> future )
+        Future<@Nullable Void> future )
         throws InterruptedException;
 
     /**

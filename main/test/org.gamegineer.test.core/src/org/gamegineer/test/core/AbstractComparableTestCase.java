@@ -1,6 +1,6 @@
 /*
  * AbstractComparableTestCase.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,6 +24,7 @@ package org.gamegineer.test.core;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import java.util.Collection;
+import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Test;
 
 /**
@@ -163,7 +164,8 @@ public abstract class AbstractComparableTestCase<T extends Comparable<T>>
     public void testCompareTo_Other_Null()
         throws Exception
     {
-        final T reference = createReferenceInstance();
+        @SuppressWarnings( "null" )
+        final Comparable<@Nullable T> reference = (Comparable<@Nullable T>)createReferenceInstance();
 
         reference.compareTo( null );
     }

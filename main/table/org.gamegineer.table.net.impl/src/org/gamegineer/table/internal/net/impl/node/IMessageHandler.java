@@ -1,6 +1,6 @@
 /*
  * IMessageHandler.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.gamegineer.table.internal.net.impl.transport.IMessage;
 
 /**
@@ -52,6 +53,6 @@ public interface IMessageHandler
      *        The message; must not be {@code null}.
      */
     public void handleMessage(
-        IRemoteNodeController<?> remoteNodeController,
+        IRemoteNodeController<@NonNull ?> remoteNodeController,
         IMessage message );
 }

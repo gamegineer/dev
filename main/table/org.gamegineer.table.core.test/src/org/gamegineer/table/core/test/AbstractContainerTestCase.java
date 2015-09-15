@@ -37,7 +37,7 @@ import java.util.List;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.gamegineer.table.core.ComponentEvent;
@@ -63,7 +63,7 @@ import org.junit.rules.Timeout;
  * @param <ContainerType>
  *        The type of the container.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITableEnvironment, ContainerType extends IContainer>
     extends AbstractComponentTestCase<TableEnvironmentType, ContainerType>
 {
@@ -102,7 +102,6 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * 
      * @return A new component; never {@code null}.
      */
-    @NonNull
     private IComponent createUniqueComponent()
     {
         return createUniqueComponent( getTableEnvironment() );
@@ -118,9 +117,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * 
      * @return A new component; never {@code null}.
      */
-    @NonNull
     private IComponent createUniqueComponent(
-        @NonNull
         final TableEnvironmentType tableEnvironment )
     {
         return TestComponents.createUniqueComponent( tableEnvironment );
@@ -132,7 +129,6 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * 
      * @return A new container; never {@code null}.
      */
-    @NonNull
     private IContainer createUniqueContainer()
     {
         return createUniqueContainer( getTableEnvironment() );
@@ -148,9 +144,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * 
      * @return A new container; never {@code null}.
      */
-    @NonNull
     private IContainer createUniqueContainer(
-        @NonNull
         final TableEnvironmentType tableEnvironment )
     {
         return TestComponents.createUniqueContainer( tableEnvironment );
@@ -163,7 +157,6 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      *        The container; must not be {@code null}.
      */
     protected abstract void fireComponentAdded(
-        @NonNull
         ContainerType container );
 
     /**
@@ -173,7 +166,6 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      *        The container; must not be {@code null}.
      */
     protected abstract void fireComponentRemoved(
-        @NonNull
         ContainerType container );
 
     /**
@@ -183,7 +175,6 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      *        The container; must not be {@code null}.
      */
     protected abstract void fireContainerLayoutChanged(
-        @NonNull
         ContainerType container );
 
     /**
@@ -191,7 +182,6 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * 
      * @return The container under test in the fixture; never {@code null}.
      */
-    @NonNull
     protected final ContainerType getContainer()
     {
         return getComponent();

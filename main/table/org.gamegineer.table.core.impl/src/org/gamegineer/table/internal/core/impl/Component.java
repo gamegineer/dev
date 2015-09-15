@@ -1,6 +1,6 @@
 /*
  * Component.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -803,10 +803,7 @@ class Component
         for( final Map.Entry<ComponentOrientation, ComponentSurfaceDesign> entry : surfaceDesigns.entrySet() )
         {
             final ComponentOrientation orientation = entry.getKey();
-            assert orientation != null;
             final ComponentSurfaceDesign surfaceDesign = entry.getValue();
-            assertArgumentLegal( surfaceDesign != null, "surfaceDesigns", NonNlsMessages.Component_setSurfaceDesigns_surfaceDesigns_containsNullSurfaceDesign ); //$NON-NLS-1$
-            assert surfaceDesign != null;
             setSurfaceDesign( orientation, surfaceDesign );
         }
     }

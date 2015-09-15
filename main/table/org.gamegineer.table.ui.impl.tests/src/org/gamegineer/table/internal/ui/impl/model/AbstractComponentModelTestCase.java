@@ -1,6 +1,6 @@
 /*
  * AbstractComponentModelTestCase.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@ import static org.junit.Assert.assertNotNull;
 import java.awt.Point;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.test.TestComponentSurfaceDesigns;
@@ -43,7 +43,7 @@ import org.junit.Test;
  * @param <T>
  *        The type of the component model.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
 {
     // ======================================================================
@@ -88,9 +88,7 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @NonNull
     protected abstract T createComponentModel(
-        @NonNull
         TableEnvironmentModel tableEnvironmentModel )
         throws Exception;
 
@@ -152,7 +150,6 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
      * @return The component model under test in the fixture; never {@code null}
      *         .
      */
-    @NonNull
     protected final T getComponentModel()
     {
         assertNotNull( componentModel_ );
@@ -165,7 +162,6 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
      * @return The table environment model for use in the fixture; never
      *         {@code null}.
      */
-    @NonNull
     protected final TableEnvironmentModel getTableEnvironmentModel()
     {
         assertNotNull( tableEnvironmentModel_ );

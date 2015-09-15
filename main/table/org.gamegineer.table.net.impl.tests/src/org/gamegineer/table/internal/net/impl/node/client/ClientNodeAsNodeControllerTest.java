@@ -1,6 +1,6 @@
 /*
  * ClientNodeAsNodeControllerTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.node.client;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.gamegineer.table.internal.net.impl.TableNetworkControllers;
 import org.gamegineer.table.internal.net.impl.node.AbstractAbstractNodeAsNodeControllerTestCase;
 import org.gamegineer.table.internal.net.impl.node.INodeController;
@@ -30,7 +31,7 @@ import org.gamegineer.table.internal.net.impl.node.INodeController;
  * violate the contract of the {@link INodeController} interface.
  */
 public final class ClientNodeAsNodeControllerTest
-    extends AbstractAbstractNodeAsNodeControllerTestCase<ClientNode, IRemoteServerNode>
+    extends AbstractAbstractNodeAsNodeControllerTestCase<@NonNull ClientNode, @NonNull IRemoteServerNode>
 {
     // ======================================================================
     // Constructors

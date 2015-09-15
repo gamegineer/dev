@@ -1,6 +1,6 @@
 /*
  * NodeLayer.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -47,7 +47,7 @@ final class NodeLayer
     private final ExecutorService executorService_;
 
     /** A reference to the node layer thread. */
-    private final AtomicReference<Thread> nodeLayerThreadRef_;
+    private final AtomicReference<@Nullable Thread> nodeLayerThreadRef_;
 
 
     // ======================================================================
@@ -78,7 +78,6 @@ final class NodeLayer
         final String playerName = ThreadPlayer.getPlayerName();
         return nonNull( executorService_.submit( new Callable<T>()
         {
-            @Nullable
             @Override
             public T call()
                 throws Exception

@@ -1,6 +1,6 @@
 /*
  * AbstractAbstractNodeAsNodeControllerTestCase.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,6 +29,7 @@ import java.util.concurrent.Future;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.easymock.EasyMock;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.concurrent.SynchronousFuture;
 import org.gamegineer.table.internal.net.impl.ITableNetworkController;
@@ -49,7 +50,7 @@ import org.junit.Test;
  * @param <RemoteNodeType>
  *        The type of the remote table network node.
  */
-public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends AbstractNode<RemoteNodeType>, RemoteNodeType extends IRemoteNode>
+public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends @NonNull AbstractNode<RemoteNodeType>, RemoteNodeType extends @NonNull IRemoteNode>
     extends AbstractNodeControllerTestCase<T>
 {
     // ======================================================================
@@ -79,13 +80,13 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         return new ITransportLayer()
         {
             @Override
-            public Future<Void> beginClose()
+            public Future<@Nullable Void> beginClose()
             {
                 return new SynchronousFuture<>();
             }
 
             @Override
-            public Future<Void> beginOpen(
+            public Future<@Nullable Void> beginOpen(
                 @SuppressWarnings( "unused" )
                 final String hostName,
                 @SuppressWarnings( "unused" )
@@ -97,7 +98,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
             @Override
             public void endClose(
                 @SuppressWarnings( "unused" )
-                final Future<Void> future )
+                final Future<@Nullable Void> future )
             {
                 // do nothing
             }
@@ -105,7 +106,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
             @Override
             public void endOpen(
                 @SuppressWarnings( "unused" )
-                final Future<Void> future )
+                final Future<@Nullable Void> future )
                 throws TransportException
             {
                 throw new TransportException();
@@ -134,13 +135,13 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         return new ITransportLayer()
         {
             @Override
-            public Future<Void> beginClose()
+            public Future<@Nullable Void> beginClose()
             {
                 return new SynchronousFuture<>();
             }
 
             @Override
-            public Future<Void> beginOpen(
+            public Future<@Nullable Void> beginOpen(
                 @SuppressWarnings( "unused" )
                 final String hostName,
                 @SuppressWarnings( "unused" )
@@ -152,7 +153,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
             @Override
             public void endClose(
                 @SuppressWarnings( "unused" )
-                final Future<Void> future )
+                final Future<@Nullable Void> future )
             {
                 // do nothing
             }
@@ -160,7 +161,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
             @Override
             public void endOpen(
                 @SuppressWarnings( "unused" )
-                final Future<Void> future )
+                final Future<@Nullable Void> future )
             {
                 // do nothing
             }
@@ -580,7 +581,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         @Override
         public Collection<IPlayer> getPlayers()
         {
-            return nonNull( Collections.<IPlayer>emptyList() );
+            return nonNull( Collections.<@NonNull IPlayer>emptyList() );
         }
 
         /*

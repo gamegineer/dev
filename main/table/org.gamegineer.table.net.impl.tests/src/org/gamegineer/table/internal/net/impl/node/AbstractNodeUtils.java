@@ -1,6 +1,6 @@
 /*
  * AbstractNodeUtils.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.impl.node;
 
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 
 /**
  * A collection of useful methods for working with instances of the
@@ -61,7 +62,7 @@ public final class AbstractNodeUtils
      *         {@code false}.
      */
     public static boolean isRemoteNodeBound(
-        final AbstractNode<?> node,
+        final AbstractNode<@NonNull ?> node,
         final String playerName )
     {
         for( final IRemoteNode remoteNode : node.getRemoteNodes() )

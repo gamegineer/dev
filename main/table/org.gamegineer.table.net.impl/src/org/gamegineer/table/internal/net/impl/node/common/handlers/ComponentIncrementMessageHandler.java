@@ -1,6 +1,6 @@
 /*
  * ComponentIncrementMessageHandler.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.impl.node.common.handlers;
 
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.NonNull;
 import org.gamegineer.table.internal.net.impl.node.IRemoteNodeController;
 import org.gamegineer.table.internal.net.impl.node.common.messages.ComponentIncrementMessage;
 
@@ -70,7 +71,7 @@ public final class ComponentIncrementMessageHandler
         "static-method", "unused"
     } )
     private void handleMessage(
-        final IRemoteNodeController<?> remoteNodeController,
+        final IRemoteNodeController<@NonNull ?> remoteNodeController,
         final ComponentIncrementMessage message )
     {
         remoteNodeController.getLocalNode().getTableManager().incrementComponentState( //

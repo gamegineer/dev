@@ -1,6 +1,6 @@
 /*
  * ComponentPrototypeMenuBuilder.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -52,7 +52,7 @@ final class ComponentPrototypeMenuBuilder
      * The collection of menu items for each category. The key is the category
      * identifier. The value is the collection of menu items.
      */
-    private final Map<String, Collection<JMenuItem>> menuItemCollections_;
+    private final Map<@Nullable String, Collection<JMenuItem>> menuItemCollections_;
 
     /** The root menu descriptor. */
     private final MenuDescriptor rootMenuDescriptor_;
@@ -92,11 +92,12 @@ final class ComponentPrototypeMenuBuilder
     void addComponentPrototype(
         final ComponentPrototype componentPrototype )
     {
-        Collection<JMenuItem> menuItems = menuItemCollections_.get( componentPrototype.getCategoryId() );
+        @Nullable Collection<JMenuItem> menuItems = menuItemCollections_.get( componentPrototype.getCategoryId() );
         if( menuItems == null )
         {
-            menuItems = new ArrayList<>();
-            menuItemCollections_.put( componentPrototype.getCategoryId(), menuItems );
+            final Collection<JMenuItem> newMenuItems = new ArrayList<>();
+            menuItemCollections_.put( componentPrototype.getCategoryId(), newMenuItems );
+            menuItems = newMenuItems;
         }
 
         final JMenuItem menuItem = new JMenuItem( menuItemAction_ );
@@ -153,7 +154,7 @@ final class ComponentPrototypeMenuBuilder
         final JMenu menu = menuDescriptor.getMenu();
         if( menu == null )
         {
-            final Collection<String> ids = new ArrayList<>();
+            final Collection<@Nullable String> ids = new ArrayList<>();
             collectAllComponentPrototypeCategoryIds( menuDescriptor, ids );
             Loggers.getDefaultLogger().warning( NonNlsMessages.ComponentPrototypeMenuBuilder_buildMenu_orphanedCategories( ids ) );
             return false;
@@ -173,7 +174,7 @@ final class ComponentPrototypeMenuBuilder
             }
         }
 
-        final Collection<JMenuItem> menuItems = menuItemCollections_.get( menuDescriptor.getId() );
+        final @Nullable Collection<JMenuItem> menuItems = menuItemCollections_.get( menuDescriptor.getId() );
         if( (menuItems != null) && !menuItems.isEmpty() )
         {
             if( childMenuCount > 0 )
@@ -204,7 +205,7 @@ final class ComponentPrototypeMenuBuilder
      */
     private static void collectAllComponentPrototypeCategoryIds(
         final MenuDescriptor menuDescriptor,
-        final Collection<String> ids )
+        final Collection<@Nullable String> ids )
     {
         ids.add( menuDescriptor.getId() );
 
@@ -292,11 +293,12 @@ final class ComponentPrototypeMenuBuilder
         private MenuDescriptor getChildMenuDescriptor(
             final String id )
         {
-            MenuDescriptor childMenuDescriptor = childMenuDescriptors_.get( id );
+            @Nullable MenuDescriptor childMenuDescriptor = childMenuDescriptors_.get( id );
             if( childMenuDescriptor == null )
             {
-                childMenuDescriptor = new MenuDescriptor( id );
-                childMenuDescriptors_.put( id, childMenuDescriptor );
+                final MenuDescriptor newChildMenuDescriptor = new MenuDescriptor( id );
+                childMenuDescriptors_.put( id, newChildMenuDescriptor );
+                childMenuDescriptor = newChildMenuDescriptor;
             }
 
             return childMenuDescriptor;

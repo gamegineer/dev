@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -64,9 +64,6 @@ final class NonNlsMessages
 
     /** The component listener is not registered. */
     public static String Component_removeComponentListener_listener_notRegistered = ""; //$NON-NLS-1$
-
-    /** The surface designs collection contains a {@code null} surface design. */
-    public static String Component_setSurfaceDesigns_surfaceDesigns_containsNullSurfaceDesign = ""; //$NON-NLS-1$
 
     // --- ComponentFactory -------------------------------------------------
 

@@ -1,6 +1,6 @@
 /*
  * ComponentPrototypeMenuBuilderTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -33,7 +33,7 @@ import java.util.Collections;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import org.easymock.EasyMock;
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.ui.impl.action.BasicAction;
@@ -44,7 +44,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link ComponentPrototypeMenuBuilder} class.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public final class ComponentPrototypeMenuBuilderTest
 {
     // ======================================================================
@@ -167,7 +167,6 @@ public final class ComponentPrototypeMenuBuilderTest
      * 
      * @return The actual root menu; never {@code null}.
      */
-    @NonNull
     private JMenu getActualRootMenu()
     {
         assertNotNull( actualRootMenu_ );

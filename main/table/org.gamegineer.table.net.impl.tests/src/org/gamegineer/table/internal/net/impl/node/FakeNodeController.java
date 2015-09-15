@@ -1,6 +1,6 @@
 /*
  * FakeNodeController.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.Future;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.concurrent.SynchronousFuture;
 import org.gamegineer.table.net.IPlayer;
@@ -58,7 +59,7 @@ public final class FakeNodeController
      * @see org.gamegineer.table.internal.net.impl.node.INodeController#beginConnect(org.gamegineer.table.net.TableNetworkConfiguration)
      */
     @Override
-    public Future<Void> beginConnect(
+    public Future<@Nullable Void> beginConnect(
         @SuppressWarnings( "unused" )
         final TableNetworkConfiguration configuration )
     {
@@ -69,7 +70,7 @@ public final class FakeNodeController
      * @see org.gamegineer.table.internal.net.impl.node.INodeController#beginDisconnect()
      */
     @Override
-    public Future<Void> beginDisconnect()
+    public Future<@Nullable Void> beginDisconnect()
     {
         return new SynchronousFuture<>();
     }
@@ -89,7 +90,7 @@ public final class FakeNodeController
     @Override
     public void endConnect(
         @SuppressWarnings( "unused" )
-        final Future<Void> future )
+        final Future<@Nullable Void> future )
     {
         // do nothing
     }
@@ -100,7 +101,7 @@ public final class FakeNodeController
     @Override
     public void endDisconnect(
         @SuppressWarnings( "unused" )
-        final Future<Void> future )
+        final Future<@Nullable Void> future )
     {
         // do nothing
     }
@@ -121,7 +122,7 @@ public final class FakeNodeController
     @Override
     public Collection<IPlayer> getPlayers()
     {
-        return nonNull( Collections.<IPlayer>emptyList() );
+        return nonNull( Collections.<@NonNull IPlayer>emptyList() );
     }
 
     /*

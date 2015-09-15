@@ -1,6 +1,6 @@
 /*
  * ITransportLayer.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.impl.transport;
 
 import java.util.concurrent.Future;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A network transport layer.
@@ -44,7 +45,7 @@ public interface ITransportLayer
      * @return An asynchronous completion token for the operation; never
      *         {@code null}.
      */
-    public Future<Void> beginClose();
+    public Future<@Nullable Void> beginClose();
 
     /**
      * Begins an asynchronous operation to open the transport layer.
@@ -62,7 +63,7 @@ public interface ITransportLayer
      * @return An asynchronous completion token for the operation; never
      *         {@code null}.
      */
-    public Future<Void> beginOpen(
+    public Future<@Nullable Void> beginOpen(
         String hostName,
         int port );
 
@@ -86,7 +87,7 @@ public interface ITransportLayer
      *         If the operation is cancelled.
      */
     public void endClose(
-        Future<Void> future )
+        Future<@Nullable Void> future )
         throws InterruptedException;
 
     /**
@@ -113,6 +114,6 @@ public interface ITransportLayer
      *         If an error occurs.
      */
     public void endOpen(
-        Future<Void> future )
+        Future<@Nullable Void> future )
         throws TransportException, InterruptedException;
 }

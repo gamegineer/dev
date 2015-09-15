@@ -1,6 +1,6 @@
 /*
  * InputQueueTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,6 +27,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import java.io.ByteArrayInputStream;
 import java.nio.channels.Channels;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.internal.net.impl.transport.FakeMessage;
 import org.gamegineer.table.internal.net.impl.transport.MessageEnvelope;
@@ -36,7 +37,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link InputQueue} class.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public final class InputQueueTest
 {
     // ======================================================================

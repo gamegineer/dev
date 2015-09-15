@@ -153,7 +153,7 @@ abstract class AbstractTransportLayer
      * @see org.gamegineer.table.internal.net.impl.transport.ITransportLayer#beginClose()
      */
     @Override
-    public final Future<Void> beginClose()
+    public final Future<@Nullable Void> beginClose()
     {
         assert isTransportLayerThread();
 
@@ -167,24 +167,22 @@ abstract class AbstractTransportLayer
         close();
         final Dispatcher dispatcher = dispatcher_;
         assert dispatcher != null;
-        final Future<Void> dispatcherCloseTaskFuture = dispatcher.beginClose();
+        final Future<@Nullable Void> dispatcherCloseTaskFuture = dispatcher.beginClose();
 
-        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
         {
-            @Nullable
             @Override
             @SuppressWarnings( "synthetic-access" )
-            public Void call()
+            public @Nullable Void call()
             {
                 try
                 {
                     dispatcher.endClose( dispatcherCloseTaskFuture );
 
-                    final Future<Void> closeTaskFuture = executorService_.submit( new Callable<Void>()
+                    final Future<@Nullable Void> closeTaskFuture = executorService_.submit( new Callable<@Nullable Void>()
                     {
-                        @Nullable
                         @Override
-                        public Void call()
+                        public @Nullable Void call()
                         {
                             dispatcher_ = null;
                             executorService_.shutdown();
@@ -217,7 +215,7 @@ abstract class AbstractTransportLayer
      * @see org.gamegineer.table.internal.net.impl.transport.ITransportLayer#beginOpen(java.lang.String, int)
      */
     @Override
-    public final Future<Void> beginOpen(
+    public final Future<@Nullable Void> beginOpen(
         final String hostName,
         final int port )
     {
@@ -231,21 +229,19 @@ abstract class AbstractTransportLayer
         state_ = State.OPEN;
         dispatcher_ = new Dispatcher( this );
 
-        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
         {
-            @Nullable
             @Override
             @SuppressWarnings( "synthetic-access" )
-            public Void call()
+            public @Nullable Void call()
                 throws TransportException
             {
                 try
                 {
-                    syncExec( new Callable<Void>()
+                    syncExec( new Callable<@Nullable Void>()
                     {
-                        @Nullable
                         @Override
-                        public Void call()
+                        public @Nullable Void call()
                             throws TransportException
                         {
                             try
@@ -328,7 +324,7 @@ abstract class AbstractTransportLayer
      */
     @Override
     public final void endClose(
-        final Future<Void> future )
+        final Future<@Nullable Void> future )
         throws InterruptedException
     {
         assert !isTransportLayerThread() || future.isDone();
@@ -351,7 +347,7 @@ abstract class AbstractTransportLayer
      */
     @Override
     public final void endOpen(
-        final Future<Void> future )
+        final Future<@Nullable Void> future )
         throws TransportException, InterruptedException
     {
         assert !isTransportLayerThread() || future.isDone();
@@ -502,10 +498,10 @@ abstract class AbstractTransportLayer
     {
         assert !isTransportLayerThread();
 
-        final Future<Future<Void>> beginCloseTaskFuture = asyncExec( new Callable<Future<Void>>()
+        final Future<Future<@Nullable Void>> beginCloseTaskFuture = asyncExec( new Callable<Future<@Nullable Void>>()
         {
             @Override
-            public Future<Void> call()
+            public Future<@Nullable Void> call()
             {
                 return beginClose();
             }
@@ -513,7 +509,7 @@ abstract class AbstractTransportLayer
 
         try
         {
-            final Future<Void> closeTaskFuture = beginCloseTaskFuture.get();
+            final Future<@Nullable Void> closeTaskFuture = beginCloseTaskFuture.get();
             assert closeTaskFuture != null;
             endClose( closeTaskFuture );
         }

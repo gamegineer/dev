@@ -1,6 +1,6 @@
 /*
  * HelloResponseMessageHandlerTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,6 +25,7 @@ import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
 import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.internal.net.impl.node.IMessageHandler;
 import org.gamegineer.table.internal.net.impl.node.client.IRemoteServerNodeController;
@@ -40,7 +41,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link HelloResponseMessageHandler} class.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public final class HelloResponseMessageHandlerTest
 {
     // ======================================================================

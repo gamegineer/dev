@@ -1,6 +1,6 @@
 /*
  * RemoteNetworkTable.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.impl.node;
 
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.NonNull;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.internal.net.impl.node.common.messages.ComponentIncrementMessage;
 import org.gamegineer.table.internal.net.impl.node.common.messages.TableMessage;
@@ -38,7 +39,7 @@ final class RemoteNetworkTable
     // ======================================================================
 
     /** The control interface for the remote node associated with the table. */
-    private final IRemoteNodeController<?> remoteNodeController_;
+    private final IRemoteNodeController<@NonNull ?> remoteNodeController_;
 
 
     // ======================================================================
@@ -53,7 +54,7 @@ final class RemoteNetworkTable
      *        table; must not be {@code null}.
      */
     RemoteNetworkTable(
-        final IRemoteNodeController<?> remoteNodeController )
+        final IRemoteNodeController<@NonNull ?> remoteNodeController )
     {
         remoteNodeController_ = remoteNodeController;
     }

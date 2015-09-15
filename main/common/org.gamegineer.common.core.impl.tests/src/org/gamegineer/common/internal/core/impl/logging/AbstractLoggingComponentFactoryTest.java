@@ -1,6 +1,6 @@
 /*
  * AbstractLoggingComponentFactoryTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,6 +28,8 @@ import java.util.Collections;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.logging.Filter;
+import org.eclipse.jdt.annotation.DefaultLocation;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.logging.LoggingServiceConstants;
 import org.junit.Before;
@@ -39,7 +41,7 @@ import org.osgi.service.component.ComponentFactory;
 /**
  * A fixture for testing the {@link AbstractLoggingComponentFactory} class.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public final class AbstractLoggingComponentFactoryTest
 {
     // ======================================================================
@@ -81,9 +83,9 @@ public final class AbstractLoggingComponentFactoryTest
         throws Exception
     {
         componentProperties_ = new Hashtable<>();
-        componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_TYPE_NAME, Object.class.getName() );
+        componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_TYPE_NAME, nonNull( Object.class.getName() ) );
         componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_INSTANCE_NAME, "instanceName" ); //$NON-NLS-1$
-        componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_LOGGING_PROPERTIES, Collections.<String, String>emptyMap() );
+        componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_LOGGING_PROPERTIES, nonNull( Collections.<@NonNull String, @NonNull String>emptyMap() ) );
 
         factory_ = new AbstractLoggingComponentFactory<Object>( Object.class )
         {
@@ -124,7 +126,7 @@ public final class AbstractLoggingComponentFactoryTest
     @Test( expected = IllegalArgumentException.class )
     public void testCreateNamedLoggingComponent_Name_Illegal()
     {
-        AbstractLoggingComponentFactory.createNamedLoggingComponent( Object.class, "name", Collections.<String, String>emptyMap() ); //$NON-NLS-1$
+        AbstractLoggingComponentFactory.createNamedLoggingComponent( Object.class, "name", Collections.<@NonNull String, @NonNull String>emptyMap() ); //$NON-NLS-1$
     }
 
     /**

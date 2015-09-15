@@ -1,6 +1,6 @@
 /*
  * AbstractMessageHandlerTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,6 +29,7 @@ import net.jcip.annotations.NotThreadSafe;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.internal.net.impl.node.common.messages.ErrorMessage;
@@ -41,7 +42,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link AbstractMessageHandler} class.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public final class AbstractMessageHandlerTest
 {
     // ======================================================================
@@ -93,7 +94,7 @@ public final class AbstractMessageHandlerTest
     @Test
     public void testHandleMessage_Message_Supported()
     {
-        final IRemoteNodeController<?> remoteNodeController = nonNull( mocksControl_.createMock( IRemoteNodeController.class ) );
+        final IRemoteNodeController<@NonNull ?> remoteNodeController = nonNull( mocksControl_.createMock( IRemoteNodeController.class ) );
         final IMessage message = new FakeMessage();
         mocksControl_.replay();
 
@@ -110,7 +111,7 @@ public final class AbstractMessageHandlerTest
     @Test
     public void testHandleMessage_Message_Unsupported()
     {
-        final IRemoteNodeController<?> remoteNodeController = mocksControl_.createMock( IRemoteNodeController.class );
+        final IRemoteNodeController<@NonNull ?> remoteNodeController = mocksControl_.createMock( IRemoteNodeController.class );
         final Capture<IMessage> messageCapture = new Capture<>();
         remoteNodeController.sendMessage( assumeNonNull( EasyMock.capture( messageCapture ) ), EasyMock.isNull( IMessageHandler.class ) );
         final IMessage message = mocksControl_.createMock( IMessage.class );
@@ -240,9 +241,7 @@ public final class AbstractMessageHandlerTest
          */
         @SuppressWarnings( "unused" )
         private void handleMessage(
-            @NonNull
-            final IRemoteNodeController<?> remoteNodeController,
-            @NonNull
+            final IRemoteNodeController<@NonNull ?> remoteNodeController,
             final FakeMessage message )
         {
             ++handleFakeMessageCallCount_;
@@ -253,7 +252,6 @@ public final class AbstractMessageHandlerTest
          */
         @Override
         protected void handleUnexpectedMessage(
-            @NonNull
             final IRemoteNodeController remoteNodeController )
         {
             super.handleUnexpectedMessage( remoteNodeController );

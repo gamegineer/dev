@@ -1,6 +1,6 @@
 /*
  * AbstractDragContextTestCase.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.ComponentPath;
@@ -52,7 +53,7 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IDragContext} interface.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public abstract class AbstractDragContextTestCase
 {
     // ======================================================================
@@ -123,7 +124,6 @@ public abstract class AbstractDragContextTestCase
      * 
      * @return A new drag strategy factory; never {@code null}.
      */
-    @NonNull
     private static IDragStrategyFactory createFixtureDragStrategyFactory()
     {
         return new IDragStrategyFactory()
@@ -168,7 +168,6 @@ public abstract class AbstractDragContextTestCase
      * 
      * @return A new component; never {@code null}.
      */
-    @NonNull
     private IComponent createUniqueComponent()
     {
         return createUniqueComponent( 0, 0 );
@@ -185,7 +184,6 @@ public abstract class AbstractDragContextTestCase
      * 
      * @return A new component; never {@code null}.
      */
-    @NonNull
     private IComponent createUniqueComponent(
         final int x,
         final int y )
@@ -207,7 +205,6 @@ public abstract class AbstractDragContextTestCase
      * 
      * @return A new container; never {@code null}.
      */
-    @NonNull
     private IContainer createUniqueContainer(
         final int x,
         final int y )
@@ -223,7 +220,6 @@ public abstract class AbstractDragContextTestCase
      * 
      * @return The table associated with the fixture; never {@code null}.
      */
-    @NonNull
     protected abstract ITable getTable();
 
     /**
@@ -551,7 +547,6 @@ public abstract class AbstractDragContextTestCase
          *        The component being dragged; must not be {@code null}.
          */
         PreDragComponentState(
-            @NonNull
             final IComponent component )
         {
             this.component = component;

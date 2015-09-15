@@ -1,6 +1,6 @@
 /*
  * AbstractAbstractRegistryExtensionPointAdapterTestCase.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -31,7 +31,7 @@ import org.easymock.IMocksControl;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.registry.AbstractRegistryExtensionPointAdapter;
@@ -50,7 +50,7 @@ import org.junit.Test;
  * @param <ObjectType>
  *        The type of object managed by the registry.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<RegistryExtensionPointAdapterType extends AbstractRegistryExtensionPointAdapter<ObjectIdType, ObjectType>, ObjectIdType, ObjectType>
 {
     // ======================================================================
@@ -122,11 +122,8 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @NonNull
     protected abstract ObjectType configureConfigurationElement(
-        @NonNull
         IConfigurationElement configurationElement,
-        @NonNull
         IMocksControl mocksControl )
         throws Exception;
 
@@ -135,7 +132,6 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
      * 
      * @return A new mock registry; never {@code null}.
      */
-    @NonNull
     @SuppressWarnings( "unchecked" )
     private IRegistry<ObjectIdType, ObjectType> createMockRegistry()
     {
@@ -156,11 +152,8 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
      * @throws java.lang.IllegalArgumentException
      *         If the configuration element represents an illegal object.
      */
-    @NonNull
     protected abstract ObjectType createObject(
-        @NonNull
         RegistryExtensionPointAdapterType registryExtensionPointAdapter,
-        @NonNull
         IConfigurationElement configurationElement );
 
     /**
@@ -172,7 +165,6 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @NonNull
     protected abstract RegistryExtensionPointAdapterType createRegistryExtensionPointAdapter()
         throws Exception;
 
@@ -187,9 +179,7 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
      * @return The identifier of the extension point associated with this
      *         adapter; never {@code null}.
      */
-    @NonNull
     protected abstract String getExtensionPointId(
-        @NonNull
         RegistryExtensionPointAdapterType registryExtensionPointAdapter );
 
     /**

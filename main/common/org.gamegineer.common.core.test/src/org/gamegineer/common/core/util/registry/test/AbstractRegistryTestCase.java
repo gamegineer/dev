@@ -1,6 +1,6 @@
 /*
  * AbstractRegistryTestCase.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,8 +27,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import java.util.Collection;
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.registry.IRegistry;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,7 +43,7 @@ import org.junit.Test;
  * @param <ObjectType>
  *        The type of object managed by the registry.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public abstract class AbstractRegistryTestCase<ObjectIdType, ObjectType>
 {
     // ======================================================================
@@ -77,9 +78,7 @@ public abstract class AbstractRegistryTestCase<ObjectIdType, ObjectType>
      * 
      * @return A new object; never {@code null}.
      */
-    @NonNull
     protected abstract ObjectType cloneObject(
-        @NonNull
         ObjectType object );
 
     /**
@@ -90,7 +89,6 @@ public abstract class AbstractRegistryTestCase<ObjectIdType, ObjectType>
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @NonNull
     protected abstract IRegistry<ObjectIdType, ObjectType> createRegistry()
         throws Exception;
 
@@ -99,7 +97,6 @@ public abstract class AbstractRegistryTestCase<ObjectIdType, ObjectType>
      * 
      * @return A new object; never {@code null}.
      */
-    @NonNull
     protected abstract ObjectType createUniqueObject();
 
     /**
@@ -110,9 +107,7 @@ public abstract class AbstractRegistryTestCase<ObjectIdType, ObjectType>
      * 
      * @return The identifier of the specified object; never {@code null}.
      */
-    @NonNull
     protected abstract ObjectIdType getObjectId(
-        @NonNull
         ObjectType object );
 
     /**
@@ -149,7 +144,7 @@ public abstract class AbstractRegistryTestCase<ObjectIdType, ObjectType>
         final ObjectType expectedObject = createUniqueObject();
         registry_.registerObject( expectedObject );
 
-        final ObjectType actualObject = registry_.getObject( getObjectId( expectedObject ) );
+        final @Nullable ObjectType actualObject = registry_.getObject( getObjectId( expectedObject ) );
 
         assertSame( expectedObject, actualObject );
     }

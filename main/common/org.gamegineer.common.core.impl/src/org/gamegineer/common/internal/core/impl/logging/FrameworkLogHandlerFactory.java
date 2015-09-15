@@ -1,6 +1,6 @@
 /*
  * FrameworkLogHandlerFactory.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,6 +24,8 @@ package org.gamegineer.common.internal.core.impl.logging;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.osgi.framework.log.FrameworkLog;
 import org.gamegineer.common.core.logging.FrameworkLogHandler;
 import org.osgi.service.component.ComponentException;
@@ -33,14 +35,14 @@ import org.osgi.service.component.ComponentException;
  */
 @ThreadSafe
 public final class FrameworkLogHandlerFactory
-    extends AbstractHandlerFactory<FrameworkLogHandler>
+    extends AbstractHandlerFactory<@NonNull FrameworkLogHandler>
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** The framework log service. */
-    private final AtomicReference<FrameworkLog> frameworkLog_;
+    private final AtomicReference<@Nullable FrameworkLog> frameworkLog_;
 
 
     // ======================================================================

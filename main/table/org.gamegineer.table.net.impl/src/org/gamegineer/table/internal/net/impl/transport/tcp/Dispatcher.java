@@ -159,7 +159,7 @@ final class Dispatcher
      * @return An asynchronous completion token for the operation; never
      *         {@code null}.
      */
-    Future<Void> beginClose()
+    Future<@Nullable Void> beginClose()
     {
         assert isTransportLayerThread();
 
@@ -170,11 +170,10 @@ final class Dispatcher
         }
 
         final Closer closer = new Closer();
-        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
         {
-            @Nullable
             @Override
-            public Void call()
+            public @Nullable Void call()
             {
                 closer.close();
 
@@ -285,7 +284,7 @@ final class Dispatcher
      *         complete.
      */
     void endClose(
-        final Future<Void> future )
+        final Future<@Nullable Void> future )
         throws InterruptedException
     {
         assert !isTransportLayerThread() || future.isDone();

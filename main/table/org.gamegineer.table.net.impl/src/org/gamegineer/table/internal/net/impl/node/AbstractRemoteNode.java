@@ -1,6 +1,6 @@
 /*
  * AbstractRemoteNode.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.net.impl.Debug;
 import org.gamegineer.table.internal.net.impl.Loggers;
@@ -579,7 +580,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
             "static-method", "unused"
         } )
         private void handleMessage(
-            final IRemoteNodeController<?> remoteNodeController,
+            final IRemoteNodeController<@NonNull ?> remoteNodeController,
             final ErrorMessage message )
         {
             Loggers.getDefaultLogger().warning( NonNlsMessages.ErrorMessageHandler_handleMessage_errorReceived( message.getError() ) );

@@ -1,6 +1,6 @@
 /*
  * NodeLayerRunner.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,6 +29,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
 import org.gamegineer.table.net.TableNetworkConfiguration;
@@ -44,7 +45,7 @@ public final class NodeLayerRunner
     // ======================================================================
 
     /** The table network node that manages the node layer. */
-    private final AbstractNode<?> node_;
+    private final AbstractNode<@NonNull ?> node_;
 
 
     // ======================================================================
@@ -58,7 +59,7 @@ public final class NodeLayerRunner
      *        The node that manages the node layer; must not be {@code null}.
      */
     public NodeLayerRunner(
-        final AbstractNode<?> node )
+        final AbstractNode<@NonNull ?> node )
     {
         node_ = node;
     }
@@ -82,11 +83,11 @@ public final class NodeLayerRunner
         final TableNetworkConfiguration configuration )
         throws Exception
     {
-        final Future<Void> future = run( new Callable<Future<Void>>()
+        final Future<@Nullable Void> future = run( new Callable<Future<@Nullable Void>>()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
-            public Future<Void> call()
+            public Future<@Nullable Void> call()
             {
                 return node_.beginConnect( configuration );
             }
@@ -106,11 +107,11 @@ public final class NodeLayerRunner
     public void disconnect()
         throws Exception
     {
-        final Future<Void> future = run( new Callable<Future<Void>>()
+        final Future<@Nullable Void> future = run( new Callable<Future<@Nullable Void>>()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
-            public Future<Void> call()
+            public Future<@Nullable Void> call()
             {
                 return node_.beginDisconnect();
             }

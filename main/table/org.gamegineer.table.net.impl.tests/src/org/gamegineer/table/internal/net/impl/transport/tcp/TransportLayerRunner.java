@@ -1,6 +1,6 @@
 /*
  * TransportLayerRunner.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -80,11 +80,11 @@ final class TransportLayerRunner
     void close()
         throws Exception
     {
-        final Future<Void> future = run( new Callable<Future<Void>>()
+        final Future<@Nullable Void> future = run( new Callable<Future<@Nullable Void>>()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
-            public Future<Void> call()
+            public Future<@Nullable Void> call()
             {
                 return transportLayer_.beginClose();
             }
@@ -110,11 +110,11 @@ final class TransportLayerRunner
         final int port )
         throws Exception
     {
-        final Future<Void> future = run( new Callable<Future<Void>>()
+        final Future<@Nullable Void> future = run( new Callable<Future<@Nullable Void>>()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
-            public Future<Void> call()
+            public Future<@Nullable Void> call()
             {
                 return transportLayer_.beginOpen( hostName, port );
             }

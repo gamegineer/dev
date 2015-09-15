@@ -1,6 +1,6 @@
 /*
  * AbstractPersistenceDelegateTestCase.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
@@ -42,7 +42,7 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IPersistenceDelegate} interface.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public abstract class AbstractPersistenceDelegateTestCase
 {
     // ======================================================================
@@ -90,7 +90,6 @@ public abstract class AbstractPersistenceDelegateTestCase
      *         If the two subjects are not equal.
      */
     protected void assertSubjectEquals(
-        @NonNull
         final Object expected,
         @Nullable
         final Object actual )
@@ -110,9 +109,7 @@ public abstract class AbstractPersistenceDelegateTestCase
      * @throws java.io.IOException
      *         If an I/O error occurs.
      */
-    @NonNull
     private ObjectInputStream createObjectInputStream(
-        @NonNull
         final InputStream is )
         throws IOException
     {
@@ -132,9 +129,7 @@ public abstract class AbstractPersistenceDelegateTestCase
      * @throws java.io.IOException
      *         If an I/O error occurs.
      */
-    @NonNull
     private ObjectOutputStream createObjectOutputStream(
-        @NonNull
         final OutputStream os )
         throws IOException
     {
@@ -151,7 +146,6 @@ public abstract class AbstractPersistenceDelegateTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @NonNull
     protected abstract IPersistenceDelegate createPersistenceDelegate()
         throws Exception;
 
@@ -160,7 +154,6 @@ public abstract class AbstractPersistenceDelegateTestCase
      * 
      * @return The subject to be persisted; never {@code null}.
      */
-    @NonNull
     protected abstract Object createSubject();
 
     /**
@@ -172,7 +165,6 @@ public abstract class AbstractPersistenceDelegateTestCase
      *        be {@code null}.
      */
     protected abstract void registerPersistenceDelegates(
-        @NonNull
         IPersistenceDelegateRegistry persistenceDelegateRegistry );
 
     /**

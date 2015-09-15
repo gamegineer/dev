@@ -29,7 +29,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
 import org.gamegineer.table.ui.ITableRunner;
@@ -41,7 +41,7 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link ITableRunner} interface.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public abstract class AbstractTableRunnerTestCase
 {
     // ======================================================================
@@ -77,7 +77,6 @@ public abstract class AbstractTableRunnerTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @NonNull
     protected abstract ITableRunner createTableRunner()
         throws Exception;
 

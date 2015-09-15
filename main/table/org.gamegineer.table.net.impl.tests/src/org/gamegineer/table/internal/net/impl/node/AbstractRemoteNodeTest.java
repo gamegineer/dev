@@ -1,6 +1,6 @@
 /*
  * AbstractRemoteNodeTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.internal.net.impl.node.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.impl.transport.FakeMessage;
@@ -41,7 +41,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link AbstractRemoteNode} class.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public final class AbstractRemoteNodeTest
 {
     // ======================================================================
@@ -76,7 +76,6 @@ public final class AbstractRemoteNodeTest
      * 
      * @return A mock local node for use in the fixture; never {@code null}.
      */
-    @NonNull
     private static INode<IRemoteNode> createMockLocalNode()
     {
         final IMocksControl mocksControl = EasyMock.createControl();
@@ -90,7 +89,6 @@ public final class AbstractRemoteNodeTest
      * 
      * @return A mock node layer for use in the fixture; never {@code null}.
      */
-    @NonNull
     @SuppressWarnings( "boxing" )
     private static INodeLayer createMockNodeLayer()
     {
@@ -112,11 +110,8 @@ public final class AbstractRemoteNodeTest
      * @return A new instance of the {@code AbstractRemoteNode} class; never
      *         {@code null}.
      */
-    @NonNull
     private static AbstractRemoteNode<INode<IRemoteNode>, IRemoteNode> createRemoteNode(
-        @NonNull
         final INodeLayer nodeLayer,
-        @NonNull
         final INode<IRemoteNode> node )
     {
         return new AbstractRemoteNode<INode<IRemoteNode>, IRemoteNode>( nodeLayer, node )

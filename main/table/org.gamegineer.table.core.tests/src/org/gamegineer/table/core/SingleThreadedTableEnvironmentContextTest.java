@@ -1,6 +1,6 @@
 /*
  * SingleThreadedTableEnvironmentContextTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +36,7 @@ import org.junit.Test;
  * A fixture for testing the {@link SingleThreadedTableEnvironmentContext}
  * class.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public final class SingleThreadedTableEnvironmentContextTest
 {
     // ======================================================================
@@ -131,7 +132,7 @@ public final class SingleThreadedTableEnvironmentContextTest
             {
                 tableEnvironmentContext_.getLock().lock();
                 tableEnvironmentContext_.getLock().unlock(); // should not fire eventNotification2
-                eventNotificationCallHistory.add( Integer.valueOf( 1 ) );
+                eventNotificationCallHistory.add( nonNull( Integer.valueOf( 1 ) ) );
             }
         };
         final Runnable eventNotification2 = new Runnable()
@@ -139,7 +140,7 @@ public final class SingleThreadedTableEnvironmentContextTest
             @Override
             public void run()
             {
-                eventNotificationCallHistory.add( Integer.valueOf( 2 ) );
+                eventNotificationCallHistory.add( nonNull( Integer.valueOf( 2 ) ) );
             }
         };
 

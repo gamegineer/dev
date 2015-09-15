@@ -35,6 +35,7 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
@@ -163,17 +164,16 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * @see org.gamegineer.table.internal.net.impl.node.INodeController#beginConnect(org.gamegineer.table.net.TableNetworkConfiguration)
      */
     @Override
-    public final Future<Void> beginConnect(
+    public final Future<@Nullable Void> beginConnect(
         final TableNetworkConfiguration configuration )
     {
         assert isNodeLayerThread();
 
         final Connecter connecter = new Connecter( configuration );
-        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
         {
-            @Nullable
             @Override
-            public Void call()
+            public @Nullable Void call()
                 throws TableNetworkException
             {
                 connecter.connect();
@@ -187,16 +187,15 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * @see org.gamegineer.table.internal.net.impl.node.INodeController#beginDisconnect()
      */
     @Override
-    public Future<Void> beginDisconnect()
+    public Future<@Nullable Void> beginDisconnect()
     {
         assert isNodeLayerThread();
 
         final Disconnecter disconnecter = new Disconnecter();
-        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
         {
-            @Nullable
             @Override
-            public Void call()
+            public @Nullable Void call()
             {
                 disconnecter.disconnect();
 
@@ -454,7 +453,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      */
     @Override
     public final void endConnect(
-        final Future<Void> future )
+        final Future<@Nullable Void> future )
         throws TableNetworkException, InterruptedException
     {
         assert !isNodeLayerThread() || future.isDone();
@@ -483,7 +482,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      */
     @Override
     public final void endDisconnect(
-        final Future<Void> future )
+        final Future<@Nullable Void> future )
         throws InterruptedException
     {
         assert !isNodeLayerThread() || future.isDone();
@@ -720,7 +719,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      *        The type of the table network node.
      */
     @Immutable
-    public static abstract class AbstractFactory<T extends AbstractNode<?>>
+    public static abstract class AbstractFactory<T extends AbstractNode<@NonNull ?>>
     {
         // ==================================================================
         // Constructors
@@ -758,7 +757,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
             {
                 return nonNull( nodeLayer.syncExec( new Callable<T>()
                 {
-                    @Nullable
                     @Override
                     public T call()
                     {
@@ -1139,11 +1137,10 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         {
             try
             {
-                nodeLayer_.syncExec( new Callable<Void>()
+                nodeLayer_.syncExec( new Callable<@Nullable Void>()
                 {
-                    @Nullable
                     @Override
-                    public Void call()
+                    public @Nullable Void call()
                         throws TableNetworkException
                     {
                         if( transportLayer_ != null )
@@ -1151,9 +1148,10 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                             throw new TableNetworkException( TableNetworkError.ILLEGAL_CONNECTION_STATE );
                         }
 
-                        localPlayerName_ = configuration_.getLocalPlayerName();
+                        final String localPlayerName = configuration_.getLocalPlayerName();
+                        localPlayerName_ = localPlayerName;
                         password_ = configuration_.getPassword();
-                        tables_.put( localPlayerName_, new LocalNetworkTable( nodeLayer_, createTableManagerDecoratorForLocalNetworkTable( getTableManager() ), configuration_.getLocalTable() ) );
+                        tables_.put( localPlayerName, new LocalNetworkTable( nodeLayer_, createTableManagerDecoratorForLocalNetworkTable( getTableManager() ), configuration_.getLocalTable() ) );
 
                         AbstractNode.this.connecting( configuration_ );
 
@@ -1225,10 +1223,10 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         {
             try
             {
-                endDisconnect( nonNull( nodeLayer_.syncExec( new Callable<Future<Void>>()
+                endDisconnect( nonNull( nodeLayer_.syncExec( new Callable<Future<@Nullable Void>>()
                 {
                     @Override
-                    public Future<Void> call()
+                    public Future<@Nullable Void> call()
                     {
                         return beginDisconnect();
                     }

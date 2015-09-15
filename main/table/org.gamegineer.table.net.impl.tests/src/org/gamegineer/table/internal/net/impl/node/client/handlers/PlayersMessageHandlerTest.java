@@ -1,6 +1,6 @@
 /*
  * PlayersMessageHandlerTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@ import java.util.Collection;
 import java.util.EnumSet;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.internal.net.impl.node.IMessageHandler;
 import org.gamegineer.table.internal.net.impl.node.client.IClientNode;
@@ -42,7 +42,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link PlayersMessageHandler} class.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public final class PlayersMessageHandlerTest
 {
     // ======================================================================
@@ -81,9 +81,7 @@ public final class PlayersMessageHandlerTest
      * 
      * @return The new mock player; never {@code null}.
      */
-    @NonNull
     private IPlayer createMockPlayer(
-        @NonNull
         final String name )
     {
         final IPlayer player = mocksControl_.createMock( IPlayer.class );

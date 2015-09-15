@@ -24,8 +24,9 @@ package org.gamegineer.table.internal.net.impl.transport;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 import java.util.concurrent.Future;
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +35,7 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link ITransportLayer} interface.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public abstract class AbstractTransportLayerTestCase
 {
     // ======================================================================
@@ -70,7 +71,6 @@ public abstract class AbstractTransportLayerTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @NonNull
     protected abstract ITransportLayer createTransportLayer()
         throws Exception;
 
@@ -114,7 +114,7 @@ public abstract class AbstractTransportLayerTestCase
     {
         transportLayer_.endClose( transportLayer_.beginClose() );
 
-        final Future<Void> future = transportLayer_.beginOpen( "localhost", 8888 ); //$NON-NLS-1$
+        final Future<@Nullable Void> future = transportLayer_.beginOpen( "localhost", 8888 ); //$NON-NLS-1$
         try
         {
             transportLayer_.endOpen( future );
@@ -146,7 +146,7 @@ public abstract class AbstractTransportLayerTestCase
             // ignore transport layer errors
         }
 
-        final Future<Void> future = transportLayer_.beginOpen( "localhost", 8888 ); //$NON-NLS-1$
+        final Future<@Nullable Void> future = transportLayer_.beginOpen( "localhost", 8888 ); //$NON-NLS-1$
         try
         {
             transportLayer_.endOpen( future );

@@ -1,6 +1,6 @@
 /*
  * Application.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -33,6 +33,7 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.app.BrandingUtils;
 import org.gamegineer.common.core.app.IBranding;
@@ -55,13 +56,13 @@ public final class Application
     // ======================================================================
 
     /** The registration token for the application branding service. */
-    private final AtomicReference<ServiceRegistration<IBranding>> brandingServiceRegistrationRef_;
+    private final AtomicReference<@Nullable ServiceRegistration<IBranding>> brandingServiceRegistrationRef_;
 
     /**
      * A reference to the asynchronous completion token associated with the
      * running table.
      */
-    private final AtomicReference<Future<TableResult>> futureRef_;
+    private final AtomicReference<@Nullable Future<TableResult>> futureRef_;
 
 
     // ======================================================================
@@ -106,12 +107,11 @@ public final class Application
      * @return The collection of application arguments; never {@code null}.
      */
     private static List<String> parseApplicationArguments(
-        @Nullable
-        final String[] applicationArgumentsArray )
+        final String @Nullable[] applicationArgumentsArray )
     {
         if( (applicationArgumentsArray == null) || (applicationArgumentsArray.length == 0) )
         {
-            return nonNull( Collections.<String>emptyList() );
+            return nonNull( Collections.<@NonNull String>emptyList() );
         }
 
         return nonNull( Arrays.asList( applicationArgumentsArray ) );

@@ -76,16 +76,16 @@ final class TransportLayerProxy
      * @see org.gamegineer.table.internal.net.impl.transport.ITransportLayer#beginClose()
      */
     @Override
-    public Future<Void> beginClose()
+    public Future<@Nullable Void> beginClose()
     {
-        final Future<Future<Void>> beginCloseTaskFuture;
+        final Future<Future<@Nullable Void>> beginCloseTaskFuture;
         try
         {
-            beginCloseTaskFuture = actualTransportLayer_.asyncExec( new Callable<Future<Void>>()
+            beginCloseTaskFuture = actualTransportLayer_.asyncExec( new Callable<Future<@Nullable Void>>()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
-                public Future<Void> call()
+                public Future<@Nullable Void> call()
                 {
                     return actualTransportLayer_.beginClose();
                 }
@@ -97,16 +97,15 @@ final class TransportLayerProxy
             return new SynchronousFuture<>();
         }
 
-        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
         {
-            @Nullable
             @Override
             @SuppressWarnings( "synthetic-access" )
-            public Void call()
+            public @Nullable Void call()
             {
                 try
                 {
-                    final Future<Void> closeTaskFuture;
+                    final Future<@Nullable Void> closeTaskFuture;
                     try
                     {
                         closeTaskFuture = beginCloseTaskFuture.get();
@@ -133,18 +132,18 @@ final class TransportLayerProxy
      * @see org.gamegineer.table.internal.net.impl.transport.ITransportLayer#beginOpen(java.lang.String, int)
      */
     @Override
-    public Future<Void> beginOpen(
+    public Future<@Nullable Void> beginOpen(
         final String hostName,
         final int port )
     {
-        final Future<Future<Void>> beginOpenTaskFuture;
+        final Future<Future<@Nullable Void>> beginOpenTaskFuture;
         try
         {
-            beginOpenTaskFuture = actualTransportLayer_.asyncExec( new Callable<Future<Void>>()
+            beginOpenTaskFuture = actualTransportLayer_.asyncExec( new Callable<Future<@Nullable Void>>()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
-                public Future<Void> call()
+                public Future<@Nullable Void> call()
                 {
                     return actualTransportLayer_.beginOpen( hostName, port );
                 }
@@ -155,17 +154,16 @@ final class TransportLayerProxy
             return new SynchronousFuture<>( new IllegalStateException( NonNlsMessages.TransportLayerProxy_beginOpen_transportLayerClosed, e ) );
         }
 
-        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
         {
-            @Nullable
             @Override
             @SuppressWarnings( "synthetic-access" )
-            public Void call()
+            public @Nullable Void call()
                 throws TransportException
             {
                 try
                 {
-                    final Future<Void> openTaskFuture;
+                    final Future<@Nullable Void> openTaskFuture;
                     try
                     {
                         openTaskFuture = beginOpenTaskFuture.get();
@@ -193,7 +191,7 @@ final class TransportLayerProxy
      */
     @Override
     public void endClose(
-        final Future<Void> future )
+        final Future<@Nullable Void> future )
         throws InterruptedException
     {
         try
@@ -211,7 +209,7 @@ final class TransportLayerProxy
      */
     @Override
     public void endOpen(
-        final Future<Void> future )
+        final Future<@Nullable Void> future )
         throws TransportException, InterruptedException
     {
         try

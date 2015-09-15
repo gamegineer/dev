@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,6 +25,7 @@ import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collection;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.osgi.util.NLS;
 
 /**
@@ -144,7 +145,7 @@ final class NonNlsMessages
      *         categories are orphans; never {@code null}.
      */
     static String ComponentPrototypeMenuBuilder_buildMenu_orphanedCategories(
-        final Collection<String> componentPrototypeCategoryIds )
+        final Collection<@Nullable String> componentPrototypeCategoryIds )
     {
         return nonNull( bind( ComponentPrototypeMenuBuilder_buildMenu_orphanedCategories, componentPrototypeCategoryIds ) );
     }

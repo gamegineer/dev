@@ -1,6 +1,6 @@
 /*
  * TableNetwork.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -65,7 +65,7 @@ public final class TableNetwork
      * A reference to the local table network node controller or {@code null} if
      * the table network is not connected.
      */
-    private final AtomicReference<INodeController> nodeControllerRef_;
+    private final AtomicReference<@Nullable INodeController> nodeControllerRef_;
 
     /** The table network node factory. */
     private final INodeFactory nodeFactory_;
@@ -221,7 +221,10 @@ public final class TableNetwork
             final INodeController nodeController = nodeControllerRef_.getAndSet( null );
             try
             {
-                nodeController.endDisconnect( nodeController.beginDisconnect() );
+                if( nodeController != null )
+                {
+                    nodeController.endDisconnect( nodeController.beginDisconnect() );
+                }
             }
             finally
             {

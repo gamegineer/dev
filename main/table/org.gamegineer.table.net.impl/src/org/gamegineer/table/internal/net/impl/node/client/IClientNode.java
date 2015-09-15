@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.impl.node.client;
 
 import java.util.Collection;
+import org.eclipse.jdt.annotation.NonNull;
 import org.gamegineer.table.internal.net.impl.node.INode;
 import org.gamegineer.table.net.IPlayer;
 
@@ -31,7 +32,7 @@ import org.gamegineer.table.net.IPlayer;
  * @noextend This interface is not intended to be extended by clients.
  */
 public interface IClientNode
-    extends INode<IRemoteServerNode>
+    extends INode<@NonNull IRemoteServerNode>
 {
     // ======================================================================
     // Methods

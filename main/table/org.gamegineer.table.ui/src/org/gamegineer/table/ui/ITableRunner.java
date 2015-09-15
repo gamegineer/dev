@@ -1,6 +1,6 @@
 /*
  * ITableRunner.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.table.ui;
 
 import java.util.concurrent.Callable;
+import org.eclipse.jdt.annotation.NonNull;
 
 /**
  * An object capable of running a table user interface.
@@ -39,7 +40,7 @@ import java.util.concurrent.Callable;
  * @noextend This interface is not intended to be extended by clients.
  */
 public interface ITableRunner
-    extends Callable<TableResult>
+    extends Callable<@NonNull TableResult>
 {
     // ======================================================================
     // Methods

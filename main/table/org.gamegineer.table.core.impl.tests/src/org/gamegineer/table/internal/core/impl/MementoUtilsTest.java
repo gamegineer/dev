@@ -1,6 +1,6 @@
 /*
  * MementoUtilsTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,8 +28,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +39,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link MementoUtils} class.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public final class MementoUtilsTest
 {
     // ======================================================================
@@ -64,7 +66,7 @@ public final class MementoUtilsTest
     private static final String PRESENT_ATTRIBUTE_VALUE = "present-Value"; //$NON-NLS-1$
 
     /** A memento for use in the fixture. */
-    private Map<String, Object> memento_;
+    private Map<String, @Nullable Object> memento_;
 
 
     // ======================================================================
@@ -88,8 +90,7 @@ public final class MementoUtilsTest
      * 
      * @return The fixture memento; never {@code null}.
      */
-    @NonNull
-    private Map<String, Object> getMemento()
+    private Map<String, @Nullable Object> getMemento()
     {
         assertNotNull( memento_ );
         return memento_;

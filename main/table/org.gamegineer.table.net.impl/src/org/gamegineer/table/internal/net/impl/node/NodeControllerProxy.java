@@ -30,6 +30,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.concurrent.SynchronousFuture;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
@@ -54,7 +55,7 @@ final class NodeControllerProxy
     // ======================================================================
 
     /** The actual node controller. */
-    private final AbstractNode<?> actualNodeController_;
+    private final AbstractNode<@NonNull ?> actualNodeController_;
 
 
     // ======================================================================
@@ -68,7 +69,7 @@ final class NodeControllerProxy
      *        The actual node controller; must not be {@code null}.
      */
     NodeControllerProxy(
-        final AbstractNode<?> actualNodeController )
+        final AbstractNode<@NonNull ?> actualNodeController )
     {
         actualNodeController_ = actualNodeController;
     }
@@ -82,17 +83,17 @@ final class NodeControllerProxy
      * @see org.gamegineer.table.internal.net.impl.node.INodeController#beginConnect(org.gamegineer.table.net.TableNetworkConfiguration)
      */
     @Override
-    public Future<Void> beginConnect(
+    public Future<@Nullable Void> beginConnect(
         final TableNetworkConfiguration configuration )
     {
-        final Future<Future<Void>> beginConnectTaskFuture;
+        final Future<Future<@Nullable Void>> beginConnectTaskFuture;
         try
         {
-            beginConnectTaskFuture = actualNodeController_.getNodeLayer().asyncExec( new Callable<Future<Void>>()
+            beginConnectTaskFuture = actualNodeController_.getNodeLayer().asyncExec( new Callable<Future<@Nullable Void>>()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
-                public Future<Void> call()
+                public Future<@Nullable Void> call()
                 {
                     return actualNodeController_.beginConnect( configuration );
                 }
@@ -103,17 +104,16 @@ final class NodeControllerProxy
             return new SynchronousFuture<>( new TableNetworkException( TableNetworkError.ILLEGAL_CONNECTION_STATE ) );
         }
 
-        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
         {
-            @Nullable
             @Override
             @SuppressWarnings( "synthetic-access" )
-            public Void call()
+            public @Nullable Void call()
                 throws TableNetworkException
             {
                 try
                 {
-                    final Future<Void> connectTaskFuture;
+                    final Future<@Nullable Void> connectTaskFuture;
                     try
                     {
                         connectTaskFuture = beginConnectTaskFuture.get();
@@ -140,16 +140,16 @@ final class NodeControllerProxy
      * @see org.gamegineer.table.internal.net.impl.node.INodeController#beginDisconnect()
      */
     @Override
-    public Future<Void> beginDisconnect()
+    public Future<@Nullable Void> beginDisconnect()
     {
-        final Future<Future<Void>> beginDisconnectTaskFuture;
+        final Future<Future<@Nullable Void>> beginDisconnectTaskFuture;
         try
         {
-            beginDisconnectTaskFuture = actualNodeController_.getNodeLayer().asyncExec( new Callable<Future<Void>>()
+            beginDisconnectTaskFuture = actualNodeController_.getNodeLayer().asyncExec( new Callable<Future<@Nullable Void>>()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
-                public Future<Void> call()
+                public Future<@Nullable Void> call()
                 {
                     return actualNodeController_.beginDisconnect();
                 }
@@ -161,16 +161,15 @@ final class NodeControllerProxy
             return new SynchronousFuture<>();
         }
 
-        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
         {
-            @Nullable
             @Override
             @SuppressWarnings( "synthetic-access" )
-            public Void call()
+            public @Nullable Void call()
             {
                 try
                 {
-                    final Future<Void> disconnectTaskFuture;
+                    final Future<@Nullable Void> disconnectTaskFuture;
                     try
                     {
                         disconnectTaskFuture = beginDisconnectTaskFuture.get();
@@ -227,7 +226,7 @@ final class NodeControllerProxy
      */
     @Override
     public void endConnect(
-        final Future<Void> future )
+        final Future<@Nullable Void> future )
         throws TableNetworkException, InterruptedException
     {
         try
@@ -251,7 +250,7 @@ final class NodeControllerProxy
      */
     @Override
     public void endDisconnect(
-        final Future<Void> future )
+        final Future<@Nullable Void> future )
         throws InterruptedException
     {
         try
@@ -273,7 +272,7 @@ final class NodeControllerProxy
     {
         try
         {
-            return actualNodeController_.getNodeLayer().syncExec( new Callable<IPlayer>()
+            return actualNodeController_.getNodeLayer().syncExec( new Callable<@Nullable IPlayer>()
             {
                 @Nullable
                 @Override
@@ -325,7 +324,7 @@ final class NodeControllerProxy
         {
             Thread.currentThread().interrupt();
             Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.NodeControllerProxy_interrupted, e );
-            return nonNull( Collections.<IPlayer>emptyList() );
+            return nonNull( Collections.<@NonNull IPlayer>emptyList() );
         }
     }
 

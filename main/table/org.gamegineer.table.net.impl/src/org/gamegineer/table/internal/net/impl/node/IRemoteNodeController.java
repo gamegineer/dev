@@ -1,6 +1,6 @@
 /*
  * IRemoteNodeController.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.net.impl.transport.IMessage;
 import org.gamegineer.table.net.TableNetworkError;
@@ -39,7 +40,7 @@ import org.gamegineer.table.net.TableNetworkError;
  * 
  * @noextend This interface is not intended to be extended by clients.
  */
-public interface IRemoteNodeController<LocalNodeType extends INode<?>>
+public interface IRemoteNodeController<@NonNull LocalNodeType extends @NonNull INode<@NonNull ?>>
 {
     // ======================================================================
     // Methods

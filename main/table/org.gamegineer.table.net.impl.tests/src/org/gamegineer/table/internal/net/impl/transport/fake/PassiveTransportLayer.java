@@ -1,6 +1,6 @@
 /*
  * PassiveTransportLayer.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.net.impl.transport.fake;
 
 import java.util.concurrent.Future;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.concurrent.SynchronousFuture;
 import org.gamegineer.table.internal.net.impl.transport.ITransportLayer;
 
@@ -53,7 +54,7 @@ final class PassiveTransportLayer
      * @see org.gamegineer.table.internal.net.impl.transport.ITransportLayer#beginClose()
      */
     @Override
-    public Future<Void> beginClose()
+    public Future<@Nullable Void> beginClose()
     {
         return new SynchronousFuture<>();
     }
@@ -62,7 +63,7 @@ final class PassiveTransportLayer
      * @see org.gamegineer.table.internal.net.impl.transport.ITransportLayer#beginOpen(java.lang.String, int)
      */
     @Override
-    public Future<Void> beginOpen(
+    public Future<@Nullable Void> beginOpen(
         @SuppressWarnings( "unused" )
         final String hostName,
         @SuppressWarnings( "unused" )
@@ -77,7 +78,7 @@ final class PassiveTransportLayer
     @Override
     public void endClose(
         @SuppressWarnings( "unused" )
-        final Future<Void> future )
+        final Future<@Nullable Void> future )
     {
         // do nothing
     }
@@ -88,7 +89,7 @@ final class PassiveTransportLayer
     @Override
     public void endOpen(
         @SuppressWarnings( "unused" )
-        final Future<Void> future )
+        final Future<@Nullable Void> future )
     {
         // do nothing
     }

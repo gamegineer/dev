@@ -39,7 +39,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentStrategyId;
@@ -57,7 +57,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link TableModel} class.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public final class TableModelTest
 {
     // ======================================================================
@@ -95,7 +95,6 @@ public final class TableModelTest
      * 
      * @return A temporary file; never {@code null}.
      */
-    @NonNull
     private static File createTemporaryFile()
     {
         try
@@ -116,7 +115,6 @@ public final class TableModelTest
      * 
      * @return A new component; never {@code null}.
      */
-    @NonNull
     private IComponent createUniqueComponent()
     {
         return createUniqueComponent( ComponentFocusability.NOT_FOCUSABLE );
@@ -132,9 +130,7 @@ public final class TableModelTest
      * 
      * @return A new component; never {@code null}.
      */
-    @NonNull
     private IComponent createUniqueComponent(
-        @NonNull
         final ComponentFocusability componentFocusability )
     {
         final IComponentStrategyUI componentStrategyUI = new IComponentStrategyUI()
@@ -160,7 +156,6 @@ public final class TableModelTest
      * 
      * @return A new container; never {@code null}.
      */
-    @NonNull
     private IContainer createUniqueContainer()
     {
         return createUniqueContainer( ComponentFocusability.FOCUSABLE );
@@ -176,9 +171,7 @@ public final class TableModelTest
      * 
      * @return A new container; never {@code null}.
      */
-    @NonNull
     private IContainer createUniqueContainer(
-        @NonNull
         final ComponentFocusability componentFocusability )
     {
         assert componentFocusability != null;
@@ -227,7 +220,6 @@ public final class TableModelTest
      *        be {@code null}.
      */
     private void fireTableModelEvent(
-        @NonNull
         final String methodName )
     {
         try

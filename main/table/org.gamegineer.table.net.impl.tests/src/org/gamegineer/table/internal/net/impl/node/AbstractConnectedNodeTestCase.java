@@ -1,6 +1,6 @@
 /*
  * AbstractConnectedNodeTestCase.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,6 +27,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.security.SecureString;
@@ -48,8 +49,8 @@ import org.junit.Test;
  * @param <RemoteNodeType>
  *        The type of the remote node.
  */
-@NonNullByDefault( false )
-public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeType>, RemoteNodeType extends IRemoteNode>
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
+public abstract class AbstractConnectedNodeTestCase<T extends @NonNull INode<RemoteNodeType>, RemoteNodeType extends @NonNull IRemoteNode>
 {
     // ======================================================================
     // Fields
@@ -98,9 +99,7 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
      * @return A mock remote table network node for use in the fixture; never
      *         {@code null}.
      */
-    @NonNull
     protected abstract RemoteNodeType createMockRemoteNode(
-        @NonNull
         IMocksControl mocksControl );
 
     /**
@@ -112,7 +111,6 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @NonNull
     protected abstract T createConnectedNode()
         throws Exception;
 
@@ -126,9 +124,7 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
      * @return The new node layer runner for the specified table network node;
      *         never {@code null}.
      */
-    @NonNull
     protected abstract NodeLayerRunner createNodeLayerRunner(
-        @NonNull
         T node );
 
     /**
@@ -136,7 +132,6 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
      * 
      * @return A new table network configuration; never {@code null}.
      */
-    @NonNull
     protected final TableNetworkConfiguration createTableNetworkConfiguration()
     {
         assertNotNull( table_ );
@@ -148,7 +143,6 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
      * 
      * @return The fixture nice mocks control; never {@code null}.
      */
-    @NonNull
     private IMocksControl getNiceMocksControl()
     {
         assertNotNull( niceMocksControl_ );
@@ -161,7 +155,6 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
      * @return The table network node under test in the fixture; never
      *         {@code null}.
      */
-    @NonNull
     protected final T getNode()
     {
         assertNotNull( node_ );
@@ -173,7 +166,6 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
      * 
      * @return The node layer runner for use in the fixture; never {@code null}.
      */
-    @NonNull
     protected final NodeLayerRunner getNodeLayerRunner()
     {
         assertNotNull( nodeLayerRunner_ );
@@ -195,9 +187,7 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
      *         to the specified table network node; otherwise {@code false}.
      */
     protected abstract boolean isRemoteNodeBound(
-        @NonNull
         final T node,
-        @NonNull
         final String playerName );
 
     /**

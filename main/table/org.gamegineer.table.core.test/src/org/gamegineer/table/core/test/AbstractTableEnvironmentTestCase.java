@@ -1,6 +1,6 @@
 /*
  * AbstractTableEnvironmentTestCase.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@ package org.gamegineer.table.core.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentStrategy;
@@ -39,7 +39,7 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link ITableEnvironment} interface.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public abstract class AbstractTableEnvironmentTestCase
 {
     // ======================================================================
@@ -78,9 +78,7 @@ public abstract class AbstractTableEnvironmentTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @NonNull
     protected abstract ITableEnvironment createTableEnvironment(
-        @NonNull
         final ITableEnvironmentContext context )
         throws Exception;
 

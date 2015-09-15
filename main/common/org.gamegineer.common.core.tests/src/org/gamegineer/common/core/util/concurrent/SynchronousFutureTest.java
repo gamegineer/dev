@@ -1,6 +1,6 @@
 /*
  * SynchronousFutureTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,6 +25,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Test;
 
 /**
@@ -61,7 +62,7 @@ public final class SynchronousFutureTest
         throws Exception
     {
         final Throwable expectedValue = new Exception();
-        final Future<Object> future = new SynchronousFuture<>( expectedValue );
+        final Future<@Nullable Object> future = new SynchronousFuture<>( expectedValue );
 
         try
         {
@@ -86,7 +87,7 @@ public final class SynchronousFutureTest
         throws Exception
     {
         final Object expectedValue = new Object();
-        final Future<Object> future = new SynchronousFuture<>( expectedValue );
+        final Future<@Nullable Object> future = new SynchronousFuture<>( expectedValue );
 
         final Object actualValue = future.get();
 

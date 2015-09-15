@@ -1,6 +1,6 @@
 /*
  * Container.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -550,7 +550,7 @@ final class Container
         getLock().lock();
         try
         {
-            return new ArrayList<IComponent>( components_ );
+            return new ArrayList<>( components_ );
         }
         finally
         {
@@ -783,7 +783,7 @@ final class Container
             getLock().unlock();
         }
 
-        return new ArrayList<IComponent>( removedComponents );
+        return new ArrayList<>( removedComponents );
     }
 
     /*

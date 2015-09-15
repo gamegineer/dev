@@ -1,6 +1,6 @@
 /*
  * ByteBufferUtils.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.transport.tcp;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -64,7 +65,7 @@ final class ByteBufferUtils
         final Collection<ByteBuffer> duplicateBuffers = new ArrayList<>( buffers.size() );
         for( final ByteBuffer buffer : buffers )
         {
-            duplicateBuffers.add( buffer.duplicate() );
+            duplicateBuffers.add( nonNull( buffer.duplicate() ) );
         }
 
         return duplicateBuffers;
@@ -107,8 +108,7 @@ final class ByteBufferUtils
      *         {@code null} if the byte buffer collection does not have enough
      *         remaining bytes to satisfy the request.
      */
-    @Nullable
-    static byte[] get(
+    static byte @Nullable[] get(
         final Collection<ByteBuffer> buffers,
         final int length )
     {

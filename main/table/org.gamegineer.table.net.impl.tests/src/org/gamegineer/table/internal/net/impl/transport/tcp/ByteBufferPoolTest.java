@@ -1,6 +1,6 @@
 /*
  * ByteBufferPoolTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.net.impl.transport.tcp;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import java.nio.ByteBuffer;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +32,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link ByteBufferPool} class.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public final class ByteBufferPoolTest
 {
     // ======================================================================

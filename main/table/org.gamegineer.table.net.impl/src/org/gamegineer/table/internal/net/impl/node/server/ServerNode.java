@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ComponentPath;
@@ -62,7 +63,7 @@ import org.gamegineer.table.net.TableNetworkException;
  */
 @NotThreadSafe
 public final class ServerNode
-    extends AbstractNode<IRemoteClientNode>
+    extends AbstractNode<@NonNull IRemoteClientNode>
     implements IServerNode
 {
     // ======================================================================
@@ -262,7 +263,7 @@ public final class ServerNode
     {
         assert isNodeLayerThread();
 
-        return new ArrayList<IPlayer>( players_.values() );
+        return new ArrayList<>( players_.values() );
     }
 
     /*

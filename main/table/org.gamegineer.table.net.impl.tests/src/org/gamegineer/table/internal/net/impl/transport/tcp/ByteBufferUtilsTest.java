@@ -1,6 +1,6 @@
 /*
  * ByteBufferUtilsTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
@@ -42,7 +43,7 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link ByteBufferUtils} class.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public final class ByteBufferUtilsTest
 {
     // ======================================================================
@@ -96,7 +97,6 @@ public final class ByteBufferUtilsTest
      * 
      * @return The fixture byte buffer collection; never {@code null}.
      */
-    @NonNull
     private List<ByteBuffer> getBuffers()
     {
         assertNotNull( buffers_ );
@@ -114,18 +114,18 @@ public final class ByteBufferUtilsTest
         throws Exception
     {
         buffers_ = new ArrayList<>();
-        buffers_.add( ByteBuffer.wrap( new byte[] {
+        buffers_.add( nonNull( ByteBuffer.wrap( new byte[] {
             0x00, 0x01, 0x02, 0x03
-        } ) );
-        buffers_.add( ByteBuffer.wrap( new byte[] {
+        } ) ) );
+        buffers_.add( nonNull( ByteBuffer.wrap( new byte[] {
             0x04, 0x05, 0x06, 0x07
-        } ) );
-        buffers_.add( ByteBuffer.wrap( new byte[] {
+        } ) ) );
+        buffers_.add( nonNull( ByteBuffer.wrap( new byte[] {
             0x08, 0x09, 0x0A, 0x0B
-        } ) );
-        buffers_.add( ByteBuffer.wrap( new byte[] {
+        } ) ) );
+        buffers_.add( nonNull( ByteBuffer.wrap( new byte[] {
             0x0C, 0x0D, 0x0E, 0x0F
-        } ) );
+        } ) ) );
     }
 
     /**
@@ -323,6 +323,6 @@ public final class ByteBufferUtilsTest
     @Test
     public void testHasRemaining_Buffers_Empty_Length_Zero()
     {
-        assertTrue( ByteBufferUtils.hasRemaining( nonNull( Collections.<ByteBuffer>emptyList() ), 0 ) );
+        assertTrue( ByteBufferUtils.hasRemaining( nonNull( Collections.<@NonNull ByteBuffer>emptyList() ), 0 ) );
     }
 }

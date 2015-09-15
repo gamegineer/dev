@@ -1,6 +1,6 @@
 /*
  * AbstractRemoteNodeControllerTestCase.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,6 +26,7 @@ import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertNotNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.internal.net.impl.transport.IMessage;
@@ -43,8 +44,8 @@ import org.junit.Test;
  * @param <RemoteNodeType>
  *        The type of the remote table network node.
  */
-@NonNullByDefault( false )
-public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNodeController<LocalNodeType>, LocalNodeType extends INode<RemoteNodeType>, RemoteNodeType extends IRemoteNode>
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
+public abstract class AbstractRemoteNodeControllerTestCase<T extends @NonNull IRemoteNodeController<LocalNodeType>, LocalNodeType extends @NonNull INode<RemoteNodeType>, RemoteNodeType extends @NonNull IRemoteNode>
 {
     // ======================================================================
     // Constructors
@@ -84,9 +85,7 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
      * @return A mock local table network node for use in the fixture; never
      *         {@code null}.
      */
-    @NonNull
     protected abstract LocalNodeType createMockLocalNode(
-        @NonNull
         IMocksControl mocksControl );
 
     /**
@@ -94,7 +93,6 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
      * 
      * @return A mock node layer for use in the fixture; never {@code null}.
      */
-    @NonNull
     @SuppressWarnings( "boxing" )
     private static INodeLayer createMockNodeLayer()
     {
@@ -120,11 +118,8 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @NonNull
     protected abstract T createRemoteNodeController(
-        @NonNull
         INodeLayer nodeLayer,
-        @NonNull
         LocalNodeType node )
         throws Exception;
 
@@ -134,7 +129,6 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
      * @return The remote node controller under test in the fixture; never
      *         {@code null}.
      */
-    @NonNull
     protected final T getRemoteNodeController()
     {
         assertNotNull( remoteNodeController_ );
@@ -148,7 +142,6 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
      *        The remote node controller; must not be {@code null}.
      */
     protected abstract void openRemoteNode(
-        @NonNull
         T remoteNodeController );
 
     /**

@@ -1,6 +1,6 @@
 /*
  * AbstractTableNetworkTestCase.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.test.TestTableEnvironments;
@@ -49,7 +49,7 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link ITableNetwork} interface.
  */
-@NonNullByDefault( false )
+@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
 public abstract class AbstractTableNetworkTestCase
 {
     // ======================================================================
@@ -107,7 +107,6 @@ public abstract class AbstractTableNetworkTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @NonNull
     protected abstract ITableNetwork createTableNetwork()
         throws Exception;
 
@@ -119,7 +118,6 @@ public abstract class AbstractTableNetworkTestCase
      *        The table network; must not be {@code null}.
      */
     protected abstract void fireTableNetworkPlayersUpdatedEvent(
-        @NonNull
         ITableNetwork tableNetwork );
 
     /**
@@ -127,7 +125,6 @@ public abstract class AbstractTableNetworkTestCase
      * 
      * @return The table network under test in the fixture; never {@code null}.
      */
-    @NonNull
     private ITableNetwork getTableNetwork()
     {
         assertNotNull( tableNetwork_ );
@@ -139,7 +136,6 @@ public abstract class AbstractTableNetworkTestCase
      * 
      * @return The fixture table network configuration; never {@code null}.
      */
-    @NonNull
     private TableNetworkConfiguration getTableNetworkConfiguration()
     {
         assertNotNull( tableNetworkConfiguration_ );
