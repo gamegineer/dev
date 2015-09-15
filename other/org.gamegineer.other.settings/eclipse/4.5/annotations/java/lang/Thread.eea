@@ -1,0 +1,4 @@
+class java/lang/Thread
+currentThread
+ ()Ljava/lang/Thread;
+ ()L1java/lang/Thread;

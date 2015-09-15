@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.core;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 import java.util.concurrent.CountDownLatch;
@@ -109,7 +108,7 @@ public final class MultiThreadedTableEnvironmentContextTest
     public void testFireEventNotification_EventNotificationFiredOnDifferentThread()
         throws Exception
     {
-        final Thread testThread = nonNull( Thread.currentThread() );
+        final Thread testThread = Thread.currentThread();
         final AtomicReference<Thread> eventNotificationThreadReference = new AtomicReference<>();
         final CountDownLatch countDownLatch = new CountDownLatch( 1 );
         final Runnable eventNotification = mocksControl_.createMock( Runnable.class );
@@ -119,7 +118,7 @@ public final class MultiThreadedTableEnvironmentContextTest
             @Override
             public @Nullable Void answer()
             {
-                eventNotificationThreadReference.set( nonNull( Thread.currentThread() ) );
+                eventNotificationThreadReference.set( Thread.currentThread() );
                 countDownLatch.countDown();
                 return null;
             }

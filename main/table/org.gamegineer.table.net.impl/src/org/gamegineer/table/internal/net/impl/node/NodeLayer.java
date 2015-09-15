@@ -173,7 +173,7 @@ final class NodeLayer
     @Override
     public boolean isNodeLayerThread()
     {
-        return isNodeLayerThread( nonNull( Thread.currentThread() ) );
+        return isNodeLayerThread( Thread.currentThread() );
     }
 
     /*

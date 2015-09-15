@@ -102,7 +102,7 @@ abstract class AbstractTransportLayer
         dispatcher_ = null;
         executorService_ = executorService;
         state_ = State.PRISTINE;
-        transportLayerThread_ = nonNull( Thread.currentThread() );
+        transportLayerThread_ = Thread.currentThread();
     }
 
 

@@ -1,6 +1,6 @@
 /*
  * SingleThreadedTableEnvironmentContext.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.table.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.TimeUnit;
@@ -68,7 +67,7 @@ public final class SingleThreadedTableEnvironmentContext
         eventNotifications_ = new ArrayDeque<>();
         isEventNotificationInProgress_ = false;
         lock_ = new TableEnvironmentLock();
-        thread_ = nonNull( Thread.currentThread() );
+        thread_ = Thread.currentThread();
     }
 
 
