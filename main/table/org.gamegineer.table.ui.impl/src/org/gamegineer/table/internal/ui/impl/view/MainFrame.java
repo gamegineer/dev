@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.view;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -488,8 +487,10 @@ public final class MainFrame
             {
                 return;
             }
-
-            file = nonNull( fileChooser.getSelectedFile() );
+            else if( (file = fileChooser.getSelectedFile()) == null )
+            {
+                return;
+            }
         }
         else
         {
@@ -603,8 +604,10 @@ public final class MainFrame
             {
                 return false;
             }
-
-            file = nonNull( fileChooser.getSelectedFile() );
+            else if( (file = fileChooser.getSelectedFile()) == null )
+            {
+                return false;
+            }
         }
         else
         {
