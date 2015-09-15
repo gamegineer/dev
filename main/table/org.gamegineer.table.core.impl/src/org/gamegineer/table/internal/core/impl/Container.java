@@ -496,7 +496,7 @@ final class Container
             }
             else if( component instanceof Container )
             {
-                return ((Container)component).getComponent( nonNull( paths.subList( 1, paths.size() ) ) );
+                return ((Container)component).getComponent( paths.subList( 1, paths.size() ) );
             }
         }
 

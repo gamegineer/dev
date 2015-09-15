@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.ui.impl.model;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.io.File;
@@ -380,7 +379,7 @@ public final class TableModel
         getLock().lock();
         try
         {
-            return tabletopModel_.getComponentModel( nonNull( paths.subList( 1, paths.size() ) ) );
+            return tabletopModel_.getComponentModel( paths.subList( 1, paths.size() ) );
         }
         finally
         {

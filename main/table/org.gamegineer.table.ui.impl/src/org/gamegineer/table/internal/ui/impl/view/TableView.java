@@ -2051,7 +2051,7 @@ final class TableView
                     assert componentPath != null;
                     final int fromIndex = inputEvent_.isShiftDown() ? 0 : componentPath.getIndex();
                     final int toIndex = inputEvent_.isShiftDown() ? componentPath.getIndex() + 1 : components.size();
-                    return nonNull( components.subList( fromIndex, toIndex ) );
+                    return components.subList( fromIndex, toIndex );
                 }
 
                 return successorDragStrategy_.getDragComponents();

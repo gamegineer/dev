@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.core.dnd.test;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -155,7 +154,7 @@ public abstract class AbstractDragContextTestCase
                         assertNotNull( componentPath );
                         final int beginIndex = componentPath.getIndex();
                         final int endIndex = ((beginIndex + 1) < components.size()) ? (beginIndex + 1) : (components.size() - 1);
-                        return nonNull( components.subList( beginIndex, endIndex + 1 ) );
+                        return components.subList( beginIndex, endIndex + 1 );
                     }
                 };
             }

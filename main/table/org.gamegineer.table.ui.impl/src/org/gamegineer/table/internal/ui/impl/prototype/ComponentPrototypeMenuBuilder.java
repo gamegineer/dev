@@ -345,7 +345,7 @@ final class ComponentPrototypeMenuBuilder
                 return menuDescriptor;
             }
 
-            return menuDescriptor.getDescendantMenuDescriptor( nonNull( idPath.subList( 1, idPath.size() ) ) );
+            return menuDescriptor.getDescendantMenuDescriptor( idPath.subList( 1, idPath.size() ) );
         }
 
         /**

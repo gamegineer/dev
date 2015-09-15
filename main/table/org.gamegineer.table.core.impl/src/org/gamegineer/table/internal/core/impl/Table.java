@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.core.impl;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -263,7 +262,7 @@ final class Table
         getLock().lock();
         try
         {
-            return tabletop_.getComponent( nonNull( paths.subList( 1, paths.size() ) ) );
+            return tabletop_.getComponent( paths.subList( 1, paths.size() ) );
         }
         finally
         {

@@ -1,6 +1,6 @@
 /*
  * ContainerModel.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.ui.impl.model;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -322,7 +321,7 @@ public final class ContainerModel
             }
             else if( componentModel instanceof ContainerModel )
             {
-                return ((ContainerModel)componentModel).getComponentModel( nonNull( paths.subList( 1, paths.size() ) ) );
+                return ((ContainerModel)componentModel).getComponentModel( paths.subList( 1, paths.size() ) );
             }
         }
 

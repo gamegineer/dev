@@ -21,7 +21,6 @@
 
 package org.gamegineer.cards.internal.core.impl.strategies;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -179,7 +178,7 @@ final class CardStrategy
             final List<IComponent> components = container.getComponents();
             final ComponentPath componentPath = component_.getPath();
             assert componentPath != null;
-            return nonNull( components.subList( componentPath.getIndex(), components.size() ) );
+            return components.subList( componentPath.getIndex(), components.size() );
         }
     }
 
