@@ -38,8 +38,8 @@
 <unit id="org.eclipse.equinox.simpleconfigurator.source" version="1.1.100.v20150423-1455"/>
 <unit id="org.eclipse.equinox.util" version="1.0.500.v20130404-1337"/>
 <unit id="org.eclipse.equinox.util.source" version="1.0.500.v20130404-1337"/>
-<unit id="org.eclipse.jdt.annotation" version="1.1.100.v20140704-0625"/>
-<unit id="org.eclipse.jdt.annotation.source" version="1.1.100.v20140704-0625"/>
+<unit id="org.eclipse.jdt.annotation" version="2.0.100.v20150311-1658"/>
+<unit id="org.eclipse.jdt.annotation.source" version="2.0.100.v20150311-1658"/>
 <unit id="org.eclipse.osgi" version="3.10.100.v20150529-1857"/>
 <unit id="org.eclipse.osgi.services" version="3.5.0.v20150519-2006"/>
 <unit id="org.eclipse.osgi.services.source" version="3.5.0.v20150519-2006"/>
