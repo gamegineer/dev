@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.core;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.EventObject;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.jdt.annotation.Nullable;
@@ -89,7 +88,7 @@ public class ComponentEvent
      */
     public final IComponent getComponent()
     {
-        return nonNull( (IComponent)getSource() );
+        return (IComponent)getSource();
     }
 
     /**

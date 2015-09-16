@@ -1,6 +1,6 @@
 /*
  * MainModelEvent.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.model;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.EventObject;
 import net.jcip.annotations.ThreadSafe;
 
@@ -68,6 +67,6 @@ public final class MainModelEvent
      */
     public MainModel getMainModel()
     {
-        return nonNull( (MainModel)getSource() );
+        return (MainModel)getSource();
     }
 }

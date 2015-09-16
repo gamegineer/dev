@@ -1,6 +1,6 @@
 /*
  * TableNetworkEvent.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.net;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.EventObject;
 import net.jcip.annotations.ThreadSafe;
 
@@ -70,6 +69,6 @@ public class TableNetworkEvent
      */
     public final ITableNetwork getTableNetwork()
     {
-        return nonNull( (ITableNetwork)getSource() );
+        return (ITableNetwork)getSource();
     }
 }
