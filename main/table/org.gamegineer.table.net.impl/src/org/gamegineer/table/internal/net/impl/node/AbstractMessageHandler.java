@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
@@ -113,7 +112,7 @@ public abstract class AbstractMessageHandler<RemoteNodeControllerType extends IR
             errorMessage.setError( TableNetworkError.UNEXPECTED_MESSAGE );
             remoteNodeController.sendMessage( errorMessage, null );
 
-            handleUnexpectedMessage( nonNull( remoteNodeControllerType_.cast( remoteNodeController ) ) );
+            handleUnexpectedMessage( remoteNodeControllerType_.cast( remoteNodeController ) );
         }
     }
 
