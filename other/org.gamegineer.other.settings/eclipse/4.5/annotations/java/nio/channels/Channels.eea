@@ -1,0 +1,4 @@
+class java/nio/channels/Channels
+newChannel
+ (Ljava/io/InputStream;)Ljava/nio/channels/ReadableByteChannel;
+ (Ljava/io/InputStream;)L1java/nio/channels/ReadableByteChannel;
