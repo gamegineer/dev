@@ -1,6 +1,6 @@
 /*
  * PlayerAsPlayerTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.EnumSet;
 import java.util.Set;
 import org.gamegineer.table.net.IPlayer;
@@ -69,7 +68,7 @@ public final class PlayerAsPlayerTest
         final Set<PlayerRole> playerRoles )
     {
         final Player typedPlayer = (Player)player;
-        typedPlayer.removeRoles( nonNull( EnumSet.allOf( PlayerRole.class ) ) );
+        typedPlayer.removeRoles( EnumSet.allOf( PlayerRole.class ) );
         typedPlayer.addRoles( playerRoles );
     }
 }

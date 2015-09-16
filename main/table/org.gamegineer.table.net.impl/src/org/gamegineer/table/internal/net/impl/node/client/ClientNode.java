@@ -190,7 +190,7 @@ public final class ClientNode
 
         // Temporarily add local player until we receive the player list from the server
         final Player player = new Player( getPlayerName() );
-        player.addRoles( nonNull( EnumSet.of( PlayerRole.LOCAL ) ) );
+        player.addRoles( EnumSet.of( PlayerRole.LOCAL ) );
         players_.put( player.getName(), player );
     }
 

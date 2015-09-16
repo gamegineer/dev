@@ -1,6 +1,6 @@
 /*
  * Player.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.impl;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.EnumSet;
 import java.util.Set;
 import net.jcip.annotations.GuardedBy;
@@ -68,7 +67,7 @@ public final class Player
     {
         lock_ = new Object();
         name_ = name;
-        roles_ = nonNull( EnumSet.noneOf( PlayerRole.class ) );
+        roles_ = EnumSet.noneOf( PlayerRole.class );
     }
 
 
@@ -114,7 +113,7 @@ public final class Player
     {
         synchronized( lock_ )
         {
-            return nonNull( EnumSet.copyOf( roles_ ) );
+            return EnumSet.copyOf( roles_ );
         }
     }
 

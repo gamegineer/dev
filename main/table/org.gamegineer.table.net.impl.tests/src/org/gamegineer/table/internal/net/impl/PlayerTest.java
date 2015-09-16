@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -84,7 +83,7 @@ public final class PlayerTest
     {
         assertEquals( 0, player_.getRoles().size() );
 
-        player_.addRoles( nonNull( EnumSet.of( PlayerRole.LOCAL ) ) );
+        player_.addRoles( EnumSet.of( PlayerRole.LOCAL ) );
 
         assertEquals( 1, player_.getRoles().size() );
         assertTrue( player_.getRoles().contains( PlayerRole.LOCAL ) );
@@ -106,11 +105,11 @@ public final class PlayerTest
     @Test
     public void testRemoveRoles()
     {
-        player_.addRoles( nonNull( EnumSet.of( PlayerRole.LOCAL ) ) );
+        player_.addRoles( EnumSet.of( PlayerRole.LOCAL ) );
         final int originalRolesSize = player_.getRoles().size();
         assertTrue( player_.getRoles().contains( PlayerRole.LOCAL ) );
 
-        player_.removeRoles( nonNull( EnumSet.of( PlayerRole.LOCAL ) ) );
+        player_.removeRoles( EnumSet.of( PlayerRole.LOCAL ) );
 
         assertEquals( originalRolesSize - 1, player_.getRoles().size() );
         assertFalse( player_.getRoles().contains( PlayerRole.LOCAL ) );

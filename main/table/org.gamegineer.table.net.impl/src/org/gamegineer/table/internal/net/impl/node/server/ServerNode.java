@@ -1,6 +1,6 @@
 /*
  * ServerNode.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node.server;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -145,7 +144,7 @@ public final class ServerNode
             return;
         }
 
-        requestingPlayer.removeRoles( nonNull( EnumSet.of( PlayerRole.EDITOR_REQUESTER ) ) );
+        requestingPlayer.removeRoles( EnumSet.of( PlayerRole.EDITOR_REQUESTER ) );
 
         notifyPlayersUpdated();
     }
@@ -164,7 +163,7 @@ public final class ServerNode
 
         initializeMasterTable( configuration.getLocalTable() );
         final Player player = new Player( getPlayerName() );
-        player.addRoles( nonNull( EnumSet.of( PlayerRole.EDITOR, PlayerRole.HOST, PlayerRole.LOCAL ) ) );
+        player.addRoles( EnumSet.of( PlayerRole.EDITOR, PlayerRole.HOST, PlayerRole.LOCAL ) );
         bindPlayer( player );
     }
 
@@ -300,9 +299,9 @@ public final class ServerNode
             return;
         }
 
-        requestingPlayer.removeRoles( nonNull( EnumSet.of( PlayerRole.EDITOR ) ) );
-        player.removeRoles( nonNull( EnumSet.of( PlayerRole.EDITOR_REQUESTER ) ) );
-        player.addRoles( nonNull( EnumSet.of( PlayerRole.EDITOR ) ) );
+        requestingPlayer.removeRoles( EnumSet.of( PlayerRole.EDITOR ) );
+        player.removeRoles( EnumSet.of( PlayerRole.EDITOR_REQUESTER ) );
+        player.addRoles( EnumSet.of( PlayerRole.EDITOR ) );
 
         notifyPlayersUpdated();
     }
@@ -419,7 +418,7 @@ public final class ServerNode
             return;
         }
 
-        requestingPlayer.addRoles( nonNull( EnumSet.of( PlayerRole.EDITOR_REQUESTER ) ) );
+        requestingPlayer.addRoles( EnumSet.of( PlayerRole.EDITOR_REQUESTER ) );
 
         notifyPlayersUpdated();
     }
@@ -457,7 +456,7 @@ public final class ServerNode
             if( hostPlayer != null )
             {
                 assert hostPlayer.hasRole( PlayerRole.HOST );
-                hostPlayer.addRoles( nonNull( EnumSet.of( PlayerRole.EDITOR ) ) );
+                hostPlayer.addRoles( EnumSet.of( PlayerRole.EDITOR ) );
             }
         }
 

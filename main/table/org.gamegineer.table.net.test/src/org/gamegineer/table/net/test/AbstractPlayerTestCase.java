@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.net.test;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
@@ -131,7 +130,7 @@ public abstract class AbstractPlayerTestCase
     @Test
     public void testHasRole_Role_Absent()
     {
-        setPlayerRoles( getPlayer(), nonNull( EnumSet.complementOf( EnumSet.of( PlayerRole.LOCAL ) ) ) );
+        setPlayerRoles( getPlayer(), EnumSet.complementOf( EnumSet.of( PlayerRole.LOCAL ) ) );
 
         assertFalse( getPlayer().hasRole( PlayerRole.LOCAL ) );
     }
@@ -143,7 +142,7 @@ public abstract class AbstractPlayerTestCase
     @Test
     public void testHasRole_Role_Present()
     {
-        setPlayerRoles( getPlayer(), nonNull( EnumSet.allOf( PlayerRole.class ) ) );
+        setPlayerRoles( getPlayer(), EnumSet.allOf( PlayerRole.class ) );
 
         assertTrue( getPlayer().hasRole( PlayerRole.LOCAL ) );
     }
