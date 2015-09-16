@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node.client;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -112,7 +111,7 @@ public final class ClientNode
         super( nodeLayer, tableNetworkController );
 
         handshakeLock_ = new ReentrantLock();
-        handshakeCondition_ = nonNull( handshakeLock_.newCondition() );
+        handshakeCondition_ = handshakeLock_.newCondition();
         handshakeError_ = null;
         isHandshakeComplete_ = false;
         players_ = new HashMap<>();

@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.ui.impl.model;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.TimeUnit;
@@ -317,7 +316,7 @@ public final class TableEnvironmentModel
         @Override
         public Condition newCondition()
         {
-            return nonNull( tableEnvironment_.getLock().newCondition() );
+            return tableEnvironment_.getLock().newCondition();
         }
 
         /*
