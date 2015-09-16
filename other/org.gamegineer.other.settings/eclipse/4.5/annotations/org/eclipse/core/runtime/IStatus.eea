@@ -1,0 +1,4 @@
+class org/eclipse/core/runtime/IStatus
+getMessage
+ ()Ljava/lang/String;
+ ()L1java/lang/String;

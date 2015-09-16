@@ -1,6 +1,6 @@
 /*
  * DialogPageDataBindingAdapter.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.ui.databinding.dialog;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Iterator;
 import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.core.databinding.AggregateValidationStatus;
@@ -316,7 +315,7 @@ public class DialogPageDataBindingAdapter
         final IStatus currentValidationStatus = currentValidationStatus_;
         if( (currentValidationStatus != null) && hasUIChanged_ && !currentValidationStatus.isOK() )
         {
-            message = new DialogMessage( nonNull( currentValidationStatus.getMessage() ), DataBindingUtils.getDialogMessageType( currentValidationStatus ) );
+            message = new DialogMessage( currentValidationStatus.getMessage(), DataBindingUtils.getDialogMessageType( currentValidationStatus ) );
         }
         else
         {
