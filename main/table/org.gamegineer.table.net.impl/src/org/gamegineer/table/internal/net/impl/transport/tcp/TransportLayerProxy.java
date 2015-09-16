@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.transport.tcp;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -97,7 +96,7 @@ final class TransportLayerProxy
             return new SynchronousFuture<>();
         }
 
-        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
+        return Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -125,7 +124,7 @@ final class TransportLayerProxy
 
                 return null;
             }
-        } ) );
+        } );
     }
 
     /*
@@ -154,7 +153,7 @@ final class TransportLayerProxy
             return new SynchronousFuture<>( new IllegalStateException( NonNlsMessages.TransportLayerProxy_beginOpen_transportLayerClosed, e ) );
         }
 
-        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
+        return Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -183,7 +182,7 @@ final class TransportLayerProxy
 
                 return null;
             }
-        } ) );
+        } );
     }
 
     /*

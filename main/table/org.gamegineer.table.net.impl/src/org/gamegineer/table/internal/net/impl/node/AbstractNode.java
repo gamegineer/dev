@@ -170,7 +170,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         assert isNodeLayerThread();
 
         final Connecter connecter = new Connecter( configuration );
-        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
+        return Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
         {
             @Override
             public @Nullable Void call()
@@ -180,7 +180,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
 
                 return null;
             }
-        } ) );
+        } );
     }
 
     /*
@@ -192,7 +192,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         assert isNodeLayerThread();
 
         final Disconnecter disconnecter = new Disconnecter();
-        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
+        return Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
         {
             @Override
             public @Nullable Void call()
@@ -201,7 +201,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
 
                 return null;
             }
-        } ) );
+        } );
     }
 
     /*

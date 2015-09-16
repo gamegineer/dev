@@ -128,7 +128,7 @@ abstract class AbstractTransportLayer
     final <T> Future<T> asyncExec(
         final Callable<T> task )
     {
-        return nonNull( executorService_.submit( task ) );
+        return executorService_.submit( task );
     }
 
     /**
@@ -146,7 +146,7 @@ abstract class AbstractTransportLayer
     Future<?> asyncExec(
         final Runnable task )
     {
-        return nonNull( executorService_.submit( task ) );
+        return executorService_.submit( task );
     }
 
     /*
@@ -169,7 +169,7 @@ abstract class AbstractTransportLayer
         assert dispatcher != null;
         final Future<@Nullable Void> dispatcherCloseTaskFuture = dispatcher.beginClose();
 
-        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
+        return Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -208,7 +208,7 @@ abstract class AbstractTransportLayer
 
                 return null;
             }
-        } ) );
+        } );
     }
 
     /*
@@ -229,7 +229,7 @@ abstract class AbstractTransportLayer
         state_ = State.OPEN;
         dispatcher_ = new Dispatcher( this );
 
-        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
+        return Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -278,7 +278,7 @@ abstract class AbstractTransportLayer
 
                 return null;
             }
-        } ) );
+        } );
     }
 
     /**

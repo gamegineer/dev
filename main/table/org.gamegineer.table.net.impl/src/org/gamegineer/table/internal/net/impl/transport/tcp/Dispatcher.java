@@ -170,7 +170,7 @@ final class Dispatcher
         }
 
         final Closer closer = new Closer();
-        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
+        return Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
         {
             @Override
             public @Nullable Void call()
@@ -179,7 +179,7 @@ final class Dispatcher
 
                 return null;
             }
-        } ) );
+        } );
     }
 
     /**

@@ -1,0 +1,7 @@
+class java/util/concurrent/ExecutorService
+submit
+ (Ljava/lang/Runnable;)Ljava/util/concurrent/Future<*>;
+ (Ljava/lang/Runnable;)L1java/util/concurrent/Future<*>;
+submit
+ <T:Ljava/lang/Object;>(Ljava/util/concurrent/Callable<TT;>;)Ljava/util/concurrent/Future<TT;>;
+ <T:Ljava/lang/Object;>(Ljava/util/concurrent/Callable<TT;>;)L1java/util/concurrent/Future<TT;>;

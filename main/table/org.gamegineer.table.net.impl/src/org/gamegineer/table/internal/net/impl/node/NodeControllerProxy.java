@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.Callable;
@@ -104,7 +103,7 @@ final class NodeControllerProxy
             return new SynchronousFuture<>( new TableNetworkException( TableNetworkError.ILLEGAL_CONNECTION_STATE ) );
         }
 
-        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
+        return Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -133,7 +132,7 @@ final class NodeControllerProxy
 
                 return null;
             }
-        } ) );
+        } );
     }
 
     /*
@@ -161,7 +160,7 @@ final class NodeControllerProxy
             return new SynchronousFuture<>();
         }
 
-        return nonNull( Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
+        return Activator.getDefault().getExecutorService().submit( new Callable<@Nullable Void>()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -189,7 +188,7 @@ final class NodeControllerProxy
 
                 return null;
             }
-        } ) );
+        } );
     }
 
     /*

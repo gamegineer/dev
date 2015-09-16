@@ -76,7 +76,7 @@ final class NodeLayer
         final Callable<T> task )
     {
         final String playerName = ThreadPlayer.getPlayerName();
-        return nonNull( executorService_.submit( new Callable<T>()
+        return executorService_.submit( new Callable<T>()
         {
             @Override
             public T call()
@@ -92,7 +92,7 @@ final class NodeLayer
                     ThreadPlayer.setPlayerName( null );
                 }
             }
-        } ) );
+        } );
     }
 
     /*
@@ -103,7 +103,7 @@ final class NodeLayer
         final Runnable task )
     {
         final String playerName = ThreadPlayer.getPlayerName();
-        return nonNull( executorService_.submit( new Runnable()
+        return executorService_.submit( new Runnable()
         {
             @Override
             public void run()
@@ -118,7 +118,7 @@ final class NodeLayer
                     ThreadPlayer.setPlayerName( null );
                 }
             }
-        } ) );
+        } );
     }
 
     /**

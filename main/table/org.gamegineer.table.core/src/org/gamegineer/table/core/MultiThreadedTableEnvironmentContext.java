@@ -22,7 +22,6 @@
 package org.gamegineer.table.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -69,7 +68,7 @@ public final class MultiThreadedTableEnvironmentContext
         eventNotifications_ = new LinkedBlockingQueue<>();
         lock_ = new TableEnvironmentLock();
 
-        eventNotificationTaskFuture_ = nonNull( Activator.getDefault().getExecutorService().submit( createEventNotificationTask() ) );
+        eventNotificationTaskFuture_ = Activator.getDefault().getExecutorService().submit( createEventNotificationTask() );
     }
 
 
