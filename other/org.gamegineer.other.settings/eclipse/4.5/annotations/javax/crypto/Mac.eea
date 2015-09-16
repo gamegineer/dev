@@ -1,0 +1,4 @@
+class javax/crypto/Mac
+doFinal
+ ()[B
+ ()[1B

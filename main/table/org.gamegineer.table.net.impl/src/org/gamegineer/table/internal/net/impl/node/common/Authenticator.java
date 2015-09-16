@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node.common;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
@@ -121,7 +120,7 @@ public final class Authenticator
             final Mac mac = Mac.getInstance( "HmacSHA1" ); //$NON-NLS-1$
             mac.init( createSecretKey( password, salt ) );
             mac.update( challenge );
-            return nonNull( mac.doFinal() );
+            return mac.doFinal();
         }
         catch( final GeneralSecurityException e )
         {
@@ -171,7 +170,7 @@ public final class Authenticator
         {
             final KeySpec keySpec = new PBEKeySpec( passwordChars, salt, ITERATION_COUNT, KEY_LENGTH );
             final SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance( "PBKDF2WithHmacSHA1" ); //$NON-NLS-1$
-            return nonNull( secretKeyFactory.generateSecret( keySpec ) );
+            return secretKeyFactory.generateSecret( keySpec );
         }
         catch( final GeneralSecurityException e )
         {
