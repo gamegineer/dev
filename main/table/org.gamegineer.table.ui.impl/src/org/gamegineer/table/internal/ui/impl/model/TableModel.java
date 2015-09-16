@@ -534,7 +534,7 @@ public final class TableModel
                     {
                         index = getNextSearchIndex( componentModels, index, searchDirection );
                         final ComponentModel componentModel = componentModels.get( index );
-                        if( (componentModel != null) && componentModel.isFocusable() )
+                        if( componentModel.isFocusable() )
                         {
                             focusableComponentModel = componentModel;
                         }
