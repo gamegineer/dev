@@ -244,6 +244,10 @@ public abstract class AbstractLoggingComponentFactory<T>
      * 
      * @return A reference to the most appropriate component factory for the
      *         specified component type information; never {@code null}.
+     * 
+     * @throws org.osgi.service.component.ComponentException
+     *         If a component factory is not available for the specified
+     *         component type information.
      */
     private static ServiceReference<ComponentFactory> findComponentFactory(
         final String typeName,
