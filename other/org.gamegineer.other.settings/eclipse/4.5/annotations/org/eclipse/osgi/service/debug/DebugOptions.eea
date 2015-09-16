@@ -1,0 +1,4 @@
+class org/eclipse/osgi/service/debug/DebugOptions
+newDebugTrace
+ (Ljava/lang/String;Ljava/lang/Class<*>;)Lorg/eclipse/osgi/service/debug/DebugTrace;
+ (Ljava/lang/String;Ljava/lang/Class<*>;)L1org/eclipse/osgi/service/debug/DebugTrace;

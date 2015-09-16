@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.core.runtime;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.jdt.annotation.Nullable;
@@ -90,7 +89,7 @@ public abstract class Debug
             return DEFAULT_DEBUG_TRACE;
         }
 
-        return nonNull( debugOptions.newDebugTrace( bundleSymbolicName_, Debug.class ) );
+        return debugOptions.newDebugTrace( bundleSymbolicName_, Debug.class );
     }
 
     /**
