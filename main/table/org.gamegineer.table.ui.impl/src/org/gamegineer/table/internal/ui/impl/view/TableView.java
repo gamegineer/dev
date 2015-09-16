@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.view;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -962,7 +961,7 @@ final class TableView
      */
     private Point getMouseLocation()
     {
-        final Point location = nonNull( MouseInfo.getPointerInfo().getLocation() );
+        final Point location = MouseInfo.getPointerInfo().getLocation();
         SwingUtilities.convertPointFromScreen( location, this );
         convertPointToTable( location );
         return location;
@@ -1382,7 +1381,7 @@ final class TableView
         {
             if( event instanceof MouseEvent )
             {
-                final Point location = nonNull( ((MouseEvent)event).getPoint() );
+                final Point location = ((MouseEvent)event).getPoint();
                 convertPointToTable( location );
                 return location;
             }
