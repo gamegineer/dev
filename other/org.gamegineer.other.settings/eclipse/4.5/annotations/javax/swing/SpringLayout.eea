@@ -1,0 +1,4 @@
+class javax/swing/SpringLayout
+getConstraints
+ (Ljava/awt/Component;)Ljavax/swing/SpringLayout$Constraints;
+ (Ljava/awt/Component;)L1javax/swing/SpringLayout$Constraints;
