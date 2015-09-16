@@ -121,7 +121,7 @@ public final class LoggingService
             assert ancestorLoggerName != null;
             if( !loggers_.containsKey( ancestorLoggerName ) )
             {
-                final Logger logger = nonNull( Logger.getLogger( ancestorLoggerName ) );
+                final Logger logger = Logger.getLogger( ancestorLoggerName );
                 loggers_.put( ancestorLoggerName, logger );
                 configureLogger( logger, new LoggerConfiguration( ancestorLoggerName, properties ) );
             }
@@ -182,7 +182,7 @@ public final class LoggingService
                 return logger;
             }
 
-            logger = nonNull( Logger.getLogger( loggerName ) );
+            logger = Logger.getLogger( loggerName );
             loggers_.put( loggerName, logger );
 
             final Map<String, String> properties = getLoggingProperties( bundle );
