@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.wizards.hosttablenetwork;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Component;
 import java.awt.Container;
 import javax.swing.JLabel;
@@ -172,11 +171,11 @@ final class MainPage
         portTargetToModelStrategy.setBeforeSetValidator( model.getPortValidator() );
         dataBindingContext.bindValue( portTargetValue, portModelValue, portTargetToModelStrategy, portModelToTargetStrategy );
 
-        final IObservableValue passwordTargetValue = nonNull( ComponentProperties.password().observe( controls.passwordField ) );
+        final IObservableValue passwordTargetValue = ComponentProperties.password().observe( controls.passwordField );
         final IObservableValue passwordModelValue = PojoProperties.value( "password" ).observe( model ); //$NON-NLS-1$
         dataBindingContext.bindValue( passwordTargetValue, passwordModelValue );
 
-        final IObservableValue confirmedPasswordTargetValue = nonNull( ComponentProperties.password().observe( controls.confirmedPasswordField ) );
+        final IObservableValue confirmedPasswordTargetValue = ComponentProperties.password().observe( controls.confirmedPasswordField );
         final IObservableValue confirmedPasswordModelValue = PojoProperties.value( "confirmedPassword" ).observe( model ); //$NON-NLS-1$
         dataBindingContext.bindValue( confirmedPasswordTargetValue, confirmedPasswordModelValue );
 

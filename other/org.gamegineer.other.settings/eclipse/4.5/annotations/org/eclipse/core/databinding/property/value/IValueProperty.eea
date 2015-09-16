@@ -1,0 +1,4 @@
+class org/eclipse/core/databinding/property/value/IValueProperty
+observe
+ (Ljava/lang/Object;)Lorg/eclipse/core/databinding/observable/value/IObservableValue;
+ (Ljava/lang/Object;)L1org/eclipse/core/databinding/observable/value/IObservableValue;
