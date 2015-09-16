@@ -1067,11 +1067,11 @@ final class TableView
         final ComponentModel focusedComponentModel = model_.getFocusedComponentModel();
         if( (hoveredComponentModel != null) && (hoveredComponentModel != focusedComponentModel) )
         {
-            paintComponentBorder( g, hoveredComponentModel, nonNull( Color.YELLOW ) );
+            paintComponentBorder( g, hoveredComponentModel, Color.YELLOW );
         }
         if( focusedComponentModel != null )
         {
-            paintComponentBorder( g, focusedComponentModel, nonNull( Color.GREEN ) );
+            paintComponentBorder( g, focusedComponentModel, Color.GREEN );
         }
     }
 
