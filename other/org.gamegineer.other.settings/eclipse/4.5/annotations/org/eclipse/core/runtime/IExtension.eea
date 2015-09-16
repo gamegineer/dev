@@ -1,0 +1,4 @@
+class org/eclipse/core/runtime/IExtension
+getNamespaceIdentifier
+ ()Ljava/lang/String;
+ ()L1java/lang/String;

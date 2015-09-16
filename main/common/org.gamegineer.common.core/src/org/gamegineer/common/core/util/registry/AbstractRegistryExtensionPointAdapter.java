@@ -23,7 +23,6 @@ package org.gamegineer.common.core.util.registry;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -211,7 +210,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
     private ObjectRegistration<ObjectType> createObjectRegistration(
         final IConfigurationElement configurationElement )
     {
-        return new ObjectRegistration<>( nonNull( configurationElement.getDeclaringExtension() ), createObject( configurationElement ) );
+        return new ObjectRegistration<>( configurationElement.getDeclaringExtension(), createObject( configurationElement ) );
     }
 
     /**
@@ -475,7 +474,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
             final IExtension extension,
             final ObjectType object )
         {
-            extensionNamespaceId_ = nonNull( extension.getNamespaceIdentifier() );
+            extensionNamespaceId_ = extension.getNamespaceIdentifier();
             extensionSimpleId_ = extension.getSimpleIdentifier();
             object_ = object;
         }

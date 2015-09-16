@@ -1,0 +1,10 @@
+class org/eclipse/core/runtime/IConfigurationElement
+createExecutableExtension
+ (Ljava/lang/String;)Ljava/lang/Object;
+ (Ljava/lang/String;)L1java/lang/Object;
+getDeclaringExtension
+ ()Lorg/eclipse/core/runtime/IExtension;
+ ()L1org/eclipse/core/runtime/IExtension;
+getNamespaceIdentifier
+ ()Ljava/lang/String;
+ ()L1java/lang/String;
