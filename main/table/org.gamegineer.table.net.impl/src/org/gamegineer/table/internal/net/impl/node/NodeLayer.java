@@ -188,7 +188,6 @@ final class NodeLayer
     /*
      * @see org.gamegineer.table.internal.net.impl.node.INodeLayer#syncExec(java.util.concurrent.Callable)
      */
-    @Nullable
     @Override
     public <T> T syncExec(
         final Callable<T> task )
