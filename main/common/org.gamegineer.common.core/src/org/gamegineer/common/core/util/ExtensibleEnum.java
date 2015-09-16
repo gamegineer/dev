@@ -1,6 +1,6 @@
 /*
  * ExtensibleEnum.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -256,6 +256,6 @@ public abstract class ExtensibleEnum
 
         @SuppressWarnings( "unchecked" )
         final T[] array = (T[])Array.newInstance( type, values.size() );
-        return nonNull( values.toArray( array ) );
+        return values.toArray( array );
     }
 }
