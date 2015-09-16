@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.prototype;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -313,7 +312,7 @@ final class ComponentPrototypeMenuBuilder
          */
         Collection<MenuDescriptor> getChildMenuDescriptors()
         {
-            return nonNull( childMenuDescriptors_.values() );
+            return childMenuDescriptors_.values();
         }
 
         /**
