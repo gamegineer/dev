@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.net.impl.node;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -755,14 +754,14 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
             final INodeLayer nodeLayer = new NodeLayer();
             try
             {
-                return nonNull( nodeLayer.syncExec( new Callable<T>()
+                return nodeLayer.syncExec( new Callable<T>()
                 {
                     @Override
                     public T call()
                     {
                         return createNode( nodeLayer, tableNetworkController );
                     }
-                } ) );
+                } );
             }
             catch( final ExecutionException e )
             {
@@ -1223,14 +1222,14 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         {
             try
             {
-                endDisconnect( nonNull( nodeLayer_.syncExec( new Callable<Future<@Nullable Void>>()
+                endDisconnect( nodeLayer_.syncExec( new Callable<Future<@Nullable Void>>()
                 {
                     @Override
                     public Future<@Nullable Void> call()
                     {
                         return beginDisconnect();
                     }
-                } ) ) );
+                } ) );
             }
             catch( final ExecutionException e )
             {
