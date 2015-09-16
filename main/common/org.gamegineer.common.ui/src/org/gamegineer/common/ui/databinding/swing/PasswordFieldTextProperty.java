@@ -1,6 +1,6 @@
 /*
  * PasswordFieldTextProperty.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.common.ui.databinding.swing;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
+import java.util.logging.Level;
 import javax.swing.JPasswordField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -35,6 +35,7 @@ import org.eclipse.core.databinding.property.NativePropertyListener;
 import org.eclipse.core.databinding.property.value.SimpleValueProperty;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.security.SecureString;
+import org.gamegineer.common.internal.ui.Loggers;
 
 /**
  * A value property for the password property of an instance of
@@ -84,7 +85,7 @@ final class PasswordFieldTextProperty
     {
         assert source != null;
 
-        return SecureString.fromCharArray( nonNull( ((JPasswordField)source).getPassword() ) );
+        return SecureString.fromCharArray( getPassword( (JPasswordField)source ) );
     }
 
     /*
@@ -101,6 +102,28 @@ final class PasswordFieldTextProperty
         assert value != null;
 
         ((JPasswordField)source).setText( ((SecureString)value).toString() );
+    }
+
+    /**
+     * Gets the password for the specified password field.
+     * 
+     * @param source
+     *        The password field; must not be {@code null}.
+     * 
+     * @return The password for the specified password field; never {@code null}
+     *         .
+     */
+    private static char[] getPassword(
+        final JPasswordField source )
+    {
+        final char[] password = source.getPassword();
+        if( password == null )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.PasswordFieldTextProperty_getPassword_notAvailable );
+            return new char[ 0 ];
+        }
+
+        return password;
     }
 
     /*

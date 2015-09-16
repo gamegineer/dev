@@ -49,6 +49,11 @@ final class NonNlsMessages
     /** The text property was requested for an unsupported component. */
     public static String ComponentProperties_text_unsupportedComponent = ""; //$NON-NLS-1$
 
+    // --- PasswordFieldTextProperty ----------------------------------------
+
+    /** The password is not available. */
+    public static String PasswordFieldTextProperty_getPassword_notAvailable = ""; //$NON-NLS-1$
+
     // --- SwingRealm -------------------------------------------------------
 
     /** An error occurred while executing the runnable. */
