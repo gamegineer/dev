@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.transport.tcp;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.IOException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
@@ -44,6 +43,7 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.concurrent.SynchronousFuture;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
@@ -217,7 +217,7 @@ final class Dispatcher
                 selectorGuardBarrier();
 
                 final int readyKeyCount = selector.select();
-                final Set<SelectionKey> selectionKeys = (readyKeyCount > 0) ? selector.selectedKeys() : Collections.<SelectionKey>emptySet();
+                final Set<SelectionKey> selectionKeys = (readyKeyCount > 0) ? selector.selectedKeys() : Collections.<@NonNull SelectionKey>emptySet();
                 try
                 {
                     try
@@ -232,7 +232,6 @@ final class Dispatcher
 
                                 for( final SelectionKey selectionKey : selectionKeys )
                                 {
-                                    assert selectionKey != null;
                                     processEvents( selectionKey );
                                 }
                             }
@@ -365,7 +364,7 @@ final class Dispatcher
         final Selector selector;
         try
         {
-            selector = nonNull( Selector.open() );
+            selector = Selector.open();
         }
         catch( final IOException e )
         {

@@ -1,0 +1,7 @@
+class java/nio/channels/Selector
+open
+ ()Ljava/nio/channels/Selector;
+ ()L1java/nio/channels/Selector;
+selectedKeys
+ ()Ljava/util/Set<Ljava/nio/channels/SelectionKey;>;
+ ()L1java/util/Set<L1java/nio/channels/SelectionKey;>;
