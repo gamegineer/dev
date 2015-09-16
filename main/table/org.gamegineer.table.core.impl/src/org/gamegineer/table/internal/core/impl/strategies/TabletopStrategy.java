@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.core.AbstractContainerStrategy;
 import org.gamegineer.table.core.ComponentOrientation;
@@ -52,7 +53,7 @@ final class TabletopStrategy
     private static final ComponentSurfaceDesignId DEFAULT_SURFACE_DESIGN_ID = ComponentSurfaceDesignId.fromString( "org.gamegineer.table.tabletopSurfaceDesigns.default" ); //$NON-NLS-1$
 
     /** The collection of supported tabletop orientations. */
-    private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( TabletopOrientation.values( TabletopOrientation.class ) ) );
+    private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<@NonNull ComponentOrientation>asList( TabletopOrientation.values( TabletopOrientation.class ) ) );
 
 
     // ======================================================================

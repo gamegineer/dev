@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.NonNull;
 import org.gamegineer.cards.core.CardPileOrientation;
 import org.gamegineer.cards.core.CardPileSurfaceDesignIds;
 import org.gamegineer.cards.core.CardsComponentStrategyIds;
@@ -48,7 +49,7 @@ final class CardPileStrategy
     private static final ContainerLayoutId DEFAULT_CONTAINER_LAYOUT_ID = ContainerLayoutId.fromString( "org.gamegineer.table.containerLayouts.stacked" ); //$NON-NLS-1$
 
     /** The collection of supported card pile orientations. */
-    private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( CardPileOrientation.values( CardPileOrientation.class ) ) );
+    private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<@NonNull ComponentOrientation>asList( CardPileOrientation.values( CardPileOrientation.class ) ) );
 
 
     // ======================================================================
