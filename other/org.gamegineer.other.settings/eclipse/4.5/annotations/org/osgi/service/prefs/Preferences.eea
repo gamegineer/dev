@@ -1,0 +1,4 @@
+class org/osgi/service/prefs/Preferences
+node
+ (Ljava/lang/String;)Lorg/osgi/service/prefs/Preferences;
+ (Ljava/lang/String;)L1org/osgi/service/prefs/Preferences;
