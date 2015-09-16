@@ -1,0 +1,4 @@
+class java/awt/Cursor
+getDefaultCursor
+ ()Ljava/awt/Cursor;
+ ()L1java/awt/Cursor;

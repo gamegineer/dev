@@ -1,6 +1,6 @@
 /*
  * Cursors.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -138,12 +138,19 @@ final class Cursors
     {
         try
         {
-            return nonNull( Cursor.getSystemCustomCursor( "Invalid.32x32" ) ); //$NON-NLS-1$
+            final String cursorName = "Invalid.32x32"; //$NON-NLS-1$
+            final Cursor cursor = Cursor.getSystemCustomCursor( cursorName ); 
+            if( cursor == null )
+            {
+                throw new AWTException( cursorName );
+            }
+
+            return cursor;
         }
         catch( final AWTException e )
         {
             Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.Cursors_createInvalidCursor_failed, e );
-            return nonNull( Cursor.getDefaultCursor() );
+            return Cursor.getDefaultCursor();
         }
     }
 
@@ -154,7 +161,7 @@ final class Cursors
      */
     static Cursor getDefaultCursor()
     {
-        return nonNull( Cursor.getDefaultCursor() );
+        return Cursor.getDefaultCursor();
     }
 
     /**
