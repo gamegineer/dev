@@ -1,6 +1,6 @@
 /*
  * Model.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.dialogs.selectremoteplayer;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 import net.jcip.annotations.NotThreadSafe;
@@ -104,10 +103,10 @@ final class Model
                 final IPlayer remotePlayer = (IPlayer)value;
                 if( remotePlayer == null )
                 {
-                    return nonNull( ValidationStatus.error( NlsMessages.Model_remotePlayer_notSelected ) );
+                    return ValidationStatus.error( NlsMessages.Model_remotePlayer_notSelected );
                 }
 
-                return nonNull( ValidationStatus.ok() );
+                return ValidationStatus.ok();
             }
         };
     }

@@ -1,0 +1,7 @@
+class org/eclipse/core/databinding/validation/ValidationStatus
+error
+ (Ljava/lang/String;)Lorg/eclipse/core/runtime/IStatus;
+ (Ljava/lang/String;)L1org/eclipse/core/runtime/IStatus;
+ok
+ ()Lorg/eclipse/core/runtime/IStatus;
+ ()L1org/eclipse/core/runtime/IStatus;

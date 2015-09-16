@@ -1,6 +1,6 @@
 /*
  * Model.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.wizards.hosttablenetwork;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.core.databinding.ValidationStatusProvider;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -130,10 +129,10 @@ final class Model
                 final SecureString confirmedPassword = (SecureString)confirmedPasswordValue.getValue();
                 if( (password == null) || (confirmedPassword == null) || !password.equals( confirmedPassword ) )
                 {
-                    return nonNull( ValidationStatus.error( NlsMessages.Model_password_unconfirmed ) );
+                    return ValidationStatus.error( NlsMessages.Model_password_unconfirmed );
                 }
 
-                return nonNull( ValidationStatus.ok() );
+                return ValidationStatus.ok();
             }
         };
     }
@@ -166,10 +165,10 @@ final class Model
                 final String playerName = (String)value;
                 if( (playerName == null) || playerName.isEmpty() )
                 {
-                    return nonNull( ValidationStatus.error( NlsMessages.Model_playerName_empty ) );
+                    return ValidationStatus.error( NlsMessages.Model_playerName_empty );
                 }
 
-                return nonNull( ValidationStatus.ok() );
+                return ValidationStatus.ok();
             }
         };
     }
@@ -203,10 +202,10 @@ final class Model
                 final Integer port = (Integer)value;
                 if( (port == null) || (port < 1) || (port > 65535) )
                 {
-                    return nonNull( ValidationStatus.error( NlsMessages.Model_port_outOfRange ) );
+                    return ValidationStatus.error( NlsMessages.Model_port_outOfRange );
                 }
 
-                return nonNull( ValidationStatus.ok() );
+                return ValidationStatus.ok();
             }
         };
     }
