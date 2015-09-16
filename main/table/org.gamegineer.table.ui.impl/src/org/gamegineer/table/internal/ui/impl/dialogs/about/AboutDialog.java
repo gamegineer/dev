@@ -1,6 +1,6 @@
 /*
  * AboutDialog.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.dialogs.about;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Image;
@@ -147,7 +146,9 @@ public final class AboutDialog
         containerLayout.putConstraint( SpringLayout.WEST, messageLabel, convertWidthInDlusToPixels( 10 ), SpringLayout.EAST, applicationIconLabel );
         final int preferredMessageLabelWidth = convertWidthInCharsToPixels( 70 );
         containerLayout.getConstraints( messageLabel ).setWidth( Spring.constant( 0, preferredMessageLabelWidth, Integer.MAX_VALUE ) );
-        containerLayout.getConstraints( messageLabel ).setHeight( Spring.constant( 0, getPreferredHtmlHeight( nonNull( messageLabel.getText() ), preferredMessageLabelWidth ), Integer.MAX_VALUE ) );
+        final String messageLabelText = messageLabel.getText();
+        final String messageLabelTextForSizing = (messageLabelText != null) ? messageLabelText : ""; //$NON-NLS-1$
+        containerLayout.getConstraints( messageLabel ).setHeight( Spring.constant( 0, getPreferredHtmlHeight( messageLabelTextForSizing, preferredMessageLabelWidth ), Integer.MAX_VALUE ) );
 
         containerLayout.putConstraint( SpringLayout.EAST, container, 0, SpringLayout.EAST, messageLabel );
         containerLayout.putConstraint( SpringLayout.SOUTH, container, 0, SpringLayout.SOUTH, messageLabel );
