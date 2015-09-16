@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Image;
 import java.util.Collections;
 import java.util.List;
@@ -100,7 +99,7 @@ public final class Branding
             return BrandingUtils.getVersion( branding );
         }
 
-        return nonNull( Version.emptyVersion );
+        return Version.emptyVersion;
     }
 
     /**

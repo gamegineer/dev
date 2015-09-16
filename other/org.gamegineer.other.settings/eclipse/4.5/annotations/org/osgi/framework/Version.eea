@@ -1,0 +1,7 @@
+class org/osgi/framework/Version
+emptyVersion
+ Lorg/osgi/framework/Version;
+ L1org/osgi/framework/Version;
+parseVersion
+ (Ljava/lang/String;)Lorg/osgi/framework/Version;
+ (Ljava/lang/String;)L1org/osgi/framework/Version;

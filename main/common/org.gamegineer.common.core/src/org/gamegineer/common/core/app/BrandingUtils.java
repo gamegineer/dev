@@ -1,6 +1,6 @@
 /*
  * BrandingUtils.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.core.app;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.internal.core.Loggers;
@@ -71,7 +70,7 @@ public final class BrandingUtils
             {
                 try
                 {
-                    return nonNull( Version.parseVersion( versionString ) );
+                    return Version.parseVersion( versionString );
                 }
                 catch( final IllegalArgumentException e )
                 {
@@ -80,6 +79,6 @@ public final class BrandingUtils
             }
         }
 
-        return nonNull( Version.emptyVersion );
+        return Version.emptyVersion;
     }
 }
