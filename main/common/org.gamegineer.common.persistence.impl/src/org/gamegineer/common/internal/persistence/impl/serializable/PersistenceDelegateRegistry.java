@@ -113,7 +113,7 @@ public final class PersistenceDelegateRegistry
         }
         else if( propertyValue instanceof String[] )
         {
-            return new HashSet<>( Arrays.asList( (String[])propertyValue ) );
+            return new HashSet<>( Arrays.asList( (@NonNull String[])propertyValue ) );
         }
 
         Loggers.getDefaultLogger().warning( NonNlsMessages.PersistenceDelegateRegistry_getDelegatorTypeNames_noDelegators( persistenceDelegateReference ) );
