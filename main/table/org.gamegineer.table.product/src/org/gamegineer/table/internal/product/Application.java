@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.product;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -170,7 +169,7 @@ public final class Application
             catch( final CancellationException e )
             {
                 Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.Application_start_cancelled, e );
-                result = nonNull( TableResult.OK );
+                result = TableResult.OK;
             }
 
             Loggers.getDefaultLogger().info( NonNlsMessages.Application_start_stopped( result ) );

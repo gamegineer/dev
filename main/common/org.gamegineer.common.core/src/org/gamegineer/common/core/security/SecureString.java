@@ -1,6 +1,6 @@
 /*
  * SecureString.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.core.security;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Arrays;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
@@ -286,7 +285,7 @@ public final class SecureString
     {
         synchronized( value_ )
         {
-            return nonNull( value_.clone() );
+            return value_.clone();
         }
     }
 
