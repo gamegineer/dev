@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.ui.window;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
@@ -138,7 +137,7 @@ public abstract class AbstractWindow<T extends Window>
     {
         final @Nullable T shell = shell_;
         assert shell != null;
-        final Rectangle bounds = nonNull( shell.getBounds() );
+        final Rectangle bounds = shell.getBounds();
         final Rectangle constrainedBounds = getConstrainedBounds( bounds );
         if( !bounds.equals( constrainedBounds ) )
         {
@@ -285,7 +284,7 @@ public abstract class AbstractWindow<T extends Window>
         assert shell != null;
         final Container parent = shell.getParent();
         final Rectangle displayBounds = new Rectangle( new Point( 0, 0 ), Toolkit.getDefaultToolkit().getScreenSize() );
-        final Point centerPoint = Geometry.calculateCenterPoint( (parent != null) ? nonNull( parent.getBounds() ) : displayBounds );
+        final Point centerPoint = Geometry.calculateCenterPoint( (parent != null) ? parent.getBounds() : displayBounds );
         return new Point( //
             centerPoint.x - (initialSize.width / 2), //
             Math.max( displayBounds.y, Math.min( centerPoint.y - (initialSize.height * 2 / 3), displayBounds.y + displayBounds.height - initialSize.height ) ) );
@@ -304,7 +303,7 @@ public abstract class AbstractWindow<T extends Window>
     {
         final @Nullable T shell = shell_;
         assert shell != null;
-        return nonNull( shell.getPreferredSize() );
+        return shell.getPreferredSize();
     }
 
     /**

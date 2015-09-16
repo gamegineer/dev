@@ -1,0 +1,10 @@
+class java/awt/Component
+getBounds
+ ()Ljava/awt/Rectangle;
+ ()L1java/awt/Rectangle;
+getFontMetrics
+ (Ljava/awt/Font;)Ljava/awt/FontMetrics;
+ (Ljava/awt/Font;)L1java/awt/FontMetrics;
+getPreferredSize
+ ()Ljava/awt/Dimension;
+ ()L1java/awt/Dimension;
