@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.core.util;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -73,7 +72,7 @@ public final class IterableUtils
             {
                 return new Iterator<T>()
                 {
-                    private final ListIterator<T> iterator_ = nonNull( list.listIterator( list.size() ) );
+                    private final ListIterator<T> iterator_ = list.listIterator( list.size() );
 
                     @Override
                     public boolean hasNext()
