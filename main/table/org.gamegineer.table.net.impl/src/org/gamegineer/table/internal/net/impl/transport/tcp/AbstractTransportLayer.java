@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.transport.tcp;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -564,7 +563,7 @@ abstract class AbstractTransportLayer
          */
         private static ExecutorService createExecutorService()
         {
-            return nonNull( Executors.newSingleThreadExecutor( new ThreadFactory()
+            return Executors.newSingleThreadExecutor( new ThreadFactory()
             {
                 @Override
                 public Thread newThread(
@@ -573,7 +572,7 @@ abstract class AbstractTransportLayer
                 {
                     return new Thread( r, NonNlsMessages.AbstractTransportLayer_transportLayerThread_name );
                 }
-            } ) );
+            } );
         }
 
         /**

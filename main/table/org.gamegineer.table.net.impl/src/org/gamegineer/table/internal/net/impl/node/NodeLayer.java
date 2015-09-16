@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -128,7 +127,7 @@ final class NodeLayer
      */
     private ExecutorService createExecutorService()
     {
-        return nonNull( Executors.newSingleThreadExecutor( new ThreadFactory()
+        return Executors.newSingleThreadExecutor( new ThreadFactory()
         {
             @Override
             public Thread newThread(
@@ -155,7 +154,7 @@ final class NodeLayer
                     }
                 };
             }
-        } ) );
+        } );
     }
 
     /*
