@@ -1,0 +1,4 @@
+class java/awt/Toolkit
+createCustomCursor
+ (Ljava/awt/Image;Ljava/awt/Point;Ljava/lang/String;)Ljava/awt/Cursor;
+ (Ljava/awt/Image;Ljava/awt/Point;Ljava/lang/String;)L1java/awt/Cursor;

@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.view;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.AWTException;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -126,7 +125,7 @@ final class Cursors
             cursorImage = image;
         }
 
-        return nonNull( toolkit.createCustomCursor( cursorImage, hotSpot, name ) );
+        return toolkit.createCustomCursor( cursorImage, hotSpot, name );
     }
 
     /**
