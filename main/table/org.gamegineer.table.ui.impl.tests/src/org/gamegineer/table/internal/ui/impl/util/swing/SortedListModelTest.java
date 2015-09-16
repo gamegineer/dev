@@ -25,6 +25,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Comparator;
 import javax.swing.DefaultListModel;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Test;
 
@@ -56,7 +57,7 @@ public final class SortedListModelTest
     @Test
     public void testGetElementAt_CustomComparator()
     {
-        final FakeElement[] elements = new FakeElement[] { //
+        final @NonNull FakeElement[] elements = new @NonNull FakeElement[] { //
             new FakeElement( 3 ), //
             new FakeElement( 2 ), //
             new FakeElement( 1 ), //
@@ -96,7 +97,7 @@ public final class SortedListModelTest
     @Test
     public void testGetElementAt_DefaultComparator()
     {
-        final String[] elements = new String[] { //
+        final @NonNull String[] elements = new @NonNull String[] { //
             "element3", //$NON-NLS-1$
             "element2", //$NON-NLS-1$
             "element1", //$NON-NLS-1$
