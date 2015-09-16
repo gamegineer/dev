@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import java.util.EnumSet;
 import java.util.Set;
 import net.jcip.annotations.GuardedBy;
@@ -81,15 +80,10 @@ public final class Player
      * @param roles
      *        The collection of roles to add to this player; must not be
      *        {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code roles} contains a {@code null} element.
      */
     public void addRoles(
         final Set<PlayerRole> roles )
     {
-        assertArgumentLegal( !roles.contains( null ), "roles" ); //$NON-NLS-1$
-
         synchronized( lock_ )
         {
             roles_.addAll( roles );
@@ -136,15 +130,10 @@ public final class Player
      * @param roles
      *        The collection of roles to remove from this player; must not be
      *        {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code roles} contains a {@code null} element.
      */
     public void removeRoles(
         final Set<PlayerRole> roles )
     {
-        assertArgumentLegal( !roles.contains( null ), "roles" ); //$NON-NLS-1$
-
         synchronized( lock_ )
         {
             roles_.removeAll( roles );

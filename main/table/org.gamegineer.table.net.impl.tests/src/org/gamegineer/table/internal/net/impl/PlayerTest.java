@@ -24,7 +24,6 @@ package org.gamegineer.table.internal.net.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import java.util.Collections;
 import java.util.EnumSet;
 import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -90,16 +89,6 @@ public final class PlayerTest
     }
 
     /**
-     * Ensures the {@link Player#addRoles} method throws an exception when
-     * passed an illegal role collection that contains a {@code null} element.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testAddRoles_Roles_Illegal_ContainsNullElement()
-    {
-        player_.addRoles( Collections.<PlayerRole>singleton( null ) );
-    }
-
-    /**
      * Ensures the {@link Player#removeRoles} method removes player roles.
      */
     @Test
@@ -113,15 +102,5 @@ public final class PlayerTest
 
         assertEquals( originalRolesSize - 1, player_.getRoles().size() );
         assertFalse( player_.getRoles().contains( PlayerRole.LOCAL ) );
-    }
-
-    /**
-     * Ensures the {@link Player#removeRoles} method throws an exception when
-     * passed an illegal role collection that contains a {@code null} element.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testRemoveRoles_Roles_Illegal_ContainsNullElement()
-    {
-        player_.removeRoles( Collections.<PlayerRole>singleton( null ) );
     }
 }
