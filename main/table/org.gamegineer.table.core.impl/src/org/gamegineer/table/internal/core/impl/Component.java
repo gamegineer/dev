@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.core.impl;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -346,7 +345,7 @@ class Component
     @Override
     public final Point getLocation()
     {
-        return nonNull( getBounds().getLocation() );
+        return getBounds().getLocation();
     }
 
     /**
@@ -417,7 +416,7 @@ class Component
     @Override
     public final Dimension getSize()
     {
-        return nonNull( getBounds().getSize() );
+        return getBounds().getSize();
     }
 
     /*

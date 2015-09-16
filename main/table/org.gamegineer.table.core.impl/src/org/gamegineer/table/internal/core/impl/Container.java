@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.core.impl;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -413,7 +412,7 @@ final class Container
 
             for( final IComponent component : components_ )
             {
-                bounds = nonNull( bounds.union( component.getBounds() ) );
+                bounds = bounds.union( component.getBounds() );
             }
 
             return bounds;

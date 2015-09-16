@@ -1,0 +1,10 @@
+class java/awt/Rectangle
+getLocation
+ ()Ljava/awt/Point;
+ ()L1java/awt/Point;
+getSize
+ ()Ljava/awt/Dimension;
+ ()L1java/awt/Dimension;
+union
+ (Ljava/awt/Rectangle;)Ljava/awt/Rectangle;
+ (Ljava/awt/Rectangle;)L1java/awt/Rectangle;
