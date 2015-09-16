@@ -1,6 +1,6 @@
 /*
  * OutputQueue.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.transport.tcp;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
@@ -134,7 +133,7 @@ final class OutputQueue
     void enqueueMessageEnvelope(
         final MessageEnvelope messageEnvelope )
     {
-        final ByteBuffer incomingBuffer = nonNull( ByteBuffer.wrap( messageEnvelope.toByteArray() ) );
+        final ByteBuffer incomingBuffer = ByteBuffer.wrap( messageEnvelope.toByteArray() );
         final ByteBuffer lastBuffer = bufferQueue_.peekLast();
         if( (lastBuffer != null) && lastBuffer.hasRemaining() )
         {

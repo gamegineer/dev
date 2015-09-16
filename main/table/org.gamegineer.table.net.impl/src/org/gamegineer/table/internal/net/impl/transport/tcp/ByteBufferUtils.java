@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.transport.tcp;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -65,7 +64,7 @@ final class ByteBufferUtils
         final Collection<ByteBuffer> duplicateBuffers = new ArrayList<>( buffers.size() );
         for( final ByteBuffer buffer : buffers )
         {
-            duplicateBuffers.add( nonNull( buffer.duplicate() ) );
+            duplicateBuffers.add( buffer.duplicate() );
         }
 
         return duplicateBuffers;

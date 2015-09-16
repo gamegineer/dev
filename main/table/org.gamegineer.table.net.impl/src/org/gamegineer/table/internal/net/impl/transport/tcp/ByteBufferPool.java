@@ -1,6 +1,6 @@
 /*
  * ByteBufferPool.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.transport.tcp;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.nio.ByteBuffer;
 import java.util.ArrayDeque;
 import java.util.Queue;
@@ -110,6 +109,6 @@ final class ByteBufferPool
             return byteBuffer;
         }
 
-        return nonNull( ByteBuffer.allocate( byteBufferCapacity_ ) );
+        return ByteBuffer.allocate( byteBufferCapacity_ );
     }
 }

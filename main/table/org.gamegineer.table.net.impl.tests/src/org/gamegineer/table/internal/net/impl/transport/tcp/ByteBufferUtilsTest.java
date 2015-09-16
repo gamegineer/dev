@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.transport.tcp;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -114,18 +113,18 @@ public final class ByteBufferUtilsTest
         throws Exception
     {
         buffers_ = new ArrayList<>();
-        buffers_.add( nonNull( ByteBuffer.wrap( new byte[] {
+        buffers_.add( ByteBuffer.wrap( new byte[] {
             0x00, 0x01, 0x02, 0x03
-        } ) ) );
-        buffers_.add( nonNull( ByteBuffer.wrap( new byte[] {
+        } ) );
+        buffers_.add( ByteBuffer.wrap( new byte[] {
             0x04, 0x05, 0x06, 0x07
-        } ) ) );
-        buffers_.add( nonNull( ByteBuffer.wrap( new byte[] {
+        } ) );
+        buffers_.add( ByteBuffer.wrap( new byte[] {
             0x08, 0x09, 0x0A, 0x0B
-        } ) ) );
-        buffers_.add( nonNull( ByteBuffer.wrap( new byte[] {
+        } ) );
+        buffers_.add( ByteBuffer.wrap( new byte[] {
             0x0C, 0x0D, 0x0E, 0x0F
-        } ) ) );
+        } ) );
     }
 
     /**
@@ -162,8 +161,8 @@ public final class ByteBufferUtilsTest
         final byte[] expectedValue = new byte[] {
             0x00, 0x01
         };
-        final ByteBuffer sourceBuffer = nonNull( ByteBuffer.wrap( inputValue ) );
-        final ByteBuffer destinationBuffer = nonNull( ByteBuffer.allocate( expectedValue.length ) );
+        final ByteBuffer sourceBuffer = ByteBuffer.wrap( inputValue );
+        final ByteBuffer destinationBuffer = ByteBuffer.allocate( expectedValue.length );
 
         ByteBufferUtils.fill( destinationBuffer, sourceBuffer );
         destinationBuffer.flip();
@@ -187,8 +186,8 @@ public final class ByteBufferUtilsTest
         final byte[] expectedValue = new byte[] {
             0x00, 0x01
         };
-        final ByteBuffer sourceBuffer = nonNull( ByteBuffer.wrap( inputValue ) );
-        final ByteBuffer destinationBuffer = nonNull( ByteBuffer.allocate( expectedValue.length ) );
+        final ByteBuffer sourceBuffer = ByteBuffer.wrap( inputValue );
+        final ByteBuffer destinationBuffer = ByteBuffer.allocate( expectedValue.length );
 
         ByteBufferUtils.fill( destinationBuffer, sourceBuffer );
         destinationBuffer.flip();
