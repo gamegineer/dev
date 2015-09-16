@@ -313,7 +313,9 @@ class Component
         getLock().lock();
         try
         {
-            return new Rectangle( location_, surfaceDesigns_.get( orientation_ ).getSize() );
+            final ComponentSurfaceDesign surfaceDesign = surfaceDesigns_.get( orientation_ );
+            assert surfaceDesign != null;
+            return new Rectangle( location_, surfaceDesign.getSize() );
         }
         finally
         {

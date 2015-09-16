@@ -448,8 +448,8 @@ public final class ServerNode
     private void unbindPlayer(
         final String playerName )
     {
-        assert players_.containsKey( playerName );
         final Player player = players_.remove( playerName );
+        assert player != null;
         if( player.hasRole( PlayerRole.EDITOR ) )
         {
             final Player hostPlayer = getPlayer();
