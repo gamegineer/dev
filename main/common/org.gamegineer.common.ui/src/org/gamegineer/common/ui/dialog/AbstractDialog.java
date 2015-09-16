@@ -1,6 +1,6 @@
 /*
  * AbstractDialog.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.ui.dialog;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
@@ -483,7 +482,7 @@ public abstract class AbstractDialog
             }
         };
 
-        return new JDialog( parent, nonNull( Dialog.ModalityType.APPLICATION_MODAL ) )
+        return new JDialog( parent, Dialog.ModalityType.APPLICATION_MODAL )
         {
             private static final long serialVersionUID = -1569267715967524723L;
 
