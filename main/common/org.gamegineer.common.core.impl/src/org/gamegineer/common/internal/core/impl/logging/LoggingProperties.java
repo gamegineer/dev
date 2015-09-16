@@ -1,6 +1,6 @@
 /*
  * LoggingProperties.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -185,7 +185,9 @@ final class LoggingProperties
         final Map<String, String> map = new HashMap<>( properties.size() );
         for( final String name : properties.stringPropertyNames() )
         {
-            map.put( name, properties.getProperty( name ) );
+            final String value = properties.getProperty( name );
+            assert value != null;
+            map.put( name, value );
         }
         return map;
     }
