@@ -175,8 +175,7 @@ final class Container
      *        the components should be added to the top of this container.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code components} contains a {@code null} element; if any
-     *         component is already contained in a container; or if any
+     *         If any component is already contained in a container; or if any
      *         component was created by a table environment other than the table
      *         environment that created this container.
      * @throws java.lang.IndexOutOfBoundsException
@@ -199,10 +198,6 @@ final class Container
             for( final IComponent component : components )
             {
                 final Component typedComponent = (Component)component;
-                if( typedComponent == null )
-                {
-                    throw new IllegalArgumentException( NonNlsMessages.Container_addComponents_components_containsNullElement );
-                }
                 assertArgumentLegal( typedComponent.getContainer() == null, "components", NonNlsMessages.Container_addComponents_components_containsOwnedComponent ); //$NON-NLS-1$
                 assertArgumentLegal( typedComponent.getTableEnvironment() == getTableEnvironment(), "components", NonNlsMessages.Container_addComponents_components_containsComponentCreatedByDifferentTableEnvironment ); //$NON-NLS-1$
 

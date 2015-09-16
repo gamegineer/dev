@@ -510,17 +510,6 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     }
 
     /**
-     * Ensures the {@link IContainer#addComponents(List)} method throws an
-     * exception when passed an illegal component collection that contains a
-     * {@code null} element.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testAddComponents_Components_Illegal_ContainsNullElement()
-    {
-        getContainer().addComponents( Collections.<IComponent>singletonList( null ) );
-    }
-
-    /**
      * Ensures the {@link IContainer#addComponents(List)} method changes the
      * location of the components to reflect the container location.
      */
@@ -641,17 +630,6 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
         otherContainer.addComponent( component );
 
         getContainer().addComponents( Arrays.asList( createUniqueComponent(), component ), 0 );
-    }
-
-    /**
-     * Ensures the {@link IContainer#addComponents(List, int)} method throws an
-     * exception when passed an illegal component collection that contains a
-     * {@code null} element.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testAddComponentsAtIndex_Components_Illegal_ContainsNullElement()
-    {
-        getContainer().addComponents( Collections.<IComponent>singletonList( null ), 0 );
     }
 
     /**

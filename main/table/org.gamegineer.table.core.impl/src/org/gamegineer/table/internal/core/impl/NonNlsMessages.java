@@ -111,9 +111,6 @@ final class NonNlsMessages
      */
     public static String Container_addComponents_components_containsComponentCreatedByDifferentTableEnvironment = ""; //$NON-NLS-1$
 
-    /** The component collection contains a {@code null} element. */
-    public static String Container_addComponents_components_containsNullElement = ""; //$NON-NLS-1$
-
     /**
      * The component collection contains a component already contained in a
      * container.
