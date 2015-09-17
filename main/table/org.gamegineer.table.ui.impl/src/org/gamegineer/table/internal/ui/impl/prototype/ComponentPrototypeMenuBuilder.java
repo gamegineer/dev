@@ -210,7 +210,6 @@ final class ComponentPrototypeMenuBuilder
 
         for( final MenuDescriptor childMenuDescriptor : menuDescriptor.getChildMenuDescriptors() )
         {
-            assert childMenuDescriptor != null;
             collectAllComponentPrototypeCategoryIds( childMenuDescriptor, ids );
         }
     }
@@ -337,7 +336,6 @@ final class ComponentPrototypeMenuBuilder
             assert !idPath.isEmpty();
 
             final String childPath = idPath.get( 0 );
-            assert childPath != null;
             final MenuDescriptor menuDescriptor = getChildMenuDescriptor( childPath );
             if( idPath.size() == 1 )
             {
