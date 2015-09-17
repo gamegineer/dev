@@ -91,18 +91,12 @@ final class ComponentPrototypeMenuBuilder
     void addComponentPrototype(
         final ComponentPrototype componentPrototype )
     {
-        @Nullable Collection<JMenuItem> menuItems = menuItemCollections_.get( componentPrototype.getCategoryId() );
-        if( menuItems == null )
-        {
-            final Collection<JMenuItem> newMenuItems = new ArrayList<>();
-            menuItemCollections_.put( componentPrototype.getCategoryId(), newMenuItems );
-            menuItems = newMenuItems;
-        }
-
         final JMenuItem menuItem = new JMenuItem( menuItemAction_ );
         menuItem.setText( componentPrototype.getName() );
         menuItem.setMnemonic( componentPrototype.getMnemonic() );
         ComponentPrototypeUtils.setComponentPrototypeFactory( menuItem, componentPrototype.getFactory() );
+
+        final Collection<JMenuItem> menuItems = menuItemCollections_.computeIfAbsent( componentPrototype.getCategoryId(), key -> new ArrayList<>() );
         menuItems.add( menuItem );
     }
 
