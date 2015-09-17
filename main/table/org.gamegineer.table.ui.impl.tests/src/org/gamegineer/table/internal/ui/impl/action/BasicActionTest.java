@@ -97,7 +97,7 @@ public final class BasicActionTest
     public void testAddActionListener_Listener_Absent()
     {
         final ActionListener listener = mocksControl_.createMock( ActionListener.class );
-        listener.actionPerformed( EasyMock.notNull( ActionEvent.class ) );
+        listener.actionPerformed( EasyMock.<ActionEvent>notNull() );
         mocksControl_.replay();
 
         action_.addActionListener( listener );
@@ -129,7 +129,7 @@ public final class BasicActionTest
     public void testAddShouldEnablePredicate_Predicate_Absent()
     {
         final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
-        EasyMock.expect( predicate.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        EasyMock.expect( predicate.evaluate( EasyMock.<Action>notNull() ) ).andReturn( false );
         mocksControl_.replay();
 
         action_.addShouldEnablePredicate( predicate );
@@ -161,7 +161,7 @@ public final class BasicActionTest
     public void testAddShouldSelectPredicate_Predicate_Absent()
     {
         final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
-        EasyMock.expect( predicate.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        EasyMock.expect( predicate.evaluate( EasyMock.<Action>notNull() ) ).andReturn( false );
         mocksControl_.replay();
 
         action_.addShouldSelectPredicate( predicate );

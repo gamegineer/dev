@@ -123,7 +123,7 @@ public final class ActionMediatorTest
     {
         final BasicAction action = createBasicAction();
         final ActionListener listener = mocksControl_.createMock( ActionListener.class );
-        listener.actionPerformed( EasyMock.notNull( ActionEvent.class ) );
+        listener.actionPerformed( EasyMock.<ActionEvent>notNull() );
         mocksControl_.replay();
 
         mediator_.bindActionListener( action, listener );
@@ -157,7 +157,7 @@ public final class ActionMediatorTest
     {
         final BasicAction action = createBasicAction();
         final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
-        EasyMock.expect( predicate.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false ).times( 2 );
+        EasyMock.expect( predicate.evaluate( EasyMock.<Action>notNull() ) ).andReturn( false ).times( 2 );
         mocksControl_.replay();
 
         mediator_.bindShouldEnablePredicate( action, predicate );
@@ -176,7 +176,7 @@ public final class ActionMediatorTest
     {
         final BasicAction action = createBasicAction();
         final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
-        EasyMock.expect( predicate.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        EasyMock.expect( predicate.evaluate( EasyMock.<Action>notNull() ) ).andReturn( false );
         mocksControl_.replay();
 
         mediator_.bindShouldEnablePredicate( action, predicate );
@@ -209,7 +209,7 @@ public final class ActionMediatorTest
     {
         final BasicAction action = createBasicAction();
         final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
-        EasyMock.expect( predicate.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false ).times( 2 );
+        EasyMock.expect( predicate.evaluate( EasyMock.<Action>notNull() ) ).andReturn( false ).times( 2 );
         mocksControl_.replay();
 
         mediator_.bindShouldSelectPredicate( action, predicate );
@@ -228,7 +228,7 @@ public final class ActionMediatorTest
     {
         final BasicAction action = createBasicAction();
         final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
-        EasyMock.expect( predicate.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        EasyMock.expect( predicate.evaluate( EasyMock.<Action>notNull() ) ).andReturn( false );
         mocksControl_.replay();
 
         mediator_.bindShouldSelectPredicate( action, predicate );
@@ -274,7 +274,7 @@ public final class ActionMediatorTest
     {
         final BasicAction action = createBasicAction();
         final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
-        EasyMock.expect( predicate.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        EasyMock.expect( predicate.evaluate( EasyMock.<Action>notNull() ) ).andReturn( false );
         mocksControl_.replay();
         mediator_.bindShouldEnablePredicate( action, predicate );
 
@@ -294,7 +294,7 @@ public final class ActionMediatorTest
     {
         final BasicAction action = createBasicAction();
         final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
-        EasyMock.expect( predicate.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        EasyMock.expect( predicate.evaluate( EasyMock.<Action>notNull() ) ).andReturn( false );
         mocksControl_.replay();
         mediator_.bindShouldSelectPredicate( action, predicate );
 
@@ -314,9 +314,9 @@ public final class ActionMediatorTest
     {
         final BasicAction action = createBasicAction();
         final IPredicate<Action> managedPredicate = mocksControl_.createMock( IPredicate.class );
-        EasyMock.expect( managedPredicate.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        EasyMock.expect( managedPredicate.evaluate( EasyMock.<Action>notNull() ) ).andReturn( false );
         final IPredicate<Action> unmanagedPredicate = mocksControl_.createMock( IPredicate.class );
-        EasyMock.expect( unmanagedPredicate.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        EasyMock.expect( unmanagedPredicate.evaluate( EasyMock.<Action>notNull() ) ).andReturn( false );
         mocksControl_.replay();
         mediator_.bindShouldEnablePredicate( action, managedPredicate );
         action.addShouldEnablePredicate( unmanagedPredicate );
@@ -358,10 +358,10 @@ public final class ActionMediatorTest
     {
         final BasicAction action1 = createBasicAction();
         final IPredicate<Action> predicate1 = mocksControl_.createMock( IPredicate.class );
-        EasyMock.expect( predicate1.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        EasyMock.expect( predicate1.evaluate( EasyMock.<Action>notNull() ) ).andReturn( false );
         final BasicAction action2 = createBasicAction();
         final IPredicate<Action> predicate2 = mocksControl_.createMock( IPredicate.class );
-        EasyMock.expect( predicate2.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        EasyMock.expect( predicate2.evaluate( EasyMock.<Action>notNull() ) ).andReturn( false );
         mocksControl_.replay();
         mediator_.bindShouldEnablePredicate( action1, predicate1 );
         mediator_.bindShouldEnablePredicate( action2, predicate2 );
@@ -383,10 +383,10 @@ public final class ActionMediatorTest
     {
         final BasicAction action1 = createBasicAction();
         final IPredicate<Action> predicate1 = mocksControl_.createMock( IPredicate.class );
-        EasyMock.expect( predicate1.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        EasyMock.expect( predicate1.evaluate( EasyMock.<Action>notNull() ) ).andReturn( false );
         final BasicAction action2 = createBasicAction();
         final IPredicate<Action> predicate2 = mocksControl_.createMock( IPredicate.class );
-        EasyMock.expect( predicate2.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        EasyMock.expect( predicate2.evaluate( EasyMock.<Action>notNull() ) ).andReturn( false );
         mocksControl_.replay();
         mediator_.bindShouldSelectPredicate( action1, predicate1 );
         mediator_.bindShouldSelectPredicate( action2, predicate2 );
@@ -408,14 +408,14 @@ public final class ActionMediatorTest
     {
         final BasicAction action1 = createBasicAction();
         final IPredicate<Action> managedPredicate1 = mocksControl_.createMock( IPredicate.class );
-        EasyMock.expect( managedPredicate1.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        EasyMock.expect( managedPredicate1.evaluate( EasyMock.<Action>notNull() ) ).andReturn( false );
         final IPredicate<Action> unmanagedPredicate1 = mocksControl_.createMock( IPredicate.class );
-        EasyMock.expect( unmanagedPredicate1.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        EasyMock.expect( unmanagedPredicate1.evaluate( EasyMock.<Action>notNull() ) ).andReturn( false );
         final BasicAction action2 = createBasicAction();
         final IPredicate<Action> managedPredicate2 = mocksControl_.createMock( IPredicate.class );
-        EasyMock.expect( managedPredicate2.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        EasyMock.expect( managedPredicate2.evaluate( EasyMock.<Action>notNull() ) ).andReturn( false );
         final IPredicate<Action> unmanagedPredicate2 = mocksControl_.createMock( IPredicate.class );
-        EasyMock.expect( unmanagedPredicate2.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        EasyMock.expect( unmanagedPredicate2.evaluate( EasyMock.<Action>notNull() ) ).andReturn( false );
         mocksControl_.replay();
         mediator_.bindShouldEnablePredicate( action1, managedPredicate1 );
         action1.addShouldEnablePredicate( unmanagedPredicate1 );
