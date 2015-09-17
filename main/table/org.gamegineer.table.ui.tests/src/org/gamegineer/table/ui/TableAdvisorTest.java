@@ -23,7 +23,6 @@ package org.gamegineer.table.ui;
 
 import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import org.junit.Test;
 
@@ -61,16 +60,5 @@ public final class TableAdvisorTest
         appArgs.add( "arg" ); //$NON-NLS-1$
 
         assertEquals( 0, tableAdvisor.getApplicationArguments().size() );
-    }
-
-    /**
-     * Ensures the {@link TableAdvisor#TableAdvisor} constructor throws an
-     * exception when passed an illegal application argument collection that
-     * contains a {@code null} element.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testConstructor_AppArgs_Illegal_ContainsNullElement()
-    {
-        new TableAdvisor( Collections.<String>singletonList( null ) );
     }
 }

@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.ui;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -51,15 +50,10 @@ public final class TableAdvisor
      * 
      * @param appArgs
      *        The application argument collection; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code appArgs} contains a {@code null} element.
      */
     public TableAdvisor(
         final List<String> appArgs )
     {
-        assertArgumentLegal( !appArgs.contains( null ), "appArgs", NonNlsMessages.TableAdvisor_ctor_appArgs_containsNullElement ); //$NON-NLS-1$
-
         appArgs_ = Collections.unmodifiableList( new ArrayList<>( appArgs ) );
     }
 

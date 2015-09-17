@@ -53,11 +53,6 @@ final class NonNlsMessages
     /** The component surface design identifier is not registered. */
     public static String ComponentSurfaceDesignUIRegistry_getComponentSurfaceDesignUI_unknownComponentSurfaceDesignId = ""; //$NON-NLS-1$
 
-    // --- TableAdvisor -----------------------------------------------------
-
-    /** The application argument collection contains a {@code null} element. */
-    public static String TableAdvisor_ctor_appArgs_containsNullElement = ""; //$NON-NLS-1$
-
 
     // ======================================================================
     // Constructors

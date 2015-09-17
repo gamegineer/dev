@@ -93,7 +93,7 @@ public final class Application
     private static ITableAdvisor createTableAdvisor(
         final IApplicationContext context )
     {
-        final List<String> applicationArguments = parseApplicationArguments( (String[])context.getArguments().get( IApplicationContext.APPLICATION_ARGS ) );
+        final List<String> applicationArguments = parseApplicationArguments( (@NonNull String @Nullable[])context.getArguments().get( IApplicationContext.APPLICATION_ARGS ) );
         return new TableAdvisor( applicationArguments );
     }
 
@@ -106,7 +106,7 @@ public final class Application
      * @return The collection of application arguments; never {@code null}.
      */
     private static List<String> parseApplicationArguments(
-        final String @Nullable[] applicationArgumentsArray )
+        final @NonNull String @Nullable[] applicationArgumentsArray )
     {
         if( (applicationArgumentsArray == null) || (applicationArgumentsArray.length == 0) )
         {
