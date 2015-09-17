@@ -21,12 +21,12 @@
 
 package org.gamegineer.table.internal.ui.impl.model;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Point;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.jdt.annotation.DefaultLocation;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.test.TestComponentSurfaceDesigns;
@@ -193,7 +193,7 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     public void testAddComponentModelListener_Listener_Absent()
     {
         final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
-        listener.componentChanged( assumeNonNull( EasyMock.notNull( ComponentModelEvent.class ) ) );
+        listener.componentChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
         mocksControl_.replay();
 
         fireComponentChangedEvent();
@@ -225,8 +225,8 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     public void testComponent_BoundsChanged_FiresComponentBoundsChangedEventAndComponentChangedEvent()
     {
         final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
-        listener.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentModelEvent.class ) ) );
-        listener.componentChanged( assumeNonNull( EasyMock.notNull( ComponentModelEvent.class ) ) );
+        listener.componentBoundsChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
+        listener.componentChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
         mocksControl_.replay();
         componentModel_.addComponentModelListener( listener );
 
@@ -245,8 +245,8 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     public void testComponent_OrientationChanged_FiresComponentOrientationChangedEventAndComponentChangedEvent()
     {
         final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
-        listener.componentOrientationChanged( assumeNonNull( EasyMock.notNull( ComponentModelEvent.class ) ) );
-        listener.componentChanged( assumeNonNull( EasyMock.notNull( ComponentModelEvent.class ) ) );
+        listener.componentOrientationChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
+        listener.componentChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
         mocksControl_.replay();
         componentModel_.addComponentModelListener( listener );
 
@@ -263,8 +263,8 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     public void testComponent_SurfaceDesignChanged_FiresComponentSurfaceDesignChangedEventAndComponentChangedEvent()
     {
         final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
-        listener.componentSurfaceDesignChanged( assumeNonNull( EasyMock.notNull( ComponentModelEvent.class ) ) );
-        listener.componentChanged( assumeNonNull( EasyMock.notNull( ComponentModelEvent.class ) ) );
+        listener.componentSurfaceDesignChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
+        listener.componentChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
         mocksControl_.replay();
         componentModel_.addComponentModelListener( listener );
 
@@ -282,10 +282,10 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     public void testComponentBoundsChanged_CatchesListenerException()
     {
         final IComponentModelListener listener1 = mocksControl_.createMock( IComponentModelListener.class );
-        listener1.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentModelEvent.class ) ) );
+        listener1.componentBoundsChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IComponentModelListener listener2 = mocksControl_.createMock( IComponentModelListener.class );
-        listener2.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentModelEvent.class ) ) );
+        listener2.componentBoundsChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
         mocksControl_.replay();
         componentModel_.addComponentModelListener( listener1 );
         componentModel_.addComponentModelListener( listener2 );
@@ -304,10 +304,10 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     public void testComponentChanged_CatchesListenerException()
     {
         final IComponentModelListener listener1 = mocksControl_.createMock( IComponentModelListener.class );
-        listener1.componentChanged( assumeNonNull( EasyMock.notNull( ComponentModelEvent.class ) ) );
+        listener1.componentChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IComponentModelListener listener2 = mocksControl_.createMock( IComponentModelListener.class );
-        listener2.componentChanged( assumeNonNull( EasyMock.notNull( ComponentModelEvent.class ) ) );
+        listener2.componentChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
         mocksControl_.replay();
         componentModel_.addComponentModelListener( listener1 );
         componentModel_.addComponentModelListener( listener2 );
@@ -326,10 +326,10 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     public void testComponentModelFocusChanged_CatchesListenerException()
     {
         final IComponentModelListener listener1 = mocksControl_.createMock( IComponentModelListener.class );
-        listener1.componentModelFocusChanged( assumeNonNull( EasyMock.notNull( ComponentModelEvent.class ) ) );
+        listener1.componentModelFocusChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IComponentModelListener listener2 = mocksControl_.createMock( IComponentModelListener.class );
-        listener2.componentModelFocusChanged( assumeNonNull( EasyMock.notNull( ComponentModelEvent.class ) ) );
+        listener2.componentModelFocusChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
         mocksControl_.replay();
         componentModel_.addComponentModelListener( listener1 );
         componentModel_.addComponentModelListener( listener2 );
@@ -348,10 +348,10 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     public void testComponentModelHoverChanged_CatchesListenerException()
     {
         final IComponentModelListener listener1 = mocksControl_.createMock( IComponentModelListener.class );
-        listener1.componentModelHoverChanged( assumeNonNull( EasyMock.notNull( ComponentModelEvent.class ) ) );
+        listener1.componentModelHoverChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IComponentModelListener listener2 = mocksControl_.createMock( IComponentModelListener.class );
-        listener2.componentModelHoverChanged( assumeNonNull( EasyMock.notNull( ComponentModelEvent.class ) ) );
+        listener2.componentModelHoverChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
         mocksControl_.replay();
         componentModel_.addComponentModelListener( listener1 );
         componentModel_.addComponentModelListener( listener2 );
@@ -370,10 +370,10 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     public void testComponentOrientationChanged_CatchesListenerException()
     {
         final IComponentModelListener listener1 = mocksControl_.createMock( IComponentModelListener.class );
-        listener1.componentOrientationChanged( assumeNonNull( EasyMock.notNull( ComponentModelEvent.class ) ) );
+        listener1.componentOrientationChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IComponentModelListener listener2 = mocksControl_.createMock( IComponentModelListener.class );
-        listener2.componentOrientationChanged( assumeNonNull( EasyMock.notNull( ComponentModelEvent.class ) ) );
+        listener2.componentOrientationChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
         mocksControl_.replay();
         componentModel_.addComponentModelListener( listener1 );
         componentModel_.addComponentModelListener( listener2 );
@@ -393,10 +393,10 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     public void testComponentSurfaceDesignChanged_CatchesListenerException()
     {
         final IComponentModelListener listener1 = mocksControl_.createMock( IComponentModelListener.class );
-        listener1.componentSurfaceDesignChanged( assumeNonNull( EasyMock.notNull( ComponentModelEvent.class ) ) );
+        listener1.componentSurfaceDesignChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IComponentModelListener listener2 = mocksControl_.createMock( IComponentModelListener.class );
-        listener2.componentSurfaceDesignChanged( assumeNonNull( EasyMock.notNull( ComponentModelEvent.class ) ) );
+        listener2.componentSurfaceDesignChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
         mocksControl_.replay();
         componentModel_.addComponentModelListener( listener1 );
         componentModel_.addComponentModelListener( listener2 );
@@ -425,7 +425,7 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     public void testRemoveComponentModelListener_Listener_Present()
     {
         final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
-        listener.componentChanged( assumeNonNull( EasyMock.notNull( ComponentModelEvent.class ) ) );
+        listener.componentChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
         mocksControl_.replay();
         componentModel_.addComponentModelListener( listener );
 
@@ -444,7 +444,7 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     public void testSetFocused_GainedFocus_FiresComponentModelFocusChangedEvent()
     {
         final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
-        listener.componentModelFocusChanged( assumeNonNull( EasyMock.notNull( ComponentModelEvent.class ) ) );
+        listener.componentModelFocusChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
         mocksControl_.replay();
         componentModel_.addComponentModelListener( listener );
 
@@ -469,7 +469,7 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     public void testSetFocused_LostFocus_FiresComponentModelFocusChangedEvent()
     {
         final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
-        listener.componentModelFocusChanged( assumeNonNull( EasyMock.notNull( ComponentModelEvent.class ) ) );
+        listener.componentModelFocusChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
         mocksControl_.replay();
         componentModel_.addComponentModelListener( listener );
 
@@ -494,7 +494,7 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     public void testSetHover_GainedHover_FiresComponentModelHoverChangedEvent()
     {
         final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
-        listener.componentModelHoverChanged( assumeNonNull( EasyMock.notNull( ComponentModelEvent.class ) ) );
+        listener.componentModelHoverChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
         mocksControl_.replay();
         componentModel_.addComponentModelListener( listener );
 
@@ -519,7 +519,7 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     public void testSetHover_LostHover_FiresComponentModelHoverChangedEvent()
     {
         final IComponentModelListener listener = mocksControl_.createMock( IComponentModelListener.class );
-        listener.componentModelHoverChanged( assumeNonNull( EasyMock.notNull( ComponentModelEvent.class ) ) );
+        listener.componentModelHoverChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
         mocksControl_.replay();
         componentModel_.addComponentModelListener( listener );
 

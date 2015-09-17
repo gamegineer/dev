@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
 import static org.junit.Assert.assertEquals;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
@@ -203,7 +202,7 @@ public final class AbstractRemoteNodeTest
     {
         final IServiceContext serviceContext = mocksControl_.createMock( IServiceContext.class );
         final Capture<IMessage> messageCapture = new Capture<>();
-        serviceContext.sendMessage( assumeNonNull( EasyMock.capture( messageCapture ) ) );
+        serviceContext.sendMessage( EasyMock.capture( messageCapture ) );
         final FakeMessage message = new FakeMessage();
         message.setId( IMessage.MINIMUM_ID );
         message.setCorrelationId( IMessage.MAXIMUM_ID );
@@ -232,7 +231,7 @@ public final class AbstractRemoteNodeTest
     {
         final IServiceContext serviceContext = mocksControl_.createMock( IServiceContext.class );
         final Capture<IMessage> messageCapture = new Capture<>();
-        serviceContext.sendMessage( assumeNonNull( EasyMock.capture( messageCapture ) ) );
+        serviceContext.sendMessage( EasyMock.capture( messageCapture ) );
         final FakeMessage message = new FakeMessage();
         message.setId( IMessage.MINIMUM_ID );
         message.setCorrelationId( IMessage.NULL_CORRELATION_ID );
@@ -257,7 +256,7 @@ public final class AbstractRemoteNodeTest
     {
         final IServiceContext serviceContext = mocksControl_.createMock( IServiceContext.class );
         final Capture<IMessage> messageCapture = new Capture<>();
-        serviceContext.sendMessage( assumeNonNull( EasyMock.capture( messageCapture ) ) );
+        serviceContext.sendMessage( EasyMock.capture( messageCapture ) );
         final MessageEnvelope.HeaderBuilder headerBuilder = new MessageEnvelope.HeaderBuilder();
         final MessageEnvelope messageEnvelope = MessageEnvelope.fromByteArray( //
             headerBuilder //

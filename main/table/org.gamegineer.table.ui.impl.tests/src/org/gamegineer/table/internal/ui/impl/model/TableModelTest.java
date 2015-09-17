@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.impl.model;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -39,6 +38,7 @@ import java.util.List;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.jdt.annotation.DefaultLocation;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentStrategyId;
@@ -292,7 +292,7 @@ public final class TableModelTest
     public void testAddTableModelListener_Listener_Absent()
     {
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener.tableChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
 
         fireTableChangedEvent();
@@ -326,7 +326,7 @@ public final class TableModelTest
         final IComponent component = createUniqueContainer();
         tableModel_.getTable().getTabletop().addComponent( component );
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableModelDirtyFlagChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener.tableModelDirtyFlagChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.addTableModelListener( listener );
 
@@ -345,7 +345,7 @@ public final class TableModelTest
         final IComponent component = createUniqueContainer();
         tableModel_.getTable().getTabletop().addComponent( component );
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener.tableChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.addTableModelListener( listener );
 
@@ -795,7 +795,7 @@ public final class TableModelTest
     public void testOpen_FiresTableChangedEvent()
     {
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener.tableChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.addTableModelListener( listener );
 
@@ -812,7 +812,7 @@ public final class TableModelTest
     public void testOpen_FiresTableModelDirtyFlagChangedEvent()
     {
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableModelDirtyFlagChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener.tableModelDirtyFlagChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.addTableModelListener( listener );
 
@@ -829,7 +829,7 @@ public final class TableModelTest
     public void testOpen_FiresTableModelFileChangedEvent()
     {
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableModelFileChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener.tableModelFileChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.addTableModelListener( listener );
 
@@ -846,7 +846,7 @@ public final class TableModelTest
     public void testOpen_FiresTableModelFocusChangedEvent()
     {
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableModelFocusChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener.tableModelFocusChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.addTableModelListener( listener );
 
@@ -863,7 +863,7 @@ public final class TableModelTest
     public void testOpen_FiresTableModelHoverChangedEvent()
     {
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableModelHoverChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener.tableModelHoverChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.addTableModelListener( listener );
 
@@ -880,7 +880,7 @@ public final class TableModelTest
     public void testOpen_FiresTableModelOriginOffsetChangedEvent()
     {
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableModelOriginOffsetChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener.tableModelOriginOffsetChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.addTableModelListener( listener );
 
@@ -902,7 +902,7 @@ public final class TableModelTest
     {
         final File file = createTemporaryFile();
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener.tableChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.save( file );
         tableModel_.addTableModelListener( listener );
@@ -925,7 +925,7 @@ public final class TableModelTest
     {
         final File file = createTemporaryFile();
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableModelDirtyFlagChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener.tableModelDirtyFlagChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.save( file );
         tableModel_.addTableModelListener( listener );
@@ -948,7 +948,7 @@ public final class TableModelTest
     {
         final File file = createTemporaryFile();
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableModelFileChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener.tableModelFileChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.save( file );
         tableModel_.addTableModelListener( listener );
@@ -971,7 +971,7 @@ public final class TableModelTest
     {
         final File file = createTemporaryFile();
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableModelFocusChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener.tableModelFocusChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.save( file );
         tableModel_.addTableModelListener( listener );
@@ -994,7 +994,7 @@ public final class TableModelTest
     {
         final File file = createTemporaryFile();
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableModelHoverChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener.tableModelHoverChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.save( file );
         tableModel_.addTableModelListener( listener );
@@ -1017,7 +1017,7 @@ public final class TableModelTest
     {
         final File file = createTemporaryFile();
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableModelOriginOffsetChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener.tableModelOriginOffsetChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.save( file );
         tableModel_.addTableModelListener( listener );
@@ -1041,7 +1041,7 @@ public final class TableModelTest
         final ComponentModel componentModel = tableModel_.getComponentModel( componentPath );
         tableModel_.setFocus( componentModel );
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableModelFocusChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener.tableModelFocusChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.addTableModelListener( listener );
 
@@ -1066,7 +1066,7 @@ public final class TableModelTest
         final ComponentModel componentModel = tableModel_.getComponentModel( componentPath );
         tableModel_.setHover( componentModel );
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableModelHoverChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener.tableModelHoverChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.addTableModelListener( listener );
 
@@ -1096,7 +1096,7 @@ public final class TableModelTest
     public void testRemoveTableModelListener_Listener_Present()
     {
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener.tableChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.addTableModelListener( listener );
 
@@ -1120,7 +1120,7 @@ public final class TableModelTest
     {
         final File file = createTemporaryFile();
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableModelDirtyFlagChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener.tableModelDirtyFlagChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.addTableModelListener( listener );
 
@@ -1142,7 +1142,7 @@ public final class TableModelTest
     {
         final File file = createTemporaryFile();
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableModelFileChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener.tableModelFileChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.addTableModelListener( listener );
 
@@ -1202,7 +1202,7 @@ public final class TableModelTest
         assertNotNull( containerPath );
         final ComponentModel containerModel = tableModel_.getComponentModel( containerPath );
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableModelFocusChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener.tableModelFocusChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.addTableModelListener( listener );
 
@@ -1262,7 +1262,7 @@ public final class TableModelTest
         assertNotNull( containerPath );
         final ComponentModel containerModel = tableModel_.getComponentModel( containerPath );
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableModelHoverChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener.tableModelHoverChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.addTableModelListener( listener );
 
@@ -1279,7 +1279,7 @@ public final class TableModelTest
     public void testSetOriginOffset_FiresTableModelOriginOffsetChangedEvent()
     {
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableModelOriginOffsetChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener.tableModelOriginOffsetChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.addTableModelListener( listener );
 
@@ -1296,7 +1296,7 @@ public final class TableModelTest
     public void testTable_StateChanged_FiresTableChangedEvent()
     {
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener.tableChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.addTableModelListener( listener );
 
@@ -1314,10 +1314,10 @@ public final class TableModelTest
     public void testTableChanged_CatchesListenerException()
     {
         final ITableModelListener listener1 = niceMocksControl_.createMock( ITableModelListener.class );
-        listener1.tableChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener1.tableChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final ITableModelListener listener2 = niceMocksControl_.createMock( ITableModelListener.class );
-        listener2.tableChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener2.tableChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.addTableModelListener( listener1 );
         tableModel_.addTableModelListener( listener2 );
@@ -1336,9 +1336,9 @@ public final class TableModelTest
     public void testTableModelDirtyFlagChanged_CatchesListenerException()
     {
         final ITableModelListener listener1 = niceMocksControl_.createMock( ITableModelListener.class );
-        listener1.tableModelDirtyFlagChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener1.tableModelDirtyFlagChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         final ITableModelListener listener2 = niceMocksControl_.createMock( ITableModelListener.class );
-        listener2.tableModelDirtyFlagChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener2.tableModelDirtyFlagChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         niceMocksControl_.replay();
         tableModel_.addTableModelListener( listener1 );
@@ -1362,10 +1362,10 @@ public final class TableModelTest
         throws Exception
     {
         final ITableModelListener listener1 = niceMocksControl_.createMock( ITableModelListener.class );
-        listener1.tableModelFileChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener1.tableModelFileChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final ITableModelListener listener2 = niceMocksControl_.createMock( ITableModelListener.class );
-        listener2.tableModelFileChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener2.tableModelFileChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.addTableModelListener( listener1 );
         tableModel_.addTableModelListener( listener2 );
@@ -1384,10 +1384,10 @@ public final class TableModelTest
     public void testTableModelFocusChanged_CatchesListenerException()
     {
         final ITableModelListener listener1 = niceMocksControl_.createMock( ITableModelListener.class );
-        listener1.tableModelFocusChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener1.tableModelFocusChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final ITableModelListener listener2 = niceMocksControl_.createMock( ITableModelListener.class );
-        listener2.tableModelFocusChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener2.tableModelFocusChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.addTableModelListener( listener1 );
         tableModel_.addTableModelListener( listener2 );
@@ -1406,10 +1406,10 @@ public final class TableModelTest
     public void testTableModelHoverChanged_CatchesListenerException()
     {
         final ITableModelListener listener1 = niceMocksControl_.createMock( ITableModelListener.class );
-        listener1.tableModelHoverChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener1.tableModelHoverChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final ITableModelListener listener2 = niceMocksControl_.createMock( ITableModelListener.class );
-        listener2.tableModelHoverChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener2.tableModelHoverChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.addTableModelListener( listener1 );
         tableModel_.addTableModelListener( listener2 );
@@ -1428,10 +1428,10 @@ public final class TableModelTest
     public void testTableModelOriginOffsetChanged_CatchesListenerException()
     {
         final ITableModelListener listener1 = niceMocksControl_.createMock( ITableModelListener.class );
-        listener1.tableModelOriginOffsetChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener1.tableModelOriginOffsetChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final ITableModelListener listener2 = niceMocksControl_.createMock( ITableModelListener.class );
-        listener2.tableModelOriginOffsetChanged( assumeNonNull( EasyMock.notNull( TableModelEvent.class ) ) );
+        listener2.tableModelOriginOffsetChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         niceMocksControl_.replay();
         tableModel_.addTableModelListener( listener1 );
         tableModel_.addTableModelListener( listener2 );

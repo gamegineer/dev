@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.persistence.serializable;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -35,6 +34,7 @@ import org.easymock.EasyMock;
 import org.easymock.IAnswer;
 import org.easymock.IMocksControl;
 import org.eclipse.jdt.annotation.DefaultLocation;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
@@ -123,7 +123,7 @@ public final class ObjectStreamTest
     {
         final IMocksControl mocksControl = EasyMock.createControl();
         persistenceDelegateRegistry_ = mocksControl.createMock( IPersistenceDelegateRegistry.class );
-        EasyMock.expect( persistenceDelegateRegistry_.getPersistenceDelegate( assumeNonNull( EasyMock.<String>notNull() ) ) ).andAnswer( new IAnswer<@Nullable IPersistenceDelegate>()
+        EasyMock.expect( persistenceDelegateRegistry_.getPersistenceDelegate( EasyMock.<@NonNull String>notNull() ) ).andAnswer( new IAnswer<@Nullable IPersistenceDelegate>()
         {
             @Override
             public @Nullable IPersistenceDelegate answer()

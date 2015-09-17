@@ -21,11 +21,12 @@
 
 package org.gamegineer.table.internal.net.impl.node.client.handlers;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.jdt.annotation.DefaultLocation;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.net.impl.node.IMessageHandler;
 import org.gamegineer.table.internal.net.impl.node.client.IRemoteServerNodeController;
 import org.gamegineer.table.internal.net.impl.node.common.messages.EndAuthenticationMessage;
@@ -96,7 +97,7 @@ public final class EndAuthenticationMessageHandlerTest
         throws Exception
     {
         final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
-        remoteNodeController.bind( assumeNonNull( EasyMock.notNull( String.class ) ) );
+        remoteNodeController.bind( EasyMock.<@NonNull String>notNull() );
         mocksControl_.replay();
 
         final EndAuthenticationMessage message = new EndAuthenticationMessage();
@@ -131,7 +132,7 @@ public final class EndAuthenticationMessageHandlerTest
     public void testHandleMessage_UnexpectedMessage()
     {
         final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
-        remoteNodeController.sendMessage( assumeNonNull( EasyMock.notNull( IMessage.class ) ), EasyMock.isNull( IMessageHandler.class ) );
+        remoteNodeController.sendMessage( EasyMock.<@NonNull IMessage>notNull(), EasyMock.<@Nullable IMessageHandler>isNull() );
         remoteNodeController.close( TableNetworkError.UNEXPECTED_MESSAGE );
         mocksControl_.replay();
 

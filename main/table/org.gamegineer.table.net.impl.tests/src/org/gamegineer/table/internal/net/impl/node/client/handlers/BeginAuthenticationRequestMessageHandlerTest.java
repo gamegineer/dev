@@ -21,13 +21,13 @@
 
 package org.gamegineer.table.internal.net.impl.node.client.handlers;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.jdt.annotation.DefaultLocation;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.impl.node.IMessageHandler;
@@ -109,7 +109,7 @@ public final class BeginAuthenticationRequestMessageHandlerTest
         final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
         EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
         final Capture<IMessage> messageCapture = new Capture<>();
-        remoteNodeController.sendMessage( assumeNonNull( EasyMock.capture( messageCapture ) ), EasyMock.notNull( IMessageHandler.class ) );
+        remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.<@NonNull IMessageHandler>notNull() );
         mocksControl_.replay();
 
         final BeginAuthenticationRequestMessage message = new BeginAuthenticationRequestMessage();

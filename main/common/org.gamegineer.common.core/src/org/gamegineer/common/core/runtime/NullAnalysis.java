@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.core.runtime;
 
-import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -47,47 +46,6 @@ public final class NullAnalysis
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Casts the specified value with unspecified nullity to a non-{@code null}
-     * value.
-     * 
-     * <p>
-     * This method is intended to be used to assume a certain nullity without
-     * actually enforcing it at runtime. It is primarily used to adapt methods
-     * that state in their contract they return {@code null}, but are intended
-     * to be passed as non-{@code null} arguments.
-     * </p>
-     * 
-     * <p>
-     * For example, the various EasyMock factory methods for producing non-
-     * {@code null} argument types and captures necessarily return {@code null}.
-     * Thus, the {@link #nonNull} method would be inappropriate as it will throw
-     * an {@link AssertionError} at runtime.
-     * </p>
-     * 
-     * @param <T>
-     *        The type of the value.
-     * 
-     * @param value
-     *        The value; may be {@code null}.
-     * 
-     * @return The value; assumed to be {@code null} at compile time, but may in
-     *         fact be {@code null} at runtime.
-     */
-    @SuppressWarnings( "null" )
-    public static <T> @NonNull T assumeNonNull(
-        final @Nullable T value )
-    {
-        if( value != null )
-        {
-            return value;
-        }
-
-        // NB: This is a hack to return null from a @NonNull-annotated method return type
-        final AtomicReference<T> nullReference = new AtomicReference<>( /* null */ );
-        return nullReference.get();
-    }
 
     /**
      * Casts the specified possibly {@code null} value to a non-{@code null}

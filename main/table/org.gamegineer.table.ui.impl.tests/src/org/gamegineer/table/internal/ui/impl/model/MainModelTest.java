@@ -21,13 +21,13 @@
 
 package org.gamegineer.table.internal.ui.impl.model;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.jdt.annotation.DefaultLocation;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
@@ -130,7 +130,7 @@ public final class MainModelTest
     public void testAddMainModelListener_Listener_Absent()
     {
         final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.mainModelStateChanged( assumeNonNull( EasyMock.notNull( MainModelEvent.class ) ) );
+        listener.mainModelStateChanged( EasyMock.<@NonNull MainModelEvent>notNull() );
         niceMocksControl_.replay();
 
         model_.addMainModelListener( listener );
@@ -162,10 +162,10 @@ public final class MainModelTest
     public void testMainModelStateChanged_CatchesListenerException()
     {
         final IMainModelListener listener1 = niceMocksControl_.createMock( IMainModelListener.class );
-        listener1.mainModelStateChanged( assumeNonNull( EasyMock.notNull( MainModelEvent.class ) ) );
+        listener1.mainModelStateChanged( EasyMock.<@NonNull MainModelEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IMainModelListener listener2 = niceMocksControl_.createMock( IMainModelListener.class );
-        listener2.mainModelStateChanged( assumeNonNull( EasyMock.notNull( MainModelEvent.class ) ) );
+        listener2.mainModelStateChanged( EasyMock.<@NonNull MainModelEvent>notNull() );
         niceMocksControl_.replay();
         model_.addMainModelListener( listener1 );
         model_.addMainModelListener( listener2 );
@@ -183,7 +183,7 @@ public final class MainModelTest
     public void testOpenTable_FiresMainModelStateChangedEvent()
     {
         final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.mainModelStateChanged( assumeNonNull( EasyMock.notNull( MainModelEvent.class ) ) );
+        listener.mainModelStateChanged( EasyMock.<@NonNull MainModelEvent>notNull() );
         niceMocksControl_.replay();
         model_.addMainModelListener( listener );
 
@@ -205,7 +205,7 @@ public final class MainModelTest
     {
         final File file = createTemporaryFile();
         final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.mainModelStateChanged( assumeNonNull( EasyMock.notNull( MainModelEvent.class ) ) );
+        listener.mainModelStateChanged( EasyMock.<@NonNull MainModelEvent>notNull() );
         niceMocksControl_.replay();
         model_.saveTable( file );
         model_.addMainModelListener( listener );
@@ -234,7 +234,7 @@ public final class MainModelTest
     public void testRemoveMainModelListener_Listener_Present()
     {
         final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.mainModelStateChanged( assumeNonNull( EasyMock.notNull( MainModelEvent.class ) ) );
+        listener.mainModelStateChanged( EasyMock.<@NonNull MainModelEvent>notNull() );
         niceMocksControl_.replay();
         model_.addMainModelListener( listener );
         fireMainModelStateChangedEvent();
@@ -258,7 +258,7 @@ public final class MainModelTest
     {
         final File file = createTemporaryFile();
         final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.mainModelStateChanged( assumeNonNull( EasyMock.notNull( MainModelEvent.class ) ) );
+        listener.mainModelStateChanged( EasyMock.<@NonNull MainModelEvent>notNull() );
         niceMocksControl_.replay();
         model_.addMainModelListener( listener );
 
@@ -275,7 +275,7 @@ public final class MainModelTest
     public void testTableModel_StateChanged_FiresMainModelStateChangedEvent()
     {
         final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.mainModelStateChanged( assumeNonNull( EasyMock.notNull( MainModelEvent.class ) ) );
+        listener.mainModelStateChanged( EasyMock.<@NonNull MainModelEvent>notNull() );
         niceMocksControl_.replay();
         model_.addMainModelListener( listener );
 

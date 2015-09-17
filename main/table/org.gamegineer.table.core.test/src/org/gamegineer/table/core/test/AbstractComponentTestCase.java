@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.core.test;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
 import static org.gamegineer.table.core.test.Assert.assertComponentEquals;
 import static org.gamegineer.test.core.Assert.assertImmutableCollection;
 import static org.junit.Assert.assertEquals;
@@ -341,10 +340,10 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testComponentBoundsChanged_CatchesListenerException()
     {
         final IComponentListener listener1 = mocksControl_.createMock( IComponentListener.class );
-        listener1.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
+        listener1.componentBoundsChanged( EasyMock.<@NonNull ComponentEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IComponentListener listener2 = mocksControl_.createMock( IComponentListener.class );
-        listener2.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
+        listener2.componentBoundsChanged( EasyMock.<@NonNull ComponentEvent>notNull() );
         mocksControl_.replay();
         getComponent().addComponentListener( listener1 );
         getComponent().addComponentListener( listener2 );
@@ -363,10 +362,10 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testComponentOrientationChanged_CatchesListenerException()
     {
         final IComponentListener listener1 = mocksControl_.createMock( IComponentListener.class );
-        listener1.componentOrientationChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
+        listener1.componentOrientationChanged( EasyMock.<@NonNull ComponentEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IComponentListener listener2 = mocksControl_.createMock( IComponentListener.class );
-        listener2.componentOrientationChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
+        listener2.componentOrientationChanged( EasyMock.<@NonNull ComponentEvent>notNull() );
         mocksControl_.replay();
         getComponent().addComponentListener( listener1 );
         getComponent().addComponentListener( listener2 );
@@ -385,10 +384,10 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testComponentSurfaceDesignChanged_CatchesListenerException()
     {
         final IComponentListener listener1 = mocksControl_.createMock( IComponentListener.class );
-        listener1.componentSurfaceDesignChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
+        listener1.componentSurfaceDesignChanged( EasyMock.<@NonNull ComponentEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final IComponentListener listener2 = mocksControl_.createMock( IComponentListener.class );
-        listener2.componentSurfaceDesignChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
+        listener2.componentSurfaceDesignChanged( EasyMock.<@NonNull ComponentEvent>notNull() );
         mocksControl_.replay();
         getComponent().addComponentListener( listener1 );
         getComponent().addComponentListener( listener2 );
@@ -717,7 +716,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testRemoveComponentListener_Listener_Present()
     {
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentOrientationChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
+        listener.componentOrientationChanged( EasyMock.<@NonNull ComponentEvent>notNull() );
         mocksControl_.replay();
         getComponent().addComponentListener( listener );
         fireComponentOrientationChanged( getComponent() );
@@ -736,7 +735,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testSetLocation_FiresComponentBoundsChangedEvent()
     {
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
+        listener.componentBoundsChanged( EasyMock.<@NonNull ComponentEvent>notNull() );
         mocksControl_.replay();
         getComponent().addComponentListener( listener );
 
@@ -769,7 +768,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testSetOrientation_FiresComponentOrientationChangedEvent()
     {
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentOrientationChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
+        listener.componentOrientationChanged( EasyMock.<@NonNull ComponentEvent>notNull() );
         mocksControl_.replay();
         getComponent().addComponentListener( listener );
 
@@ -796,7 +795,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testSetOrigin_FiresComponentBoundsChangedEvent()
     {
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentBoundsChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
+        listener.componentBoundsChanged( EasyMock.<@NonNull ComponentEvent>notNull() );
         mocksControl_.replay();
         getComponent().addComponentListener( listener );
 
@@ -829,7 +828,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     public void testSetSurfaceDesign_FiresComponentSurfaceDesignChangedEvent()
     {
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentSurfaceDesignChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
+        listener.componentSurfaceDesignChanged( EasyMock.<@NonNull ComponentEvent>notNull() );
         mocksControl_.replay();
         getComponent().addComponentListener( listener );
 
@@ -863,7 +862,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
             surfaceDesigns.put( orientation, TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         }
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentSurfaceDesignChanged( assumeNonNull( EasyMock.notNull( ComponentEvent.class ) ) );
+        listener.componentSurfaceDesignChanged( EasyMock.<@NonNull ComponentEvent>notNull() );
         EasyMock.expectLastCall().times( orientations.size() );
         mocksControl_.replay();
         getComponent().addComponentListener( listener );

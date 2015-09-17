@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.core.util.registry.test;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.easymock.Capture;
@@ -222,7 +221,7 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
         } );
         final IRegistry<ObjectIdType, ObjectType> objectRegistry = createMockRegistry();
         final Capture<ObjectType> objectCapture = new Capture<>();
-        objectRegistry.registerObject( assumeNonNull( EasyMock.capture( objectCapture ) ) );
+        objectRegistry.registerObject( EasyMock.capture( objectCapture ) );
         mocksControl.replay();
         registryExtensionPointAdapter_.bindObjectRegistry( objectRegistry );
         registryExtensionPointAdapter_.bindExtensionRegistry( extensionRegistry );
@@ -287,9 +286,9 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
             configurationElement
         } ).anyTimes();
         final IRegistry<ObjectIdType, ObjectType> objectRegistry = createMockRegistry();
-        objectRegistry.registerObject( assumeNonNull( EasyMock.<ObjectType>notNull() ) );
+        objectRegistry.registerObject( EasyMock.<ObjectType>notNull() );
         final Capture<ObjectType> objectCapture = new Capture<>();
-        objectRegistry.unregisterObject( assumeNonNull( EasyMock.capture( objectCapture ) ) );
+        objectRegistry.unregisterObject( EasyMock.capture( objectCapture ) );
         mocksControl.replay();
         registryExtensionPointAdapter_.bindObjectRegistry( objectRegistry );
         registryExtensionPointAdapter_.bindExtensionRegistry( extensionRegistry );

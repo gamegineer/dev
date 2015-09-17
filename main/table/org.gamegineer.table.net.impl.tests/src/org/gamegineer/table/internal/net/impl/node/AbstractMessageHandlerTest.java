@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
 import static org.junit.Assert.assertEquals;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
@@ -31,6 +30,7 @@ import org.easymock.IMocksControl;
 import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.net.impl.node.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.impl.transport.AbstractMessage;
 import org.gamegineer.table.internal.net.impl.transport.IMessage;
@@ -112,7 +112,7 @@ public final class AbstractMessageHandlerTest
     {
         final IRemoteNodeController<@NonNull ?> remoteNodeController = mocksControl_.createMock( IRemoteNodeController.class );
         final Capture<IMessage> messageCapture = new Capture<>();
-        remoteNodeController.sendMessage( assumeNonNull( EasyMock.capture( messageCapture ) ), EasyMock.isNull( IMessageHandler.class ) );
+        remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.<@Nullable IMessageHandler>isNull() );
         final IMessage message = mocksControl_.createMock( IMessage.class );
         EasyMock.expect( message.getId() ).andReturn( IMessage.MINIMUM_ID ).anyTimes();
         EasyMock.expect( message.getCorrelationId() ).andReturn( IMessage.MAXIMUM_ID ).anyTimes();

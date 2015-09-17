@@ -21,13 +21,13 @@
 
 package org.gamegineer.table.internal.net.impl.node.client.handlers;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.assumeNonNull;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.jdt.annotation.DefaultLocation;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.internal.net.impl.node.IMessageHandler;
 import org.gamegineer.table.internal.net.impl.node.client.IClientNode;
@@ -120,7 +120,7 @@ public final class PlayersMessageHandlerTest
             createMockPlayer( "player3" ) ); //$NON-NLS-1$
         final IClientNode localNode = mocksControl_.createMock( IClientNode.class );
         EasyMock.expect( localNode.getPlayerName() ).andReturn( "player1" ).anyTimes(); //$NON-NLS-1$
-        localNode.setPlayers( assumeNonNull( EasyMock.<Collection<IPlayer>>notNull() ) );
+        localNode.setPlayers( EasyMock.<@NonNull Collection<IPlayer>>notNull() );
         final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
         EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
         mocksControl_.replay();
