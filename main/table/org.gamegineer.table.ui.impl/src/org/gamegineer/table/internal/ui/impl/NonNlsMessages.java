@@ -47,6 +47,9 @@ final class NonNlsMessages
     /** An error occurred while reading the image. */
     public static String BundleImages_getImage_readError = ""; //$NON-NLS-1$
 
+    /** The image format is not supported. */
+    public static String BundleImages_getImage_unsupportedFormat = ""; //$NON-NLS-1$
+
     // --- ComponentStrategyUIRegistryExtensionPointAdapter -----------------
 
     /**
