@@ -198,7 +198,6 @@ public final class DebugUtils
 
                 for( final IComponent childComponent : ((IContainer)component).getComponents() )
                 {
-                    assert childComponent != null;
                     trace( childComponent );
                 }
 
@@ -318,7 +317,6 @@ public final class DebugUtils
 
                 for( final ComponentModel childComponentModel : ((ContainerModel)componentModel).getComponentModels() )
                 {
-                    assert childComponentModel != null;
                     trace( childComponentModel );
                 }
 

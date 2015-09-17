@@ -438,7 +438,6 @@ public final class ContainerModel
             int componentIndex = 0;
             for( final IComponent component : getComponent().getComponents() )
             {
-                assert component != null;
                 createComponentModel( component, componentIndex++ );
             }
         }

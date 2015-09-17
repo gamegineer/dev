@@ -114,7 +114,6 @@ final class TransportLayerProxy
                         throw TaskUtils.launderThrowable( e.getCause() );
                     }
 
-                    assert closeTaskFuture != null;
                     actualTransportLayer_.endClose( closeTaskFuture );
                 }
                 catch( @SuppressWarnings( "unused" ) final InterruptedException e )
@@ -172,7 +171,6 @@ final class TransportLayerProxy
                         throw TaskUtils.launderThrowable( e.getCause() );
                     }
 
-                    assert openTaskFuture != null;
                     actualTransportLayer_.endOpen( openTaskFuture );
                 }
                 catch( @SuppressWarnings( "unused" ) final InterruptedException e )

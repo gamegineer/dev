@@ -1,6 +1,6 @@
 /*
  * NetworkTableUtils.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -133,9 +133,7 @@ public final class NetworkTableUtils
                 final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<>( surfaceDesignIds.size() );
                 for( final Map.Entry<ComponentOrientation, ComponentSurfaceDesignId> entry : surfaceDesignIds.entrySet() )
                 {
-                    final ComponentSurfaceDesignId surfaceDesignId = entry.getValue();
-                    assert surfaceDesignId != null;
-                    surfaceDesigns.put( entry.getKey(), ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( surfaceDesignId ) );
+                    surfaceDesigns.put( entry.getKey(), ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( entry.getValue() ) );
                 }
 
                 component.setSurfaceDesigns( surfaceDesigns );
@@ -202,8 +200,6 @@ public final class NetworkTableUtils
             int addedComponentIndex = boxedAddedComponentIndex;
             for( final Object componentMemento : addedComponentMementos )
             {
-                assert componentMemento != null;
-
                 try
                 {
                     container.addComponent( container.getTableEnvironment().createComponent( componentMemento ), addedComponentIndex++ );

@@ -1,0 +1,4 @@
+class org/eclipse/equinox/app/IApplicationContext
+getBrandingId
+ ()Ljava/lang/String;
+ ()L1java/lang/String;

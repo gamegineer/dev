@@ -220,7 +220,6 @@ final class Container
             int componentIndex = firstComponentIndex;
             for( final Component component : addedComponents )
             {
-                assert component != null;
                 fireComponentAdded( component, componentIndex++ );
             }
 
@@ -452,9 +451,7 @@ final class Container
         try
         {
             assertArgumentLegal( (index >= 0) && (index < components_.size()), "index", NonNlsMessages.Container_getComponentFromIndex_index_outOfRange ); //$NON-NLS-1$
-            final Component component = components_.get( index );
-            assert component != null;
-            return component;
+            return components_.get( index );
         }
         finally
         {
@@ -714,9 +711,7 @@ final class Container
         };
         final List<IComponent> components = removeComponents( componentRangeStrategy );
         assert components.size() == 1;
-        final IComponent component = components.get( 0 );
-        assert component != null;
-        return component;
+        return components.get( 0 );
     }
 
     /**
@@ -763,7 +758,6 @@ final class Container
             int componentIndex = componentRangeStrategy.getUpperIndex();
             for( final Component component : IterableUtils.reverse( removedComponents ) )
             {
-                assert component != null;
                 fireComponentRemoved( component, --componentIndex );
             }
 
@@ -820,7 +814,6 @@ final class Container
 
         for( final Object componentMemento : componentMementos )
         {
-            assert componentMemento != null;
             addComponent( ComponentFactory.createComponent( getTableEnvironment(), componentMemento ) );
         }
     }

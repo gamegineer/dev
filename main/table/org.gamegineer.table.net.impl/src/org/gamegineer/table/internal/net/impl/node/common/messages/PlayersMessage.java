@@ -101,7 +101,6 @@ public final class PlayersMessage
         {
             final String playerName = playerNames_.get( index );
             final Set<PlayerRole> playerRoles = playerRoles_.get( index );
-            assert playerRoles != null;
 
             if( playerName.equals( localPlayerName ) )
             {

@@ -234,8 +234,6 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     {
         for( final ComponentOrientation supportedOrientation : supportedOrientations )
         {
-            assert supportedOrientation != null;
-
             if( supportedOrientation != orientation )
             {
                 return supportedOrientation;
@@ -295,7 +293,6 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
         component.setOrigin( getAlternatePoint( component.getOrigin() ) );
         for( final ComponentOrientation orientation : component.getSupportedOrientations() )
         {
-            assert orientation != null;
             component.setSurfaceDesign( orientation, TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         }
     }
@@ -407,8 +404,6 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
         int length = 0;
         for( final ComponentOrientation orientation : getComponent().getSupportedOrientations() )
         {
-            assert orientation != null;
-
             length += 10;
             getComponent().setSurfaceDesign( orientation, TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign( length, length ) );
             getComponent().setOrientation( orientation );
@@ -584,8 +579,6 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
         int length = 0;
         for( final ComponentOrientation orientation : getComponent().getSupportedOrientations() )
         {
-            assert orientation != null;
-
             length += 10;
             getComponent().setSurfaceDesign( orientation, TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign( length, length ) );
             getComponent().setOrientation( orientation );

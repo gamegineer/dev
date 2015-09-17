@@ -1,6 +1,6 @@
 /*
  * LocalNetworkTable.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -130,7 +130,6 @@ final class LocalNetworkTable
 
             for( final IComponent childComponent : container.getComponents() )
             {
-                assert childComponent != null;
                 addComponentListeners( childComponent );
             }
         }
@@ -208,7 +207,6 @@ final class LocalNetworkTable
 
             for( final IComponent childComponent : container.getComponents() )
             {
-                assert childComponent != null;
                 removeComponentListeners( childComponent );
             }
         }

@@ -1,6 +1,6 @@
 /*
  * DragContext.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -162,7 +162,6 @@ final class DragContext
         final List<PreDragComponentState> preDragComponentStates = new ArrayList<>( dragComponents.size() );
         for( final IComponent dragComponent : dragComponents )
         {
-            assert dragComponent != null;
             preDragComponentStates.add( new PreDragComponentState( dragComponent ) );
         }
 

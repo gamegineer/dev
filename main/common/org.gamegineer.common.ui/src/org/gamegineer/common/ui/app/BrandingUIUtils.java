@@ -119,7 +119,6 @@ public final class BrandingUIUtils
         final List<Image> windowImages = new ArrayList<>();
         for( final String windowImagePath : windowImagePaths.split( "," ) ) //$NON-NLS-1$
         {
-            assert windowImagePath != null;
             final Image windowImage = getImage( brandingBundle, windowImagePath );
             if( windowImage != null )
             {

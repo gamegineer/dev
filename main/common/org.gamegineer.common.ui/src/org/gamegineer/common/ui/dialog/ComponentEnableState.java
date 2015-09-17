@@ -1,6 +1,6 @@
 /*
  * ComponentEnableState.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -107,7 +107,6 @@ public final class ComponentEnableState
             for( int index = 0, count = container.getComponentCount(); index < count; ++index )
             {
                 final Component childComponent = container.getComponent( index );
-                assert childComponent != null;
                 disable( childComponent, components );
             }
         }

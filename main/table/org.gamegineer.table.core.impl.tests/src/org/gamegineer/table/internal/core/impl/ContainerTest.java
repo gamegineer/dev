@@ -79,7 +79,6 @@ public final class ContainerTest
         final Component component = new Component( getTableEnvironment(), TestComponentStrategies.createUniqueComponentStrategy() );
         for( final ComponentOrientation orientation : component.getSupportedOrientations() )
         {
-            assert orientation != null;
             component.setSurfaceDesign( orientation, TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         }
 

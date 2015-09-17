@@ -139,9 +139,7 @@ public final class TableRunner
             closeFrameAsyncAndWait();
         }
 
-        final TableResult result = resultRef_.get();
-        assert result != null;
-        return result;
+        return resultRef_.get();
     }
 
     /**

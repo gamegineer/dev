@@ -781,9 +781,7 @@ class Component
             final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = new IdentityHashMap<>( surfaceDesignIds.size() );
             for( final Map.Entry<ComponentOrientation, ComponentSurfaceDesignId> entry : surfaceDesignIds.entrySet() )
             {
-                final ComponentSurfaceDesignId surfaceDesignId = entry.getValue();
-                assert surfaceDesignId != null;
-                surfaceDesigns.put( entry.getKey(), ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( surfaceDesignId ) );
+                surfaceDesigns.put( entry.getKey(), ComponentSurfaceDesignRegistry.getComponentSurfaceDesign( entry.getValue() ) );
             }
 
             setSurfaceDesigns( surfaceDesigns );

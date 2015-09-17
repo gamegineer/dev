@@ -1,4 +1,7 @@
 class org/eclipse/core/runtime/IExtension
+getConfigurationElements
+ ()[Lorg/eclipse/core/runtime/IConfigurationElement;
+ ()[1L1org/eclipse/core/runtime/IConfigurationElement;
 getNamespaceIdentifier
  ()Ljava/lang/String;
  ()L1java/lang/String;

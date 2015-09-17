@@ -1,0 +1,4 @@
+class java/awt/Container
+getComponent
+ (I)Ljava/awt/Component;
+ (I)L1java/awt/Component;

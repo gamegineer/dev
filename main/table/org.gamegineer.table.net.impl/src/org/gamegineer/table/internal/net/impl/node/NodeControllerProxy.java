@@ -122,7 +122,6 @@ final class NodeControllerProxy
                         throw TaskUtils.launderThrowable( e.getCause() );
                     }
 
-                    assert connectTaskFuture != null;
                     actualNodeController_.endConnect( connectTaskFuture );
                 }
                 catch( @SuppressWarnings( "unused" ) final InterruptedException e )
@@ -178,7 +177,6 @@ final class NodeControllerProxy
                         throw TaskUtils.launderThrowable( e.getCause() );
                     }
 
-                    assert disconnectTaskFuture != null;
                     actualNodeController_.endDisconnect( disconnectTaskFuture );
                 }
                 catch( @SuppressWarnings( "unused" ) final InterruptedException e )
@@ -303,7 +301,7 @@ final class NodeControllerProxy
     {
         try
         {
-            final Collection<IPlayer> players = actualNodeController_.getNodeLayer().syncExec( new Callable<Collection<IPlayer>>()
+            return actualNodeController_.getNodeLayer().syncExec( new Callable<Collection<IPlayer>>()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
@@ -312,8 +310,6 @@ final class NodeControllerProxy
                     return actualNodeController_.getPlayers();
                 }
             } );
-            assert players != null;
-            return players;
         }
         catch( final ExecutionException e )
         {

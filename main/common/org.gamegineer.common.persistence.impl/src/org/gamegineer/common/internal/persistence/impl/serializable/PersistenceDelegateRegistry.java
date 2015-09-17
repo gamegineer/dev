@@ -198,8 +198,6 @@ public final class PersistenceDelegateRegistry
             final Set<String> typeNames = new HashSet<>();
             for( final String typeName : getDelegatorTypeNames( persistenceDelegateReference ) )
             {
-                assert typeName != null;
-
                 try
                 {
                     registerPersistenceDelegate( typeName, persistenceDelegateProxy );
@@ -284,7 +282,6 @@ public final class PersistenceDelegateRegistry
                 final PersistenceDelegateProxy persistenceDelegateProxy = persistenceDelegateProxyRegistration.persistenceDelegateProxy;
                 for( final String typeName : persistenceDelegateProxyRegistration.typeNames )
                 {
-                    assert typeName != null;
                     unregisterPersistenceDelegate( typeName, persistenceDelegateProxy );
                 }
                 persistenceDelegateProxy.dispose();

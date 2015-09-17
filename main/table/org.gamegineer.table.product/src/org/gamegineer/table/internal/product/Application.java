@@ -164,7 +164,6 @@ public final class Application
             try
             {
                 result = future.get();
-                assert result != null;
             }
             catch( final CancellationException e )
             {
@@ -304,9 +303,7 @@ public final class Application
         @Override
         public String getId()
         {
-            final String id = context_.getBrandingId();
-            assert id != null;
-            return id;
+            return context_.getBrandingId();
         }
 
         /*

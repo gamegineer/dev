@@ -1,6 +1,6 @@
 /*
  * ContainerLayoutRegistryExtensionPointAdapter.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -99,7 +99,6 @@ public final class ContainerLayoutRegistryExtensionPointAdapter
             throw new IllegalArgumentException( NonNlsMessages.ContainerLayoutRegistryExtensionPointAdapter_createObject_createContainerLayoutError, e );
         }
 
-        assert containerLayout != null;
         return containerLayout;
     }
 

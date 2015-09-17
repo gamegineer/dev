@@ -22,7 +22,6 @@
 package org.gamegineer.common.core.util;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.InvalidObjectException;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
@@ -32,6 +31,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -162,16 +162,14 @@ public abstract class ExtensibleEnum
     protected final Object readResolve()
         throws ObjectStreamException
     {
-        final ExtensibleEnum[] values = ExtensibleEnum.values( nonNull( getClass() ) );
+        final @NonNull ExtensibleEnum[] values = ExtensibleEnum.values( getClass() );
         final int ordinal = ordinal();
         if( (ordinal < 0) || (ordinal >= values.length) )
         {
             throw new InvalidObjectException( NonNlsMessages.ExtensibleEnum_ordinal_outOfRange( ordinal ) );
         }
 
-        final Object value = values[ ordinal ];
-        assert value != null;
-        return value;
+        return values[ ordinal ];
     }
 
     /*
@@ -228,7 +226,7 @@ public abstract class ExtensibleEnum
      * @return The collection of values associated with the specified enum type;
      *         never {@code null}.
      */
-    public static <T extends ExtensibleEnum> T[] values(
+    public static <T extends ExtensibleEnum> @NonNull T[] values(
         final Class<T> type )
     {
         final Collection<T> values = new ArrayList<>();
@@ -255,7 +253,7 @@ public abstract class ExtensibleEnum
         }
 
         @SuppressWarnings( "unchecked" )
-        final T[] array = (T[])Array.newInstance( type, values.size() );
+        final @NonNull T[] array = (@NonNull T[])Array.newInstance( type, values.size() );
         return values.toArray( array );
     }
 }

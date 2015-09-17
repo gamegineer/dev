@@ -545,7 +545,6 @@ final class NlsMessages
             for( int index = 0, size = annotatedRoles.size(); index < size; ++index )
             {
                 final PlayerRole annotatedRole = annotatedRoles.get( index );
-                assert annotatedRole != null;
                 sb.append( TableNetworkPlayerView_playersList_role( annotatedRole ) );
                 if( index < (size - 1) )
                 {

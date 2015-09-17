@@ -1,6 +1,6 @@
 /*
  * ActionMediator.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -219,27 +219,21 @@ public final class ActionMediator
     {
         for( final Map.Entry<BasicAction, IPredicate<Action>> entry : shouldEnablePredicates_.entrySet() )
         {
-            final IPredicate<Action> shouldEnablePredicate = entry.getValue();
-            assert shouldEnablePredicate != null;
-            entry.getKey().removeShouldEnablePredicate( shouldEnablePredicate );
+            entry.getKey().removeShouldEnablePredicate( entry.getValue() );
             entry.getKey().update();
         }
         shouldEnablePredicates_.clear();
 
         for( final Map.Entry<BasicAction, IPredicate<Action>> entry : shouldSelectPredicates_.entrySet() )
         {
-            final IPredicate<Action> shouldSelectPredicate = entry.getValue();
-            assert shouldSelectPredicate != null;
-            entry.getKey().removeShouldSelectPredicate( shouldSelectPredicate );
+            entry.getKey().removeShouldSelectPredicate( entry.getValue() );
             entry.getKey().update();
         }
         shouldSelectPredicates_.clear();
 
         for( final Map.Entry<BasicAction, ActionListener> entry : actionListeners_.entrySet() )
         {
-            final ActionListener actionListener = entry.getValue();
-            assert actionListener != null;
-            entry.getKey().removeActionListener( actionListener );
+            entry.getKey().removeActionListener( entry.getValue() );
         }
         actionListeners_.clear();
     }

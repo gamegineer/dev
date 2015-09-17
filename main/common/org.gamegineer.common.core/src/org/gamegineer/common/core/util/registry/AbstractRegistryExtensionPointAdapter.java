@@ -126,7 +126,6 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
         {
             for( final IConfigurationElement configurationElement : extension.getConfigurationElements() )
             {
-                assert configurationElement != null;
                 registerObject( configurationElement );
             }
         }
@@ -274,7 +273,6 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
 
         for( final IConfigurationElement configurationElement : extensionRegistry.getConfigurationElementsFor( getExtensionPointId() ) )
         {
-            assert configurationElement != null;
             registerObject( configurationElement );
         }
     }
@@ -417,7 +415,6 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
             for( final Iterator<ObjectRegistration<ObjectType>> iterator = objectRegistrations.iterator(); iterator.hasNext(); )
             {
                 final ObjectRegistration<ObjectType> objectRegistration = iterator.next();
-                assert objectRegistration != null;
                 if( isObjectRegistrationContributedByExtension( objectRegistration, extension ) )
                 {
                     objectRegistry.unregisterObject( objectRegistration.getObject() );

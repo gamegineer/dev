@@ -346,8 +346,6 @@ public final class TableModel
     public ComponentPath getChildPath(
         final ComponentModel componentModel )
     {
-        assert componentModel != null;
-
         assert componentModel == tabletopModel_;
         return TABLETOP_MODEL_PATH;
     }

@@ -118,7 +118,6 @@ public final class LoggingService
 
         for( final String ancestorLoggerName : LoggingProperties.getAncestorLoggerNames( properties, loggerName ) )
         {
-            assert ancestorLoggerName != null;
             if( !loggers_.containsKey( ancestorLoggerName ) )
             {
                 final Logger logger = Logger.getLogger( ancestorLoggerName );

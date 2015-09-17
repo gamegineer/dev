@@ -123,9 +123,6 @@ public final class Assert
         @Nullable
         final IEqualityComparator<Object> equalityComparator )
     {
-        assert expected != null;
-        assert actual != null;
-
         if( equalityComparator == null )
         {
             return false;

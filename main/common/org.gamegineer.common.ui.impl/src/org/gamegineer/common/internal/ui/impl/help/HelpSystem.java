@@ -1,6 +1,6 @@
 /*
  * HelpSystem.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -148,7 +148,6 @@ public final class HelpSystem
 
             for( final HelpSetProviderProxy helpSetProviderProxy : helpSetProviderProxies_.values() )
             {
-                assert helpSetProviderProxy != null;
                 addHelpSet( helpSetProviderProxy );
             }
         }
@@ -212,7 +211,6 @@ public final class HelpSystem
             {
                 for( final HelpSetProviderProxy helpSetProviderProxy : helpSetProviderProxies_.values() )
                 {
-                    assert helpSetProviderProxy != null;
                     removeHelpSet( helpSetProviderProxy );
                 }
 

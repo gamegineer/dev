@@ -508,9 +508,7 @@ abstract class AbstractTransportLayer
 
         try
         {
-            final Future<@Nullable Void> closeTaskFuture = beginCloseTaskFuture.get();
-            assert closeTaskFuture != null;
-            endClose( closeTaskFuture );
+            endClose( beginCloseTaskFuture.get() );
         }
         catch( final ExecutionException e )
         {
@@ -602,9 +600,7 @@ abstract class AbstractTransportLayer
 
             try
             {
-                final AbstractTransportLayer transportLayer = future.get();
-                assert transportLayer != null;
-                return transportLayer;
+                return future.get();
             }
             catch( final ExecutionException e )
             {

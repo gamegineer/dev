@@ -173,8 +173,6 @@ public final class TableModelTest
     private IContainer createUniqueContainer(
         final ComponentFocusability componentFocusability )
     {
-        assert componentFocusability != null;
-
         final IContainerStrategyUI containerStrategyUI = new IContainerStrategyUI()
         {
             @Override
