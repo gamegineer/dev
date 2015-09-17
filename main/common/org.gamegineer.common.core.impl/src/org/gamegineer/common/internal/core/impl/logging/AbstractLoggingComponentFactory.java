@@ -22,11 +22,13 @@
 package org.gamegineer.common.internal.core.impl.logging;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Map;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.logging.LoggingServiceConstants;
 import org.gamegineer.common.internal.core.impl.Activator;
@@ -129,13 +131,14 @@ public abstract class AbstractLoggingComponentFactory<T>
      * @throws org.osgi.service.component.ComponentException
      *         If an error occurs while creating the component.
      */
-    protected T createLoggingComponent(
+    @SuppressWarnings( "null" )
+    protected @NonNull T createLoggingComponent(
         final String typeName )
     {
         try
         {
             final Class<?> type = Class.forName( typeName );
-            return type_.cast( type.newInstance() );
+            return nonNull( type_, type.newInstance() );
         }
         catch( final ClassNotFoundException e )
         {

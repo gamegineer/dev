@@ -77,4 +77,29 @@ public final class NullAnalysis
         assert value != null;
         return value;
     }
+
+    /**
+     * Casts the specified non-{@code null} value to a non-{@code null} value of
+     * the specified type.
+     * 
+     * @param <T>
+     *        The type of the cast value.
+     * 
+     * @param type
+     *        The type to which the value is to be cast; must not be
+     *        {@code null}.
+     * @param value
+     *        The value; must not be {@code null}.
+     * 
+     * @return The cast value; never {@code null}.
+     */
+    @SuppressWarnings( "null" )
+    public static <T> @NonNull T nonNull(
+        final Class<T> type,
+        final Object value )
+    {
+        final T castValue = type.cast( value );
+        assert castValue != null;
+        return castValue;
+    }
 }
