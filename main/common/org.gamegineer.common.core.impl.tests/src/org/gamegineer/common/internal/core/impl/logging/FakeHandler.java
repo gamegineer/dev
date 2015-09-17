@@ -1,6 +1,6 @@
 /*
  * FakeHandler.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.logging.Handler;
@@ -102,7 +101,7 @@ public final class FakeHandler
         };
         final Dictionary<String, Object> properties = new Hashtable<>();
         properties.put( ComponentConstants.COMPONENT_FACTORY, FakeHandler.class.getName() );
-        return nonNull( Activator.getDefault().getBundleContext().registerService( ComponentFactory.class, componentFactory, properties ) );
+        return Activator.getDefault().getBundleContext().registerService( ComponentFactory.class, componentFactory, properties );
     }
 
     /**
@@ -126,6 +125,6 @@ public final class FakeHandler
         };
         final Dictionary<String, Object> properties = new Hashtable<>();
         properties.put( ComponentConstants.COMPONENT_FACTORY, FakeHandler.class.getName() );
-        return nonNull( Activator.getDefault().getBundleContext().registerService( ComponentFactory.class, componentFactory, properties ) );
+        return Activator.getDefault().getBundleContext().registerService( ComponentFactory.class, componentFactory, properties );
     }
 }
