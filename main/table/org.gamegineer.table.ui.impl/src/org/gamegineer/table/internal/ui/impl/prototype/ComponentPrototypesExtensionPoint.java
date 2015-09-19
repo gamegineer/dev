@@ -147,7 +147,6 @@ public final class ComponentPrototypesExtensionPoint
         {
             @Override
             public void menuCanceled(
-                @SuppressWarnings( "unused" )
                 final @Nullable MenuEvent event )
             {
                 // do nothing
@@ -155,7 +154,6 @@ public final class ComponentPrototypesExtensionPoint
 
             @Override
             public void menuDeselected(
-                @SuppressWarnings( "unused" )
                 final @Nullable MenuEvent event )
             {
                 // do nothing

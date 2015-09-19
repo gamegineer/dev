@@ -168,7 +168,6 @@ public final class MainFrame
         {
             @Override
             public void actionPerformed(
-                @SuppressWarnings( "unused" )
                 final @Nullable ActionEvent event )
             {
                 final IHelpSystem helpSystem = Activator.getDefault().getHelpSystem();
@@ -183,7 +182,6 @@ public final class MainFrame
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @SuppressWarnings( "unused" )
                 final @Nullable ActionEvent event )
             {
                 if( confirmSaveDirtyTable() )
@@ -197,7 +195,6 @@ public final class MainFrame
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @SuppressWarnings( "unused" )
                 final @Nullable ActionEvent event )
             {
                 openAboutDialog();
@@ -208,7 +205,6 @@ public final class MainFrame
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @SuppressWarnings( "unused" )
                 final @Nullable ActionEvent event )
             {
                 openTable();
@@ -233,7 +229,6 @@ public final class MainFrame
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @SuppressWarnings( "unused" )
                 final @Nullable ActionEvent event )
             {
                 saveTable( false );
@@ -244,7 +239,6 @@ public final class MainFrame
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @SuppressWarnings( "unused" )
                 final @Nullable ActionEvent event )
             {
                 saveTable( true );
@@ -256,7 +250,6 @@ public final class MainFrame
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
-                @SuppressWarnings( "unused" )
                 final @Nullable Action obj )
             {
                 return isTableDirty();
@@ -267,7 +260,6 @@ public final class MainFrame
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
-                @SuppressWarnings( "unused" )
                 final @Nullable Action obj )
             {
                 return isTableEditable();
@@ -716,7 +708,6 @@ public final class MainFrame
          */
         @Override
         public void mainModelStateChanged(
-            @SuppressWarnings( "unused" )
             final MainModelEvent event )
         {
             isActionUpdateRequired_.set( true );
@@ -752,7 +743,6 @@ public final class MainFrame
          */
         @Override
         public void tableModelFileChanged(
-            @SuppressWarnings( "unused" )
             final TableModelEvent event )
         {
             SwingUtilities.invokeLater( new Runnable()

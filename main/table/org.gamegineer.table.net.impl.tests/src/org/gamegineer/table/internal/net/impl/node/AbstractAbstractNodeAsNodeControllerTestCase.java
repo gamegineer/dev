@@ -86,9 +86,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends @No
 
             @Override
             public Future<@Nullable Void> beginOpen(
-                @SuppressWarnings( "unused" )
                 final String hostName,
-                @SuppressWarnings( "unused" )
                 final int port )
             {
                 return new SynchronousFuture<>();
@@ -96,7 +94,6 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends @No
 
             @Override
             public void endClose(
-                @SuppressWarnings( "unused" )
                 final Future<@Nullable Void> future )
             {
                 // do nothing
@@ -104,7 +101,6 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends @No
 
             @Override
             public void endOpen(
-                @SuppressWarnings( "unused" )
                 final Future<@Nullable Void> future )
                 throws TransportException
             {
@@ -141,9 +137,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends @No
 
             @Override
             public Future<@Nullable Void> beginOpen(
-                @SuppressWarnings( "unused" )
                 final String hostName,
-                @SuppressWarnings( "unused" )
                 final int port )
             {
                 return new SynchronousFuture<>();
@@ -151,7 +145,6 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends @No
 
             @Override
             public void endClose(
-                @SuppressWarnings( "unused" )
                 final Future<@Nullable Void> future )
             {
                 // do nothing
@@ -159,7 +152,6 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends @No
 
             @Override
             public void endOpen(
-                @SuppressWarnings( "unused" )
                 final Future<@Nullable Void> future )
             {
                 // do nothing
@@ -595,7 +587,6 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends @No
          */
         @Override
         public void giveControl(
-            @SuppressWarnings( "unused" )
             final String playerName )
         {
             // do nothing

@@ -55,7 +55,6 @@ public final class FileHistoryPreferences
 
         @Override
         protected boolean removeEldestEntry(
-            @SuppressWarnings( "unused" )
             final Map.@Nullable Entry<File, File> eldest )
         {
             return size() > CAPACITY;

@@ -1,6 +1,6 @@
 /*
  * TableNetworkAsTableNetworkTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -64,7 +64,6 @@ public final class TableNetworkAsTableNetworkTest
             {
                 @Override
                 public INodeController createClientNode(
-                    @SuppressWarnings( "unused" )
                     final ITableNetworkController tableNetworkController )
                 {
                     return new FakeNodeController();
@@ -72,7 +71,6 @@ public final class TableNetworkAsTableNetworkTest
 
                 @Override
                 public INodeController createServerNode(
-                    @SuppressWarnings( "unused" )
                     final ITableNetworkController tableNetworkController )
                 {
                     return new FakeNodeController();

@@ -127,7 +127,6 @@ public final class TestContainerLayouts
         {
             @Override
             public void layout(
-                @SuppressWarnings( "unused" )
                 final IContainer container )
             {
                 // do nothing

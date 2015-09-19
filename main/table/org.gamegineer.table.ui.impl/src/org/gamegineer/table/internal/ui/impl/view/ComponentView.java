@@ -367,7 +367,6 @@ class ComponentView
          */
         @Override
         public void componentBoundsChanged(
-            @SuppressWarnings( "unused" )
             final ComponentModelEvent event )
         {
             SwingUtilities.invokeLater( new Runnable()
@@ -385,7 +384,6 @@ class ComponentView
          */
         @Override
         public void componentModelFocusChanged(
-            @SuppressWarnings( "unused" )
             final ComponentModelEvent event )
         {
             SwingUtilities.invokeLater( new Runnable()
@@ -403,7 +401,6 @@ class ComponentView
          */
         @Override
         public void componentModelHoverChanged(
-            @SuppressWarnings( "unused" )
             final ComponentModelEvent event )
         {
             SwingUtilities.invokeLater( new Runnable()
@@ -421,7 +418,6 @@ class ComponentView
          */
         @Override
         public void componentOrientationChanged(
-            @SuppressWarnings( "unused" )
             final ComponentModelEvent event )
         {
             SwingUtilities.invokeLater( new Runnable()
@@ -439,7 +435,6 @@ class ComponentView
          */
         @Override
         public void componentSurfaceDesignChanged(
-            @SuppressWarnings( "unused" )
             final ComponentModelEvent event )
         {
             SwingUtilities.invokeLater( new Runnable()

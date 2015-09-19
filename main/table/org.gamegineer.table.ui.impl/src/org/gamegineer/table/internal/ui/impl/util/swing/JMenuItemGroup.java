@@ -98,7 +98,6 @@ public final class JMenuItemGroup
         {
             @Override
             public void menuCanceled(
-                @SuppressWarnings( "unused" )
                 final @Nullable MenuEvent event )
             {
                 // do nothing
@@ -106,7 +105,6 @@ public final class JMenuItemGroup
 
             @Override
             public void menuDeselected(
-                @SuppressWarnings( "unused" )
                 final @Nullable MenuEvent event )
             {
                 // do nothing

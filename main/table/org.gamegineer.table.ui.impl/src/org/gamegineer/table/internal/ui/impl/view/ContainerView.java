@@ -327,7 +327,6 @@ final class ContainerView
          */
         @Override
         public void containerLayoutChanged(
-            @SuppressWarnings( "unused" )
             final ContainerModelEvent event )
         {
             SwingUtilities.invokeLater( new Runnable()

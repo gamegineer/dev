@@ -64,9 +64,7 @@ final class PassiveTransportLayer
      */
     @Override
     public Future<@Nullable Void> beginOpen(
-        @SuppressWarnings( "unused" )
         final String hostName,
-        @SuppressWarnings( "unused" )
         final int port )
     {
         return new SynchronousFuture<>();
@@ -77,7 +75,6 @@ final class PassiveTransportLayer
      */
     @Override
     public void endClose(
-        @SuppressWarnings( "unused" )
         final Future<@Nullable Void> future )
     {
         // do nothing
@@ -88,7 +85,6 @@ final class PassiveTransportLayer
      */
     @Override
     public void endOpen(
-        @SuppressWarnings( "unused" )
         final Future<@Nullable Void> future )
     {
         // do nothing

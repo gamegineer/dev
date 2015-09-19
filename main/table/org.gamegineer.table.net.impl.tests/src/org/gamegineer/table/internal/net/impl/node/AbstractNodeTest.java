@@ -343,7 +343,6 @@ public final class AbstractNodeTest
          */
         @Override
         public void giveControl(
-            @SuppressWarnings( "unused" )
             final String playerName )
         {
             // do nothing

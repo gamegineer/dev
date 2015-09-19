@@ -52,7 +52,6 @@ public class FakeService
      */
     @Override
     public void messageReceived(
-        @SuppressWarnings( "unused" )
         final MessageEnvelope messageEnvelope )
     {
         // do nothing
@@ -72,7 +71,6 @@ public class FakeService
      */
     @Override
     public void started(
-        @SuppressWarnings( "unused" )
         final IServiceContext context )
     {
         // do nothing
@@ -83,7 +81,6 @@ public class FakeService
      */
     @Override
     public void stopped(
-        @SuppressWarnings( "unused" )
         final @Nullable Exception exception )
     {
         // do nothing

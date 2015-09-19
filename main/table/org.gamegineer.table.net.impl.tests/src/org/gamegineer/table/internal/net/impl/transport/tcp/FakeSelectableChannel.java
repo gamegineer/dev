@@ -108,7 +108,6 @@ class FakeSelectableChannel
      */
     @Override
     public @Nullable SelectionKey keyFor(
-        @SuppressWarnings( "unused" )
         final @Nullable Selector selector )
     {
         return null;

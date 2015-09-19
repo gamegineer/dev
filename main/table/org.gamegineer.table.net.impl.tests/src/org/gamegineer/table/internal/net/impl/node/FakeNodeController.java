@@ -59,7 +59,6 @@ public final class FakeNodeController
      */
     @Override
     public Future<@Nullable Void> beginConnect(
-        @SuppressWarnings( "unused" )
         final TableNetworkConfiguration configuration )
     {
         return new SynchronousFuture<>();
@@ -88,7 +87,6 @@ public final class FakeNodeController
      */
     @Override
     public void endConnect(
-        @SuppressWarnings( "unused" )
         final Future<@Nullable Void> future )
     {
         // do nothing
@@ -99,7 +97,6 @@ public final class FakeNodeController
      */
     @Override
     public void endDisconnect(
-        @SuppressWarnings( "unused" )
         final Future<@Nullable Void> future )
     {
         // do nothing
@@ -128,7 +125,6 @@ public final class FakeNodeController
      */
     @Override
     public void giveControl(
-        @SuppressWarnings( "unused" )
         final String playerName )
     {
         // do nothing

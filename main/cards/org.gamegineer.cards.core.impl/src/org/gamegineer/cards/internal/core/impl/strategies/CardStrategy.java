@@ -219,7 +219,6 @@ final class CardStrategy
         @Override
         public IDragStrategy createDragStrategy(
             final IComponent component,
-            @SuppressWarnings( "unused" )
             final IDragStrategy successorDragStrategy )
         {
             return isContainedWithinCardPile( component ) //

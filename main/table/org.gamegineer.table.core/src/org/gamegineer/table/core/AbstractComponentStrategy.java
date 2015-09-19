@@ -144,7 +144,6 @@ public abstract class AbstractComponentStrategy
      */
     @Override
     public <T> @Nullable T getExtension(
-        @SuppressWarnings( "unused" )
         final Class<T> type )
     {
         return null;

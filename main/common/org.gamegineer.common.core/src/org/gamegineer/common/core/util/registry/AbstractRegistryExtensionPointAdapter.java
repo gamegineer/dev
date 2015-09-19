@@ -133,7 +133,6 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
      */
     @Override
     public final void added(
-        @SuppressWarnings( "unused" )
         final IExtensionPoint @Nullable[] extensionPoints )
     {
         // do nothing
@@ -328,7 +327,6 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
      */
     @Override
     public final void removed(
-        @SuppressWarnings( "unused" )
         final IExtensionPoint @Nullable[] extensionPoints )
     {
         // do nothing

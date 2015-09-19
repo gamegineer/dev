@@ -128,7 +128,6 @@ public class DialogPageDataBindingAdapter
         {
             @Override
             public void handleChange(
-                @SuppressWarnings( "unused" )
                 final @Nullable ChangeEvent event )
             {
                 handleUIChanged();
@@ -353,7 +352,6 @@ public class DialogPageDataBindingAdapter
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void handleStale(
-                @SuppressWarnings( "unused" )
                 final @Nullable StaleEvent event )
             {
                 isCurrentValidationStatusStale_ = true;

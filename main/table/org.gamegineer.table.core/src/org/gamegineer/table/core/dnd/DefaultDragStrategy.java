@@ -70,7 +70,6 @@ public final class DefaultDragStrategy
      */
     @Override
     public boolean canDrop(
-        @SuppressWarnings( "unused" )
         final IContainer dropContainer )
     {
         return true;

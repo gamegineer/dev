@@ -111,9 +111,7 @@ public final class CardPilePrototypeFactory
      */
     @Override
     public void setInitializationData(
-        @SuppressWarnings( "unused" )
         final @Nullable IConfigurationElement config,
-        @SuppressWarnings( "unused" )
         final @Nullable String propertyName,
         final @Nullable Object data )
         throws CoreException

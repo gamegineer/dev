@@ -311,7 +311,6 @@ final class TableNetworkPlayerView
          */
         @Override
         public void tableNetworkDisconnected(
-            @SuppressWarnings( "unused" )
             final TableNetworkDisconnectedEvent event )
         {
             SwingUtilities.invokeLater( new Runnable()

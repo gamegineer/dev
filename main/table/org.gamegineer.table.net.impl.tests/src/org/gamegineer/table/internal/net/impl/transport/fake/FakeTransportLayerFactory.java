@@ -1,6 +1,6 @@
 /*
  * FakeTransportLayerFactory.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -55,7 +55,6 @@ public final class FakeTransportLayerFactory
      */
     @Override
     public ITransportLayer createActiveTransportLayer(
-        @SuppressWarnings( "unused" )
         final ITransportLayerContext context )
     {
         return new ActiveTransportLayer();
@@ -66,7 +65,6 @@ public final class FakeTransportLayerFactory
      */
     @Override
     public ITransportLayer createPassiveTransportLayer(
-        @SuppressWarnings( "unused" )
         final ITransportLayerContext context )
     {
         return new PassiveTransportLayer();

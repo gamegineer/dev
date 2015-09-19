@@ -253,9 +253,7 @@ public abstract class Debug
          */
         @Override
         public void trace(
-            @SuppressWarnings( "unused" )
             final @Nullable String option,
-            @SuppressWarnings( "unused" )
             final @Nullable String message )
         {
             warn();
@@ -266,11 +264,8 @@ public abstract class Debug
          */
         @Override
         public void trace(
-            @SuppressWarnings( "unused" )
             final @Nullable String option,
-            @SuppressWarnings( "unused" )
             final @Nullable String message,
-            @SuppressWarnings( "unused" )
             final @Nullable Throwable error )
         {
             warn();
@@ -281,7 +276,6 @@ public abstract class Debug
          */
         @Override
         public void traceDumpStack(
-            @SuppressWarnings( "unused" )
             final @Nullable String option )
         {
             warn();
@@ -292,7 +286,6 @@ public abstract class Debug
          */
         @Override
         public void traceEntry(
-            @SuppressWarnings( "unused" )
             final @Nullable String option )
         {
             warn();
@@ -303,9 +296,7 @@ public abstract class Debug
          */
         @Override
         public void traceEntry(
-            @SuppressWarnings( "unused" )
             final @Nullable String option,
-            @SuppressWarnings( "unused" )
             final @Nullable Object methodArgument )
         {
             warn();
@@ -316,9 +307,7 @@ public abstract class Debug
          */
         @Override
         public void traceEntry(
-            @SuppressWarnings( "unused" )
             final @Nullable String option,
-            @SuppressWarnings( "unused" )
             final Object @Nullable[] methodArguments )
         {
             warn();
@@ -329,7 +318,6 @@ public abstract class Debug
          */
         @Override
         public void traceExit(
-            @SuppressWarnings( "unused" )
             final @Nullable String option )
         {
             warn();
@@ -340,9 +328,7 @@ public abstract class Debug
          */
         @Override
         public void traceExit(
-            @SuppressWarnings( "unused" )
             final @Nullable String option,
-            @SuppressWarnings( "unused" )
             final @Nullable Object result )
         {
             warn();

@@ -93,7 +93,6 @@ public final class FakeFilter
      */
     @Override
     public boolean isLoggable(
-        @SuppressWarnings( "unused" )
         final @Nullable LogRecord record )
     {
         return true;

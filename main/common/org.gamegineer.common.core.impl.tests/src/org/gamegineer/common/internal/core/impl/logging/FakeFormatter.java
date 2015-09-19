@@ -54,7 +54,6 @@ public final class FakeFormatter
      */
     @Override
     public String format(
-        @SuppressWarnings( "unused" )
         final @Nullable LogRecord record )
     {
         return ""; //$NON-NLS-1$

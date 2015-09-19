@@ -1,6 +1,6 @@
 /*
  * StackedLayout.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -92,7 +92,6 @@ final class StackedLayout
      */
     @Override
     protected Dimension getComponentOffsetAt(
-        @SuppressWarnings( "unused" )
         final IContainer container,
         final int index )
     {

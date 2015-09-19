@@ -226,7 +226,6 @@ final class MainView
          */
         @Override
         public void tableNetworkConnected(
-            @SuppressWarnings( "unused" )
             final TableNetworkEvent event )
         {
             SwingUtilities.invokeLater( new Runnable()

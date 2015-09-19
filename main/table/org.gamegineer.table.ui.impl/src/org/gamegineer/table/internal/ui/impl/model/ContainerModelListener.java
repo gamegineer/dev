@@ -1,6 +1,6 @@
 /*
  * ContainerModelListener.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -57,7 +57,6 @@ public class ContainerModelListener
      */
     @Override
     public void componentModelAdded(
-        @SuppressWarnings( "unused" )
         final ContainerModelContentChangedEvent event )
     {
         // do nothing
@@ -70,7 +69,6 @@ public class ContainerModelListener
      */
     @Override
     public void componentModelRemoved(
-        @SuppressWarnings( "unused" )
         final ContainerModelContentChangedEvent event )
     {
         // do nothing
@@ -83,7 +81,6 @@ public class ContainerModelListener
      */
     @Override
     public void containerLayoutChanged(
-        @SuppressWarnings( "unused" )
         final ContainerModelEvent event )
     {
         // do nothing

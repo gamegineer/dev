@@ -72,7 +72,6 @@ final class MenuUtils
         {
             @Override
             public void menuCanceled(
-                @SuppressWarnings( "unused" )
                 final @Nullable MenuEvent event )
             {
                 // do nothing
@@ -80,7 +79,6 @@ final class MenuUtils
 
             @Override
             public void menuDeselected(
-                @SuppressWarnings( "unused" )
                 final @Nullable MenuEvent event )
             {
                 // do nothing
@@ -88,7 +86,6 @@ final class MenuUtils
 
             @Override
             public void menuSelected(
-                @SuppressWarnings( "unused" )
                 final @Nullable MenuEvent event )
             {
                 Actions.updateAll();
@@ -107,7 +104,6 @@ final class MenuUtils
         {
             @Override
             public void popupMenuCanceled(
-                @SuppressWarnings( "unused" )
                 final @Nullable PopupMenuEvent event )
             {
                 // do nothing
@@ -115,7 +111,6 @@ final class MenuUtils
 
             @Override
             public void popupMenuWillBecomeInvisible(
-                @SuppressWarnings( "unused" )
                 final @Nullable PopupMenuEvent event )
             {
                 // do nothing
@@ -123,7 +118,6 @@ final class MenuUtils
 
             @Override
             public void popupMenuWillBecomeVisible(
-                @SuppressWarnings( "unused" )
                 final @Nullable PopupMenuEvent event )
             {
                 Actions.updateAll();

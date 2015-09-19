@@ -64,7 +64,6 @@ public final class NullDragStrategy
      */
     @Override
     public boolean canDrop(
-        @SuppressWarnings( "unused" )
         final IContainer dropContainer )
     {
         return false;

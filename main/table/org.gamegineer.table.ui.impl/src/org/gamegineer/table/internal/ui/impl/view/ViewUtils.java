@@ -86,7 +86,6 @@ final class ViewUtils
 
             @Override
             protected boolean removeEldestEntry(
-                @SuppressWarnings( "unused" )
                 final @Nullable Entry<Dimension, Icon> eldest )
             {
                 return size() > MAX_MISSING_ICONS;
@@ -155,7 +154,6 @@ final class ViewUtils
 
             @Override
             public void paintIcon(
-                @SuppressWarnings( "unused" )
                 final @Nullable Component c,
                 final @Nullable Graphics g,
                 final int x,

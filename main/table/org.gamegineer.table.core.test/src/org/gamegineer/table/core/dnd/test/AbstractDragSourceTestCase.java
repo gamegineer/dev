@@ -175,14 +175,12 @@ public abstract class AbstractDragSourceTestCase
             @Override
             public IDragStrategy createDragStrategy(
                 final IComponent component,
-                @SuppressWarnings( "unused" )
                 final IDragStrategy successorDragStrategy )
             {
                 return new IDragStrategy()
                 {
                     @Override
                     public boolean canDrop(
-                        @SuppressWarnings( "unused" )
                         final IContainer dropContainer )
                     {
                         return true;

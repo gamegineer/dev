@@ -113,9 +113,7 @@ public final class ComponentStrategyUIExtensionFactory
     @Override
     public void setInitializationData(
         final @Nullable IConfigurationElement config,
-        @SuppressWarnings( "unused" )
         final @Nullable String propertyName,
-        @SuppressWarnings( "unused" )
         final @Nullable Object data )
         throws CoreException
     {

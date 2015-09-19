@@ -229,9 +229,7 @@ public final class SingleThreadedTableEnvironmentContext
          */
         @Override
         public boolean tryLock(
-            @SuppressWarnings( "unused" )
             final long time,
-            @SuppressWarnings( "unused" )
             final @Nullable TimeUnit unit )
         {
             return tryLock();

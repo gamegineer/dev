@@ -87,7 +87,6 @@ class FakeEventHandler
      */
     @Override
     void close(
-        @SuppressWarnings( "unused" )
         final @Nullable Exception exception )
     {
         assert isTransportLayerThread();

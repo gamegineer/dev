@@ -511,7 +511,6 @@ public final class ContainerModel
          */
         @Override
         public void componentChanged(
-            @SuppressWarnings( "unused" )
             final ComponentModelEvent event )
         {
             fireEventNotification( new Runnable()
@@ -529,7 +528,6 @@ public final class ContainerModel
          */
         @Override
         public void componentModelFocusChanged(
-            @SuppressWarnings( "unused" )
             final ComponentModelEvent event )
         {
             fireEventNotification( new Runnable()
@@ -547,7 +545,6 @@ public final class ContainerModel
          */
         @Override
         public void componentModelHoverChanged(
-            @SuppressWarnings( "unused" )
             final ComponentModelEvent event )
         {
             fireEventNotification( new Runnable()
@@ -671,7 +668,6 @@ public final class ContainerModel
          */
         @Override
         public void containerLayoutChanged(
-            @SuppressWarnings( "unused" )
             final ContainerEvent event )
         {
             fireEventNotification( new Runnable()

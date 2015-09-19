@@ -1168,7 +1168,6 @@ public final class TableModel
          */
         @Override
         public void componentChanged(
-            @SuppressWarnings( "unused" )
             final ComponentModelEvent event )
         {
             fireEventNotification( new Runnable()
@@ -1187,7 +1186,6 @@ public final class TableModel
          */
         @Override
         public void componentModelFocusChanged(
-            @SuppressWarnings( "unused" )
             final ComponentModelEvent event )
         {
             fireEventNotification( new Runnable()
@@ -1205,7 +1203,6 @@ public final class TableModel
          */
         @Override
         public void componentModelHoverChanged(
-            @SuppressWarnings( "unused" )
             final ComponentModelEvent event )
         {
             fireEventNotification( new Runnable()
@@ -1268,7 +1265,6 @@ public final class TableModel
          */
         @Override
         public void tableNetworkConnected(
-            @SuppressWarnings( "unused" )
             final TableNetworkEvent event )
         {
             fireEventNotification( new Runnable()
@@ -1286,7 +1282,6 @@ public final class TableModel
          */
         @Override
         public void tableNetworkDisconnected(
-            @SuppressWarnings( "unused" )
             final TableNetworkDisconnectedEvent event )
         {
             fireEventNotification( new Runnable()
@@ -1304,7 +1299,6 @@ public final class TableModel
          */
         @Override
         public void tableNetworkPlayersUpdated(
-            @SuppressWarnings( "unused" )
             final TableNetworkEvent event )
         {
             fireEventNotification( new Runnable()

@@ -80,7 +80,6 @@ public final class FakeHandler
      */
     @Override
     public void publish(
-        @SuppressWarnings( "unused" )
         final @Nullable LogRecord record )
     {
         // do nothing
@@ -116,7 +115,6 @@ public final class FakeHandler
         {
             @Override
             protected FakeHandler createLoggingComponent(
-                @SuppressWarnings( "unused" )
                 final String typeName )
             {
                 throw new ComponentException( "failed to create FakeHandler" ); //$NON-NLS-1$

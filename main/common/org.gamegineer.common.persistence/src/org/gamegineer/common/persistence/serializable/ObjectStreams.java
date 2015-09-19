@@ -161,7 +161,6 @@ public final class ObjectStreams
          */
         @Override
         public @Nullable IPersistenceDelegate getPersistenceDelegate(
-            @SuppressWarnings( "unused" )
             final Class<?> type )
         {
             return null;
@@ -172,7 +171,6 @@ public final class ObjectStreams
          */
         @Override
         public @Nullable IPersistenceDelegate getPersistenceDelegate(
-            @SuppressWarnings( "unused" )
             final String typeName )
         {
             return null;
@@ -192,9 +190,7 @@ public final class ObjectStreams
          */
         @Override
         public void registerPersistenceDelegate(
-            @SuppressWarnings( "unused" )
             final Class<?> type,
-            @SuppressWarnings( "unused" )
             final IPersistenceDelegate persistenceDelegate )
         {
             throw new UnsupportedOperationException();
@@ -205,9 +201,7 @@ public final class ObjectStreams
          */
         @Override
         public void unregisterPersistenceDelegate(
-            @SuppressWarnings( "unused" )
             final Class<?> type,
-            @SuppressWarnings( "unused" )
             final IPersistenceDelegate persistenceDelegate )
         {
             throw new UnsupportedOperationException();

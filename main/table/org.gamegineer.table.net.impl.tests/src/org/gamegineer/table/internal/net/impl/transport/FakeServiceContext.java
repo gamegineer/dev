@@ -1,6 +1,6 @@
 /*
  * FakeServiceContext.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -51,7 +51,6 @@ public class FakeServiceContext
      */
     @Override
     public void sendMessage(
-        @SuppressWarnings( "unused" )
         final IMessage message )
     {
         // do nothing

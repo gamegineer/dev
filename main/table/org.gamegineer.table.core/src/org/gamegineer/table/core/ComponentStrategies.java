@@ -143,7 +143,6 @@ public final class ComponentStrategies
          */
         @Override
         public final <T> @Nullable T getExtension(
-            @SuppressWarnings( "unused" )
             final Class<T> type )
         {
             return null;

@@ -182,7 +182,6 @@ public abstract class AbstractDialog
         {
             @Override
             public void windowClosing(
-                @SuppressWarnings( "unused" )
                 final @Nullable WindowEvent event )
             {
                 cancelPressed();
@@ -464,7 +463,6 @@ public abstract class AbstractDialog
         {
             @Override
             public void actionPerformed(
-                @SuppressWarnings( "unused" )
                 final @Nullable ActionEvent event )
             {
                 cancelPressed();

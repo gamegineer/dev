@@ -186,7 +186,6 @@ final class PasswordFieldTextProperty
          */
         @Override
         public void changedUpdate(
-            @SuppressWarnings( "unused" )
             final @Nullable DocumentEvent event )
         {
             assert source_ != null;
@@ -227,7 +226,6 @@ final class PasswordFieldTextProperty
          */
         @Override
         public void insertUpdate(
-            @SuppressWarnings( "unused" )
             final @Nullable DocumentEvent event )
         {
             assert source_ != null;
@@ -240,7 +238,6 @@ final class PasswordFieldTextProperty
          */
         @Override
         public void removeUpdate(
-            @SuppressWarnings( "unused" )
             final @Nullable DocumentEvent event )
         {
             assert source_ != null;

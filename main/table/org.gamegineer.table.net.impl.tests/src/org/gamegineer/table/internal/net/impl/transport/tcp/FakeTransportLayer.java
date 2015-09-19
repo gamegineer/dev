@@ -1,6 +1,6 @@
 /*
  * FakeTransportLayer.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -72,9 +72,7 @@ final class FakeTransportLayer
      */
     @Override
     void open(
-        @SuppressWarnings( "unused" )
         final String hostName,
-        @SuppressWarnings( "unused" )
         final int port )
     {
         assert isTransportLayerThread();

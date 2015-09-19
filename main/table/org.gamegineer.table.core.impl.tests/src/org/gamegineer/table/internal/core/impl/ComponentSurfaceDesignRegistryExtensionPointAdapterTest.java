@@ -84,7 +84,6 @@ public final class ComponentSurfaceDesignRegistryExtensionPointAdapterTest
     @Override
     protected ComponentSurfaceDesign configureConfigurationElement(
         final IConfigurationElement configurationElement,
-        @SuppressWarnings( "unused" )
         final IMocksControl mocksControl )
     {
         final ComponentSurfaceDesignId id = ComponentSurfaceDesignId.fromString( "expected-id" ); //$NON-NLS-1$

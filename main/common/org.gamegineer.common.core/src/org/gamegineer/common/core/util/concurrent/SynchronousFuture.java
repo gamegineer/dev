@@ -117,7 +117,6 @@ public final class SynchronousFuture<@Nullable V>
      */
     @Override
     public boolean cancel(
-        @SuppressWarnings( "unused" )
         final boolean mayInterruptIfRunning )
     {
         return false;
@@ -143,9 +142,7 @@ public final class SynchronousFuture<@Nullable V>
      */
     @Override
     public V get(
-        @SuppressWarnings( "unused" )
         final long timeout,
-        @SuppressWarnings( "unused" )
         final TimeUnit unit )
         throws ExecutionException
     {

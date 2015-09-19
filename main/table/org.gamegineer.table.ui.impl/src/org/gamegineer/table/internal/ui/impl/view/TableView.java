@@ -327,7 +327,6 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @SuppressWarnings( "unused" )
                 final @Nullable ActionEvent event )
             {
                 cancelTableNetworkControlRequest();
@@ -338,7 +337,6 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @SuppressWarnings( "unused" )
                 final @Nullable ActionEvent event )
             {
                 debugTraceTable();
@@ -349,7 +347,6 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @SuppressWarnings( "unused" )
                 final @Nullable ActionEvent event )
             {
                 debugTraceTableModel();
@@ -360,7 +357,6 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @SuppressWarnings( "unused" )
                 final @Nullable ActionEvent event )
             {
                 disconnectTableNetwork();
@@ -371,7 +367,6 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @SuppressWarnings( "unused" )
                 final @Nullable ActionEvent event )
             {
                 flipComponent();
@@ -382,7 +377,6 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @SuppressWarnings( "unused" )
                 final @Nullable ActionEvent event )
             {
                 giveTableNetworkControl();
@@ -393,7 +387,6 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @SuppressWarnings( "unused" )
                 final @Nullable ActionEvent event )
             {
                 hostTableNetwork();
@@ -404,7 +397,6 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @SuppressWarnings( "unused" )
                 final @Nullable ActionEvent event )
             {
                 joinTableNetwork();
@@ -415,7 +407,6 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @SuppressWarnings( "unused" )
                 final @Nullable ActionEvent event )
             {
                 removeAllComponents();
@@ -426,7 +417,6 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @SuppressWarnings( "unused" )
                 final @Nullable ActionEvent event )
             {
                 removeComponent();
@@ -437,7 +427,6 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @SuppressWarnings( "unused" )
                 final @Nullable ActionEvent event )
             {
                 requestTableNetworkControl();
@@ -448,7 +437,6 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @SuppressWarnings( "unused" )
                 final @Nullable ActionEvent event )
             {
                 resetTableOrigin();
@@ -465,7 +453,6 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
-                @SuppressWarnings( "unused" )
                 final @Nullable Action obj )
             {
                 if( getFocusedComponentModel() == null )
@@ -481,7 +468,6 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
-                @SuppressWarnings( "unused" )
                 final @Nullable Action obj )
             {
                 if( getFocusedContainerModel() == null )
@@ -497,7 +483,6 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
-                @SuppressWarnings( "unused" )
                 final @Nullable Action obj )
             {
                 getTableEnvironmentModelLock().lock();
@@ -522,7 +507,6 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
-                @SuppressWarnings( "unused" )
                 final @Nullable Action obj )
             {
                 return model_.isEditable();
@@ -533,7 +517,6 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
-                @SuppressWarnings( "unused" )
                 final @Nullable Action obj )
             {
                 return model_.getTableNetwork().isConnected();
@@ -544,7 +527,6 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
-                @SuppressWarnings( "unused" )
                 final @Nullable Action obj )
             {
                 return !model_.getTableNetwork().isConnected();
@@ -556,7 +538,6 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
-                @SuppressWarnings( "unused" )
                 final @Nullable Action obj )
             {
                 final IPlayer localPlayer = model_.getTableNetwork().getLocalPlayer();
@@ -570,7 +551,6 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
-                @SuppressWarnings( "unused" )
                 final @Nullable Action obj )
             {
                 final IPlayer localPlayer = model_.getTableNetwork().getLocalPlayer();
@@ -586,7 +566,6 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
-                @SuppressWarnings( "unused" )
                 final @Nullable Action obj )
             {
                 final IPlayer localPlayer = model_.getTableNetwork().getLocalPlayer();
@@ -1355,7 +1334,6 @@ final class TableView
          */
         @Override
         public void keyPressed(
-            @SuppressWarnings( "unused" )
             final @Nullable KeyEvent event )
         {
             // do nothing
@@ -1369,7 +1347,6 @@ final class TableView
          */
         @Override
         public void keyReleased(
-            @SuppressWarnings( "unused" )
             final @Nullable KeyEvent event )
         {
             // do nothing
@@ -1383,7 +1360,6 @@ final class TableView
          */
         @Override
         public void keyTyped(
-            @SuppressWarnings( "unused" )
             final @Nullable KeyEvent event )
         {
             // do nothing
@@ -1396,7 +1372,6 @@ final class TableView
          */
         @Override
         public void mouseReleased(
-            @SuppressWarnings( "unused" )
             final @Nullable MouseEvent event )
         {
             updateFocusOnMouseReleased_ = false;
@@ -2224,7 +2199,6 @@ final class TableView
          */
         @Override
         public void popupMenuCanceled(
-            @SuppressWarnings( "unused" )
             final @Nullable PopupMenuEvent event )
         {
             setInputHandler( DefaultInputHandler.class, null );
@@ -2235,7 +2209,6 @@ final class TableView
          */
         @Override
         public void popupMenuWillBecomeInvisible(
-            @SuppressWarnings( "unused" )
             final @Nullable PopupMenuEvent event )
         {
             setInputHandler( DefaultInputHandler.class, null );
@@ -2246,7 +2219,6 @@ final class TableView
          */
         @Override
         public void popupMenuWillBecomeVisible(
-            @SuppressWarnings( "unused" )
             final @Nullable PopupMenuEvent event )
         {
             // do nothing
@@ -2282,7 +2254,6 @@ final class TableView
          */
         @Override
         public void tableModelOriginOffsetChanged(
-            @SuppressWarnings( "unused" )
             final TableModelEvent event )
         {
             SwingUtilities.invokeLater( new Runnable()

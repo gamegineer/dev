@@ -652,7 +652,6 @@ public class ComponentModel
          */
         @Override
         public void componentBoundsChanged(
-            @SuppressWarnings( "unused" )
             final ComponentEvent event )
         {
             fireEventNotification( new Runnable()
@@ -671,7 +670,6 @@ public class ComponentModel
          */
         @Override
         public void componentOrientationChanged(
-            @SuppressWarnings( "unused" )
             final ComponentEvent event )
         {
             fireEventNotification( new Runnable()
@@ -690,7 +688,6 @@ public class ComponentModel
          */
         @Override
         public void componentSurfaceDesignChanged(
-            @SuppressWarnings( "unused" )
             final ComponentEvent event )
         {
             fireEventNotification( new Runnable()

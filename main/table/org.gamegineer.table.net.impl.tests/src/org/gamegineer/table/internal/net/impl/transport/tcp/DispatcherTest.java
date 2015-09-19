@@ -220,7 +220,6 @@ public final class DispatcherTest
                     final SelectableChannel channel = new FakeSelectableChannel()
                     {
                         @Override
-                        @SuppressWarnings( "unused" )
                         public @Nullable SelectionKey register(
                             final @Nullable Selector selector,
                             final int ops,

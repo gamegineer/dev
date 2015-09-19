@@ -186,7 +186,6 @@ final class ListSingleSelectionValueProperty
          */
         @Override
         public void valueChanged(
-            @SuppressWarnings( "unused" )
             final @Nullable ListSelectionEvent event )
         {
             assert source_ != null;
