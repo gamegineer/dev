@@ -1,6 +1,6 @@
 /*
  * ContainerIncrement.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -46,8 +46,7 @@ public final class ContainerIncrement
      * 
      * @serial The index of the first component added to the container.
      */
-    @Nullable
-    private Integer addedComponentIndex_;
+    private @Nullable Integer addedComponentIndex_;
 
     /**
      * The collection of mementos representing the components added to the
@@ -57,16 +56,14 @@ public final class ContainerIncrement
      * @serial The collection of mementos representing the components added to
      *         the container.
      */
-    @Nullable
-    private List<Object> addedComponentMementos_;
+    private @Nullable List<Object> addedComponentMementos_;
 
     /**
      * The new container layout identifier or {@code null} if unchanged.
      * 
      * @serial The new container layout identifier.
      */
-    @Nullable
-    private ContainerLayoutId layoutId_;
+    private @Nullable ContainerLayoutId layoutId_;
 
     /**
      * The count of components removed from the container or {@code null} if no
@@ -74,8 +71,7 @@ public final class ContainerIncrement
      * 
      * @serial The count of components removed from the top of the container.
      */
-    @Nullable
-    private Integer removedComponentCount_;
+    private @Nullable Integer removedComponentCount_;
 
     /**
      * The index of the first component removed from the container or
@@ -83,8 +79,7 @@ public final class ContainerIncrement
      * 
      * @serial The index of the first component removed from the container.
      */
-    @Nullable
-    private Integer removedComponentIndex_;
+    private @Nullable Integer removedComponentIndex_;
 
 
     // ======================================================================
@@ -114,8 +109,7 @@ public final class ContainerIncrement
      * @return The index of the first component added to the container or
      *         {@code null} if no components were added.
      */
-    @Nullable
-    public Integer getAddedComponentIndex()
+    public @Nullable Integer getAddedComponentIndex()
     {
         return addedComponentIndex_;
     }
@@ -129,8 +123,7 @@ public final class ContainerIncrement
      *         components were added. The returned value is not a copy and must
      *         not be modified.
      */
-    @Nullable
-    public List<Object> getAddedComponentMementos()
+    public @Nullable List<Object> getAddedComponentMementos()
     {
         return addedComponentMementos_;
     }
@@ -140,8 +133,7 @@ public final class ContainerIncrement
      * 
      * @return The new container layout identifier or {@code null} if unchanged.
      */
-    @Nullable
-    public ContainerLayoutId getLayoutId()
+    public @Nullable ContainerLayoutId getLayoutId()
     {
         return layoutId_;
     }
@@ -152,8 +144,7 @@ public final class ContainerIncrement
      * @return The count of components removed from the container or
      *         {@code null} if no components were removed.
      */
-    @Nullable
-    public Integer getRemovedComponentCount()
+    public @Nullable Integer getRemovedComponentCount()
     {
         return removedComponentCount_;
     }
@@ -164,8 +155,7 @@ public final class ContainerIncrement
      * @return The index of the first component removed from the container or
      *         {@code null} if no components were removed.
      */
-    @Nullable
-    public Integer getRemovedComponentIndex()
+    public @Nullable Integer getRemovedComponentIndex()
     {
         return removedComponentIndex_;
     }
@@ -178,8 +168,7 @@ public final class ContainerIncrement
      *        {@code null} if no components were added.
      */
     public void setAddedComponentIndex(
-        @Nullable
-        final Integer addedComponentIndex )
+        final @Nullable Integer addedComponentIndex )
     {
         addedComponentIndex_ = addedComponentIndex;
     }
@@ -195,8 +184,7 @@ public final class ContainerIncrement
      *        it must not be modified after calling this method.
      */
     public void setAddedComponentMementos(
-        @Nullable
-        final List<Object> addedComponentMementos )
+        final @Nullable List<Object> addedComponentMementos )
     {
         addedComponentMementos_ = addedComponentMementos;
     }
@@ -208,8 +196,7 @@ public final class ContainerIncrement
      *        The new container layout identifier or {@code null} if unchanged.
      */
     public void setLayoutId(
-        @Nullable
-        final ContainerLayoutId layoutId )
+        final @Nullable ContainerLayoutId layoutId )
     {
         layoutId_ = layoutId;
     }
@@ -222,8 +209,7 @@ public final class ContainerIncrement
      *        if no components were removed.
      */
     public void setRemovedComponentCount(
-        @Nullable
-        final Integer removedComponentCount )
+        final @Nullable Integer removedComponentCount )
     {
         removedComponentCount_ = removedComponentCount;
     }
@@ -236,8 +222,7 @@ public final class ContainerIncrement
      *        {@code null} if no components were removed.
      */
     public void setRemovedComponentIndex(
-        @Nullable
-        final Integer removedComponentIndex )
+        final @Nullable Integer removedComponentIndex )
     {
         removedComponentIndex_ = removedComponentIndex;
     }

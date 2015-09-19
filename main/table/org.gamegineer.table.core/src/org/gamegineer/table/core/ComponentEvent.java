@@ -45,8 +45,7 @@ public class ComponentEvent
      * The path of the component that fired the event at the time the event was
      * fired.
      */
-    @Nullable
-    private final ComponentPath componentPath_;
+    private final @Nullable ComponentPath componentPath_;
 
     /** The thread on which the event originated. */
     private final Thread thread_;
@@ -67,8 +66,7 @@ public class ComponentEvent
      */
     public ComponentEvent(
         final IComponent source,
-        @Nullable
-        final ComponentPath componentPath )
+        final @Nullable ComponentPath componentPath )
     {
         super( source );
 
@@ -98,8 +96,7 @@ public class ComponentEvent
      * @return The path of the component that fired the event at the time the
      *         event was fired; may be {@code null}.
      */
-    @Nullable
-    public final ComponentPath getComponentPath()
+    public final @Nullable ComponentPath getComponentPath()
     {
         return componentPath_;
     }

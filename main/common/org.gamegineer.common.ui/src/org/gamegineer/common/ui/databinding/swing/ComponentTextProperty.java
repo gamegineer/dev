@@ -1,6 +1,6 @@
 /*
  * ComponentTextProperty.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,8 +40,7 @@ final class ComponentTextProperty
     // ======================================================================
 
     /** The value property for instances of {@code JTextComponent}. */
-    @Nullable
-    private IValueProperty textComponentValueProperty_;
+    private @Nullable IValueProperty textComponentValueProperty_;
 
 
     // ======================================================================
@@ -68,8 +67,7 @@ final class ComponentTextProperty
      */
     @Override
     protected IValueProperty doGetDelegate(
-        @Nullable
-        final Object source )
+        final @Nullable Object source )
     {
         assert source != null;
 

@@ -159,9 +159,8 @@ public final class ObjectStreams
         /*
          * @see org.gamegineer.common.persistence.serializable.persistencedelegateregistry.IPersistenceDelegateRegistry#getPersistenceDelegate(java.lang.Class)
          */
-        @Nullable
         @Override
-        public IPersistenceDelegate getPersistenceDelegate(
+        public @Nullable IPersistenceDelegate getPersistenceDelegate(
             @SuppressWarnings( "unused" )
             final Class<?> type )
         {
@@ -171,9 +170,8 @@ public final class ObjectStreams
         /*
          * @see org.gamegineer.common.persistence.serializable.persistencedelegateregistry.IPersistenceDelegateRegistry#getPersistenceDelegate(java.lang.String)
          */
-        @Nullable
         @Override
-        public IPersistenceDelegate getPersistenceDelegate(
+        public @Nullable IPersistenceDelegate getPersistenceDelegate(
             @SuppressWarnings( "unused" )
             final String typeName )
         {

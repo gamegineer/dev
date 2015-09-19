@@ -146,8 +146,7 @@ public final class FrameworkLogHandler
      */
     @Override
     public synchronized void publish(
-        @Nullable
-        final LogRecord record )
+        final @Nullable LogRecord record )
     {
         if( (record == null) || !isLoggable( record ) )
         {
@@ -203,8 +202,7 @@ public final class FrameworkLogHandler
          */
         @Override
         public String format(
-            @Nullable
-            final LogRecord record )
+            final @Nullable LogRecord record )
         {
             assert record != null;
 

@@ -80,9 +80,8 @@ public final class FakeHandler
      */
     @Override
     public void publish(
-        @Nullable
         @SuppressWarnings( "unused" )
-        final LogRecord record )
+        final @Nullable LogRecord record )
     {
         // do nothing
     }

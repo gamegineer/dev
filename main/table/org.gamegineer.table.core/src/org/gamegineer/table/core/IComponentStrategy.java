@@ -1,6 +1,6 @@
 /*
  * IComponentStrategy.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -81,8 +81,7 @@ public interface IComponentStrategy
      *         {@code null} if the component strategy does not support the
      *         specified extension.
      */
-    @Nullable
-    public <T> T getExtension(
+    public <T> @Nullable T getExtension(
         Class<T> type );
 
     /**

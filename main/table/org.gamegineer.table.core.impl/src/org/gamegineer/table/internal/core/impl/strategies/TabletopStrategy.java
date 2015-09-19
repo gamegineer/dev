@@ -112,9 +112,8 @@ final class TabletopStrategy
     /*
      * @see org.gamegineer.table.core.AbstractComponentStrategy#getExtension(java.lang.Class)
      */
-    @Nullable
     @Override
-    public <T> T getExtension(
+    public <T> @Nullable T getExtension(
         final Class<T> type )
     {
         if( type == IDragStrategyFactory.class )

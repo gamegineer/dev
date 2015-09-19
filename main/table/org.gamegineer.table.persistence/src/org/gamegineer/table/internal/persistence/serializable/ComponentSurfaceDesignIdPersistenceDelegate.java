@@ -1,6 +1,6 @@
 /*
  * ComponentSurfaceDesignIdPersistenceDelegate.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -54,11 +54,9 @@ public final class ComponentSurfaceDesignIdPersistenceDelegate
     /*
      * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate#replaceObject(java.lang.Object)
      */
-    @Nullable
     @Override
-    public Object replaceObject(
-        @Nullable
-        final Object obj )
+    public @Nullable Object replaceObject(
+        final @Nullable Object obj )
         throws IOException
     {
         if( obj instanceof ComponentSurfaceDesignId )

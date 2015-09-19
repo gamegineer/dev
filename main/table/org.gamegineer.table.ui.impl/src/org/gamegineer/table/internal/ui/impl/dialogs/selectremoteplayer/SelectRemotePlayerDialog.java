@@ -1,6 +1,6 @@
 /*
  * SelectRemotePlayerDialog.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -63,16 +63,13 @@ public final class SelectRemotePlayerDialog
     // ======================================================================
 
     /** The dialog controls. */
-    @Nullable
-    private Controls controls_;
+    private @Nullable Controls controls_;
 
     /** The dialog data binding adapter. */
-    @Nullable
-    private BannerDialogDataBindingAdapter dataBindingAdapter_;
+    private @Nullable BannerDialogDataBindingAdapter dataBindingAdapter_;
 
     /** The dialog data binding context. */
-    @Nullable
-    private DataBindingContext dataBindingContext_;
+    private @Nullable DataBindingContext dataBindingContext_;
 
     /** The dialog model. */
     private final Model model_;
@@ -92,8 +89,7 @@ public final class SelectRemotePlayerDialog
      *        {@code null}.
      */
     public SelectRemotePlayerDialog(
-        @Nullable
-        final Window parentShell,
+        final @Nullable Window parentShell,
         final TableModel tableModel )
     {
         super( parentShell );
@@ -219,8 +215,7 @@ public final class SelectRemotePlayerDialog
      * @return The player that was selected or {@code null} if no remote player
      *         was selected.
      */
-    @Nullable
-    public IPlayer getSelectedPlayer()
+    public @Nullable IPlayer getSelectedPlayer()
     {
         return model_.getRemotePlayer();
     }
@@ -310,10 +305,8 @@ public final class SelectRemotePlayerDialog
          */
         @Override
         public Component getListCellRendererComponent(
-            @Nullable
-            final JList<?> list,
-            @Nullable
-            final Object value,
+            final @Nullable JList<?> list,
+            final @Nullable Object value,
             final int index,
             final boolean isSelected,
             final boolean cellHasFocus )

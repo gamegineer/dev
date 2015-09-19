@@ -71,8 +71,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      * The error that caused the connection to the remote node to be closed or
      * {@code null} if the connection to the remote node was closed normally.
      */
-    @Nullable
-    private TableNetworkError closeError_;
+    private @Nullable TableNetworkError closeError_;
 
     /**
      * The collection of message handlers for correlated messages. The key is
@@ -93,15 +92,13 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      * The name of the remote player or {@code null} if the player has not yet
      * been authenticated.
      */
-    @Nullable
-    private String playerName_;
+    private @Nullable String playerName_;
 
     /**
      * The network service context or {@code null} if the network is not
      * connected.
      */
-    @Nullable
-    private IServiceContext serviceContext_;
+    private @Nullable IServiceContext serviceContext_;
 
     /** The table associated with the remote node. */
     private final INetworkTable table_;
@@ -171,8 +168,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      */
     @Override
     public final void close(
-        @Nullable
-        final TableNetworkError error )
+        final @Nullable TableNetworkError error )
     {
         assertStateLegal( serviceContext_ != null, NonNlsMessages.AbstractRemoteNode_closed );
         assert isNodeLayerThread();
@@ -199,9 +195,8 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      *        if the remote node was closed normally.
      */
     protected void closed(
-        @Nullable
         @SuppressWarnings( "unused" )
-        final TableNetworkError error )
+        final @Nullable TableNetworkError error )
     {
         assert isNodeLayerThread();
 
@@ -221,8 +216,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      * @return The message extracted from the specified message envelope or
      *         {@code null} if the message envelope contains an unknown message.
      */
-    @Nullable
-    private static IMessage extractMessage(
+    private static @Nullable IMessage extractMessage(
         final MessageEnvelope messageEnvelope )
     {
         try
@@ -475,8 +469,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
     @SuppressWarnings( "boxing" )
     public final void sendMessage(
         final IMessage message,
-        @Nullable
-        final IMessageHandler messageHandler )
+        final @Nullable IMessageHandler messageHandler )
     {
         assert isNodeLayerThread();
 
@@ -514,8 +507,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      */
     @Override
     public final void stopped(
-        @Nullable
-        final Exception exception )
+        final @Nullable Exception exception )
     {
         assert isNodeLayerThread();
 

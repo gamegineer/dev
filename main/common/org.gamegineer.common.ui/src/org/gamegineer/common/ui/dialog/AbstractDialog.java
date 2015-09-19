@@ -61,8 +61,7 @@ public abstract class AbstractDialog
     // ======================================================================
 
     /** The dialog button bar component. */
-    @Nullable
-    private Component buttonBar_;
+    private @Nullable Component buttonBar_;
 
     /**
      * The collection of dialog buttons. The key is the button identifier. The
@@ -71,16 +70,13 @@ public abstract class AbstractDialog
     private final Map<String, JButton> buttons_;
 
     /** The dialog content area component. */
-    @Nullable
-    private Component dialogArea_;
+    private @Nullable Component dialogArea_;
 
     /** The dialog pixel converter. */
-    @Nullable
-    private PixelConverter pixelConverter_;
+    private @Nullable PixelConverter pixelConverter_;
 
     /** The dialog title. */
-    @Nullable
-    private String title_;
+    private @Nullable String title_;
 
 
     // ======================================================================
@@ -94,8 +90,7 @@ public abstract class AbstractDialog
      *        The parent shell or {@code null} to create a top-level shell.
      */
     protected AbstractDialog(
-        @Nullable
-        final Window parentShell )
+        final @Nullable Window parentShell )
     {
         super( parentShell );
 
@@ -187,9 +182,8 @@ public abstract class AbstractDialog
         {
             @Override
             public void windowClosing(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final WindowEvent event )
+                final @Nullable WindowEvent event )
             {
                 cancelPressed();
             }
@@ -298,8 +292,7 @@ public abstract class AbstractDialog
     protected final JButton createButton(
         final Container parent,
         final String id,
-        @Nullable
-        final String label,
+        final @Nullable String label,
         final boolean defaultButton )
     {
         final JButton button = new JButton();
@@ -310,8 +303,7 @@ public abstract class AbstractDialog
         {
             @Override
             public void actionPerformed(
-                @Nullable
-                final ActionEvent event )
+                final @Nullable ActionEvent event )
             {
                 assert event != null;
 
@@ -408,8 +400,7 @@ public abstract class AbstractDialog
      */
     @Override
     protected final Component createContent(
-        @Nullable
-        final Container parent )
+        final @Nullable Container parent )
     {
         assert parent != null;
 
@@ -465,8 +456,7 @@ public abstract class AbstractDialog
      */
     @Override
     protected final JDialog createShell(
-        @Nullable
-        final Window parent )
+        final @Nullable Window parent )
     {
         assert parent != null;
 
@@ -474,9 +464,8 @@ public abstract class AbstractDialog
         {
             @Override
             public void actionPerformed(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final ActionEvent event )
+                final @Nullable ActionEvent event )
             {
                 cancelPressed();
             }
@@ -506,8 +495,7 @@ public abstract class AbstractDialog
      * @return The button with the specified identifier or {@code null} if no
      *         such button exists.
      */
-    @Nullable
-    protected final JButton getButton(
+    protected final @Nullable JButton getButton(
         final String id )
     {
         return buttons_.get( id );
@@ -519,8 +507,7 @@ public abstract class AbstractDialog
      * @return The dialog button bar component or {@code null} if the button bar
      *         has not yet been created.
      */
-    @Nullable
-    protected final Component getButtonBar()
+    protected final @Nullable Component getButtonBar()
     {
         return buttonBar_;
     }
@@ -531,8 +518,7 @@ public abstract class AbstractDialog
      * @return The dialog content area component or {@code null} if the content
      *         area component has not yet been created.
      */
-    @Nullable
-    protected final Component getDialogArea()
+    protected final @Nullable Component getDialogArea()
     {
         return dialogArea_;
     }
@@ -573,8 +559,7 @@ public abstract class AbstractDialog
      *        The dialog title or {@code null} to clear the title.
      */
     protected final void setTitle(
-        @Nullable
-        final String title )
+        final @Nullable String title )
     {
         title_ = title;
 

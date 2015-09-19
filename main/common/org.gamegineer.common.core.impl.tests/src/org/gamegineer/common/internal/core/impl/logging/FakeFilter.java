@@ -93,9 +93,8 @@ public final class FakeFilter
      */
     @Override
     public boolean isLoggable(
-        @Nullable
         @SuppressWarnings( "unused" )
-        final LogRecord record )
+        final @Nullable LogRecord record )
     {
         return true;
     }
@@ -114,8 +113,7 @@ public final class FakeFilter
             protected void configureLoggingComponent(
                 final FakeFilter component,
                 final String instanceName,
-                @Nullable
-                final Map<String, String> properties )
+                final @Nullable Map<String, String> properties )
             {
                 super.configureLoggingComponent( component, instanceName, properties );
 

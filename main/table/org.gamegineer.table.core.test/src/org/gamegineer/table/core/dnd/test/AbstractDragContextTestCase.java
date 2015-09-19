@@ -60,8 +60,7 @@ public abstract class AbstractDragContextTestCase
     // ======================================================================
 
     /** The default component surface design for use in the fixture. */
-    @NonNull
-    private static final ComponentSurfaceDesign DEFAULT_SURFACE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "defaultSurfaceDesign" ), 10, 10 ); //$NON-NLS-1$
+    private static final @NonNull ComponentSurfaceDesign DEFAULT_SURFACE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "defaultSurfaceDesign" ), 10, 10 ); //$NON-NLS-1$
 
     /** The location where the drag-and-drop operation is begun. */
     private Point beginDragLocation_;
@@ -511,14 +510,12 @@ public abstract class AbstractDragContextTestCase
         // ==================================================================
 
         /** The component being dragged. */
-        @NonNull
-        final IComponent component;
+        final @NonNull IComponent component;
 
         /**
          * The component container before the drag-and-drop operation began.
          */
-        @NonNull
-        final IContainer container;
+        final @NonNull IContainer container;
 
         /**
          * The component index within its container before the drag-and-drop
@@ -530,8 +527,7 @@ public abstract class AbstractDragContextTestCase
          * The component location in table coordinates before the drag-and-drop
          * operation began.
          */
-        @NonNull
-        final Point location;
+        final @NonNull Point location;
 
 
         // ==================================================================

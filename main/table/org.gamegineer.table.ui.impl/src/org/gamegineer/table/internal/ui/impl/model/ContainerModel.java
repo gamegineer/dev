@@ -264,9 +264,8 @@ public final class ContainerModel
     /*
      * @see org.gamegineer.table.internal.ui.impl.model.IComponentModelParent#getChildPath(org.gamegineer.table.internal.ui.impl.model.ComponentModel)
      */
-    @Nullable
     @Override
-    public ComponentPath getChildPath(
+    public @Nullable ComponentPath getChildPath(
         final ComponentModel componentModel )
     {
         assert getLock().isHeldByCurrentThread();
@@ -304,8 +303,7 @@ public final class ContainerModel
      *         path.
      */
     @GuardedBy( "getLock()" )
-    @Nullable
-    ComponentModel getComponentModel(
+    @Nullable ComponentModel getComponentModel(
         final List<ComponentPath> paths )
     {
         assert !paths.isEmpty();
@@ -338,8 +336,7 @@ public final class ContainerModel
      *         specified index is not a legal component model index.
      */
     @GuardedBy( "getLock()" )
-    @Nullable
-    private ComponentModel getComponentModel(
+    private @Nullable ComponentModel getComponentModel(
         final int componentModelIndex )
     {
         assert componentModelIndex >= 0;
@@ -390,9 +387,8 @@ public final class ContainerModel
     /*
      * @see org.gamegineer.table.internal.ui.impl.model.IComponentModelParent#getTableModel()
      */
-    @Nullable
     @Override
-    public TableModel getTableModel()
+    public @Nullable TableModel getTableModel()
     {
         final IComponentModelParent parent = getParent();
         return (parent != null) ? parent.getTableModel() : null;

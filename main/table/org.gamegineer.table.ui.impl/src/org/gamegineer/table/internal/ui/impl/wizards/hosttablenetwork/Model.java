@@ -159,8 +159,7 @@ final class Model
         {
             @Override
             public IStatus validate(
-                @Nullable
-                final Object value )
+                final @Nullable Object value )
             {
                 final String playerName = (String)value;
                 if( (playerName == null) || playerName.isEmpty() )
@@ -196,8 +195,7 @@ final class Model
             @Override
             @SuppressWarnings( "boxing" )
             public IStatus validate(
-                @Nullable
-                final Object value )
+                final @Nullable Object value )
             {
                 final Integer port = (Integer)value;
                 if( (port == null) || (port < 1) || (port > 65535) )

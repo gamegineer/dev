@@ -61,8 +61,7 @@ public final class ThreadPlayer
      * @return The name of the player associated with the current thread or
      *         {@code null} if no player is associated with the current thread.
      */
-    @Nullable
-    public static String getPlayerName()
+    public static @Nullable String getPlayerName()
     {
         return playerName_.get();
     }
@@ -75,8 +74,7 @@ public final class ThreadPlayer
      *        {@code null} if no player is associated with the current thread.
      */
     public static void setPlayerName(
-        @Nullable
-        final String playerName )
+        final @Nullable String playerName )
     {
         playerName_.set( playerName );
     }

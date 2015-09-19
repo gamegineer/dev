@@ -63,8 +63,7 @@ class FakeSocketChannel
      *        The selector provider; must not be {@code null}.
      */
     FakeSocketChannel(
-        @NonNull
-        final SelectorProvider provider )
+        final @NonNull SelectorProvider provider )
     {
         super( provider );
     }

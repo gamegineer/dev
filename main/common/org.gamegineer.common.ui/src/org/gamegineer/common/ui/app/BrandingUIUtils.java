@@ -70,8 +70,7 @@ public final class BrandingUIUtils
      * 
      * @return The image or {@code null} if no such image exists.
      */
-    @Nullable
-    private static BufferedImage getImage(
+    private static @Nullable BufferedImage getImage(
         final Bundle bundle,
         final String path )
     {

@@ -147,18 +147,16 @@ public final class ComponentPrototypesExtensionPoint
         {
             @Override
             public void menuCanceled(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final MenuEvent event )
+                final @Nullable MenuEvent event )
             {
                 // do nothing
             }
 
             @Override
             public void menuDeselected(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final MenuEvent event )
+                final @Nullable MenuEvent event )
             {
                 // do nothing
             }
@@ -166,8 +164,7 @@ public final class ComponentPrototypesExtensionPoint
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void menuSelected(
-                @Nullable
-                final MenuEvent event )
+                final @Nullable MenuEvent event )
             {
                 assert event != null;
 
@@ -309,8 +306,7 @@ public final class ComponentPrototypesExtensionPoint
      * @return The decoded category path; never {@code null}.
      */
     private static List<String> decodeCategoryPath(
-        @Nullable
-        final String source )
+        final @Nullable String source )
     {
         if( source == null )
         {

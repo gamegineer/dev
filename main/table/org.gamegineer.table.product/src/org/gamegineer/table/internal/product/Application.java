@@ -137,8 +137,7 @@ public final class Application
      */
     @Override
     public Object start(
-        @Nullable
-        final IApplicationContext context )
+        final @Nullable IApplicationContext context )
         throws Exception
     {
         assert context != null;
@@ -270,9 +269,8 @@ public final class Application
         /*
          * @see org.gamegineer.common.core.app.IBranding#getApplication()
          */
-        @Nullable
         @Override
-        public String getApplication()
+        public @Nullable String getApplication()
         {
             return context_.getBrandingApplication();
         }
@@ -280,9 +278,8 @@ public final class Application
         /*
          * @see org.gamegineer.common.core.app.IBranding#getBundle()
          */
-        @Nullable
         @Override
-        public Bundle getBundle()
+        public @Nullable Bundle getBundle()
         {
             return context_.getBrandingBundle();
         }
@@ -290,9 +287,8 @@ public final class Application
         /*
          * @see org.gamegineer.common.core.app.IBranding#getDescription()
          */
-        @Nullable
         @Override
-        public String getDescription()
+        public @Nullable String getDescription()
         {
             return context_.getBrandingDescription();
         }
@@ -309,9 +305,8 @@ public final class Application
         /*
          * @see org.gamegineer.common.core.app.IBranding#getName()
          */
-        @Nullable
         @Override
-        public String getName()
+        public @Nullable String getName()
         {
             return context_.getBrandingName();
         }
@@ -319,9 +314,8 @@ public final class Application
         /*
          * @see org.gamegineer.common.core.app.IBranding#getProperty(java.lang.String)
          */
-        @Nullable
         @Override
-        public String getProperty(
+        public @Nullable String getProperty(
             final String name )
         {
             return context_.getBrandingProperty( name );

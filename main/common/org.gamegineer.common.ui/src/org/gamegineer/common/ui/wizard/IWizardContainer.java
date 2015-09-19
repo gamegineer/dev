@@ -1,6 +1,6 @@
 /*
  * IWizardContainer.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -80,8 +80,7 @@ public interface IWizardContainer
      * @return The active page displayed in the container or {@code null} if no
      *         page is active.
      */
-    @Nullable
-    public IWizardPage getActivePage();
+    public @Nullable IWizardPage getActivePage();
 
     /**
      * Gets the shell hosting the container.
@@ -89,8 +88,7 @@ public interface IWizardContainer
      * @return The shell hosting container or {@code null} if the container does
      *         not have a shell.
      */
-    @Nullable
-    public Window getShell();
+    public @Nullable Window getShell();
 
     /**
      * Presses the container Next button.

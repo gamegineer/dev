@@ -136,8 +136,7 @@ public final class BundleImages
      * 
      * @return The icon or {@code null} if no such icon exists.
      */
-    @Nullable
-    public ImageIcon getIcon(
+    public @Nullable ImageIcon getIcon(
         final String path )
     {
         final BufferedImage image = getImage( path );
@@ -152,8 +151,7 @@ public final class BundleImages
      * 
      * @return The image or {@code null} if no such image exists.
      */
-    @Nullable
-    public BufferedImage getImage(
+    public @Nullable BufferedImage getImage(
         final String path )
     {
         synchronized( lock_ )

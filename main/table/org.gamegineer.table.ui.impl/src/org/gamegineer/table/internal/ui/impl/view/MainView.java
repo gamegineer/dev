@@ -1,6 +1,6 @@
 /*
  * MainView.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -53,22 +53,19 @@ final class MainView
     private static final long serialVersionUID = 8895515474498086806L;
 
     /** The main model listener for this view. */
-    @Nullable
-    private IMainModelListener mainModelListener_;
+    private @Nullable IMainModelListener mainModelListener_;
 
     /** The model associated with this view. */
     private final MainModel model_;
 
     /** The split pane used to layout the component views. */
-    @Nullable
-    private JSplitPane splitPane_;
+    private @Nullable JSplitPane splitPane_;
 
     /** The default size of the split pane divider. */
     private int splitPaneDividerSize_;
 
     /** The table network listener for this view. */
-    @Nullable
-    private ITableNetworkListener tableNetworkListener_;
+    private @Nullable ITableNetworkListener tableNetworkListener_;
 
     /** The table network player view. */
     private final TableNetworkPlayerView tableNetworkPlayerView_;

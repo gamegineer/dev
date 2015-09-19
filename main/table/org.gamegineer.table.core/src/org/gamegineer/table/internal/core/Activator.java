@@ -49,28 +49,23 @@ public final class Activator
 
     /** The bundle context. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private BundleContext bundleContext_;
+    private @Nullable BundleContext bundleContext_;
 
     /** The component strategy registry service tracker. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private ServiceTracker<IComponentStrategyRegistry, IComponentStrategyRegistry> componentStrategyRegistryTracker_;
+    private @Nullable ServiceTracker<IComponentStrategyRegistry, IComponentStrategyRegistry> componentStrategyRegistryTracker_;
 
     /** The component surface design registry service tracker. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private ServiceTracker<IComponentSurfaceDesignRegistry, IComponentSurfaceDesignRegistry> componentSurfaceDesignRegistryTracker_;
+    private @Nullable ServiceTracker<IComponentSurfaceDesignRegistry, IComponentSurfaceDesignRegistry> componentSurfaceDesignRegistryTracker_;
 
     /** The container layout registry service tracker. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private ServiceTracker<IContainerLayoutRegistry, IContainerLayoutRegistry> containerLayoutRegistryTracker_;
+    private @Nullable ServiceTracker<IContainerLayoutRegistry, IContainerLayoutRegistry> containerLayoutRegistryTracker_;
 
     /** The executor service tracker. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private ServiceTracker<ExecutorService, ExecutorService> executorServiceTracker_;
+    private @Nullable ServiceTracker<ExecutorService, ExecutorService> executorServiceTracker_;
 
     /** The instance lock. */
     private final Object lock_;
@@ -118,8 +113,7 @@ public final class Activator
      * @return The component strategy registry service or {@code null} if no
      *         component strategy registry service is available.
      */
-    @Nullable
-    public IComponentStrategyRegistry getComponentStrategyRegistry()
+    public @Nullable IComponentStrategyRegistry getComponentStrategyRegistry()
     {
         synchronized( lock_ )
         {
@@ -142,8 +136,7 @@ public final class Activator
      * @return The component surface design registry service or {@code null} if
      *         no component surface design registry service is available.
      */
-    @Nullable
-    public IComponentSurfaceDesignRegistry getComponentSurfaceDesignRegistry()
+    public @Nullable IComponentSurfaceDesignRegistry getComponentSurfaceDesignRegistry()
     {
         synchronized( lock_ )
         {
@@ -166,8 +159,7 @@ public final class Activator
      * @return The container layout registry service or {@code null} if no
      *         container layout registry service is available.
      */
-    @Nullable
-    public IContainerLayoutRegistry getContainerLayoutRegistry()
+    public @Nullable IContainerLayoutRegistry getContainerLayoutRegistry()
     {
         synchronized( lock_ )
         {
@@ -231,8 +223,7 @@ public final class Activator
      */
     @Override
     public void start(
-        @Nullable
-        final BundleContext bundleContext )
+        final @Nullable BundleContext bundleContext )
     {
         if( bundleContext == null )
         {
@@ -254,8 +245,7 @@ public final class Activator
      */
     @Override
     public void stop(
-        @Nullable
-        final BundleContext bundleContext )
+        final @Nullable BundleContext bundleContext )
     {
         if( bundleContext == null )
         {

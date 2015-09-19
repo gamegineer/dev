@@ -57,8 +57,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
 
     /** The extension registry service. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private IExtensionRegistry extensionRegistry_;
+    private @Nullable IExtensionRegistry extensionRegistry_;
 
     /** The instance lock. */
     private final Object lock_;
@@ -68,13 +67,11 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
      * registry.
      */
     @GuardedBy( "lock_" )
-    @Nullable
-    private Collection<ObjectRegistration<ObjectType>> objectRegistrations_;
+    private @Nullable Collection<ObjectRegistration<ObjectType>> objectRegistrations_;
 
     /** The object registry service. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private IRegistry<ObjectIdType, ObjectType> objectRegistry_;
+    private @Nullable IRegistry<ObjectIdType, ObjectType> objectRegistry_;
 
 
     // ======================================================================
@@ -446,8 +443,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
         private final String extensionNamespaceId_;
 
         /** The simple identifier of the contributing extension. */
-        @Nullable
-        private final String extensionSimpleId_;
+        private final @Nullable String extensionSimpleId_;
 
         /** The object contributed by the extension. */
         private final ObjectType object_;
@@ -498,8 +494,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
          * @return The simple identifier of the contributing extension; may be
          *         {@code null}.
          */
-        @Nullable
-        String getExtensionSimpleId()
+        @Nullable String getExtensionSimpleId()
         {
             return extensionSimpleId_;
         }

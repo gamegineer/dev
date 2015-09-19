@@ -49,19 +49,16 @@ public abstract class AbstractWindow<T extends Window>
     // ======================================================================
 
     /** The window content. */
-    @Nullable
-    private Component content_;
+    private @Nullable Component content_;
 
     /** The window parent shell. */
-    @Nullable
-    private Window parentShell_;
+    private @Nullable Window parentShell_;
 
     /** The window return code. */
     private int returnCode_;
 
     /** The window shell. */
-    @Nullable
-    private T shell_;
+    private @Nullable T shell_;
 
 
     // ======================================================================
@@ -75,8 +72,7 @@ public abstract class AbstractWindow<T extends Window>
      *        The parent shell or {@code null} to create a top-level shell.
      */
     protected AbstractWindow(
-        @Nullable
-        final Window parentShell )
+        final @Nullable Window parentShell )
     {
         content_ = null;
         parentShell_ = parentShell;
@@ -216,8 +212,7 @@ public abstract class AbstractWindow<T extends Window>
      * @return The window shell; never {@code null}.
      */
     protected abstract T createShell(
-        @Nullable
-        final Window parent );
+        final @Nullable Window parent );
 
     /**
      * Adjusts the specified preferred bounds so that they do not extend beyond
@@ -257,8 +252,7 @@ public abstract class AbstractWindow<T extends Window>
      * @return The window content or {@code null} if the window content has not
      *         yet been created.
      */
-    @Nullable
-    protected final Component getContent()
+    protected final @Nullable Component getContent()
     {
         return content_;
     }
@@ -316,8 +310,7 @@ public abstract class AbstractWindow<T extends Window>
      * @return The layout for the shell or {@code null} if no layout should be
      *         associated with the shell.
      */
-    @Nullable
-    protected LayoutManager getLayout()
+    protected @Nullable LayoutManager getLayout()
     {
         return new BorderLayout();
     }
@@ -328,8 +321,7 @@ public abstract class AbstractWindow<T extends Window>
      * @return The window parent shell or {@code null} if the window has no
      *         parent shell.
      */
-    @Nullable
-    protected final Window getParentShell()
+    protected final @Nullable Window getParentShell()
     {
         return parentShell_;
     }
@@ -350,8 +342,7 @@ public abstract class AbstractWindow<T extends Window>
      * @return The window shell or {@code null} if the window shell has not yet
      *         been created.
      */
-    @Nullable
-    public final T getShell()
+    public final @Nullable T getShell()
     {
         return shell_;
     }

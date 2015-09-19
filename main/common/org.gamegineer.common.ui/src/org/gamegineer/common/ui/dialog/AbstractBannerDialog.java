@@ -1,6 +1,6 @@
 /*
  * AbstractBannerDialog.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -63,38 +63,31 @@ public abstract class AbstractBannerDialog
     private static final int MINIMUM_DIALOG_WIDTH = 350;
 
     /** The banner image. */
-    @Nullable
-    private Image bannerImage_;
+    private @Nullable Image bannerImage_;
 
     /** The banner image label. */
-    @Nullable
-    private JLabel bannerImageLabel_;
+    private @Nullable JLabel bannerImageLabel_;
 
     /** The banner title. */
     private String bannerTitle_;
 
     /** The banner title label. */
-    @Nullable
-    private JLabel bannerTitleLabel_;
+    private @Nullable JLabel bannerTitleLabel_;
 
     /** The dialog content area component. */
-    @Nullable
-    private Component contentArea_;
+    private @Nullable Component contentArea_;
 
     /** The description. */
     private String description_;
 
     /** The description image label. */
-    @Nullable
-    private JLabel descriptionImageLabel_;
+    private @Nullable JLabel descriptionImageLabel_;
 
     /** The description label. */
-    @Nullable
-    private JTextArea descriptionLabel_;
+    private @Nullable JTextArea descriptionLabel_;
 
     /** The active message or {@code null} if no active message. */
-    @Nullable
-    private DialogMessage message_;
+    private @Nullable DialogMessage message_;
 
 
     // ======================================================================
@@ -108,8 +101,7 @@ public abstract class AbstractBannerDialog
      *        The parent shell or {@code null} to create a top-level shell.
      */
     protected AbstractBannerDialog(
-        @Nullable
-        final Window parentShell )
+        final @Nullable Window parentShell )
     {
         super( parentShell );
 
@@ -280,8 +272,7 @@ public abstract class AbstractBannerDialog
      *        The dialog banner image or {@code null} to clear the banner image.
      */
     protected final void setBannerImage(
-        @Nullable
-        final Image image )
+        final @Nullable Image image )
     {
         bannerImage_ = image;
 
@@ -298,8 +289,7 @@ public abstract class AbstractBannerDialog
      *        The dialog banner title or {@code null} to clear the banner title.
      */
     protected final void setBannerTitle(
-        @Nullable
-        final String title )
+        final @Nullable String title )
     {
         bannerTitle_ = (title != null) ? title : ""; //$NON-NLS-1$
 
@@ -316,8 +306,7 @@ public abstract class AbstractBannerDialog
      *        The dialog description or {@code null} to clear the description.
      */
     protected final void setDescription(
-        @Nullable
-        final String description )
+        final @Nullable String description )
     {
         description_ = (description != null) ? description : ""; //$NON-NLS-1$
 
@@ -337,8 +326,7 @@ public abstract class AbstractBannerDialog
      *        The dialog message or {@code null} to clear the message.
      */
     public final void setMessage(
-        @Nullable
-        final DialogMessage message )
+        final @Nullable DialogMessage message )
     {
         message_ = message;
 

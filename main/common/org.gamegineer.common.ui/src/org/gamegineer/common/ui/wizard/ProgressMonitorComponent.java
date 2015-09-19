@@ -1,6 +1,6 @@
 /*
  * ProgressMonitorComponent.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -51,8 +51,7 @@ final class ProgressMonitorComponent
     private static final long serialVersionUID = 5081928693810072186L;
 
     /** The component controls. */
-    @Nullable
-    private Controls controls_;
+    private @Nullable Controls controls_;
 
     // ======================================================================
     // Constructors
@@ -108,8 +107,7 @@ final class ProgressMonitorComponent
     @Override
     @SuppressWarnings( "boxing" )
     public void propertyChange(
-        @Nullable
-        final PropertyChangeEvent event )
+        final @Nullable PropertyChangeEvent event )
     {
         assert event != null;
 

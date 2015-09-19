@@ -1,6 +1,6 @@
 /*
  * FakeSelectableChannel.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -56,9 +56,8 @@ class FakeSelectableChannel
     /*
      * @see java.nio.channels.SelectableChannel#blockingLock()
      */
-    @Nullable
     @Override
-    public Object blockingLock()
+    public @Nullable Object blockingLock()
     {
         return null;
     }
@@ -66,10 +65,9 @@ class FakeSelectableChannel
     /*
      * @see java.nio.channels.SelectableChannel#configureBlocking(boolean)
      */
-    @Nullable
     @Override
     @SuppressWarnings( "unused" )
-    public SelectableChannel configureBlocking(
+    public @Nullable SelectableChannel configureBlocking(
         final boolean block )
         throws IOException
     {
@@ -108,12 +106,10 @@ class FakeSelectableChannel
     /*
      * @see java.nio.channels.SelectableChannel#keyFor(java.nio.channels.Selector)
      */
-    @Nullable
     @Override
-    public SelectionKey keyFor(
-        @Nullable
+    public @Nullable SelectionKey keyFor(
         @SuppressWarnings( "unused" )
-        final Selector selector )
+        final @Nullable Selector selector )
     {
         return null;
     }
@@ -121,9 +117,8 @@ class FakeSelectableChannel
     /*
      * @see java.nio.channels.SelectableChannel#provider()
      */
-    @Nullable
     @Override
-    public SelectorProvider provider()
+    public @Nullable SelectorProvider provider()
     {
         return null;
     }
@@ -131,15 +126,12 @@ class FakeSelectableChannel
     /*
      * @see java.nio.channels.SelectableChannel#register(java.nio.channels.Selector, int, java.lang.Object)
      */
-    @Nullable
     @Override
     @SuppressWarnings( "unused" )
-    public SelectionKey register(
-        @Nullable
-        final Selector selector,
+    public @Nullable SelectionKey register(
+        final @Nullable Selector selector,
         final int ops,
-        @Nullable
-        final Object attachment )
+        final @Nullable Object attachment )
         throws ClosedChannelException
     {
         return null;

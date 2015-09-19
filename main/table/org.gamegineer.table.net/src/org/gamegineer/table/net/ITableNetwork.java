@@ -1,6 +1,6 @@
 /*
  * ITableNetwork.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -80,8 +80,7 @@ public interface ITableNetwork
      * @return The local player connected to the table network or {@code null}
      *         if the table network is not connected.
      */
-    @Nullable
-    public IPlayer getLocalPlayer();
+    public @Nullable IPlayer getLocalPlayer();
 
     /**
      * Gets the collection of players connected to the table network.

@@ -72,12 +72,10 @@ public abstract class AbstractPersistenceDelegate
      * 
      * @see org.gamegineer.common.persistence.serializable.IPersistenceDelegate#replaceObject(java.lang.Object)
      */
-    @Nullable
     @Override
     @SuppressWarnings( "unused" )
-    public Object replaceObject(
-        @Nullable
-        final Object obj )
+    public @Nullable Object replaceObject(
+        final @Nullable Object obj )
         throws IOException
     {
         return obj;
@@ -109,12 +107,10 @@ public abstract class AbstractPersistenceDelegate
      * 
      * @see org.gamegineer.common.persistence.serializable.IPersistenceDelegate#resolveObject(java.lang.Object)
      */
-    @Nullable
     @Override
     @SuppressWarnings( "unused" )
-    public Object resolveObject(
-        @Nullable
-        final Object obj )
+    public @Nullable Object resolveObject(
+        final @Nullable Object obj )
         throws IOException
     {
         return obj;

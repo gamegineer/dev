@@ -1,6 +1,6 @@
 /*
  * PersistenceDelegateProxy.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -54,8 +54,7 @@ final class PersistenceDelegateProxy
 
     /** The actual persistence delegate. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private IPersistenceDelegate persistenceDelegate_;
+    private @Nullable IPersistenceDelegate persistenceDelegate_;
 
     /** The service registry reference to the persistence delegate. */
     private final ServiceReference<IPersistenceDelegate> persistenceDelegateReference_;
@@ -145,11 +144,9 @@ final class PersistenceDelegateProxy
     /*
      * @see org.gamegineer.common.persistence.serializable.IPersistenceDelegate#replaceObject(java.lang.Object)
      */
-    @Nullable
     @Override
-    public Object replaceObject(
-        @Nullable
-        final Object obj )
+    public @Nullable Object replaceObject(
+        final @Nullable Object obj )
         throws IOException
     {
         return getActualPersistenceDelegate().replaceObject( obj );
@@ -170,11 +167,9 @@ final class PersistenceDelegateProxy
     /*
      * @see org.gamegineer.common.persistence.serializable.IPersistenceDelegate#resolveObject(java.lang.Object)
      */
-    @Nullable
     @Override
-    public Object resolveObject(
-        @Nullable
-        final Object obj )
+    public @Nullable Object resolveObject(
+        final @Nullable Object obj )
         throws IOException
     {
         return getActualPersistenceDelegate().resolveObject( obj );

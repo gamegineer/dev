@@ -47,23 +47,19 @@ public final class MementoUtilsTest
     // ======================================================================
 
     /** The name of an attribute guaranteed to be absent from the memento. */
-    @NonNull
-    private static final String ABSENT_ATTRIBUTE_NAME = "absent"; //$NON-NLS-1$
+    private static final @NonNull String ABSENT_ATTRIBUTE_NAME = "absent"; //$NON-NLS-1$
 
     /**
      * The name of an attribute guaranteed to be present and in the memento with
      * a {@code null} value.
      */
-    @NonNull
-    private static final String NULL_ATTRIBUTE_NAME = "null"; //$NON-NLS-1$
+    private static final @NonNull String NULL_ATTRIBUTE_NAME = "null"; //$NON-NLS-1$
 
     /** The name of an attribute guaranteed to be present in the memento. */
-    @NonNull
-    private static final String PRESENT_ATTRIBUTE_NAME = "present"; //$NON-NLS-1$
+    private static final @NonNull String PRESENT_ATTRIBUTE_NAME = "present"; //$NON-NLS-1$
 
     /** The value of an attribute guaranteed to be present in the memento. */
-    @NonNull
-    private static final String PRESENT_ATTRIBUTE_VALUE = "present-Value"; //$NON-NLS-1$
+    private static final @NonNull String PRESENT_ATTRIBUTE_VALUE = "present-Value"; //$NON-NLS-1$
 
     /** A memento for use in the fixture. */
     private Map<String, @Nullable Object> memento_;

@@ -41,10 +41,8 @@ public final class Comparators
     {
         @Override
         public int compare(
-            @Nullable
-            final IPlayer o1,
-            @Nullable
-            final IPlayer o2 )
+            final @Nullable IPlayer o1,
+            final @Nullable IPlayer o2 )
         {
             assert o1 != null;
             assert o2 != null;

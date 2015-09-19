@@ -1,6 +1,6 @@
 /*
  * TextComponentTextProperty.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -64,8 +64,7 @@ final class TextComponentTextProperty
      */
     @Override
     public INativePropertyListener adaptListener(
-        @Nullable
-        final ISimplePropertyListener listener )
+        final @Nullable ISimplePropertyListener listener )
     {
         assert listener != null;
 
@@ -75,11 +74,9 @@ final class TextComponentTextProperty
     /*
      * @see org.eclipse.core.databinding.property.value.SimpleValueProperty#doGetValue(java.lang.Object)
      */
-    @Nullable
     @Override
-    protected Object doGetValue(
-        @Nullable
-        final Object source )
+    protected @Nullable Object doGetValue(
+        final @Nullable Object source )
     {
         assert source != null;
 
@@ -91,10 +88,8 @@ final class TextComponentTextProperty
      */
     @Override
     protected void doSetValue(
-        @Nullable
-        final Object source,
-        @Nullable
-        final Object value )
+        final @Nullable Object source,
+        final @Nullable Object value )
     {
         assert source != null;
 
@@ -128,8 +123,7 @@ final class TextComponentTextProperty
         // ==================================================================
 
         /** The text component associated with this listener. */
-        @Nullable
-        private JTextComponent source_;
+        private @Nullable JTextComponent source_;
 
 
         // ==================================================================
@@ -166,9 +160,8 @@ final class TextComponentTextProperty
          */
         @Override
         public void changedUpdate(
-            @Nullable
             @SuppressWarnings( "unused" )
-            final DocumentEvent event )
+            final @Nullable DocumentEvent event )
         {
             assert source_ != null;
 
@@ -180,8 +173,7 @@ final class TextComponentTextProperty
          */
         @Override
         protected void doAddTo(
-            @Nullable
-            final Object source )
+            final @Nullable Object source )
         {
             assert source != null;
             assert source_ == null;
@@ -195,8 +187,7 @@ final class TextComponentTextProperty
          */
         @Override
         protected void doRemoveFrom(
-            @Nullable
-            final Object source )
+            final @Nullable Object source )
         {
             assert source != null;
             assert source_ == source;
@@ -210,9 +201,8 @@ final class TextComponentTextProperty
          */
         @Override
         public void insertUpdate(
-            @Nullable
             @SuppressWarnings( "unused" )
-            final DocumentEvent event )
+            final @Nullable DocumentEvent event )
         {
             assert source_ != null;
 
@@ -224,9 +214,8 @@ final class TextComponentTextProperty
          */
         @Override
         public void removeUpdate(
-            @Nullable
             @SuppressWarnings( "unused" )
-            final DocumentEvent event )
+            final @Nullable DocumentEvent event )
         {
             assert source_ != null;
 

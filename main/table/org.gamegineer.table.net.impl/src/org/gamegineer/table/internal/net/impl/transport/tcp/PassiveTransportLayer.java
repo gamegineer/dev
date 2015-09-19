@@ -1,6 +1,6 @@
 /*
  * PassiveTransportLayer.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,8 +40,7 @@ final class PassiveTransportLayer
     // ======================================================================
 
     /** The acceptor that receives passive connections. */
-    @Nullable
-    private Acceptor acceptor_;
+    private @Nullable Acceptor acceptor_;
 
 
     // ======================================================================

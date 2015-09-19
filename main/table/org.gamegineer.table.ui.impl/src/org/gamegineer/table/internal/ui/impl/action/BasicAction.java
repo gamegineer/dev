@@ -1,6 +1,6 @@
 /*
  * BasicAction.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -90,8 +90,7 @@ public class BasicAction
      */
     @Override
     public final void actionPerformed(
-        @Nullable
-        final ActionEvent event )
+        final @Nullable ActionEvent event )
     {
         for( final ActionListener listener : actionListeners_ )
         {
@@ -152,8 +151,7 @@ public class BasicAction
      * @return The action accelerator or {@code null} if no accelerator is
      *         defined.
      */
-    @Nullable
-    public final KeyStroke getAccelerator()
+    public final @Nullable KeyStroke getAccelerator()
     {
         return (KeyStroke)getValue( ACCELERATOR_KEY );
     }

@@ -80,8 +80,7 @@ final class Dispatcher
      * dispatch thread or {@code null} if the event dispatch thread is not
      * running.
      */
-    @Nullable
-    private Future<?> eventDispatchTaskFuture_;
+    private @Nullable Future<?> eventDispatchTaskFuture_;
 
     /** The event handler shutdown timeout in milliseconds. */
     private long eventHandlerShutdownTimeout_;
@@ -94,8 +93,7 @@ final class Dispatcher
      * or {@code null} if the event dispatch thread is not running.
      */
     @GuardedBy( "selectorGuard_" )
-    @Nullable
-    private Selector selector_;
+    private @Nullable Selector selector_;
 
     /** The selector lock. */
     private final ReadWriteLock selectorGuard_;

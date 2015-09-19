@@ -1,6 +1,6 @@
 /*
  * FramePreferences.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -55,21 +55,18 @@ public final class FramePreferences
 
     /** The frame location or {@code null} if not defined. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private Point location_;
+    private @Nullable Point location_;
 
     /** The instance lock. */
     private final Object lock_;
 
     /** The frame size or {@code null} if not defined. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private Dimension size_;
+    private @Nullable Dimension size_;
 
     /** The frame state or {@code null} if not defined. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private Integer state_;
+    private @Nullable Integer state_;
 
 
     // ======================================================================
@@ -98,8 +95,7 @@ public final class FramePreferences
      * @return The frame location or {@code null} if the frame location is not
      *         defined.
      */
-    @Nullable
-    public Point getLocation()
+    public @Nullable Point getLocation()
     {
         synchronized( lock_ )
         {
@@ -112,8 +108,7 @@ public final class FramePreferences
      * 
      * @return The frame size or {@code null} if the frame size is not defined.
      */
-    @Nullable
-    public Dimension getSize()
+    public @Nullable Dimension getSize()
     {
         synchronized( lock_ )
         {
@@ -127,8 +122,7 @@ public final class FramePreferences
      * @return The frame state or {@code null} if the frame state is not
      *         defined.
      */
-    @Nullable
-    public Integer getState()
+    public @Nullable Integer getState()
     {
         synchronized( lock_ )
         {
@@ -231,8 +225,7 @@ public final class FramePreferences
      *        defined.
      */
     public void setLocation(
-        @Nullable
-        final Point location )
+        final @Nullable Point location )
     {
         synchronized( lock_ )
         {
@@ -247,8 +240,7 @@ public final class FramePreferences
      *        The frame size or {@code null} if the frame size is not defined.
      */
     public void setSize(
-        @Nullable
-        final Dimension size )
+        final @Nullable Dimension size )
     {
         synchronized( lock_ )
         {
@@ -263,8 +255,7 @@ public final class FramePreferences
      *        The frame state or {@code null} if the frame state is not defined.
      */
     public void setState(
-        @Nullable
-        final Integer state )
+        final @Nullable Integer state )
     {
         synchronized( lock_ )
         {

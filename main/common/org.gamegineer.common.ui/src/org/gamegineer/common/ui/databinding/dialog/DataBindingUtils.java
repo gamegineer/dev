@@ -95,8 +95,7 @@ final class DataBindingUtils
      *         otherwise {@code false}.
      */
     static boolean isValidationStatusFatal(
-        @Nullable
-        final IStatus status,
+        final @Nullable IStatus status,
         final boolean isStatusStale )
     {
         if( isStatusStale )

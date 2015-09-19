@@ -1,6 +1,6 @@
 /*
  * IComponent.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -67,8 +67,7 @@ public interface IComponent
      * @return The container that contains this component or {@code null} if
      *         this component is not contained in a container.
      */
-    @Nullable
-    public IContainer getContainer();
+    public @Nullable IContainer getContainer();
 
     /**
      * Gets the location of this component in table coordinates.
@@ -111,8 +110,7 @@ public interface IComponent
      * @return The path to this component from its associated table or
      *         {@code null} if the component is not associated with a table.
      */
-    @Nullable
-    public ComponentPath getPath();
+    public @Nullable ComponentPath getPath();
 
     /**
      * Gets the size of this component in table coordinates.
@@ -170,8 +168,7 @@ public interface IComponent
      * @return The table associated with this component or {@code null} if this
      *         component is not associated with a table.
      */
-    @Nullable
-    public ITable getTable();
+    public @Nullable ITable getTable();
 
     /**
      * Gets the table environment associated with this component.

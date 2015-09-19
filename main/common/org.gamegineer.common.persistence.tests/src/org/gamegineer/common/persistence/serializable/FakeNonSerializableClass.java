@@ -1,6 +1,6 @@
 /*
  * FakeNonSerializableClass.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -46,8 +46,7 @@ public final class FakeNonSerializableClass
     private final int intField_;
 
     /** The string field. */
-    @Nullable
-    private final String stringField_;
+    private final @Nullable String stringField_;
 
 
     // ======================================================================
@@ -64,8 +63,7 @@ public final class FakeNonSerializableClass
      */
     public FakeNonSerializableClass(
         final int intField,
-        @Nullable
-        final String stringField )
+        final @Nullable String stringField )
     {
         intField_ = intField;
         stringField_ = stringField;
@@ -81,8 +79,7 @@ public final class FakeNonSerializableClass
      */
     @Override
     public boolean equals(
-        @Nullable
-        final Object obj )
+        final @Nullable Object obj )
     {
         if( obj == this )
         {
@@ -113,8 +110,7 @@ public final class FakeNonSerializableClass
      * 
      * @return The string field; may be {@code null}.
      */
-    @Nullable
-    public String getStringField()
+    public @Nullable String getStringField()
     {
         return stringField_;
     }

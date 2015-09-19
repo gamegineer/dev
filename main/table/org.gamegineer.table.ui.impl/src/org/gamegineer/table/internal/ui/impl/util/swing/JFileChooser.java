@@ -1,6 +1,6 @@
 /*
  * JFileChooser.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -67,8 +67,7 @@ public final class JFileChooser
      *        directory.
      */
     public JFileChooser(
-        @Nullable
-        final File currentDirectory )
+        final @Nullable File currentDirectory )
     {
         super( currentDirectory );
     }
@@ -85,10 +84,8 @@ public final class JFileChooser
      *        system view.
      */
     public JFileChooser(
-        @Nullable
-        final File currentDirectory,
-        @Nullable
-        final FileSystemView fileSystemView )
+        final @Nullable File currentDirectory,
+        final @Nullable FileSystemView fileSystemView )
     {
         super( currentDirectory, fileSystemView );
     }
@@ -103,8 +100,7 @@ public final class JFileChooser
      *        system view.
      */
     public JFileChooser(
-        @Nullable
-        final FileSystemView fileSystemView )
+        final @Nullable FileSystemView fileSystemView )
     {
         super( fileSystemView );
     }
@@ -118,8 +114,7 @@ public final class JFileChooser
      *        directory.
      */
     public JFileChooser(
-        @Nullable
-        final String currentDirectoryPath )
+        final @Nullable String currentDirectoryPath )
     {
         super( currentDirectoryPath );
     }
@@ -136,10 +131,8 @@ public final class JFileChooser
      *        system view.
      */
     public JFileChooser(
-        @Nullable
-        final String currentDirectoryPath,
-        @Nullable
-        final FileSystemView fileSystemView )
+        final @Nullable String currentDirectoryPath,
+        final @Nullable FileSystemView fileSystemView )
     {
         super( currentDirectoryPath, fileSystemView );
     }

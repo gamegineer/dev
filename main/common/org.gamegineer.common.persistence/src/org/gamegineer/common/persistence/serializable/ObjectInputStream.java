@@ -91,11 +91,9 @@ public final class ObjectInputStream
     /*
      * @see java.io.ObjectInputStream#resolveClass(java.io.ObjectStreamClass)
      */
-    @Nullable
     @Override
-    protected Class<?> resolveClass(
-        @Nullable
-        final ObjectStreamClass desc )
+    protected @Nullable Class<?> resolveClass(
+        final @Nullable ObjectStreamClass desc )
         throws IOException, ClassNotFoundException
     {
         if( desc != null )
@@ -113,11 +111,9 @@ public final class ObjectInputStream
     /*
      * @see java.io.ObjectInputStream#resolveObject(java.lang.Object)
      */
-    @Nullable
     @Override
-    protected Object resolveObject(
-        @Nullable
-        final Object obj )
+    protected @Nullable Object resolveObject(
+        final @Nullable Object obj )
         throws IOException
     {
         Object object = obj;

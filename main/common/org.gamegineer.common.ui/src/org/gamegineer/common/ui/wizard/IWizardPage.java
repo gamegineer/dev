@@ -1,6 +1,6 @@
 /*
  * IWizardPage.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -55,16 +55,14 @@ public interface IWizardPage
      * 
      * @return The next page in the wizard sequence or {@code null} if none.
      */
-    @Nullable
-    public IWizardPage getNextPage();
+    public @Nullable IWizardPage getNextPage();
 
     /**
      * Gets the previous page in the wizard sequence.
      * 
      * @return The previous page in the wizard sequence or {@code null} if none.
      */
-    @Nullable
-    public IWizardPage getPreviousPage();
+    public @Nullable IWizardPage getPreviousPage();
 
     /**
      * Gets the wizard that hosts the page.
@@ -72,8 +70,7 @@ public interface IWizardPage
      * @return The wizard that hosts the page or {@code null} if the page has
      *         not yet been added to a wizard.
      */
-    @Nullable
-    public IWizard getWizard();
+    public @Nullable IWizard getWizard();
 
     /**
      * Indicates the page is complete.
@@ -107,8 +104,7 @@ public interface IWizardPage
      *        The previous page in the wizard sequence or {@code null} if none.
      */
     public void setPreviousPage(
-        @Nullable
-        IWizardPage page );
+        @Nullable IWizardPage page );
 
     /**
      * Sets the wizard that hosts the page.

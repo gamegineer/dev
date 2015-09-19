@@ -1,6 +1,6 @@
 /*
  * HelpSetProviderProxy.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -45,8 +45,7 @@ final class HelpSetProviderProxy
 
     /** The actual help set provider. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private IHelpSetProvider helpSetProvider_;
+    private @Nullable IHelpSetProvider helpSetProvider_;
 
     /** The service registry reference to the help set provider. */
     private final ServiceReference<IHelpSetProvider> helpSetProviderReference_;

@@ -1,6 +1,6 @@
 /*
  * AbstractComponentStrategy.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -142,9 +142,8 @@ public abstract class AbstractComponentStrategy
      * 
      * @see org.gamegineer.table.core.IComponentStrategy#getExtension(java.lang.Class)
      */
-    @Nullable
     @Override
-    public <T> T getExtension(
+    public <T> @Nullable T getExtension(
         @SuppressWarnings( "unused" )
         final Class<T> type )
     {

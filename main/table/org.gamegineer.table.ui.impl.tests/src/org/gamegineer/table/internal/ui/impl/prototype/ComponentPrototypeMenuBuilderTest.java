@@ -91,10 +91,8 @@ public final class ComponentPrototypeMenuBuilderTest
      */
     @SuppressWarnings( "boxing" )
     private static void assertMenuEquals(
-        @Nullable
-        final JMenu menu1,
-        @Nullable
-        final JMenu menu2 )
+        final @Nullable JMenu menu1,
+        final @Nullable JMenu menu2 )
     {
         if( menu1 == null )
         {
@@ -142,10 +140,8 @@ public final class ComponentPrototypeMenuBuilderTest
      *         If the two objects are not equal.
      */
     private static void assertMenuItemEquals(
-        @Nullable
-        final JMenuItem menuItem1,
-        @Nullable
-        final JMenuItem menuItem2 )
+        final @Nullable JMenuItem menuItem1,
+        final @Nullable JMenuItem menuItem2 )
     {
         if( menuItem1 == null )
         {

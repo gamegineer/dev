@@ -57,8 +57,7 @@ public final class ContainerLayoutExtensionFactory
     private static final Map<ContainerLayoutId, IContainerLayout> CONTAINER_LAYOUTS;
 
     /** The identifier of the container layouts to create. */
-    @Nullable
-    private ContainerLayoutId containerLayoutId_;
+    private @Nullable ContainerLayoutId containerLayoutId_;
 
 
     // ======================================================================
@@ -113,14 +112,11 @@ public final class ContainerLayoutExtensionFactory
      */
     @Override
     public void setInitializationData(
-        @Nullable
-        final IConfigurationElement config,
-        @Nullable
+        final @Nullable IConfigurationElement config,
         @SuppressWarnings( "unused" )
-        final String propertyName,
-        @Nullable
+        final @Nullable String propertyName,
         @SuppressWarnings( "unused" )
-        final Object data )
+        final @Nullable Object data )
         throws CoreException
     {
         assert config != null;

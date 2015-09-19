@@ -73,8 +73,7 @@ public interface IRemoteNodeController<@NonNull LocalNodeType extends @NonNull I
      *         If the remote node is closed.
      */
     public void close(
-        @Nullable
-        TableNetworkError error );
+        @Nullable TableNetworkError error );
 
     /**
      * Gets the local table network node.
@@ -104,6 +103,5 @@ public interface IRemoteNodeController<@NonNull LocalNodeType extends @NonNull I
      */
     public void sendMessage(
         IMessage message,
-        @Nullable
-        IMessageHandler messageHandler );
+        @Nullable IMessageHandler messageHandler );
 }

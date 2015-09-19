@@ -47,20 +47,16 @@ public final class ComponentPrototypesExtensionPointTest
     // ======================================================================
 
     /** The default component prototype category attribute value. */
-    @NonNull
-    private static final String DEFAULT_COMPONENT_PROTOTYPE_ATTR_CATEGORY = "category"; //$NON-NLS-1$
+    private static final @NonNull String DEFAULT_COMPONENT_PROTOTYPE_ATTR_CATEGORY = "category"; //$NON-NLS-1$
 
     /** The default component prototype mnemonic attribute value. */
-    @NonNull
-    private static final String DEFAULT_COMPONENT_PROTOTYPE_ATTR_MNEMONIC = "M"; //$NON-NLS-1$
+    private static final @NonNull String DEFAULT_COMPONENT_PROTOTYPE_ATTR_MNEMONIC = "M"; //$NON-NLS-1$
 
     /** The default component prototype name attribute value. */
-    @NonNull
-    private static final String DEFAULT_COMPONENT_PROTOTYPE_ATTR_NAME = "name"; //$NON-NLS-1$
+    private static final @NonNull String DEFAULT_COMPONENT_PROTOTYPE_ATTR_NAME = "name"; //$NON-NLS-1$
 
     /** The default component prototype factory class attribute value. */
-    @NonNull
-    private static final String DEFAULT_COMPONENT_PROTOTYPE_FACTORY_ATTR_CLASS = "class"; //$NON-NLS-1$
+    private static final @NonNull String DEFAULT_COMPONENT_PROTOTYPE_FACTORY_ATTR_CLASS = "class"; //$NON-NLS-1$
 
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
@@ -99,14 +95,10 @@ public final class ComponentPrototypesExtensionPointTest
      *         {@code null}.
      */
     private IConfigurationElement createComponentPrototypeConfigurationElement(
-        @Nullable
-        final String category,
-        @Nullable
-        final String mnemonic,
-        @Nullable
-        final String name,
-        @Nullable
-        final String factoryClass )
+        final @Nullable String category,
+        final @Nullable String mnemonic,
+        final @Nullable String name,
+        final @Nullable String factoryClass )
     {
         final IConfigurationElement configurationElement = mocksControl_.createMock( IConfigurationElement.class );
         EasyMock.expect( configurationElement.getName() ).andReturn( "componentPrototype" ).anyTimes(); //$NON-NLS-1$
@@ -147,14 +139,10 @@ public final class ComponentPrototypesExtensionPointTest
      *         {@code null}.
      */
     private IConfigurationElement createComponentPrototypeCategoryConfigurationElement(
-        @Nullable
-        final String id,
-        @Nullable
-        final String mnemonic,
-        @Nullable
-        final String name,
-        @Nullable
-        final String parentCategory )
+        final @Nullable String id,
+        final @Nullable String mnemonic,
+        final @Nullable String name,
+        final @Nullable String parentCategory )
     {
         final IConfigurationElement configurationElement = mocksControl_.createMock( IConfigurationElement.class );
         EasyMock.expect( configurationElement.getName() ).andReturn( "category" ).anyTimes(); //$NON-NLS-1$

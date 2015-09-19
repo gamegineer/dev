@@ -1,6 +1,6 @@
 /*
  * ImageRegistry.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -91,8 +91,7 @@ public final class ImageRegistry
      * @return The image associated with the specified bundle-relative path or
      *         {@code null} if no such image exists.
      */
-    @Nullable
-    public Image getImage(
+    public @Nullable Image getImage(
         final String path )
     {
         Image image = null;

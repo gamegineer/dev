@@ -167,7 +167,7 @@ final class ComponentPrototypeMenuBuilder
             }
         }
 
-        final @Nullable Collection<JMenuItem> menuItems = menuItemCollections_.get( menuDescriptor.getId() );
+        final Collection<JMenuItem> menuItems = menuItemCollections_.get( menuDescriptor.getId() );
         if( (menuItems != null) && !menuItems.isEmpty() )
         {
             if( childMenuCount > 0 )
@@ -234,12 +234,10 @@ final class ComponentPrototypeMenuBuilder
          * The component prototype category identifier associated with the menu
          * or {@code null} if the root menu.
          */
-        @Nullable
-        private final String id_;
+        private final @Nullable String id_;
 
         /** The menu or {@code null} if the menu has not yet been set. */
-        @Nullable
-        private JMenu menu_;
+        private @Nullable JMenu menu_;
 
 
         // ==================================================================
@@ -254,8 +252,7 @@ final class ComponentPrototypeMenuBuilder
          *        the menu or {@code null} if the root menu.
          */
         MenuDescriptor(
-            @Nullable
-            final String id )
+            final @Nullable String id )
         {
             childMenuDescriptors_ = new LinkedHashMap<>();
             id_ = id;
@@ -285,7 +282,7 @@ final class ComponentPrototypeMenuBuilder
         private MenuDescriptor getChildMenuDescriptor(
             final String id )
         {
-            @Nullable MenuDescriptor childMenuDescriptor = childMenuDescriptors_.get( id );
+            MenuDescriptor childMenuDescriptor = childMenuDescriptors_.get( id );
             if( childMenuDescriptor == null )
             {
                 final MenuDescriptor newChildMenuDescriptor = new MenuDescriptor( id );
@@ -346,8 +343,7 @@ final class ComponentPrototypeMenuBuilder
          * @return The component prototype category identifier associated with
          *         the menu or {@code null} if the root menu.
          */
-        @Nullable
-        String getId()
+        @Nullable String getId()
         {
             return id_;
         }
@@ -357,8 +353,7 @@ final class ComponentPrototypeMenuBuilder
          * 
          * @return The menu or {@code null} if the menu has not yet been set.
          */
-        @Nullable
-        JMenu getMenu()
+        @Nullable JMenu getMenu()
         {
             return menu_;
         }

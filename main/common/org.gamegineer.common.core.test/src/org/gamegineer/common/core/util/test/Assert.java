@@ -71,10 +71,8 @@ public final class Assert
      *         If the objects are not equal.
      */
     public static void assertObjectEquals(
-        @Nullable
-        final Object expected,
-        @Nullable
-        final Object actual )
+        final @Nullable Object expected,
+        final @Nullable Object actual )
     {
         if( expected == null )
         {
@@ -120,8 +118,7 @@ public final class Assert
     private static boolean assertEqualsUsingEqualityComparator(
         final Object expected,
         final Object actual,
-        @Nullable
-        final IEqualityComparator<Object> equalityComparator )
+        final @Nullable IEqualityComparator<Object> equalityComparator )
     {
         if( equalityComparator == null )
         {
@@ -153,8 +150,7 @@ public final class Assert
      * @return The platform equality comparator associated with the specified
      *         object or {@code null} if no equality comparator is available.
      */
-    @Nullable
-    private static IEqualityComparator<Object> getPlatformEqualityComparator(
+    private static @Nullable IEqualityComparator<Object> getPlatformEqualityComparator(
         final Object obj )
     {
         final IAdapterManager adapterManager = Activator.getDefault().getAdapterManager();

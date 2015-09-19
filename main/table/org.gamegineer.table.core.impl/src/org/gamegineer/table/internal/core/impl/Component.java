@@ -93,8 +93,7 @@ class Component
 
     /** The component parent or {@code null} if this component has no parent. */
     @GuardedBy( "getLock()" )
-    @Nullable
-    private IComponentParent parent_;
+    private @Nullable IComponentParent parent_;
 
     /** The component strategy. */
     private final IComponentStrategy strategy_;
@@ -326,9 +325,8 @@ class Component
     /*
      * @see org.gamegineer.table.core.IComponent#getContainer()
      */
-    @Nullable
     @Override
-    public final Container getContainer()
+    public final @Nullable Container getContainer()
     {
         getLock().lock();
         try
@@ -397,9 +395,8 @@ class Component
     /*
      * @see org.gamegineer.table.core.IComponent#getPath()
      */
-    @Nullable
     @Override
-    public final ComponentPath getPath()
+    public final @Nullable ComponentPath getPath()
     {
         getLock().lock();
         try
@@ -501,9 +498,8 @@ class Component
     /*
      * @see org.gamegineer.table.core.IComponent#getTable()
      */
-    @Nullable
     @Override
-    public final Table getTable()
+    public final @Nullable Table getTable()
     {
         getLock().lock();
         try
@@ -729,8 +725,7 @@ class Component
      */
     @GuardedBy( "getLock()" )
     final void setParent(
-        @Nullable
-        final IComponentParent parent )
+        final @Nullable IComponentParent parent )
     {
         assert getLock().isHeldByCurrentThread();
 

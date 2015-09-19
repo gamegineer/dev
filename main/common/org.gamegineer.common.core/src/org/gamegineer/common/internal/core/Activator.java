@@ -47,21 +47,18 @@ public final class Activator
 
     /** The bundle context. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private BundleContext bundleContext_;
+    private @Nullable BundleContext bundleContext_;
 
     /** The debug options service tracker. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private ServiceTracker<DebugOptions, DebugOptions> debugOptionsTracker_;
+    private @Nullable ServiceTracker<DebugOptions, DebugOptions> debugOptionsTracker_;
 
     /** The instance lock. */
     private final Object lock_;
 
     /** The logging service tracker. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private ServiceTracker<ILoggingService, ILoggingService> loggingServiceTracker_;
+    private @Nullable ServiceTracker<ILoggingService, ILoggingService> loggingServiceTracker_;
 
 
     // ======================================================================
@@ -104,8 +101,7 @@ public final class Activator
      * @return The debug options service or {@code null} if no debug options
      *         service is available.
      */
-    @Nullable
-    public DebugOptions getDebugOptions()
+    public @Nullable DebugOptions getDebugOptions()
     {
         synchronized( lock_ )
         {
@@ -140,8 +136,7 @@ public final class Activator
      * @return The logging service or {@code null} if no logging service is
      *         available.
      */
-    @Nullable
-    public ILoggingService getLoggingService()
+    public @Nullable ILoggingService getLoggingService()
     {
         synchronized( lock_ )
         {
@@ -163,8 +158,7 @@ public final class Activator
      */
     @Override
     public void start(
-        @Nullable
-        final BundleContext bundleContext )
+        final @Nullable BundleContext bundleContext )
     {
         if( bundleContext == null )
         {
@@ -186,8 +180,7 @@ public final class Activator
      */
     @Override
     public void stop(
-        @Nullable
-        final BundleContext bundleContext )
+        final @Nullable BundleContext bundleContext )
     {
         if( bundleContext == null )
         {

@@ -73,10 +73,8 @@ public final class TableModel
     {
         @Override
         public int compare(
-            @Nullable
-            final ComponentModel componentModel1,
-            @Nullable
-            final ComponentModel componentModel2 )
+            final @Nullable ComponentModel componentModel1,
+            final @Nullable ComponentModel componentModel2 )
         {
             assert componentModel1 != null;
             assert componentModel2 != null;
@@ -99,24 +97,21 @@ public final class TableModel
 
     /** The file to which the model was last saved. */
     @GuardedBy( "getLock()" )
-    @Nullable
-    private File file_;
+    private @Nullable File file_;
 
     /**
      * The model associated with the focused component or {@code null} if no
      * component has the focus.
      */
     @GuardedBy( "getLock()" )
-    @Nullable
-    private ComponentModel focusedComponentModel_;
+    private @Nullable ComponentModel focusedComponentModel_;
 
     /**
      * The model associated with the hovered component or {@code null} if no
      * component has the hover.
      */
     @GuardedBy( "getLock()" )
-    @Nullable
-    private ComponentModel hoveredComponentModel_;
+    private @Nullable ComponentModel hoveredComponentModel_;
 
     /** The collection of table model listeners. */
     private final CopyOnWriteArrayList<ITableModelListener> listeners_;
@@ -341,9 +336,8 @@ public final class TableModel
     /*
      * @see org.gamegineer.table.internal.ui.impl.model.IComponentModelParent#getChildPath(org.gamegineer.table.internal.ui.impl.model.ComponentModel)
      */
-    @Nullable
     @Override
-    public ComponentPath getChildPath(
+    public @Nullable ComponentPath getChildPath(
         final ComponentModel componentModel )
     {
         assert componentModel == tabletopModel_;
@@ -359,8 +353,7 @@ public final class TableModel
      * @return The component model in this table model at the specified path or
      *         {@code null} if no component model exists at the specified path.
      */
-    @Nullable
-    public ComponentModel getComponentModel(
+    public @Nullable ComponentModel getComponentModel(
         final ComponentPath path )
     {
         final List<ComponentPath> paths = path.toList();
@@ -443,8 +436,7 @@ public final class TableModel
      * @return The file to which this model was last saved or {@code null} if
      *         this model has not yet been saved.
      */
-    @Nullable
-    public File getFile()
+    public @Nullable File getFile()
     {
         getLock().lock();
         try
@@ -467,8 +459,7 @@ public final class TableModel
      *         or {@code null} if no focusable component model is at that
      *         location.
      */
-    @Nullable
-    public ComponentModel getFocusableComponentModel(
+    public @Nullable ComponentModel getFocusableComponentModel(
         final Point location )
     {
         return getFocusableComponentModel( location, null );
@@ -495,11 +486,9 @@ public final class TableModel
      * @return The focusable component model at the specified location or
      *         {@code null} if no focusable component model is at that location.
      */
-    @Nullable
-    public ComponentModel getFocusableComponentModel(
+    public @Nullable ComponentModel getFocusableComponentModel(
         final Point location,
-        @Nullable
-        final ComponentModelVector searchVector )
+        final @Nullable ComponentModelVector searchVector )
     {
         ComponentModel focusableComponentModel = null;
 
@@ -555,8 +544,7 @@ public final class TableModel
      * @return The focused component model or {@code null} if no component model
      *         has the focus.
      */
-    @Nullable
-    public ComponentModel getFocusedComponentModel()
+    public @Nullable ComponentModel getFocusedComponentModel()
     {
         getLock().lock();
         try
@@ -575,8 +563,7 @@ public final class TableModel
      * @return The hovered component model or {@code null} if no component model
      *         has the hover.
      */
-    @Nullable
-    public ComponentModel getHoveredComponentModel()
+    public @Nullable ComponentModel getHoveredComponentModel()
     {
         getLock().lock();
         try
@@ -653,9 +640,8 @@ public final class TableModel
     /*
      * @see org.gamegineer.table.internal.ui.impl.model.IComponentModelParent#getParent()
      */
-    @Nullable
     @Override
-    public IComponentModelParent getParent()
+    public @Nullable IComponentModelParent getParent()
     {
         return null;
     }
@@ -684,9 +670,8 @@ public final class TableModel
     /*
      * @see org.gamegineer.table.internal.ui.impl.model.IComponentModelParent#getTableModel()
      */
-    @Nullable
     @Override
-    public TableModel getTableModel()
+    public @Nullable TableModel getTableModel()
     {
         return this;
     }
@@ -945,8 +930,7 @@ public final class TableModel
      *        component model should have the focus.
      */
     public void setFocus(
-        @Nullable
-        final ComponentModel componentModel )
+        final @Nullable ComponentModel componentModel )
     {
         final boolean componentModelFocusChanged;
 
@@ -1008,8 +992,7 @@ public final class TableModel
      *        component model should have the hover.
      */
     public void setHover(
-        @Nullable
-        final ComponentModel componentModel )
+        final @Nullable ComponentModel componentModel )
     {
         final boolean componentModelHoverChanged;
 

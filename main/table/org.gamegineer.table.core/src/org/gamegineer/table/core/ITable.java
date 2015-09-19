@@ -1,6 +1,6 @@
 /*
  * ITable.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -47,8 +47,7 @@ public interface ITable
      * @return The component in this table at the specified path or {@code null}
      *         if no component exists at the specified path.
      */
-    @Nullable
-    public IComponent getComponent(
+    public @Nullable IComponent getComponent(
         ComponentPath path );
 
     /**
@@ -83,8 +82,7 @@ public interface ITable
      * @return The table extension of the specified type or {@code null} if the
      *         table does not support the specified extension.
      */
-    @Nullable
-    public <T> T getExtension(
+    public <T> @Nullable T getExtension(
         Class<T> type );
 
     /**

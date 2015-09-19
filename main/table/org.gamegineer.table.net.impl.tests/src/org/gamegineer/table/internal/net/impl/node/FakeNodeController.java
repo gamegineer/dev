@@ -108,9 +108,8 @@ public final class FakeNodeController
     /*
      * @see org.gamegineer.table.internal.net.impl.node.INodeController#getPlayer()
      */
-    @Nullable
     @Override
-    public IPlayer getPlayer()
+    public @Nullable IPlayer getPlayer()
     {
         return null;
     }

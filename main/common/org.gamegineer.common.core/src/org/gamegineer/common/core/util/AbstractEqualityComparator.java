@@ -1,6 +1,6 @@
 /*
  * AbstractEqualityComparator.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -56,10 +56,8 @@ public abstract class AbstractEqualityComparator<T>
      */
     @Override
     public final boolean equals(
-        @Nullable
-        final T obj1,
-        @Nullable
-        final T obj2 )
+        final @Nullable T obj1,
+        final @Nullable T obj2 )
     {
         if( obj1 == null )
         {
@@ -93,8 +91,7 @@ public abstract class AbstractEqualityComparator<T>
      */
     @Override
     public final int hashCode(
-        @Nullable
-        final T obj )
+        final @Nullable T obj )
     {
         if( obj == null )
         {

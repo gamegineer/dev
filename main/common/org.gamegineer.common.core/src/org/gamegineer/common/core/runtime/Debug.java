@@ -102,10 +102,8 @@ public abstract class Debug
      *        The message; may be {@code null}.
      */
     public final void trace(
-        @Nullable
-        final String option,
-        @Nullable
-        final String message )
+        final @Nullable String option,
+        final @Nullable String message )
     {
         getDebugTrace().trace( option, message );
     }
@@ -122,12 +120,9 @@ public abstract class Debug
      *        The exception; may be {@code null}.
      */
     public final void trace(
-        @Nullable
-        final String option,
-        @Nullable
-        final String message,
-        @Nullable
-        final Throwable error )
+        final @Nullable String option,
+        final @Nullable String message,
+        final @Nullable Throwable error )
     {
         getDebugTrace().trace( option, message, error );
     }
@@ -141,8 +136,7 @@ public abstract class Debug
      *        is printed or {@code null} to always print the trace message.
      */
     public final void traceDumpStack(
-        @Nullable
-        final String option )
+        final @Nullable String option )
     {
         getDebugTrace().traceDumpStack( option );
     }
@@ -156,8 +150,7 @@ public abstract class Debug
      *        is printed or {@code null} to always print the trace message.
      */
     public final void traceEntry(
-        @Nullable
-        final String option )
+        final @Nullable String option )
     {
         getDebugTrace().traceEntry( option );
     }
@@ -173,10 +166,8 @@ public abstract class Debug
      *        The method argument; may be {@code null}.
      */
     public final void traceEntry(
-        @Nullable
-        final String option,
-        @Nullable
-        final Object methodArgument )
+        final @Nullable String option,
+        final @Nullable Object methodArgument )
     {
         getDebugTrace().traceEntry( option, methodArgument );
     }
@@ -192,10 +183,8 @@ public abstract class Debug
      *        The method arguments; may be {@code null}.
      */
     public final void traceEntry(
-        @Nullable
-        final String option,
-        @Nullable
-        final Object... methodArguments )
+        final @Nullable String option,
+        final @Nullable Object... methodArguments )
     {
         getDebugTrace().traceEntry( option, methodArguments );
     }
@@ -209,8 +198,7 @@ public abstract class Debug
      *        is printed or {@code null} to always print the trace message.
      */
     public final void traceExit(
-        @Nullable
-        final String option )
+        final @Nullable String option )
     {
         getDebugTrace().traceExit( option );
     }
@@ -226,10 +214,8 @@ public abstract class Debug
      *        The method result; may be {@code null}.
      */
     public final void traceExit(
-        @Nullable
-        final String option,
-        @Nullable
-        final Object result )
+        final @Nullable String option,
+        final @Nullable Object result )
     {
         getDebugTrace().traceExit( option, result );
     }
@@ -267,12 +253,10 @@ public abstract class Debug
          */
         @Override
         public void trace(
-            @Nullable
             @SuppressWarnings( "unused" )
-            final String option,
-            @Nullable
+            final @Nullable String option,
             @SuppressWarnings( "unused" )
-            final String message )
+            final @Nullable String message )
         {
             warn();
         }
@@ -282,15 +266,12 @@ public abstract class Debug
          */
         @Override
         public void trace(
-            @Nullable
             @SuppressWarnings( "unused" )
-            final String option,
-            @Nullable
+            final @Nullable String option,
             @SuppressWarnings( "unused" )
-            final String message,
-            @Nullable
+            final @Nullable String message,
             @SuppressWarnings( "unused" )
-            final Throwable error )
+            final @Nullable Throwable error )
         {
             warn();
         }
@@ -300,9 +281,8 @@ public abstract class Debug
          */
         @Override
         public void traceDumpStack(
-            @Nullable
             @SuppressWarnings( "unused" )
-            final String option )
+            final @Nullable String option )
         {
             warn();
         }
@@ -312,9 +292,8 @@ public abstract class Debug
          */
         @Override
         public void traceEntry(
-            @Nullable
             @SuppressWarnings( "unused" )
-            final String option )
+            final @Nullable String option )
         {
             warn();
         }
@@ -324,12 +303,10 @@ public abstract class Debug
          */
         @Override
         public void traceEntry(
-            @Nullable
             @SuppressWarnings( "unused" )
-            final String option,
-            @Nullable
+            final @Nullable String option,
             @SuppressWarnings( "unused" )
-            final Object methodArgument )
+            final @Nullable Object methodArgument )
         {
             warn();
         }
@@ -339,9 +316,8 @@ public abstract class Debug
          */
         @Override
         public void traceEntry(
-            @Nullable
             @SuppressWarnings( "unused" )
-            final String option,
+            final @Nullable String option,
             @SuppressWarnings( "unused" )
             final Object @Nullable[] methodArguments )
         {
@@ -353,9 +329,8 @@ public abstract class Debug
          */
         @Override
         public void traceExit(
-            @Nullable
             @SuppressWarnings( "unused" )
-            final String option )
+            final @Nullable String option )
         {
             warn();
         }
@@ -365,12 +340,10 @@ public abstract class Debug
          */
         @Override
         public void traceExit(
-            @Nullable
             @SuppressWarnings( "unused" )
-            final String option,
-            @Nullable
+            final @Nullable String option,
             @SuppressWarnings( "unused" )
-            final Object result )
+            final @Nullable Object result )
         {
             warn();
         }

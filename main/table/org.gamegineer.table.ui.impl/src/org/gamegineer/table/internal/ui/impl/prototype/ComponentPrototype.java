@@ -1,6 +1,6 @@
 /*
  * ComponentPrototype.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -39,8 +39,7 @@ final class ComponentPrototype
      * The component prototype category identifier or {@code null} if the
      * component prototype has no category.
      */
-    @Nullable
-    private final String categoryId_;
+    private final @Nullable String categoryId_;
 
     /** The component prototype factory. */
     private final IComponentPrototypeFactory componentPrototypeFactory_;
@@ -72,8 +71,7 @@ final class ComponentPrototype
     ComponentPrototype(
         final String name,
         final int mnemonic,
-        @Nullable
-        final String categoryId,
+        final @Nullable String categoryId,
         final IComponentPrototypeFactory componentPrototypeFactory )
     {
         categoryId_ = categoryId;
@@ -93,8 +91,7 @@ final class ComponentPrototype
      * @return The component prototype category identifier or {@code null} if
      *         the component prototype has no category.
      */
-    @Nullable
-    String getCategoryId()
+    @Nullable String getCategoryId()
     {
         return categoryId_;
     }

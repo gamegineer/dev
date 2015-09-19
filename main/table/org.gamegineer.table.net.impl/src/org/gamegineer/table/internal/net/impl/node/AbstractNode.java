@@ -80,8 +80,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * The local player name or {@code null} if the table network is not
      * connected.
      */
-    @Nullable
-    private String localPlayerName_;
+    private @Nullable String localPlayerName_;
 
     /** The node layer. */
     private final INodeLayer nodeLayer_;
@@ -90,8 +89,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * The table network password or {@code null} if the table network is not
      * connected.
      */
-    @Nullable
-    private SecureString password_;
+    private @Nullable SecureString password_;
 
     /**
      * The collection of bound remote nodes. The key is the name of the player
@@ -112,8 +110,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * The transport layer or {@code null} if the table network is not
      * connected.
      */
-    @Nullable
-    private ITransportLayer transportLayer_;
+    private @Nullable ITransportLayer transportLayer_;
 
 
     // ======================================================================
@@ -319,8 +316,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      */
     @Override
     public final void disconnect(
-        @Nullable
-        final TableNetworkError error )
+        final @Nullable TableNetworkError error )
     {
         assert isNodeLayerThread();
 
@@ -404,9 +400,8 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      *        {@code null} if the table network node was disconnected normally.
      */
     protected void disconnecting(
-        @Nullable
         @SuppressWarnings( "unused" )
-        final TableNetworkError error )
+        final @Nullable TableNetworkError error )
     {
         assert isNodeLayerThread();
 
@@ -546,8 +541,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * @return The bound remote node associated with the specified player or
      *         {@code null} if no remote node is bound for the specified player.
      */
-    @Nullable
-    protected final RemoteNodeType getRemoteNode(
+    protected final @Nullable RemoteNodeType getRemoteNode(
         final String playerName )
     {
         assert isNodeLayerThread();
@@ -806,8 +800,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         // ==================================================================
 
         /** The actual service. */
-        @Nullable
-        private IService service_;
+        private @Nullable IService service_;
 
 
         // ==================================================================
@@ -929,8 +922,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          */
         @Override
         public void stopped(
-            @Nullable
-            final Exception exception )
+            final @Nullable Exception exception )
         {
             try
             {
@@ -981,8 +973,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          */
         @Override
         public final void transportLayerDisconnected(
-            @Nullable
-            final Exception exception )
+            final @Nullable Exception exception )
         {
             try
             {
@@ -1251,9 +1242,8 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         // ==================================================================
 
         /** The transport layer associated with the table network node. */
-        @Nullable
         @SuppressWarnings( "hiding" )
-        private final ITransportLayer transportLayer_;
+        private final @Nullable ITransportLayer transportLayer_;
 
 
         // ==================================================================

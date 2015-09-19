@@ -1,6 +1,6 @@
 /*
  * AbstractEventHandler.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -42,8 +42,7 @@ abstract class AbstractEventHandler
      * an event dispatcher or {@code null} if the event handler is not currently
      * bound to an event dispatcher.
      */
-    @Nullable
-    private SelectionKey selectionKey_;
+    private @Nullable SelectionKey selectionKey_;
 
     /** The event handler state. */
     private State state_;
@@ -92,8 +91,7 @@ abstract class AbstractEventHandler
      *        {@code null} if the event handler was closed normally.
      */
     abstract void close(
-        @Nullable
-        Exception exception );
+        @Nullable Exception exception );
 
     /**
      * Gets the channel associated with the event handler.
@@ -101,8 +99,7 @@ abstract class AbstractEventHandler
      * @return The channel associated with the event handler or {@code null} if
      *         the channel is not available.
      */
-    @Nullable
-    abstract SelectableChannel getChannel();
+    abstract @Nullable SelectableChannel getChannel();
 
     /**
      * Gets a bit mask of the channel operations in which the event handler is
@@ -121,8 +118,7 @@ abstract class AbstractEventHandler
      *         handler and an event dispatcher or {@code null} if the event
      *         handler is not currently bound to an event dispatcher.
      */
-    @Nullable
-    final SelectionKey getSelectionKey()
+    final @Nullable SelectionKey getSelectionKey()
     {
         assert isTransportLayerThread();
 
@@ -202,8 +198,7 @@ abstract class AbstractEventHandler
      *        binding.
      */
     final void setSelectionKey(
-        @Nullable
-        final SelectionKey selectionKey )
+        final @Nullable SelectionKey selectionKey )
     {
         assert isTransportLayerThread();
 

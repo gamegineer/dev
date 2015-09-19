@@ -1,6 +1,6 @@
 /*
  * IWizard.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -67,8 +67,7 @@ public interface IWizard
      * @return The container hosting the wizard or {@code null} if the wizard
      *         has not yet been added to a container.
      */
-    @Nullable
-    public IWizardContainer getContainer();
+    public @Nullable IWizardContainer getContainer();
 
     /**
      * Gets the successor of the specified page in the wizard sequence.
@@ -79,8 +78,7 @@ public interface IWizard
      * @return The successor of the specified page in the wizard sequence or
      *         {@code null} if none.
      */
-    @Nullable
-    public IWizardPage getNextPage(
+    public @Nullable IWizardPage getNextPage(
         IWizardPage page );
 
     /**
@@ -92,8 +90,7 @@ public interface IWizard
      * @return The page with the specified name or {@code null} if no such page
      *         exists.
      */
-    @Nullable
-    public IWizardPage getPage(
+    public @Nullable IWizardPage getPage(
         String name );
 
     /**
@@ -119,8 +116,7 @@ public interface IWizard
      * @return The predecessor of the specified page in the wizard sequence or
      *         {@code null} if none.
      */
-    @Nullable
-    public IWizardPage getPreviousPage(
+    public @Nullable IWizardPage getPreviousPage(
         IWizardPage page );
 
     /**
@@ -129,16 +125,14 @@ public interface IWizard
      * @return The first page to be displayed in the wizard or {@code null} if
      *         none.
      */
-    @Nullable
-    public IWizardPage getFirstPage();
+    public @Nullable IWizardPage getFirstPage();
 
     /**
      * Gets the wizard title.
      * 
      * @return The wizard title or {@code null} if the wizard has no title.
      */
-    @Nullable
-    public String getTitle();
+    public @Nullable String getTitle();
 
     /**
      * Indicates the wizard needs Previous and Next buttons.
@@ -179,6 +173,5 @@ public interface IWizard
      *        The container hosting the wizard or {@code null} to clear it.
      */
     public void setContainer(
-        @Nullable
-        IWizardContainer container );
+        @Nullable IWizardContainer container );
 }

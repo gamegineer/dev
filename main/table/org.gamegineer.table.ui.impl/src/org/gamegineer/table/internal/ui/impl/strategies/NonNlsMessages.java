@@ -83,8 +83,7 @@ final class NonNlsMessages
      *         identifier is unknown; never {@code null}.
      */
     static String ComponentStrategyUIExtensionFactory_create_unknownId(
-        @Nullable
-        final ComponentStrategyId componentStrategyId )
+        final @Nullable ComponentStrategyId componentStrategyId )
     {
         return bind( ComponentStrategyUIExtensionFactory_create_unknownId, componentStrategyId );
     }

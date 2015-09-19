@@ -1,6 +1,6 @@
 /*
  * NoSuchComponentStrategyException.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -61,8 +61,7 @@ public final class NoSuchComponentStrategyException
      *        The detail message; may be {@code null}.
      */
     public NoSuchComponentStrategyException(
-        @Nullable
-        final String message )
+        final @Nullable String message )
     {
         super( message );
     }
@@ -76,8 +75,7 @@ public final class NoSuchComponentStrategyException
      *        The cause; may be {@code null}.
      */
     public NoSuchComponentStrategyException(
-        @Nullable
-        final Throwable cause )
+        final @Nullable Throwable cause )
     {
         super( cause );
     }
@@ -93,10 +91,8 @@ public final class NoSuchComponentStrategyException
      *        The cause; may be {@code null}.
      */
     public NoSuchComponentStrategyException(
-        @Nullable
-        final String message,
-        @Nullable
-        final Throwable cause )
+        final @Nullable String message,
+        final @Nullable Throwable cause )
     {
         super( message, cause );
     }

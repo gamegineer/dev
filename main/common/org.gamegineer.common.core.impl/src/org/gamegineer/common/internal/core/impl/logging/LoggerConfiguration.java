@@ -88,10 +88,8 @@ final class LoggerConfiguration
      * 
      * @see java.util.logging.Logger#getFilter()
      */
-    @Nullable
-    Filter getFilter(
-        @Nullable
-        final Filter defaultValue )
+    @Nullable Filter getFilter(
+        final @Nullable Filter defaultValue )
     {
         final String value = LoggingProperties.getProperty( properties_, name_, LoggingServiceConstants.PROPERTY_LOGGER_FILTER );
         if( value != null )
@@ -157,10 +155,8 @@ final class LoggerConfiguration
      * 
      * @see java.util.logging.Logger#getLevel()
      */
-    @Nullable
-    Level getLevel(
-        @Nullable
-        final Level defaultValue )
+    @Nullable Level getLevel(
+        final @Nullable Level defaultValue )
     {
         try
         {

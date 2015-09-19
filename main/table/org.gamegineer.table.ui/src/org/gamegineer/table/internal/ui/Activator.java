@@ -47,18 +47,15 @@ public final class Activator
 
     /** The bundle context. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private BundleContext bundleContext_;
+    private @Nullable BundleContext bundleContext_;
 
     /** The component strategy user interface registry service tracker. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private ServiceTracker<IComponentStrategyUIRegistry, IComponentStrategyUIRegistry> componentStrategyUIRegistryTracker_;
+    private @Nullable ServiceTracker<IComponentStrategyUIRegistry, IComponentStrategyUIRegistry> componentStrategyUIRegistryTracker_;
 
     /** The component surface design user interface registry service tracker. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private ServiceTracker<IComponentSurfaceDesignUIRegistry, IComponentSurfaceDesignUIRegistry> componentSurfaceDesignUIRegistryTracker_;
+    private @Nullable ServiceTracker<IComponentSurfaceDesignUIRegistry, IComponentSurfaceDesignUIRegistry> componentSurfaceDesignUIRegistryTracker_;
 
     /** The instance lock. */
     private final Object lock_;
@@ -105,8 +102,7 @@ public final class Activator
      *         {@code null} if no component strategy user interface registry
      *         service is available.
      */
-    @Nullable
-    public IComponentStrategyUIRegistry getComponentStrategyUIRegistry()
+    public @Nullable IComponentStrategyUIRegistry getComponentStrategyUIRegistry()
     {
         synchronized( lock_ )
         {
@@ -130,8 +126,7 @@ public final class Activator
      *         {@code null} if no component surface design user interface
      *         registry service is available.
      */
-    @Nullable
-    public IComponentSurfaceDesignUIRegistry getComponentSurfaceDesignUIRegistry()
+    public @Nullable IComponentSurfaceDesignUIRegistry getComponentSurfaceDesignUIRegistry()
     {
         synchronized( lock_ )
         {
@@ -165,8 +160,7 @@ public final class Activator
      */
     @Override
     public void start(
-        @Nullable
-        final BundleContext bundleContext )
+        final @Nullable BundleContext bundleContext )
     {
         if( bundleContext == null )
         {
@@ -188,8 +182,7 @@ public final class Activator
      */
     @Override
     public void stop(
-        @Nullable
-        final BundleContext bundleContext )
+        final @Nullable BundleContext bundleContext )
     {
         if( bundleContext == null )
         {

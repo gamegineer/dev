@@ -1,6 +1,6 @@
 /*
  * ComponentPrototypeFactoryProxy.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -51,8 +51,7 @@ final class ComponentPrototypeFactoryProxy
      * {@code null} if the component prototype factory delegate has not yet been
      * created.
      */
-    @Nullable
-    private IComponentPrototypeFactory delegate_;
+    private @Nullable IComponentPrototypeFactory delegate_;
 
     /**
      * The name of the configuration element property (attribute or child

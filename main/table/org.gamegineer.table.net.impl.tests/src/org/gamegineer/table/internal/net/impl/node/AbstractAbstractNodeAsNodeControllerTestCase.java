@@ -364,8 +364,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends @No
         private final Object lock_;
 
         /** The transport layer used by the node. */
-        @Nullable
-        private ITransportLayer transportLayer_;
+        private @Nullable ITransportLayer transportLayer_;
 
 
         // ==================================================================
@@ -567,9 +566,8 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends @No
         /*
          * @see org.gamegineer.table.internal.net.impl.node.INodeController#getPlayer()
          */
-        @Nullable
         @Override
-        public IPlayer getPlayer()
+        public @Nullable IPlayer getPlayer()
         {
             return null;
         }

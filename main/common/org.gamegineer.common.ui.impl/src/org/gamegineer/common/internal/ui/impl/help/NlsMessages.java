@@ -78,8 +78,7 @@ final class NlsMessages
      *         {@code null}.
      */
     static String HelpSystem_masterHelpSet_title(
-        @Nullable
-        final String name )
+        final @Nullable String name )
     {
         return bind( HelpSystem_masterHelpSet_title, name );
     }

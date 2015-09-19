@@ -172,8 +172,7 @@ public final class SecureString
      */
     @Override
     public boolean equals(
-        @Nullable
-        final Object obj )
+        final @Nullable Object obj )
     {
         if( this == obj )
         {

@@ -167,8 +167,7 @@ public final class LoggingService
     @Override
     public Logger getLogger(
         final Bundle bundle,
-        @Nullable
-        final String name )
+        final @Nullable String name )
     {
         Logger logger = null;
         final String loggerName = getLoggerName( bundle, name );
@@ -209,8 +208,7 @@ public final class LoggingService
      */
     private static String getLoggerName(
         final Bundle bundle,
-        @Nullable
-        final String name )
+        final @Nullable String name )
     {
         final StringBuilder sb = new StringBuilder();
         sb.append( bundle.getSymbolicName() );
@@ -231,8 +229,7 @@ public final class LoggingService
      * @return The logging properties for the specified bundle or {@code null}
      *         if no properties exist or they could not be loaded.
      */
-    @Nullable
-    private static Map<String, String> getLoggingProperties(
+    private static @Nullable Map<String, String> getLoggingProperties(
         final Bundle bundle )
     {
         final URL propertiesUrl = bundle.getEntry( LOGGING_PROPERTIES_PATH );

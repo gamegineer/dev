@@ -72,10 +72,8 @@ public final class SortedListModelTest
         {
             @Override
             public int compare(
-                @Nullable
-                final FakeElement o1,
-                @Nullable
-                final FakeElement o2 )
+                final @Nullable FakeElement o1,
+                final @Nullable FakeElement o2 )
             {
                 assert o1 != null;
                 assert o2 != null;

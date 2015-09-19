@@ -71,8 +71,7 @@ final class TableNetworkPlayerView
     private final DefaultListModel<IPlayer> playerListModel_;
 
     /** The table network listener for this view. */
-    @Nullable
-    private ITableNetworkListener tableNetworkListener_;
+    private @Nullable ITableNetworkListener tableNetworkListener_;
 
 
     // ======================================================================
@@ -227,10 +226,8 @@ final class TableNetworkPlayerView
          */
         @Override
         public Component getListCellRendererComponent(
-            @Nullable
-            final JList<?> list,
-            @Nullable
-            final Object value,
+            final @Nullable JList<?> list,
+            final @Nullable Object value,
             final int index,
             final boolean isSelected,
             final boolean cellHasFocus )

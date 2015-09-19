@@ -78,15 +78,13 @@ public final class MainFrame
     private final ActionMediator actionMediator_;
 
     /** The asynchronous completion token for the action updater task. */
-    @Nullable
-    private Future<?> actionUpdaterTaskFuture_;
+    private @Nullable Future<?> actionUpdaterTaskFuture_;
 
     /** Indicates an action update is required. */
     private final AtomicBoolean isActionUpdateRequired_;
 
     /** The main model listener for this view. */
-    @Nullable
-    private IMainModelListener mainModelListener_;
+    private @Nullable IMainModelListener mainModelListener_;
 
     /** The main view. */
     private final MainView mainView_;
@@ -101,8 +99,7 @@ public final class MainFrame
     private final MultiThreadedTableEnvironmentContext tableEnvironmentContext_;
 
     /** The table model listener for this view. */
-    @Nullable
-    private ITableModelListener tableModelListener_;
+    private @Nullable ITableModelListener tableModelListener_;
 
 
     // ======================================================================
@@ -171,9 +168,8 @@ public final class MainFrame
         {
             @Override
             public void actionPerformed(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final ActionEvent event )
+                final @Nullable ActionEvent event )
             {
                 final IHelpSystem helpSystem = Activator.getDefault().getHelpSystem();
                 if( helpSystem != null )
@@ -187,9 +183,8 @@ public final class MainFrame
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final ActionEvent event )
+                final @Nullable ActionEvent event )
             {
                 if( confirmSaveDirtyTable() )
                 {
@@ -202,9 +197,8 @@ public final class MainFrame
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final ActionEvent event )
+                final @Nullable ActionEvent event )
             {
                 openAboutDialog();
             }
@@ -214,9 +208,8 @@ public final class MainFrame
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final ActionEvent event )
+                final @Nullable ActionEvent event )
             {
                 openTable();
             }
@@ -226,8 +219,7 @@ public final class MainFrame
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @Nullable
-                final ActionEvent event )
+                final @Nullable ActionEvent event )
             {
                 assert event != null;
 
@@ -241,9 +233,8 @@ public final class MainFrame
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final ActionEvent event )
+                final @Nullable ActionEvent event )
             {
                 saveTable( false );
             }
@@ -253,9 +244,8 @@ public final class MainFrame
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final ActionEvent event )
+                final @Nullable ActionEvent event )
             {
                 saveTable( true );
             }
@@ -266,9 +256,8 @@ public final class MainFrame
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final Action obj )
+                final @Nullable Action obj )
             {
                 return isTableDirty();
             }
@@ -278,9 +267,8 @@ public final class MainFrame
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final Action obj )
+                final @Nullable Action obj )
             {
                 return isTableEditable();
             }
@@ -349,8 +337,7 @@ public final class MainFrame
      * @return The file associated with the table or {@code null} if no file is
      *         associated with the table.
      */
-    @Nullable
-    private File getTableFile()
+    private @Nullable File getTableFile()
     {
         return model_.getTableModel().getFile();
     }
@@ -513,8 +500,7 @@ public final class MainFrame
      */
     @Override
     protected void processWindowEvent(
-        @Nullable
-        final WindowEvent event )
+        final @Nullable WindowEvent event )
     {
         assert event != null;
 

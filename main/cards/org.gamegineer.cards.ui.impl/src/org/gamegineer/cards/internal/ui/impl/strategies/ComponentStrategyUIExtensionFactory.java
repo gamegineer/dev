@@ -60,8 +60,7 @@ public final class ComponentStrategyUIExtensionFactory
     private static final Map<ComponentStrategyId, IComponentStrategyUI> COMPONENT_STRATEGY_UIS;
 
     /** The identifier of the component strategy user interface to create. */
-    @Nullable
-    private ComponentStrategyId componentStrategyId_;
+    private @Nullable ComponentStrategyId componentStrategyId_;
 
 
     // ======================================================================
@@ -113,14 +112,11 @@ public final class ComponentStrategyUIExtensionFactory
      */
     @Override
     public void setInitializationData(
-        @Nullable
-        final IConfigurationElement config,
-        @Nullable
+        final @Nullable IConfigurationElement config,
         @SuppressWarnings( "unused" )
-        final String propertyName,
-        @Nullable
+        final @Nullable String propertyName,
         @SuppressWarnings( "unused" )
-        final Object data )
+        final @Nullable Object data )
         throws CoreException
     {
         assert config != null;

@@ -1,6 +1,6 @@
 /*
  * MenuUtils.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -72,27 +72,24 @@ final class MenuUtils
         {
             @Override
             public void menuCanceled(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final MenuEvent event )
+                final @Nullable MenuEvent event )
             {
                 // do nothing
             }
 
             @Override
             public void menuDeselected(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final MenuEvent event )
+                final @Nullable MenuEvent event )
             {
                 // do nothing
             }
 
             @Override
             public void menuSelected(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final MenuEvent event )
+                final @Nullable MenuEvent event )
             {
                 Actions.updateAll();
             }
@@ -110,27 +107,24 @@ final class MenuUtils
         {
             @Override
             public void popupMenuCanceled(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final PopupMenuEvent event )
+                final @Nullable PopupMenuEvent event )
             {
                 // do nothing
             }
 
             @Override
             public void popupMenuWillBecomeInvisible(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final PopupMenuEvent event )
+                final @Nullable PopupMenuEvent event )
             {
                 // do nothing
             }
 
             @Override
             public void popupMenuWillBecomeVisible(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final PopupMenuEvent event )
+                final @Nullable PopupMenuEvent event )
             {
                 Actions.updateAll();
             }

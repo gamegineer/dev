@@ -1,6 +1,6 @@
 /*
  * ListSingleSelectionValueProperty.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -63,8 +63,7 @@ final class ListSingleSelectionValueProperty
      */
     @Override
     public INativePropertyListener adaptListener(
-        @Nullable
-        final ISimplePropertyListener listener )
+        final @Nullable ISimplePropertyListener listener )
     {
         assert listener != null;
 
@@ -74,11 +73,9 @@ final class ListSingleSelectionValueProperty
     /*
      * @see org.eclipse.core.databinding.property.value.SimpleValueProperty#doGetValue(java.lang.Object)
      */
-    @Nullable
     @Override
-    protected Object doGetValue(
-        @Nullable
-        final Object source )
+    protected @Nullable Object doGetValue(
+        final @Nullable Object source )
     {
         assert source != null;
 
@@ -90,10 +87,8 @@ final class ListSingleSelectionValueProperty
      */
     @Override
     protected void doSetValue(
-        @Nullable
-        final Object source,
-        @Nullable
-        final Object value )
+        final @Nullable Object source,
+        final @Nullable Object value )
     {
         assert source != null;
 
@@ -103,9 +98,8 @@ final class ListSingleSelectionValueProperty
     /*
      * @see org.eclipse.core.databinding.property.value.IValueProperty#getValueType()
      */
-    @Nullable
     @Override
-    public Object getValueType()
+    public @Nullable Object getValueType()
     {
         return null;
     }
@@ -128,8 +122,7 @@ final class ListSingleSelectionValueProperty
         // ==================================================================
 
         /** The list associated with this listener. */
-        @Nullable
-        private JList<?> source_;
+        private @Nullable JList<?> source_;
 
 
         // ==================================================================
@@ -165,8 +158,7 @@ final class ListSingleSelectionValueProperty
          */
         @Override
         protected void doAddTo(
-            @Nullable
-            final Object source )
+            final @Nullable Object source )
         {
             assert source != null;
             assert source_ == null;
@@ -180,8 +172,7 @@ final class ListSingleSelectionValueProperty
          */
         @Override
         protected void doRemoveFrom(
-            @Nullable
-            final Object source )
+            final @Nullable Object source )
         {
             assert source != null;
             assert source_ == source;
@@ -195,9 +186,8 @@ final class ListSingleSelectionValueProperty
          */
         @Override
         public void valueChanged(
-            @Nullable
             @SuppressWarnings( "unused" )
-            final ListSelectionEvent event )
+            final @Nullable ListSelectionEvent event )
         {
             assert source_ != null;
 

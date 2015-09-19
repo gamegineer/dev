@@ -98,18 +98,16 @@ public final class JMenuItemGroup
         {
             @Override
             public void menuCanceled(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final MenuEvent event )
+                final @Nullable MenuEvent event )
             {
                 // do nothing
             }
 
             @Override
             public void menuDeselected(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final MenuEvent event )
+                final @Nullable MenuEvent event )
             {
                 // do nothing
             }
@@ -117,8 +115,7 @@ public final class JMenuItemGroup
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void menuSelected(
-                @Nullable
-                final MenuEvent event )
+                final @Nullable MenuEvent event )
             {
                 assert event != null;
 
@@ -232,12 +229,10 @@ public final class JMenuItemGroup
         // ==================================================================
 
         /** The menu item action command. */
-        @Nullable
-        private final String actionCommand_;
+        private final @Nullable String actionCommand_;
 
         /** The menu item text. */
-        @Nullable
-        private final String text_;
+        private final @Nullable String text_;
 
 
         // ==================================================================
@@ -254,10 +249,8 @@ public final class JMenuItemGroup
          *        The menu item action command; may be {@code null}.
          */
         public MenuItemDescriptor(
-            @Nullable
-            final String text,
-            @Nullable
-            final String actionCommand )
+            final @Nullable String text,
+            final @Nullable String actionCommand )
         {
             text_ = text;
             actionCommand_ = actionCommand;
@@ -273,8 +266,7 @@ public final class JMenuItemGroup
          * 
          * @return The menu item action command; may be {@code null}.
          */
-        @Nullable
-        public String getActionCommand()
+        public @Nullable String getActionCommand()
         {
             return actionCommand_;
         }
@@ -284,8 +276,7 @@ public final class JMenuItemGroup
          * 
          * @return The menu item text; may be {@code null}.
          */
-        @Nullable
-        public String getText()
+        public @Nullable String getText()
         {
             return text_;
         }

@@ -1,6 +1,6 @@
 /*
  * Acceptor.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -53,8 +53,7 @@ final class Acceptor
     private boolean isRegistered_;
 
     /** The server socket channel on which incoming connections are accepted. */
-    @Nullable
-    private ServerSocketChannel serverChannel_;
+    private @Nullable ServerSocketChannel serverChannel_;
 
 
     // ======================================================================
@@ -154,8 +153,7 @@ final class Acceptor
      */
     @Override
     void close(
-        @Nullable
-        final Exception exception )
+        final @Nullable Exception exception )
     {
         assert isTransportLayerThread();
 
@@ -219,9 +217,8 @@ final class Acceptor
     /*
      * @see org.gamegineer.table.internal.net.impl.transport.tcp.AbstractEventHandler#getChannel()
      */
-    @Nullable
     @Override
-    SelectableChannel getChannel()
+    @Nullable SelectableChannel getChannel()
     {
         assert isTransportLayerThread();
 

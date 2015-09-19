@@ -89,8 +89,7 @@ public final class ObjectOutputStream
      */
     @Override
     protected void annotateClass(
-        @Nullable
-        final Class<?> cl )
+        final @Nullable Class<?> cl )
         throws IOException
     {
         if( cl != null )
@@ -114,11 +113,9 @@ public final class ObjectOutputStream
     /*
      * @see java.io.ObjectOutputStream#replaceObject(java.lang.Object)
      */
-    @Nullable
     @Override
-    protected Object replaceObject(
-        @Nullable
-        final Object obj )
+    protected @Nullable Object replaceObject(
+        final @Nullable Object obj )
         throws IOException
     {
         Object object = obj;

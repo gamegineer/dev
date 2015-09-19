@@ -81,8 +81,7 @@ public final class ByteBufferUtilsTest
      *        The expected byte buffer remaining.
      */
     private static void assertByteBuffer(
-        @Nullable
-        final ByteBuffer buffer,
+        final @Nullable ByteBuffer buffer,
         final int position,
         final int remaining )
     {

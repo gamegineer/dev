@@ -140,8 +140,7 @@ final class TransportLayerRunner
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Nullable
-    <V> V run(
+    <V> @Nullable V run(
         final Callable<V> task )
         throws Exception
     {
@@ -167,8 +166,7 @@ final class TransportLayerRunner
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Nullable
-    <V> V run(
+    <V> @Nullable V run(
         final Callable<V> task,
         final Class<? extends Exception> exceptionType )
         throws Exception
@@ -196,8 +194,7 @@ final class TransportLayerRunner
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Nullable
-    <V> V run(
+    <V> @Nullable V run(
         final Callable<V> task,
         final Collection<Class<? extends Exception>> exceptionTypes )
         throws Exception

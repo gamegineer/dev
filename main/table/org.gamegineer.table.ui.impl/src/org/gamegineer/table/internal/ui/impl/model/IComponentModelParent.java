@@ -1,6 +1,6 @@
 /*
  * IComponentModelParent.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -45,8 +45,7 @@ interface IComponentModelParent
      *         associated table model or {@code null} if this component model
      *         parent is not associated with a table model.
      */
-    @Nullable
-    ComponentPath getChildPath(
+    @Nullable ComponentPath getChildPath(
         ComponentModel componentModel );
 
     /**
@@ -67,8 +66,7 @@ interface IComponentModelParent
      * @return The parent of this component model parent or {@code null} if this
      *         component model parent has no parent.
      */
-    @Nullable
-    IComponentModelParent getParent();
+    @Nullable IComponentModelParent getParent();
 
     /**
      * Gets the table model associated with this component model parent.
@@ -77,6 +75,5 @@ interface IComponentModelParent
      *         {@code null} if this component model parent is not associated
      *         with a table model.
      */
-    @Nullable
-    TableModel getTableModel();
+    @Nullable TableModel getTableModel();
 }

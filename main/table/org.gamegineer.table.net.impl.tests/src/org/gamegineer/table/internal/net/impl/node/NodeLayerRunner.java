@@ -136,8 +136,7 @@ public final class NodeLayerRunner
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Nullable
-    public <V> V run(
+    public <V> @Nullable V run(
         final Callable<V> task )
         throws Exception
     {
@@ -163,8 +162,7 @@ public final class NodeLayerRunner
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Nullable
-    public <V> V run(
+    public <V> @Nullable V run(
         final Callable<V> task,
         final Class<? extends Exception> exceptionType )
         throws Exception
@@ -193,8 +191,7 @@ public final class NodeLayerRunner
      * @throws java.lang.IllegalArgumentException
      *         If {@code exceptionTypes} contains a {@code null} element.
      */
-    @Nullable
-    public <V> V run(
+    public <V> @Nullable V run(
         final Callable<V> task,
         final Collection<Class<? extends Exception>> exceptionTypes )
         throws Exception

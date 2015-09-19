@@ -45,8 +45,7 @@ final class Model
     // ======================================================================
 
     /** The remote player. */
-    @Nullable
-    private IPlayer remotePlayer_;
+    private @Nullable IPlayer remotePlayer_;
 
     /** The table model. */
     private final TableModel tableModel_;
@@ -79,8 +78,7 @@ final class Model
      * 
      * @return The remote player or {@code null} if not specified.
      */
-    @Nullable
-    public IPlayer getRemotePlayer()
+    public @Nullable IPlayer getRemotePlayer()
     {
         return remotePlayer_;
     }
@@ -97,8 +95,7 @@ final class Model
         {
             @Override
             public IStatus validate(
-                @Nullable
-                final Object value )
+                final @Nullable Object value )
             {
                 final IPlayer remotePlayer = (IPlayer)value;
                 if( remotePlayer == null )
@@ -139,8 +136,7 @@ final class Model
      *        The remote player or {@code null} if not specified.
      */
     public void setRemotePlayer(
-        @Nullable
-        final IPlayer remotePlayer )
+        final @Nullable IPlayer remotePlayer )
     {
         remotePlayer_ = remotePlayer;
     }

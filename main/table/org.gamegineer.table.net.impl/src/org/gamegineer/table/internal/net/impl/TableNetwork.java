@@ -212,8 +212,7 @@ public final class TableNetwork
      */
     @Override
     public void disconnect(
-        @Nullable
-        final TableNetworkError error )
+        final @Nullable TableNetworkError error )
         throws InterruptedException
     {
         if( connectionStateRef_.compareAndSet( ConnectionState.CONNECTED, ConnectionState.DISCONNECTING ) )
@@ -261,8 +260,7 @@ public final class TableNetwork
      *        {@code null} if the table network was disconnected normally.
      */
     private void fireTableNetworkDisconnected(
-        @Nullable
-        final TableNetworkError error )
+        final @Nullable TableNetworkError error )
     {
         final TableNetworkDisconnectedEvent event = new TableNetworkDisconnectedEvent( this, error );
         for( final ITableNetworkListener listener : listeners_ )
@@ -300,9 +298,8 @@ public final class TableNetwork
     /*
      * @see org.gamegineer.table.net.ITableNetwork#getLocalPlayer()
      */
-    @Nullable
     @Override
-    public IPlayer getLocalPlayer()
+    public @Nullable IPlayer getLocalPlayer()
     {
         final INodeController nodeController = nodeControllerRef_.get();
         if( nodeController != null )

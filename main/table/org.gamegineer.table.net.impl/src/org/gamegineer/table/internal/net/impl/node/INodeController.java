@@ -133,8 +133,7 @@ public interface INodeController
      * @return The player associated with the table network node or {@code null}
      *         if the table network is not connected.
      */
-    @Nullable
-    public IPlayer getPlayer();
+    public @Nullable IPlayer getPlayer();
 
     /**
      * Gets the collection of players connected to the table network.

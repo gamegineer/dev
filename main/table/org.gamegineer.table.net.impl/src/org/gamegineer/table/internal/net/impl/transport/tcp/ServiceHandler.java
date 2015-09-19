@@ -50,8 +50,7 @@ final class ServiceHandler
     // ======================================================================
 
     /** The channel associated with the service handler. */
-    @Nullable
-    private SocketChannel channel_;
+    private @Nullable SocketChannel channel_;
 
     /** The input queue associated with the service handler. */
     private final InputQueue inputQueue_;
@@ -127,8 +126,7 @@ final class ServiceHandler
      */
     @Override
     void close(
-        @Nullable
-        final Exception exception )
+        final @Nullable Exception exception )
     {
         assert isTransportLayerThread();
 
@@ -231,9 +229,8 @@ final class ServiceHandler
     /*
      * @see org.gamegineer.table.internal.net.impl.transport.tcp.AbstractEventHandler#getChannel()
      */
-    @Nullable
     @Override
-    SelectableChannel getChannel()
+    @Nullable SelectableChannel getChannel()
     {
         assert isTransportLayerThread();
 

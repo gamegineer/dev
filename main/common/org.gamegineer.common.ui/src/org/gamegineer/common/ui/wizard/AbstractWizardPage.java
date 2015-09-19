@@ -1,6 +1,6 @@
 /*
  * AbstractWizardPage.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -45,12 +45,10 @@ public abstract class AbstractWizardPage
     private final String name_;
 
     /** The previous page in the wizard sequence. */
-    @Nullable
-    private IWizardPage previousPage_;
+    private @Nullable IWizardPage previousPage_;
 
     /** The wizard that hosts the page. */
-    @Nullable
-    private IWizard wizard_;
+    private @Nullable IWizard wizard_;
 
 
     // ======================================================================
@@ -94,8 +92,7 @@ public abstract class AbstractWizardPage
      *         {@code null} if the page has not yet been added to a wizard or
      *         the wizard has not yet been added to a container.
      */
-    @Nullable
-    protected final IWizardContainer getContainer()
+    protected final @Nullable IWizardContainer getContainer()
     {
         return (wizard_ != null) ? wizard_.getContainer() : null;
     }
@@ -114,9 +111,8 @@ public abstract class AbstractWizardPage
      * 
      * @see org.gamegineer.common.ui.wizard.IWizardPage#getNextPage()
      */
-    @Nullable
     @Override
-    public IWizardPage getNextPage()
+    public @Nullable IWizardPage getNextPage()
     {
         if( wizard_ != null )
         {
@@ -132,9 +128,8 @@ public abstract class AbstractWizardPage
      * 
      * @see org.gamegineer.common.ui.wizard.IWizardPage#getPreviousPage()
      */
-    @Nullable
     @Override
-    public IWizardPage getPreviousPage()
+    public @Nullable IWizardPage getPreviousPage()
     {
         if( previousPage_ != null )
         {
@@ -152,9 +147,8 @@ public abstract class AbstractWizardPage
     /*
      * @see org.gamegineer.common.ui.wizard.IWizardPage#getWizard()
      */
-    @Nullable
     @Override
-    public final IWizard getWizard()
+    public final @Nullable IWizard getWizard()
     {
         return wizard_;
     }
@@ -210,8 +204,7 @@ public abstract class AbstractWizardPage
      */
     @Override
     protected void setDescription(
-        @Nullable
-        final String description )
+        final @Nullable String description )
     {
         super.setDescription( description );
 
@@ -231,8 +224,7 @@ public abstract class AbstractWizardPage
      */
     @Override
     public void setMessage(
-        @Nullable
-        final DialogMessage message )
+        final @Nullable DialogMessage message )
     {
         super.setMessage( message );
 
@@ -249,8 +241,7 @@ public abstract class AbstractWizardPage
      */
     @Override
     public final void setPreviousPage(
-        @Nullable
-        final IWizardPage page )
+        final @Nullable IWizardPage page )
     {
         previousPage_ = page;
     }
@@ -263,8 +254,7 @@ public abstract class AbstractWizardPage
      */
     @Override
     protected void setTitle(
-        @Nullable
-        final String title )
+        final @Nullable String title )
     {
         super.setTitle( title );
 

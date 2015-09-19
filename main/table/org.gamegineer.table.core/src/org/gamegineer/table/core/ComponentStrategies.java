@@ -141,9 +141,8 @@ public final class ComponentStrategies
         /*
          * @see org.gamegineer.table.core.IComponentStrategy#getExtension(java.lang.Class)
          */
-        @Nullable
         @Override
-        public final <T> T getExtension(
+        public final <T> @Nullable T getExtension(
             @SuppressWarnings( "unused" )
             final Class<T> type )
         {

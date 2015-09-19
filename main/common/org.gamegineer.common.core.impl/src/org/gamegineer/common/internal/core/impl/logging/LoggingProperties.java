@@ -126,8 +126,7 @@ final class LoggingProperties
      *         logging properties or {@code null} if the property does not
      *         exist.
      */
-    @Nullable
-    static String getProperty(
+    static @Nullable String getProperty(
         final Map<String, String> properties,
         final String componentName,
         final String propertyName )
@@ -157,8 +156,7 @@ final class LoggingProperties
      *         logging properties or {@code null} if the property does not
      *         exist.
      */
-    @Nullable
-    static String getProperty(
+    static @Nullable String getProperty(
         final Map<String, String> properties,
         final Class<?> type,
         final String instanceName,

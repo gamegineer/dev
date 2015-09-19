@@ -47,21 +47,18 @@ public final class Activator
 
     /** The bundle context. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private BundleContext bundleContext_;
+    private @Nullable BundleContext bundleContext_;
 
     /** The executor service tracker. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private ServiceTracker<ExecutorService, ExecutorService> executorServiceTracker_;
+    private @Nullable ServiceTracker<ExecutorService, ExecutorService> executorServiceTracker_;
 
     /** The instance lock. */
     private final Object lock_;
 
     /** The table environment factory service tracker. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private ServiceTracker<ITableEnvironmentFactory, ITableEnvironmentFactory> tableEnvironmentFactoryTracker_;
+    private @Nullable ServiceTracker<ITableEnvironmentFactory, ITableEnvironmentFactory> tableEnvironmentFactoryTracker_;
 
 
     // ======================================================================
@@ -146,8 +143,7 @@ public final class Activator
      * @return The table environment factory service or {@code null} if the
      *         table environment factory service is not available.
      */
-    @Nullable
-    public ITableEnvironmentFactory getTableEnvironmentFactory()
+    public @Nullable ITableEnvironmentFactory getTableEnvironmentFactory()
     {
         synchronized( lock_ )
         {
@@ -169,8 +165,7 @@ public final class Activator
      */
     @Override
     public void start(
-        @Nullable
-        final BundleContext bundleContext )
+        final @Nullable BundleContext bundleContext )
     {
         if( bundleContext == null )
         {
@@ -192,8 +187,7 @@ public final class Activator
      */
     @Override
     public void stop(
-        @Nullable
-        final BundleContext bundleContext )
+        final @Nullable BundleContext bundleContext )
     {
         if( bundleContext == null )
         {

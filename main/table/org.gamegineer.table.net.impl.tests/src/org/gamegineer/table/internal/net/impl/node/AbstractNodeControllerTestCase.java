@@ -112,7 +112,6 @@ public abstract class AbstractNodeControllerTestCase<T extends @NonNull INodeCon
      *         controller; never {@code null}.
      */
     protected abstract NodeLayerRunner createNodeLayerRunner(
-        @NonNull
         T nodeController );
 
     /**

@@ -57,8 +57,7 @@ public final class ComponentStrategyExtensionFactory
     private static final Map<ComponentStrategyId, IComponentStrategy> COMPONENT_STRATEGIES;
 
     /** The identifier of the component strategy to create. */
-    @Nullable
-    private ComponentStrategyId componentStrategyId_;
+    private @Nullable ComponentStrategyId componentStrategyId_;
 
 
     // ======================================================================
@@ -109,14 +108,11 @@ public final class ComponentStrategyExtensionFactory
      */
     @Override
     public void setInitializationData(
-        @Nullable
-        final IConfigurationElement config,
-        @Nullable
+        final @Nullable IConfigurationElement config,
         @SuppressWarnings( "unused" )
-        final String propertyName,
-        @Nullable
+        final @Nullable String propertyName,
         @SuppressWarnings( "unused" )
-        final Object data )
+        final @Nullable Object data )
         throws CoreException
     {
         assert config != null;

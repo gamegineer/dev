@@ -1,6 +1,6 @@
 /*
  * TableNetworkException.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -72,8 +72,7 @@ public final class TableNetworkException
      */
     public TableNetworkException(
         final TableNetworkError error,
-        @Nullable
-        final String message )
+        final @Nullable String message )
     {
         this( error, message, null );
     }
@@ -90,8 +89,7 @@ public final class TableNetworkException
      */
     public TableNetworkException(
         final TableNetworkError error,
-        @Nullable
-        final Throwable cause )
+        final @Nullable Throwable cause )
     {
         this( error, error.toString(), cause );
     }
@@ -110,10 +108,8 @@ public final class TableNetworkException
      */
     public TableNetworkException(
         final TableNetworkError error,
-        @Nullable
-        final String message,
-        @Nullable
-        final Throwable cause )
+        final @Nullable String message,
+        final @Nullable Throwable cause )
     {
         super( message, cause );
 

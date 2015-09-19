@@ -58,10 +58,8 @@ public final class ObjectUtils
      *         {@code false}.
      */
     public static boolean equals(
-        @Nullable
-        final Object obj1,
-        @Nullable
-        final Object obj2 )
+        final @Nullable Object obj1,
+        final @Nullable Object obj2 )
     {
         if( obj1 == null )
         {
@@ -85,8 +83,7 @@ public final class ObjectUtils
      * @return A hash code for the specified object.
      */
     public static int hashCode(
-        @Nullable
-        final Object obj )
+        final @Nullable Object obj )
     {
         if( obj == null )
         {
@@ -107,8 +104,7 @@ public final class ObjectUtils
      *         {@code null}.
      */
     public static String toString(
-        @Nullable
-        final Object obj )
+        final @Nullable Object obj )
     {
         if( obj == null )
         {

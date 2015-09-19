@@ -1,6 +1,6 @@
 /*
  * AbstractWizard.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,8 +40,7 @@ public abstract class AbstractWizard
     // ======================================================================
 
     /** The container that hosts this wizard. */
-    @Nullable
-    private IWizardContainer container_;
+    private @Nullable IWizardContainer container_;
 
     /** Indicates the wizard needs Previous and Back buttons. */
     private boolean needsPreviousAndBackButtons_;
@@ -53,8 +52,7 @@ public abstract class AbstractWizard
     private final List<IWizardPage> pages_;
 
     /** The wizard title. */
-    @Nullable
-    private String title_;
+    private @Nullable String title_;
 
 
     // ======================================================================
@@ -160,9 +158,8 @@ public abstract class AbstractWizard
     /*
      * @see org.gamegineer.common.ui.wizard.IWizard#getContainer()
      */
-    @Nullable
     @Override
-    public final IWizardContainer getContainer()
+    public final @Nullable IWizardContainer getContainer()
     {
         return container_;
     }
@@ -172,9 +169,8 @@ public abstract class AbstractWizard
      * 
      * @see org.gamegineer.common.ui.wizard.IWizard#getFirstPage()
      */
-    @Nullable
     @Override
-    public IWizardPage getFirstPage()
+    public @Nullable IWizardPage getFirstPage()
     {
         if( pages_.isEmpty() )
         {
@@ -190,9 +186,8 @@ public abstract class AbstractWizard
      * 
      * @see org.gamegineer.common.ui.wizard.IWizard#getNextPage(org.gamegineer.common.ui.wizard.IWizardPage)
      */
-    @Nullable
     @Override
-    public IWizardPage getNextPage(
+    public @Nullable IWizardPage getNextPage(
         final IWizardPage page )
     {
         final int index = pages_.indexOf( page );
@@ -207,9 +202,8 @@ public abstract class AbstractWizard
     /*
      * @see org.gamegineer.common.ui.wizard.IWizard#getPage(java.lang.String)
      */
-    @Nullable
     @Override
-    public final IWizardPage getPage(
+    public final @Nullable IWizardPage getPage(
         final String name )
     {
         for( final IWizardPage page : pages_ )
@@ -247,9 +241,8 @@ public abstract class AbstractWizard
      * 
      * @see org.gamegineer.common.ui.wizard.IWizard#getPreviousPage(org.gamegineer.common.ui.wizard.IWizardPage)
      */
-    @Nullable
     @Override
-    public IWizardPage getPreviousPage(
+    public @Nullable IWizardPage getPreviousPage(
         final IWizardPage page )
     {
         final int index = pages_.indexOf( page );
@@ -264,9 +257,8 @@ public abstract class AbstractWizard
     /*
      * @see org.gamegineer.common.ui.wizard.IWizard#getTitle()
      */
-    @Nullable
     @Override
-    public final String getTitle()
+    public final @Nullable String getTitle()
     {
         return title_;
     }
@@ -316,8 +308,7 @@ public abstract class AbstractWizard
      */
     @Override
     public final void setContainer(
-        @Nullable
-        final IWizardContainer container )
+        final @Nullable IWizardContainer container )
     {
         container_ = container;
     }
@@ -361,8 +352,7 @@ public abstract class AbstractWizard
      *        The wizard title or {@code null} to clear the title.
      */
     protected final void setTitle(
-        @Nullable
-        final String title )
+        final @Nullable String title )
     {
         title_ = title;
 

@@ -107,9 +107,8 @@ public abstract class AbstractLoggingComponentFactory<T>
         final T component,
         @SuppressWarnings( "unused" )
         final String instanceName,
-        @Nullable
         @SuppressWarnings( "unused" )
-        final Map<String, String> properties )
+        final @Nullable Map<String, String> properties )
     {
         // do nothing
     }
@@ -197,8 +196,7 @@ public abstract class AbstractLoggingComponentFactory<T>
     static final <T> T createNamedLoggingComponent(
         final Class<T> type,
         final String name,
-        @Nullable
-        final Map<String, String> properties )
+        final @Nullable Map<String, String> properties )
     {
         final int index = name.lastIndexOf( '.' );
         assertArgumentLegal( index != -1, "name", NonNlsMessages.AbstractLoggingComponentFactory_createNamedLoggingComponent_nameNoDots ); //$NON-NLS-1$
@@ -284,8 +282,7 @@ public abstract class AbstractLoggingComponentFactory<T>
      * @throws org.osgi.service.component.ComponentException
      *         If an error occurs.
      */
-    @Nullable
-    private static ServiceReference<ComponentFactory> getComponentFactory(
+    private static @Nullable ServiceReference<ComponentFactory> getComponentFactory(
         final String typeName )
     {
         try
@@ -328,8 +325,7 @@ public abstract class AbstractLoggingComponentFactory<T>
      *         component properties collection or the property value is the
      *         wrong type.
      */
-    @Nullable
-    private static <T> T getComponentProperty(
+    private static <T> @Nullable T getComponentProperty(
         final Dictionary<?, ?> componentProperties,
         final String name,
         final Class<T> type,
@@ -359,9 +355,8 @@ public abstract class AbstractLoggingComponentFactory<T>
      */
     @Override
     public final ComponentInstance newInstance(
-        @Nullable
         @SuppressWarnings( "rawtypes" )
-        final Dictionary componentProperties )
+        final @Nullable Dictionary componentProperties )
     {
         if( componentProperties == null )
         {

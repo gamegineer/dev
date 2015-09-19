@@ -57,61 +57,50 @@ public final class Activator
 
     /** The application branding service tracker. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private ServiceTracker<IBranding, IBranding> brandingTracker_;
+    private @Nullable ServiceTracker<IBranding, IBranding> brandingTracker_;
 
     /** The bundle context. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private BundleContext bundleContext_;
+    private @Nullable BundleContext bundleContext_;
 
     /** The bundle image manager. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private BundleImages bundleImages_;
+    private @Nullable BundleImages bundleImages_;
 
     /** The component strategy user interface registry service tracker. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private ServiceTracker<IComponentStrategyUIRegistry, IComponentStrategyUIRegistry> componentStrategyUIRegistryTracker_;
+    private @Nullable ServiceTracker<IComponentStrategyUIRegistry, IComponentStrategyUIRegistry> componentStrategyUIRegistryTracker_;
 
     /** The component surface design user interface registry service tracker. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private ServiceTracker<IComponentSurfaceDesignUIRegistry, IComponentSurfaceDesignUIRegistry> componentSurfaceDesignUIRegistryTracker_;
+    private @Nullable ServiceTracker<IComponentSurfaceDesignUIRegistry, IComponentSurfaceDesignUIRegistry> componentSurfaceDesignUIRegistryTracker_;
 
     /** The executor service tracker. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private ServiceTracker<ExecutorService, ExecutorService> executorServiceTracker_;
+    private @Nullable ServiceTracker<ExecutorService, ExecutorService> executorServiceTracker_;
 
     /** The extension registry service tracker. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private ServiceTracker<IExtensionRegistry, IExtensionRegistry> extensionRegistryTracker_;
+    private @Nullable ServiceTracker<IExtensionRegistry, IExtensionRegistry> extensionRegistryTracker_;
 
     /** The help system service tracker. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private ServiceTracker<IHelpSystem, IHelpSystem> helpSystemTracker_;
+    private @Nullable ServiceTracker<IHelpSystem, IHelpSystem> helpSystemTracker_;
 
     /** The instance lock. */
     private final Object lock_;
 
     /** The preferences service tracker. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private ServiceTracker<PreferencesService, PreferencesService> preferencesServiceTracker_;
+    private @Nullable ServiceTracker<PreferencesService, PreferencesService> preferencesServiceTracker_;
 
     /** The table environment factory service tracker. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private ServiceTracker<ITableEnvironmentFactory, ITableEnvironmentFactory> tableEnvironmentFactoryTracker_;
+    private @Nullable ServiceTracker<ITableEnvironmentFactory, ITableEnvironmentFactory> tableEnvironmentFactoryTracker_;
 
     /** The table network factory service tracker. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private ServiceTracker<ITableNetworkFactory, ITableNetworkFactory> tableNetworkFactoryTracker_;
+    private @Nullable ServiceTracker<ITableNetworkFactory, ITableNetworkFactory> tableNetworkFactoryTracker_;
 
 
     // ======================================================================
@@ -148,8 +137,7 @@ public final class Activator
      * @return The application branding service or {@code null} if no
      *         application branding service is available.
      */
-    @Nullable
-    public IBranding getBranding()
+    public @Nullable IBranding getBranding()
     {
         synchronized( lock_ )
         {
@@ -208,8 +196,7 @@ public final class Activator
      *         {@code null} if no component strategy user interface registry
      *         service is available.
      */
-    @Nullable
-    public IComponentStrategyUIRegistry getComponentStrategyUIRegistry()
+    public @Nullable IComponentStrategyUIRegistry getComponentStrategyUIRegistry()
     {
         synchronized( lock_ )
         {
@@ -233,8 +220,7 @@ public final class Activator
      *         {@code null} if no component surface design user interface
      *         registry service is available.
      */
-    @Nullable
-    public IComponentSurfaceDesignUIRegistry getComponentSurfaceDesignUIRegistry()
+    public @Nullable IComponentSurfaceDesignUIRegistry getComponentSurfaceDesignUIRegistry()
     {
         synchronized( lock_ )
         {
@@ -298,8 +284,7 @@ public final class Activator
      * 
      * @return The extension registry service; never {@code null}.
      */
-    @Nullable
-    public IExtensionRegistry getExtensionRegistry()
+    public @Nullable IExtensionRegistry getExtensionRegistry()
     {
         synchronized( lock_ )
         {
@@ -322,8 +307,7 @@ public final class Activator
      * @return The help system service or {@code null} if no help system service
      *         is available.
      */
-    @Nullable
-    public IHelpSystem getHelpSystem()
+    public @Nullable IHelpSystem getHelpSystem()
     {
         synchronized( lock_ )
         {
@@ -346,8 +330,7 @@ public final class Activator
      * @return The preferences service or {@code null} if no preferences service
      *         is available.
      */
-    @Nullable
-    public PreferencesService getPreferencesService()
+    public @Nullable PreferencesService getPreferencesService()
     {
         synchronized( lock_ )
         {
@@ -370,8 +353,7 @@ public final class Activator
      * @return The table environment factory service or {@code null} if the
      *         table environment factory service is not available.
      */
-    @Nullable
-    public ITableEnvironmentFactory getTableEnvironmentFactory()
+    public @Nullable ITableEnvironmentFactory getTableEnvironmentFactory()
     {
         synchronized( lock_ )
         {
@@ -394,8 +376,7 @@ public final class Activator
      * @return The table network factory service or {@code null} if the table
      *         network factory service is not available.
      */
-    @Nullable
-    public ITableNetworkFactory getTableNetworkFactory()
+    public @Nullable ITableNetworkFactory getTableNetworkFactory()
     {
         synchronized( lock_ )
         {
@@ -418,8 +399,7 @@ public final class Activator
      * @return The root node from the user preferences for this bundle or
      *         {@code null} if no preferences service is available.
      */
-    @Nullable
-    public Preferences getUserPreferences()
+    public @Nullable Preferences getUserPreferences()
     {
         final PreferencesService preferencesService = getPreferencesService();
         if( preferencesService == null )
@@ -442,8 +422,7 @@ public final class Activator
      *         this bundle or {@code null} if no preferences service is
      *         available.
      */
-    @Nullable
-    public Preferences getUserPreferences(
+    public @Nullable Preferences getUserPreferences(
         final Class<?> type )
     {
         final Preferences userPreferences = getUserPreferences();
@@ -479,8 +458,7 @@ public final class Activator
      */
     @Override
     public void start(
-        @Nullable
-        final BundleContext bundleContext )
+        final @Nullable BundleContext bundleContext )
     {
         if( bundleContext == null )
         {
@@ -502,8 +480,7 @@ public final class Activator
      */
     @Override
     public void stop(
-        @Nullable
-        final BundleContext bundleContext )
+        final @Nullable BundleContext bundleContext )
     {
         if( bundleContext == null )
         {

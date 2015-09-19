@@ -126,9 +126,8 @@ public final class TestComponentStrategies
                 return componentStrategy.getDefaultSurfaceDesigns();
             }
 
-            @Nullable
             @Override
-            public <T> T getExtension(
+            public <T> @Nullable T getExtension(
                 final Class<T> type )
             {
                 return componentStrategy.getExtension( type );
@@ -196,9 +195,8 @@ public final class TestComponentStrategies
                 return containerStrategy.getDefaultSurfaceDesigns();
             }
 
-            @Nullable
             @Override
-            public <T> T getExtension(
+            public <T> @Nullable T getExtension(
                 final Class<T> type )
             {
                 return containerStrategy.getExtension( type );

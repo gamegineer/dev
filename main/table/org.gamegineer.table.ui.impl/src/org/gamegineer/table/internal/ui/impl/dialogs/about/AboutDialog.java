@@ -66,8 +66,7 @@ public final class AboutDialog
      *        The parent shell or {@code null} to create a top-level shell.
      */
     public AboutDialog(
-        @Nullable
-        final Window parentShell )
+        final @Nullable Window parentShell )
     {
         super( parentShell );
 
@@ -161,8 +160,7 @@ public final class AboutDialog
      * 
      * @return The application icon or {@code null} if no icon is available.
      */
-    @Nullable
-    private static Icon getApplicationIcon()
+    private static @Nullable Icon getApplicationIcon()
     {
         final int preferredSize = 32;
         Image preferredImage = null;

@@ -1,6 +1,6 @@
 /*
  * DeckPrototypeFactory.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -71,8 +71,7 @@ public final class DeckPrototypeFactory
      * The identifier of the component surface design of the back of each card
      * in the deck.
      */
-    @Nullable
-    private ComponentSurfaceDesignId backDesignId_;
+    private @Nullable ComponentSurfaceDesignId backDesignId_;
 
     /** Indicates Jokers should be included in the deck. */
     private boolean includeJokers_;
@@ -218,14 +217,11 @@ public final class DeckPrototypeFactory
      */
     @Override
     public void setInitializationData(
-        @Nullable
         @SuppressWarnings( "unused" )
-        final IConfigurationElement config,
-        @Nullable
+        final @Nullable IConfigurationElement config,
         @SuppressWarnings( "unused" )
-        final String propertyName,
-        @Nullable
-        final Object data )
+        final @Nullable String propertyName,
+        final @Nullable Object data )
         throws CoreException
     {
         @SuppressWarnings( "unchecked" )

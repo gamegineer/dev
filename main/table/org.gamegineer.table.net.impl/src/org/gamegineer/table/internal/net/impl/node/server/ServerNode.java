@@ -70,8 +70,7 @@ public final class ServerNode
     // ======================================================================
 
     /** The master table for the table network. */
-    @Nullable
-    private ITable masterTable_;
+    private @Nullable ITable masterTable_;
 
     /**
      * The collection of players connected to the table network. The key is the
@@ -245,9 +244,8 @@ public final class ServerNode
     /*
      * @see org.gamegineer.table.internal.net.impl.node.INodeController#getPlayer()
      */
-    @Nullable
     @Override
-    public Player getPlayer()
+    public @Nullable Player getPlayer()
     {
         assert isNodeLayerThread();
 

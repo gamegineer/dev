@@ -55,16 +55,13 @@ final class MainPage
     // ======================================================================
 
     /** The page controls. */
-    @Nullable
-    private Controls controls_;
+    private @Nullable Controls controls_;
 
     /** The page data binding adapter. */
-    @Nullable
-    private WizardPageDataBindingAdapter dataBindingAdapter_;
+    private @Nullable WizardPageDataBindingAdapter dataBindingAdapter_;
 
     /** The page data binding context. */
-    @Nullable
-    private DataBindingContext dataBindingContext_;
+    private @Nullable DataBindingContext dataBindingContext_;
 
 
     // ======================================================================

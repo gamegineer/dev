@@ -1,6 +1,6 @@
 /*
  * ComponentView.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -57,15 +57,13 @@ class ComponentView
     private final ComponentModel componentModel_;
 
     /** The component model listener for this view. */
-    @Nullable
-    private IComponentModelListener componentModelListener_;
+    private @Nullable IComponentModelListener componentModelListener_;
 
     /** The dirty bounds of this view in table coordinates. */
     private final Rectangle dirtyBounds_;
 
     /** The table view that owns this view. */
-    @Nullable
-    private TableView tableView_;
+    private @Nullable TableView tableView_;
 
 
     // ======================================================================

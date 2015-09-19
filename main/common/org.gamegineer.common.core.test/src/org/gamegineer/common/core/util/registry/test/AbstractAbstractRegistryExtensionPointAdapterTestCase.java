@@ -96,10 +96,8 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
      *         If the two objects are not equal.
      */
     protected void assertObjectEquals(
-        @Nullable
-        final ObjectType expected,
-        @Nullable
-        final ObjectType actual )
+        final @Nullable ObjectType expected,
+        final @Nullable ObjectType actual )
     {
         assertEquals( expected, actual );
     }

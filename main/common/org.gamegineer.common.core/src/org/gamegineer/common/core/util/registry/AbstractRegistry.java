@@ -1,6 +1,6 @@
 /*
  * AbstractRegistry.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -70,9 +70,8 @@ public abstract class AbstractRegistry<ObjectIdType, ObjectType>
     /*
      * @see org.gamegineer.common.core.util.registry.IRegistry#getObject(java.lang.Object)
      */
-    @Nullable
     @Override
-    public final ObjectType getObject(
+    public final @Nullable ObjectType getObject(
         final ObjectIdType id )
     {
         return objects_.get( id );

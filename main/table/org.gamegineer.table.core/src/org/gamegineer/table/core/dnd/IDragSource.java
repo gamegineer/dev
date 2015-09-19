@@ -1,6 +1,6 @@
 /*
  * IDragSource.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -61,8 +61,7 @@ public interface IDragSource
      *         If there is an active drag-and-drop operation in the associated
      *         table.
      */
-    @Nullable
-    public IDragContext beginDrag(
+    public @Nullable IDragContext beginDrag(
         Point location,
         IComponent component,
         IDragStrategyFactory dragStrategyFactory );

@@ -131,8 +131,7 @@ final class NodeLayer
         {
             @Override
             public Thread newThread(
-                @Nullable
-                final Runnable r )
+                final @Nullable Runnable r )
             {
                 assert r != null;
 

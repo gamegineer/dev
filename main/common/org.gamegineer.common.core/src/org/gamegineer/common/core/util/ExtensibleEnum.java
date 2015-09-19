@@ -100,8 +100,7 @@ public abstract class ExtensibleEnum
      */
     @Override
     public final boolean equals(
-        @Nullable
-        final Object obj )
+        final @Nullable Object obj )
     {
         return super.equals( obj );
     }

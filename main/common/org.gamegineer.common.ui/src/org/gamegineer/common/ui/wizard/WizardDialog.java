@@ -1,6 +1,6 @@
 /*
  * WizardDialog.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -65,27 +65,22 @@ public final class WizardDialog
     private static final int MINIMUM_DIALOG_WIDTH = 350;
 
     /** The active wizard page. */
-    @Nullable
-    private IWizardPage activePage_;
+    private @Nullable IWizardPage activePage_;
 
     /** The component enable state before executing the active wizard task. */
-    @Nullable
-    private ComponentEnableState componentEnableState_;
+    private @Nullable ComponentEnableState componentEnableState_;
 
     /** Indicates the wizard is in the process of moving to the previous page. */
     private boolean isMovingToPreviousPage_;
 
     /** The container for all page content. */
-    @Nullable
-    private Container pageContainer_;
+    private @Nullable Container pageContainer_;
 
     /** The wizard progress monitor component. */
-    @Nullable
-    private ProgressMonitorComponent progressMonitorComponent_;
+    private @Nullable ProgressMonitorComponent progressMonitorComponent_;
 
     /** The active task. */
-    @Nullable
-    private RunnableTask<?, ?> task_;
+    private @Nullable RunnableTask<?, ?> task_;
 
     /** The wizard hosted in the dialog. */
     private final IWizard wizard_;
@@ -104,8 +99,7 @@ public final class WizardDialog
      *        The wizard hosted in the dialog; must not be {@code null}.
      */
     public WizardDialog(
-        @Nullable
-        final Window parentShell,
+        final @Nullable Window parentShell,
         final IWizard wizard )
     {
         super( parentShell );
@@ -460,8 +454,7 @@ public final class WizardDialog
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void propertyChange(
-                @Nullable
-                final PropertyChangeEvent event )
+                final @Nullable PropertyChangeEvent event )
             {
                 assert event != null;
 
@@ -498,9 +491,8 @@ public final class WizardDialog
     /*
      * @see org.gamegineer.common.ui.wizard.IWizardContainer#getActivePage()
      */
-    @Nullable
     @Override
-    public IWizardPage getActivePage()
+    public @Nullable IWizardPage getActivePage()
     {
         return activePage_;
     }

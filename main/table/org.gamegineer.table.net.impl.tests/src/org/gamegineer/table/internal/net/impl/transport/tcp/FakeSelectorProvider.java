@@ -1,6 +1,6 @@
 /*
  * FakeSelectorProvider.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -58,10 +58,9 @@ class FakeSelectorProvider
     /*
      * @see java.nio.channels.spi.SelectorProvider#openDatagramChannel()
      */
-    @Nullable
     @Override
     @SuppressWarnings( "unused" )
-    public DatagramChannel openDatagramChannel()
+    public @Nullable DatagramChannel openDatagramChannel()
         throws IOException
     {
         return null;
@@ -70,12 +69,10 @@ class FakeSelectorProvider
     /*
      * @see java.nio.channels.spi.SelectorProvider#openDatagramChannel(java.net.ProtocolFamily)
      */
-    @Nullable
     @Override
     @SuppressWarnings( "unused" )
-    public DatagramChannel openDatagramChannel(
-        @Nullable
-        final ProtocolFamily family )
+    public @Nullable DatagramChannel openDatagramChannel(
+        final @Nullable ProtocolFamily family )
         throws IOException
     {
         return null;
@@ -84,10 +81,9 @@ class FakeSelectorProvider
     /*
      * @see java.nio.channels.spi.SelectorProvider#openPipe()
      */
-    @Nullable
     @Override
     @SuppressWarnings( "unused" )
-    public Pipe openPipe()
+    public @Nullable Pipe openPipe()
         throws IOException
     {
         return null;
@@ -96,10 +92,9 @@ class FakeSelectorProvider
     /*
      * @see java.nio.channels.spi.SelectorProvider#openSelector()
      */
-    @Nullable
     @Override
     @SuppressWarnings( "unused" )
-    public AbstractSelector openSelector()
+    public @Nullable AbstractSelector openSelector()
         throws IOException
     {
         return null;
@@ -108,10 +103,9 @@ class FakeSelectorProvider
     /*
      * @see java.nio.channels.spi.SelectorProvider#openServerSocketChannel()
      */
-    @Nullable
     @Override
     @SuppressWarnings( "unused" )
-    public ServerSocketChannel openServerSocketChannel()
+    public @Nullable ServerSocketChannel openServerSocketChannel()
         throws IOException
     {
         return null;
@@ -120,10 +114,9 @@ class FakeSelectorProvider
     /*
      * @see java.nio.channels.spi.SelectorProvider#openSocketChannel()
      */
-    @Nullable
     @Override
     @SuppressWarnings( "unused" )
-    public SocketChannel openSocketChannel()
+    public @Nullable SocketChannel openSocketChannel()
         throws IOException
     {
         return null;

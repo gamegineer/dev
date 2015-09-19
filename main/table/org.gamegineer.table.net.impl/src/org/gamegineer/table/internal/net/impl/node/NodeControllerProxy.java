@@ -263,18 +263,16 @@ final class NodeControllerProxy
     /*
      * @see org.gamegineer.table.internal.net.impl.node.INodeController#getPlayer()
      */
-    @Nullable
     @Override
-    public IPlayer getPlayer()
+    public @Nullable IPlayer getPlayer()
     {
         try
         {
             return actualNodeController_.getNodeLayer().syncExec( new Callable<@Nullable IPlayer>()
             {
-                @Nullable
                 @Override
                 @SuppressWarnings( "synthetic-access" )
-                public IPlayer call()
+                public @Nullable IPlayer call()
                 {
                     return actualNodeController_.getPlayer();
                 }

@@ -72,8 +72,7 @@ public final class ClientNode
      * occurred.
      */
     @GuardedBy( "handshakeLock_" )
-    @Nullable
-    private TableNetworkError handshakeError_;
+    private @Nullable TableNetworkError handshakeError_;
 
     /** The handshake lock. */
     private final Lock handshakeLock_;
@@ -246,8 +245,7 @@ public final class ClientNode
      */
     @Override
     protected void disconnecting(
-        @Nullable
-        final TableNetworkError error )
+        final @Nullable TableNetworkError error )
     {
         assert isNodeLayerThread();
 
@@ -272,9 +270,8 @@ public final class ClientNode
     /*
      * @see org.gamegineer.table.internal.net.impl.node.INodeController#getPlayer()
      */
-    @Nullable
     @Override
-    public IPlayer getPlayer()
+    public @Nullable IPlayer getPlayer()
     {
         assert isNodeLayerThread();
 
@@ -363,8 +360,7 @@ public final class ClientNode
      *        handshake completed successfully.
      */
     void setHandshakeComplete(
-        @Nullable
-        final TableNetworkError error )
+        final @Nullable TableNetworkError error )
     {
         handshakeLock_.lock();
         try

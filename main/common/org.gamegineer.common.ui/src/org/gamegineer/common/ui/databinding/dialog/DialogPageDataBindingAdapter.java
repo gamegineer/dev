@@ -55,20 +55,16 @@ public class DialogPageDataBindingAdapter
     // ======================================================================
 
     /** The aggregate validation status. */
-    @Nullable
-    private IObservableValue aggregateValidationStatus_;
+    private @Nullable IObservableValue aggregateValidationStatus_;
 
     /** The current validation status. */
-    @Nullable
-    private IStatus currentValidationStatus_;
+    private @Nullable IStatus currentValidationStatus_;
 
     /** The data binding context. */
-    @Nullable
-    private DataBindingContext dataBindingContext_;
+    private @Nullable DataBindingContext dataBindingContext_;
 
     /** The dialog page. */
-    @Nullable
-    private IDialogPage dialogPage_;
+    private @Nullable IDialogPage dialogPage_;
 
     /** Indicates the UI has changed. */
     private boolean hasUIChanged_;
@@ -77,16 +73,13 @@ public class DialogPageDataBindingAdapter
     private boolean isCurrentValidationStatusStale_;
 
     /** The UI change listener. */
-    @Nullable
-    private IChangeListener uiChangeListener_;
+    private @Nullable IChangeListener uiChangeListener_;
 
     /** The validation status provider targets list change listener. */
-    @Nullable
-    private IListChangeListener validationStatusProviderTargetsListChangeListener_;
+    private @Nullable IListChangeListener validationStatusProviderTargetsListChangeListener_;
 
     /** The validation status providers list change listener. */
-    @Nullable
-    private IListChangeListener validationStatusProvidersListChangeListener_;
+    private @Nullable IListChangeListener validationStatusProvidersListChangeListener_;
 
 
     // ======================================================================
@@ -135,9 +128,8 @@ public class DialogPageDataBindingAdapter
         {
             @Override
             public void handleChange(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final ChangeEvent event )
+                final @Nullable ChangeEvent event )
             {
                 handleUIChanged();
             }
@@ -157,8 +149,7 @@ public class DialogPageDataBindingAdapter
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void handleListChange(
-                @Nullable
-                final ListChangeEvent event )
+                final @Nullable ListChangeEvent event )
             {
                 assert event != null;
 
@@ -191,8 +182,7 @@ public class DialogPageDataBindingAdapter
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void handleListChange(
-                @Nullable
-                final ListChangeEvent event )
+                final @Nullable ListChangeEvent event )
             {
                 assert event != null;
 
@@ -262,8 +252,7 @@ public class DialogPageDataBindingAdapter
      * @return The current validation status or {@code null} if there is no
      *         current validation status.
      */
-    @Nullable
-    protected final IStatus getCurrentValidationStatus()
+    protected final @Nullable IStatus getCurrentValidationStatus()
     {
         return currentValidationStatus_;
     }
@@ -350,8 +339,7 @@ public class DialogPageDataBindingAdapter
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void handleValueChange(
-                @Nullable
-                final ValueChangeEvent event )
+                final @Nullable ValueChangeEvent event )
             {
                 assert event != null;
 
@@ -365,9 +353,8 @@ public class DialogPageDataBindingAdapter
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void handleStale(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final StaleEvent event )
+                final @Nullable StaleEvent event )
             {
                 isCurrentValidationStatusStale_ = true;
                 handleValidationStatusChanged();

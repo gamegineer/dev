@@ -334,8 +334,7 @@ public final class TableEnvironmentModel
         @Override
         public boolean tryLock(
             final long time,
-            @Nullable
-            final TimeUnit unit )
+            final @Nullable TimeUnit unit )
             throws InterruptedException
         {
             return tableEnvironment_.getLock().tryLock( time, unit );

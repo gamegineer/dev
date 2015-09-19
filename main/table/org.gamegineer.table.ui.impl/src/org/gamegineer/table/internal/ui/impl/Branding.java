@@ -60,8 +60,7 @@ public final class Branding
      * @return The default application branding service or {@code null} if no
      *         application branding service is available.
      */
-    @Nullable
-    public static IBranding getDefault()
+    public static @Nullable IBranding getDefault()
     {
         return Activator.getDefault().getBranding();
     }

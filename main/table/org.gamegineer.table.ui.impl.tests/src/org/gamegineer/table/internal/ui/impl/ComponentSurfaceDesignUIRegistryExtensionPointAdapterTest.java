@@ -65,10 +65,8 @@ public final class ComponentSurfaceDesignUIRegistryExtensionPointAdapterTest
      */
     @Override
     protected void assertObjectEquals(
-        @Nullable
-        final ComponentSurfaceDesignUI expected,
-        @Nullable
-        final ComponentSurfaceDesignUI actual )
+        final @Nullable ComponentSurfaceDesignUI expected,
+        final @Nullable ComponentSurfaceDesignUI actual )
     {
         if( expected == null )
         {

@@ -1,6 +1,6 @@
 /*
  * ITableNetworkController.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -59,8 +59,7 @@ public interface ITableNetworkController
      *         to disconnect.
      */
     public void disconnect(
-        @Nullable
-        TableNetworkError error )
+        @Nullable TableNetworkError error )
         throws InterruptedException;
 
     /**

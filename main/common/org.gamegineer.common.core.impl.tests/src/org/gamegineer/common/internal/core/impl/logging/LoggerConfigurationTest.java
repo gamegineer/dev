@@ -51,24 +51,19 @@ public final class LoggerConfigurationTest
     // ======================================================================
 
     /** The class name of the filter used in the fixture. */
-    @NonNull
-    private static final String FILTER_CLASS_NAME = FakeFilter.class.getName();
+    private static final @NonNull String FILTER_CLASS_NAME = FakeFilter.class.getName();
 
     /** The instance name of the filter used in the fixture. */
-    @NonNull
-    private static final String FILTER_INSTANCE_NAME = "filterName"; //$NON-NLS-1$
+    private static final @NonNull String FILTER_INSTANCE_NAME = "filterName"; //$NON-NLS-1$
 
     /** The class name of the handler used in the fixture. */
-    @NonNull
-    private static final String HANDLER_CLASS_NAME = FakeHandler.class.getName();
+    private static final @NonNull String HANDLER_CLASS_NAME = FakeHandler.class.getName();
 
     /** The instance name of the first handler used in the fixture. */
-    @NonNull
-    private static final String HANDLER_INSTANCE_NAME_1 = "handlerName1"; //$NON-NLS-1$
+    private static final @NonNull String HANDLER_INSTANCE_NAME_1 = "handlerName1"; //$NON-NLS-1$
 
     /** The instance name of the second handler used in the fixture. */
-    @NonNull
-    private static final String HANDLER_INSTANCE_NAME_2 = "handlerName2"; //$NON-NLS-1$
+    private static final @NonNull String HANDLER_INSTANCE_NAME_2 = "handlerName2"; //$NON-NLS-1$
 
     /** The default logger configuration under test in the fixture. */
     private LoggerConfiguration config_;

@@ -86,8 +86,7 @@ public final class SynchronousFuture<@Nullable V>
      *        The operation exception; must not be {@code null}.
      */
     public SynchronousFuture(
-        @NonNull
-        final Throwable exception )
+        final @NonNull Throwable exception )
     {
         this( null, exception );
     }

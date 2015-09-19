@@ -63,8 +63,7 @@ abstract class AbstractTransportLayer
      * The dispatcher associated with the transport layer or {@code null} if the
      * transport layer is not open.
      */
-    @Nullable
-    private Dispatcher dispatcher_;
+    private @Nullable Dispatcher dispatcher_;
 
     /** The transport layer executor service. */
     private final ExecutorService executorService_;
@@ -307,8 +306,7 @@ abstract class AbstractTransportLayer
      *        or {@code null} if the transport layer was disconnected normally.
      */
     final void disconnected(
-        @Nullable
-        final Exception exception )
+        final @Nullable Exception exception )
     {
         assert isTransportLayerThread();
 
@@ -431,8 +429,7 @@ abstract class AbstractTransportLayer
      * @throws java.util.concurrent.RejectedExecutionException
      *         If the task cannot be scheduled for execution.
      */
-    @Nullable
-    <T> T syncExec(
+    <T> @Nullable T syncExec(
         final Callable<T> task )
         throws ExecutionException, InterruptedException
     {
@@ -565,8 +562,7 @@ abstract class AbstractTransportLayer
             {
                 @Override
                 public Thread newThread(
-                    @Nullable
-                    final Runnable r )
+                    final @Nullable Runnable r )
                 {
                     return new Thread( r, NonNlsMessages.AbstractTransportLayer_transportLayerThread_name );
                 }

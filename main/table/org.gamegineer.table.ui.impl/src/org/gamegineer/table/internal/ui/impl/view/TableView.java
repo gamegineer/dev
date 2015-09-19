@@ -136,12 +136,10 @@ final class TableView
     private final MouseInputListener mouseInputListener_;
 
     /** The table model listener for this view. */
-    @Nullable
-    private ITableModelListener tableModelListener_;
+    private @Nullable ITableModelListener tableModelListener_;
 
     /** The tabletop view. */
-    @Nullable
-    private ContainerView tabletopView_;
+    private @Nullable ContainerView tabletopView_;
 
     /**
      * Indicates the active input handler should update the focus in the Mouse
@@ -299,8 +297,7 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @Nullable
-                final ActionEvent event )
+                final @Nullable ActionEvent event )
             {
                 assert event != null;
 
@@ -314,8 +311,7 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @Nullable
-                final ActionEvent event )
+                final @Nullable ActionEvent event )
             {
                 assert event != null;
 
@@ -331,9 +327,8 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final ActionEvent event )
+                final @Nullable ActionEvent event )
             {
                 cancelTableNetworkControlRequest();
             }
@@ -343,9 +338,8 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final ActionEvent event )
+                final @Nullable ActionEvent event )
             {
                 debugTraceTable();
             }
@@ -355,9 +349,8 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final ActionEvent event )
+                final @Nullable ActionEvent event )
             {
                 debugTraceTableModel();
             }
@@ -367,9 +360,8 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final ActionEvent event )
+                final @Nullable ActionEvent event )
             {
                 disconnectTableNetwork();
             }
@@ -379,9 +371,8 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final ActionEvent event )
+                final @Nullable ActionEvent event )
             {
                 flipComponent();
             }
@@ -391,9 +382,8 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final ActionEvent event )
+                final @Nullable ActionEvent event )
             {
                 giveTableNetworkControl();
             }
@@ -403,9 +393,8 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final ActionEvent event )
+                final @Nullable ActionEvent event )
             {
                 hostTableNetwork();
             }
@@ -415,9 +404,8 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final ActionEvent event )
+                final @Nullable ActionEvent event )
             {
                 joinTableNetwork();
             }
@@ -427,9 +415,8 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final ActionEvent event )
+                final @Nullable ActionEvent event )
             {
                 removeAllComponents();
             }
@@ -439,9 +426,8 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final ActionEvent event )
+                final @Nullable ActionEvent event )
             {
                 removeComponent();
             }
@@ -451,9 +437,8 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final ActionEvent event )
+                final @Nullable ActionEvent event )
             {
                 requestTableNetworkControl();
             }
@@ -463,9 +448,8 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final ActionEvent event )
+                final @Nullable ActionEvent event )
             {
                 resetTableOrigin();
             }
@@ -481,9 +465,8 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final Action obj )
+                final @Nullable Action obj )
             {
                 if( getFocusedComponentModel() == null )
                 {
@@ -498,9 +481,8 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final Action obj )
+                final @Nullable Action obj )
             {
                 if( getFocusedContainerModel() == null )
                 {
@@ -515,9 +497,8 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final Action obj )
+                final @Nullable Action obj )
             {
                 getTableEnvironmentModelLock().lock();
                 try
@@ -541,9 +522,8 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final Action obj )
+                final @Nullable Action obj )
             {
                 return model_.isEditable();
             }
@@ -553,9 +533,8 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final Action obj )
+                final @Nullable Action obj )
             {
                 return model_.getTableNetwork().isConnected();
             }
@@ -565,9 +544,8 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final Action obj )
+                final @Nullable Action obj )
             {
                 return !model_.getTableNetwork().isConnected();
             }
@@ -578,9 +556,8 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final Action obj )
+                final @Nullable Action obj )
             {
                 final IPlayer localPlayer = model_.getTableNetwork().getLocalPlayer();
                 return (localPlayer != null) && localPlayer.hasRole( PlayerRole.EDITOR_REQUESTER );
@@ -593,9 +570,8 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final Action obj )
+                final @Nullable Action obj )
             {
                 final IPlayer localPlayer = model_.getTableNetwork().getLocalPlayer();
                 return (localPlayer != null) && localPlayer.hasRole( PlayerRole.EDITOR );
@@ -610,9 +586,8 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
-                @Nullable
                 @SuppressWarnings( "unused" )
-                final Action obj )
+                final @Nullable Action obj )
             {
                 final IPlayer localPlayer = model_.getTableNetwork().getLocalPlayer();
                 return (localPlayer != null) && !localPlayer.hasRole( PlayerRole.EDITOR ) && !localPlayer.hasRole( PlayerRole.EDITOR_REQUESTER );
@@ -629,8 +604,7 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
-                @Nullable
-                final Action obj )
+                final @Nullable Action obj )
             {
                 assert obj != null;
 
@@ -756,8 +730,7 @@ final class TableView
         {
             @Override
             public void keyPressed(
-                @Nullable
-                final KeyEvent event )
+                final @Nullable KeyEvent event )
             {
                 assert event != null;
 
@@ -766,8 +739,7 @@ final class TableView
 
             @Override
             public void keyReleased(
-                @Nullable
-                final KeyEvent event )
+                final @Nullable KeyEvent event )
             {
                 assert event != null;
 
@@ -781,8 +753,7 @@ final class TableView
 
             @Override
             public void keyTyped(
-                @Nullable
-                final KeyEvent event )
+                final @Nullable KeyEvent event )
             {
                 assert event != null;
 
@@ -804,32 +775,28 @@ final class TableView
         {
             @Override
             public void mouseDragged(
-                @Nullable
-                final MouseEvent event )
+                final @Nullable MouseEvent event )
             {
                 inputHandler_.mouseDragged( event );
             }
 
             @Override
             public void mouseMoved(
-                @Nullable
-                final MouseEvent event )
+                final @Nullable MouseEvent event )
             {
                 inputHandler_.mouseMoved( event );
             }
 
             @Override
             public void mousePressed(
-                @Nullable
-                final MouseEvent event )
+                final @Nullable MouseEvent event )
             {
                 inputHandler_.mousePressed( event );
             }
 
             @Override
             public void mouseReleased(
-                @Nullable
-                final MouseEvent event )
+                final @Nullable MouseEvent event )
             {
                 inputHandler_.mouseReleased( event );
             }
@@ -911,8 +878,7 @@ final class TableView
      * @return The model associated with the focused component or {@code null}
      *         if no component has the focus.
      */
-    @Nullable
-    private ComponentModel getFocusedComponentModel()
+    private @Nullable ComponentModel getFocusedComponentModel()
     {
         return model_.getFocusedComponentModel();
     }
@@ -923,8 +889,7 @@ final class TableView
      * @return The model associated with the focused container or {@code null}
      *         if no container has the focus.
      */
-    @Nullable
-    private ContainerModel getFocusedContainerModel()
+    private @Nullable ContainerModel getFocusedContainerModel()
     {
         final ComponentModel componentModel = getFocusedComponentModel();
         return (componentModel instanceof ContainerModel) ? (ContainerModel)componentModel : null;
@@ -938,8 +903,7 @@ final class TableView
      *         model if no component has the focus; or {@code null} if a
      *         non-container component has the focus.
      */
-    @Nullable
-    private ContainerModel getFocusedContainerModelOrTabletopModel()
+    private @Nullable ContainerModel getFocusedContainerModelOrTabletopModel()
     {
         final ComponentModel componentModel = getFocusedComponentModel();
         if( componentModel == null )
@@ -1036,8 +1000,7 @@ final class TableView
      */
     @Override
     protected void paintChildren(
-        @Nullable
-        final Graphics g )
+        final @Nullable Graphics g )
     {
         assert g != null;
 
@@ -1235,8 +1198,7 @@ final class TableView
      */
     private void setInputHandler(
         final Class<? extends AbstractInputHandler> handlerClass,
-        @Nullable
-        final InputEvent event )
+        final @Nullable InputEvent event )
     {
         inputHandler_.deactivate();
         final AbstractInputHandler inputHandler = inputHandlers_.get( handlerClass );
@@ -1301,9 +1263,8 @@ final class TableView
          *        be {@code null} if no input event triggered the activation.
          */
         void activate(
-            @Nullable
             @SuppressWarnings( "unused" )
-            final InputEvent event )
+            final @Nullable InputEvent event )
         {
             // do nothing
         }
@@ -1319,10 +1280,8 @@ final class TableView
          * @return A search vector from the focused component model or
          *         {@code null} if no component model has the focus.
          */
-        @Nullable
-        protected final ComponentModelVector createSearchVectorFromFocusedComponentModel(
-            @Nullable
-            final InputEvent event )
+        protected final @Nullable ComponentModelVector createSearchVectorFromFocusedComponentModel(
+            final @Nullable InputEvent event )
         {
             final ComponentModel focusedComponentModel = model_.getFocusedComponentModel();
             if( focusedComponentModel == null )
@@ -1376,8 +1335,7 @@ final class TableView
          * @return The mouse location in table coordinates; never {@code null}.
          */
         protected final Point getMouseLocation(
-            @Nullable
-            final InputEvent event )
+            final @Nullable InputEvent event )
         {
             if( event instanceof MouseEvent )
             {
@@ -1397,9 +1355,8 @@ final class TableView
          */
         @Override
         public void keyPressed(
-            @Nullable
             @SuppressWarnings( "unused" )
-            final KeyEvent event )
+            final @Nullable KeyEvent event )
         {
             // do nothing
         }
@@ -1412,9 +1369,8 @@ final class TableView
          */
         @Override
         public void keyReleased(
-            @Nullable
             @SuppressWarnings( "unused" )
-            final KeyEvent event )
+            final @Nullable KeyEvent event )
         {
             // do nothing
         }
@@ -1427,9 +1383,8 @@ final class TableView
          */
         @Override
         public void keyTyped(
-            @Nullable
             @SuppressWarnings( "unused" )
-            final KeyEvent event )
+            final @Nullable KeyEvent event )
         {
             // do nothing
         }
@@ -1441,9 +1396,8 @@ final class TableView
          */
         @Override
         public void mouseReleased(
-            @Nullable
             @SuppressWarnings( "unused" )
-            final MouseEvent event )
+            final @Nullable MouseEvent event )
         {
             updateFocusOnMouseReleased_ = false;
         }
@@ -1478,8 +1432,7 @@ final class TableView
          */
         @Override
         void activate(
-            @Nullable
-            final InputEvent event )
+            final @Nullable InputEvent event )
         {
             updateHover( event );
             updateCursor( event );
@@ -1490,8 +1443,7 @@ final class TableView
          */
         @Override
         public void keyPressed(
-            @Nullable
-            final KeyEvent event )
+            final @Nullable KeyEvent event )
         {
             updateHover( event );
         }
@@ -1501,8 +1453,7 @@ final class TableView
          */
         @Override
         public void keyReleased(
-            @Nullable
-            final KeyEvent event )
+            final @Nullable KeyEvent event )
         {
             updateHover( event );
         }
@@ -1512,8 +1463,7 @@ final class TableView
          */
         @Override
         public void mouseMoved(
-            @Nullable
-            final MouseEvent event )
+            final @Nullable MouseEvent event )
         {
             updateHover( event );
             updateCursor( event );
@@ -1524,8 +1474,7 @@ final class TableView
          */
         @Override
         public void mousePressed(
-            @Nullable
-            final MouseEvent event )
+            final @Nullable MouseEvent event )
         {
             assert event != null;
 
@@ -1553,8 +1502,7 @@ final class TableView
          */
         @Override
         public void mouseReleased(
-            @Nullable
-            final MouseEvent event )
+            final @Nullable MouseEvent event )
         {
             assert event != null;
 
@@ -1574,8 +1522,7 @@ final class TableView
          *        available.
          */
         private void updateCursor(
-            @Nullable
-            final InputEvent event )
+            final @Nullable InputEvent event )
         {
             final ComponentModel componentModel = model_.getFocusableComponentModel( getMouseLocation( event ) );
             final Cursor newCursor;
@@ -1634,8 +1581,7 @@ final class TableView
          *        available.
          */
         private void updateHover(
-            @Nullable
-            final InputEvent event )
+            final @Nullable InputEvent event )
         {
             getTableEnvironmentModelLock().lock();
             try
@@ -1698,8 +1644,7 @@ final class TableView
          */
         @Override
         void activate(
-            @Nullable
-            final InputEvent event )
+            final @Nullable InputEvent event )
         {
             originalLocation_.setLocation( getMouseLocation( event ) );
         }
@@ -1736,8 +1681,7 @@ final class TableView
          */
         @Override
         public void mouseDragged(
-            @Nullable
-            final MouseEvent event )
+            final @Nullable MouseEvent event )
         {
             final Point location = getMouseLocation( event );
             if( canBeginDrag( location ) )
@@ -1765,8 +1709,7 @@ final class TableView
          */
         @Override
         public void mouseReleased(
-            @Nullable
-            final MouseEvent event )
+            final @Nullable MouseEvent event )
         {
             assert event != null;
 
@@ -1820,12 +1763,10 @@ final class TableView
         // ==================================================================
 
         /** The drag context. */
-        @Nullable
-        private IDragContext dragContext_;
+        private @Nullable IDragContext dragContext_;
 
         /** The drag strategy. */
-        @Nullable
-        private DragStrategy dragStrategy_;
+        private @Nullable DragStrategy dragStrategy_;
 
 
         // ==================================================================
@@ -1852,8 +1793,7 @@ final class TableView
          */
         @Override
         void activate(
-            @Nullable
-            final InputEvent event )
+            final @Nullable InputEvent event )
         {
             getTableEnvironmentModelLock().lock();
             try
@@ -1902,8 +1842,7 @@ final class TableView
          */
         @Override
         public void keyPressed(
-            @Nullable
-            final KeyEvent event )
+            final @Nullable KeyEvent event )
         {
             assert event != null;
 
@@ -1918,8 +1857,7 @@ final class TableView
          */
         @Override
         public void keyReleased(
-            @Nullable
-            final KeyEvent event )
+            final @Nullable KeyEvent event )
         {
             assert event != null;
 
@@ -1934,8 +1872,7 @@ final class TableView
          */
         @Override
         public void mouseDragged(
-            @Nullable
-            final MouseEvent event )
+            final @Nullable MouseEvent event )
         {
             assert dragContext_ != null;
 
@@ -1947,8 +1884,7 @@ final class TableView
          */
         @Override
         public void mouseReleased(
-            @Nullable
-            final MouseEvent event )
+            final @Nullable MouseEvent event )
         {
             if( SwingUtilities.isLeftMouseButton( event ) )
             {
@@ -2172,8 +2108,7 @@ final class TableView
          */
         @Override
         void activate(
-            @Nullable
-            final InputEvent event )
+            final @Nullable InputEvent event )
         {
             final Point location = getMouseLocation( event );
             convertPointFromTable( location );
@@ -2198,8 +2133,7 @@ final class TableView
          */
         @Override
         public void mouseDragged(
-            @Nullable
-            final MouseEvent event )
+            final @Nullable MouseEvent event )
         {
             final Point location = getMouseLocation( event );
             convertPointFromTable( location );
@@ -2212,8 +2146,7 @@ final class TableView
          */
         @Override
         public void mouseReleased(
-            @Nullable
-            final MouseEvent event )
+            final @Nullable MouseEvent event )
         {
             if( SwingUtilities.isMiddleMouseButton( event ) )
             {
@@ -2255,8 +2188,7 @@ final class TableView
          */
         @Override
         void activate(
-            @Nullable
-            final InputEvent event )
+            final @Nullable InputEvent event )
         {
             final Point location = getMouseLocation( event );
             final JPopupMenu menu = getPopupMenu();
@@ -2292,9 +2224,8 @@ final class TableView
          */
         @Override
         public void popupMenuCanceled(
-            @Nullable
             @SuppressWarnings( "unused" )
-            final PopupMenuEvent event )
+            final @Nullable PopupMenuEvent event )
         {
             setInputHandler( DefaultInputHandler.class, null );
         }
@@ -2304,9 +2235,8 @@ final class TableView
          */
         @Override
         public void popupMenuWillBecomeInvisible(
-            @Nullable
             @SuppressWarnings( "unused" )
-            final PopupMenuEvent event )
+            final @Nullable PopupMenuEvent event )
         {
             setInputHandler( DefaultInputHandler.class, null );
         }
@@ -2316,9 +2246,8 @@ final class TableView
          */
         @Override
         public void popupMenuWillBecomeVisible(
-            @Nullable
             @SuppressWarnings( "unused" )
-            final PopupMenuEvent event )
+            final @Nullable PopupMenuEvent event )
         {
             // do nothing
         }

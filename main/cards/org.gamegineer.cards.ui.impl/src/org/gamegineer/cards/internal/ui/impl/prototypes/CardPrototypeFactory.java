@@ -67,12 +67,10 @@ public final class CardPrototypeFactory
     private static final String PARAM_NAME_FACE_DESIGN_ID = "faceDesign"; //$NON-NLS-1$
 
     /** The identifier of the component surface design of the card back. */
-    @Nullable
-    private ComponentSurfaceDesignId backDesignId_;
+    private @Nullable ComponentSurfaceDesignId backDesignId_;
 
     /** The identifier of the component surface design of the card face. */
-    @Nullable
-    private ComponentSurfaceDesignId faceDesignId_;
+    private @Nullable ComponentSurfaceDesignId faceDesignId_;
 
 
     // ======================================================================
@@ -125,14 +123,11 @@ public final class CardPrototypeFactory
      */
     @Override
     public void setInitializationData(
-        @Nullable
         @SuppressWarnings( "unused" )
-        final IConfigurationElement config,
-        @Nullable
+        final @Nullable IConfigurationElement config,
         @SuppressWarnings( "unused" )
-        final String propertyName,
-        @Nullable
-        final Object data )
+        final @Nullable String propertyName,
+        final @Nullable Object data )
         throws CoreException
     {
         @SuppressWarnings( "unchecked" )

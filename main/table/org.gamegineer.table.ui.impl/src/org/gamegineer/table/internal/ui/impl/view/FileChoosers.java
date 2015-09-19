@@ -1,6 +1,6 @@
 /*
  * FileChoosers.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -59,8 +59,7 @@ final class FileChoosers
      * @return The table file chooser; never {@code null}.
      */
     static JFileChooser getTableFileChooser(
-        @Nullable
-        final File file )
+        final @Nullable File file )
     {
         final JFileChooser fileChooser = new JFileChooser( file );
         final FileFilter tableFileFilter = new FileNameExtensionFilter( NlsMessages.FileChoosers_fileFilter_table, "ser" ); //$NON-NLS-1$

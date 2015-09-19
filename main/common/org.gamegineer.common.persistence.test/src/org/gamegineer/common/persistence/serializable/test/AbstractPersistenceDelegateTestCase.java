@@ -91,8 +91,7 @@ public abstract class AbstractPersistenceDelegateTestCase
      */
     protected void assertSubjectEquals(
         final Object expected,
-        @Nullable
-        final Object actual )
+        final @Nullable Object actual )
     {
         assertEquals( expected, actual );
     }

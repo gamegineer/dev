@@ -1,6 +1,6 @@
 /*
  * ComponentModel.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -76,8 +76,7 @@ public class ComponentModel
 
     /** The model parent or {@code null} if this model has no parent. */
     @GuardedBy( "getLock()" )
-    @Nullable
-    private IComponentModelParent parent_;
+    private @Nullable IComponentModelParent parent_;
 
     /** The table environment model associated with this model. */
     private final TableEnvironmentModel tableEnvironmentModel_;
@@ -340,8 +339,7 @@ public class ComponentModel
      * 
      * @return The model parent or {@code null} if this model has no parent.
      */
-    @Nullable
-    public final IComponentModelParent getParent()
+    public final @Nullable IComponentModelParent getParent()
     {
         getLock().lock();
         try
@@ -361,8 +359,7 @@ public class ComponentModel
      *         or {@code null} if the component model is not associated with a
      *         table model.
      */
-    @Nullable
-    public final ComponentPath getPath()
+    public final @Nullable ComponentPath getPath()
     {
         getLock().lock();
         try

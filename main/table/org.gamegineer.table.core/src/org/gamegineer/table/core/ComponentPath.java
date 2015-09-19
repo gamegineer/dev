@@ -57,8 +57,7 @@ public final class ComponentPath
     private final int index_;
 
     /** The parent path or {@code null} if the component has no parent. */
-    @Nullable
-    private final ComponentPath parentPath_;
+    private final @Nullable ComponentPath parentPath_;
 
 
     // ======================================================================
@@ -77,8 +76,7 @@ public final class ComponentPath
      *         If {@code index} is negative.
      */
     public ComponentPath(
-        @Nullable
-        final ComponentPath parentPath,
+        final @Nullable ComponentPath parentPath,
         final int index )
     {
         assertArgumentLegal( index >= 0, "index", NonNlsMessages.ComponentPath_ctor_index_negative ); //$NON-NLS-1$
@@ -97,8 +95,7 @@ public final class ComponentPath
      */
     @Override
     public int compareTo(
-        @Nullable
-        final ComponentPath other )
+        final @Nullable ComponentPath other )
     {
         if( other == null )
         {
@@ -119,8 +116,7 @@ public final class ComponentPath
      */
     @Override
     public boolean equals(
-        @Nullable
-        final Object obj )
+        final @Nullable Object obj )
     {
         if( this == obj )
         {
@@ -150,8 +146,7 @@ public final class ComponentPath
      * 
      * @return The parent path or {@code null} if the component has no parent.
      */
-    @Nullable
-    public ComponentPath getParentPath()
+    public @Nullable ComponentPath getParentPath()
     {
         return parentPath_;
     }

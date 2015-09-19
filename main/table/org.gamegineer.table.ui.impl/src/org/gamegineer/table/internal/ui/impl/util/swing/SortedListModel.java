@@ -92,8 +92,7 @@ public final class SortedListModel<E>
      */
     public SortedListModel(
         final ListModel<E> listModel,
-        @Nullable
-        final Comparator<E> comparator )
+        final @Nullable Comparator<E> comparator )
     {
         comparator_ = (comparator != null) ? comparator : createDefaultComparator();
         sortedEntries_ = new ArrayList<>( listModel.getSize() );
@@ -121,10 +120,8 @@ public final class SortedListModel<E>
             @Override
             @SuppressWarnings( "unchecked" )
             public int compare(
-                @Nullable
-                final E o1,
-                @Nullable
-                final E o2 )
+                final @Nullable E o1,
+                final @Nullable E o2 )
             {
                 assert o1 != null;
                 assert o2 != null;
@@ -201,8 +198,7 @@ public final class SortedListModel<E>
         {
             @Override
             public void contentsChanged(
-                @Nullable
-                final ListDataEvent event )
+                final @Nullable ListDataEvent event )
             {
                 assert event != null;
 
@@ -211,8 +207,7 @@ public final class SortedListModel<E>
 
             @Override
             public void intervalAdded(
-                @Nullable
-                final ListDataEvent event )
+                final @Nullable ListDataEvent event )
             {
                 assert event != null;
 
@@ -221,8 +216,7 @@ public final class SortedListModel<E>
 
             @Override
             public void intervalRemoved(
-                @Nullable
-                final ListDataEvent event )
+                final @Nullable ListDataEvent event )
             {
                 assert event != null;
 
@@ -394,8 +388,7 @@ public final class SortedListModel<E>
             "synthetic-access", "unchecked"
         } )
         public int compareTo(
-            @Nullable
-            final Entry other )
+            final @Nullable Entry other )
         {
             if( other == null )
             {

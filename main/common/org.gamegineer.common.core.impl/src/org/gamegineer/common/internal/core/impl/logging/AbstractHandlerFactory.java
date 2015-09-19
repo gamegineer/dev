@@ -1,6 +1,6 @@
 /*
  * AbstractHandlerFactory.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -72,8 +72,7 @@ public abstract class AbstractHandlerFactory<T extends Handler>
     protected void configureLoggingComponent(
         final T component,
         final String instanceName,
-        @Nullable
-        final Map<String, String> properties )
+        final @Nullable Map<String, String> properties )
     {
         super.configureLoggingComponent( component, instanceName, properties );
 

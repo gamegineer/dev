@@ -231,9 +231,8 @@ public final class SingleThreadedTableEnvironmentContext
         public boolean tryLock(
             @SuppressWarnings( "unused" )
             final long time,
-            @Nullable
             @SuppressWarnings( "unused" )
-            final TimeUnit unit )
+            final @Nullable TimeUnit unit )
         {
             return tryLock();
         }

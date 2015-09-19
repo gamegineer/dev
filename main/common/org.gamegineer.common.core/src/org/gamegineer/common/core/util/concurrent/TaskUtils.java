@@ -1,6 +1,6 @@
 /*
  * TaskUtils.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -97,8 +97,7 @@ public final class TaskUtils
      *         If the cause was a checked exception.
      */
     public static RuntimeException launderThrowable(
-        @Nullable
-        final Throwable t )
+        final @Nullable Throwable t )
     {
         if( t instanceof RuntimeException )
         {

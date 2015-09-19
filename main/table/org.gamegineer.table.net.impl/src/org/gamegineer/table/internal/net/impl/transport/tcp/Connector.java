@@ -1,6 +1,6 @@
 /*
  * Connector.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -68,8 +68,7 @@ final class Connector
      */
     @Override
     void close(
-        @Nullable
-        final Exception exception )
+        final @Nullable Exception exception )
     {
         assert exception == null : "asynchronous connection not supported"; //$NON-NLS-1$
         assert isTransportLayerThread();
@@ -149,9 +148,8 @@ final class Connector
     /*
      * @see org.gamegineer.table.internal.net.impl.transport.tcp.AbstractEventHandler#getChannel()
      */
-    @Nullable
     @Override
-    SelectableChannel getChannel()
+    @Nullable SelectableChannel getChannel()
     {
         assert isTransportLayerThread();
 

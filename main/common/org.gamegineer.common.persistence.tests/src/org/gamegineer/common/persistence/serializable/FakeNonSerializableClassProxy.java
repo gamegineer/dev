@@ -51,8 +51,7 @@ public final class FakeNonSerializableClassProxy
      * 
      * @serial
      */
-    @Nullable
-    private String stringField_;
+    private @Nullable String stringField_;
 
 
     // ======================================================================

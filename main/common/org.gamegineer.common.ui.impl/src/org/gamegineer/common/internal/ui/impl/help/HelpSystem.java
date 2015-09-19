@@ -63,8 +63,7 @@ public final class HelpSystem
 
     /** The branding for the running application. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private IBranding branding_;
+    private @Nullable IBranding branding_;
 
     /**
      * The collection of help set providers registered from the service
@@ -83,13 +82,11 @@ public final class HelpSystem
 
     /** The master help broker. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private HelpBroker masterHelpBroker_;
+    private @Nullable HelpBroker masterHelpBroker_;
 
     /** The master help set. */
     @GuardedBy( "lock_" )
-    @Nullable
-    private HelpSet masterHelpSet_;
+    private @Nullable HelpSet masterHelpSet_;
 
 
     // ======================================================================

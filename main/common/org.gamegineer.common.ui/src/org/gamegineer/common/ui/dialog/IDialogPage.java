@@ -1,6 +1,6 @@
 /*
  * IDialogPage.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -61,8 +61,7 @@ public interface IDialogPage
      * @return The top-level component encapsulating the dialog page content or
      *         {@code null} if the dialog page content has not yet been created.
      */
-    @Nullable
-    public Component getContent();
+    public @Nullable Component getContent();
 
     /**
      * Gets the dialog page description.
@@ -70,8 +69,7 @@ public interface IDialogPage
      * @return The dialog page description or {@code null} if the dialog page
      *         has no description.
      */
-    @Nullable
-    public String getDescription();
+    public @Nullable String getDescription();
 
     /**
      * Gets the dialog page message.
@@ -79,8 +77,7 @@ public interface IDialogPage
      * @return The dialog page message or {@code null} if the dialog page has no
      *         message.
      */
-    @Nullable
-    public DialogMessage getMessage();
+    public @Nullable DialogMessage getMessage();
 
     /**
      * Gets the dialog page shell.
@@ -88,8 +85,7 @@ public interface IDialogPage
      * @return The dialog page shell or {@code null} if the dialog page has no
      *         shell.
      */
-    @Nullable
-    public Window getShell();
+    public @Nullable Window getShell();
 
     /**
      * Gets the dialog page title.
@@ -97,8 +93,7 @@ public interface IDialogPage
      * @return The dialog page title or {@code null} if the dialog page has no
      *         title.
      */
-    @Nullable
-    public String getTitle();
+    public @Nullable String getTitle();
 
     /**
      * Sets the dialog page message.
@@ -107,8 +102,7 @@ public interface IDialogPage
      *        The dialog page message or {@code null} to clear the message.
      */
     public void setMessage(
-        @Nullable
-        DialogMessage message );
+        @Nullable DialogMessage message );
 
     /**
      * Sets the visibility of the dialog page.

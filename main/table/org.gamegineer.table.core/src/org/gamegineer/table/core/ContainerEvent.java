@@ -45,8 +45,7 @@ public class ContainerEvent
      * The path of the container that fired the event at the time the event was
      * fired.
      */
-    @Nullable
-    private final ComponentPath containerPath_;
+    private final @Nullable ComponentPath containerPath_;
 
     /** The thread on which the event originated. */
     private final Thread thread_;
@@ -67,8 +66,7 @@ public class ContainerEvent
      */
     public ContainerEvent(
         final IContainer source,
-        @Nullable
-        final ComponentPath containerPath )
+        final @Nullable ComponentPath containerPath )
     {
         super( source );
 
@@ -98,8 +96,7 @@ public class ContainerEvent
      * @return The path of the container that fired the event at the time the
      *         event was fired; may be {@code null}.
      */
-    @Nullable
-    public final ComponentPath getContainerPath()
+    public final @Nullable ComponentPath getContainerPath()
     {
         return containerPath_;
     }

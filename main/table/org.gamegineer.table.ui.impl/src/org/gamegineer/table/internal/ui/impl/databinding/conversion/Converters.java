@@ -40,15 +40,13 @@ public final class Converters
      * A data binding converter from values of type {@link Integer#TYPE} to
      * values of type {@link String}.
      */
-    @Nullable
-    private static IConverter primitiveIntegerToStringConverter_ = null;
+    private static @Nullable IConverter primitiveIntegerToStringConverter_ = null;
 
     /**
      * A data binding converter from values of type {@link String} to values of
      * type {@link Integer#TYPE}
      */
-    @Nullable
-    private static IConverter stringToPrimitiveIntegerConverter_ = null;
+    private static @Nullable IConverter stringToPrimitiveIntegerConverter_ = null;
 
 
     // ======================================================================
@@ -121,11 +119,9 @@ public final class Converters
     {
         final IConverter decorator = new Converter( converter.getFromType(), converter.getToType() )
         {
-            @Nullable
             @Override
-            public Object convert(
-                @Nullable
-                final Object fromObject )
+            public @Nullable Object convert(
+                final @Nullable Object fromObject )
             {
                 try
                 {

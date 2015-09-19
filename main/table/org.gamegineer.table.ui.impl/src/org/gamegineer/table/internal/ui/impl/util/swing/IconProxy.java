@@ -1,6 +1,6 @@
 /*
  * IconProxy.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -46,8 +46,7 @@ public final class IconProxy
     // ======================================================================
 
     /** The underlying icon. */
-    @Nullable
-    private Icon icon_;
+    private @Nullable Icon icon_;
 
     /** The icon URL. */
     private final URL url_;
@@ -118,10 +117,8 @@ public final class IconProxy
      */
     @Override
     public void paintIcon(
-        @Nullable
-        final Component c,
-        @Nullable
-        final Graphics g,
+        final @Nullable Component c,
+        final @Nullable Graphics g,
         final int x,
         final int y )
     {

@@ -143,8 +143,7 @@ final class DragContext
      *         arguments.
      */
     @GuardedBy( "table.getTableEnvironment().getLock()" )
-    @Nullable
-    static DragContext beginDrag(
+    static @Nullable DragContext beginDrag(
         final Table table,
         final Point location,
         final Component component,
@@ -230,8 +229,7 @@ final class DragContext
      */
     @GuardedBy( "getLock()" )
     private void endDrag(
-        @Nullable
-        final Point location )
+        final @Nullable Point location )
     {
         assert getLock().isHeldByCurrentThread();
 

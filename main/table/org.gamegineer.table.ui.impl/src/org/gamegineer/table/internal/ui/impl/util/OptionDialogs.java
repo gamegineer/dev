@@ -1,6 +1,6 @@
 /*
  * OptionDialogs.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -61,8 +61,7 @@ public final class OptionDialogs
      * @return The option selected by the user.
      */
     public static int showConfirmDialog(
-        @Nullable
-        final Component parentComponent,
+        final @Nullable Component parentComponent,
         final String message )
     {
         return JOptionPane.showConfirmDialog( parentComponent, message, Branding.getName(), JOptionPane.YES_NO_CANCEL_OPTION );
@@ -77,8 +76,7 @@ public final class OptionDialogs
      *        The dialog message; must not be {@code null}.
      */
     public static void showErrorMessageDialog(
-        @Nullable
-        final Component parentComponent,
+        final @Nullable Component parentComponent,
         final String message )
     {
         JOptionPane.showMessageDialog( parentComponent, message, Branding.getName(), JOptionPane.ERROR_MESSAGE );

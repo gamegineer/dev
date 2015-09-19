@@ -123,9 +123,8 @@ public final class PersistenceDelegateRegistry
     /*
      * @see org.gamegineer.common.persistence.serializable.persistencedelegateregistry.IPersistenceDelegateRegistry#getPersistenceDelegate(java.lang.Class)
      */
-    @Nullable
     @Override
-    public IPersistenceDelegate getPersistenceDelegate(
+    public @Nullable IPersistenceDelegate getPersistenceDelegate(
         final Class<?> type )
     {
         return getPersistenceDelegate( type.getName() );
@@ -134,9 +133,8 @@ public final class PersistenceDelegateRegistry
     /*
      * @see org.gamegineer.common.persistence.serializable.persistencedelegateregistry.IPersistenceDelegateRegistry#getPersistenceDelegate(java.lang.String)
      */
-    @Nullable
     @Override
-    public IPersistenceDelegate getPersistenceDelegate(
+    public @Nullable IPersistenceDelegate getPersistenceDelegate(
         final String typeName )
     {
         synchronized( lock_ )

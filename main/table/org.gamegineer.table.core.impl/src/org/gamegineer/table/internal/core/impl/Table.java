@@ -61,10 +61,8 @@ final class Table
     {
         @Override
         public int compare(
-            @Nullable
-            final IComponent component1,
-            @Nullable
-            final IComponent component2 )
+            final @Nullable IComponent component1,
+            final @Nullable IComponent component2 )
         {
             assert component1 != null;
             assert component2 != null;
@@ -89,8 +87,7 @@ final class Table
      * if a drag-and-drop operation is not active.
      */
     @GuardedBy( "getLock()" )
-    @Nullable
-    private IDragContext dragContext_;
+    private @Nullable IDragContext dragContext_;
 
     /** The table revision number. */
     @GuardedBy( "getLock()" )
@@ -140,9 +137,8 @@ final class Table
     /*
      * @see org.gamegineer.table.core.dnd.IDragSource#beginDrag(java.awt.Point, org.gamegineer.table.core.IComponent, org.gamegineer.table.core.dnd.IDragStrategyFactory)
      */
-    @Nullable
     @Override
-    public IDragContext beginDrag(
+    public @Nullable IDragContext beginDrag(
         final Point location,
         final IComponent component,
         final IDragStrategyFactory dragStrategyFactory )
@@ -231,9 +227,8 @@ final class Table
     /*
      * @see org.gamegineer.table.internal.core.IComponentParent#getChildPath(org.gamegineer.table.internal.core.Component)
      */
-    @Nullable
     @Override
-    public ComponentPath getChildPath(
+    public @Nullable ComponentPath getChildPath(
         final Component component )
     {
         assert component == tabletop_;
@@ -243,9 +238,8 @@ final class Table
     /*
      * @see org.gamegineer.table.core.ITable#getComponent(org.gamegineer.table.core.ComponentPath)
      */
-    @Nullable
     @Override
-    public IComponent getComponent(
+    public @Nullable IComponent getComponent(
         final ComponentPath path )
     {
         final List<ComponentPath> paths = path.toList();
@@ -298,9 +292,8 @@ final class Table
     /*
      * @see org.gamegineer.table.core.ITable#getExtension(java.lang.Class)
      */
-    @Nullable
     @Override
-    public <T> T getExtension(
+    public <T> @Nullable T getExtension(
         final Class<T> type )
     {
         if( type.isInstance( this ) )
@@ -341,9 +334,8 @@ final class Table
     /*
      * @see org.gamegineer.table.internal.core.IComponentParent#getTable()
      */
-    @Nullable
     @Override
-    public Table getTable()
+    public @Nullable Table getTable()
     {
         return this;
     }

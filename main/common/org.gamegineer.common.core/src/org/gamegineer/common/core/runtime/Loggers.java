@@ -72,8 +72,7 @@ public abstract class Loggers
      */
     protected static Logger getLogger(
         final Bundle bundle,
-        @Nullable
-        final String name )
+        final @Nullable String name )
     {
         final ILoggingService loggingService = Activator.getDefault().getLoggingService();
         if( loggingService == null )

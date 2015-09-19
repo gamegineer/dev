@@ -1,6 +1,6 @@
 /*
  * AbstractDialogPage.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -46,24 +46,19 @@ public abstract class AbstractDialogPage
     // ======================================================================
 
     /** The dialog page content. */
-    @Nullable
-    private Component content_;
+    private @Nullable Component content_;
 
     /** The dialog page description. */
-    @Nullable
-    private String description_;
+    private @Nullable String description_;
 
     /** The dialog page message. */
-    @Nullable
-    private DialogMessage message_;
+    private @Nullable DialogMessage message_;
 
     /** The dialog page pixel converter. */
-    @Nullable
-    private PixelConverter pixelConverter_;
+    private @Nullable PixelConverter pixelConverter_;
 
     /** The dialog page title. */
-    @Nullable
-    private String title_;
+    private @Nullable String title_;
 
 
     // ======================================================================
@@ -220,9 +215,8 @@ public abstract class AbstractDialogPage
     /*
      * @see org.gamegineer.common.ui.dialog.IDialogPage#getContent()
      */
-    @Nullable
     @Override
-    public final Component getContent()
+    public final @Nullable Component getContent()
     {
         return content_;
     }
@@ -230,9 +224,8 @@ public abstract class AbstractDialogPage
     /*
      * @see org.gamegineer.common.ui.dialog.IDialogPage#getDescription()
      */
-    @Nullable
     @Override
-    public final String getDescription()
+    public final @Nullable String getDescription()
     {
         return description_;
     }
@@ -240,9 +233,8 @@ public abstract class AbstractDialogPage
     /*
      * @see org.gamegineer.common.ui.dialog.IDialogPage#getMessage()
      */
-    @Nullable
     @Override
-    public final DialogMessage getMessage()
+    public final @Nullable DialogMessage getMessage()
     {
         return message_;
     }
@@ -250,9 +242,8 @@ public abstract class AbstractDialogPage
     /*
      * @see org.gamegineer.common.ui.dialog.IDialogPage#getShell()
      */
-    @Nullable
     @Override
-    public final Window getShell()
+    public final @Nullable Window getShell()
     {
         if( content_ == null )
         {
@@ -265,9 +256,8 @@ public abstract class AbstractDialogPage
     /*
      * @see org.gamegineer.common.ui.dialog.IDialogPage#getTitle()
      */
-    @Nullable
     @Override
-    public final String getTitle()
+    public final @Nullable String getTitle()
     {
         return title_;
     }
@@ -298,8 +288,7 @@ public abstract class AbstractDialogPage
      *        The dialog page description or {@code null} to clear it.
      */
     protected void setDescription(
-        @Nullable
-        final String description )
+        final @Nullable String description )
     {
         description_ = description;
     }
@@ -311,8 +300,7 @@ public abstract class AbstractDialogPage
      */
     @Override
     public void setMessage(
-        @Nullable
-        final DialogMessage message )
+        final @Nullable DialogMessage message )
     {
         message_ = message;
     }
@@ -328,8 +316,7 @@ public abstract class AbstractDialogPage
      *        The dialog page title or {@code null} to clear it.
      */
     protected void setTitle(
-        @Nullable
-        final String title )
+        final @Nullable String title )
     {
         title_ = title;
     }

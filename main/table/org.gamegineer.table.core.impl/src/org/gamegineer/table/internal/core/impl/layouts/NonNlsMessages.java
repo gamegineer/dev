@@ -88,8 +88,7 @@ final class NonNlsMessages
      *         is unknown; never {@code null}.
      */
     static String ContainerLayoutExtensionFactory_create_unknownId(
-        @Nullable
-        final ContainerLayoutId containerLayoutId )
+        final @Nullable ContainerLayoutId containerLayoutId )
     {
         return bind( ContainerLayoutExtensionFactory_create_unknownId, containerLayoutId );
     }

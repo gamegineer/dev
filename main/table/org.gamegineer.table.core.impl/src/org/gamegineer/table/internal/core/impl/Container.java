@@ -184,8 +184,7 @@ final class Container
      */
     private void addComponents(
         final List<IComponent> components,
-        @Nullable
-        final Integer boxedIndex )
+        final @Nullable Integer boxedIndex )
     {
         getLock().lock();
         try
@@ -421,9 +420,8 @@ final class Container
      * @see org.gamegineer.table.internal.core.IComponentParent#getChildPath(org.gamegineer.table.internal.core.Component)
      */
     @GuardedBy( "getLock()" )
-    @Nullable
     @Override
-    public ComponentPath getChildPath(
+    public @Nullable ComponentPath getChildPath(
         final Component component )
     {
         assert getLock().isHeldByCurrentThread();
@@ -470,8 +468,7 @@ final class Container
      *         {@code null} if no component exists at the specified path.
      */
     @GuardedBy( "getLock()" )
-    @Nullable
-    Component getComponent(
+    @Nullable Component getComponent(
         final List<ComponentPath> paths )
     {
         assert !paths.isEmpty();

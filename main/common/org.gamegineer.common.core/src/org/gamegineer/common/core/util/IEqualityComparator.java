@@ -1,6 +1,6 @@
 /*
  * IEqualityComparator.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -53,10 +53,8 @@ public interface IEqualityComparator<T>
      *         being compared by this comparator.
      */
     public boolean equals(
-        @Nullable
-        T obj1,
-        @Nullable
-        T obj2 );
+        @Nullable T obj1,
+        @Nullable T obj2 );
 
     /**
      * Gets a hash code for the specified object.
@@ -72,6 +70,5 @@ public interface IEqualityComparator<T>
      *         comparator.
      */
     public int hashCode(
-        @Nullable
-        T obj );
+        @Nullable T obj );
 }

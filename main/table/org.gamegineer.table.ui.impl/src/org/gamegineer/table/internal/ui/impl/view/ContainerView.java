@@ -54,8 +54,7 @@ final class ContainerView
     private final List<ComponentView> componentViews_;
 
     /** The container model listener for this view. */
-    @Nullable
-    private IContainerModelListener containerModelListener_;
+    private @Nullable IContainerModelListener containerModelListener_;
 
 
     // ======================================================================

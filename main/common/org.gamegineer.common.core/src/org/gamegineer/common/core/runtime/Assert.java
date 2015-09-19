@@ -109,8 +109,7 @@ public final class Assert
      */
     public static void assertArgumentLegal(
         final boolean expression,
-        @Nullable
-        final String paramName )
+        final @Nullable String paramName )
     {
         assertArgumentLegal( expression, paramName, null );
     }
@@ -131,10 +130,8 @@ public final class Assert
      */
     public static void assertArgumentLegal(
         final boolean expression,
-        @Nullable
-        final String paramName,
-        @Nullable
-        final String message )
+        final @Nullable String paramName,
+        final @Nullable String message )
     {
         if( !expression )
         {
@@ -172,8 +169,7 @@ public final class Assert
      */
     public static void assertStateLegal(
         final boolean expression,
-        @Nullable
-        final String message )
+        final @Nullable String message )
     {
         if( !expression )
         {

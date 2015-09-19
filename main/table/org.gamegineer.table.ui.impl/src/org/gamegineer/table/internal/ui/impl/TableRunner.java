@@ -68,8 +68,7 @@ public final class TableRunner
      * This reference must only be manipulated from the Swing event-dispatching
      * thread.
      */
-    @Nullable
-    private MainFrame frame_;
+    private @Nullable MainFrame frame_;
 
     /** A reference to the table result. */
     private final AtomicReference<TableResult> resultRef_;
@@ -218,9 +217,8 @@ public final class TableRunner
                 @Override
                 @SuppressWarnings( "synthetic-access" )
                 public void windowClosed(
-                    @Nullable
                     @SuppressWarnings( "unused" )
-                    final WindowEvent event )
+                    final @Nullable WindowEvent event )
                 {
                     Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Frame window closed by user" ); //$NON-NLS-1$
                     stop( TableResult.OK );
@@ -270,8 +268,7 @@ public final class TableRunner
      *         should exit immediately; otherwise {@code null} to indicate the
      *         runner should continue running.
      */
-    @Nullable
-    private TableResult processCommandLineArguments()
+    private @Nullable TableResult processCommandLineArguments()
     {
         try
         {

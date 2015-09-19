@@ -61,8 +61,7 @@ public final class CardPilePrototypeFactory
     private static final String PARAM_NAME_BASE_DESIGN_ID = "baseDesign"; //$NON-NLS-1$
 
     /** The identifier of the component surface design of the card pile base. */
-    @Nullable
-    private ComponentSurfaceDesignId baseDesignId_;
+    private @Nullable ComponentSurfaceDesignId baseDesignId_;
 
 
     // ======================================================================
@@ -112,14 +111,11 @@ public final class CardPilePrototypeFactory
      */
     @Override
     public void setInitializationData(
-        @Nullable
         @SuppressWarnings( "unused" )
-        final IConfigurationElement config,
-        @Nullable
+        final @Nullable IConfigurationElement config,
         @SuppressWarnings( "unused" )
-        final String propertyName,
-        @Nullable
-        final Object data )
+        final @Nullable String propertyName,
+        final @Nullable Object data )
         throws CoreException
     {
         @SuppressWarnings( "unchecked" )

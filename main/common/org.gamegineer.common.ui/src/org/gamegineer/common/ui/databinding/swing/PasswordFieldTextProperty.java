@@ -67,8 +67,7 @@ final class PasswordFieldTextProperty
      */
     @Override
     public INativePropertyListener adaptListener(
-        @Nullable
-        final ISimplePropertyListener listener )
+        final @Nullable ISimplePropertyListener listener )
     {
         assert listener != null;
 
@@ -80,8 +79,7 @@ final class PasswordFieldTextProperty
      */
     @Override
     protected Object doGetValue(
-        @Nullable
-        final Object source )
+        final @Nullable Object source )
     {
         assert source != null;
 
@@ -93,10 +91,8 @@ final class PasswordFieldTextProperty
      */
     @Override
     protected void doSetValue(
-        @Nullable
-        final Object source,
-        @Nullable
-        final Object value )
+        final @Nullable Object source,
+        final @Nullable Object value )
     {
         assert source != null;
         assert value != null;
@@ -153,8 +149,7 @@ final class PasswordFieldTextProperty
         // ==================================================================
 
         /** The text component associated with this listener. */
-        @Nullable
-        private JPasswordField source_;
+        private @Nullable JPasswordField source_;
 
 
         // ==================================================================
@@ -191,9 +186,8 @@ final class PasswordFieldTextProperty
          */
         @Override
         public void changedUpdate(
-            @Nullable
             @SuppressWarnings( "unused" )
-            final DocumentEvent event )
+            final @Nullable DocumentEvent event )
         {
             assert source_ != null;
 
@@ -205,8 +199,7 @@ final class PasswordFieldTextProperty
          */
         @Override
         protected void doAddTo(
-            @Nullable
-            final Object source )
+            final @Nullable Object source )
         {
             assert source != null;
             assert source_ == null;
@@ -220,8 +213,7 @@ final class PasswordFieldTextProperty
          */
         @Override
         protected void doRemoveFrom(
-            @Nullable
-            final Object source )
+            final @Nullable Object source )
         {
             assert source != null;
             assert source_ == source;
@@ -235,9 +227,8 @@ final class PasswordFieldTextProperty
          */
         @Override
         public void insertUpdate(
-            @Nullable
             @SuppressWarnings( "unused" )
-            final DocumentEvent event )
+            final @Nullable DocumentEvent event )
         {
             assert source_ != null;
 
@@ -249,9 +240,8 @@ final class PasswordFieldTextProperty
          */
         @Override
         public void removeUpdate(
-            @Nullable
             @SuppressWarnings( "unused" )
-            final DocumentEvent event )
+            final @Nullable DocumentEvent event )
         {
             assert source_ != null;
 

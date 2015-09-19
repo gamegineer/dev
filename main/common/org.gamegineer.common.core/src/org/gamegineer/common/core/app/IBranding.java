@@ -1,6 +1,6 @@
 /*
  * IBranding.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -41,24 +41,21 @@ public interface IBranding
      * @return The identifier of the application associated with the branding or
      *         {@code null} if none.
      */
-    @Nullable
-    public String getApplication();
+    public @Nullable String getApplication();
 
     /**
      * Gets the bundle responsible for the branding.
      * 
      * @return The bundle responsible for the branding or {@code null} if none.
      */
-    @Nullable
-    public Bundle getBundle();
+    public @Nullable Bundle getBundle();
 
     /**
      * Gets the branding description.
      * 
      * @return The branding description or {@code null} if none.
      */
-    @Nullable
-    public String getDescription();
+    public @Nullable String getDescription();
 
     /**
      * Gets the branding identifier.
@@ -72,8 +69,7 @@ public interface IBranding
      * 
      * @return The branding name or {@code null} if none.
      */
-    @Nullable
-    public String getName();
+    public @Nullable String getName();
 
     /**
      * Gets the value of the branding property with the specified name.
@@ -84,7 +80,6 @@ public interface IBranding
      * @return The value of the branding property with the specified name or
      *         {@code null} if the property does not exist.
      */
-    @Nullable
-    public String getProperty(
+    public @Nullable String getProperty(
         String name );
 }

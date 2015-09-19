@@ -57,8 +57,7 @@ public final class SwingRealm
      */
     @Override
     public void asyncExec(
-        @Nullable
-        final Runnable runnable )
+        final @Nullable Runnable runnable )
     {
         final Runnable safeRunnable = new Runnable()
         {
@@ -103,8 +102,7 @@ public final class SwingRealm
      * @return The Swing realm for the system event dispatch thread or
      *         {@code null} if no system event dispatch thread is running.
      */
-    @Nullable
-    public static SwingRealm getSystemRealm()
+    public static @Nullable SwingRealm getSystemRealm()
     {
         final AtomicReference<@Nullable SwingRealm> systemRealm = new AtomicReference<>();
         execSystem( new Runnable()
