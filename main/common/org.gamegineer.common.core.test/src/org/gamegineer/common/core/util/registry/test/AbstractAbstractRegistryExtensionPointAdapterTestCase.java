@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.jdt.annotation.DefaultLocation;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.registry.AbstractRegistryExtensionPointAdapter;
@@ -214,7 +215,7 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
         EasyMock.expect( configurationElement.getDeclaringExtension() ).andReturn( extension );
         EasyMock.expect( extension.getNamespaceIdentifier() ).andReturn( "namespace" ); //$NON-NLS-1$
         EasyMock.expect( extension.getSimpleIdentifier() ).andReturn( "simple-id" ); //$NON-NLS-1$
-        EasyMock.expect( extension.getConfigurationElements() ).andReturn( new IConfigurationElement[] {
+        EasyMock.expect( extension.getConfigurationElements() ).andReturn( new @NonNull IConfigurationElement[] {
             configurationElement
         } );
         final IRegistry<ObjectIdType, ObjectType> objectRegistry = createMockRegistry();
@@ -280,7 +281,7 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
         EasyMock.expect( configurationElement.getDeclaringExtension() ).andReturn( extension );
         EasyMock.expect( extension.getNamespaceIdentifier() ).andReturn( "namespace" ).anyTimes(); //$NON-NLS-1$
         EasyMock.expect( extension.getSimpleIdentifier() ).andReturn( "simple-id" ).anyTimes(); //$NON-NLS-1$
-        EasyMock.expect( extension.getConfigurationElements() ).andReturn( new IConfigurationElement[] {
+        EasyMock.expect( extension.getConfigurationElements() ).andReturn( new @NonNull IConfigurationElement[] {
             configurationElement
         } ).anyTimes();
         final IRegistry<ObjectIdType, ObjectType> objectRegistry = createMockRegistry();
