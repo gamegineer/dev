@@ -30,11 +30,12 @@ import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.AbstractSelector;
 import java.nio.channels.spi.SelectorProvider;
 import net.jcip.annotations.NotThreadSafe;
-import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 
 /**
  * Fake implementation of {@link SelectorProvider}.
  */
+@NonNullByDefault( {} )
 @NotThreadSafe
 class FakeSelectorProvider
     extends SelectorProvider
@@ -60,7 +61,7 @@ class FakeSelectorProvider
      */
     @Override
     @SuppressWarnings( "unused" )
-    public @Nullable DatagramChannel openDatagramChannel()
+    public DatagramChannel openDatagramChannel()
         throws IOException
     {
         return null;
@@ -71,8 +72,8 @@ class FakeSelectorProvider
      */
     @Override
     @SuppressWarnings( "unused" )
-    public @Nullable DatagramChannel openDatagramChannel(
-        final @Nullable ProtocolFamily family )
+    public DatagramChannel openDatagramChannel(
+        final ProtocolFamily family )
         throws IOException
     {
         return null;
@@ -83,7 +84,7 @@ class FakeSelectorProvider
      */
     @Override
     @SuppressWarnings( "unused" )
-    public @Nullable Pipe openPipe()
+    public Pipe openPipe()
         throws IOException
     {
         return null;
@@ -94,7 +95,7 @@ class FakeSelectorProvider
      */
     @Override
     @SuppressWarnings( "unused" )
-    public @Nullable AbstractSelector openSelector()
+    public AbstractSelector openSelector()
         throws IOException
     {
         return null;
@@ -105,7 +106,7 @@ class FakeSelectorProvider
      */
     @Override
     @SuppressWarnings( "unused" )
-    public @Nullable ServerSocketChannel openServerSocketChannel()
+    public ServerSocketChannel openServerSocketChannel()
         throws IOException
     {
         return null;
@@ -116,7 +117,7 @@ class FakeSelectorProvider
      */
     @Override
     @SuppressWarnings( "unused" )
-    public @Nullable SocketChannel openSocketChannel()
+    public SocketChannel openSocketChannel()
         throws IOException
     {
         return null;

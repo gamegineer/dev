@@ -28,11 +28,12 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.spi.SelectorProvider;
 import net.jcip.annotations.NotThreadSafe;
-import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 
 /**
  * Fake implementation of {@link SelectableChannel}.
  */
+@NonNullByDefault( {} )
 @NotThreadSafe
 class FakeSelectableChannel
     extends SelectableChannel
@@ -57,7 +58,7 @@ class FakeSelectableChannel
      * @see java.nio.channels.SelectableChannel#blockingLock()
      */
     @Override
-    public @Nullable Object blockingLock()
+    public Object blockingLock()
     {
         return null;
     }
@@ -67,7 +68,7 @@ class FakeSelectableChannel
      */
     @Override
     @SuppressWarnings( "unused" )
-    public @Nullable SelectableChannel configureBlocking(
+    public SelectableChannel configureBlocking(
         final boolean block )
         throws IOException
     {
@@ -107,8 +108,8 @@ class FakeSelectableChannel
      * @see java.nio.channels.SelectableChannel#keyFor(java.nio.channels.Selector)
      */
     @Override
-    public @Nullable SelectionKey keyFor(
-        final @Nullable Selector selector )
+    public SelectionKey keyFor(
+        final Selector selector )
     {
         return null;
     }
@@ -117,7 +118,7 @@ class FakeSelectableChannel
      * @see java.nio.channels.SelectableChannel#provider()
      */
     @Override
-    public @Nullable SelectorProvider provider()
+    public SelectorProvider provider()
     {
         return null;
     }
@@ -127,10 +128,10 @@ class FakeSelectableChannel
      */
     @Override
     @SuppressWarnings( "unused" )
-    public @Nullable SelectionKey register(
-        final @Nullable Selector selector,
+    public SelectionKey register(
+        final Selector selector,
         final int ops,
-        final @Nullable Object attachment )
+        final Object attachment )
         throws ClosedChannelException
     {
         return null;
