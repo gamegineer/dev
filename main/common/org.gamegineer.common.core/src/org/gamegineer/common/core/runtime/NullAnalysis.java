@@ -24,11 +24,11 @@ package org.gamegineer.common.core.runtime;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A collection of useful methods for working with the null analysis engine.
  */
+@NonNullByDefault( {} )
 @ThreadSafe
 public final class NullAnalysis
 {
@@ -71,9 +71,8 @@ public final class NullAnalysis
      * @throws java.lang.AssertionError
      *         If {@code value} is {@code null}.
      */
-    @SuppressWarnings( "null" )
     public static <T> @NonNull T nonNull(
-        final @Nullable T value )
+        final T value )
     {
         assert value != null;
         return value;
@@ -94,10 +93,9 @@ public final class NullAnalysis
      * 
      * @return The cast value; never {@code null}.
      */
-    @SuppressWarnings( "null" )
     public static <T> @NonNull T nonNull(
-        final Class<T> type,
-        final Object value )
+        final @NonNull Class<T> type,
+        final @NonNull Object value )
     {
         final T castValue = type.cast( value );
         assert castValue != null;
@@ -121,7 +119,6 @@ public final class NullAnalysis
      * 
      * @return The cast class; never {@code null}.
      */
-    @NonNullByDefault( {} )
     public static <T> @NonNull Class<@NonNull T> nonNull(
         final Class<T> type )
     {
