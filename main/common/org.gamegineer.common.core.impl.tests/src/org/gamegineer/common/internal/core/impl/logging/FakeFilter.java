@@ -106,7 +106,7 @@ public final class FakeFilter
      */
     public static ServiceRegistration<ComponentFactory> registerComponentFactory()
     {
-        final ComponentFactory componentFactory = new AbstractLoggingComponentFactory<FakeFilter>( FakeFilter.class )
+        final ComponentFactory componentFactory = new AbstractLoggingComponentFactory<FakeFilter>( nonNull( FakeFilter.class ) )
         {
             @Override
             protected void configureLoggingComponent(

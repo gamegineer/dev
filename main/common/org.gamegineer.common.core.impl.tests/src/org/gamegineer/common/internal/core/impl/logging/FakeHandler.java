@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.logging.Handler;
@@ -93,7 +94,7 @@ public final class FakeHandler
      */
     public static ServiceRegistration<ComponentFactory> registerComponentFactory()
     {
-        final ComponentFactory componentFactory = new AbstractHandlerFactory<FakeHandler>( FakeHandler.class )
+        final ComponentFactory componentFactory = new AbstractHandlerFactory<FakeHandler>( nonNull( FakeHandler.class ) )
         {
             // no overrides
         };
@@ -111,7 +112,7 @@ public final class FakeHandler
      */
     public static ServiceRegistration<ComponentFactory> registerFailingComponentFactory()
     {
-        final ComponentFactory componentFactory = new AbstractHandlerFactory<FakeHandler>( FakeHandler.class )
+        final ComponentFactory componentFactory = new AbstractHandlerFactory<FakeHandler>( nonNull( FakeHandler.class ) )
         {
             @Override
             protected FakeHandler createLoggingComponent(

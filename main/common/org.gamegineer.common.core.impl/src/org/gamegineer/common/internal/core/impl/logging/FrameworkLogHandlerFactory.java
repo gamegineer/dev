@@ -22,6 +22,7 @@
 package org.gamegineer.common.internal.core.impl.logging;
 
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.jdt.annotation.NonNull;
@@ -55,7 +56,7 @@ public final class FrameworkLogHandlerFactory
      */
     public FrameworkLogHandlerFactory()
     {
-        super( FrameworkLogHandler.class );
+        super( nonNull( FrameworkLogHandler.class ) );
 
         frameworkLog_ = new AtomicReference<>( null );
     }

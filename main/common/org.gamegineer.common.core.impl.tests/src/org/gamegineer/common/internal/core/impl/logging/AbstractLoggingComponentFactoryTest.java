@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import java.util.Collections;
@@ -86,7 +87,7 @@ public final class AbstractLoggingComponentFactoryTest
         componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_INSTANCE_NAME, "instanceName" ); //$NON-NLS-1$
         componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_LOGGING_PROPERTIES, Collections.<@NonNull String, @NonNull String>emptyMap() );
 
-        factory_ = new AbstractLoggingComponentFactory<Object>( Object.class )
+        factory_ = new AbstractLoggingComponentFactory<Object>( nonNull( Object.class ) )
         {
             // no overrides
         };

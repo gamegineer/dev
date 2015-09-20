@@ -23,6 +23,7 @@ package org.gamegineer.common.core.runtime;
 
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -101,5 +102,31 @@ public final class NullAnalysis
         final T castValue = type.cast( value );
         assert castValue != null;
         return castValue;
+    }
+
+    /**
+     * Casts the specified class with a {@code null} type parameter to the
+     * equivalent class with a non-{@code null} type parameter.
+     * 
+     * <p>
+     * See Eclipse Bug 477719
+     * (https://bugs.eclipse.org/bugs/show_bug.cgi?id=477719).
+     * </p>
+     * 
+     * @param <T>
+     *        The type of the class.
+     * 
+     * @param type
+     *        The class to be cast; must not be {@code null}.
+     * 
+     * @return The cast class; never {@code null}.
+     */
+    @NonNullByDefault( {} )
+    public static <T> @NonNull Class<@NonNull T> nonNull(
+        final Class<T> type )
+    {
+        @SuppressWarnings( "null" )
+        final @NonNull Class<@NonNull T> nonNullType = (@NonNull Class<@NonNull T>)type;
+        return nonNullType;
     }
 }

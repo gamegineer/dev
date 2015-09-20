@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -96,7 +97,7 @@ final class LoggerConfiguration
         {
             try
             {
-                return AbstractLoggingComponentFactory.createNamedLoggingComponent( Filter.class, value, properties_ );
+                return AbstractLoggingComponentFactory.createNamedLoggingComponent( nonNull( Filter.class ), value, properties_ );
             }
             catch( final IllegalArgumentException e )
             {

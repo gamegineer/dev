@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import org.easymock.EasyMock;
 import org.eclipse.osgi.framework.log.FrameworkLog;
 import org.gamegineer.common.core.logging.FrameworkLogHandler;
@@ -66,6 +67,6 @@ public final class FrameworkLogHandlerFactoryAsAbstractHandlerFactoryTest
     @Override
     protected Class<? extends FrameworkLogHandler> getLoggingComponentType()
     {
-        return FrameworkLogHandler.class;
+        return nonNull( FrameworkLogHandler.class );
     }
 }

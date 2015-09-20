@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.view;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -689,11 +690,11 @@ final class TableView
     private Map<Class<? extends AbstractInputHandler>, AbstractInputHandler> createInputHandlers()
     {
         final Map<Class<? extends AbstractInputHandler>, AbstractInputHandler> inputHandlers = new HashMap<>();
-        inputHandlers.put( DefaultInputHandler.class, new DefaultInputHandler() );
-        inputHandlers.put( DragPrimedInputHandler.class, new DragPrimedInputHandler() );
-        inputHandlers.put( DraggingComponentInputHandler.class, new DraggingComponentInputHandler() );
-        inputHandlers.put( PanningTableInputHandler.class, new PanningTableInputHandler() );
-        inputHandlers.put( PopupMenuInputHandler.class, new PopupMenuInputHandler() );
+        inputHandlers.put( nonNull( DefaultInputHandler.class ), new DefaultInputHandler() );
+        inputHandlers.put( nonNull( DragPrimedInputHandler.class ), new DragPrimedInputHandler() );
+        inputHandlers.put( nonNull( DraggingComponentInputHandler.class ), new DraggingComponentInputHandler() );
+        inputHandlers.put( nonNull( PanningTableInputHandler.class ), new PanningTableInputHandler() );
+        inputHandlers.put( nonNull( PopupMenuInputHandler.class ), new PopupMenuInputHandler() );
         return inputHandlers;
     }
 
@@ -724,7 +725,7 @@ final class TableView
 
                 if( event.getKeyCode() == KeyEvent.VK_CONTEXT_MENU )
                 {
-                    setInputHandler( PopupMenuInputHandler.class, event );
+                    setInputHandler( nonNull( PopupMenuInputHandler.class ), event );
                 }
 
                 inputHandler_.keyReleased( event );
@@ -1457,18 +1458,18 @@ final class TableView
 
             if( event.isPopupTrigger() )
             {
-                setInputHandler( PopupMenuInputHandler.class, event );
+                setInputHandler( nonNull( PopupMenuInputHandler.class ), event );
             }
             else if( SwingUtilities.isLeftMouseButton( event ) )
             {
                 if( model_.getFocusedComponentModel() != null )
                 {
-                    setInputHandler( DragPrimedInputHandler.class, event );
+                    setInputHandler( nonNull( DragPrimedInputHandler.class ), event );
                 }
             }
             else if( SwingUtilities.isMiddleMouseButton( event ) )
             {
-                setInputHandler( PanningTableInputHandler.class, event );
+                setInputHandler( nonNull( PanningTableInputHandler.class ), event );
             }
         }
 
@@ -1483,7 +1484,7 @@ final class TableView
 
             if( event.isPopupTrigger() )
             {
-                setInputHandler( PopupMenuInputHandler.class, event );
+                setInputHandler( nonNull( PopupMenuInputHandler.class ), event );
             }
 
             super.mouseReleased( event );
@@ -1665,16 +1666,16 @@ final class TableView
                 {
                     if( model_.isEditable() )
                     {
-                        setInputHandler( DraggingComponentInputHandler.class, event );
+                        setInputHandler( nonNull( DraggingComponentInputHandler.class ), event );
                     }
                     else
                     {
-                        setInputHandler( DefaultInputHandler.class, event );
+                        setInputHandler( nonNull( DefaultInputHandler.class ), event );
                     }
                 }
                 else
                 {
-                    setInputHandler( DefaultInputHandler.class, event );
+                    setInputHandler( nonNull( DefaultInputHandler.class ), event );
                 }
             }
         }
@@ -1695,7 +1696,7 @@ final class TableView
 
             if( SwingUtilities.isLeftMouseButton( event ) )
             {
-                setInputHandler( DefaultInputHandler.class, null );
+                setInputHandler( nonNull( DefaultInputHandler.class ), null );
             }
 
             super.mouseReleased( event );
@@ -1782,18 +1783,18 @@ final class TableView
                         dragContext_ = dragSource.beginDrag( getMouseLocation( event ), focusedComponentModel.getComponent(), new DragStrategyFactory( event ) );
                         if( dragContext_ == null )
                         {
-                            setInputHandler( DefaultInputHandler.class, null );
+                            setInputHandler( nonNull( DefaultInputHandler.class ), null );
                         }
                     }
                     else
                     {
                         Loggers.getDefaultLogger().severe( NonNlsMessages.TableView_draggingComponent_dragSourceNotAvailable );
-                        setInputHandler( DefaultInputHandler.class, null );
+                        setInputHandler( nonNull( DefaultInputHandler.class ), null );
                     }
                 }
                 else
                 {
-                    setInputHandler( DefaultInputHandler.class, null );
+                    setInputHandler( nonNull( DefaultInputHandler.class ), null );
                 }
             }
             finally
@@ -1866,7 +1867,7 @@ final class TableView
                 assert dragContext_ != null;
 
                 dragContext_.drop( getMouseLocation( event ) );
-                setInputHandler( DefaultInputHandler.class, null );
+                setInputHandler( nonNull( DefaultInputHandler.class ), null );
             }
 
             super.mouseReleased( event );
@@ -2125,7 +2126,7 @@ final class TableView
         {
             if( SwingUtilities.isMiddleMouseButton( event ) )
             {
-                setInputHandler( DefaultInputHandler.class, null );
+                setInputHandler( nonNull( DefaultInputHandler.class ), null );
             }
 
             super.mouseReleased( event );
@@ -2201,7 +2202,7 @@ final class TableView
         public void popupMenuCanceled(
             final @Nullable PopupMenuEvent event )
         {
-            setInputHandler( DefaultInputHandler.class, null );
+            setInputHandler( nonNull( DefaultInputHandler.class ), null );
         }
 
         /*
@@ -2211,7 +2212,7 @@ final class TableView
         public void popupMenuWillBecomeInvisible(
             final @Nullable PopupMenuEvent event )
         {
-            setInputHandler( DefaultInputHandler.class, null );
+            setInputHandler( nonNull( DefaultInputHandler.class ), null );
         }
 
         /*

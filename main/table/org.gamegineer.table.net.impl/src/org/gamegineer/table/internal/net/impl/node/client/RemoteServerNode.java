@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.node.client;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.net.impl.node.AbstractRemoteNode;
@@ -70,9 +71,9 @@ final class RemoteServerNode
     {
         super( nodeLayer, localNode );
 
-        registerUncorrelatedMessageHandler( BeginAuthenticationRequestMessage.class, BeginAuthenticationRequestMessageHandler.INSTANCE );
-        registerUncorrelatedMessageHandler( GoodbyeMessage.class, GoodbyeMessageHandler.INSTANCE );
-        registerUncorrelatedMessageHandler( PlayersMessage.class, PlayersMessageHandler.INSTANCE );
+        registerUncorrelatedMessageHandler( nonNull( BeginAuthenticationRequestMessage.class ), BeginAuthenticationRequestMessageHandler.INSTANCE );
+        registerUncorrelatedMessageHandler( nonNull( GoodbyeMessage.class ), GoodbyeMessageHandler.INSTANCE );
+        registerUncorrelatedMessageHandler( nonNull( PlayersMessage.class ), PlayersMessageHandler.INSTANCE );
     }
 
 

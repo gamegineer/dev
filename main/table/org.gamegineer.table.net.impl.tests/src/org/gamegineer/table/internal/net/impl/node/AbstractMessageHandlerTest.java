@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
@@ -192,7 +193,7 @@ public final class AbstractMessageHandlerTest
          */
         MockMessageHandler()
         {
-            super( IRemoteNodeController.class );
+            super( nonNull( IRemoteNodeController.class ) );
 
             handleFakeMessageCallCount_ = 0;
             handleUnexpectedMessageCallCount_ = 0;
