@@ -1,0 +1,4 @@
+class java/nio/channels/NetworkChannel
+getOption
+ <T:Ljava/lang/Object;>(Ljava/net/SocketOption<TT;>;)TT;
+ <T:Ljava/lang/Object;>(Ljava/net/SocketOption<TT;>;)T0T;

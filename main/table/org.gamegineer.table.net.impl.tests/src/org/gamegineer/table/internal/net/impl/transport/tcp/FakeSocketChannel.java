@@ -29,7 +29,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.SelectorProvider;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -139,10 +138,7 @@ class FakeSocketChannel
         final SocketOption<T> name )
         throws IOException
     {
-        // NB: This is a hack to return null for the unconstrained type T until we
-        // can annotate NetworkChannel#getOption as returning @Nullable T.
-        final AtomicReference<T> ref = new AtomicReference<>( /* null */ );
-        return ref.get();
+        return null;
     }
 
     /*
