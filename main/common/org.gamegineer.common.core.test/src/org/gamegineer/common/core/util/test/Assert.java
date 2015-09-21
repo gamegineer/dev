@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.core.util.test;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import net.jcip.annotations.ThreadSafe;
@@ -159,8 +160,8 @@ public final class Assert
             return null;
         }
 
-        @SuppressWarnings( "unchecked" )
-        final IEqualityComparator<Object> equalityComparator = adapterManager.getAdapter( obj, IEqualityComparator.class );
+        @SuppressWarnings( "all" )
+        final IEqualityComparator<Object> equalityComparator = adapterManager.getAdapter( obj, nonNull( IEqualityComparator.class ) );
         return equalityComparator;
     }
 }
