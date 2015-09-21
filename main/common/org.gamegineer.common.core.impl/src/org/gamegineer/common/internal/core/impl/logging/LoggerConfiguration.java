@@ -30,6 +30,7 @@ import java.util.logging.Filter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.logging.LoggingServiceConstants;
 import org.gamegineer.common.internal.core.impl.Debug;
@@ -129,7 +130,7 @@ final class LoggerConfiguration
             {
                 try
                 {
-                    handlers.add( AbstractLoggingComponentFactory.createNamedLoggingComponent( Handler.class, name, properties_ ) );
+                    handlers.add( AbstractLoggingComponentFactory.<@NonNull Handler>createNamedLoggingComponent( nonNull( Handler.class ), name, properties_ ) );
                 }
                 catch( final IllegalArgumentException e )
                 {
