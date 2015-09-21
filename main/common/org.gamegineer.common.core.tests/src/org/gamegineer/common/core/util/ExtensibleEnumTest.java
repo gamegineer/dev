@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.core.util;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import java.io.ByteArrayInputStream;
@@ -30,6 +31,7 @@ import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.List;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.NonNull;
 import org.junit.Test;
 
 /**
@@ -106,7 +108,7 @@ public final class ExtensibleEnumTest
     @Test( expected = IllegalArgumentException.class )
     public void testValueOf_Name_Illegal()
     {
-        ExtensibleEnum.valueOf( MockEnum.class, "__UNKNOWN_NAME__" ); //$NON-NLS-1$
+        ExtensibleEnum.<@NonNull MockEnum>valueOf( nonNull( MockEnum.class ), "__UNKNOWN_NAME__" ); //$NON-NLS-1$
     }
 
     /**
@@ -116,9 +118,9 @@ public final class ExtensibleEnumTest
     @Test
     public void testValueOf_Name_Legal()
     {
-        assertSame( MockEnum.CONSTANT_1, ExtensibleEnum.valueOf( MockEnum.class, MockEnum.CONSTANT_1.name() ) );
-        assertSame( MockEnum.CONSTANT_2, ExtensibleEnum.valueOf( MockEnum.class, MockEnum.CONSTANT_2.name() ) );
-        assertSame( MockEnum.CONSTANT_3, ExtensibleEnum.valueOf( MockEnum.class, MockEnum.CONSTANT_3.name() ) );
+        assertSame( MockEnum.CONSTANT_1, ExtensibleEnum.<@NonNull MockEnum>valueOf( nonNull( MockEnum.class ), MockEnum.CONSTANT_1.name() ) );
+        assertSame( MockEnum.CONSTANT_2, ExtensibleEnum.<@NonNull MockEnum>valueOf( nonNull( MockEnum.class ), MockEnum.CONSTANT_2.name() ) );
+        assertSame( MockEnum.CONSTANT_3, ExtensibleEnum.<@NonNull MockEnum>valueOf( nonNull( MockEnum.class ), MockEnum.CONSTANT_3.name() ) );
     }
 
     /**
@@ -134,7 +136,7 @@ public final class ExtensibleEnumTest
             MockEnum.CONSTANT_3
         );
 
-        final List<MockEnum> actualValues = ExtensibleEnum.values( MockEnum.class );
+        final List<MockEnum> actualValues = ExtensibleEnum.<@NonNull MockEnum>values( nonNull( MockEnum.class ) );
 
         assertEquals( expectedValues, actualValues );
     }

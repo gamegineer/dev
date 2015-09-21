@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.core;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Point;
 import java.util.Collection;
 import java.util.Collections;
@@ -28,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -78,7 +80,7 @@ public final class ComponentStrategies
         private static final ComponentStrategyId ID = ComponentStrategyId.fromString( "org.gamegineer.table.componentStrategies.nullComponent" ); //$NON-NLS-1$
 
         /** The collection of supported component orientations. */
-        private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( NullOrientation.values( NullOrientation.class ) );
+        private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( NullOrientation.<@NonNull NullOrientation>values( nonNull( NullOrientation.class ) ) );
 
 
         // ==================================================================

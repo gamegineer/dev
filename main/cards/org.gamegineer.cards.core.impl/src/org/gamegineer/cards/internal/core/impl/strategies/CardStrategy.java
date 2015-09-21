@@ -21,10 +21,12 @@
 
 package org.gamegineer.cards.internal.core.impl.strategies;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import net.jcip.annotations.Immutable;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.cards.core.CardOrientation;
 import org.gamegineer.cards.core.CardSurfaceDesignIds;
@@ -51,7 +53,7 @@ final class CardStrategy
     // ======================================================================
 
     /** The collection of supported card orientations. */
-    private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( CardOrientation.values( CardOrientation.class ) );
+    private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( CardOrientation.<@NonNull CardOrientation>values( nonNull( CardOrientation.class ) ) );
 
 
     // ======================================================================
