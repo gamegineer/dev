@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.net.TableNetworkError;
@@ -38,7 +39,7 @@ import org.gamegineer.table.net.TableNetworkError;
  * 
  * @noextend This interface is not intended to be extended by clients.
  */
-public interface INode<RemoteNodeType extends IRemoteNode>
+public interface INode<@NonNull RemoteNodeType extends IRemoteNode>
 {
     // ======================================================================
     // Methods

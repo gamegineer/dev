@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node.server;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.gamegineer.table.internal.net.impl.TableNetworkControllers;
 import org.gamegineer.table.internal.net.impl.node.AbstractAbstractNodeAsNodeControllerTestCase;
 import org.gamegineer.table.internal.net.impl.node.INodeController;
@@ -31,7 +30,7 @@ import org.gamegineer.table.internal.net.impl.node.INodeController;
  * violate the contract of the {@link INodeController} interface.
  */
 public final class ServerNodeAsNodeControllerTest
-    extends AbstractAbstractNodeAsNodeControllerTestCase<@NonNull ServerNode, @NonNull IRemoteClientNode>
+    extends AbstractAbstractNodeAsNodeControllerTestCase<ServerNode, IRemoteClientNode>
 {
     // ======================================================================
     // Constructors

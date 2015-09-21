@@ -69,7 +69,7 @@ import org.gamegineer.table.net.TableNetworkException;
  *        The type of the remote node managed by the local table network node.
  */
 @NotThreadSafe
-public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
+public abstract class AbstractNode<@NonNull RemoteNodeType extends IRemoteNode>
     implements INode<RemoteNodeType>, INodeController
 {
     // ======================================================================

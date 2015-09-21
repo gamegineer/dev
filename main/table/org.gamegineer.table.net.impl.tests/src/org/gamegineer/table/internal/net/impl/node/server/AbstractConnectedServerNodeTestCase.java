@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.net.impl.node.server;
 
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.eclipse.jdt.annotation.NonNull;
 import org.gamegineer.table.internal.net.impl.node.AbstractConnectedNodeTestCase;
 import org.gamegineer.table.internal.net.impl.node.INetworkTable;
 
@@ -35,7 +34,7 @@ import org.gamegineer.table.internal.net.impl.node.INetworkTable;
  *        The type of the server node.
  */
 public abstract class AbstractConnectedServerNodeTestCase<T extends IServerNode>
-    extends AbstractConnectedNodeTestCase<T, @NonNull IRemoteClientNode>
+    extends AbstractConnectedNodeTestCase<T, IRemoteClientNode>
 {
     // ======================================================================
     // Constructors
