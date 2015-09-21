@@ -1,6 +1,6 @@
 /*
  * ComponentStrategyUIRegistry.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.ui.impl;
 
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 import org.gamegineer.common.core.util.registry.AbstractRegistry;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.ui.IComponentStrategyUI;
@@ -32,7 +33,7 @@ import org.gamegineer.table.ui.IComponentStrategyUIRegistry;
  */
 @ThreadSafe
 public final class ComponentStrategyUIRegistry
-    extends AbstractRegistry<ComponentStrategyId, IComponentStrategyUI>
+    extends AbstractRegistry<@NonNull ComponentStrategyId, @NonNull IComponentStrategyUI>
     implements IComponentStrategyUIRegistry
 {
     // ======================================================================

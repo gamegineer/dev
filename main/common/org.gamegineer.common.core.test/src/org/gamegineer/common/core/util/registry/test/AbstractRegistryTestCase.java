@@ -28,6 +28,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 import org.eclipse.jdt.annotation.DefaultLocation;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.registry.IRegistry;
@@ -44,7 +45,7 @@ import org.junit.Test;
  *        The type of object managed by the registry.
  */
 @NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
-public abstract class AbstractRegistryTestCase<ObjectIdType, ObjectType>
+public abstract class AbstractRegistryTestCase<@NonNull ObjectIdType, @NonNull ObjectType>
 {
     // ======================================================================
     // Fields

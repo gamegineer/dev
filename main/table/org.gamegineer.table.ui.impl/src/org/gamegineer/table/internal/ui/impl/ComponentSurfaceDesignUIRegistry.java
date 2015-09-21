@@ -1,6 +1,6 @@
 /*
  * ComponentSurfaceDesignUIRegistry.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.ui.impl;
 
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 import org.gamegineer.common.core.util.registry.AbstractRegistry;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.ui.ComponentSurfaceDesignUI;
@@ -32,7 +33,7 @@ import org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry;
  */
 @ThreadSafe
 public final class ComponentSurfaceDesignUIRegistry
-    extends AbstractRegistry<ComponentSurfaceDesignId, ComponentSurfaceDesignUI>
+    extends AbstractRegistry<@NonNull ComponentSurfaceDesignId, @NonNull ComponentSurfaceDesignUI>
     implements IComponentSurfaceDesignUIRegistry
 {
     // ======================================================================

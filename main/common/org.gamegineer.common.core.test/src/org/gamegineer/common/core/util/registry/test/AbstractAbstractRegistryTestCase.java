@@ -23,6 +23,7 @@ package org.gamegineer.common.core.util.registry.test;
 
 import static org.junit.Assert.assertNotNull;
 import org.eclipse.jdt.annotation.DefaultLocation;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.util.registry.AbstractRegistry;
 import org.junit.Before;
@@ -40,7 +41,7 @@ import org.junit.Test;
  *        The type of object managed by the registry.
  */
 @NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
-public abstract class AbstractAbstractRegistryTestCase<RegistryType extends AbstractRegistry<ObjectIdType, ObjectType>, ObjectIdType, ObjectType>
+public abstract class AbstractAbstractRegistryTestCase<RegistryType extends AbstractRegistry<ObjectIdType, ObjectType>, @NonNull ObjectIdType, @NonNull ObjectType>
 {
     // ======================================================================
     // Fields

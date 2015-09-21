@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.ContributorFactoryOSGi;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.annotation.NonNull;
 import org.gamegineer.common.core.util.registry.AbstractRegistryExtensionPointAdapter;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.internal.ui.impl.util.swing.IconProxy;
@@ -42,7 +43,7 @@ import org.osgi.framework.Bundle;
  */
 @ThreadSafe
 public final class ComponentSurfaceDesignUIRegistryExtensionPointAdapter
-    extends AbstractRegistryExtensionPointAdapter<ComponentSurfaceDesignId, ComponentSurfaceDesignUI>
+    extends AbstractRegistryExtensionPointAdapter<@NonNull ComponentSurfaceDesignId, @NonNull ComponentSurfaceDesignUI>
 {
     // ======================================================================
     // Fields

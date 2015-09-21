@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.core.impl;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.jdt.annotation.NonNull;
 import org.gamegineer.common.core.util.registry.AbstractRegistryExtensionPointAdapter;
 import org.gamegineer.table.core.ContainerLayoutId;
 import org.gamegineer.table.core.ContainerLayoutsExtensionPoint;
@@ -36,7 +37,7 @@ import org.gamegineer.table.core.IContainerLayout;
  */
 @ThreadSafe
 public final class ContainerLayoutRegistryExtensionPointAdapter
-    extends AbstractRegistryExtensionPointAdapter<ContainerLayoutId, IContainerLayout>
+    extends AbstractRegistryExtensionPointAdapter<@NonNull ContainerLayoutId, @NonNull IContainerLayout>
 {
     // ======================================================================
     // Fields

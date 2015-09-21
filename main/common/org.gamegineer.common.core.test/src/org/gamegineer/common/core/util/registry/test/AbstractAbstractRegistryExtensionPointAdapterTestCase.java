@@ -50,7 +50,7 @@ import org.junit.Test;
  *        The type of object managed by the registry.
  */
 @NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
-public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<RegistryExtensionPointAdapterType extends AbstractRegistryExtensionPointAdapter<ObjectIdType, ObjectType>, ObjectIdType, ObjectType>
+public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<RegistryExtensionPointAdapterType extends AbstractRegistryExtensionPointAdapter<ObjectIdType, ObjectType>, @NonNull ObjectIdType, @NonNull ObjectType>
 {
     // ======================================================================
     // Fields

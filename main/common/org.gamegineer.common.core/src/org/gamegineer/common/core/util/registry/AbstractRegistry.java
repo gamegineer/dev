@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.internal.core.Debug;
 
@@ -39,7 +40,7 @@ import org.gamegineer.common.internal.core.Debug;
  *        The type of object managed by the registry.
  */
 @ThreadSafe
-public abstract class AbstractRegistry<ObjectIdType, ObjectType>
+public abstract class AbstractRegistry<@NonNull ObjectIdType, @NonNull ObjectType>
     implements IRegistry<ObjectIdType, ObjectType>
 {
     // ======================================================================

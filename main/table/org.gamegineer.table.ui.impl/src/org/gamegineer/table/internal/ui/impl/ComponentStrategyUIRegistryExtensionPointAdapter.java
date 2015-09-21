@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.ui.impl;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.jdt.annotation.NonNull;
 import org.gamegineer.common.core.util.registry.AbstractRegistryExtensionPointAdapter;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.ui.ComponentStrategyUIsExtensionPoint;
@@ -36,7 +37,7 @@ import org.gamegineer.table.ui.IComponentStrategyUI;
  */
 @ThreadSafe
 public final class ComponentStrategyUIRegistryExtensionPointAdapter
-    extends AbstractRegistryExtensionPointAdapter<ComponentStrategyId, IComponentStrategyUI>
+    extends AbstractRegistryExtensionPointAdapter<@NonNull ComponentStrategyId, @NonNull IComponentStrategyUI>
 {
     // ======================================================================
     // Fields

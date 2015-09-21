@@ -22,6 +22,7 @@
 package org.gamegineer.common.core.util.registry;
 
 import java.util.Collection;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -32,7 +33,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @param <ObjectType>
  *        The type of object managed by the registry.
  */
-public interface IRegistry<ObjectIdType, ObjectType>
+public interface IRegistry<@NonNull ObjectIdType, @NonNull ObjectType>
 {
     // ======================================================================
     // Methods

@@ -35,6 +35,7 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IRegistryEventListener;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.internal.core.Loggers;
 
@@ -48,7 +49,7 @@ import org.gamegineer.common.internal.core.Loggers;
  *        The type of object managed by the registry.
  */
 @ThreadSafe
-public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, ObjectType>
+public abstract class AbstractRegistryExtensionPointAdapter<@NonNull ObjectIdType, @NonNull ObjectType>
     implements IRegistryEventListener
 {
     // ======================================================================
@@ -431,7 +432,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<ObjectIdType, Object
      *        The type of object managed by the registry.
      */
     @Immutable
-    private static final class ObjectRegistration<ObjectType>
+    private static final class ObjectRegistration<@NonNull ObjectType>
     {
         // ==================================================================
         // Fields
