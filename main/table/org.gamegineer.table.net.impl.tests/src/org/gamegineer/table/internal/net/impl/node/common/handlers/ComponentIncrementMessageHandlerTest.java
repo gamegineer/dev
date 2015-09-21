@@ -30,6 +30,7 @@ import org.gamegineer.table.internal.net.impl.node.ComponentIncrement;
 import org.gamegineer.table.internal.net.impl.node.IMessageHandler;
 import org.gamegineer.table.internal.net.impl.node.INetworkTable;
 import org.gamegineer.table.internal.net.impl.node.INode;
+import org.gamegineer.table.internal.net.impl.node.IRemoteNode;
 import org.gamegineer.table.internal.net.impl.node.IRemoteNodeController;
 import org.gamegineer.table.internal.net.impl.node.ITableManager;
 import org.gamegineer.table.internal.net.impl.node.common.messages.ComponentIncrementMessage;
@@ -91,7 +92,6 @@ public final class ComponentIncrementMessageHandlerTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "rawtypes" )
     @Test
     public void testHandleMessage_ComponentIncrementMessage()
         throws Exception
@@ -101,9 +101,9 @@ public final class ComponentIncrementMessageHandlerTest
         final INetworkTable table = mocksControl_.createMock( INetworkTable.class );
         final ITableManager tableManager = mocksControl_.createMock( ITableManager.class );
         tableManager.incrementComponentState( table, componentPath, componentIncrement );
-        final INode localNode = mocksControl_.createMock( INode.class );
+        final INode<IRemoteNode> localNode = mocksControl_.createMock( INode.class );
         EasyMock.expect( localNode.getTableManager() ).andReturn( tableManager ).anyTimes();
-        final IRemoteNodeController remoteNodeController = mocksControl_.createMock( IRemoteNodeController.class );
+        final IRemoteNodeController<INode<IRemoteNode>> remoteNodeController = mocksControl_.createMock( IRemoteNodeController.class );
         EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
         EasyMock.expect( remoteNodeController.getTable() ).andReturn( table ).anyTimes();
         mocksControl_.replay();
