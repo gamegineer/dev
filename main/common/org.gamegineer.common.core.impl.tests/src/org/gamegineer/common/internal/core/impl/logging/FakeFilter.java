@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.logging.Filter;
 import java.util.logging.LogRecord;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.internal.core.impl.Activator;
 import org.osgi.framework.ServiceRegistration;
@@ -130,7 +131,7 @@ public final class FakeFilter
         };
         final Dictionary<String, Object> properties = new Hashtable<>();
         properties.put( ComponentConstants.COMPONENT_FACTORY, FakeFilter.class.getName() );
-        return Activator.getDefault().getBundleContext().registerService( ComponentFactory.class, componentFactory, properties );
+        return nonNull( Activator.getDefault().getBundleContext().<@NonNull ComponentFactory>registerService( nonNull( ComponentFactory.class ), componentFactory, properties ) );
     }
 
     /**
