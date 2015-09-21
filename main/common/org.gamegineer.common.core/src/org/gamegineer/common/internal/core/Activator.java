@@ -21,12 +21,14 @@
 
 package org.gamegineer.common.internal.core;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.osgi.service.debug.DebugOptions;
 import org.gamegineer.common.core.logging.ILoggingService;
+import org.gamegineer.common.core.util.osgi.ServiceTrackerUtils;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
@@ -49,16 +51,16 @@ public final class Activator
     @GuardedBy( "lock_" )
     private @Nullable BundleContext bundleContext_;
 
-    /** The debug options service tracker. */
+    /** A reference to the debug options service tracker. */
     @GuardedBy( "lock_" )
-    private @Nullable ServiceTracker<DebugOptions, DebugOptions> debugOptionsTracker_;
+    private final AtomicReference<@Nullable ServiceTracker<DebugOptions, DebugOptions>> debugOptionsTrackerRef_;
 
     /** The instance lock. */
     private final Object lock_;
 
-    /** The logging service tracker. */
+    /** A reference to the logging service tracker. */
     @GuardedBy( "lock_" )
-    private @Nullable ServiceTracker<ILoggingService, ILoggingService> loggingServiceTracker_;
+    private final AtomicReference<@Nullable ServiceTracker<ILoggingService, ILoggingService>> loggingServiceTrackerRef_;
 
 
     // ======================================================================
@@ -72,8 +74,8 @@ public final class Activator
     {
         lock_ = new Object();
         bundleContext_ = null;
-        debugOptionsTracker_ = null;
-        loggingServiceTracker_ = null;
+        debugOptionsTrackerRef_ = new AtomicReference<>();
+        loggingServiceTrackerRef_ = new AtomicReference<>();
     }
 
 
@@ -90,9 +92,20 @@ public final class Activator
     {
         synchronized( lock_ )
         {
-            assert bundleContext_ != null;
-            return bundleContext_;
+            return getBundleContextInternal();
         }
+    }
+
+    /**
+     * Gets the bundle context.
+     * 
+     * @return The bundle context; never {@code null}.
+     */
+    @GuardedBy( "lock_" )
+    private BundleContext getBundleContextInternal()
+    {
+        assert bundleContext_ != null;
+        return bundleContext_;
     }
 
     /**
@@ -105,16 +118,7 @@ public final class Activator
     {
         synchronized( lock_ )
         {
-            assert bundleContext_ != null;
-
-            if( debugOptionsTracker_ == null )
-            {
-                debugOptionsTracker_ = new ServiceTracker<>( bundleContext_, DebugOptions.class, null );
-                debugOptionsTracker_.open();
-            }
-
-            assert debugOptionsTracker_ != null;
-            return debugOptionsTracker_.getService();
+            return ServiceTrackerUtils.openService( debugOptionsTrackerRef_, getBundleContextInternal(), nonNull( DebugOptions.class ) );
         }
     }
 
@@ -140,16 +144,7 @@ public final class Activator
     {
         synchronized( lock_ )
         {
-            assert bundleContext_ != null;
-
-            if( loggingServiceTracker_ == null )
-            {
-                loggingServiceTracker_ = new ServiceTracker<>( bundleContext_, ILoggingService.class, null );
-                loggingServiceTracker_.open();
-            }
-
-            assert loggingServiceTracker_ != null;
-            return loggingServiceTracker_.getService();
+            return ServiceTrackerUtils.openService( loggingServiceTrackerRef_, getBundleContextInternal(), nonNull( ILoggingService.class ) );
         }
     }
 
@@ -195,16 +190,8 @@ public final class Activator
             assert bundleContext_ != null;
             bundleContext_ = null;
 
-            if( loggingServiceTracker_ != null )
-            {
-                loggingServiceTracker_.close();
-                loggingServiceTracker_ = null;
-            }
-            if( debugOptionsTracker_ != null )
-            {
-                debugOptionsTracker_.close();
-                debugOptionsTracker_ = null;
-            }
+            ServiceTrackerUtils.closeService( loggingServiceTrackerRef_ );
+            ServiceTrackerUtils.closeService( debugOptionsTrackerRef_ );
         }
     }
 }

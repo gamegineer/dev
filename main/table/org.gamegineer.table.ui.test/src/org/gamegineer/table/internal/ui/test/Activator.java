@@ -21,10 +21,12 @@
 
 package org.gamegineer.table.internal.ui.test;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.jdt.annotation.Nullable;
+import org.gamegineer.common.core.util.osgi.ServiceTrackerUtils;
 import org.gamegineer.table.ui.IComponentStrategyUIRegistry;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -48,9 +50,12 @@ public final class Activator
     @GuardedBy( "lock_" )
     private @Nullable BundleContext bundleContext_;
 
-    /** The component strategy user interface registry service tracker. */
+    /**
+     * A reference to the component strategy user interface registry service
+     * tracker.
+     */
     @GuardedBy( "lock_" )
-    private @Nullable ServiceTracker<IComponentStrategyUIRegistry, IComponentStrategyUIRegistry> componentStrategyUIRegistryTracker_;
+    private final AtomicReference<@Nullable ServiceTracker<IComponentStrategyUIRegistry, IComponentStrategyUIRegistry>> componentStrategyUIRegistryTrackerRef_;
 
     /** The instance lock. */
     private final Object lock_;
@@ -67,7 +72,7 @@ public final class Activator
     {
         lock_ = new Object();
         bundleContext_ = null;
-        componentStrategyUIRegistryTracker_ = null;
+        componentStrategyUIRegistryTrackerRef_ = new AtomicReference<>();
     }
 
 
@@ -84,9 +89,20 @@ public final class Activator
     {
         synchronized( lock_ )
         {
-            assert bundleContext_ != null;
-            return bundleContext_;
+            return getBundleContextInternal();
         }
+    }
+
+    /**
+     * Gets the bundle context.
+     * 
+     * @return The bundle context; never {@code null}.
+     */
+    @GuardedBy( "lock_" )
+    private BundleContext getBundleContextInternal()
+    {
+        assert bundleContext_ != null;
+        return bundleContext_;
     }
 
     /**
@@ -100,16 +116,7 @@ public final class Activator
     {
         synchronized( lock_ )
         {
-            assert bundleContext_ != null;
-
-            if( componentStrategyUIRegistryTracker_ == null )
-            {
-                componentStrategyUIRegistryTracker_ = new ServiceTracker<>( bundleContext_, IComponentStrategyUIRegistry.class, null );
-                componentStrategyUIRegistryTracker_.open();
-            }
-
-            assert componentStrategyUIRegistryTracker_ != null;
-            return componentStrategyUIRegistryTracker_.getService();
+            return ServiceTrackerUtils.openService( componentStrategyUIRegistryTrackerRef_, getBundleContextInternal(), nonNull( IComponentStrategyUIRegistry.class ) );
         }
     }
 
@@ -167,11 +174,7 @@ public final class Activator
             assert bundleContext_ != null;
             bundleContext_ = null;
 
-            if( componentStrategyUIRegistryTracker_ != null )
-            {
-                componentStrategyUIRegistryTracker_.close();
-                componentStrategyUIRegistryTracker_ = null;
-            }
+            ServiceTrackerUtils.closeService( componentStrategyUIRegistryTrackerRef_ );
         }
     }
 }

@@ -21,10 +21,12 @@
 
 package org.gamegineer.table.internal.core.test;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.jdt.annotation.Nullable;
+import org.gamegineer.common.core.util.osgi.ServiceTrackerUtils;
 import org.gamegineer.table.core.IComponentStrategyRegistry;
 import org.gamegineer.table.core.IComponentSurfaceDesignRegistry;
 import org.gamegineer.table.core.IContainerLayoutRegistry;
@@ -51,24 +53,24 @@ public final class Activator
     @GuardedBy( "lock_" )
     private @Nullable BundleContext bundleContext_;
 
-    /** The component strategy registry service tracker. */
+    /** A reference to the component strategy registry service tracker. */
     @GuardedBy( "lock_" )
-    private @Nullable ServiceTracker<IComponentStrategyRegistry, IComponentStrategyRegistry> componentStrategyRegistryTracker_;
+    private final AtomicReference<@Nullable ServiceTracker<IComponentStrategyRegistry, IComponentStrategyRegistry>> componentStrategyRegistryTrackerRef_;
 
-    /** The component surface design registry service tracker. */
+    /** A reference to the component surface design registry service tracker. */
     @GuardedBy( "lock_" )
-    private @Nullable ServiceTracker<IComponentSurfaceDesignRegistry, IComponentSurfaceDesignRegistry> componentSurfaceDesignRegistryTracker_;
+    private final AtomicReference<@Nullable ServiceTracker<IComponentSurfaceDesignRegistry, IComponentSurfaceDesignRegistry>> componentSurfaceDesignRegistryTrackerRef_;
 
-    /** The container layout registry service tracker. */
+    /** A reference to the container layout registry service tracker. */
     @GuardedBy( "lock_" )
-    private @Nullable ServiceTracker<IContainerLayoutRegistry, IContainerLayoutRegistry> containerLayoutRegistryTracker_;
+    private final AtomicReference<@Nullable ServiceTracker<IContainerLayoutRegistry, IContainerLayoutRegistry>> containerLayoutRegistryTrackerRef_;
 
     /** The instance lock. */
     private final Object lock_;
 
-    /** The table environment factory service tracker. */
+    /** A reference to the table environment factory service tracker. */
     @GuardedBy( "lock_" )
-    private @Nullable ServiceTracker<ITableEnvironmentFactory, ITableEnvironmentFactory> tableEnvironmentFactoryTracker_;
+    private final AtomicReference<@Nullable ServiceTracker<ITableEnvironmentFactory, ITableEnvironmentFactory>> tableEnvironmentFactoryTrackerRef_;
 
 
     // ======================================================================
@@ -82,10 +84,10 @@ public final class Activator
     {
         lock_ = new Object();
         bundleContext_ = null;
-        componentStrategyRegistryTracker_ = null;
-        componentSurfaceDesignRegistryTracker_ = null;
-        containerLayoutRegistryTracker_ = null;
-        tableEnvironmentFactoryTracker_ = null;
+        componentStrategyRegistryTrackerRef_ = new AtomicReference<>();
+        componentSurfaceDesignRegistryTrackerRef_ = new AtomicReference<>();
+        containerLayoutRegistryTrackerRef_ = new AtomicReference<>();
+        tableEnvironmentFactoryTrackerRef_ = new AtomicReference<>();
     }
 
 
@@ -102,9 +104,20 @@ public final class Activator
     {
         synchronized( lock_ )
         {
-            assert bundleContext_ != null;
-            return bundleContext_;
+            return getBundleContextInternal();
         }
+    }
+
+    /**
+     * Gets the bundle context.
+     * 
+     * @return The bundle context; never {@code null}.
+     */
+    @GuardedBy( "lock_" )
+    private BundleContext getBundleContextInternal()
+    {
+        assert bundleContext_ != null;
+        return bundleContext_;
     }
 
     /**
@@ -129,16 +142,7 @@ public final class Activator
     {
         synchronized( lock_ )
         {
-            assert bundleContext_ != null;
-
-            if( componentStrategyRegistryTracker_ == null )
-            {
-                componentStrategyRegistryTracker_ = new ServiceTracker<>( bundleContext_, IComponentStrategyRegistry.class, null );
-                componentStrategyRegistryTracker_.open();
-            }
-
-            assert componentStrategyRegistryTracker_ != null;
-            return componentStrategyRegistryTracker_.getService();
+            return ServiceTrackerUtils.openService( componentStrategyRegistryTrackerRef_, getBundleContextInternal(), nonNull( IComponentStrategyRegistry.class ) );
         }
     }
 
@@ -152,16 +156,7 @@ public final class Activator
     {
         synchronized( lock_ )
         {
-            assert bundleContext_ != null;
-
-            if( componentSurfaceDesignRegistryTracker_ == null )
-            {
-                componentSurfaceDesignRegistryTracker_ = new ServiceTracker<>( bundleContext_, IComponentSurfaceDesignRegistry.class, null );
-                componentSurfaceDesignRegistryTracker_.open();
-            }
-
-            assert componentSurfaceDesignRegistryTracker_ != null;
-            return componentSurfaceDesignRegistryTracker_.getService();
+            return ServiceTrackerUtils.openService( componentSurfaceDesignRegistryTrackerRef_, getBundleContextInternal(), nonNull( IComponentSurfaceDesignRegistry.class ) );
         }
     }
 
@@ -175,16 +170,7 @@ public final class Activator
     {
         synchronized( lock_ )
         {
-            assert bundleContext_ != null;
-
-            if( containerLayoutRegistryTracker_ == null )
-            {
-                containerLayoutRegistryTracker_ = new ServiceTracker<>( bundleContext_, IContainerLayoutRegistry.class, null );
-                containerLayoutRegistryTracker_.open();
-            }
-
-            assert containerLayoutRegistryTracker_ != null;
-            return containerLayoutRegistryTracker_.getService();
+            return ServiceTrackerUtils.openService( containerLayoutRegistryTrackerRef_, getBundleContextInternal(), nonNull( IContainerLayoutRegistry.class ) );
         }
     }
 
@@ -198,16 +184,7 @@ public final class Activator
     {
         synchronized( lock_ )
         {
-            assert bundleContext_ != null;
-
-            if( tableEnvironmentFactoryTracker_ == null )
-            {
-                tableEnvironmentFactoryTracker_ = new ServiceTracker<>( bundleContext_, ITableEnvironmentFactory.class, null );
-                tableEnvironmentFactoryTracker_.open();
-            }
-
-            assert tableEnvironmentFactoryTracker_ != null;
-            return tableEnvironmentFactoryTracker_.getService();
+            return ServiceTrackerUtils.openService( tableEnvironmentFactoryTrackerRef_, getBundleContextInternal(), nonNull( ITableEnvironmentFactory.class ) );
         }
     }
 
@@ -253,26 +230,10 @@ public final class Activator
             assert bundleContext_ != null;
             bundleContext_ = null;
 
-            if( componentStrategyRegistryTracker_ != null )
-            {
-                componentStrategyRegistryTracker_.close();
-                componentStrategyRegistryTracker_ = null;
-            }
-            if( componentSurfaceDesignRegistryTracker_ != null )
-            {
-                componentSurfaceDesignRegistryTracker_.close();
-                componentSurfaceDesignRegistryTracker_ = null;
-            }
-            if( containerLayoutRegistryTracker_ != null )
-            {
-                containerLayoutRegistryTracker_.close();
-                containerLayoutRegistryTracker_ = null;
-            }
-            if( tableEnvironmentFactoryTracker_ != null )
-            {
-                tableEnvironmentFactoryTracker_.close();
-                tableEnvironmentFactoryTracker_ = null;
-            }
+            ServiceTrackerUtils.closeService( componentStrategyRegistryTrackerRef_ );
+            ServiceTrackerUtils.closeService( componentSurfaceDesignRegistryTrackerRef_ );
+            ServiceTrackerUtils.closeService( containerLayoutRegistryTrackerRef_ );
+            ServiceTrackerUtils.closeService( tableEnvironmentFactoryTrackerRef_ );
         }
     }
 }

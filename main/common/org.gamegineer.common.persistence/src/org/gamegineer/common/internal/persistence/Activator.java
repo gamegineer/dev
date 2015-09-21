@@ -21,10 +21,12 @@
 
 package org.gamegineer.common.internal.persistence;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.jdt.annotation.Nullable;
+import org.gamegineer.common.core.util.osgi.ServiceTrackerUtils;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
@@ -50,9 +52,12 @@ public final class Activator
     /** The instance lock. */
     private final Object lock_;
 
-    /** The Serializable persistence delegate registry service tracker. */
+    /**
+     * A reference to the Serializable persistence delegate registry service
+     * tracker.
+     */
     @GuardedBy( "lock_" )
-    private @Nullable ServiceTracker<org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry, org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry> serializablePersistenceDelegateRegistryTracker_;
+    private final AtomicReference<@Nullable ServiceTracker<org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry, org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry>> serializablePersistenceDelegateRegistryTrackerRef_;
 
 
     // ======================================================================
@@ -66,7 +71,7 @@ public final class Activator
     {
         lock_ = new Object();
         bundleContext_ = null;
-        serializablePersistenceDelegateRegistryTracker_ = null;
+        serializablePersistenceDelegateRegistryTrackerRef_ = new AtomicReference<>();
     }
 
 
@@ -83,9 +88,20 @@ public final class Activator
     {
         synchronized( lock_ )
         {
-            assert bundleContext_ != null;
-            return bundleContext_;
+            return getBundleContextInternal();
         }
+    }
+
+    /**
+     * Gets the bundle context.
+     * 
+     * @return The bundle context; never {@code null}.
+     */
+    @GuardedBy( "lock_" )
+    private BundleContext getBundleContextInternal()
+    {
+        assert bundleContext_ != null;
+        return bundleContext_;
     }
 
     /**
@@ -111,16 +127,7 @@ public final class Activator
     {
         synchronized( lock_ )
         {
-            assert bundleContext_ != null;
-
-            if( serializablePersistenceDelegateRegistryTracker_ == null )
-            {
-                serializablePersistenceDelegateRegistryTracker_ = new ServiceTracker<>( bundleContext_, org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry.class, null );
-                serializablePersistenceDelegateRegistryTracker_.open();
-            }
-
-            assert serializablePersistenceDelegateRegistryTracker_ != null;
-            return serializablePersistenceDelegateRegistryTracker_.getService();
+            return ServiceTrackerUtils.openService( serializablePersistenceDelegateRegistryTrackerRef_, getBundleContextInternal(), nonNull( org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry.class ) );
         }
     }
 
@@ -166,11 +173,7 @@ public final class Activator
             assert bundleContext_ != null;
             bundleContext_ = null;
 
-            if( serializablePersistenceDelegateRegistryTracker_ != null )
-            {
-                serializablePersistenceDelegateRegistryTracker_.close();
-                serializablePersistenceDelegateRegistryTracker_ = null;
-            }
+            ServiceTrackerUtils.closeService( serializablePersistenceDelegateRegistryTrackerRef_ );
         }
     }
 }

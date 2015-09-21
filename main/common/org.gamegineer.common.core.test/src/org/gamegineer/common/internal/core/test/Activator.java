@@ -21,11 +21,13 @@
 
 package org.gamegineer.common.internal.core.test;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.jdt.annotation.Nullable;
+import org.gamegineer.common.core.util.osgi.ServiceTrackerUtils;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
@@ -44,9 +46,9 @@ public final class Activator
     /** The singleton instance of the bundle activator. */
     private static final AtomicReference<@Nullable Activator> instance_ = new AtomicReference<>();
 
-    /** The adapter manager service tracker. */
+    /** A reference to the adapter manager service tracker. */
     @GuardedBy( "lock_" )
-    private @Nullable ServiceTracker<IAdapterManager, IAdapterManager> adapterManagerTracker_;
+    private final AtomicReference<@Nullable ServiceTracker<IAdapterManager, IAdapterManager>> adapterManagerTrackerRef_;
 
     /** The bundle context. */
     @GuardedBy( "lock_" )
@@ -66,7 +68,7 @@ public final class Activator
     public Activator()
     {
         lock_ = new Object();
-        adapterManagerTracker_ = null;
+        adapterManagerTrackerRef_ = new AtomicReference<>();
         bundleContext_ = null;
     }
 
@@ -85,16 +87,7 @@ public final class Activator
     {
         synchronized( lock_ )
         {
-            assert bundleContext_ != null;
-
-            if( adapterManagerTracker_ == null )
-            {
-                adapterManagerTracker_ = new ServiceTracker<>( bundleContext_, IAdapterManager.class, null );
-                adapterManagerTracker_.open();
-            }
-
-            assert adapterManagerTracker_ != null;
-            return adapterManagerTracker_.getService();
+            return ServiceTrackerUtils.openService( adapterManagerTrackerRef_, getBundleContextInternal(), nonNull( IAdapterManager.class ) );
         }
     }
 
@@ -107,9 +100,20 @@ public final class Activator
     {
         synchronized( lock_ )
         {
-            assert bundleContext_ != null;
-            return bundleContext_;
+            return getBundleContextInternal();
         }
+    }
+
+    /**
+     * Gets the bundle context.
+     * 
+     * @return The bundle context; never {@code null}.
+     */
+    @GuardedBy( "lock_" )
+    private BundleContext getBundleContextInternal()
+    {
+        assert bundleContext_ != null;
+        return bundleContext_;
     }
 
     /**
@@ -166,11 +170,7 @@ public final class Activator
             assert bundleContext_ != null;
             bundleContext_ = null;
 
-            if( adapterManagerTracker_ != null )
-            {
-                adapterManagerTracker_.close();
-                adapterManagerTracker_ = null;
-            }
+            ServiceTrackerUtils.closeService( adapterManagerTrackerRef_ );
         }
     }
 }

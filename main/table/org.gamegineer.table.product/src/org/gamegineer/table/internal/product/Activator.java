@@ -21,11 +21,13 @@
 
 package org.gamegineer.table.internal.product;
 
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.jdt.annotation.Nullable;
+import org.gamegineer.common.core.util.osgi.ServiceTrackerUtils;
 import org.gamegineer.table.ui.ITableRunnerFactory;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -49,16 +51,16 @@ public final class Activator
     @GuardedBy( "lock_" )
     private @Nullable BundleContext bundleContext_;
 
-    /** The executor service tracker. */
+    /** A reference to the executor service tracker. */
     @GuardedBy( "lock_" )
-    private @Nullable ServiceTracker<ExecutorService, ExecutorService> executorServiceTracker_;
+    private final AtomicReference<@Nullable ServiceTracker<ExecutorService, ExecutorService>> executorServiceTrackerRef_;
 
     /** The instance lock. */
     private final Object lock_;
 
-    /** The table runner factory service tracker. */
+    /** A reference to the table runner factory service tracker. */
     @GuardedBy( "lock_" )
-    private @Nullable ServiceTracker<ITableRunnerFactory, ITableRunnerFactory> tableRunnerFactoryTracker_;
+    private final AtomicReference<@Nullable ServiceTracker<ITableRunnerFactory, ITableRunnerFactory>> tableRunnerFactoryTrackerRef_;
 
 
     // ======================================================================
@@ -72,8 +74,8 @@ public final class Activator
     {
         lock_ = new Object();
         bundleContext_ = null;
-        executorServiceTracker_ = null;
-        tableRunnerFactoryTracker_ = null;
+        executorServiceTrackerRef_ = new AtomicReference<>();
+        tableRunnerFactoryTrackerRef_ = new AtomicReference<>();
     }
 
 
@@ -90,9 +92,20 @@ public final class Activator
     {
         synchronized( lock_ )
         {
-            assert bundleContext_ != null;
-            return bundleContext_;
+            return getBundleContextInternal();
         }
+    }
+
+    /**
+     * Gets the bundle context.
+     * 
+     * @return The bundle context; never {@code null}.
+     */
+    @GuardedBy( "lock_" )
+    private BundleContext getBundleContextInternal()
+    {
+        assert bundleContext_ != null;
+        return bundleContext_;
     }
 
     /**
@@ -117,16 +130,7 @@ public final class Activator
         final ExecutorService executorService;
         synchronized( lock_ )
         {
-            assert bundleContext_ != null;
-
-            if( executorServiceTracker_ == null )
-            {
-                executorServiceTracker_ = new ServiceTracker<>( bundleContext_, ExecutorService.class, null );
-                executorServiceTracker_.open();
-            }
-
-            assert executorServiceTracker_ != null;
-            executorService = executorServiceTracker_.getService();
+            executorService = ServiceTrackerUtils.openService( executorServiceTrackerRef_, getBundleContextInternal(), nonNull( ExecutorService.class ) );
         }
 
         if( executorService == null )
@@ -147,16 +151,7 @@ public final class Activator
     {
         synchronized( lock_ )
         {
-            assert bundleContext_ != null;
-
-            if( tableRunnerFactoryTracker_ == null )
-            {
-                tableRunnerFactoryTracker_ = new ServiceTracker<>( bundleContext_, ITableRunnerFactory.class, null );
-                tableRunnerFactoryTracker_.open();
-            }
-
-            assert tableRunnerFactoryTracker_ != null;
-            return tableRunnerFactoryTracker_.getService();
+            return ServiceTrackerUtils.openService( tableRunnerFactoryTrackerRef_, getBundleContextInternal(), nonNull( ITableRunnerFactory.class ) );
         }
     }
 
@@ -202,16 +197,8 @@ public final class Activator
             assert bundleContext_ != null;
             bundleContext_ = null;
 
-            if( executorServiceTracker_ != null )
-            {
-                executorServiceTracker_.close();
-                executorServiceTracker_ = null;
-            }
-            if( tableRunnerFactoryTracker_ != null )
-            {
-                tableRunnerFactoryTracker_.close();
-                tableRunnerFactoryTracker_ = null;
-            }
+            ServiceTrackerUtils.closeService( executorServiceTrackerRef_ );
+            ServiceTrackerUtils.closeService( tableRunnerFactoryTrackerRef_ );
         }
     }
 }
