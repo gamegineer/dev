@@ -61,11 +61,9 @@ final class Table
     {
         @Override
         public int compare(
-            final @Nullable IComponent component1,
-            final @Nullable IComponent component2 )
+            final IComponent component1,
+            final IComponent component2 )
         {
-            assert component1 != null;
-            assert component2 != null;
             assert component1.getTableEnvironment().getLock().isHeldByCurrentThread();
             final ComponentPath componentPath1 = component1.getPath();
             assert componentPath1 != null;

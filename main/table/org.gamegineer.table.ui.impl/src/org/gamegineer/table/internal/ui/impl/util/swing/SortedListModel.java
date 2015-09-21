@@ -120,12 +120,9 @@ public final class SortedListModel<E>
             @Override
             @SuppressWarnings( "unchecked" )
             public int compare(
-                final @Nullable E o1,
-                final @Nullable E o2 )
+                final E o1,
+                final E o2 )
             {
-                assert o1 != null;
-                assert o2 != null;
-
                 return ((Comparable<E>)o1).compareTo( o2 );
             }
         };
@@ -384,9 +381,7 @@ public final class SortedListModel<E>
          * @see java.lang.Comparable#compareTo(java.lang.Object)
          */
         @Override
-        @SuppressWarnings( {
-            "synthetic-access", "unchecked"
-        } )
+        @SuppressWarnings( "synthetic-access" )
         public int compareTo(
             final @Nullable Entry other )
         {
@@ -395,9 +390,9 @@ public final class SortedListModel<E>
                 throw new NullPointerException( "other" ); //$NON-NLS-1$
             }
 
-            final Object element = unsortedListModel_.getElementAt( index_ );
-            final Object otherElement = unsortedListModel_.getElementAt( other.getIndex() );
-            return ((Comparator<@Nullable Object>)comparator_).compare( element, otherElement );
+            final E element = unsortedListModel_.getElementAt( index_ );
+            final E otherElement = unsortedListModel_.getElementAt( other.getIndex() );
+            return comparator_.compare( element, otherElement );
         }
 
         /**

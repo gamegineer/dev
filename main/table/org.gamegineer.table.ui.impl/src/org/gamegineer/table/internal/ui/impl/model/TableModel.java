@@ -73,11 +73,9 @@ public final class TableModel
     {
         @Override
         public int compare(
-            final @Nullable ComponentModel componentModel1,
-            final @Nullable ComponentModel componentModel2 )
+            final ComponentModel componentModel1,
+            final ComponentModel componentModel2 )
         {
-            assert componentModel1 != null;
-            assert componentModel2 != null;
             assert componentModel1.getLock().isHeldByCurrentThread();
 
             final ComponentPath componentPath1 = componentModel1.getPath();

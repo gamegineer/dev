@@ -26,7 +26,6 @@ import java.util.Comparator;
 import javax.swing.DefaultListModel;
 import net.jcip.annotations.Immutable;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Test;
 
 /**
@@ -72,12 +71,9 @@ public final class SortedListModelTest
         {
             @Override
             public int compare(
-                final @Nullable FakeElement o1,
-                final @Nullable FakeElement o2 )
+                final FakeElement o1,
+                final FakeElement o2 )
             {
-                assert o1 != null;
-                assert o2 != null;
-
                 return o1.value - o2.value;
             }
         } );
