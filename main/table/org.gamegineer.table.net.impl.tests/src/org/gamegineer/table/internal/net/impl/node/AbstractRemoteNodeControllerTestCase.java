@@ -222,6 +222,8 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     @Test( expected = IllegalStateException.class )
     public void testSendMessage_Closed()
     {
-        getRemoteNodeController().sendMessage( EasyMock.createMock( IMessage.class ), EasyMock.createMock( IMessageHandler.class ) );
+        final IMessageHandler messageHandler = EasyMock.createMock( IMessageHandler.class );
+
+        getRemoteNodeController().sendMessage( EasyMock.createMock( IMessage.class ), messageHandler );
     }
 }
