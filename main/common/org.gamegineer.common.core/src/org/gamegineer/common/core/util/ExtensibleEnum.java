@@ -22,14 +22,14 @@
 package org.gamegineer.common.core.util;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.InvalidObjectException;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import net.jcip.annotations.Immutable;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -161,14 +161,14 @@ public abstract class ExtensibleEnum
     protected final Object readResolve()
         throws ObjectStreamException
     {
-        final @NonNull ExtensibleEnum[] values = ExtensibleEnum.values( getClass() );
+        final List<@NonNull ?> values = ExtensibleEnum.values( nonNull( getClass() ) );
         final int ordinal = ordinal();
-        if( (ordinal < 0) || (ordinal >= values.length) )
+        if( (ordinal < 0) || (ordinal >= values.size()) )
         {
             throw new InvalidObjectException( NonNlsMessages.ExtensibleEnum_ordinal_outOfRange( ordinal ) );
         }
 
-        return values[ ordinal ];
+        return values.get( ordinal );
     }
 
     /*
@@ -225,10 +225,10 @@ public abstract class ExtensibleEnum
      * @return The collection of values associated with the specified enum type;
      *         never {@code null}.
      */
-    public static <T extends ExtensibleEnum> @NonNull T[] values(
+    public static <T extends ExtensibleEnum> List<T> values(
         final Class<T> type )
     {
-        final Collection<T> values = new ArrayList<>();
+        final List<T> values = new ArrayList<>();
 
         for( final Field field : type.getDeclaredFields() )
         {
@@ -251,8 +251,6 @@ public abstract class ExtensibleEnum
             }
         }
 
-        @SuppressWarnings( "unchecked" )
-        final @NonNull T[] array = (@NonNull T[])Array.newInstance( type, values.size() );
-        return values.toArray( array );
+        return values;
     }
 }

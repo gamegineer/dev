@@ -1,6 +1,6 @@
 /*
  * AbstractExtensibleEnumTestCase.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ package org.gamegineer.common.core.util.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import java.util.List;
 import org.gamegineer.common.core.util.ExtensibleEnum;
 import org.junit.Test;
 
@@ -63,10 +64,10 @@ public abstract class AbstractExtensibleEnumTestCase
     @Test
     public void testOrdinals()
     {
-        final ExtensibleEnum[] values = ExtensibleEnum.values( getType() );
-        for( int expectedOrdinal = 0; expectedOrdinal < values.length; ++expectedOrdinal )
+        final List<? extends ExtensibleEnum> values = ExtensibleEnum.values( getType() );
+        for( int expectedOrdinal = 0; expectedOrdinal < values.size(); ++expectedOrdinal )
         {
-            assertEquals( expectedOrdinal, values[ expectedOrdinal ].ordinal() );
+            assertEquals( expectedOrdinal, values.get( expectedOrdinal ).ordinal() );
         }
     }
 
@@ -77,10 +78,10 @@ public abstract class AbstractExtensibleEnumTestCase
     @Test
     public void testValueOf()
     {
-        final ExtensibleEnum[] values = ExtensibleEnum.values( getType() );
-        for( int index = 0; index < values.length; ++index )
+        final List<? extends ExtensibleEnum> values = ExtensibleEnum.values( getType() );
+        for( int index = 0; index < values.size(); ++index )
         {
-            assertSame( values[ index ], ExtensibleEnum.valueOf( getType(), values[ index ].name() ) );
+            assertSame( values.get( index ), ExtensibleEnum.valueOf( getType(), values.get( index ).name() ) );
         }
     }
 }

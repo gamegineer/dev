@@ -1,6 +1,6 @@
 /*
  * ExtensibleEnumTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,12 +21,14 @@
 
 package org.gamegineer.common.core.util;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Arrays;
+import java.util.List;
 import net.jcip.annotations.Immutable;
 import org.junit.Test;
 
@@ -126,15 +128,15 @@ public final class ExtensibleEnumTest
     @Test
     public void testValues()
     {
-        final MockEnum[] expectedValues = new MockEnum[] {
+        final List<MockEnum> expectedValues = Arrays.asList(
             MockEnum.CONSTANT_1, //
             MockEnum.CONSTANT_2, //
             MockEnum.CONSTANT_3
-        };
+        );
 
-        final MockEnum[] actualValues = ExtensibleEnum.values( MockEnum.class );
+        final List<MockEnum> actualValues = ExtensibleEnum.values( MockEnum.class );
 
-        assertArrayEquals( expectedValues, actualValues );
+        assertEquals( expectedValues, actualValues );
     }
 
 
