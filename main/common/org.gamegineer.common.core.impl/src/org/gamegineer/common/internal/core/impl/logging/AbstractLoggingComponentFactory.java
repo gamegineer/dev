@@ -46,7 +46,7 @@ import org.osgi.service.component.ComponentInstance;
  *        The type of the logging component.
  */
 @ThreadSafe
-public abstract class AbstractLoggingComponentFactory<T>
+public abstract class AbstractLoggingComponentFactory<@NonNull T>
     implements ComponentFactory
 {
     // ======================================================================
@@ -130,8 +130,7 @@ public abstract class AbstractLoggingComponentFactory<T>
      * @throws org.osgi.service.component.ComponentException
      *         If an error occurs while creating the component.
      */
-    @SuppressWarnings( "null" )
-    protected @NonNull T createLoggingComponent(
+    protected T createLoggingComponent(
         final String typeName )
     {
         try

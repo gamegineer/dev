@@ -29,6 +29,7 @@ import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.logging.LoggingServiceConstants;
 import org.gamegineer.common.internal.core.impl.Debug;
@@ -41,7 +42,7 @@ import org.osgi.service.component.ComponentException;
  *        The type of the handler.
  */
 @ThreadSafe
-public abstract class AbstractHandlerFactory<T extends Handler>
+public abstract class AbstractHandlerFactory<@NonNull T extends Handler>
     extends AbstractLoggingComponentFactory<T>
 {
     // ======================================================================

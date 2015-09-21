@@ -24,6 +24,7 @@ package org.gamegineer.common.internal.core.impl.logging;
 import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.logging.Formatter;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 
 /**
  * A component factory for creating instances of {@link Formatter} whose
@@ -31,7 +32,7 @@ import net.jcip.annotations.ThreadSafe;
  */
 @ThreadSafe
 public final class DefaultFormatterFactory
-    extends AbstractLoggingComponentFactory<Formatter>
+    extends AbstractLoggingComponentFactory<@NonNull Formatter>
 {
     // ======================================================================
     // Constructors

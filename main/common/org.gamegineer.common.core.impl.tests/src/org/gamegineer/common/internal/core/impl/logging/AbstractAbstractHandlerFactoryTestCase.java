@@ -30,6 +30,7 @@ import java.util.logging.Filter;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
+import org.eclipse.jdt.annotation.NonNull;
 import org.gamegineer.common.core.logging.LoggingServiceConstants;
 import org.junit.Test;
 import org.osgi.framework.ServiceRegistration;
@@ -44,7 +45,7 @@ import org.osgi.service.component.ComponentFactory;
  * @param <T>
  *        The type of the handler.
  */
-public abstract class AbstractAbstractHandlerFactoryTestCase<F extends AbstractHandlerFactory<T>, T extends Handler>
+public abstract class AbstractAbstractHandlerFactoryTestCase<F extends AbstractHandlerFactory<T>, @NonNull T extends Handler>
     extends AbstractAbstractLoggingComponentFactoryTestCase<F, T>
 {
     // ======================================================================

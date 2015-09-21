@@ -22,7 +22,9 @@
 package org.gamegineer.common.internal.core.impl.logging;
 
 import static org.junit.Assert.assertNotNull;
+import java.util.Optional;
 import org.eclipse.jdt.annotation.DefaultLocation;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,14 +39,14 @@ import org.junit.Test;
  *        The type of the logging component; may be an abstract type.
  */
 @NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
-public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends AbstractLoggingComponentFactory<T>, T>
+public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends AbstractLoggingComponentFactory<T>, @NonNull T>
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** A logging component for use in the fixture. */
-    private T component_;
+    private Optional<T> component_;
 
     /** The logging component factory under test in the fixture. */
     private F factory_;
@@ -60,6 +62,7 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
      */
     protected AbstractAbstractLoggingComponentFactoryTestCase()
     {
+        component_ = Optional.empty();
     }
 
 
@@ -85,8 +88,7 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
      */
     protected final T getLoggingComponent()
     {
-        assertNotNull( component_ );
-        return component_;
+        return component_.get();
     }
 
     /**
@@ -121,8 +123,7 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     {
         factory_ = createLoggingComponentFactory();
         assertNotNull( factory_ );
-        component_ = factory_.createLoggingComponent( getLoggingComponentType().getName() );
-        assertNotNull( component_ );
+        component_ = Optional.of( factory_.createLoggingComponent( getLoggingComponentType().getName() ) );
     }
 
     /**
