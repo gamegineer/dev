@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.core.impl;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -35,6 +36,7 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.IterableUtils;
 import org.gamegineer.common.core.util.memento.MementoException;
@@ -612,7 +614,6 @@ final class Container
      * @see org.gamegineer.table.internal.core.Component#readMemento(java.lang.Object)
      */
     @Override
-    @SuppressWarnings( "unchecked" )
     void readMemento(
         final Object memento )
         throws MementoException
@@ -621,8 +622,12 @@ final class Container
 
         super.readMemento( memento );
 
-        setLayoutId( MementoUtils.getAttribute( memento, LAYOUT_ID_MEMENTO_ATTRIBUTE_NAME, ContainerLayoutId.class ) );
-        setComponentMementos( MementoUtils.getAttribute( memento, COMPONENTS_MEMENTO_ATTRIBUTE_NAME, List.class ) );
+        setLayoutId( MementoUtils.<@NonNull ContainerLayoutId>getAttribute( memento, LAYOUT_ID_MEMENTO_ATTRIBUTE_NAME, nonNull( ContainerLayoutId.class ) ) );
+        @SuppressWarnings( {
+            "rawtypes", "unchecked"
+        } )
+        final List<Object> componentMementos = MementoUtils.<@NonNull List>getAttribute( memento, COMPONENTS_MEMENTO_ATTRIBUTE_NAME, nonNull( List.class ) );
+        setComponentMementos( componentMementos );
     }
 
     /*

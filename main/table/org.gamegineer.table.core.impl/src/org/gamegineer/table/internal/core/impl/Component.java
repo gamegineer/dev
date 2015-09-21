@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.core.impl;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -35,6 +36,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ComponentEvent;
@@ -608,17 +610,20 @@ class Component
      *         component.
      */
     @GuardedBy( "getLock()" )
-    @SuppressWarnings( "unchecked" )
     void readMemento(
         final Object memento )
         throws MementoException
     {
         assert getLock().isHeldByCurrentThread();
 
-        setLocation( MementoUtils.getAttribute( memento, LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class ) );
-        setOrientation( MementoUtils.getAttribute( memento, ORIENTATION_MEMENTO_ATTRIBUTE_NAME, ComponentOrientation.class ) );
-        setOrigin( MementoUtils.getAttribute( memento, ORIGIN_MEMENTO_ATTRIBUTE_NAME, Point.class ) );
-        setSurfaceDesignIds( MementoUtils.getAttribute( memento, SURFACE_DESIGN_IDS_MEMENTO_ATTRIBUTE_NAME, Map.class ) );
+        setLocation( MementoUtils.<@NonNull Point>getAttribute( memento, LOCATION_MEMENTO_ATTRIBUTE_NAME, nonNull( Point.class ) ) );
+        setOrientation( MementoUtils.<@NonNull ComponentOrientation>getAttribute( memento, ORIENTATION_MEMENTO_ATTRIBUTE_NAME, nonNull( ComponentOrientation.class ) ) );
+        setOrigin( MementoUtils.<@NonNull Point>getAttribute( memento, ORIGIN_MEMENTO_ATTRIBUTE_NAME, nonNull( Point.class ) ) );
+        @SuppressWarnings( {
+            "rawtypes", "unchecked"
+        } )
+        final Map<ComponentOrientation, ComponentSurfaceDesignId> surfaceDesignIds = MementoUtils.<@NonNull Map>getAttribute( memento, SURFACE_DESIGN_IDS_MEMENTO_ATTRIBUTE_NAME, nonNull( Map.class ) );
+        setSurfaceDesignIds( surfaceDesignIds );
     }
 
     /*

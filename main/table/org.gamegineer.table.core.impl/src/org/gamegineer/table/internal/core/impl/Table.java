@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.core.impl;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
+import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ComponentPath;
@@ -216,7 +218,7 @@ final class Table
     {
         final Table table = new Table( tableEnvironment );
 
-        final Object tabletopMemento = MementoUtils.getAttribute( memento, TABLETOP_MEMENTO_ATTRIBUTE_NAME, Object.class );
+        final Object tabletopMemento = MementoUtils.<@NonNull Object>getAttribute( memento, TABLETOP_MEMENTO_ATTRIBUTE_NAME, nonNull( Object.class ) );
         table.tabletop_.setMemento( tabletopMemento );
 
         return table;
