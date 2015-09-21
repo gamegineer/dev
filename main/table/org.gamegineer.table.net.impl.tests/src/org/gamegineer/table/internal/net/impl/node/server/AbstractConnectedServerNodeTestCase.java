@@ -34,7 +34,7 @@ import org.gamegineer.table.internal.net.impl.node.INetworkTable;
  * @param <T>
  *        The type of the server node.
  */
-public abstract class AbstractConnectedServerNodeTestCase<T extends @NonNull IServerNode>
+public abstract class AbstractConnectedServerNodeTestCase<T extends IServerNode>
     extends AbstractConnectedNodeTestCase<T, @NonNull IRemoteClientNode>
 {
     // ======================================================================

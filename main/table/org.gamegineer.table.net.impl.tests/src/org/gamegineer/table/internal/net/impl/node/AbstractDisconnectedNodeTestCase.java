@@ -25,7 +25,6 @@ import static org.junit.Assert.assertNotNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +39,7 @@ import org.junit.Test;
  *        The type of the remote node.
  */
 @NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
-public abstract class AbstractDisconnectedNodeTestCase<T extends @NonNull INode<RemoteNodeType>, RemoteNodeType extends @NonNull IRemoteNode>
+public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNodeType>, RemoteNodeType extends IRemoteNode>
 {
     // ======================================================================
     // Fields

@@ -30,7 +30,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import org.easymock.EasyMock;
 import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.core.ITable;
@@ -52,7 +51,7 @@ import org.junit.Test;
  *        The type of the table network node controller.
  */
 @NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
-public abstract class AbstractNodeControllerTestCase<T extends @NonNull INodeController>
+public abstract class AbstractNodeControllerTestCase<T extends INodeController>
 {
     // ======================================================================
     // Fields

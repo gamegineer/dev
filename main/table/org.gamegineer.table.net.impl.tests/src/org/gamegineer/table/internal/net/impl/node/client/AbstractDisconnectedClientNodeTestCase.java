@@ -36,7 +36,7 @@ import org.junit.Test;
  * @param <T>
  *        The type of the client node.
  */
-public abstract class AbstractDisconnectedClientNodeTestCase<T extends @NonNull IClientNode>
+public abstract class AbstractDisconnectedClientNodeTestCase<T extends IClientNode>
     extends AbstractDisconnectedNodeTestCase<T, IRemoteServerNode>
 {
     // ======================================================================

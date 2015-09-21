@@ -32,7 +32,7 @@ import org.gamegineer.table.internal.net.impl.node.AbstractRemoteNodeControllerT
  * @param <T>
  *        The type of the remote client node controller.
  */
-public abstract class AbstractRemoteClientNodeControllerTestCase<T extends @NonNull IRemoteClientNodeController>
+public abstract class AbstractRemoteClientNodeControllerTestCase<T extends IRemoteClientNodeController>
     extends AbstractRemoteNodeControllerTestCase<T, @NonNull IServerNode, @NonNull IRemoteClientNode>
 {
     // ======================================================================

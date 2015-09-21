@@ -23,7 +23,6 @@ package org.gamegineer.common.internal.core.impl.logging;
 
 import static org.junit.Assert.assertNotNull;
 import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +37,7 @@ import org.junit.Test;
  *        The type of the logging component; may be an abstract type.
  */
 @NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
-public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends @NonNull AbstractLoggingComponentFactory<T>, T>
+public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends AbstractLoggingComponentFactory<T>, T>
 {
     // ======================================================================
     // Fields

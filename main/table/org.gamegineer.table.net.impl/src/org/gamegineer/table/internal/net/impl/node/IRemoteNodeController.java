@@ -40,7 +40,7 @@ import org.gamegineer.table.net.TableNetworkError;
  * 
  * @noextend This interface is not intended to be extended by clients.
  */
-public interface IRemoteNodeController<@NonNull LocalNodeType extends @NonNull INode<@NonNull ?>>
+public interface IRemoteNodeController<@NonNull LocalNodeType extends INode<@NonNull ?>>
 {
     // ======================================================================
     // Methods

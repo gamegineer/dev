@@ -25,7 +25,6 @@ import static org.junit.Assert.assertNotNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.internal.net.impl.transport.IMessage;
 import org.junit.Before;
@@ -43,7 +42,7 @@ import org.junit.Test;
  *        The type of the remote table network node.
  */
 @NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
-public abstract class AbstractRemoteNodeControllerTestCase<T extends @NonNull IRemoteNodeController<LocalNodeType>, LocalNodeType extends @NonNull INode<RemoteNodeType>, RemoteNodeType extends @NonNull IRemoteNode>
+public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNodeController<LocalNodeType>, LocalNodeType extends INode<RemoteNodeType>, RemoteNodeType extends IRemoteNode>
 {
     // ======================================================================
     // Constructors

@@ -28,7 +28,6 @@ import static org.junit.Assert.assertTrue;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.core.ITable;
@@ -50,7 +49,7 @@ import org.junit.Test;
  *        The type of the remote node.
  */
 @NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
-public abstract class AbstractConnectedNodeTestCase<T extends @NonNull INode<RemoteNodeType>, RemoteNodeType extends @NonNull IRemoteNode>
+public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeType>, RemoteNodeType extends IRemoteNode>
 {
     // ======================================================================
     // Fields
