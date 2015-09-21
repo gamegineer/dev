@@ -135,7 +135,7 @@ public final class NodeLayerRunner
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    public <V> @Nullable V run(
+    public <V> V run(
         final Callable<V> task )
         throws Exception
     {
@@ -161,7 +161,7 @@ public final class NodeLayerRunner
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    public <V> @Nullable V run(
+    public <V> V run(
         final Callable<V> task,
         final Class<? extends Exception> exceptionType )
         throws Exception
@@ -188,7 +188,7 @@ public final class NodeLayerRunner
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    public <V> @Nullable V run(
+    public <V> V run(
         final Callable<V> task,
         final Collection<Class<? extends Exception>> exceptionTypes )
         throws Exception

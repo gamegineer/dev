@@ -429,7 +429,7 @@ abstract class AbstractTransportLayer
      * @throws java.util.concurrent.RejectedExecutionException
      *         If the task cannot be scheduled for execution.
      */
-    <T> @Nullable T syncExec(
+    <T> T syncExec(
         final Callable<T> task )
         throws ExecutionException, InterruptedException
     {
