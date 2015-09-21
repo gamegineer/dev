@@ -37,7 +37,7 @@ import org.gamegineer.table.net.TableNetworkError;
  *        The type of the remote node control interface.
  */
 @Immutable
-public abstract class AbstractMessageHandler<RemoteNodeControllerType extends IRemoteNodeController<@NonNull ?>>
+public abstract class AbstractMessageHandler<@NonNull RemoteNodeControllerType extends IRemoteNodeController<@NonNull ?>>
     implements IMessageHandler
 {
     // ======================================================================

@@ -712,7 +712,7 @@ public abstract class AbstractNode<@NonNull RemoteNodeType extends IRemoteNode>
      *        The type of the table network node.
      */
     @Immutable
-    public static abstract class AbstractFactory<T extends AbstractNode<@NonNull ?>>
+    public static abstract class AbstractFactory<@NonNull T extends AbstractNode<@NonNull ?>>
     {
         // ==================================================================
         // Constructors
