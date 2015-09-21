@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.Callable;
@@ -188,16 +187,12 @@ public final class NodeLayerRunner
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code exceptionTypes} contains a {@code null} element.
      */
     public <V> @Nullable V run(
         final Callable<V> task,
         final Collection<Class<? extends Exception>> exceptionTypes )
         throws Exception
     {
-        assertArgumentLegal( !exceptionTypes.contains( null ), "exceptionTypes" ); //$NON-NLS-1$
-
         try
         {
             return node_.getNodeLayer().syncExec( task );

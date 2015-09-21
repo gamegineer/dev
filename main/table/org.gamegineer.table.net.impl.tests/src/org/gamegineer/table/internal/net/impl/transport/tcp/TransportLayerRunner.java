@@ -186,8 +186,7 @@ final class TransportLayerRunner
      *        {@code null}.
      * @param exceptionTypes
      *        The collection of checked exception types expected to be thrown;
-     *        must not be {@code null} and must not contain a {@code null}
-     *        element.
+     *        must not be {@code null}.
      * 
      * @return The task result; may be {@code null}.
      * 
@@ -199,8 +198,6 @@ final class TransportLayerRunner
         final Collection<Class<? extends Exception>> exceptionTypes )
         throws Exception
     {
-        assert !exceptionTypes.contains( null );
-
         try
         {
             return transportLayer_.syncExec( task );
