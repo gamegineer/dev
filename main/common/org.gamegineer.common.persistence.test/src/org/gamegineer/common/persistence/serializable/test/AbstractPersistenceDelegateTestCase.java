@@ -22,14 +22,12 @@
 package org.gamegineer.common.persistence.serializable.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
@@ -42,23 +40,14 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IPersistenceDelegate} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractPersistenceDelegateTestCase
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The persistence delegate under test in the fixture. */
-    private IPersistenceDelegate persistenceDelegate_;
-
     /** The persistence delegate registry for use in the fixture. */
-    private IPersistenceDelegateRegistry persistenceDelegateRegistry_;
+    private Optional<IPersistenceDelegateRegistry> persistenceDelegateRegistry_;
 
 
     // ======================================================================
@@ -71,6 +60,7 @@ public abstract class AbstractPersistenceDelegateTestCase
      */
     protected AbstractPersistenceDelegateTestCase()
     {
+        persistenceDelegateRegistry_ = Optional.empty();
     }
 
 
@@ -117,8 +107,7 @@ public abstract class AbstractPersistenceDelegateTestCase
         final InputStream is )
         throws IOException
     {
-        assertNotNull( persistenceDelegateRegistry_ );
-        return new ObjectInputStream( is, persistenceDelegateRegistry_ );
+        return new ObjectInputStream( is, getPersistenceDelegateRegistry() );
     }
 
     /**
@@ -137,21 +126,8 @@ public abstract class AbstractPersistenceDelegateTestCase
         final OutputStream os )
         throws IOException
     {
-        assertNotNull( persistenceDelegateRegistry_ );
-        return new ObjectOutputStream( os, persistenceDelegateRegistry_ );
+        return new ObjectOutputStream( os, getPersistenceDelegateRegistry() );
     }
-
-    /**
-     * Creates the persistence delegate under test in the fixture.
-     * 
-     * @return The persistence delegate under test in the fixture; never
-     *         {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    protected abstract IPersistenceDelegate createPersistenceDelegate()
-        throws Exception;
 
     /**
      * Creates the subject to be persisted.
@@ -159,6 +135,16 @@ public abstract class AbstractPersistenceDelegateTestCase
      * @return The subject to be persisted; never {@code null}.
      */
     protected abstract Object createSubject();
+
+    /**
+     * Gets the fixture persistence delegate registry.
+     * 
+     * @return The fixture persistence delegate registry; never {@code null}.
+     */
+    private IPersistenceDelegateRegistry getPersistenceDelegateRegistry()
+    {
+        return persistenceDelegateRegistry_.get();
+    }
 
     /**
      * Registers the persistence delegates required for the subject to be
@@ -181,10 +167,8 @@ public abstract class AbstractPersistenceDelegateTestCase
     public void setUp()
         throws Exception
     {
-        persistenceDelegate_ = createPersistenceDelegate();
-        assertNotNull( persistenceDelegate_ );
         final IPersistenceDelegateRegistry persistenceDelegateRegistry = new FakePersistenceDelegateRegistry();
-        persistenceDelegateRegistry_ = persistenceDelegateRegistry;
+        persistenceDelegateRegistry_ = Optional.of( persistenceDelegateRegistry );
         registerPersistenceDelegates( persistenceDelegateRegistry );
     }
 

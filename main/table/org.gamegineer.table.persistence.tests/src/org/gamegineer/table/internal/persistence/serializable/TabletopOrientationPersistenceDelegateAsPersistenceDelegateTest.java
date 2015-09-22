@@ -1,6 +1,6 @@
 /*
  * TabletopOrientationPersistenceDelegateAsPersistenceDelegateTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -51,15 +51,6 @@ public final class TabletopOrientationPersistenceDelegateAsPersistenceDelegateTe
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /*
-     * @see org.gamegineer.common.persistence.serializable.test.AbstractPersistenceDelegateTestCase#createPersistenceDelegate()
-     */
-    @Override
-    protected IPersistenceDelegate createPersistenceDelegate()
-    {
-        return new TabletopOrientationPersistenceDelegate();
-    }
 
     /*
      * @see org.gamegineer.common.persistence.serializable.test.AbstractPersistenceDelegateTestCase#createSubject()
