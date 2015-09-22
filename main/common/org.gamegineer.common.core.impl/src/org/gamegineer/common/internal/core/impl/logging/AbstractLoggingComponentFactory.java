@@ -31,6 +31,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.logging.LoggingServiceConstants;
+import org.gamegineer.common.core.util.osgi.BundleContextUtils;
 import org.gamegineer.common.internal.core.impl.Activator;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
@@ -203,7 +204,7 @@ public abstract class AbstractLoggingComponentFactory<@NonNull T>
         final String instanceName = name.substring( index + 1 );
 
         final ServiceReference<ComponentFactory> serviceReference = findComponentFactory( typeName, type );
-        final ComponentFactory factory = Activator.getDefault().getBundleContext().getService( serviceReference );
+        final ComponentFactory factory = BundleContextUtils.getService( Activator.getDefault().getBundleContext(), serviceReference );
         if( factory == null )
         {
             throw new ComponentException( NonNlsMessages.AbstractLoggingComponentFactory_createNamedLoggingComponent_noComponentFactoryAvailable );
@@ -287,7 +288,8 @@ public abstract class AbstractLoggingComponentFactory<@NonNull T>
         try
         {
             final String filter = String.format( "(%1$s=%2$s)", ComponentConstants.COMPONENT_FACTORY, typeName ); //$NON-NLS-1$
-            final Collection<ServiceReference<ComponentFactory>> serviceReferences = Activator.getDefault().getBundleContext().getServiceReferences( ComponentFactory.class, filter );
+            @SuppressWarnings( "null" )
+            final Collection<ServiceReference<ComponentFactory>> serviceReferences = (Collection<ServiceReference<ComponentFactory>>)nonNull( Activator.getDefault().getBundleContext().<@NonNull ComponentFactory>getServiceReferences( nonNull( ComponentFactory.class ), filter ) );
             if( serviceReferences.isEmpty() )
             {
                 return null;
