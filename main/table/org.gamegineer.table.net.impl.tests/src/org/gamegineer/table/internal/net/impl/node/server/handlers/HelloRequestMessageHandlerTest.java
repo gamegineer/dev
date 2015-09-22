@@ -45,7 +45,12 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link HelloRequestMessageHandler} class.
  */
-@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
+@NonNullByDefault( {
+    DefaultLocation.PARAMETER, //
+    DefaultLocation.RETURN_TYPE, //
+    DefaultLocation.TYPE_BOUND, //
+    DefaultLocation.TYPE_ARGUMENT
+} )
 public final class HelloRequestMessageHandlerTest
 {
     // ======================================================================
@@ -101,8 +106,8 @@ public final class HelloRequestMessageHandlerTest
         final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
         final Capture<IMessage> messageCapture = new Capture<>( CaptureType.ALL );
         remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.<@Nullable IMessageHandler>isNull() );
-        remoteNodeController.setChallenge( EasyMock.<byte @NonNull[]>notNull() );
-        remoteNodeController.setSalt( EasyMock.<byte @NonNull[]>notNull() );
+        remoteNodeController.setChallenge( EasyMock.<byte @NonNull []>notNull() );
+        remoteNodeController.setSalt( EasyMock.<byte @NonNull []>notNull() );
         remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.<@NonNull IMessageHandler>notNull() );
         mocksControl_.replay();
 

@@ -83,7 +83,9 @@ final class NonNlsMessages
      */
     public static String ComponentPrototypesExtensionPoint_isConfigurationElementEnabled_error = ""; //$NON-NLS-1$
 
-    /** The configuration element enablement expression could not be converted. */
+    /**
+     * The configuration element enablement expression could not be converted.
+     */
     public static String ComponentPrototypesExtensionPoint_isConfigurationElementEnabled_unconvertable = ""; //$NON-NLS-1$
 
 

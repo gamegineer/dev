@@ -35,7 +35,12 @@ import org.junit.Test;
  * A fixture for testing the {@link SingleThreadedTableEnvironmentContext}
  * class.
  */
-@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
+@NonNullByDefault( {
+    DefaultLocation.PARAMETER, //
+    DefaultLocation.RETURN_TYPE, //
+    DefaultLocation.TYPE_BOUND, //
+    DefaultLocation.TYPE_ARGUMENT
+} )
 public final class SingleThreadedTableEnvironmentContextTest
 {
     // ======================================================================
@@ -45,7 +50,9 @@ public final class SingleThreadedTableEnvironmentContextTest
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
 
-    /** The single-threaded table environment context under test in the fixture. */
+    /**
+     * The single-threaded table environment context under test in the fixture.
+     */
     private SingleThreadedTableEnvironmentContext tableEnvironmentContext_;
 
 

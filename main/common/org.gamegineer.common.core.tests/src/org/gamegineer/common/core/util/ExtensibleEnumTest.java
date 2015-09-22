@@ -130,11 +130,10 @@ public final class ExtensibleEnumTest
     @Test
     public void testValues()
     {
-        final List<MockEnum> expectedValues = Arrays.asList(
+        final List<MockEnum> expectedValues = Arrays.asList( //
             MockEnum.CONSTANT_1, //
             MockEnum.CONSTANT_2, //
-            MockEnum.CONSTANT_3
-        );
+            MockEnum.CONSTANT_3 );
 
         final List<MockEnum> actualValues = ExtensibleEnum.<@NonNull MockEnum>values( nonNull( MockEnum.class ) );
 

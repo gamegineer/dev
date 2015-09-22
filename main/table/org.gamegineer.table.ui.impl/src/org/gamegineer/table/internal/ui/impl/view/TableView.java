@@ -1885,7 +1885,9 @@ final class TableView
             // Fields
             // ==============================================================
 
-            /** The component from which the drag-and-drop operation will begin. */
+            /**
+             * The component from which the drag-and-drop operation will begin.
+             */
             private final IComponent dragComponent;
 
             /** The current input event. */

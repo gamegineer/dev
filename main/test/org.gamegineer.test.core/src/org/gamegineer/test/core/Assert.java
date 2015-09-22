@@ -50,13 +50,14 @@ public final class Assert
     /**
      * Asserts that the specified collection is immutable.
      * 
-     * @param <T> The type of the collection elements. 
+     * @param <T>
+     *        The type of the collection elements.
      * 
      * @param c
      *        The collection to be tested; must not be {@code null}.
-     * @param prototype 
-     *        A prototype value that is legal to add to the collection; must
-     *        not be {@code null}. 
+     * @param prototype
+     *        A prototype value that is legal to add to the collection; must not
+     *        be {@code null}.
      */
     public static <T> void assertImmutableCollection(
         final Collection<T> c,

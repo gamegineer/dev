@@ -1,6 +1,6 @@
 /*
  * WindowConstants.java
- * Copyright 2008-2012 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -36,7 +36,9 @@ public final class WindowConstants
     /** The standard window return code that indicates the window was opened. */
     public static final int RETURN_CODE_OK = 0;
 
-    /** The standard window return code that indicates the window was cancelled. */
+    /**
+     * The standard window return code that indicates the window was cancelled.
+     */
     public static final int RETURN_CODE_CANCEL = 1;
 
 

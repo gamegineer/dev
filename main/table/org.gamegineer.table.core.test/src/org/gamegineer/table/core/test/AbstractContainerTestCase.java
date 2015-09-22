@@ -62,7 +62,12 @@ import org.junit.rules.Timeout;
  * @param <ContainerType>
  *        The type of the container.
  */
-@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
+@NonNullByDefault( {
+    DefaultLocation.PARAMETER, //
+    DefaultLocation.RETURN_TYPE, //
+    DefaultLocation.TYPE_BOUND, //
+    DefaultLocation.TYPE_ARGUMENT
+} )
 public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITableEnvironment, ContainerType extends IContainer>
     extends AbstractComponentTestCase<TableEnvironmentType, ContainerType>
 {

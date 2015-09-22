@@ -41,7 +41,12 @@ import org.junit.Test;
  * @param <T>
  *        The type of the comparable object.
  */
-@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
+@NonNullByDefault( {
+    DefaultLocation.PARAMETER, //
+    DefaultLocation.RETURN_TYPE, //
+    DefaultLocation.TYPE_BOUND, //
+    DefaultLocation.TYPE_ARGUMENT
+} )
 public abstract class AbstractEqualityComparatorTestCase<T>
 {
     // ======================================================================

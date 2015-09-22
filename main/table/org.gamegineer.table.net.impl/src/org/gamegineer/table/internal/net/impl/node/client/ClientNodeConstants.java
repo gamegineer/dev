@@ -1,6 +1,6 @@
 /*
  * ClientNodeConstants.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -33,7 +33,9 @@ public final class ClientNodeConstants
     // Fields
     // ======================================================================
 
-    /** The name of the virtual player associated with the remote server node. */
+    /**
+     * The name of the virtual player associated with the remote server node.
+     */
     public static final String SERVER_PLAYER_NAME = "<<server>>"; //$NON-NLS-1$
 
 

@@ -35,7 +35,12 @@ import org.junit.Test;
  * @param <ComponentStrategyUIType>
  *        The type of the component strategy user interface.
  */
-@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
+@NonNullByDefault( {
+    DefaultLocation.PARAMETER, //
+    DefaultLocation.RETURN_TYPE, //
+    DefaultLocation.TYPE_BOUND, //
+    DefaultLocation.TYPE_ARGUMENT
+} )
 public abstract class AbstractComponentStrategyUITestCase<ComponentStrategyUIType extends IComponentStrategyUI>
 {
     // ======================================================================

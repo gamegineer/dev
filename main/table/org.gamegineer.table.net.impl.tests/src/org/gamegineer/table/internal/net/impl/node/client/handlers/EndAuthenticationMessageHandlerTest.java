@@ -40,7 +40,12 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link EndAuthenticationMessageHandler} class.
  */
-@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
+@NonNullByDefault( {
+    DefaultLocation.PARAMETER, //
+    DefaultLocation.RETURN_TYPE, //
+    DefaultLocation.TYPE_BOUND, //
+    DefaultLocation.TYPE_ARGUMENT
+} )
 public final class EndAuthenticationMessageHandlerTest
 {
     // ======================================================================

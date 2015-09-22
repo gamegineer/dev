@@ -36,7 +36,12 @@ import org.junit.Test;
  * @param <ComponentStrategyType>
  *        The type of the component strategy.
  */
-@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
+@NonNullByDefault( {
+    DefaultLocation.PARAMETER, //
+    DefaultLocation.RETURN_TYPE, //
+    DefaultLocation.TYPE_BOUND, //
+    DefaultLocation.TYPE_ARGUMENT
+} )
 public abstract class AbstractAbstractComponentStrategyTestCase<ComponentStrategyType extends AbstractComponentStrategy>
 {
     // ======================================================================

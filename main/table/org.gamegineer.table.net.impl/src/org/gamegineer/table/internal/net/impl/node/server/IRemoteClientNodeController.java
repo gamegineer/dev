@@ -44,7 +44,7 @@ public interface IRemoteClientNodeController
      *         {@code null} if an authentication request has not yet been sent.
      *         Callers must not modify the returned array.
      */
-    public byte @Nullable[] getChallenge();
+    public byte @Nullable [] getChallenge();
 
     /**
      * Gets the most-recent salt used to authenticate the client.
@@ -53,7 +53,7 @@ public interface IRemoteClientNodeController
      *         {@code null} if an authentication request has not yet been sent.
      *         Callers must not modify the returned array.
      */
-    public byte @Nullable[] getSalt();
+    public byte @Nullable [] getSalt();
 
     /**
      * Sets the challenge used to authenticate the client.
@@ -64,7 +64,7 @@ public interface IRemoteClientNodeController
      *        after passing it to this method.
      */
     public void setChallenge(
-        byte @Nullable[] challenge );
+        byte @Nullable [] challenge );
 
     /**
      * Sets the salt used to authenticate the client.
@@ -75,5 +75,5 @@ public interface IRemoteClientNodeController
      *        passing it to this method.
      */
     public void setSalt(
-        byte @Nullable[] salt );
+        byte @Nullable [] salt );
 }

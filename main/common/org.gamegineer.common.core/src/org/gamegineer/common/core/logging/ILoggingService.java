@@ -54,7 +54,8 @@ import org.osgi.framework.Bundle;
  * 
  * <ul>
  * <li>It is acceptable to configure all loggers in a single location and your
- * logger configurations only require classes located on the system classpath.</li>
+ * logger configurations only require classes located on the system classpath.
+ * </li>
  * <li>You configure all your loggers programatically.</li>
  * </ul>
  * 

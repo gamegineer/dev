@@ -44,7 +44,12 @@ import org.junit.Test;
  * A fixture for testing the interaction between the {@link ObjectInputStream}
  * and {@link ObjectOutputStream} classes.
  */
-@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
+@NonNullByDefault( {
+    DefaultLocation.PARAMETER, //
+    DefaultLocation.RETURN_TYPE, //
+    DefaultLocation.TYPE_BOUND, //
+    DefaultLocation.TYPE_ARGUMENT
+} )
 public final class ObjectStreamTest
 {
     // ======================================================================

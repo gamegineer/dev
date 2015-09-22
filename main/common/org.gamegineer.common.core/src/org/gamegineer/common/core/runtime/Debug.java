@@ -308,7 +308,7 @@ public abstract class Debug
         @Override
         public void traceEntry(
             final @Nullable String option,
-            final Object @Nullable[] methodArguments )
+            final Object @Nullable [] methodArguments )
         {
             warn();
         }

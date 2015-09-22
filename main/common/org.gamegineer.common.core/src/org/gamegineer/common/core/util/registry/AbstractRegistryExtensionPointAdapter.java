@@ -116,7 +116,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<@NonNull ObjectIdTyp
      */
     @Override
     public final void added(
-        final IExtension @Nullable[] extensions )
+        final IExtension @Nullable [] extensions )
     {
         assert extensions != null;
 
@@ -134,7 +134,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<@NonNull ObjectIdTyp
      */
     @Override
     public final void added(
-        final IExtensionPoint @Nullable[] extensionPoints )
+        final IExtensionPoint @Nullable [] extensionPoints )
     {
         // do nothing
     }
@@ -312,7 +312,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<@NonNull ObjectIdTyp
      */
     @Override
     public final void removed(
-        final IExtension @Nullable[] extensions )
+        final IExtension @Nullable [] extensions )
     {
         assert extensions != null;
 
@@ -328,7 +328,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<@NonNull ObjectIdTyp
      */
     @Override
     public final void removed(
-        final IExtensionPoint @Nullable[] extensionPoints )
+        final IExtensionPoint @Nullable [] extensionPoints )
     {
         // do nothing
     }

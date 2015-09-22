@@ -61,13 +61,13 @@ final class RemoteClientNode
      * The most-recent challenge used to authenticate the client or {@code null}
      * if an authentication request has not yet been sent.
      */
-    private byte @Nullable[] challenge_;
+    private byte @Nullable [] challenge_;
 
     /**
      * The most-recent salt used to authenticate the client or {@code null} if
      * an authentication request has not yet been sent.
      */
-    private byte @Nullable[] salt_;
+    private byte @Nullable [] salt_;
 
 
     // ======================================================================
@@ -107,7 +107,7 @@ final class RemoteClientNode
      * @see org.gamegineer.table.internal.net.impl.node.server.IRemoteClientNodeController#getChallenge()
      */
     @Override
-    public byte @Nullable[] getChallenge()
+    public byte @Nullable [] getChallenge()
     {
         assert isNodeLayerThread();
 
@@ -118,7 +118,7 @@ final class RemoteClientNode
      * @see org.gamegineer.table.internal.net.impl.node.server.IRemoteClientNodeController#getSalt()
      */
     @Override
-    public byte @Nullable[] getSalt()
+    public byte @Nullable [] getSalt()
     {
         assert isNodeLayerThread();
 
@@ -139,7 +139,7 @@ final class RemoteClientNode
      */
     @Override
     public void setChallenge(
-        final byte @Nullable[] challenge )
+        final byte @Nullable [] challenge )
     {
         assert isNodeLayerThread();
 
@@ -165,7 +165,7 @@ final class RemoteClientNode
      */
     @Override
     public void setSalt(
-        final byte @Nullable[] salt )
+        final byte @Nullable [] salt )
     {
         assert isNodeLayerThread();
 

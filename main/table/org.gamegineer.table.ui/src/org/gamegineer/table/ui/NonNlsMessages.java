@@ -47,7 +47,9 @@ final class NonNlsMessages
 
     // --- ComponentSurfaceDesignUIRegistry ---------------------------------
 
-    /** The component surface design user interface registry is not available. */
+    /**
+     * The component surface design user interface registry is not available.
+     */
     public static String ComponentSurfaceDesignUIRegistry_getComponentSurfaceDesignUI_componentSurfaceDesignUIRegistryNotAvailable = ""; //$NON-NLS-1$
 
     /** The component surface design identifier is not registered. */

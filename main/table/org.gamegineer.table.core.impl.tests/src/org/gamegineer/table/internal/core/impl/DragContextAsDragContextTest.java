@@ -33,7 +33,12 @@ import org.gamegineer.table.core.dnd.test.AbstractDragContextTestCase;
  * A fixture for testing the {@link DragContext} class to ensure it does not
  * violate the contract of the {@link IDragContext} interface.
  */
-@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
+@NonNullByDefault( {
+    DefaultLocation.PARAMETER, //
+    DefaultLocation.RETURN_TYPE, //
+    DefaultLocation.TYPE_BOUND, //
+    DefaultLocation.TYPE_ARGUMENT
+} )
 public final class DragContextAsDragContextTest
     extends AbstractDragContextTestCase
 {

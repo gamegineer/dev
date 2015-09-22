@@ -36,7 +36,12 @@ import org.junit.Test;
  * @param <TableEnvironmentContextType>
  *        The type of the table environment context.
  */
-@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
+@NonNullByDefault( {
+    DefaultLocation.PARAMETER, //
+    DefaultLocation.RETURN_TYPE, //
+    DefaultLocation.TYPE_BOUND, //
+    DefaultLocation.TYPE_ARGUMENT
+} )
 public abstract class AbstractTableEnvironmentContextTestCase<TableEnvironmentContextType extends ITableEnvironmentContext>
 {
     // ======================================================================

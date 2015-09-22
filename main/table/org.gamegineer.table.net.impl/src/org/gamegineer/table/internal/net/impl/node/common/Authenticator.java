@@ -46,7 +46,9 @@ public final class Authenticator
     /** The length in bytes of a challenge buffer. */
     private static final int CHALLENGE_LENGTH = 64;
 
-    /** The default password to use if none was specified in the configuration. */
+    /**
+     * The default password to use if none was specified in the configuration.
+     */
     private static final String DEFAULT_PASSWORD = "#8v&}KF$NI%Nyu3!{KwdH5Enu)MUp8m'"; //$NON-NLS-1$
 
     /** The iteration count used to generate a secret key. */

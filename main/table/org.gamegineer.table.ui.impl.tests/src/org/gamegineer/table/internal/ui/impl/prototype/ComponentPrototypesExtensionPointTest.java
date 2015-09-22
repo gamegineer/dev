@@ -39,7 +39,12 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link ComponentPrototypesExtensionPoint} class.
  */
-@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
+@NonNullByDefault( {
+    DefaultLocation.PARAMETER, //
+    DefaultLocation.RETURN_TYPE, //
+    DefaultLocation.TYPE_BOUND, //
+    DefaultLocation.TYPE_ARGUMENT
+} )
 public final class ComponentPrototypesExtensionPointTest
 {
     // ======================================================================
@@ -112,7 +117,9 @@ public final class ComponentPrototypesExtensionPointTest
             EasyMock.expect( factoryConfigurationElement.getName() ).andReturn( "factory" ).anyTimes(); //$NON-NLS-1$
             EasyMock.expect( factoryConfigurationElement.getAttribute( "class" ) ).andReturn( factoryClass ).anyTimes(); //$NON-NLS-1$
 
-            EasyMock.expect( configurationElement.getChildren( "factory" ) ).andReturn( new IConfigurationElement[] { factoryConfigurationElement} ).anyTimes(); //$NON-NLS-1$
+            EasyMock.expect( configurationElement.getChildren( "factory" ) ).andReturn( new IConfigurationElement[] { //$NON-NLS-1$
+                factoryConfigurationElement
+            } ).anyTimes();
         }
         else
         {

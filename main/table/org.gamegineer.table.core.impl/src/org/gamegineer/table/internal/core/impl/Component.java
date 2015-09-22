@@ -65,7 +65,9 @@ class Component
     /** The name of the memento attribute that stores the component location. */
     private static final String LOCATION_MEMENTO_ATTRIBUTE_NAME = "component.location"; //$NON-NLS-1$
 
-    /** The name of the memento attribute that stores the component orientation. */
+    /**
+     * The name of the memento attribute that stores the component orientation.
+     */
     private static final String ORIENTATION_MEMENTO_ATTRIBUTE_NAME = "component.orientation"; //$NON-NLS-1$
 
     /** The name of the memento attribute that stores the component origin. */

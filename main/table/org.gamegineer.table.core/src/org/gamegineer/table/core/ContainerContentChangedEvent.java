@@ -22,8 +22,8 @@
 package org.gamegineer.table.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import org.eclipse.jdt.annotation.Nullable;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * An event used to notify listeners that the content of a container has

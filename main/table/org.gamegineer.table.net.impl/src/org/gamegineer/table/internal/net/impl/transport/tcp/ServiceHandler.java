@@ -61,7 +61,9 @@ final class ServiceHandler
     /** The channel operations in which the handler is interested. */
     private int interestOperations_;
 
-    /** Indicates the service handler has been registered with the dispatcher. */
+    /**
+     * Indicates the service handler has been registered with the dispatcher.
+     */
     private boolean isRegistered_;
 
     /** Indicates the handler is running. */

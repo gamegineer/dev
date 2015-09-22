@@ -107,7 +107,7 @@ final class ByteBufferUtils
      *         {@code null} if the byte buffer collection does not have enough
      *         remaining bytes to satisfy the request.
      */
-    static byte @Nullable[] get(
+    static byte @Nullable [] get(
         final Collection<ByteBuffer> buffers,
         final int length )
     {

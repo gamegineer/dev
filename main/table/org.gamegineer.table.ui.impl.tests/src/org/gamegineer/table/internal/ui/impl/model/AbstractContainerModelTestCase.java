@@ -42,7 +42,12 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link ContainerModel} class.
  */
-@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
+@NonNullByDefault( {
+    DefaultLocation.PARAMETER, //
+    DefaultLocation.RETURN_TYPE, //
+    DefaultLocation.TYPE_BOUND, //
+    DefaultLocation.TYPE_ARGUMENT
+} )
 public abstract class AbstractContainerModelTestCase
     extends AbstractComponentModelTestCase<ContainerModel>
 {

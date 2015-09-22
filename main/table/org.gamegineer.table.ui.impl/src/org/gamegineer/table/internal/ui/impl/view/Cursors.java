@@ -138,7 +138,7 @@ final class Cursors
         try
         {
             final String cursorName = "Invalid.32x32"; //$NON-NLS-1$
-            final Cursor cursor = Cursor.getSystemCustomCursor( cursorName ); 
+            final Cursor cursor = Cursor.getSystemCustomCursor( cursorName );
             if( cursor == null )
             {
                 throw new AWTException( cursorName );

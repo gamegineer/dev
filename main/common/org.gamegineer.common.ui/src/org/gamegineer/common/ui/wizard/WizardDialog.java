@@ -70,7 +70,9 @@ public final class WizardDialog
     /** The component enable state before executing the active wizard task. */
     private @Nullable ComponentEnableState componentEnableState_;
 
-    /** Indicates the wizard is in the process of moving to the previous page. */
+    /**
+     * Indicates the wizard is in the process of moving to the previous page.
+     */
     private boolean isMovingToPreviousPage_;
 
     /** The container for all page content. */

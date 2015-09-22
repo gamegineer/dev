@@ -43,7 +43,9 @@ final class ComponentFactory
     // Fields
     // ======================================================================
 
-    /** The name of the memento attribute that stores the component class name. */
+    /**
+     * The name of the memento attribute that stores the component class name.
+     */
     private static final String CLASS_NAME_MEMENTO_ATTRIBUTE_NAME = "componentFactory.className"; //$NON-NLS-1$
 
     /**

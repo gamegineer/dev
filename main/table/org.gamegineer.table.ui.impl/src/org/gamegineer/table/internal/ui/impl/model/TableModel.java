@@ -89,7 +89,9 @@ public final class TableModel
     /** The path to the tabletop component model. */
     private static final ComponentPath TABLETOP_MODEL_PATH = new ComponentPath( null, 0 );
 
-    /** The table revision number at which the table model was last committed. */
+    /**
+     * The table revision number at which the table model was last committed.
+     */
     @GuardedBy( "getLock()" )
     private long committedTableRevisionNumber_;
 

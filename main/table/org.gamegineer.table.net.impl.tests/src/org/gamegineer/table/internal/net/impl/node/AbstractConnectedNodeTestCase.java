@@ -49,7 +49,12 @@ import org.junit.Test;
  * @param <RemoteNodeType>
  *        The type of the remote node.
  */
-@NonNullByDefault( { DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.TYPE_BOUND, DefaultLocation.TYPE_ARGUMENT } )
+@NonNullByDefault( {
+    DefaultLocation.PARAMETER, //
+    DefaultLocation.RETURN_TYPE, //
+    DefaultLocation.TYPE_BOUND, //
+    DefaultLocation.TYPE_ARGUMENT
+} )
 public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeType>, @NonNull RemoteNodeType extends IRemoteNode>
 {
     // ======================================================================
