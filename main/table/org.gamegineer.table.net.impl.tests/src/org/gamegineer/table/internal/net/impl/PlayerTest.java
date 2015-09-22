@@ -25,8 +25,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import java.util.EnumSet;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.table.net.PlayerRole;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,12 +33,6 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link Player} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class PlayerTest
 {
     // ======================================================================
@@ -47,7 +40,7 @@ public final class PlayerTest
     // ======================================================================
 
     /** The player under test in the fixture. */
-    private Player player_;
+    private Optional<Player> player_;
 
 
     // ======================================================================
@@ -59,12 +52,23 @@ public final class PlayerTest
      */
     public PlayerTest()
     {
+        player_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the player under test in the fixture.
+     * 
+     * @return The player under test in the fixture; never {@code null}.
+     */
+    private Player getPlayer()
+    {
+        return player_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -76,7 +80,7 @@ public final class PlayerTest
     public void setUp()
         throws Exception
     {
-        player_ = new Player( "name" ); //$NON-NLS-1$
+        player_ = Optional.of( new Player( "name" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -85,12 +89,13 @@ public final class PlayerTest
     @Test
     public void testAddRoles()
     {
-        assertEquals( 0, player_.getRoles().size() );
+        final Player player = getPlayer();
+        assertEquals( 0, player.getRoles().size() );
 
-        player_.addRoles( EnumSet.of( PlayerRole.LOCAL ) );
+        player.addRoles( EnumSet.of( PlayerRole.LOCAL ) );
 
-        assertEquals( 1, player_.getRoles().size() );
-        assertTrue( player_.getRoles().contains( PlayerRole.LOCAL ) );
+        assertEquals( 1, player.getRoles().size() );
+        assertTrue( player.getRoles().contains( PlayerRole.LOCAL ) );
     }
 
     /**
@@ -99,13 +104,14 @@ public final class PlayerTest
     @Test
     public void testRemoveRoles()
     {
-        player_.addRoles( EnumSet.of( PlayerRole.LOCAL ) );
-        final int originalRolesSize = player_.getRoles().size();
-        assertTrue( player_.getRoles().contains( PlayerRole.LOCAL ) );
+        final Player player = getPlayer();
+        player.addRoles( EnumSet.of( PlayerRole.LOCAL ) );
+        final int originalRolesSize = player.getRoles().size();
+        assertTrue( player.getRoles().contains( PlayerRole.LOCAL ) );
 
-        player_.removeRoles( EnumSet.of( PlayerRole.LOCAL ) );
+        player.removeRoles( EnumSet.of( PlayerRole.LOCAL ) );
 
-        assertEquals( originalRolesSize - 1, player_.getRoles().size() );
-        assertFalse( player_.getRoles().contains( PlayerRole.LOCAL ) );
+        assertEquals( originalRolesSize - 1, player.getRoles().size() );
+        assertFalse( player.getRoles().contains( PlayerRole.LOCAL ) );
     }
 }

@@ -21,9 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl;
 
-import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,12 +29,6 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link ITableNetworkController} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractTableNetworkControllerTestCase
 {
     // ======================================================================
@@ -44,7 +36,7 @@ public abstract class AbstractTableNetworkControllerTestCase
     // ======================================================================
 
     /** The table network controller under test in the fixture. */
-    private ITableNetworkController tableNetworkController_;
+    private Optional<ITableNetworkController> tableNetworkController_;
 
 
     // ======================================================================
@@ -57,6 +49,7 @@ public abstract class AbstractTableNetworkControllerTestCase
      */
     protected AbstractTableNetworkControllerTestCase()
     {
+        tableNetworkController_ = Optional.empty();
     }
 
 
@@ -76,6 +69,17 @@ public abstract class AbstractTableNetworkControllerTestCase
         throws Exception;
 
     /**
+     * Gets the table network controller under test in the fixture.
+     * 
+     * @return The table network controller under test in the fixture; never
+     *         {@code null}.
+     */
+    protected final ITableNetworkController getTableNetworkController()
+    {
+        return tableNetworkController_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -85,8 +89,7 @@ public abstract class AbstractTableNetworkControllerTestCase
     public void setUp()
         throws Exception
     {
-        tableNetworkController_ = createTableNetworkController();
-        assertNotNull( tableNetworkController_ );
+        tableNetworkController_ = Optional.of( createTableNetworkController() );
     }
 
     /**

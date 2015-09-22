@@ -21,9 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.model;
 
-import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.test.TestTableEnvironments;
 import org.gamegineer.table.ui.test.TestComponents;
@@ -33,12 +31,6 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link ContainerModelContentChangedEvent} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class ContainerModelContentChangedEventTest
 {
     // ======================================================================
@@ -46,7 +38,7 @@ public final class ContainerModelContentChangedEventTest
     // ======================================================================
 
     /** The table environment model for use in the fixture. */
-    private TableEnvironmentModel tableEnvironmentModel_;
+    private Optional<TableEnvironmentModel> tableEnvironmentModel_;
 
 
     // ======================================================================
@@ -59,6 +51,7 @@ public final class ContainerModelContentChangedEventTest
      */
     public ContainerModelContentChangedEventTest()
     {
+        tableEnvironmentModel_ = Optional.empty();
     }
 
 
@@ -93,8 +86,7 @@ public final class ContainerModelContentChangedEventTest
      */
     private TableEnvironmentModel getTableEnvironmentModel()
     {
-        assertNotNull( tableEnvironmentModel_ );
-        return tableEnvironmentModel_;
+        return tableEnvironmentModel_.get();
     }
 
     /**
@@ -107,7 +99,7 @@ public final class ContainerModelContentChangedEventTest
     public void setUp()
         throws Exception
     {
-        tableEnvironmentModel_ = new TableEnvironmentModel( TestTableEnvironments.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
+        tableEnvironmentModel_ = Optional.of( new TableEnvironmentModel( TestTableEnvironments.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) ) );
     }
 
     /**

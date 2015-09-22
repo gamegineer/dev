@@ -21,9 +21,7 @@
 
 package org.gamegineer.table.internal.core.impl;
 
-import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.dnd.IDragContext;
@@ -33,12 +31,6 @@ import org.gamegineer.table.core.dnd.test.AbstractDragContextTestCase;
  * A fixture for testing the {@link DragContext} class to ensure it does not
  * violate the contract of the {@link IDragContext} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class DragContextAsDragContextTest
     extends AbstractDragContextTestCase
 {
@@ -47,7 +39,7 @@ public final class DragContextAsDragContextTest
     // ======================================================================
 
     /** The table associated with the fixture. */
-    private Table table_;
+    private Optional<Table> table_;
 
 
     // ======================================================================
@@ -60,6 +52,7 @@ public final class DragContextAsDragContextTest
      */
     public DragContextAsDragContextTest()
     {
+        table_ = Optional.empty();
     }
 
 
@@ -73,8 +66,7 @@ public final class DragContextAsDragContextTest
     @Override
     protected ITable getTable()
     {
-        assertNotNull( table_ );
-        return table_;
+        return table_.get();
     }
 
     /*
@@ -84,7 +76,7 @@ public final class DragContextAsDragContextTest
     public void setUp()
         throws Exception
     {
-        table_ = new Table( new TableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
+        table_ = Optional.of( new Table( new TableEnvironment( new SingleThreadedTableEnvironmentContext() ) ) );
 
         super.setUp();
     }

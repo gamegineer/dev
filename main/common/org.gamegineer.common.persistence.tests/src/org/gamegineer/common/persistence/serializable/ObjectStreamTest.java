@@ -22,7 +22,6 @@
 package org.gamegineer.common.persistence.serializable;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -30,12 +29,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
+import java.util.Optional;
 import org.easymock.EasyMock;
 import org.easymock.IAnswer;
 import org.easymock.IMocksControl;
-import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,12 +42,6 @@ import org.junit.Test;
  * A fixture for testing the interaction between the {@link ObjectInputStream}
  * and {@link ObjectOutputStream} classes.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class ObjectStreamTest
 {
     // ======================================================================
@@ -57,7 +49,7 @@ public final class ObjectStreamTest
     // ======================================================================
 
     /** The persistence delegate registry for use in the fixture. */
-    private IPersistenceDelegateRegistry persistenceDelegateRegistry_;
+    private Optional<IPersistenceDelegateRegistry> persistenceDelegateRegistry_;
 
 
     // ======================================================================
@@ -69,6 +61,7 @@ public final class ObjectStreamTest
      */
     public ObjectStreamTest()
     {
+        persistenceDelegateRegistry_ = Optional.empty();
     }
 
 
@@ -92,8 +85,7 @@ public final class ObjectStreamTest
         final InputStream is )
         throws IOException
     {
-        assertNotNull( persistenceDelegateRegistry_ );
-        return new ObjectInputStream( is, persistenceDelegateRegistry_ );
+        return new ObjectInputStream( is, getPersistenceDelegateRegistry() );
     }
 
     /**
@@ -112,8 +104,18 @@ public final class ObjectStreamTest
         final OutputStream os )
         throws IOException
     {
-        assertNotNull( persistenceDelegateRegistry_ );
-        return new ObjectOutputStream( os, persistenceDelegateRegistry_ );
+        return new ObjectOutputStream( os, getPersistenceDelegateRegistry() );
+    }
+
+    /**
+     * Gets the persistence delegate registry under test in the fixture.
+     * 
+     * @return The persistence delegate registry under test in the fixture;
+     *         never {@code null}.
+     */
+    private IPersistenceDelegateRegistry getPersistenceDelegateRegistry()
+    {
+        return persistenceDelegateRegistry_.get();
     }
 
     /**
@@ -127,8 +129,9 @@ public final class ObjectStreamTest
         throws Exception
     {
         final IMocksControl mocksControl = EasyMock.createControl();
-        persistenceDelegateRegistry_ = mocksControl.createMock( IPersistenceDelegateRegistry.class );
-        EasyMock.expect( persistenceDelegateRegistry_.getPersistenceDelegate( EasyMock.<@NonNull String>notNull() ) ).andAnswer( new IAnswer<@Nullable IPersistenceDelegate>()
+        final IPersistenceDelegateRegistry persistenceDelegateRegistry = mocksControl.createMock( IPersistenceDelegateRegistry.class );
+        persistenceDelegateRegistry_ = Optional.of( persistenceDelegateRegistry );
+        EasyMock.expect( persistenceDelegateRegistry.getPersistenceDelegate( EasyMock.<@NonNull String>notNull() ) ).andAnswer( new IAnswer<@Nullable IPersistenceDelegate>()
         {
             @Override
             public @Nullable IPersistenceDelegate answer()

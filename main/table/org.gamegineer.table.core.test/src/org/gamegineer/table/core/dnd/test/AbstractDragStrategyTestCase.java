@@ -21,9 +21,7 @@
 
 package org.gamegineer.table.core.dnd.test;
 
-import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.table.core.dnd.IDragStrategy;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,12 +30,6 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IDragStrategy} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractDragStrategyTestCase
 {
     // ======================================================================
@@ -45,7 +37,7 @@ public abstract class AbstractDragStrategyTestCase
     // ======================================================================
 
     /** The drag strategy under test in the fixture. */
-    private IDragStrategy dragStrategy_;
+    private Optional<IDragStrategy> dragStrategy_;
 
 
     // ======================================================================
@@ -58,6 +50,7 @@ public abstract class AbstractDragStrategyTestCase
      */
     protected AbstractDragStrategyTestCase()
     {
+        dragStrategy_ = Optional.empty();
     }
 
 
@@ -77,6 +70,16 @@ public abstract class AbstractDragStrategyTestCase
         throws Exception;
 
     /**
+     * Gets the drag strategy under test in the fixture.
+     * 
+     * @return The drag strategy under test in the fixture; never {@code null}.
+     */
+    protected final IDragStrategy getDragStrategy()
+    {
+        return dragStrategy_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -86,8 +89,7 @@ public abstract class AbstractDragStrategyTestCase
     public void setUp()
         throws Exception
     {
-        dragStrategy_ = createDragStrategy();
-        assertNotNull( dragStrategy_ );
+        dragStrategy_ = Optional.of( createDragStrategy() );
     }
 
     /**

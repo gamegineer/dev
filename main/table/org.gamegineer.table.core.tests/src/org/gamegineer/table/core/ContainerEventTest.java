@@ -22,21 +22,14 @@
 package org.gamegineer.table.core;
 
 import static org.junit.Assert.assertSame;
+import java.util.Optional;
 import org.easymock.EasyMock;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the {@link ContainerEvent} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class ContainerEventTest
 {
     // ======================================================================
@@ -44,7 +37,7 @@ public final class ContainerEventTest
     // ======================================================================
 
     /** The container event under test in the fixture. */
-    private ContainerEvent event_;
+    private Optional<ContainerEvent> containerEvent_;
 
 
     // ======================================================================
@@ -56,12 +49,24 @@ public final class ContainerEventTest
      */
     public ContainerEventTest()
     {
+        containerEvent_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the container event under test in the fixture.
+     * 
+     * @return The container event under test in the fixture; never {@code null}
+     *         .
+     */
+    private ContainerEvent getContainerEvent()
+    {
+        return containerEvent_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -73,7 +78,7 @@ public final class ContainerEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new ContainerEvent( EasyMock.createMock( IContainer.class ), new ComponentPath( null, 0 ) );
+        containerEvent_ = Optional.of( new ContainerEvent( EasyMock.createMock( IContainer.class ), new ComponentPath( null, 0 ) ) );
     }
 
     /**
@@ -83,6 +88,8 @@ public final class ContainerEventTest
     @Test
     public void testGetSource_ReturnValue_SameContainer()
     {
-        assertSame( event_.getContainer(), event_.getSource() );
+        final ContainerEvent containerEvent = getContainerEvent();
+
+        assertSame( containerEvent.getContainer(), containerEvent.getSource() );
     }
 }

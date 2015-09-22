@@ -23,8 +23,7 @@ package org.gamegineer.table.core.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentStrategy;
 import org.gamegineer.table.core.IContainer;
@@ -39,12 +38,6 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link ITableEnvironment} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractTableEnvironmentTestCase
 {
     // ======================================================================
@@ -52,7 +45,7 @@ public abstract class AbstractTableEnvironmentTestCase
     // ======================================================================
 
     /** The table environment under test in the fixture. */
-    private ITableEnvironment tableEnvironment_;
+    private Optional<ITableEnvironment> tableEnvironment_;
 
 
     // ======================================================================
@@ -65,6 +58,7 @@ public abstract class AbstractTableEnvironmentTestCase
      */
     protected AbstractTableEnvironmentTestCase()
     {
+        tableEnvironment_ = Optional.empty();
     }
 
 
@@ -88,6 +82,17 @@ public abstract class AbstractTableEnvironmentTestCase
         throws Exception;
 
     /**
+     * Gets the table environment under test in the fixture.
+     * 
+     * @return The table environment under test in the fixture; never
+     *         {@code null}.
+     */
+    protected final ITableEnvironment getTableEnvironment()
+    {
+        return tableEnvironment_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -97,8 +102,7 @@ public abstract class AbstractTableEnvironmentTestCase
     public void setUp()
         throws Exception
     {
-        tableEnvironment_ = createTableEnvironment( new SingleThreadedTableEnvironmentContext() );
-        assertNotNull( tableEnvironment_ );
+        tableEnvironment_ = Optional.of( createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
     }
 
     /**
@@ -108,10 +112,11 @@ public abstract class AbstractTableEnvironmentTestCase
     @Test
     public void testCreateComponentFromStrategy_ReturnValue_AssociatedWithTableEnvironment()
     {
-        final IComponent component = tableEnvironment_.createComponent( TestComponentStrategies.createUniqueComponentStrategy() );
+        final ITableEnvironment tableEnvironment = getTableEnvironment();
+        final IComponent component = tableEnvironment.createComponent( TestComponentStrategies.createUniqueComponentStrategy() );
 
         assertNotNull( component );
-        assertEquals( tableEnvironment_, component.getTableEnvironment() );
+        assertEquals( tableEnvironment, component.getTableEnvironment() );
     }
 
     /**
@@ -121,10 +126,11 @@ public abstract class AbstractTableEnvironmentTestCase
     @Test
     public void testCreateContainer_ReturnValue_AssociatedWithTableEnvironment()
     {
-        final IContainer container = tableEnvironment_.createContainer( TestComponentStrategies.createUniqueContainerStrategy() );
+        final ITableEnvironment tableEnvironment = getTableEnvironment();
+        final IContainer container = tableEnvironment.createContainer( TestComponentStrategies.createUniqueContainerStrategy() );
 
         assertNotNull( container );
-        assertEquals( tableEnvironment_, container.getTableEnvironment() );
+        assertEquals( tableEnvironment, container.getTableEnvironment() );
     }
 
     /**
@@ -134,9 +140,10 @@ public abstract class AbstractTableEnvironmentTestCase
     @Test
     public void testCreateTable_ReturnValue_AssociatedWithTableEnvironment()
     {
-        final ITable table = tableEnvironment_.createTable();
+        final ITableEnvironment tableEnvironment = getTableEnvironment();
+        final ITable table = tableEnvironment.createTable();
 
         assertNotNull( table );
-        assertEquals( tableEnvironment_, table.getTableEnvironment() );
+        assertEquals( tableEnvironment, table.getTableEnvironment() );
     }
 }

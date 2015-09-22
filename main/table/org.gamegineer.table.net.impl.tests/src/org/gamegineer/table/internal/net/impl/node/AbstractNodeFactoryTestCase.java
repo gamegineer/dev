@@ -21,9 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
-import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,12 +29,6 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link INodeFactory} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractNodeFactoryTestCase
 {
     // ======================================================================
@@ -44,7 +36,7 @@ public abstract class AbstractNodeFactoryTestCase
     // ======================================================================
 
     /** The table network node factory under test in the fixture. */
-    private INodeFactory nodeFactory_;
+    private Optional<INodeFactory> nodeFactory_;
 
 
     // ======================================================================
@@ -57,6 +49,7 @@ public abstract class AbstractNodeFactoryTestCase
      */
     protected AbstractNodeFactoryTestCase()
     {
+        nodeFactory_ = Optional.empty();
     }
 
 
@@ -76,6 +69,17 @@ public abstract class AbstractNodeFactoryTestCase
         throws Exception;
 
     /**
+     * Gets the table network node factory under test in the fixture.
+     * 
+     * @return The table network node factory under test in the fixture; never
+     *         {@code null}.
+     */
+    protected final INodeFactory getNodeFactory()
+    {
+        return nodeFactory_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -85,8 +89,7 @@ public abstract class AbstractNodeFactoryTestCase
     public void setUp()
         throws Exception
     {
-        nodeFactory_ = createNodeFactory();
-        assertNotNull( nodeFactory_ );
+        nodeFactory_ = Optional.of( createNodeFactory() );
     }
 
     /**

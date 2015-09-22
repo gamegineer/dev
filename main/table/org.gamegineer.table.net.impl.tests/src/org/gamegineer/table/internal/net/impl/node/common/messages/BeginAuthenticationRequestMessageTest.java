@@ -21,20 +21,13 @@
 
 package org.gamegineer.table.internal.net.impl.node.common.messages;
 
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the {@link BeginAuthenticationRequestMessage} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class BeginAuthenticationRequestMessageTest
 {
     // ======================================================================
@@ -42,7 +35,7 @@ public final class BeginAuthenticationRequestMessageTest
     // ======================================================================
 
     /** The begin authentication request message under test in the fixture. */
-    private BeginAuthenticationRequestMessage message_;
+    private Optional<BeginAuthenticationRequestMessage> message_;
 
 
     // ======================================================================
@@ -55,12 +48,24 @@ public final class BeginAuthenticationRequestMessageTest
      */
     public BeginAuthenticationRequestMessageTest()
     {
+        message_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the begin authentication request message under test in the fixture.
+     * 
+     * @return The begin authentication request message under test in the
+     *         fixture; never {@code null}.
+     */
+    private BeginAuthenticationRequestMessage getMessage()
+    {
+        return message_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -72,7 +77,7 @@ public final class BeginAuthenticationRequestMessageTest
     public void setUp()
         throws Exception
     {
-        message_ = new BeginAuthenticationRequestMessage();
+        message_ = Optional.of( new BeginAuthenticationRequestMessage() );
     }
 
     /**
@@ -82,7 +87,7 @@ public final class BeginAuthenticationRequestMessageTest
     @Test( expected = IllegalArgumentException.class )
     public void testSetChallenge_Challenge_Illegal_Empty()
     {
-        message_.setChallenge( new byte[ 0 ] );
+        getMessage().setChallenge( new byte[ 0 ] );
     }
 
     /**
@@ -92,6 +97,6 @@ public final class BeginAuthenticationRequestMessageTest
     @Test( expected = IllegalArgumentException.class )
     public void testSetSalt_Salt_Illegal_Empty()
     {
-        message_.setSalt( new byte[ 0 ] );
+        getMessage().setSalt( new byte[ 0 ] );
     }
 }

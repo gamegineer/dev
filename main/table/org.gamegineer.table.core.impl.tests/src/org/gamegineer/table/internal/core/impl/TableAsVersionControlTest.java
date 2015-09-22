@@ -21,9 +21,7 @@
 
 package org.gamegineer.table.internal.core.impl;
 
-import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.version.IVersionControl;
@@ -34,12 +32,6 @@ import org.junit.Before;
  * A fixture for testing the {@link Table} class to ensure it does not violate
  * the contract of the {@link IVersionControl} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class TableAsVersionControlTest
     extends AbstractVersionControlTestCase
 {
@@ -48,7 +40,7 @@ public final class TableAsVersionControlTest
     // ======================================================================
 
     /** The table associated with the fixture. */
-    private Table table_;
+    private Optional<Table> table_;
 
 
     // ======================================================================
@@ -61,6 +53,7 @@ public final class TableAsVersionControlTest
      */
     public TableAsVersionControlTest()
     {
+        table_ = Optional.empty();
     }
 
 
@@ -74,8 +67,7 @@ public final class TableAsVersionControlTest
     @Override
     protected ITable getTable()
     {
-        assertNotNull( table_ );
-        return table_;
+        return table_.get();
     }
 
     /*
@@ -86,7 +78,7 @@ public final class TableAsVersionControlTest
     public void setUp()
         throws Exception
     {
-        table_ = new Table( new TableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
+        table_ = Optional.of( new Table( new TableEnvironment( new SingleThreadedTableEnvironmentContext() ) ) );
 
         super.setUp();
     }

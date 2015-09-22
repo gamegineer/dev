@@ -29,22 +29,15 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
-import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the {@link LoggingProperties} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class LoggingPropertiesTest
 {
     // ======================================================================
@@ -52,7 +45,7 @@ public final class LoggingPropertiesTest
     // ======================================================================
 
     /** The logging properties under test in the fixture. */
-    private Map<String, String> properties_;
+    private Optional<Map<String, String>> properties_;
 
 
     // ======================================================================
@@ -64,6 +57,7 @@ public final class LoggingPropertiesTest
      */
     public LoggingPropertiesTest()
     {
+        properties_ = Optional.empty();
     }
 
 
@@ -79,8 +73,7 @@ public final class LoggingPropertiesTest
      */
     private Map<String, String> getProperties()
     {
-        assertNotNull( properties_ );
-        return properties_;
+        return properties_.get();
     }
 
     /**
@@ -93,16 +86,17 @@ public final class LoggingPropertiesTest
     public void setUp()
         throws Exception
     {
-        properties_ = new HashMap<>();
-        properties_.put( Object.class.getName() + ".a.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
-        properties_.put( "a.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
-        properties_.put( "a.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$
-        properties_.put( "a.b.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
-        properties_.put( "a.b.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$
-        properties_.put( "a.b.c.d.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
-        properties_.put( "a.b.c.d.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$
-        properties_.put( "a.b.c.d.e.f.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
-        properties_.put( "a.b.c.d.e.f.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$
+        final Map<String, String> properties = new HashMap<>();
+        properties.put( Object.class.getName() + ".a.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties.put( "a.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties.put( "a.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties.put( "a.b.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties.put( "a.b.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties.put( "a.b.c.d.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties.put( "a.b.c.d.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties.put( "a.b.c.d.e.f.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties.put( "a.b.c.d.e.f.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties_ = Optional.of( properties );
     }
 
     /**

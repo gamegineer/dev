@@ -25,20 +25,13 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the {@link FileHistoryPreferences} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class FileHistoryPreferencesTest
 {
     // ======================================================================
@@ -46,7 +39,7 @@ public final class FileHistoryPreferencesTest
     // ======================================================================
 
     /** The file history preferences under test in the fixture. */
-    private FileHistoryPreferences fileHistoryPreferences_;
+    private Optional<FileHistoryPreferences> fileHistoryPreferences_;
 
 
     // ======================================================================
@@ -59,12 +52,24 @@ public final class FileHistoryPreferencesTest
      */
     public FileHistoryPreferencesTest()
     {
+        fileHistoryPreferences_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the file history preferences under test in the fixture.
+     * 
+     * @return The file history preferences under test in the fixture; never
+     *         {@code null}.
+     */
+    private FileHistoryPreferences getFileHistoryPreferences()
+    {
+        return fileHistoryPreferences_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -76,7 +81,7 @@ public final class FileHistoryPreferencesTest
     public void setUp()
         throws Exception
     {
-        fileHistoryPreferences_ = new FileHistoryPreferences();
+        fileHistoryPreferences_ = Optional.of( new FileHistoryPreferences() );
     }
 
     /**
@@ -86,11 +91,12 @@ public final class FileHistoryPreferencesTest
     @Test
     public void testGetFiles_ReturnValue_Copy()
     {
-        final List<File> files = fileHistoryPreferences_.getFiles();
+        final FileHistoryPreferences fileHistoryPreferences = getFileHistoryPreferences();
+        final List<File> files = fileHistoryPreferences.getFiles();
         final List<File> expectedFiles = new ArrayList<>( files );
         files.add( new File( "path" ) ); //$NON-NLS-1$
 
-        final List<File> actualFiles = fileHistoryPreferences_.getFiles();
+        final List<File> actualFiles = fileHistoryPreferences.getFiles();
 
         assertEquals( expectedFiles, actualFiles );
     }

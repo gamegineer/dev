@@ -21,10 +21,8 @@
 
 package org.gamegineer.table.core.test;
 
-import static org.junit.Assert.assertNotNull;
+import java.util.Optional;
 import org.easymock.EasyMock;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.ITableEnvironmentContext;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,12 +34,6 @@ import org.junit.Test;
  * @param <TableEnvironmentContextType>
  *        The type of the table environment context.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractTableEnvironmentContextTestCase<TableEnvironmentContextType extends ITableEnvironmentContext>
 {
     // ======================================================================
@@ -49,7 +41,7 @@ public abstract class AbstractTableEnvironmentContextTestCase<TableEnvironmentCo
     // ======================================================================
 
     /** The table environment context under test in the fixture. */
-    private TableEnvironmentContextType tableEnvironmentContext_;
+    private Optional<TableEnvironmentContextType> tableEnvironmentContext_;
 
 
     // ======================================================================
@@ -62,6 +54,7 @@ public abstract class AbstractTableEnvironmentContextTestCase<TableEnvironmentCo
      */
     protected AbstractTableEnvironmentContextTestCase()
     {
+        tableEnvironmentContext_ = Optional.empty();
     }
 
 
@@ -88,8 +81,7 @@ public abstract class AbstractTableEnvironmentContextTestCase<TableEnvironmentCo
      */
     protected final TableEnvironmentContextType getTableEnvironmentContext()
     {
-        assertNotNull( tableEnvironmentContext_ );
-        return tableEnvironmentContext_;
+        return tableEnvironmentContext_.get();
     }
 
     /**
@@ -102,8 +94,7 @@ public abstract class AbstractTableEnvironmentContextTestCase<TableEnvironmentCo
     public void setUp()
         throws Exception
     {
-        tableEnvironmentContext_ = createTableEnvironmentContext();
-        assertNotNull( tableEnvironmentContext_ );
+        tableEnvironmentContext_ = Optional.of( createTableEnvironmentContext() );
     }
 
     /**
@@ -114,6 +105,6 @@ public abstract class AbstractTableEnvironmentContextTestCase<TableEnvironmentCo
     @Test( expected = IllegalStateException.class )
     public void testFireEventNotification_ThrowsExceptionWhenLockNotHeld()
     {
-        tableEnvironmentContext_.fireEventNotification( EasyMock.createMock( Runnable.class ) );
+        getTableEnvironmentContext().fireEventNotification( EasyMock.createMock( Runnable.class ) );
     }
 }

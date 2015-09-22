@@ -21,9 +21,7 @@
 
 package org.gamegineer.table.internal.core.impl;
 
-import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.test.TestComponentStrategies;
 import org.junit.Before;
@@ -32,12 +30,6 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link Table} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class TableTest
 {
     // ======================================================================
@@ -45,10 +37,10 @@ public final class TableTest
     // ======================================================================
 
     /** The table under test in the fixture. */
-    private Table table_;
+    private Optional<Table> table_;
 
     /** The table environment for use in the fixture. */
-    private TableEnvironment tableEnvironment_;
+    private Optional<TableEnvironment> tableEnvironment_;
 
 
     // ======================================================================
@@ -60,6 +52,8 @@ public final class TableTest
      */
     public TableTest()
     {
+        table_ = Optional.empty();
+        tableEnvironment_ = Optional.empty();
     }
 
 
@@ -68,14 +62,23 @@ public final class TableTest
     // ======================================================================
 
     /**
+     * Gets the table under test in the fixture.
+     * 
+     * @return The table under test in the fixture; never {@code null}.
+     */
+    private Table getTable()
+    {
+        return table_.get();
+    }
+
+    /**
      * Gets the table environment for use in the fixture.
      * 
      * @return The table environment for use in the fixture; never {@code null}.
      */
     private TableEnvironment getTableEnvironment()
     {
-        assertNotNull( tableEnvironment_ );
-        return tableEnvironment_;
+        return tableEnvironment_.get();
     }
 
     /**
@@ -88,8 +91,9 @@ public final class TableTest
     public void setUp()
         throws Exception
     {
-        final TableEnvironment tableEnvironment = tableEnvironment_ = new TableEnvironment( new SingleThreadedTableEnvironmentContext() );
-        table_ = new Table( tableEnvironment );
+        final TableEnvironment tableEnvironment = new TableEnvironment( new SingleThreadedTableEnvironmentContext() );
+        tableEnvironment_ = Optional.of( tableEnvironment );
+        table_ = Optional.of( new Table( tableEnvironment ) );
     }
 
     /**
@@ -99,6 +103,6 @@ public final class TableTest
     @Test( expected = AssertionError.class )
     public void testGetChildPath_Component_NotTabletop()
     {
-        table_.getChildPath( new Component( getTableEnvironment(), TestComponentStrategies.createUniqueComponentStrategy() ) );
+        getTable().getChildPath( new Component( getTableEnvironment(), TestComponentStrategies.createUniqueComponentStrategy() ) );
     }
 }

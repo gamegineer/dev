@@ -21,9 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.transport;
 
-import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,12 +29,6 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IService} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractServiceTestCase
 {
     // ======================================================================
@@ -44,7 +36,7 @@ public abstract class AbstractServiceTestCase
     // ======================================================================
 
     /** The service under test in the fixture. */
-    private IService service_;
+    private Optional<IService> service_;
 
 
     // ======================================================================
@@ -56,6 +48,7 @@ public abstract class AbstractServiceTestCase
      */
     protected AbstractServiceTestCase()
     {
+        service_ = Optional.empty();
     }
 
 
@@ -75,6 +68,16 @@ public abstract class AbstractServiceTestCase
         throws Exception;
 
     /**
+     * Gets the service under test in the fixture.
+     * 
+     * @return The service under test in the fixture; never {@code null}.
+     */
+    protected final IService getService()
+    {
+        return service_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -84,8 +87,7 @@ public abstract class AbstractServiceTestCase
     public void setUp()
         throws Exception
     {
-        service_ = createService();
-        assertNotNull( service_ );
+        service_ = Optional.of( createService() );
     }
 
     /**

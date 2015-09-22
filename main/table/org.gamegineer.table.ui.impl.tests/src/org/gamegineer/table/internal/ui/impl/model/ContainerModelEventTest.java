@@ -22,8 +22,7 @@
 package org.gamegineer.table.internal.ui.impl.model;
 
 import static org.junit.Assert.assertSame;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.test.TestTableEnvironments;
 import org.gamegineer.table.ui.test.TestComponents;
@@ -33,12 +32,6 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link ContainerModelEvent} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class ContainerModelEventTest
 {
     // ======================================================================
@@ -46,7 +39,7 @@ public final class ContainerModelEventTest
     // ======================================================================
 
     /** The container model event under test in the fixture. */
-    private ContainerModelEvent event_;
+    private Optional<ContainerModelEvent> event_;
 
 
     // ======================================================================
@@ -58,12 +51,24 @@ public final class ContainerModelEventTest
      */
     public ContainerModelEventTest()
     {
+        event_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the container model event under test in the fixture.
+     * 
+     * @return The container model event under test in the fixture; never
+     *         {@code null}.
+     */
+    private ContainerModelEvent getEvent()
+    {
+        return event_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -76,7 +81,7 @@ public final class ContainerModelEventTest
         throws Exception
     {
         final TableEnvironmentModel tableEnvironmentModel = new TableEnvironmentModel( TestTableEnvironments.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
-        event_ = new ContainerModelEvent( new ContainerModel( tableEnvironmentModel, TestComponents.createUniqueContainer( tableEnvironmentModel.getTableEnvironment() ) ) );
+        event_ = Optional.of( new ContainerModelEvent( new ContainerModel( tableEnvironmentModel, TestComponents.createUniqueContainer( tableEnvironmentModel.getTableEnvironment() ) ) ) );
     }
 
     /**
@@ -86,6 +91,8 @@ public final class ContainerModelEventTest
     @Test
     public void testGetSource_ReturnValue_SameContainerModel()
     {
-        assertSame( event_.getContainerModel(), event_.getSource() );
+        final ContainerModelEvent event = getEvent();
+
+        assertSame( event.getContainerModel(), event.getSource() );
     }
 }

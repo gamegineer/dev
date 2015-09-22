@@ -22,21 +22,14 @@
 package org.gamegineer.table.core;
 
 import static org.junit.Assert.assertSame;
+import java.util.Optional;
 import org.easymock.EasyMock;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the {@link ComponentEvent} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class ComponentEventTest
 {
     // ======================================================================
@@ -44,7 +37,7 @@ public final class ComponentEventTest
     // ======================================================================
 
     /** The component event under test in the fixture. */
-    private ComponentEvent event_;
+    private Optional<ComponentEvent> componentEvent_;
 
 
     // ======================================================================
@@ -56,12 +49,24 @@ public final class ComponentEventTest
      */
     public ComponentEventTest()
     {
+        componentEvent_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the component event under test in the fixture.
+     * 
+     * @return The component event under test in the fixture; never {@code null}
+     *         .
+     */
+    private ComponentEvent getComponentEvent()
+    {
+        return componentEvent_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -73,7 +78,7 @@ public final class ComponentEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new ComponentEvent( EasyMock.createMock( IComponent.class ), new ComponentPath( null, 0 ) );
+        componentEvent_ = Optional.of( new ComponentEvent( EasyMock.createMock( IComponent.class ), new ComponentPath( null, 0 ) ) );
     }
 
     /**
@@ -83,6 +88,8 @@ public final class ComponentEventTest
     @Test
     public void testGetSource_ReturnValue_SameComponent()
     {
-        assertSame( event_.getComponent(), event_.getSource() );
+        final ComponentEvent componentEvent = getComponentEvent();
+
+        assertSame( componentEvent.getComponent(), componentEvent.getSource() );
     }
 }

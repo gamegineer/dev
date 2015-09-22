@@ -21,9 +21,7 @@
 
 package org.gamegineer.table.ui.test;
 
-import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.table.ui.ITableRunnerFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,12 +30,6 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link ITableRunnerFactory} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractTableRunnerFactoryTestCase
 {
     // ======================================================================
@@ -45,7 +37,7 @@ public abstract class AbstractTableRunnerFactoryTestCase
     // ======================================================================
 
     /** The table runner factory under test in the fixture. */
-    private ITableRunnerFactory tableRunnerFactory_;
+    private Optional<ITableRunnerFactory> tableRunnerFactory_;
 
 
     // ======================================================================
@@ -58,6 +50,7 @@ public abstract class AbstractTableRunnerFactoryTestCase
      */
     protected AbstractTableRunnerFactoryTestCase()
     {
+        tableRunnerFactory_ = Optional.empty();
     }
 
 
@@ -77,6 +70,17 @@ public abstract class AbstractTableRunnerFactoryTestCase
         throws Exception;
 
     /**
+     * Gets the table runner factory under test in the fixture.
+     * 
+     * @return The table runner factory under test in the fixture; never
+     *         {@code null}.
+     */
+    protected final ITableRunnerFactory getTableRunnerFactory()
+    {
+        return tableRunnerFactory_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -86,8 +90,7 @@ public abstract class AbstractTableRunnerFactoryTestCase
     public void setUp()
         throws Exception
     {
-        tableRunnerFactory_ = createTableRunnerFactory();
-        assertNotNull( tableRunnerFactory_ );
+        tableRunnerFactory_ = Optional.of( createTableRunnerFactory() );
     }
 
     /**

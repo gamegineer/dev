@@ -21,20 +21,13 @@
 
 package org.gamegineer.table.internal.net.impl.node.common.messages;
 
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the {@link HelloRequestMessage} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class HelloRequestMessageTest
 {
     // ======================================================================
@@ -42,7 +35,7 @@ public final class HelloRequestMessageTest
     // ======================================================================
 
     /** The hello request message under test in the fixture. */
-    private HelloRequestMessage message_;
+    private Optional<HelloRequestMessage> message_;
 
 
     // ======================================================================
@@ -54,12 +47,24 @@ public final class HelloRequestMessageTest
      */
     public HelloRequestMessageTest()
     {
+        message_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the hello request message under test in the fixture.
+     * 
+     * @return The hello request message under test in the fixture; never
+     *         {@code null}.
+     */
+    private HelloRequestMessage getMessage()
+    {
+        return message_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -71,7 +76,7 @@ public final class HelloRequestMessageTest
     public void setUp()
         throws Exception
     {
-        message_ = new HelloRequestMessage();
+        message_ = Optional.of( new HelloRequestMessage() );
     }
 
     /**
@@ -81,6 +86,6 @@ public final class HelloRequestMessageTest
     @Test( expected = IllegalArgumentException.class )
     public void testSetSupportedProtocolVersion_Version_Illegal_Negative()
     {
-        message_.setSupportedProtocolVersion( -1 );
+        getMessage().setSupportedProtocolVersion( -1 );
     }
 }

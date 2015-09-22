@@ -24,20 +24,13 @@ package org.gamegineer.table.internal.net.impl.transport.tcp;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import java.nio.ByteBuffer;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the {@link ByteBufferPool} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class ByteBufferPoolTest
 {
     // ======================================================================
@@ -48,7 +41,7 @@ public final class ByteBufferPoolTest
     private static final int BYTE_BUFFER_CAPACITY = 16;
 
     /** The byte buffer pool under test in the fixture. */
-    private ByteBufferPool byteBufferPool_;
+    private Optional<ByteBufferPool> byteBufferPool_;
 
 
     // ======================================================================
@@ -60,12 +53,24 @@ public final class ByteBufferPoolTest
      */
     public ByteBufferPoolTest()
     {
+        byteBufferPool_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the byte buffer pool under test in the fixture.
+     * 
+     * @return The byte buffer pool under test in the fixture; never
+     *         {@code null}.
+     */
+    private ByteBufferPool getByteBufferPool()
+    {
+        return byteBufferPool_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -77,7 +82,7 @@ public final class ByteBufferPoolTest
     public void setUp()
         throws Exception
     {
-        byteBufferPool_ = new ByteBufferPool( BYTE_BUFFER_CAPACITY );
+        byteBufferPool_ = Optional.of( new ByteBufferPool( BYTE_BUFFER_CAPACITY ) );
     }
 
     /**
@@ -87,11 +92,12 @@ public final class ByteBufferPoolTest
     @Test
     public void testTakeByteBuffer_ClearsExistingByteBuffer()
     {
-        final ByteBuffer byteBuffer1 = byteBufferPool_.takeByteBuffer();
+        final ByteBufferPool byteBufferPool = getByteBufferPool();
+        final ByteBuffer byteBuffer1 = byteBufferPool.takeByteBuffer();
         byteBuffer1.position( byteBuffer1.limit() );
-        byteBufferPool_.returnByteBuffer( byteBuffer1 );
+        byteBufferPool.returnByteBuffer( byteBuffer1 );
 
-        final ByteBuffer byteBuffer2 = byteBufferPool_.takeByteBuffer();
+        final ByteBuffer byteBuffer2 = byteBufferPool.takeByteBuffer();
 
         assertEquals( 0, byteBuffer2.position() );
         assertEquals( byteBuffer2.capacity(), byteBuffer2.limit() );
@@ -104,10 +110,11 @@ public final class ByteBufferPoolTest
     @Test
     public void testTakeByteBuffer_ReturnsExistingByteBuffer()
     {
-        final ByteBuffer byteBuffer1 = byteBufferPool_.takeByteBuffer();
-        byteBufferPool_.returnByteBuffer( byteBuffer1 );
+        final ByteBufferPool byteBufferPool = getByteBufferPool();
+        final ByteBuffer byteBuffer1 = byteBufferPool.takeByteBuffer();
+        byteBufferPool.returnByteBuffer( byteBuffer1 );
 
-        final ByteBuffer byteBuffer2 = byteBufferPool_.takeByteBuffer();
+        final ByteBuffer byteBuffer2 = byteBufferPool.takeByteBuffer();
 
         assertSame( byteBuffer1, byteBuffer2 );
     }

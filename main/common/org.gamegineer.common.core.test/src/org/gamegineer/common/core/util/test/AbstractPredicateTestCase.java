@@ -21,9 +21,7 @@
 
 package org.gamegineer.common.core.util.test;
 
-import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.common.core.util.IPredicate;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,12 +30,6 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IPredicate} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractPredicateTestCase
 {
     // ======================================================================
@@ -45,7 +37,7 @@ public abstract class AbstractPredicateTestCase
     // ======================================================================
 
     /** The predicate under test in the fixture. */
-    private IPredicate<?> predicate_;
+    private Optional<IPredicate<?>> predicate_;
 
 
     // ======================================================================
@@ -58,6 +50,7 @@ public abstract class AbstractPredicateTestCase
      */
     protected AbstractPredicateTestCase()
     {
+        predicate_ = Optional.empty();
     }
 
 
@@ -77,6 +70,16 @@ public abstract class AbstractPredicateTestCase
         throws Exception;
 
     /**
+     * Gets the predicate under test in the fixture.
+     * 
+     * @return The predicate under test in the fixture; never {@code null}.
+     */
+    protected final IPredicate<?> getPredicate()
+    {
+        return predicate_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -86,8 +89,7 @@ public abstract class AbstractPredicateTestCase
     public void setUp()
         throws Exception
     {
-        predicate_ = createPredicate();
-        assertNotNull( predicate_ );
+        predicate_ = Optional.of( createPredicate() );
     }
 
     /**
@@ -97,6 +99,6 @@ public abstract class AbstractPredicateTestCase
     @Test
     public void testEvaluate_Object_Null()
     {
-        predicate_.evaluate( null );
+        getPredicate().evaluate( null );
     }
 }

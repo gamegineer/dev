@@ -21,8 +21,7 @@
 
 package org.gamegineer.table.internal.ui.impl.model;
 
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.table.core.ITableEnvironment;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.test.TestTableEnvironments;
@@ -34,12 +33,6 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link TableEnvironmentModel} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class TableEnvironmentModelTest
 {
     // ======================================================================
@@ -47,7 +40,7 @@ public final class TableEnvironmentModelTest
     // ======================================================================
 
     /** The table environment model under test in the fixture. */
-    private TableEnvironmentModel tableEnvironmentModel_;
+    private Optional<TableEnvironmentModel> tableEnvironmentModel_;
 
 
     // ======================================================================
@@ -60,6 +53,7 @@ public final class TableEnvironmentModelTest
      */
     public TableEnvironmentModelTest()
     {
+        tableEnvironmentModel_ = Optional.empty();
     }
 
 
@@ -78,6 +72,17 @@ public final class TableEnvironmentModelTest
     }
 
     /**
+     * Gets the table environment model under test in the fixture.
+     * 
+     * @return The table environment model under test in the fixture; never
+     *         {@code null}.
+     */
+    private TableEnvironmentModel getTableEnvironmentModel()
+    {
+        return tableEnvironmentModel_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -87,7 +92,7 @@ public final class TableEnvironmentModelTest
     public void setUp()
         throws Exception
     {
-        tableEnvironmentModel_ = new TableEnvironmentModel( createTableEnvironment() );
+        tableEnvironmentModel_ = Optional.of( new TableEnvironmentModel( createTableEnvironment() ) );
     }
 
     /**
@@ -98,9 +103,10 @@ public final class TableEnvironmentModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testCreateComponentModel_Component_Illegal_CreatedByDifferentTableEnvironment()
     {
+        final TableEnvironmentModel tableEnvironmentModel = getTableEnvironmentModel();
         final ITableEnvironment otherTableEnvironment = createTableEnvironment();
 
-        tableEnvironmentModel_.createComponentModel( TestComponents.createUniqueComponent( otherTableEnvironment ) );
+        tableEnvironmentModel.createComponentModel( TestComponents.createUniqueComponent( otherTableEnvironment ) );
     }
 
     /**
@@ -111,9 +117,10 @@ public final class TableEnvironmentModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testCreateContainerModel_Container_Illegal_CreatedByDifferentTableEnvironment()
     {
+        final TableEnvironmentModel tableEnvironmentModel = getTableEnvironmentModel();
         final ITableEnvironment otherTableEnvironment = createTableEnvironment();
 
-        tableEnvironmentModel_.createContainerModel( TestComponents.createUniqueContainer( otherTableEnvironment ) );
+        tableEnvironmentModel.createContainerModel( TestComponents.createUniqueContainer( otherTableEnvironment ) );
     }
 
     /**
@@ -124,8 +131,9 @@ public final class TableEnvironmentModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testCreateTableModel_Table_Illegal_CreatedByDifferentTableEnvironment()
     {
+        final TableEnvironmentModel tableEnvironmentModel = getTableEnvironmentModel();
         final ITableEnvironment otherTableEnvironment = createTableEnvironment();
 
-        tableEnvironmentModel_.createTableModel( otherTableEnvironment.createTable(), TestTableNetworks.createTableNetwork() );
+        tableEnvironmentModel.createTableModel( otherTableEnvironment.createTable(), TestTableNetworks.createTableNetwork() );
     }
 }

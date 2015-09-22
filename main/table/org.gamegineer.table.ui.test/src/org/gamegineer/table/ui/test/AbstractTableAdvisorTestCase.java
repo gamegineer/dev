@@ -22,9 +22,7 @@
 package org.gamegineer.table.ui.test;
 
 import static org.gamegineer.test.core.Assert.assertImmutableCollection;
-import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.table.ui.ITableAdvisor;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,12 +31,6 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link ITableAdvisor} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractTableAdvisorTestCase
 {
     // ======================================================================
@@ -46,7 +38,7 @@ public abstract class AbstractTableAdvisorTestCase
     // ======================================================================
 
     /** The table advisor under test in the fixture. */
-    private ITableAdvisor advisor_;
+    private Optional<ITableAdvisor> tableAdvisor_;
 
 
     // ======================================================================
@@ -59,6 +51,7 @@ public abstract class AbstractTableAdvisorTestCase
      */
     protected AbstractTableAdvisorTestCase()
     {
+        tableAdvisor_ = Optional.empty();
     }
 
 
@@ -78,6 +71,16 @@ public abstract class AbstractTableAdvisorTestCase
         throws Exception;
 
     /**
+     * Gets the table advisor under test in the fixture.
+     * 
+     * @return The table advisor under test in the fixture; never {@code null}.
+     */
+    protected final ITableAdvisor getTableAdvisor()
+    {
+        return tableAdvisor_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -87,8 +90,7 @@ public abstract class AbstractTableAdvisorTestCase
     public void setUp()
         throws Exception
     {
-        advisor_ = createTableAdvisor();
-        assertNotNull( advisor_ );
+        tableAdvisor_ = Optional.of( createTableAdvisor() );
     }
 
     /**
@@ -98,6 +100,6 @@ public abstract class AbstractTableAdvisorTestCase
     @Test
     public void testGetApplicationArguments_ReturnValue_Immutable()
     {
-        assertImmutableCollection( advisor_.getApplicationArguments(), "" ); //$NON-NLS-1$
+        assertImmutableCollection( getTableAdvisor().getApplicationArguments(), "" ); //$NON-NLS-1$
     }
 }

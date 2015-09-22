@@ -22,8 +22,7 @@
 package org.gamegineer.table.internal.ui.impl.model;
 
 import static org.junit.Assert.assertSame;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.test.TestTableEnvironments;
 import org.gamegineer.table.net.test.TestTableNetworks;
@@ -33,12 +32,6 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link TableModelEvent} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class TableModelEventTest
 {
     // ======================================================================
@@ -46,7 +39,7 @@ public final class TableModelEventTest
     // ======================================================================
 
     /** The table model event under test in the fixture. */
-    private TableModelEvent event_;
+    private Optional<TableModelEvent> event_;
 
 
     // ======================================================================
@@ -58,12 +51,24 @@ public final class TableModelEventTest
      */
     public TableModelEventTest()
     {
+        event_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the table model event under test in the fixture.
+     * 
+     * @return The table model event under test in the fixture; never
+     *         {@code null}.
+     */
+    private TableModelEvent getEvent()
+    {
+        return event_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -76,7 +81,7 @@ public final class TableModelEventTest
         throws Exception
     {
         final TableEnvironmentModel tableEnvironmentModel = new TableEnvironmentModel( TestTableEnvironments.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
-        event_ = new TableModelEvent( new TableModel( tableEnvironmentModel, tableEnvironmentModel.getTableEnvironment().createTable(), TestTableNetworks.createTableNetwork() ) );
+        event_ = Optional.of( new TableModelEvent( new TableModel( tableEnvironmentModel, tableEnvironmentModel.getTableEnvironment().createTable(), TestTableNetworks.createTableNetwork() ) ) );
     }
 
     /**
@@ -86,6 +91,8 @@ public final class TableModelEventTest
     @Test
     public void testGetSource_ReturnValue_SameTableModel()
     {
-        assertSame( event_.getTableModel(), event_.getSource() );
+        final TableModelEvent event = getEvent();
+
+        assertSame( event.getTableModel(), event.getSource() );
     }
 }

@@ -25,20 +25,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Dimension;
 import java.awt.Point;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the {@link FramePreferences} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class FramePreferencesTest
 {
     // ======================================================================
@@ -46,7 +39,7 @@ public final class FramePreferencesTest
     // ======================================================================
 
     /** The frame preferences under test in the fixture. */
-    private FramePreferences framePreferences_;
+    private Optional<FramePreferences> framePreferences_;
 
 
     // ======================================================================
@@ -58,12 +51,24 @@ public final class FramePreferencesTest
      */
     public FramePreferencesTest()
     {
+        framePreferences_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the frame preferences under test in the fixture.
+     * 
+     * @return The frame preferences under test in the fixture; never
+     *         {@code null}.
+     */
+    private FramePreferences getFramePreferences()
+    {
+        return framePreferences_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -75,7 +80,7 @@ public final class FramePreferencesTest
     public void setUp()
         throws Exception
     {
-        framePreferences_ = new FramePreferences();
+        framePreferences_ = Optional.of( new FramePreferences() );
     }
 
     /**
@@ -85,13 +90,14 @@ public final class FramePreferencesTest
     @Test
     public void testGetLocation_ReturnValue_Copy()
     {
+        final FramePreferences framePreferences = getFramePreferences();
         final Point expectedLocation = new Point( 0, 0 );
-        framePreferences_.setLocation( expectedLocation );
+        framePreferences.setLocation( expectedLocation );
 
-        final Point location = framePreferences_.getLocation();
+        final Point location = framePreferences.getLocation();
         assertNotNull( location );
         location.x = location.y = 1;
-        final Point actualLocation = framePreferences_.getLocation();
+        final Point actualLocation = framePreferences.getLocation();
 
         assertEquals( expectedLocation, actualLocation );
     }
@@ -103,13 +109,14 @@ public final class FramePreferencesTest
     @Test
     public void testGetSize_ReturnValue_Copy()
     {
+        final FramePreferences framePreferences = getFramePreferences();
         final Dimension expectedSize = new Dimension( 0, 0 );
-        framePreferences_.setSize( expectedSize );
+        framePreferences.setSize( expectedSize );
 
-        final Dimension size = framePreferences_.getSize();
+        final Dimension size = framePreferences.getSize();
         assertNotNull( size );
         size.width = size.height = 1;
-        final Dimension actualSize = framePreferences_.getSize();
+        final Dimension actualSize = framePreferences.getSize();
 
         assertEquals( expectedSize, actualSize );
     }
@@ -121,12 +128,13 @@ public final class FramePreferencesTest
     @Test
     public void testSetLocation_Location_Copy()
     {
+        final FramePreferences framePreferences = getFramePreferences();
         final Point location = new Point( 0, 0 );
         final Point expectedLocation = new Point( location );
 
-        framePreferences_.setLocation( location );
+        framePreferences.setLocation( location );
         location.x = location.y = 1;
-        final Point actualLocation = framePreferences_.getLocation();
+        final Point actualLocation = framePreferences.getLocation();
 
         assertEquals( expectedLocation, actualLocation );
     }
@@ -138,12 +146,13 @@ public final class FramePreferencesTest
     @Test
     public void testSetSize_Size_Copy()
     {
+        final FramePreferences framePreferences = getFramePreferences();
         final Dimension size = new Dimension( 0, 0 );
         final Dimension expectedSize = new Dimension( size );
 
-        framePreferences_.setSize( size );
+        framePreferences.setSize( size );
         size.width = size.height = 1;
-        final Dimension actualSize = framePreferences_.getSize();
+        final Dimension actualSize = framePreferences.getSize();
 
         assertEquals( expectedSize, actualSize );
     }

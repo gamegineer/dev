@@ -21,9 +21,7 @@
 
 package org.gamegineer.common.ui.dialog.test;
 
-import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.common.ui.dialog.IDialogPage;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,12 +30,6 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IDialogPage} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractDialogPageTestCase
 {
     // ======================================================================
@@ -45,7 +37,7 @@ public abstract class AbstractDialogPageTestCase
     // ======================================================================
 
     /** The dialog page under test in the fixture. */
-    private IDialogPage dialogPage_;
+    private Optional<IDialogPage> dialogPage_;
 
 
     // ======================================================================
@@ -58,6 +50,7 @@ public abstract class AbstractDialogPageTestCase
      */
     protected AbstractDialogPageTestCase()
     {
+        dialogPage_ = Optional.empty();
     }
 
 
@@ -77,6 +70,16 @@ public abstract class AbstractDialogPageTestCase
         throws Exception;
 
     /**
+     * Gets the dialog page under test in the fixture.
+     * 
+     * @return The dialog page under test in the fixture; never {@code null}.
+     */
+    protected final IDialogPage getDialogPage()
+    {
+        return dialogPage_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -86,8 +89,7 @@ public abstract class AbstractDialogPageTestCase
     public void setUp()
         throws Exception
     {
-        dialogPage_ = createDialogPage();
-        assertNotNull( dialogPage_ );
+        dialogPage_ = Optional.of( createDialogPage() );
     }
 
     /**

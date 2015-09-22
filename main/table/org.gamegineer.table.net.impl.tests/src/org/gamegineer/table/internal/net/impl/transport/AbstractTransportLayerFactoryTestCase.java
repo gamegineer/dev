@@ -21,9 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.transport;
 
-import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,12 +29,6 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link ITransportLayerFactory} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractTransportLayerFactoryTestCase
 {
     // ======================================================================
@@ -44,7 +36,7 @@ public abstract class AbstractTransportLayerFactoryTestCase
     // ======================================================================
 
     /** The transport layer factory under test in the fixture. */
-    private ITransportLayerFactory transportLayerFactory_;
+    private Optional<ITransportLayerFactory> transportLayerFactory_;
 
 
     // ======================================================================
@@ -57,6 +49,7 @@ public abstract class AbstractTransportLayerFactoryTestCase
      */
     protected AbstractTransportLayerFactoryTestCase()
     {
+        transportLayerFactory_ = Optional.empty();
     }
 
 
@@ -76,6 +69,17 @@ public abstract class AbstractTransportLayerFactoryTestCase
         throws Exception;
 
     /**
+     * Gets the transport layer factory under test in the fixture.
+     * 
+     * @return The transport layer factory under test in the fixture; never
+     *         {@code null}.
+     */
+    protected final ITransportLayerFactory getTransportLayerFactory()
+    {
+        return transportLayerFactory_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -85,8 +89,7 @@ public abstract class AbstractTransportLayerFactoryTestCase
     public void setUp()
         throws Exception
     {
-        transportLayerFactory_ = createTransportLayerFactory();
-        assertNotNull( transportLayerFactory_ );
+        transportLayerFactory_ = Optional.of( createTransportLayerFactory() );
     }
 
     /**

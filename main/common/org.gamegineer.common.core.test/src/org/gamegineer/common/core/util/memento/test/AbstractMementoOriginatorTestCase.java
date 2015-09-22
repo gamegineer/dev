@@ -22,9 +22,7 @@
 package org.gamegineer.common.core.util.memento.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,12 +31,6 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IMementoOriginator} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractMementoOriginatorTestCase
 {
     // ======================================================================
@@ -46,7 +38,7 @@ public abstract class AbstractMementoOriginatorTestCase
     // ======================================================================
 
     /** The memento originator under test in the fixture. */
-    private IMementoOriginator mementoOriginator_;
+    private Optional<IMementoOriginator> mementoOriginator_;
 
 
     // ======================================================================
@@ -59,6 +51,7 @@ public abstract class AbstractMementoOriginatorTestCase
      */
     protected AbstractMementoOriginatorTestCase()
     {
+        mementoOriginator_ = Optional.empty();
     }
 
 
@@ -108,8 +101,7 @@ public abstract class AbstractMementoOriginatorTestCase
      */
     protected final IMementoOriginator getMementoOriginator()
     {
-        assertNotNull( mementoOriginator_ );
-        return mementoOriginator_;
+        return mementoOriginator_.get();
     }
 
     /**
@@ -132,8 +124,7 @@ public abstract class AbstractMementoOriginatorTestCase
     public void setUp()
         throws Exception
     {
-        mementoOriginator_ = createMementoOriginator();
-        assertNotNull( mementoOriginator_ );
+        mementoOriginator_ = Optional.of( createMementoOriginator() );
     }
 
     /**

@@ -21,9 +21,7 @@
 
 package org.gamegineer.table.ui.test;
 
-import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.table.ui.IComponentStrategyUI;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,12 +33,6 @@ import org.junit.Test;
  * @param <ComponentStrategyUIType>
  *        The type of the component strategy user interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractComponentStrategyUITestCase<ComponentStrategyUIType extends IComponentStrategyUI>
 {
     // ======================================================================
@@ -48,7 +40,7 @@ public abstract class AbstractComponentStrategyUITestCase<ComponentStrategyUITyp
     // ======================================================================
 
     /** The component strategy user interface under test in the fixture. */
-    private ComponentStrategyUIType componentStrategyUI_;
+    private Optional<ComponentStrategyUIType> componentStrategyUI_;
 
 
     // ======================================================================
@@ -61,6 +53,7 @@ public abstract class AbstractComponentStrategyUITestCase<ComponentStrategyUITyp
      */
     protected AbstractComponentStrategyUITestCase()
     {
+        componentStrategyUI_ = Optional.empty();
     }
 
 
@@ -88,8 +81,7 @@ public abstract class AbstractComponentStrategyUITestCase<ComponentStrategyUITyp
      */
     protected final ComponentStrategyUIType getComponentStrategyUI()
     {
-        assertNotNull( componentStrategyUI_ );
-        return componentStrategyUI_;
+        return componentStrategyUI_.get();
     }
 
     /**
@@ -102,8 +94,7 @@ public abstract class AbstractComponentStrategyUITestCase<ComponentStrategyUITyp
     public void setUp()
         throws Exception
     {
-        componentStrategyUI_ = createComponentStrategyUI();
-        assertNotNull( componentStrategyUI_ );
+        componentStrategyUI_ = Optional.of( createComponentStrategyUI() );
     }
 
     /**

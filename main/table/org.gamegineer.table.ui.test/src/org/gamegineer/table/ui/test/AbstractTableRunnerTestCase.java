@@ -21,16 +21,14 @@
 
 package org.gamegineer.table.ui.test;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
 import org.gamegineer.table.ui.ITableRunner;
 import org.gamegineer.table.ui.TableResult;
@@ -41,12 +39,6 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link ITableRunner} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractTableRunnerTestCase
 {
     // ======================================================================
@@ -54,7 +46,7 @@ public abstract class AbstractTableRunnerTestCase
     // ======================================================================
 
     /** The table runner under test in the fixture. */
-    private ITableRunner runner_;
+    private Optional<ITableRunner> tableRunner_;
 
 
     // ======================================================================
@@ -67,6 +59,7 @@ public abstract class AbstractTableRunnerTestCase
      */
     protected AbstractTableRunnerTestCase()
     {
+        tableRunner_ = Optional.empty();
     }
 
 
@@ -86,6 +79,16 @@ public abstract class AbstractTableRunnerTestCase
         throws Exception;
 
     /**
+     * Gets the table runner under test in the fixture.
+     * 
+     * @return The table runner under test in the fixture; never {@code null}.
+     */
+    protected final ITableRunner getTableRunner()
+    {
+        return tableRunner_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -95,8 +98,7 @@ public abstract class AbstractTableRunnerTestCase
     public void setUp()
         throws Exception
     {
-        runner_ = createTableRunner();
-        assertNotNull( runner_ );
+        tableRunner_ = Optional.of( createTableRunner() );
     }
 
     /**
@@ -110,11 +112,12 @@ public abstract class AbstractTableRunnerTestCase
     public void testCall_NotPristine()
         throws Exception
     {
+        final ITableRunner tableRunner = getTableRunner();
         final ExecutorService executor = Executors.newCachedThreadPool();
         try
         {
-            final Future<TableResult> firstTask = executor.submit( runner_ );
-            final Future<TableResult> secondTask = executor.submit( runner_ );
+            final Future<TableResult> firstTask = executor.submit( tableRunner );
+            final Future<TableResult> secondTask = executor.submit( tableRunner );
 
             // One of the two tasks should throw an IllegalStateException
             // depending on the order in which they are run by the executor.

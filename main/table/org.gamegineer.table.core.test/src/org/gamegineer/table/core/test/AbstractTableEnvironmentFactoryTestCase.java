@@ -21,9 +21,7 @@
 
 package org.gamegineer.table.core.test;
 
-import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.table.core.ITableEnvironmentFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,12 +30,6 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link ITableEnvironmentFactory} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractTableEnvironmentFactoryTestCase
 {
     // ======================================================================
@@ -45,7 +37,7 @@ public abstract class AbstractTableEnvironmentFactoryTestCase
     // ======================================================================
 
     /** The table environment factory under test in the fixture. */
-    private ITableEnvironmentFactory tableEnvironmentFactory_;
+    private Optional<ITableEnvironmentFactory> tableEnvironmentFactory_;
 
 
     // ======================================================================
@@ -58,6 +50,7 @@ public abstract class AbstractTableEnvironmentFactoryTestCase
      */
     protected AbstractTableEnvironmentFactoryTestCase()
     {
+        tableEnvironmentFactory_ = Optional.empty();
     }
 
 
@@ -77,6 +70,17 @@ public abstract class AbstractTableEnvironmentFactoryTestCase
         throws Exception;
 
     /**
+     * Gets the table environment factory under test in the fixture.
+     * 
+     * @return The table environment factory under test in the fixture; never
+     *         {@code null}.
+     */
+    protected final ITableEnvironmentFactory getTableEnvironmentFactory()
+    {
+        return tableEnvironmentFactory_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -86,8 +90,7 @@ public abstract class AbstractTableEnvironmentFactoryTestCase
     public void setUp()
         throws Exception
     {
-        tableEnvironmentFactory_ = createTableEnvironmentFactory();
-        assertNotNull( tableEnvironmentFactory_ );
+        tableEnvironmentFactory_ = Optional.of( createTableEnvironmentFactory() );
     }
 
     /**

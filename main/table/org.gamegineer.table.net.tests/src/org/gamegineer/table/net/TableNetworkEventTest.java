@@ -21,23 +21,15 @@
 
 package org.gamegineer.table.net;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
+import java.util.Optional;
 import org.easymock.EasyMock;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the {@link TableNetworkEvent} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class TableNetworkEventTest
 {
     // ======================================================================
@@ -45,7 +37,7 @@ public final class TableNetworkEventTest
     // ======================================================================
 
     /** The table network event under test in the fixture. */
-    private TableNetworkEvent event_;
+    private Optional<TableNetworkEvent> event_;
 
 
     // ======================================================================
@@ -57,12 +49,24 @@ public final class TableNetworkEventTest
      */
     public TableNetworkEventTest()
     {
+        event_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the table network event under test in the fixture.
+     * 
+     * @return The table network event under test in the fixture; never
+     *         {@code null}.
+     */
+    private TableNetworkEvent getEvent()
+    {
+        return event_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -74,8 +78,7 @@ public final class TableNetworkEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new TableNetworkEvent( EasyMock.createMock( ITableNetwork.class ) );
-        assertNotNull( event_ );
+        event_ = Optional.of( new TableNetworkEvent( EasyMock.createMock( ITableNetwork.class ) ) );
     }
 
     /**
@@ -85,6 +88,8 @@ public final class TableNetworkEventTest
     @Test
     public void testGetSource_ReturnValue_SameTableNetwork()
     {
-        assertSame( event_.getTableNetwork(), event_.getSource() );
+        final TableNetworkEvent event = getEvent();
+
+        assertSame( event.getTableNetwork(), event.getSource() );
     }
 }

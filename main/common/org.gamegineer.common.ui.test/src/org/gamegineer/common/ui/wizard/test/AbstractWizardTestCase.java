@@ -22,12 +22,10 @@
 package org.gamegineer.common.ui.wizard.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import org.easymock.EasyMock;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.ui.wizard.IWizard;
 import org.gamegineer.common.ui.wizard.IWizardPage;
 import org.junit.Before;
@@ -37,12 +35,6 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IWizard} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractWizardTestCase
 {
     // ======================================================================
@@ -50,7 +42,7 @@ public abstract class AbstractWizardTestCase
     // ======================================================================
 
     /** The wizard under test in the fixture. */
-    private IWizard wizard_;
+    private Optional<IWizard> wizard_;
 
 
     // ======================================================================
@@ -62,6 +54,7 @@ public abstract class AbstractWizardTestCase
      */
     protected AbstractWizardTestCase()
     {
+        wizard_ = Optional.empty();
     }
 
 
@@ -81,6 +74,16 @@ public abstract class AbstractWizardTestCase
         throws Exception;
 
     /**
+     * Gets the wizard under test in the fixture.
+     * 
+     * @return The wizard under test in the fixture; never {@code null}.
+     */
+    protected final IWizard getWizard()
+    {
+        return wizard_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -90,8 +93,7 @@ public abstract class AbstractWizardTestCase
     public void setUp()
         throws Exception
     {
-        wizard_ = createWizard();
-        assertNotNull( wizard_ );
+        wizard_ = Optional.of( createWizard() );
     }
 
     /**
@@ -101,11 +103,12 @@ public abstract class AbstractWizardTestCase
     @Test
     public void testGetPages_ReturnValue_Copy()
     {
-        final Collection<IWizardPage> pages = wizard_.getPages();
+        final IWizard wizard = getWizard();
+        final Collection<IWizardPage> pages = wizard.getPages();
         final Collection<IWizardPage> expectedPages = new ArrayList<>( pages );
         pages.add( EasyMock.createMock( IWizardPage.class ) );
 
-        final Collection<IWizardPage> actualPages = wizard_.getPages();
+        final Collection<IWizardPage> actualPages = wizard.getPages();
 
         assertEquals( expectedPages, actualPages );
     }

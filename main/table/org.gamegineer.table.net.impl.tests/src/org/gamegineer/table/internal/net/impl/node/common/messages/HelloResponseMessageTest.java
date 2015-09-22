@@ -21,20 +21,13 @@
 
 package org.gamegineer.table.internal.net.impl.node.common.messages;
 
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the {@link HelloResponseMessage} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class HelloResponseMessageTest
 {
     // ======================================================================
@@ -42,7 +35,7 @@ public final class HelloResponseMessageTest
     // ======================================================================
 
     /** The hello response message under test in the fixture. */
-    private HelloResponseMessage message_;
+    private Optional<HelloResponseMessage> message_;
 
 
     // ======================================================================
@@ -54,12 +47,24 @@ public final class HelloResponseMessageTest
      */
     public HelloResponseMessageTest()
     {
+        message_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the hello response message under test in the fixture.
+     * 
+     * @return The hello response message under test in the fixture; never
+     *         {@code null}.
+     */
+    private HelloResponseMessage getMessage()
+    {
+        return message_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -71,7 +76,7 @@ public final class HelloResponseMessageTest
     public void setUp()
         throws Exception
     {
-        message_ = new HelloResponseMessage();
+        message_ = Optional.of( new HelloResponseMessage() );
     }
 
     /**
@@ -81,6 +86,6 @@ public final class HelloResponseMessageTest
     @Test( expected = IllegalArgumentException.class )
     public void testSetChosenProtocolVersion_Version_Illegal_Negative()
     {
-        message_.setChosenProtocolVersion( -1 );
+        getMessage().setChosenProtocolVersion( -1 );
     }
 }

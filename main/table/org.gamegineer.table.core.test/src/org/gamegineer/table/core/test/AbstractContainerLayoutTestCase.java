@@ -21,9 +21,7 @@
 
 package org.gamegineer.table.core.test;
 
-import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.table.core.IContainerLayout;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,12 +30,6 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IContainerLayout} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractContainerLayoutTestCase
 {
     // ======================================================================
@@ -45,7 +37,7 @@ public abstract class AbstractContainerLayoutTestCase
     // ======================================================================
 
     /** The container layout under test in the fixture. */
-    private IContainerLayout layout_;
+    private Optional<IContainerLayout> containerLayout_;
 
 
     // ======================================================================
@@ -58,6 +50,7 @@ public abstract class AbstractContainerLayoutTestCase
      */
     protected AbstractContainerLayoutTestCase()
     {
+        containerLayout_ = Optional.empty();
     }
 
 
@@ -77,6 +70,17 @@ public abstract class AbstractContainerLayoutTestCase
         throws Exception;
 
     /**
+     * Gets the container layout under test in the fixture.
+     * 
+     * @return The container layout under test in the fixture; never
+     *         {@code null}.
+     */
+    protected final IContainerLayout getContainerLayout()
+    {
+        return containerLayout_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -86,8 +90,7 @@ public abstract class AbstractContainerLayoutTestCase
     public void setUp()
         throws Exception
     {
-        layout_ = createContainerLayout();
-        assertNotNull( layout_ );
+        containerLayout_ = Optional.of( createContainerLayout() );
     }
 
     /**

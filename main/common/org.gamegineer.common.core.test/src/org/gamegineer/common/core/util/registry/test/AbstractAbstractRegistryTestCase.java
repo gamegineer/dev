@@ -21,10 +21,8 @@
 
 package org.gamegineer.common.core.util.registry.test;
 
-import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.DefaultLocation;
+import java.util.Optional;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.util.registry.AbstractRegistry;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,12 +38,6 @@ import org.junit.Test;
  * @param <ObjectType>
  *        The type of object managed by the registry.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractAbstractRegistryTestCase<RegistryType extends AbstractRegistry<ObjectIdType, ObjectType>, @NonNull ObjectIdType, @NonNull ObjectType>
 {
     // ======================================================================
@@ -53,7 +45,7 @@ public abstract class AbstractAbstractRegistryTestCase<RegistryType extends Abst
     // ======================================================================
 
     /** The registry under test in the fixture. */
-    private RegistryType registry_;
+    private Optional<RegistryType> registry_;
 
 
     // ======================================================================
@@ -66,6 +58,7 @@ public abstract class AbstractAbstractRegistryTestCase<RegistryType extends Abst
      */
     protected AbstractAbstractRegistryTestCase()
     {
+        registry_ = Optional.empty();
     }
 
 
@@ -100,6 +93,16 @@ public abstract class AbstractAbstractRegistryTestCase<RegistryType extends Abst
         throws Exception;
 
     /**
+     * Gets the registry under test in the fixture.
+     * 
+     * @return The registry under test in the fixture; never {@code null}.
+     */
+    protected final RegistryType getRegistry()
+    {
+        return registry_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -109,8 +112,7 @@ public abstract class AbstractAbstractRegistryTestCase<RegistryType extends Abst
     public void setUp()
         throws Exception
     {
-        registry_ = createRegistry();
-        assertNotNull( registry_ );
+        registry_ = Optional.of( createRegistry() );
     }
 
     /**

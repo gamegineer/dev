@@ -23,8 +23,7 @@ package org.gamegineer.common.core.security;
 
 import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,12 +31,6 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link SecureString} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class SecureStringTest
 {
     // ======================================================================
@@ -45,7 +38,7 @@ public final class SecureStringTest
     // ======================================================================
 
     /** The secure string under test in the fixture. */
-    private SecureString secureString_;
+    private Optional<SecureString> secureString_;
 
 
     // ======================================================================
@@ -57,12 +50,23 @@ public final class SecureStringTest
      */
     public SecureStringTest()
     {
+        secureString_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the secure string under test in the fixture.
+     * 
+     * @return The secure string under test in the fixture; never {@code null}.
+     */
+    private SecureString getSecureString()
+    {
+        return secureString_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -74,7 +78,7 @@ public final class SecureStringTest
     public void setUp()
         throws Exception
     {
-        secureString_ = new SecureString( "password".toCharArray() ); //$NON-NLS-1$
+        secureString_ = Optional.of( new SecureString( "password".toCharArray() ) ); //$NON-NLS-1$
     }
 
     /**
@@ -87,7 +91,7 @@ public final class SecureStringTest
     public void tearDown()
         throws Exception
     {
-        secureString_.dispose();
+        getSecureString().dispose();
     }
 
     /**
@@ -97,7 +101,7 @@ public final class SecureStringTest
     @Test( expected = IndexOutOfBoundsException.class )
     public void testCharAt_Index_OutOfBounds()
     {
-        secureString_.charAt( -1 );
+        getSecureString().charAt( -1 );
     }
 
     /**
@@ -143,7 +147,9 @@ public final class SecureStringTest
     @Test( expected = IndexOutOfBoundsException.class )
     public void testSubSequence_End_OutOfBounds()
     {
-        secureString_.subSequence( 0, secureString_.length() + 1 );
+        final SecureString secureString = getSecureString();
+
+        secureString.subSequence( 0, secureString.length() + 1 );
     }
 
     /**
@@ -153,6 +159,8 @@ public final class SecureStringTest
     @Test( expected = IndexOutOfBoundsException.class )
     public void testSubSequence_Start_OutOfBounds()
     {
-        secureString_.subSequence( -1, secureString_.length() + 1 );
+        final SecureString secureString = getSecureString();
+
+        secureString.subSequence( -1, secureString.length() + 1 );
     }
 }

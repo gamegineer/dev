@@ -21,9 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.transport;
 
-import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,12 +29,6 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IMessage} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractMessageTestCase
 {
     // ======================================================================
@@ -44,7 +36,7 @@ public abstract class AbstractMessageTestCase
     // ======================================================================
 
     /** The message under test in the fixture. */
-    private IMessage message_;
+    private Optional<IMessage> message_;
 
 
     // ======================================================================
@@ -56,6 +48,7 @@ public abstract class AbstractMessageTestCase
      */
     protected AbstractMessageTestCase()
     {
+        message_ = Optional.empty();
     }
 
 
@@ -75,6 +68,16 @@ public abstract class AbstractMessageTestCase
         throws Exception;
 
     /**
+     * Gets the message under test in the fixture.
+     * 
+     * @return The message under test in the fixture; never {@code null}.
+     */
+    protected final IMessage getMessage()
+    {
+        return message_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -84,8 +87,7 @@ public abstract class AbstractMessageTestCase
     public void setUp()
         throws Exception
     {
-        message_ = createMessage();
-        assertNotNull( message_ );
+        message_ = Optional.of( createMessage() );
     }
 
     /**
@@ -96,7 +98,7 @@ public abstract class AbstractMessageTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testSetCorrelationId_CorrelationId_Illegal_GreaterThanMaxCorrelationId()
     {
-        message_.setCorrelationId( IMessage.MAXIMUM_ID + 1 );
+        getMessage().setCorrelationId( IMessage.MAXIMUM_ID + 1 );
     }
 
     /**
@@ -107,7 +109,7 @@ public abstract class AbstractMessageTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testSetCorrelationId_CorrelationId_Illegal_LessThanMinCorrelationId()
     {
-        message_.setCorrelationId( IMessage.NULL_CORRELATION_ID - 1 );
+        getMessage().setCorrelationId( IMessage.NULL_CORRELATION_ID - 1 );
     }
 
     /**
@@ -117,7 +119,7 @@ public abstract class AbstractMessageTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testSetId_Id_Illegal_GreaterThanMaxId()
     {
-        message_.setId( IMessage.MAXIMUM_ID + 1 );
+        getMessage().setId( IMessage.MAXIMUM_ID + 1 );
     }
 
     /**
@@ -127,6 +129,6 @@ public abstract class AbstractMessageTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testSetId_Id_Illegal_LessThanMinId()
     {
-        message_.setId( IMessage.MINIMUM_ID - 1 );
+        getMessage().setId( IMessage.MINIMUM_ID - 1 );
     }
 }

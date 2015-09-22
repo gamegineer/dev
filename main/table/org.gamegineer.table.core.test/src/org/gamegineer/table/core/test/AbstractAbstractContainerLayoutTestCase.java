@@ -21,11 +21,9 @@
 
 package org.gamegineer.table.core.test;
 
-import static org.junit.Assert.assertNotNull;
 import java.awt.Dimension;
+import java.util.Optional;
 import org.easymock.EasyMock;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.AbstractContainerLayout;
 import org.gamegineer.table.core.IContainer;
 import org.junit.Before;
@@ -38,12 +36,6 @@ import org.junit.Test;
  * @param <ContainerLayoutType>
  *        The type of the container layout.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractAbstractContainerLayoutTestCase<ContainerLayoutType extends AbstractContainerLayout>
 {
     // ======================================================================
@@ -51,7 +43,7 @@ public abstract class AbstractAbstractContainerLayoutTestCase<ContainerLayoutTyp
     // ======================================================================
 
     /** The container layout under test in the fixture. */
-    private ContainerLayoutType containerLayout_;
+    private Optional<ContainerLayoutType> containerLayout_;
 
 
     // ======================================================================
@@ -64,6 +56,7 @@ public abstract class AbstractAbstractContainerLayoutTestCase<ContainerLayoutTyp
      */
     protected AbstractAbstractContainerLayoutTestCase()
     {
+        containerLayout_ = Optional.empty();
     }
 
 
@@ -113,8 +106,7 @@ public abstract class AbstractAbstractContainerLayoutTestCase<ContainerLayoutTyp
      */
     protected final ContainerLayoutType getContainerLayout()
     {
-        assertNotNull( containerLayout_ );
-        return containerLayout_;
+        return containerLayout_.get();
     }
 
     /**
@@ -127,8 +119,7 @@ public abstract class AbstractAbstractContainerLayoutTestCase<ContainerLayoutTyp
     public void setUp()
         throws Exception
     {
-        containerLayout_ = createContainerLayout();
-        assertNotNull( containerLayout_ );
+        containerLayout_ = Optional.of( createContainerLayout() );
     }
 
     /**

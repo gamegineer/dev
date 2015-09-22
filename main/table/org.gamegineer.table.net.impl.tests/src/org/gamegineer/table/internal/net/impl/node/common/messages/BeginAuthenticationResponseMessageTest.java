@@ -21,20 +21,13 @@
 
 package org.gamegineer.table.internal.net.impl.node.common.messages;
 
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the {@link BeginAuthenticationResponseMessage} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class BeginAuthenticationResponseMessageTest
 {
     // ======================================================================
@@ -42,7 +35,7 @@ public final class BeginAuthenticationResponseMessageTest
     // ======================================================================
 
     /** The begin authentication response message under test in the fixture. */
-    private BeginAuthenticationResponseMessage message_;
+    private Optional<BeginAuthenticationResponseMessage> message_;
 
 
     // ======================================================================
@@ -55,12 +48,24 @@ public final class BeginAuthenticationResponseMessageTest
      */
     public BeginAuthenticationResponseMessageTest()
     {
+        message_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the begin authentication response message under test in the fixture.
+     * 
+     * @return The begin authentication response message under test in the
+     *         fixture; never {@code null}.
+     */
+    private BeginAuthenticationResponseMessage getMessage()
+    {
+        return message_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -72,7 +77,7 @@ public final class BeginAuthenticationResponseMessageTest
     public void setUp()
         throws Exception
     {
-        message_ = new BeginAuthenticationResponseMessage();
+        message_ = Optional.of( new BeginAuthenticationResponseMessage() );
     }
 
     /**
@@ -82,6 +87,6 @@ public final class BeginAuthenticationResponseMessageTest
     @Test( expected = IllegalArgumentException.class )
     public void testSetResponse_Response_Illegal_Empty()
     {
-        message_.setResponse( new byte[ 0 ] );
+        getMessage().setResponse( new byte[ 0 ] );
     }
 }

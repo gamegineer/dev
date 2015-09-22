@@ -22,10 +22,8 @@
 package org.gamegineer.common.core.logging.test;
 
 import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.common.core.logging.ILoggingService;
 import org.gamegineer.common.internal.core.test.Activator;
 import org.junit.Before;
@@ -36,12 +34,6 @@ import org.osgi.framework.Bundle;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link ILoggingService} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractLoggingServiceTestCase
 {
     // ======================================================================
@@ -49,7 +41,7 @@ public abstract class AbstractLoggingServiceTestCase
     // ======================================================================
 
     /** The logging service under test in the fixture. */
-    private ILoggingService service_;
+    private Optional<ILoggingService> loggingService_;
 
 
     // ======================================================================
@@ -62,6 +54,7 @@ public abstract class AbstractLoggingServiceTestCase
      */
     protected AbstractLoggingServiceTestCase()
     {
+        loggingService_ = Optional.empty();
     }
 
 
@@ -91,6 +84,16 @@ public abstract class AbstractLoggingServiceTestCase
     }
 
     /**
+     * Gets the logging service under test in the fixture.
+     * 
+     * @return The logging service under test in the fixture; never {@code null}.
+     */
+    protected final ILoggingService getLoggingService()
+    {
+        return loggingService_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -100,8 +103,7 @@ public abstract class AbstractLoggingServiceTestCase
     public void setUp()
         throws Exception
     {
-        service_ = createLoggingService();
-        assertNotNull( service_ );
+        loggingService_ = Optional.of( createLoggingService() );
     }
 
     /**
@@ -111,9 +113,10 @@ public abstract class AbstractLoggingServiceTestCase
     @Test
     public void testGetLoggerFromBundleAndName_Name_Empty()
     {
+        final ILoggingService loggingService = getLoggingService();
         final Bundle bundle = getBundle();
 
-        assertSame( service_.getLogger( bundle ), service_.getLogger( bundle, "" ) ); //$NON-NLS-1$
+        assertSame( loggingService.getLogger( bundle ), loggingService.getLogger( bundle, "" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -123,8 +126,9 @@ public abstract class AbstractLoggingServiceTestCase
     @Test
     public void testGetLoggerFromBundleAndName_Name_Null()
     {
+        final ILoggingService loggingService = getLoggingService();
         final Bundle bundle = getBundle();
 
-        assertSame( service_.getLogger( bundle ), service_.getLogger( bundle, null ) );
+        assertSame( loggingService.getLogger( bundle ), loggingService.getLogger( bundle, null ) );
     }
 }

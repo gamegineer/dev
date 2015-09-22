@@ -21,11 +21,8 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
-import static org.junit.Assert.assertNotNull;
 import java.util.Optional;
-import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,12 +35,6 @@ import org.junit.Test;
  * @param <T>
  *        The type of the logging component; may be an abstract type.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends AbstractLoggingComponentFactory<T>, @NonNull T>
 {
     // ======================================================================
@@ -54,7 +45,7 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     private Optional<T> component_;
 
     /** The logging component factory under test in the fixture. */
-    private F factory_;
+    private Optional<F> factory_;
 
 
     // ======================================================================
@@ -68,6 +59,7 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     protected AbstractAbstractLoggingComponentFactoryTestCase()
     {
         component_ = Optional.empty();
+        factory_ = Optional.empty();
     }
 
 
@@ -104,8 +96,7 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
      */
     protected final F getLoggingComponentFactory()
     {
-        assertNotNull( factory_ );
-        return factory_;
+        return factory_.get();
     }
 
     /**
@@ -126,9 +117,9 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     public void setUp()
         throws Exception
     {
-        factory_ = createLoggingComponentFactory();
-        assertNotNull( factory_ );
-        component_ = Optional.of( factory_.createLoggingComponent( getLoggingComponentType().getName() ) );
+        final F factory = createLoggingComponentFactory();
+        factory_ = Optional.of( factory );
+        component_ = Optional.of( factory.createLoggingComponent( getLoggingComponentType().getName() ) );
     }
 
     /**

@@ -28,9 +28,6 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 import java.util.Collections;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -44,22 +41,8 @@ import org.junit.Test;
  * @param <T>
  *        The type of the equatable class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractEquatableTestCase<T>
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The reference instance for use in the fixture. */
-    private T reference_;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -113,20 +96,6 @@ public abstract class AbstractEquatableTestCase<T>
         throws Exception;
 
     /**
-     * Sets up the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Before
-    public void setUp()
-        throws Exception
-    {
-        reference_ = createReferenceInstance();
-        assertNotNull( reference_ );
-    }
-
-    /**
      * Ensures the collection returned by the {@code createUnequalInstances}
      * method satisfy the criteria of this fixture.
      * 
@@ -159,21 +128,28 @@ public abstract class AbstractEquatableTestCase<T>
     public void testEquals_Equal_NotSame()
         throws Exception
     {
+        final T reference = createReferenceInstance();
         final T other = createReferenceInstance();
 
-        assertNotSame( reference_, other );
-        assertEquals( reference_, other );
-        assertEquals( other, reference_ ); // symmetric
+        assertNotSame( reference, other );
+        assertEquals( reference, other );
+        assertEquals( other, reference ); // symmetric
     }
 
     /**
      * Ensures the {@link Object#equals} method correctly indicates an instance
      * is equal to itself.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testEquals_Equal_Same()
+        throws Exception
     {
-        assertEquals( reference_, reference_ ); // reflexive
+        final T reference = createReferenceInstance();
+
+        assertEquals( reference, reference ); // reflexive
     }
 
     /**
@@ -187,30 +163,43 @@ public abstract class AbstractEquatableTestCase<T>
     public void testEquals_Unequal()
         throws Exception
     {
+        final T reference = createReferenceInstance();
         for( final T other : createUnequalInstances() )
         {
-            assertFalse( String.format( "expected <%1$s> and <%2$s> to be unequal", reference_, other ), reference_.equals( other ) ); //$NON-NLS-1$
+            assertFalse( String.format( "expected <%1$s> and <%2$s> to be unequal", reference, other ), reference.equals( other ) ); //$NON-NLS-1$
         }
     }
 
     /**
      * Ensures the {@link Object#equals} method correctly indicates an instance
      * is unequal to an instance of a different class.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testEquals_Unequal_DifferentClass()
+        throws Exception
     {
-        assertFalse( reference_.equals( new Object() ) );
+        final T reference = createReferenceInstance();
+
+        assertFalse( reference.equals( new Object() ) );
     }
 
     /**
      * Ensures the {@link Object#equals} method correctly handles a {@code null}
      * instance.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testEquals_Unequal_Null()
+        throws Exception
     {
-        assertFalse( reference_.equals( null ) );
+        final T reference = createReferenceInstance();
+
+        assertFalse( reference.equals( null ) );
     }
 
     /**
@@ -224,10 +213,11 @@ public abstract class AbstractEquatableTestCase<T>
     public void testHashCode_Equal()
         throws Exception
     {
+        final T reference = createReferenceInstance();
         final T other = createReferenceInstance();
 
-        assertNotSame( reference_, other );
-        assertEquals( reference_.hashCode(), other.hashCode() );
+        assertNotSame( reference, other );
+        assertEquals( reference.hashCode(), other.hashCode() );
     }
 
     /**
@@ -241,9 +231,10 @@ public abstract class AbstractEquatableTestCase<T>
     public void testHashCode_Unequal()
         throws Exception
     {
+        final T reference = createReferenceInstance();
         for( final T other : createUnequalInstances() )
         {
-            assertTrue( String.format( "expected hash codes for <%1$s> and <%2$s> to be unequal", reference_, other ), reference_.hashCode() != other.hashCode() ); //$NON-NLS-1$
+            assertTrue( String.format( "expected hash codes for <%1$s> and <%2$s> to be unequal", reference, other ), reference.hashCode() != other.hashCode() ); //$NON-NLS-1$
         }
     }
 }

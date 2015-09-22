@@ -22,13 +22,11 @@
 package org.gamegineer.table.net.test;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 import java.util.EnumSet;
+import java.util.Optional;
 import java.util.Set;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.PlayerRole;
 import org.junit.Before;
@@ -38,12 +36,6 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IPlayer} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractPlayerTestCase
 {
     // ======================================================================
@@ -51,7 +43,7 @@ public abstract class AbstractPlayerTestCase
     // ======================================================================
 
     /** The player under test in the fixture. */
-    private IPlayer player_;
+    private Optional<IPlayer> player_;
 
 
     // ======================================================================
@@ -63,6 +55,7 @@ public abstract class AbstractPlayerTestCase
      */
     protected AbstractPlayerTestCase()
     {
+        player_ = Optional.empty();
     }
 
 
@@ -86,10 +79,9 @@ public abstract class AbstractPlayerTestCase
      * 
      * @return The player under test in the fixture; never {@code null}.
      */
-    private IPlayer getPlayer()
+    protected final IPlayer getPlayer()
     {
-        assertNotNull( player_ );
-        return player_;
+        return player_.get();
     }
 
     /**
@@ -114,8 +106,7 @@ public abstract class AbstractPlayerTestCase
     public void setUp()
         throws Exception
     {
-        player_ = createPlayer();
-        assertNotNull( player_ );
+        player_ = Optional.of( createPlayer() );
     }
 
     /**
@@ -125,7 +116,9 @@ public abstract class AbstractPlayerTestCase
     @Test
     public void testGetRoles_ReturnValue_Copy()
     {
-        assertNotSame( getPlayer().getRoles(), getPlayer().getRoles() );
+        final IPlayer player = getPlayer();
+
+        assertNotSame( player.getRoles(), player.getRoles() );
     }
 
     /**
@@ -135,9 +128,10 @@ public abstract class AbstractPlayerTestCase
     @Test
     public void testHasRole_Role_Absent()
     {
-        setPlayerRoles( getPlayer(), EnumSet.complementOf( EnumSet.of( PlayerRole.LOCAL ) ) );
+        final IPlayer player = getPlayer();
+        setPlayerRoles( player, EnumSet.complementOf( EnumSet.of( PlayerRole.LOCAL ) ) );
 
-        assertFalse( getPlayer().hasRole( PlayerRole.LOCAL ) );
+        assertFalse( player.hasRole( PlayerRole.LOCAL ) );
     }
 
     /**
@@ -147,8 +141,9 @@ public abstract class AbstractPlayerTestCase
     @Test
     public void testHasRole_Role_Present()
     {
-        setPlayerRoles( getPlayer(), EnumSet.allOf( PlayerRole.class ) );
+        final IPlayer player = getPlayer();
+        setPlayerRoles( player, EnumSet.allOf( PlayerRole.class ) );
 
-        assertTrue( getPlayer().hasRole( PlayerRole.LOCAL ) );
+        assertTrue( player.hasRole( PlayerRole.LOCAL ) );
     }
 }

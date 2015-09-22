@@ -21,9 +21,7 @@
 
 package org.gamegineer.table.ui.prototype.test;
 
-import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.table.ui.prototype.IComponentPrototypeFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,12 +30,6 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IComponentPrototypeFactory} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractComponentPrototypeFactoryTestCase
 {
     // ======================================================================
@@ -45,7 +37,7 @@ public abstract class AbstractComponentPrototypeFactoryTestCase
     // ======================================================================
 
     /** The component prototype factory under test in the fixture. */
-    private IComponentPrototypeFactory componentPrototypeFactory_;
+    private Optional<IComponentPrototypeFactory> componentPrototypeFactory_;
 
 
     // ======================================================================
@@ -58,6 +50,7 @@ public abstract class AbstractComponentPrototypeFactoryTestCase
      */
     protected AbstractComponentPrototypeFactoryTestCase()
     {
+        componentPrototypeFactory_ = Optional.empty();
     }
 
 
@@ -77,6 +70,17 @@ public abstract class AbstractComponentPrototypeFactoryTestCase
         throws Exception;
 
     /**
+     * Gets the component prototype factory under test in the fixture.
+     * 
+     * @return The component prototype factory under test in the fixture; never
+     *         {@code null}.
+     */
+    protected final IComponentPrototypeFactory getComponentPrototypeFactory()
+    {
+        return componentPrototypeFactory_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -86,8 +90,7 @@ public abstract class AbstractComponentPrototypeFactoryTestCase
     public void setUp()
         throws Exception
     {
-        componentPrototypeFactory_ = createComponentPrototypeFactory();
-        assertNotNull( componentPrototypeFactory_ );
+        componentPrototypeFactory_ = Optional.of( createComponentPrototypeFactory() );
     }
 
     /**

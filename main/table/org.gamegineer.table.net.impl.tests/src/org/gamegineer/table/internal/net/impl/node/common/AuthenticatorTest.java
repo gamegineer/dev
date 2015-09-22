@@ -24,32 +24,15 @@ package org.gamegineer.table.internal.net.impl.node.common;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.net.TableNetworkException;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the {@link Authenticator} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class AuthenticatorTest
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The authenticator under test in the fixture. */
-    private Authenticator authenticator_;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -81,31 +64,19 @@ public final class AuthenticatorTest
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
      */
-    private boolean authenticate(
+    private static boolean authenticate(
         final String expectedPassword,
         final String actualPassword )
         throws TableNetworkException
     {
-        final byte[] challenge = authenticator_.createChallenge();
-        final byte[] salt = authenticator_.createSalt();
-        final byte[] expectedResponse = authenticator_.createResponse( challenge, new SecureString( expectedPassword.toCharArray() ), salt );
+        final Authenticator authenticator = new Authenticator();
+        final byte[] challenge = authenticator.createChallenge();
+        final byte[] salt = authenticator.createSalt();
+        final byte[] expectedResponse = authenticator.createResponse( challenge, new SecureString( expectedPassword.toCharArray() ), salt );
 
-        final byte[] actualResponse = authenticator_.createResponse( challenge, new SecureString( actualPassword.toCharArray() ), salt );
+        final byte[] actualResponse = authenticator.createResponse( challenge, new SecureString( actualPassword.toCharArray() ), salt );
 
         return Arrays.equals( expectedResponse, actualResponse );
-    }
-
-    /**
-     * Sets up the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Before
-    public void setUp()
-        throws Exception
-    {
-        authenticator_ = new Authenticator();
     }
 
     /**

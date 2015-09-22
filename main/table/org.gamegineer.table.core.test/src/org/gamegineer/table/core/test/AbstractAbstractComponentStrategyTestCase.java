@@ -21,9 +21,7 @@
 
 package org.gamegineer.table.core.test;
 
-import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.table.core.AbstractComponentStrategy;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.junit.Before;
@@ -36,12 +34,6 @@ import org.junit.Test;
  * @param <ComponentStrategyType>
  *        The type of the component strategy.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractAbstractComponentStrategyTestCase<ComponentStrategyType extends AbstractComponentStrategy>
 {
     // ======================================================================
@@ -49,7 +41,7 @@ public abstract class AbstractAbstractComponentStrategyTestCase<ComponentStrateg
     // ======================================================================
 
     /** The component strategy under test in the fixture. */
-    private ComponentStrategyType componentStrategy_;
+    private Optional<ComponentStrategyType> componentStrategy_;
 
 
     // ======================================================================
@@ -62,6 +54,7 @@ public abstract class AbstractAbstractComponentStrategyTestCase<ComponentStrateg
      */
     protected AbstractAbstractComponentStrategyTestCase()
     {
+        componentStrategy_ = Optional.empty();
     }
 
 
@@ -88,8 +81,7 @@ public abstract class AbstractAbstractComponentStrategyTestCase<ComponentStrateg
      */
     protected final ComponentStrategyType getComponentStrategy()
     {
-        assertNotNull( componentStrategy_ );
-        return componentStrategy_;
+        return componentStrategy_.get();
     }
 
     /**
@@ -115,8 +107,7 @@ public abstract class AbstractAbstractComponentStrategyTestCase<ComponentStrateg
     public void setUp()
         throws Exception
     {
-        componentStrategy_ = createComponentStrategy();
-        assertNotNull( componentStrategy_ );
+        componentStrategy_ = Optional.of( createComponentStrategy() );
     }
 
     /**

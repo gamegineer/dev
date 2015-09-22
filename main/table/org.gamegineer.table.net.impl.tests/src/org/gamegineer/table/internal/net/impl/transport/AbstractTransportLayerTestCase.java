@@ -21,11 +21,9 @@
 
 package org.gamegineer.table.internal.net.impl.transport;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
+import java.util.Optional;
 import java.util.concurrent.Future;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.junit.After;
 import org.junit.Before;
@@ -35,12 +33,6 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link ITransportLayer} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractTransportLayerTestCase
 {
     // ======================================================================
@@ -48,7 +40,7 @@ public abstract class AbstractTransportLayerTestCase
     // ======================================================================
 
     /** The transport layer under test in the fixture. */
-    private ITransportLayer transportLayer_;
+    private Optional<ITransportLayer> transportLayer_;
 
 
     // ======================================================================
@@ -61,6 +53,7 @@ public abstract class AbstractTransportLayerTestCase
      */
     protected AbstractTransportLayerTestCase()
     {
+        transportLayer_ = Optional.empty();
     }
 
 
@@ -80,6 +73,17 @@ public abstract class AbstractTransportLayerTestCase
         throws Exception;
 
     /**
+     * Gets the transport layer under test in the fixture.
+     * 
+     * @return The transport layer under test in the fixture; never {@code null}
+     *         .
+     */
+    protected final ITransportLayer getTransportLayer()
+    {
+        return transportLayer_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -89,8 +93,7 @@ public abstract class AbstractTransportLayerTestCase
     public void setUp()
         throws Exception
     {
-        transportLayer_ = createTransportLayer();
-        assertNotNull( transportLayer_ );
+        transportLayer_ = Optional.of( createTransportLayer() );
     }
 
     /**
@@ -103,7 +106,8 @@ public abstract class AbstractTransportLayerTestCase
     public void tearDown()
         throws Exception
     {
-        transportLayer_.endClose( transportLayer_.beginClose() );
+        final ITransportLayer transportLayer = getTransportLayer();
+        transportLayer.endClose( transportLayer.beginClose() );
     }
 
     /**
@@ -117,12 +121,13 @@ public abstract class AbstractTransportLayerTestCase
     public void testEndOpen_AfterClose()
         throws Exception
     {
-        transportLayer_.endClose( transportLayer_.beginClose() );
+        final ITransportLayer transportLayer = getTransportLayer();
+        transportLayer.endClose( transportLayer.beginClose() );
 
-        final Future<@Nullable Void> future = transportLayer_.beginOpen( "localhost", 8888 ); //$NON-NLS-1$
+        final Future<@Nullable Void> future = transportLayer.beginOpen( "localhost", 8888 ); //$NON-NLS-1$
         try
         {
-            transportLayer_.endOpen( future );
+            transportLayer.endOpen( future );
             fail( "expected IllegalStateException" ); //$NON-NLS-1$
         }
         catch( @SuppressWarnings( "unused" ) final IllegalStateException e )
@@ -142,19 +147,21 @@ public abstract class AbstractTransportLayerTestCase
     public void testEndOpen_MultipleInvocations()
         throws Exception
     {
+        final ITransportLayer transportLayer = getTransportLayer();
+
         try
         {
-            transportLayer_.endOpen( transportLayer_.beginOpen( "localhost", 8888 ) ); //$NON-NLS-1$
+            transportLayer.endOpen( transportLayer.beginOpen( "localhost", 8888 ) ); //$NON-NLS-1$
         }
         catch( @SuppressWarnings( "unused" ) final TransportException e )
         {
             // ignore transport layer errors
         }
 
-        final Future<@Nullable Void> future = transportLayer_.beginOpen( "localhost", 8888 ); //$NON-NLS-1$
+        final Future<@Nullable Void> future = transportLayer.beginOpen( "localhost", 8888 ); //$NON-NLS-1$
         try
         {
-            transportLayer_.endOpen( future );
+            transportLayer.endOpen( future );
             fail( "expected IllegalStateException" ); //$NON-NLS-1$
         }
         catch( @SuppressWarnings( "unused" ) final IllegalStateException e )

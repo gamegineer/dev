@@ -21,9 +21,7 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
-import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,12 +32,6 @@ import org.junit.Test;
  * @param <T>
  *        The type of the remote node.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractRemoteNodeTestCase<T extends IRemoteNode>
 {
     // ======================================================================
@@ -47,7 +39,7 @@ public abstract class AbstractRemoteNodeTestCase<T extends IRemoteNode>
     // ======================================================================
 
     /** The remote node under test in the fixture. */
-    private T remoteNode_;
+    private Optional<T> remoteNode_;
 
 
     // ======================================================================
@@ -60,6 +52,7 @@ public abstract class AbstractRemoteNodeTestCase<T extends IRemoteNode>
      */
     protected AbstractRemoteNodeTestCase()
     {
+        remoteNode_ = Optional.empty();
     }
 
 
@@ -85,8 +78,7 @@ public abstract class AbstractRemoteNodeTestCase<T extends IRemoteNode>
      */
     protected final T getRemoteNode()
     {
-        assertNotNull( remoteNode_ );
-        return remoteNode_;
+        return remoteNode_.get();
     }
 
     /**
@@ -99,8 +91,7 @@ public abstract class AbstractRemoteNodeTestCase<T extends IRemoteNode>
     public void setUp()
         throws Exception
     {
-        remoteNode_ = createRemoteNode();
-        assertNotNull( remoteNode_ );
+        remoteNode_ = Optional.of( createRemoteNode() );
     }
 
     /**

@@ -21,9 +21,7 @@
 
 package org.gamegineer.common.ui.help.test;
 
-import static org.junit.Assert.assertNotNull;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.common.ui.help.IHelpSystem;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,12 +30,6 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IHelpSystem} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractHelpSystemTestCase
 {
     // ======================================================================
@@ -45,7 +37,7 @@ public abstract class AbstractHelpSystemTestCase
     // ======================================================================
 
     /** The help system under test in the fixture. */
-    private IHelpSystem helpSystem_;
+    private Optional<IHelpSystem> helpSystem_;
 
 
     // ======================================================================
@@ -58,6 +50,7 @@ public abstract class AbstractHelpSystemTestCase
      */
     protected AbstractHelpSystemTestCase()
     {
+        helpSystem_ = Optional.empty();
     }
 
 
@@ -77,6 +70,16 @@ public abstract class AbstractHelpSystemTestCase
         throws Exception;
 
     /**
+     * Gets the help system under test in the fixture.
+     * 
+     * @return The help system under test in the fixture; never {@code null}.
+     */
+    protected final IHelpSystem getHelpSystem()
+    {
+        return helpSystem_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -86,8 +89,7 @@ public abstract class AbstractHelpSystemTestCase
     public void setUp()
         throws Exception
     {
-        helpSystem_ = createHelpSystem();
-        assertNotNull( helpSystem_ );
+        helpSystem_ = Optional.of( createHelpSystem() );
     }
 
     /**

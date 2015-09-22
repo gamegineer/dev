@@ -21,9 +21,8 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
+import java.util.Optional;
 import org.easymock.EasyMock;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.osgi.framework.log.FrameworkLog;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,12 +30,6 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link FrameworkLogHandlerFactory} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class FrameworkLogHandlerFactoryTest
 {
     // ======================================================================
@@ -44,7 +37,7 @@ public final class FrameworkLogHandlerFactoryTest
     // ======================================================================
 
     /** The framework log handler factory under test in the fixture. */
-    private FrameworkLogHandlerFactory factory_;
+    private Optional<FrameworkLogHandlerFactory> factory_;
 
 
     // ======================================================================
@@ -57,12 +50,24 @@ public final class FrameworkLogHandlerFactoryTest
      */
     public FrameworkLogHandlerFactoryTest()
     {
+        factory_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the framework log handler factory under test in the fixture.
+     * 
+     * @return The framework log handler factory under test in the fixture;
+     *         never {@code null}.
+     */
+    private FrameworkLogHandlerFactory getFactory()
+    {
+        return factory_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -74,7 +79,7 @@ public final class FrameworkLogHandlerFactoryTest
     public void setUp()
         throws Exception
     {
-        factory_ = new FrameworkLogHandlerFactory();
+        factory_ = Optional.of( new FrameworkLogHandlerFactory() );
     }
 
     /**
@@ -84,9 +89,10 @@ public final class FrameworkLogHandlerFactoryTest
     @Test( expected = IllegalStateException.class )
     public void testBindFrameworkLog_ServiceAlreadyBound()
     {
-        factory_.bindFrameworkLog( EasyMock.createMock( FrameworkLog.class ) );
+        final FrameworkLogHandlerFactory factory = getFactory();
+        factory.bindFrameworkLog( EasyMock.createMock( FrameworkLog.class ) );
 
-        factory_.bindFrameworkLog( EasyMock.createMock( FrameworkLog.class ) );
+        factory.bindFrameworkLog( EasyMock.createMock( FrameworkLog.class ) );
     }
 
     /**
@@ -97,8 +103,9 @@ public final class FrameworkLogHandlerFactoryTest
     @Test( expected = IllegalStateException.class )
     public void testUnbindFrameworkLog_DifferentServiceBound()
     {
-        factory_.bindFrameworkLog( EasyMock.createMock( FrameworkLog.class ) );
+        final FrameworkLogHandlerFactory factory = getFactory();
+        factory.bindFrameworkLog( EasyMock.createMock( FrameworkLog.class ) );
 
-        factory_.unbindFrameworkLog( EasyMock.createMock( FrameworkLog.class ) );
+        factory.unbindFrameworkLog( EasyMock.createMock( FrameworkLog.class ) );
     }
 }

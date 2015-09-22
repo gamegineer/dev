@@ -22,8 +22,7 @@
 package org.gamegineer.table.internal.ui.impl.model;
 
 import static org.junit.Assert.assertSame;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.table.core.SingleThreadedTableEnvironmentContext;
 import org.gamegineer.table.core.test.TestTableEnvironments;
 import org.gamegineer.table.ui.test.TestComponents;
@@ -33,12 +32,6 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link ComponentModelEvent} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class ComponentModelEventTest
 {
     // ======================================================================
@@ -46,7 +39,7 @@ public final class ComponentModelEventTest
     // ======================================================================
 
     /** The component model event under test in the fixture. */
-    private ComponentModelEvent event_;
+    private Optional<ComponentModelEvent> event_;
 
 
     // ======================================================================
@@ -58,12 +51,24 @@ public final class ComponentModelEventTest
      */
     public ComponentModelEventTest()
     {
+        event_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the component model event under test in the fixture.
+     * 
+     * @return The component model event under test in the fixture; never
+     *         {@code null}.
+     */
+    private ComponentModelEvent getEvent()
+    {
+        return event_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -76,7 +81,7 @@ public final class ComponentModelEventTest
         throws Exception
     {
         final TableEnvironmentModel tableEnvironmentModel = new TableEnvironmentModel( TestTableEnvironments.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
-        event_ = new ComponentModelEvent( new ComponentModel( tableEnvironmentModel, TestComponents.createUniqueComponent( tableEnvironmentModel.getTableEnvironment() ) ) );
+        event_ = Optional.of( new ComponentModelEvent( new ComponentModel( tableEnvironmentModel, TestComponents.createUniqueComponent( tableEnvironmentModel.getTableEnvironment() ) ) ) );
     }
 
     /**
@@ -86,6 +91,8 @@ public final class ComponentModelEventTest
     @Test
     public void testGetSource_ReturnValue_SameComponentModel()
     {
-        assertSame( event_.getComponentModel(), event_.getSource() );
+        final ComponentModelEvent event = getEvent();
+
+        assertSame( event.getComponentModel(), event.getSource() );
     }
 }
