@@ -48,7 +48,6 @@ import org.gamegineer.table.net.TableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkException;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -62,7 +61,7 @@ public final class AbstractNodeTest
     // ======================================================================
 
     /** The table network node under test in the fixture. */
-    private volatile AbstractNode<@NonNull ?> node_;
+    private volatile AbstractNode<@NonNull IRemoteNode> node_;
 
     /** The node layer runner for use in the fixture. */
     private NodeLayerRunner nodeLayerRunner_;
@@ -114,7 +113,7 @@ public final class AbstractNodeTest
         final MultiThreadedTableEnvironmentContext tableEnvironmentContext = tableEnvironmentContext_ = new MultiThreadedTableEnvironmentContext();
         table_ = TestTableEnvironments.createTableEnvironment( tableEnvironmentContext ).createTable();
 
-        final AbstractNode<@NonNull ?> node = node_ = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
+        final AbstractNode<IRemoteNode> node = node_ = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
         nodeLayerRunner_ = new NodeLayerRunner( node );
     }
 
@@ -235,7 +234,6 @@ public final class AbstractNodeTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Ignore( "need to refactor test to allow addition of non-null remote node instance" )
     @Test
     public void testGetRemoteNodes_ReturnValue_Copy()
         throws Exception
@@ -246,9 +244,9 @@ public final class AbstractNodeTest
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                final Collection<?> remoteNodes = node_.getRemoteNodes();
+                final Collection<IRemoteNode> remoteNodes = node_.getRemoteNodes();
                 final int expectedRemoteNodesSize = remoteNodes.size();
-                //remoteNodes.add( null ); // FIXME
+                remoteNodes.add( EasyMock.createMock( IRemoteNode.class ) );
 
                 final int actualRemoteNodesSize = node_.getRemoteNodes().size();
 
