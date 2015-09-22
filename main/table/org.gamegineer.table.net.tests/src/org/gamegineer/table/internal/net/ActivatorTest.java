@@ -21,20 +21,13 @@
 
 package org.gamegineer.table.internal.net;
 
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the {@link Activator} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class ActivatorTest
 {
     // ======================================================================
@@ -42,7 +35,7 @@ public final class ActivatorTest
     // ======================================================================
 
     /** The activator under test in the fixture. */
-    private Activator activator_;
+    private Optional<Activator> activator_;
 
 
     // ======================================================================
@@ -54,12 +47,23 @@ public final class ActivatorTest
      */
     public ActivatorTest()
     {
+        activator_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the activator under test in the fixture.
+     * 
+     * @return The activator under test in the fixture; never {@code null}.
+     */
+    private Activator getActivator()
+    {
+        return activator_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -71,7 +75,7 @@ public final class ActivatorTest
     public void setUp()
         throws Exception
     {
-        activator_ = new Activator();
+        activator_ = Optional.of( new Activator() );
     }
 
     /**
@@ -81,7 +85,7 @@ public final class ActivatorTest
     @Test( expected = NullPointerException.class )
     public void testStart_BundleContext_Null()
     {
-        activator_.start( null );
+        getActivator().start( null );
     }
 
     /**
@@ -91,6 +95,6 @@ public final class ActivatorTest
     @Test( expected = NullPointerException.class )
     public void testStop_BundleContext_Null()
     {
-        activator_.stop( null );
+        getActivator().stop( null );
     }
 }
