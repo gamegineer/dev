@@ -11,5 +11,5 @@ Import-Package: org.easymock;version="3.2.0",
  org.gamegineer.table.core.dnd.test;version="[0.17.0,0.18.0)",
  org.gamegineer.table.core.test;version="[0.17.0,0.18.0)",
  org.gamegineer.test.core;version="[0.17.0,0.18.0)",
- org.hamcrest;core=split;version="1.1.0"
-Require-Bundle: org.junit;bundle-version="4.8.2"
+ org.hamcrest;core=split;version="1.1.0",
+ org.junit;version="4.12.0"

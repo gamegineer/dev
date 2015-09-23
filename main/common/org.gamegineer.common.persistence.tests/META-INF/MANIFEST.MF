@@ -8,5 +8,5 @@ Bundle-Vendor: %bundleVendor
 Bundle-Version: 0.17.0.qualifier
 Fragment-Host: org.gamegineer.common.persistence;bundle-version="0.17.0"
 Import-Package: org.easymock;version="3.2.0",
- org.gamegineer.common.core.util;version="[0.17.0,0.18.0)"
-Require-Bundle: org.junit;bundle-version="4.8.2"
+ org.gamegineer.common.core.util;version="[0.17.0,0.18.0)",
+ org.junit;version="4.12.0"
