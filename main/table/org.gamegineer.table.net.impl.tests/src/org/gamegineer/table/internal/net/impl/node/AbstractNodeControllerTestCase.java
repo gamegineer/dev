@@ -26,11 +26,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import org.easymock.EasyMock;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.MultiThreadedTableEnvironmentContext;
@@ -50,12 +49,6 @@ import org.junit.Test;
  * @param <T>
  *        The type of the table network node controller.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractNodeControllerTestCase<T extends INodeController>
 {
     // ======================================================================
@@ -63,16 +56,16 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     // ======================================================================
 
     /** The table network node controller under test in the fixture. */
-    private volatile T nodeController_;
+    private Optional<T> nodeController_;
 
     /** The node layer runner for use in the fixture. */
-    private NodeLayerRunner nodeLayerRunner_;
+    private Optional<NodeLayerRunner> nodeLayerRunner_;
 
     /** The table for use in the fixture. */
-    private ITable table_;
+    private Optional<ITable> table_;
 
     /** The table environment context for use in the fixture. */
-    private MultiThreadedTableEnvironmentContext tableEnvironmentContext_;
+    private Optional<MultiThreadedTableEnvironmentContext> tableEnvironmentContext_;
 
 
     // ======================================================================
@@ -85,6 +78,10 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
      */
     protected AbstractNodeControllerTestCase()
     {
+        nodeController_ = Optional.empty();
+        nodeLayerRunner_ = Optional.empty();
+        table_ = Optional.empty();
+        tableEnvironmentContext_ = Optional.empty();
     }
 
 
@@ -125,8 +122,7 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
      */
     protected final TableNetworkConfiguration createTableNetworkConfiguration()
     {
-        assertNotNull( table_ );
-        return TableNetworkConfigurations.createDefaultTableNetworkConfiguration( table_ );
+        return TableNetworkConfigurations.createDefaultTableNetworkConfiguration( getTable() );
     }
 
     /**
@@ -137,8 +133,37 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
      */
     protected final T getNodeController()
     {
-        assertNotNull( nodeController_ );
-        return nodeController_;
+        return nodeController_.get();
+    }
+
+    /**
+     * Gets the fixture node layer runner.
+     * 
+     * @return The fixture node layer runner; never {@code null}.
+     */
+    private NodeLayerRunner getNodeLayerRunner()
+    {
+        return nodeLayerRunner_.get();
+    }
+
+    /**
+     * Gets the fixture table.
+     * 
+     * @return The fixture table; never {@code null}.
+     */
+    private ITable getTable()
+    {
+        return table_.get();
+    }
+
+    /**
+     * Gets the fixture table environment context.
+     * 
+     * @return The fixture table environment context; never {@code null}.
+     */
+    private MultiThreadedTableEnvironmentContext getTableEnvironmentContext()
+    {
+        return tableEnvironmentContext_.get();
     }
 
     /**
@@ -151,12 +176,13 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     public void setUp()
         throws Exception
     {
-        final MultiThreadedTableEnvironmentContext tableEnvironmentContext = tableEnvironmentContext_ = new MultiThreadedTableEnvironmentContext();
-        table_ = TestTableEnvironments.createTableEnvironment( tableEnvironmentContext ).createTable();
+        final MultiThreadedTableEnvironmentContext tableEnvironmentContext = new MultiThreadedTableEnvironmentContext();
+        tableEnvironmentContext_ = Optional.of( tableEnvironmentContext );
+        table_ = Optional.of( TestTableEnvironments.createTableEnvironment( tableEnvironmentContext ).createTable() );
 
-        nodeController_ = createNodeController();
-        assertNotNull( nodeController_ );
-        nodeLayerRunner_ = createNodeLayerRunner( nodeController_ );
+        final T nodeController = createNodeController();
+        nodeController_ = Optional.of( nodeController );
+        nodeLayerRunner_ = Optional.of( createNodeLayerRunner( nodeController ) );
     }
 
     /**
@@ -169,7 +195,7 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     public void tearDown()
         throws Exception
     {
-        tableEnvironmentContext_.dispose();
+        getTableEnvironmentContext().dispose();
     }
 
     /**
@@ -183,30 +209,29 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     public void testConnect_Connected_ThrowsException()
         throws Exception
     {
+        final T nodeController = getNodeController();
         final TableNetworkConfiguration configuration = createTableNetworkConfiguration();
-        final Future<@Nullable Void> connectFuture1 = nodeLayerRunner_.run( new Callable<Future<@Nullable Void>>()
+        final Future<@Nullable Void> connectFuture1 = getNodeLayerRunner().run( new Callable<Future<@Nullable Void>>()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public Future<@Nullable Void> call()
             {
-                return nodeController_.beginConnect( configuration );
+                return nodeController.beginConnect( configuration );
             }
         } );
         assertNotNull( connectFuture1 );
-        nodeController_.endConnect( connectFuture1 );
+        nodeController.endConnect( connectFuture1 );
 
-        final Future<@Nullable Void> connectFuture2 = nodeLayerRunner_.run( new Callable<Future<@Nullable Void>>()
+        final Future<@Nullable Void> connectFuture2 = getNodeLayerRunner().run( new Callable<Future<@Nullable Void>>()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public Future<@Nullable Void> call()
             {
-                return nodeController_.beginConnect( configuration );
+                return nodeController.beginConnect( configuration );
             }
         } );
         assertNotNull( connectFuture2 );
-        nodeController_.endConnect( connectFuture2 );
+        nodeController.endConnect( connectFuture2 );
     }
 
     /**
@@ -220,17 +245,17 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     public void testDisconnect_Disconnected_DoesNothing()
         throws Exception
     {
-        final Future<@Nullable Void> disconnectFuture = nodeLayerRunner_.run( new Callable<Future<@Nullable Void>>()
+        final T nodeController = getNodeController();
+        final Future<@Nullable Void> disconnectFuture = getNodeLayerRunner().run( new Callable<Future<@Nullable Void>>()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public Future<@Nullable Void> call()
             {
-                return nodeController_.beginDisconnect();
+                return nodeController.beginDisconnect();
             }
         } );
         assertNotNull( disconnectFuture );
-        nodeController_.endDisconnect( disconnectFuture );
+        nodeController.endDisconnect( disconnectFuture );
     }
 
     /**
@@ -244,26 +269,25 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     public void testGetPlayer_Connected()
         throws Exception
     {
-        final Future<@Nullable Void> connectFuture = nodeLayerRunner_.run( new Callable<Future<@Nullable Void>>()
+        final T nodeController = getNodeController();
+        final Future<@Nullable Void> connectFuture = getNodeLayerRunner().run( new Callable<Future<@Nullable Void>>()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public Future<@Nullable Void> call()
                 throws Exception
             {
-                return nodeController_.beginConnect( createTableNetworkConfiguration() );
+                return nodeController.beginConnect( createTableNetworkConfiguration() );
             }
         } );
         assertNotNull( connectFuture );
-        nodeController_.endConnect( connectFuture );
+        nodeController.endConnect( connectFuture );
 
-        nodeLayerRunner_.run( new Runnable()
+        getNodeLayerRunner().run( new Runnable()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                assertNotNull( nodeController_.getPlayer() );
+                assertNotNull( nodeController.getPlayer() );
             }
         } );
     }
@@ -279,13 +303,13 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     public void testGetPlayer_Disconnected()
         throws Exception
     {
-        nodeLayerRunner_.run( new Runnable()
+        final T nodeController = getNodeController();
+        getNodeLayerRunner().run( new Runnable()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                assertNull( nodeController_.getPlayer() );
+                assertNull( nodeController.getPlayer() );
             }
         } );
     }
@@ -301,17 +325,17 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     public void testGetPlayers_ReturnValue_Copy()
         throws Exception
     {
-        nodeLayerRunner_.run( new Runnable()
+        final T nodeController = getNodeController();
+        getNodeLayerRunner().run( new Runnable()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                final Collection<IPlayer> players = nodeController_.getPlayers();
+                final Collection<IPlayer> players = nodeController.getPlayers();
                 final Collection<IPlayer> expectedValue = new ArrayList<>( players );
 
                 players.add( EasyMock.createMock( IPlayer.class ) );
-                final Collection<IPlayer> actualValue = nodeController_.getPlayers();
+                final Collection<IPlayer> actualValue = nodeController.getPlayers();
 
                 assertEquals( expectedValue, actualValue );
             }

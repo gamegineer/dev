@@ -21,12 +21,10 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
-import static org.junit.Assert.assertNotNull;
+import java.util.Optional;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,12 +37,6 @@ import org.junit.Test;
  * @param <RemoteNodeType>
  *        The type of the remote node.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNodeType>, @NonNull RemoteNodeType extends IRemoteNode>
 {
     // ======================================================================
@@ -52,13 +44,13 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
     // ======================================================================
 
     /** The nice mocks control for use in the fixture. */
-    private volatile IMocksControl niceMocksControl_;
+    private Optional<IMocksControl> niceMocksControl_;
 
     /** The table network node under test in the fixture. */
-    private volatile T node_;
+    private Optional<T> node_;
 
     /** The node layer runner for use in the fixture. */
-    private NodeLayerRunner nodeLayerRunner_;
+    private Optional<NodeLayerRunner> nodeLayerRunner_;
 
 
     // ======================================================================
@@ -71,6 +63,9 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
      */
     protected AbstractDisconnectedNodeTestCase()
     {
+        niceMocksControl_ = Optional.empty();
+        node_ = Optional.empty();
+        nodeLayerRunner_ = Optional.empty();
     }
 
 
@@ -123,8 +118,7 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
      */
     private IMocksControl getNiceMocksControl()
     {
-        assertNotNull( niceMocksControl_ );
-        return niceMocksControl_;
+        return niceMocksControl_.get();
     }
 
     /**
@@ -135,8 +129,7 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
      */
     protected final T getNode()
     {
-        assertNotNull( node_ );
-        return node_;
+        return node_.get();
     }
 
     /**
@@ -146,8 +139,7 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
      */
     protected final NodeLayerRunner getNodeLayerRunner()
     {
-        assertNotNull( nodeLayerRunner_ );
-        return nodeLayerRunner_;
+        return nodeLayerRunner_.get();
     }
 
     /**
@@ -160,10 +152,10 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
     public void setUp()
         throws Exception
     {
-        niceMocksControl_ = EasyMock.createNiceControl();
-        node_ = createDisconnectedNode();
-        assertNotNull( node_ );
-        nodeLayerRunner_ = createNodeLayerRunner( node_ );
+        niceMocksControl_ = Optional.of( EasyMock.createNiceControl() );
+        final T node = createDisconnectedNode();
+        node_ = Optional.of( node );
+        nodeLayerRunner_ = Optional.of( createNodeLayerRunner( node ) );
     }
 
     /**
@@ -177,13 +169,14 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
     public void testBindRemoteNode_RemoteNode_NonNull()
         throws Exception
     {
-        nodeLayerRunner_.run( new Runnable()
+        final T node = getNode();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        getNodeLayerRunner().run( new Runnable()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                node_.bindRemoteNode( createMockRemoteNode( getNiceMocksControl() ) );
+                node.bindRemoteNode( createMockRemoteNode( niceMocksControl ) );
             }
         } );
     }
@@ -198,13 +191,13 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
     public void testGetPassword()
         throws Exception
     {
-        nodeLayerRunner_.run( new Runnable()
+        final T node = getNode();
+        getNodeLayerRunner().run( new Runnable()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                node_.getPassword();
+                node.getPassword();
             }
         } );
     }
@@ -219,13 +212,13 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
     public void testGetPlayerName()
         throws Exception
     {
-        nodeLayerRunner_.run( new Runnable()
+        final T node = getNode();
+        getNodeLayerRunner().run( new Runnable()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                node_.getPlayerName();
+                node.getPlayerName();
             }
         } );
     }
@@ -241,13 +234,14 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
     public void testUnbindRemoteNode_RemoteNode_NonNull()
         throws Exception
     {
-        nodeLayerRunner_.run( new Runnable()
+        final T node = getNode();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        getNodeLayerRunner().run( new Runnable()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                node_.unbindRemoteNode( createMockRemoteNode( getNiceMocksControl() ) );
+                node.unbindRemoteNode( createMockRemoteNode( niceMocksControl ) );
             }
         } );
     }

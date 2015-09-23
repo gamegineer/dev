@@ -28,12 +28,11 @@ import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 import org.easymock.EasyMock;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.net.impl.transport.ITransportLayerContext;
 import org.junit.After;
@@ -43,12 +42,6 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link Dispatcher} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class DispatcherTest
 {
     // ======================================================================
@@ -56,13 +49,13 @@ public final class DispatcherTest
     // ======================================================================
 
     /** The dispatcher under test in the fixture. */
-    private volatile Dispatcher dispatcher_;
+    private final AtomicReference<@Nullable Dispatcher> dispatcherRef_;
 
     /** The transport layer for use in the fixture. */
-    private volatile AbstractTransportLayer transportLayer_;
+    private Optional<AbstractTransportLayer> transportLayer_;
 
     /** The transport layer runner for use in the fixture. */
-    private TransportLayerRunner transportLayerRunner_;
+    private Optional<TransportLayerRunner> transportLayerRunner_;
 
 
     // ======================================================================
@@ -74,6 +67,9 @@ public final class DispatcherTest
      */
     public DispatcherTest()
     {
+        dispatcherRef_ = new AtomicReference<>();
+        transportLayer_ = Optional.empty();
+        transportLayerRunner_ = Optional.empty();
     }
 
 
@@ -91,19 +87,31 @@ public final class DispatcherTest
         throws Exception
     {
         // Invoke beginClose() on transport layer thread
-        final Future<@Nullable Void> dispatcherCloseFuture = transportLayerRunner_.run( new Callable<Future<@Nullable Void>>()
+        final Dispatcher dispatcher = getDispatcher();
+        final Future<@Nullable Void> dispatcherCloseFuture = getTransportLayerRunner().run( new Callable<Future<@Nullable Void>>()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public Future<@Nullable Void> call()
             {
-                return dispatcher_.beginClose();
+                return dispatcher.beginClose();
             }
         } );
         assertNotNull( dispatcherCloseFuture );
 
         // Wait for dispatcher to close on current thread
-        dispatcher_.endClose( dispatcherCloseFuture );
+        dispatcher.endClose( dispatcherCloseFuture );
+    }
+
+    /**
+     * Gets the dispatcher under test in the fixture.
+     * 
+     * @return The dispatcher under test in the fixture; never {@code null}.
+     */
+    private Dispatcher getDispatcher()
+    {
+        final Dispatcher dispatcher = dispatcherRef_.get();
+        assertNotNull( dispatcher );
+        return dispatcher;
     }
 
     /**
@@ -113,8 +121,17 @@ public final class DispatcherTest
      */
     private AbstractTransportLayer getTransportLayer()
     {
-        assertNotNull( transportLayer_ );
-        return transportLayer_;
+        return transportLayer_.get();
+    }
+
+    /**
+     * Gets the fixture transport layer runner.
+     * 
+     * @return The fixture transport layer runner; never {@code null}.
+     */
+    private TransportLayerRunner getTransportLayerRunner()
+    {
+        return transportLayerRunner_.get();
     }
 
     /**
@@ -127,17 +144,20 @@ public final class DispatcherTest
     public void setUp()
         throws Exception
     {
-        final AbstractTransportLayer transportLayer = transportLayer_ = new FakeTransportLayer.Factory().createTransportLayer( EasyMock.createMock( ITransportLayerContext.class ) );
-        transportLayerRunner_ = new TransportLayerRunner( transportLayer );
+        final AbstractTransportLayer transportLayer = new FakeTransportLayer.Factory().createTransportLayer( EasyMock.createMock( ITransportLayerContext.class ) );
+        transportLayer_ = Optional.of( transportLayer );
+        final TransportLayerRunner transportLayerRunner = new TransportLayerRunner( transportLayer );
+        transportLayerRunner_ = Optional.of( transportLayerRunner );
 
-        transportLayerRunner_.run( new Callable<@Nullable Void>()
+        transportLayerRunner.run( new Callable<@Nullable Void>()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
             public @Nullable Void call()
             {
-                dispatcher_ = new Dispatcher( transportLayer );
-                dispatcher_.setEventHandlerShutdownTimeout( 500L );
+                final Dispatcher dispatcher = new Dispatcher( transportLayer );
+                dispatcher.setEventHandlerShutdownTimeout( 500L );
+                dispatcherRef_.set( dispatcher );
                 return null;
             }
         } );
@@ -154,7 +174,7 @@ public final class DispatcherTest
         throws Exception
     {
         closeDispatcher();
-        transportLayerRunner_.close();
+        getTransportLayerRunner().close();
     }
 
     /**
@@ -168,30 +188,31 @@ public final class DispatcherTest
     public void testClose_ClosesRegisteredEventHandlers()
         throws Exception
     {
+        final Dispatcher dispatcher = getDispatcher();
+        final AbstractTransportLayer transportLayer = getTransportLayer();
         final AtomicReference<AbstractEventHandler> eventHandlerRef = new AtomicReference<>();
-        transportLayerRunner_.run( new Callable<@Nullable Void>()
+        getTransportLayerRunner().run( new Callable<@Nullable Void>()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public @Nullable Void call()
                 throws Exception
             {
-                dispatcher_.open();
-                final AbstractEventHandler eventHandler = new FakeEventHandler( getTransportLayer() )
+                dispatcher.open();
+                final AbstractEventHandler eventHandler = new FakeEventHandler( transportLayer )
                 {
                     {
                         setState( State.OPEN );
                     }
                 };
                 eventHandlerRef.set( eventHandler );
-                dispatcher_.registerEventHandler( eventHandler );
+                dispatcher.registerEventHandler( eventHandler );
                 assertEquals( State.OPEN, eventHandler.getState() );
 
                 return null;
             }
         } );
         closeDispatcher();
-        transportLayerRunner_.run( new Callable<@Nullable Void>()
+        getTransportLayerRunner().run( new Callable<@Nullable Void>()
         {
             @Override
             public @Nullable Void call()
@@ -215,11 +236,12 @@ public final class DispatcherTest
     public void testRegisterEventHandler_EventHandler_ChannelClosed()
         throws Exception
     {
-        transportLayerRunner_.run( //
+        final Dispatcher dispatcher = getDispatcher();
+        final AbstractTransportLayer transportLayer = getTransportLayer();
+        getTransportLayerRunner().run( //
             new Callable<@Nullable Void>()
             {
                 @Override
-                @SuppressWarnings( "synthetic-access" )
                 public @Nullable Void call()
                     throws Exception
                 {
@@ -235,9 +257,9 @@ public final class DispatcherTest
                             throw new ClosedChannelException();
                         }
                     };
-                    dispatcher_.open();
+                    dispatcher.open();
 
-                    dispatcher_.registerEventHandler( new FakeEventHandler( getTransportLayer(), channel ) );
+                    dispatcher.registerEventHandler( new FakeEventHandler( transportLayer, channel ) );
 
                     return null;
                 }

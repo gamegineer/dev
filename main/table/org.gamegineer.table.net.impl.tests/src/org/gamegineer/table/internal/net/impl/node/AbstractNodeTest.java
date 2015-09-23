@@ -23,17 +23,15 @@ package org.gamegineer.table.internal.net.impl.node;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 import net.jcip.annotations.Immutable;
 import org.easymock.EasyMock;
-import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.MultiThreadedTableEnvironmentContext;
@@ -53,12 +51,6 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link AbstractNode} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class AbstractNodeTest
 {
     // ======================================================================
@@ -66,16 +58,16 @@ public final class AbstractNodeTest
     // ======================================================================
 
     /** The table network node under test in the fixture. */
-    private volatile AbstractNode<@NonNull IRemoteNode> node_;
+    private Optional<AbstractNode<@NonNull IRemoteNode>> node_;
 
     /** The node layer runner for use in the fixture. */
-    private NodeLayerRunner nodeLayerRunner_;
+    private Optional<NodeLayerRunner> nodeLayerRunner_;
 
     /** The table for use in the fixture. */
-    private ITable table_;
+    private Optional<ITable> table_;
 
     /** The table environment context for use in the fixture. */
-    private MultiThreadedTableEnvironmentContext tableEnvironmentContext_;
+    private Optional<MultiThreadedTableEnvironmentContext> tableEnvironmentContext_;
 
 
     // ======================================================================
@@ -87,6 +79,10 @@ public final class AbstractNodeTest
      */
     public AbstractNodeTest()
     {
+        node_ = Optional.empty();
+        nodeLayerRunner_ = Optional.empty();
+        table_ = Optional.empty();
+        tableEnvironmentContext_ = Optional.empty();
     }
 
 
@@ -101,8 +97,47 @@ public final class AbstractNodeTest
      */
     private TableNetworkConfiguration createTableNetworkConfiguration()
     {
-        assertNotNull( table_ );
-        return TableNetworkConfigurations.createDefaultTableNetworkConfiguration( table_ );
+        return TableNetworkConfigurations.createDefaultTableNetworkConfiguration( getTable() );
+    }
+
+    /**
+     * Gets the node under test in the fixture.
+     * 
+     * @return The node under test in the fixture; never {@code null}.
+     */
+    private AbstractNode<@NonNull IRemoteNode> getNode()
+    {
+        return node_.get();
+    }
+
+    /**
+     * Gets the fixture node layer runner.
+     * 
+     * @return The fixture node layer runner; never {@code null}.
+     */
+    private NodeLayerRunner getNodeLayerRunner()
+    {
+        return nodeLayerRunner_.get();
+    }
+
+    /**
+     * Gets the fixture table.
+     * 
+     * @return The fixture table; never {@code null}.
+     */
+    private ITable getTable()
+    {
+        return table_.get();
+    }
+
+    /**
+     * Gets the fixture table environment context.
+     * 
+     * @return The fixture table environment context; never {@code null}.
+     */
+    private MultiThreadedTableEnvironmentContext getTableEnvironmentContext()
+    {
+        return tableEnvironmentContext_.get();
     }
 
     /**
@@ -115,11 +150,13 @@ public final class AbstractNodeTest
     public void setUp()
         throws Exception
     {
-        final MultiThreadedTableEnvironmentContext tableEnvironmentContext = tableEnvironmentContext_ = new MultiThreadedTableEnvironmentContext();
-        table_ = TestTableEnvironments.createTableEnvironment( tableEnvironmentContext ).createTable();
+        final MultiThreadedTableEnvironmentContext tableEnvironmentContext = new MultiThreadedTableEnvironmentContext();
+        tableEnvironmentContext_ = Optional.of( tableEnvironmentContext );
+        table_ = Optional.of( TestTableEnvironments.createTableEnvironment( tableEnvironmentContext ).createTable() );
 
-        final AbstractNode<IRemoteNode> node = node_ = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
-        nodeLayerRunner_ = new NodeLayerRunner( node );
+        final AbstractNode<IRemoteNode> node = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
+        node_ = Optional.of( node );
+        nodeLayerRunner_ = Optional.of( new NodeLayerRunner( node ) );
     }
 
     /**
@@ -132,7 +169,7 @@ public final class AbstractNodeTest
     public void tearDown()
         throws Exception
     {
-        tableEnvironmentContext_.dispose();
+        getTableEnvironmentContext().dispose();
     }
 
     /**
@@ -243,17 +280,17 @@ public final class AbstractNodeTest
     public void testGetRemoteNodes_ReturnValue_Copy()
         throws Exception
     {
-        nodeLayerRunner_.run( new Runnable()
+        final AbstractNode<@NonNull IRemoteNode> node = getNode();
+        getNodeLayerRunner().run( new Runnable()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                final Collection<IRemoteNode> remoteNodes = node_.getRemoteNodes();
+                final Collection<IRemoteNode> remoteNodes = node.getRemoteNodes();
                 final int expectedRemoteNodesSize = remoteNodes.size();
                 remoteNodes.add( EasyMock.createMock( IRemoteNode.class ) );
 
-                final int actualRemoteNodesSize = node_.getRemoteNodes().size();
+                final int actualRemoteNodesSize = node.getRemoteNodes().size();
 
                 assertEquals( expectedRemoteNodesSize, actualRemoteNodesSize );
             }
