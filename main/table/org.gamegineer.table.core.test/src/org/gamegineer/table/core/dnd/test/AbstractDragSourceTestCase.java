@@ -28,9 +28,8 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import java.awt.Point;
 import java.util.List;
+import java.util.Optional;
 import org.easymock.EasyMock;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
@@ -48,12 +47,6 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IDragSource} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractDragSourceTestCase
 {
     // ======================================================================
@@ -61,10 +54,7 @@ public abstract class AbstractDragSourceTestCase
     // ======================================================================
 
     /** The drag source under test in the fixture. */
-    private IDragSource dragSource_;
-
-    /** The table for use in the fixture. */
-    private ITable table_;
+    private Optional<IDragSource> dragSource_;
 
 
     // ======================================================================
@@ -77,6 +67,7 @@ public abstract class AbstractDragSourceTestCase
      */
     protected AbstractDragSourceTestCase()
     {
+        dragSource_ = Optional.empty();
     }
 
 
@@ -92,7 +83,7 @@ public abstract class AbstractDragSourceTestCase
      */
     private IComponent createUniqueComponent()
     {
-        return TestComponents.createUniqueComponent( table_.getTableEnvironment() );
+        return TestComponents.createUniqueComponent( getTable().getTableEnvironment() );
     }
 
     /**
@@ -103,7 +94,17 @@ public abstract class AbstractDragSourceTestCase
      */
     private IContainer createUniqueContainer()
     {
-        return TestComponents.createUniqueContainer( table_.getTableEnvironment() );
+        return TestComponents.createUniqueContainer( getTable().getTableEnvironment() );
+    }
+
+    /**
+     * Gets the drag source under test in the fixture.
+     * 
+     * @return The drag source under test in the fixture; never {@code null}.
+     */
+    protected final IDragSource getDragSource()
+    {
+        return dragSource_.get();
     }
 
     /**
@@ -112,6 +113,16 @@ public abstract class AbstractDragSourceTestCase
      * @return The table associated with the fixture; never {@code null}.
      */
     protected abstract ITable getTable();
+
+    /**
+     * Gets the tabletop associated with the fixture.
+     * 
+     * @return The tabletop associated with the fixture; never {@code null}.
+     */
+    private IContainer getTabletop()
+    {
+        return getTable().getTabletop();
+    }
 
     /**
      * Sets up the test fixture.
@@ -123,10 +134,9 @@ public abstract class AbstractDragSourceTestCase
     public void setUp()
         throws Exception
     {
-        table_ = getTable();
-        assertNotNull( table_ );
-        dragSource_ = table_.getExtension( IDragSource.class );
-        assertNotNull( dragSource_ );
+        final IDragSource dragSource = getTable().getExtension( IDragSource.class );
+        assertNotNull( dragSource );
+        dragSource_ = Optional.of( dragSource );
     }
 
     /**
@@ -137,14 +147,15 @@ public abstract class AbstractDragSourceTestCase
     @Test
     public void testBeginDrag_BeginsDragAndDropOperation()
     {
+        final IContainer tabletop = getTabletop();
         final IComponent component = createUniqueComponent();
-        table_.getTabletop().addComponent( component );
+        tabletop.addComponent( component );
         final Point originalComponentLocation = component.getLocation();
 
-        assertNotNull( dragSource_.beginDrag( new Point( 0, 0 ), component, PassiveDragStrategyFactory.INSTANCE ) );
+        assertNotNull( getDragSource().beginDrag( new Point( 0, 0 ), component, PassiveDragStrategyFactory.INSTANCE ) );
 
         assertEquals( originalComponentLocation, component.getLocation() );
-        assertNotSame( table_.getTabletop(), component.getContainer() );
+        assertNotSame( tabletop, component.getContainer() );
     }
 
     /**
@@ -154,7 +165,7 @@ public abstract class AbstractDragSourceTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testBeginDrag_Component_Illegal_NoContainer()
     {
-        dragSource_.beginDrag( new Point( 0, 0 ), table_.getTabletop(), EasyMock.createMock( IDragStrategyFactory.class ) );
+        getDragSource().beginDrag( new Point( 0, 0 ), getTabletop(), EasyMock.createMock( IDragStrategyFactory.class ) );
     }
 
     /**
@@ -164,7 +175,7 @@ public abstract class AbstractDragSourceTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testBeginDrag_Component_Illegal_NotExistsInTable()
     {
-        dragSource_.beginDrag( new Point( 0, 0 ), createUniqueComponent(), EasyMock.createMock( IDragStrategyFactory.class ) );
+        getDragSource().beginDrag( new Point( 0, 0 ), createUniqueComponent(), EasyMock.createMock( IDragStrategyFactory.class ) );
     }
 
     /**
@@ -210,9 +221,9 @@ public abstract class AbstractDragSourceTestCase
         container.addComponent( component2 );
         final Point originalComponentLocation2 = component2.getLocation();
         assertFalse( originalComponentLocation1.equals( originalComponentLocation2 ) );
-        table_.getTabletop().addComponent( container );
+        getTabletop().addComponent( container );
 
-        assertNotNull( dragSource_.beginDrag( new Point( 0, 0 ), component1, dragStrategyFactory ) );
+        assertNotNull( getDragSource().beginDrag( new Point( 0, 0 ), component1, dragStrategyFactory ) );
 
         assertEquals( originalComponentLocation1, component1.getLocation() );
         assertEquals( originalComponentLocation2, component2.getLocation() );
@@ -227,9 +238,9 @@ public abstract class AbstractDragSourceTestCase
     public void testBeginDrag_ReturnValue_NonNull()
     {
         final IComponent component = createUniqueComponent();
-        table_.getTabletop().addComponent( component );
+        getTabletop().addComponent( component );
 
-        assertNotNull( dragSource_.beginDrag( new Point( 0, 0 ), component, PassiveDragStrategyFactory.INSTANCE ) );
+        assertNotNull( getDragSource().beginDrag( new Point( 0, 0 ), component, PassiveDragStrategyFactory.INSTANCE ) );
     }
 
     /**
@@ -241,9 +252,9 @@ public abstract class AbstractDragSourceTestCase
     public void testBeginDrag_ReturnValue_Null()
     {
         final IComponent component = createUniqueComponent();
-        table_.getTabletop().addComponent( component );
+        getTabletop().addComponent( component );
 
-        assertNull( dragSource_.beginDrag( new Point( 0, 0 ), component, NullDragStrategyFactory.INSTANCE ) );
+        assertNull( getDragSource().beginDrag( new Point( 0, 0 ), component, NullDragStrategyFactory.INSTANCE ) );
     }
 
     /**
@@ -253,12 +264,14 @@ public abstract class AbstractDragSourceTestCase
     @Test( expected = IllegalStateException.class )
     public void testBeginDrag_State_Illegal_DragAndDropOperationActive()
     {
+        final IContainer tabletop = getTabletop();
+        final IDragSource dragSource = getDragSource();
         final IComponent component1 = createUniqueComponent();
-        table_.getTabletop().addComponent( component1 );
+        tabletop.addComponent( component1 );
         final IComponent component2 = createUniqueComponent();
-        table_.getTabletop().addComponent( component2 );
+        tabletop.addComponent( component2 );
 
-        assertNotNull( dragSource_.beginDrag( new Point( 0, 0 ), component1, PassiveDragStrategyFactory.INSTANCE ) );
-        dragSource_.beginDrag( new Point( 0, 0 ), component2, PassiveDragStrategyFactory.INSTANCE );
+        assertNotNull( dragSource.beginDrag( new Point( 0, 0 ), component1, PassiveDragStrategyFactory.INSTANCE ) );
+        dragSource.beginDrag( new Point( 0, 0 ), component2, PassiveDragStrategyFactory.INSTANCE );
     }
 }

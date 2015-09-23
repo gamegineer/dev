@@ -23,13 +23,12 @@ package org.gamegineer.table.core;
 
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
+import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 import org.easymock.EasyMock;
 import org.easymock.IAnswer;
 import org.easymock.IMocksControl;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.junit.After;
 import org.junit.Before;
@@ -38,12 +37,6 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link MultiThreadedTableEnvironmentContext} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class MultiThreadedTableEnvironmentContextTest
 {
     // ======================================================================
@@ -51,12 +44,12 @@ public final class MultiThreadedTableEnvironmentContextTest
     // ======================================================================
 
     /** The mocks control for use in the fixture. */
-    private IMocksControl mocksControl_;
+    private Optional<IMocksControl> mocksControl_;
 
     /**
      * The multi-threaded table environment context under test in the fixture.
      */
-    private MultiThreadedTableEnvironmentContext tableEnvironmentContext_;
+    private Optional<MultiThreadedTableEnvironmentContext> tableEnvironmentContext_;
 
 
     // ======================================================================
@@ -69,12 +62,36 @@ public final class MultiThreadedTableEnvironmentContextTest
      */
     public MultiThreadedTableEnvironmentContextTest()
     {
+        mocksControl_ = Optional.empty();
+        tableEnvironmentContext_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the fixture mocks control.
+     * 
+     * @return The fixture mocks control; never {@code null}.
+     */
+    private IMocksControl getMocksControl()
+    {
+        return mocksControl_.get();
+    }
+
+    /**
+     * Gets the multi-threaded table environment context under test in the
+     * fixture.
+     * 
+     * @return The multi-threaded table environment context under test in the
+     *         fixture; never {@code null}.
+     */
+    private MultiThreadedTableEnvironmentContext getTableEnvironmentContext()
+    {
+        return tableEnvironmentContext_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -86,8 +103,8 @@ public final class MultiThreadedTableEnvironmentContextTest
     public void setUp()
         throws Exception
     {
-        mocksControl_ = EasyMock.createControl();
-        tableEnvironmentContext_ = new MultiThreadedTableEnvironmentContext();
+        mocksControl_ = Optional.of( EasyMock.createControl() );
+        tableEnvironmentContext_ = Optional.of( new MultiThreadedTableEnvironmentContext() );
     }
 
     /**
@@ -100,7 +117,7 @@ public final class MultiThreadedTableEnvironmentContextTest
     public void tearDown()
         throws Exception
     {
-        tableEnvironmentContext_.dispose();
+        getTableEnvironmentContext().dispose();
     }
 
     /**
@@ -115,10 +132,12 @@ public final class MultiThreadedTableEnvironmentContextTest
     public void testFireEventNotification_EventNotificationFiredOnDifferentThread()
         throws Exception
     {
+        final MultiThreadedTableEnvironmentContext tableEnvironmentContext = getTableEnvironmentContext();
+        final IMocksControl mocksControl = getMocksControl();
         final Thread testThread = Thread.currentThread();
         final AtomicReference<Thread> eventNotificationThreadReference = new AtomicReference<>();
         final CountDownLatch countDownLatch = new CountDownLatch( 1 );
-        final Runnable eventNotification = mocksControl_.createMock( Runnable.class );
+        final Runnable eventNotification = mocksControl.createMock( Runnable.class );
         eventNotification.run();
         EasyMock.expectLastCall().andAnswer( new IAnswer<@Nullable Void>()
         {
@@ -130,20 +149,20 @@ public final class MultiThreadedTableEnvironmentContextTest
                 return null;
             }
         } );
-        mocksControl_.replay();
+        mocksControl.replay();
 
-        tableEnvironmentContext_.getLock().lock();
+        tableEnvironmentContext.getLock().lock();
         try
         {
-            tableEnvironmentContext_.fireEventNotification( eventNotification );
+            tableEnvironmentContext.fireEventNotification( eventNotification );
         }
         finally
         {
-            tableEnvironmentContext_.getLock().unlock();
+            tableEnvironmentContext.getLock().unlock();
         }
 
         countDownLatch.await();
-        mocksControl_.verify();
+        mocksControl.verify();
         assertThat( eventNotificationThreadReference.get(), not( testThread ) );
     }
 }

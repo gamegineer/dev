@@ -24,10 +24,9 @@ package org.gamegineer.table.core;
 import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,12 +34,6 @@ import org.junit.Test;
  * A fixture for testing the {@link SingleThreadedTableEnvironmentContext}
  * class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class SingleThreadedTableEnvironmentContextTest
 {
     // ======================================================================
@@ -48,12 +41,12 @@ public final class SingleThreadedTableEnvironmentContextTest
     // ======================================================================
 
     /** The mocks control for use in the fixture. */
-    private IMocksControl mocksControl_;
+    private Optional<IMocksControl> mocksControl_;
 
     /**
      * The single-threaded table environment context under test in the fixture.
      */
-    private SingleThreadedTableEnvironmentContext tableEnvironmentContext_;
+    private Optional<SingleThreadedTableEnvironmentContext> tableEnvironmentContext_;
 
 
     // ======================================================================
@@ -66,12 +59,36 @@ public final class SingleThreadedTableEnvironmentContextTest
      */
     public SingleThreadedTableEnvironmentContextTest()
     {
+        mocksControl_ = Optional.empty();
+        tableEnvironmentContext_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the fixture mocks control.
+     * 
+     * @return The fixture mocks control; never {@code null}.
+     */
+    private IMocksControl getMocksControl()
+    {
+        return mocksControl_.get();
+    }
+
+    /**
+     * Gets the single-threaded table environment context under test in the
+     * fixture.
+     * 
+     * @return The single-threaded table environment context under test in the
+     *         fixture; never {@code null}.
+     */
+    private SingleThreadedTableEnvironmentContext getTableEnvironmentContext()
+    {
+        return tableEnvironmentContext_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -83,8 +100,8 @@ public final class SingleThreadedTableEnvironmentContextTest
     public void setUp()
         throws Exception
     {
-        mocksControl_ = EasyMock.createControl();
-        tableEnvironmentContext_ = new SingleThreadedTableEnvironmentContext();
+        mocksControl_ = Optional.of( EasyMock.createControl() );
+        tableEnvironmentContext_ = Optional.of( new SingleThreadedTableEnvironmentContext() );
     }
 
     /**
@@ -94,13 +111,15 @@ public final class SingleThreadedTableEnvironmentContextTest
     @Test
     public void testFireEventNotification_Locked_DoesNotFireEventNotification()
     {
-        final Runnable eventNotification = mocksControl_.createMock( Runnable.class );
-        mocksControl_.replay();
+        final SingleThreadedTableEnvironmentContext tableEnvironmentContext = getTableEnvironmentContext();
+        final IMocksControl mocksControl = getMocksControl();
+        final Runnable eventNotification = mocksControl.createMock( Runnable.class );
+        mocksControl.replay();
 
-        tableEnvironmentContext_.getLock().lock();
-        tableEnvironmentContext_.fireEventNotification( eventNotification );
+        tableEnvironmentContext.getLock().lock();
+        tableEnvironmentContext.fireEventNotification( eventNotification );
 
-        mocksControl_.verify();
+        mocksControl.verify();
     }
 
     /**
@@ -110,15 +129,17 @@ public final class SingleThreadedTableEnvironmentContextTest
     @Test
     public void testTableEnvironmentLock_Unlock_Locked_DoesNotFirePendingEventNotifications()
     {
-        final Runnable eventNotification = mocksControl_.createMock( Runnable.class );
-        mocksControl_.replay();
+        final SingleThreadedTableEnvironmentContext tableEnvironmentContext = getTableEnvironmentContext();
+        final IMocksControl mocksControl = getMocksControl();
+        final Runnable eventNotification = mocksControl.createMock( Runnable.class );
+        mocksControl.replay();
 
-        tableEnvironmentContext_.getLock().lock();
-        tableEnvironmentContext_.getLock().lock();
-        tableEnvironmentContext_.fireEventNotification( eventNotification );
-        tableEnvironmentContext_.getLock().unlock();
+        tableEnvironmentContext.getLock().lock();
+        tableEnvironmentContext.getLock().lock();
+        tableEnvironmentContext.fireEventNotification( eventNotification );
+        tableEnvironmentContext.getLock().unlock();
 
-        mocksControl_.verify();
+        mocksControl.verify();
     }
 
     /**
@@ -129,15 +150,15 @@ public final class SingleThreadedTableEnvironmentContextTest
     @Test
     public void testTableEnvironmentLock_Unlock_Unlocked_DoesNotFirePendingEventNotifications_EventNotificationsInProgress()
     {
+        final SingleThreadedTableEnvironmentContext tableEnvironmentContext = getTableEnvironmentContext();
         final List<Integer> eventNotificationCallHistory = new ArrayList<>();
         final Runnable eventNotification1 = new Runnable()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                tableEnvironmentContext_.getLock().lock();
-                tableEnvironmentContext_.getLock().unlock(); // should not fire eventNotification2
+                tableEnvironmentContext.getLock().lock();
+                tableEnvironmentContext.getLock().unlock(); // should not fire eventNotification2
                 eventNotificationCallHistory.add( Integer.valueOf( 1 ) );
             }
         };
@@ -150,10 +171,10 @@ public final class SingleThreadedTableEnvironmentContextTest
             }
         };
 
-        tableEnvironmentContext_.getLock().lock();
-        tableEnvironmentContext_.fireEventNotification( eventNotification1 );
-        tableEnvironmentContext_.fireEventNotification( eventNotification2 );
-        tableEnvironmentContext_.getLock().unlock();
+        tableEnvironmentContext.getLock().lock();
+        tableEnvironmentContext.fireEventNotification( eventNotification1 );
+        tableEnvironmentContext.fireEventNotification( eventNotification2 );
+        tableEnvironmentContext.getLock().unlock();
 
         assertEquals( 2, eventNotificationCallHistory.size() );
         assertEquals( Integer.valueOf( 1 ), eventNotificationCallHistory.get( 0 ) );

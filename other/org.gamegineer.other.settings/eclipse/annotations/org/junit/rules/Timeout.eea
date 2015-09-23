@@ -1,0 +1,4 @@
+class org/junit/rules/Timeout
+millis
+ (J)Lorg/junit/rules/Timeout;
+ (J)L1org/junit/rules/Timeout;

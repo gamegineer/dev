@@ -29,9 +29,8 @@ import java.awt.Point;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.IComponentStrategy;
@@ -45,12 +44,6 @@ import org.junit.Test;
  * @param <ComponentStrategyType>
  *        The type of the component strategy.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType extends IComponentStrategy>
 {
     // ======================================================================
@@ -58,7 +51,7 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     // ======================================================================
 
     /** The component strategy under test in the fixture. */
-    private ComponentStrategyType componentStrategy_;
+    private Optional<ComponentStrategyType> componentStrategy_;
 
 
     // ======================================================================
@@ -71,6 +64,7 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
      */
     protected AbstractComponentStrategyTestCase()
     {
+        componentStrategy_ = Optional.empty();
     }
 
 
@@ -117,8 +111,7 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
      */
     protected final ComponentStrategyType getComponentStrategy()
     {
-        assertNotNull( componentStrategy_ );
-        return componentStrategy_;
+        return componentStrategy_.get();
     }
 
     /**
@@ -131,8 +124,7 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     public void setUp()
         throws Exception
     {
-        componentStrategy_ = createComponentStrategy();
-        assertNotNull( componentStrategy_ );
+        componentStrategy_ = Optional.of( createComponentStrategy() );
     }
 
     /**
@@ -142,12 +134,13 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     @Test
     public void testGetDefaultLocation_ReturnValue_Copy()
     {
-        final Point location = componentStrategy_.getDefaultLocation();
+        final ComponentStrategyType componentStrategy = getComponentStrategy();
+        final Point location = componentStrategy.getDefaultLocation();
         final Point expectedLocation = new Point( location );
 
         location.setLocation( 1010, 2020 );
 
-        assertEquals( expectedLocation, componentStrategy_.getDefaultLocation() );
+        assertEquals( expectedLocation, componentStrategy.getDefaultLocation() );
     }
 
     /**
@@ -157,12 +150,13 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     @Test
     public void testGetDefaultOrigin_ReturnValue_Copy()
     {
-        final Point origin = componentStrategy_.getDefaultOrigin();
+        final ComponentStrategyType componentStrategy = getComponentStrategy();
+        final Point origin = componentStrategy.getDefaultOrigin();
         final Point expectedOrigin = new Point( origin );
 
         origin.setLocation( 1010, 2020 );
 
-        assertEquals( expectedOrigin, componentStrategy_.getDefaultOrigin() );
+        assertEquals( expectedOrigin, componentStrategy.getDefaultOrigin() );
     }
 
     /**
@@ -172,12 +166,13 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     @Test
     public void testGetDefaultSurfaceDesigns_ReturnValue_Copy()
     {
-        final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = componentStrategy_.getDefaultSurfaceDesigns();
+        final ComponentStrategyType componentStrategy = getComponentStrategy();
+        final Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns = componentStrategy.getDefaultSurfaceDesigns();
         final Map<ComponentOrientation, ComponentSurfaceDesign> expectedSurfaceDesigns = new HashMap<>( surfaceDesigns );
 
         surfaceDesigns.put( createIllegalOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
 
-        assertEquals( expectedSurfaceDesigns, componentStrategy_.getDefaultSurfaceDesigns() );
+        assertEquals( expectedSurfaceDesigns, componentStrategy.getDefaultSurfaceDesigns() );
     }
 
     /**
@@ -188,9 +183,10 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     @Test
     public void testGetDefaultSurfaceDesigns_ReturnValue_Keys_SupportedOrientations()
     {
-        final Set<ComponentOrientation> expectedValue = new HashSet<>( componentStrategy_.getSupportedOrientations() );
+        final ComponentStrategyType componentStrategy = getComponentStrategy();
+        final Set<ComponentOrientation> expectedValue = new HashSet<>( componentStrategy.getSupportedOrientations() );
 
-        final Set<ComponentOrientation> actualValue = componentStrategy_.getDefaultSurfaceDesigns().keySet();
+        final Set<ComponentOrientation> actualValue = componentStrategy.getDefaultSurfaceDesigns().keySet();
 
         assertEquals( expectedValue, actualValue );
     }
@@ -202,7 +198,7 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     @Test
     public void testGetDefaultSurfaceDesigns_ReturnValue_Values_NonNull()
     {
-        for( final ComponentSurfaceDesign surfaceDesign : componentStrategy_.getDefaultSurfaceDesigns().values() )
+        for( final ComponentSurfaceDesign surfaceDesign : getComponentStrategy().getDefaultSurfaceDesigns().values() )
         {
             assertNotNull( surfaceDesign );
         }
@@ -215,7 +211,9 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     @Test
     public void testGetSupportedOrientations_ReturnValue_Immutable()
     {
-        assertImmutableCollection( componentStrategy_.getSupportedOrientations(), componentStrategy_.getDefaultOrientation() );
+        final ComponentStrategyType componentStrategy = getComponentStrategy();
+
+        assertImmutableCollection( componentStrategy.getSupportedOrientations(), componentStrategy.getDefaultOrientation() );
     }
 
     /**
@@ -225,6 +223,6 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     @Test
     public void testGetSupportedOrientations_ReturnValue_NonEmpty()
     {
-        assertFalse( componentStrategy_.getSupportedOrientations().isEmpty() );
+        assertFalse( getComponentStrategy().getSupportedOrientations().isEmpty() );
     }
 }

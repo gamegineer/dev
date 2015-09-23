@@ -25,8 +25,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import java.awt.Point;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
@@ -41,23 +40,14 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IVersionControl} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractVersionControlTestCase
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The table for use in the fixture. */
-    private ITable table_;
-
     /** The version control under test in the fixture. */
-    private IVersionControl versionControl_;
+    private Optional<IVersionControl> versionControl_;
 
 
     // ======================================================================
@@ -70,6 +60,7 @@ public abstract class AbstractVersionControlTestCase
      */
     protected AbstractVersionControlTestCase()
     {
+        versionControl_ = Optional.empty();
     }
 
 
@@ -85,7 +76,7 @@ public abstract class AbstractVersionControlTestCase
      */
     private IComponent createUniqueComponent()
     {
-        return TestComponents.createUniqueComponent( table_.getTableEnvironment() );
+        return TestComponents.createUniqueComponent( getTable().getTableEnvironment() );
     }
 
     /**
@@ -96,7 +87,7 @@ public abstract class AbstractVersionControlTestCase
      */
     private IContainer createUniqueContainer()
     {
-        return TestComponents.createUniqueContainer( table_.getTableEnvironment() );
+        return TestComponents.createUniqueContainer( getTable().getTableEnvironment() );
     }
 
     /**
@@ -105,6 +96,27 @@ public abstract class AbstractVersionControlTestCase
      * @return The table associated with the fixture; never {@code null}.
      */
     protected abstract ITable getTable();
+
+    /**
+     * Gets the tabletop associated with the fixture.
+     * 
+     * @return The tabletop associated with the fixture; never {@code null}.
+     */
+    private IContainer getTabletop()
+    {
+        return getTable().getTabletop();
+    }
+
+    /**
+     * Gets the version control under test in the fixture.
+     * 
+     * @return The version control under test in the fixture; never {@code null}
+     *         .
+     */
+    protected final IVersionControl getVersionControl()
+    {
+        return versionControl_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -116,10 +128,9 @@ public abstract class AbstractVersionControlTestCase
     public void setUp()
         throws Exception
     {
-        table_ = getTable();
-        assertNotNull( table_ );
-        versionControl_ = table_.getExtension( IVersionControl.class );
-        assertNotNull( versionControl_ );
+        final IVersionControl versionControl = getTable().getExtension( IVersionControl.class );
+        assertNotNull( versionControl );
+        versionControl_ = Optional.of( versionControl );
     }
 
     /**
@@ -129,10 +140,11 @@ public abstract class AbstractVersionControlTestCase
     @Test
     public void testAddComponent_AssociatedWithTable_IncrementsRevisionNumber()
     {
-        final long oldRevisionNumber = versionControl_.getRevisionNumber();
+        final IVersionControl versionControl = getVersionControl();
+        final long oldRevisionNumber = versionControl.getRevisionNumber();
 
-        table_.getTabletop().addComponent( createUniqueComponent() );
-        final long newRevisionNumber = versionControl_.getRevisionNumber();
+        getTabletop().addComponent( createUniqueComponent() );
+        final long newRevisionNumber = versionControl.getRevisionNumber();
 
         assertTrue( "new revision number not greater than old revision number", newRevisionNumber > oldRevisionNumber ); //$NON-NLS-1$
     }
@@ -144,11 +156,12 @@ public abstract class AbstractVersionControlTestCase
     @Test
     public void testAddComponent_NotAssociatedWithTable_DoesNotIncrementRevisionNumber()
     {
+        final IVersionControl versionControl = getVersionControl();
         final IContainer container = createUniqueContainer();
-        final long oldRevisionNumber = versionControl_.getRevisionNumber();
+        final long oldRevisionNumber = versionControl.getRevisionNumber();
 
         container.addComponent( createUniqueComponent() );
-        final long newRevisionNumber = versionControl_.getRevisionNumber();
+        final long newRevisionNumber = versionControl.getRevisionNumber();
 
         assertEquals( oldRevisionNumber, newRevisionNumber );
     }
@@ -160,12 +173,14 @@ public abstract class AbstractVersionControlTestCase
     @Test
     public void testRemoveComponent_AssociatedWithTable_IncrementsRevisionNumber()
     {
+        final IVersionControl versionControl = getVersionControl();
+        final IContainer tabletop = getTabletop();
         final IComponent component = createUniqueComponent();
-        table_.getTabletop().addComponent( component );
-        final long oldRevisionNumber = versionControl_.getRevisionNumber();
+        tabletop.addComponent( component );
+        final long oldRevisionNumber = versionControl.getRevisionNumber();
 
-        table_.getTabletop().removeComponent( component );
-        final long newRevisionNumber = versionControl_.getRevisionNumber();
+        tabletop.removeComponent( component );
+        final long newRevisionNumber = versionControl.getRevisionNumber();
 
         assertTrue( "new revision number not greater than old revision number", newRevisionNumber > oldRevisionNumber ); //$NON-NLS-1$
     }
@@ -177,13 +192,14 @@ public abstract class AbstractVersionControlTestCase
     @Test
     public void testRemoveComponent_NotAssociatedWithTable_DoesNotIncrementRevisionNumber()
     {
+        final IVersionControl versionControl = getVersionControl();
         final IContainer container = createUniqueContainer();
         final IComponent component = createUniqueComponent();
         container.addComponent( component );
-        final long oldRevisionNumber = versionControl_.getRevisionNumber();
+        final long oldRevisionNumber = versionControl.getRevisionNumber();
 
         container.removeComponent( component );
-        final long newRevisionNumber = versionControl_.getRevisionNumber();
+        final long newRevisionNumber = versionControl.getRevisionNumber();
 
         assertEquals( oldRevisionNumber, newRevisionNumber );
     }
@@ -195,12 +211,13 @@ public abstract class AbstractVersionControlTestCase
     @Test
     public void testSetComponentLocation_AssociatedWithTable_IncrementsRevisionNumber()
     {
+        final IVersionControl versionControl = getVersionControl();
         final IComponent component = createUniqueComponent();
-        table_.getTabletop().addComponent( component );
-        final long oldRevisionNumber = versionControl_.getRevisionNumber();
+        getTabletop().addComponent( component );
+        final long oldRevisionNumber = versionControl.getRevisionNumber();
 
         component.setLocation( new Point( 1000, 1000 ) );
-        final long newRevisionNumber = versionControl_.getRevisionNumber();
+        final long newRevisionNumber = versionControl.getRevisionNumber();
 
         assertTrue( "new revision number not greater than old revision number", newRevisionNumber > oldRevisionNumber ); //$NON-NLS-1$
     }
@@ -212,13 +229,14 @@ public abstract class AbstractVersionControlTestCase
     @Test
     public void testSetComponentLocation_NotAssociatedWithTable_DoesNotIncrementRevisionNumber()
     {
+        final IVersionControl versionControl = getVersionControl();
         final IContainer container = createUniqueContainer();
         final IComponent component = createUniqueComponent();
         container.addComponent( component );
-        final long oldRevisionNumber = versionControl_.getRevisionNumber();
+        final long oldRevisionNumber = versionControl.getRevisionNumber();
 
         component.setLocation( new Point( 1000, 1000 ) );
-        final long newRevisionNumber = versionControl_.getRevisionNumber();
+        final long newRevisionNumber = versionControl.getRevisionNumber();
 
         assertEquals( oldRevisionNumber, newRevisionNumber );
     }
@@ -230,12 +248,13 @@ public abstract class AbstractVersionControlTestCase
     @Test
     public void testSetComponentOrientation_AssociatedWithTable_IncrementsRevisionNumber()
     {
+        final IVersionControl versionControl = getVersionControl();
         final IComponent component = createUniqueComponent();
-        table_.getTabletop().addComponent( component );
-        final long oldRevisionNumber = versionControl_.getRevisionNumber();
+        getTabletop().addComponent( component );
+        final long oldRevisionNumber = versionControl.getRevisionNumber();
 
         component.setOrientation( component.getOrientation().inverse() );
-        final long newRevisionNumber = versionControl_.getRevisionNumber();
+        final long newRevisionNumber = versionControl.getRevisionNumber();
 
         assertTrue( "new revision number not greater than old revision number", newRevisionNumber > oldRevisionNumber ); //$NON-NLS-1$
     }
@@ -247,13 +266,14 @@ public abstract class AbstractVersionControlTestCase
     @Test
     public void testSetComponentOrientation_NotAssociatedWithTable_DoesNotIncrementRevisionNumber()
     {
+        final IVersionControl versionControl = getVersionControl();
         final IContainer container = createUniqueContainer();
         final IComponent component = createUniqueComponent();
         container.addComponent( component );
-        final long oldRevisionNumber = versionControl_.getRevisionNumber();
+        final long oldRevisionNumber = versionControl.getRevisionNumber();
 
         component.setOrientation( component.getOrientation().inverse() );
-        final long newRevisionNumber = versionControl_.getRevisionNumber();
+        final long newRevisionNumber = versionControl.getRevisionNumber();
 
         assertEquals( oldRevisionNumber, newRevisionNumber );
     }
@@ -265,12 +285,13 @@ public abstract class AbstractVersionControlTestCase
     @Test
     public void testSetComponentOrigin_AssociatedWithTable_IncrementsRevisionNumber()
     {
+        final IVersionControl versionControl = getVersionControl();
         final IComponent component = createUniqueComponent();
-        table_.getTabletop().addComponent( component );
-        final long oldRevisionNumber = versionControl_.getRevisionNumber();
+        getTabletop().addComponent( component );
+        final long oldRevisionNumber = versionControl.getRevisionNumber();
 
         component.setOrigin( new Point( 1000, 1000 ) );
-        final long newRevisionNumber = versionControl_.getRevisionNumber();
+        final long newRevisionNumber = versionControl.getRevisionNumber();
 
         assertTrue( "new revision number not greater than old revision number", newRevisionNumber > oldRevisionNumber ); //$NON-NLS-1$
     }
@@ -282,13 +303,14 @@ public abstract class AbstractVersionControlTestCase
     @Test
     public void testSetComponentOrigin_NotAssociatedWithTable_DoesNotIncrementRevisionNumber()
     {
+        final IVersionControl versionControl = getVersionControl();
         final IContainer container = createUniqueContainer();
         final IComponent component = createUniqueComponent();
         container.addComponent( component );
-        final long oldRevisionNumber = versionControl_.getRevisionNumber();
+        final long oldRevisionNumber = versionControl.getRevisionNumber();
 
         component.setOrigin( new Point( 1000, 1000 ) );
-        final long newRevisionNumber = versionControl_.getRevisionNumber();
+        final long newRevisionNumber = versionControl.getRevisionNumber();
 
         assertEquals( oldRevisionNumber, newRevisionNumber );
     }
@@ -300,12 +322,13 @@ public abstract class AbstractVersionControlTestCase
     @Test
     public void testSetComponentSurfaceDesign_AssociatedWithTable_IncrementsRevisionNumber()
     {
+        final IVersionControl versionControl = getVersionControl();
         final IComponent component = createUniqueComponent();
-        table_.getTabletop().addComponent( component );
-        final long oldRevisionNumber = versionControl_.getRevisionNumber();
+        getTabletop().addComponent( component );
+        final long oldRevisionNumber = versionControl.getRevisionNumber();
 
         component.setSurfaceDesign( component.getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
-        final long newRevisionNumber = versionControl_.getRevisionNumber();
+        final long newRevisionNumber = versionControl.getRevisionNumber();
 
         assertTrue( "new revision number not greater than old revision number", newRevisionNumber > oldRevisionNumber ); //$NON-NLS-1$
     }
@@ -317,13 +340,14 @@ public abstract class AbstractVersionControlTestCase
     @Test
     public void testSetComponentSurfaceDesign_NotAssociatedWithTable_DoesNotIncrementRevisionNumber()
     {
+        final IVersionControl versionControl = getVersionControl();
         final IContainer container = createUniqueContainer();
         final IComponent component = createUniqueComponent();
         container.addComponent( component );
-        final long oldRevisionNumber = versionControl_.getRevisionNumber();
+        final long oldRevisionNumber = versionControl.getRevisionNumber();
 
         component.setSurfaceDesign( component.getOrientation(), TestComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
-        final long newRevisionNumber = versionControl_.getRevisionNumber();
+        final long newRevisionNumber = versionControl.getRevisionNumber();
 
         assertEquals( oldRevisionNumber, newRevisionNumber );
     }
@@ -335,12 +359,13 @@ public abstract class AbstractVersionControlTestCase
     @Test
     public void testSetContainerLayout_AssociatedWithTable_IncrementsRevisionNumber()
     {
+        final IVersionControl versionControl = getVersionControl();
         final IContainer container = createUniqueContainer();
-        table_.getTabletop().addComponent( container );
-        final long oldRevisionNumber = versionControl_.getRevisionNumber();
+        getTabletop().addComponent( container );
+        final long oldRevisionNumber = versionControl.getRevisionNumber();
 
         container.setLayout( TestContainerLayouts.createUniqueContainerLayout() );
-        final long newRevisionNumber = versionControl_.getRevisionNumber();
+        final long newRevisionNumber = versionControl.getRevisionNumber();
 
         assertTrue( "new revision number not greater than old revision number", newRevisionNumber > oldRevisionNumber ); //$NON-NLS-1$
     }
@@ -352,13 +377,14 @@ public abstract class AbstractVersionControlTestCase
     @Test
     public void testSetContainerLayout_NotAssociatedWithTable_DoesNotIncrementRevisionNumber()
     {
+        final IVersionControl versionControl = getVersionControl();
         final IContainer parentContainer = createUniqueContainer();
         final IContainer container = createUniqueContainer();
         parentContainer.addComponent( container );
-        final long oldRevisionNumber = versionControl_.getRevisionNumber();
+        final long oldRevisionNumber = versionControl.getRevisionNumber();
 
         container.setLayout( TestContainerLayouts.createUniqueContainerLayout() );
-        final long newRevisionNumber = versionControl_.getRevisionNumber();
+        final long newRevisionNumber = versionControl.getRevisionNumber();
 
         assertEquals( oldRevisionNumber, newRevisionNumber );
     }

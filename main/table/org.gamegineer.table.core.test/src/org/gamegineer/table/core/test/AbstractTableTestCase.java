@@ -30,8 +30,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.List;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.gamegineer.common.core.util.memento.test.AbstractMementoOriginatorTestCase;
 import org.gamegineer.table.core.ComponentPath;
@@ -53,12 +52,6 @@ import org.junit.Test;
  * @param <TableType>
  *        The type of the table.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableEnvironment, TableType extends ITable>
     extends AbstractMementoOriginatorTestCase
 {
@@ -67,10 +60,10 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     // ======================================================================
 
     /** The table under test in the fixture. */
-    private TableType table_;
+    private Optional<TableType> table_;
 
     /** The table environment for use in the fixture. */
-    private TableEnvironmentType tableEnvironment_;
+    private Optional<TableEnvironmentType> tableEnvironment_;
 
 
     // ======================================================================
@@ -82,6 +75,8 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
      */
     protected AbstractTableTestCase()
     {
+        table_ = Optional.empty();
+        tableEnvironment_ = Optional.empty();
     }
 
 
@@ -113,8 +108,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     protected final IMementoOriginator createMementoOriginator()
         throws Exception
     {
-        assertNotNull( tableEnvironment_ );
-        return createTable( tableEnvironment_ );
+        return createTable( getTableEnvironment() );
     }
 
     /**
@@ -162,8 +156,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
      */
     private IComponent createUniqueComponent()
     {
-        assertNotNull( tableEnvironment_ );
-        return TestComponents.createUniqueComponent( tableEnvironment_ );
+        return TestComponents.createUniqueComponent( getTableEnvironment() );
     }
 
     /**
@@ -174,8 +167,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
      */
     private IContainer createUniqueContainer()
     {
-        assertNotNull( tableEnvironment_ );
-        return TestComponents.createUniqueContainer( tableEnvironment_ );
+        return TestComponents.createUniqueContainer( getTableEnvironment() );
     }
 
     /*
@@ -190,6 +182,26 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
         table.getTabletop().addComponent( TestComponents.createUniqueComponent( table.getTableEnvironment() ) );
     }
 
+    /**
+     * Gets the table under test in the fixture.
+     * 
+     * @return The table under test in the fixture; never {@code null}.
+     */
+    protected final TableType getTable()
+    {
+        return table_.get();
+    }
+
+    /**
+     * Gets the fixture table environment.
+     * 
+     * @return The fixture table environment; never {@code null}.
+     */
+    private TableEnvironmentType getTableEnvironment()
+    {
+        return tableEnvironment_.get();
+    }
+
     /*
      * @see org.gamegineer.common.core.util.memento.test.AbstractMementoOriginatorTestCase#setUp()
      */
@@ -198,10 +210,9 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     public void setUp()
         throws Exception
     {
-        tableEnvironment_ = createTableEnvironment();
-        assertNotNull( tableEnvironment_ );
-        table_ = createTable( tableEnvironment_ );
-        assertNotNull( table_ );
+        final TableEnvironmentType tableEnvironment = createTableEnvironment();
+        tableEnvironment_ = Optional.of( tableEnvironment );
+        table_ = Optional.of( createTable( tableEnvironment ) );
 
         super.setUp();
     }
@@ -213,7 +224,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     @Test
     public void testGetComponent_Path_Absent()
     {
-        assertNull( table_.getComponent( new ComponentPath( null, 1 ) ) );
+        assertNull( getTable().getComponent( new ComponentPath( null, 1 ) ) );
     }
 
     /**
@@ -223,7 +234,8 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     @Test
     public void testGetComponent_Path_Present()
     {
-        final IContainer expectedTabletop = table_.getTabletop();
+        final TableType table = getTable();
+        final IContainer expectedTabletop = table.getTabletop();
         final IContainer expectedContainer = createUniqueContainer();
         expectedTabletop.addComponent( expectedContainer );
         expectedContainer.addComponent( createUniqueComponent() );
@@ -233,13 +245,13 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
 
         final ComponentPath expectedTabletopPath = expectedTabletop.getPath();
         assertNotNull( expectedTabletopPath );
-        final IComponent actualTabletop = table_.getComponent( expectedTabletopPath );
+        final IComponent actualTabletop = table.getComponent( expectedTabletopPath );
         final ComponentPath expectedContainerPath = expectedContainer.getPath();
         assertNotNull( expectedContainerPath );
-        final IComponent actualContainer = table_.getComponent( expectedContainerPath );
+        final IComponent actualContainer = table.getComponent( expectedContainerPath );
         final ComponentPath expectedComponentPath = expectedComponent.getPath();
         assertNotNull( expectedComponentPath );
-        final IComponent actualComponent = table_.getComponent( expectedComponentPath );
+        final IComponent actualComponent = table.getComponent( expectedComponentPath );
 
         assertSame( expectedTabletop, actualTabletop );
         assertSame( expectedContainer, actualContainer );
@@ -253,7 +265,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     @Test
     public void testGetComponents_Location_ComponentAbsent()
     {
-        assertTrue( table_.getComponents( new Point( Integer.MIN_VALUE, Integer.MIN_VALUE ) ).isEmpty() );
+        assertTrue( getTable().getComponents( new Point( Integer.MIN_VALUE, Integer.MIN_VALUE ) ).isEmpty() );
     }
 
     /**
@@ -264,13 +276,15 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     @Test
     public void testGetComponents_Location_ComponentPresent_MultipleComponents()
     {
+        final TableType table = getTable();
+        //
         final Point location1 = new Point( 7, 420 );
         final Point location2 = new Point( 7, -420 );
         final Point location3 = new Point( 7, 840 );
         //
         final IContainer container1 = createUniqueContainer();
         container1.setLocation( location1 );
-        table_.getTabletop().addComponent( container1 );
+        table.getTabletop().addComponent( container1 );
         final IComponent component1 = createUniqueComponent();
         component1.setLocation( location1 );
         container1.addComponent( component1 );
@@ -280,7 +294,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
         //
         final IContainer container2 = createUniqueContainer();
         container2.setLocation( location2 );
-        table_.getTabletop().addComponent( container2 );
+        table.getTabletop().addComponent( container2 );
         final IComponent component3 = createUniqueComponent();
         component3.setLocation( location2 );
         container2.addComponent( component3 );
@@ -290,7 +304,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
         //
         final IContainer container3 = createUniqueContainer();
         container3.setLocation( location1 );
-        table_.getTabletop().addComponent( container3 );
+        table.getTabletop().addComponent( container3 );
         final IComponent component5 = createUniqueComponent();
         component5.setLocation( location1 );
         container3.addComponent( component5 );
@@ -299,14 +313,14 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
         container3.addComponent( component6 );
         //
         final List<IComponent> expectedComponents = Arrays.asList( //
-            table_.getTabletop(), //
+            table.getTabletop(), //
             container1, //
             container3, //
             component1, //
             component2, //
             component5 );
 
-        final List<IComponent> actualComponents = table_.getComponents( location1 );
+        final List<IComponent> actualComponents = table.getComponents( location1 );
 
         assertEquals( expectedComponents, actualComponents );
     }
@@ -319,15 +333,16 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     @Test
     public void testGetComponents_Location_ComponentPresent_SingleComponent()
     {
+        final TableType table = getTable();
         final Point location = new Point( 7, 42 );
         final IComponent component = createUniqueComponent();
         component.setLocation( location );
-        table_.getTabletop().addComponent( component );
+        table.getTabletop().addComponent( component );
         final List<IComponent> expectedComponents = Arrays.asList( //
-            table_.getTabletop(), //
+            table.getTabletop(), //
             component );
 
-        final List<IComponent> actualComponents = table_.getComponents( location );
+        final List<IComponent> actualComponents = table.getComponents( location );
 
         assertEquals( expectedComponents, actualComponents );
     }
@@ -339,10 +354,11 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     @Test
     public void testGetComponents_ReturnValue_Copy()
     {
-        final List<IComponent> components = table_.getComponents( new Point( 0, 0 ) );
+        final TableType table = getTable();
+        final List<IComponent> components = table.getComponents( new Point( 0, 0 ) );
         final int expectedComponentsSize = components.size();
 
-        table_.getTabletop().addComponent( createUniqueComponent() );
+        table.getTabletop().addComponent( createUniqueComponent() );
 
         assertEquals( expectedComponentsSize, components.size() );
     }
