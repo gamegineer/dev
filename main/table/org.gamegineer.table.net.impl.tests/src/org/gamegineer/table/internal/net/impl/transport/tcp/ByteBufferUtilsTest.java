@@ -32,9 +32,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import org.eclipse.jdt.annotation.DefaultLocation;
+import java.util.Optional;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,12 +41,6 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link ByteBufferUtils} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class ByteBufferUtilsTest
 {
     // ======================================================================
@@ -55,7 +48,7 @@ public final class ByteBufferUtilsTest
     // ======================================================================
 
     /** The collection of byte buffers for use in the fixture. */
-    private List<ByteBuffer> buffers_;
+    private Optional<List<ByteBuffer>> buffers_;
 
 
     // ======================================================================
@@ -67,6 +60,7 @@ public final class ByteBufferUtilsTest
      */
     public ByteBufferUtilsTest()
     {
+        buffers_ = Optional.empty();
     }
 
 
@@ -102,8 +96,7 @@ public final class ByteBufferUtilsTest
      */
     private List<ByteBuffer> getBuffers()
     {
-        assertNotNull( buffers_ );
-        return buffers_;
+        return buffers_.get();
     }
 
     /**
@@ -116,19 +109,20 @@ public final class ByteBufferUtilsTest
     public void setUp()
         throws Exception
     {
-        buffers_ = new ArrayList<>();
-        buffers_.add( ByteBuffer.wrap( new byte[] {
+        final List<ByteBuffer> buffers = new ArrayList<>();
+        buffers.add( ByteBuffer.wrap( new byte[] {
             0x00, 0x01, 0x02, 0x03
         } ) );
-        buffers_.add( ByteBuffer.wrap( new byte[] {
+        buffers.add( ByteBuffer.wrap( new byte[] {
             0x04, 0x05, 0x06, 0x07
         } ) );
-        buffers_.add( ByteBuffer.wrap( new byte[] {
+        buffers.add( ByteBuffer.wrap( new byte[] {
             0x08, 0x09, 0x0A, 0x0B
         } ) );
-        buffers_.add( ByteBuffer.wrap( new byte[] {
+        buffers.add( ByteBuffer.wrap( new byte[] {
             0x0C, 0x0D, 0x0E, 0x0F
         } ) );
+        buffers_ = Optional.of( buffers );
     }
 
     /**

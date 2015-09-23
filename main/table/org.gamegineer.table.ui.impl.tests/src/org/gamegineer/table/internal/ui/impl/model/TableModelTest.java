@@ -35,11 +35,10 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentStrategyId;
 import org.gamegineer.table.core.IComponent;
@@ -56,12 +55,6 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link TableModel} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class TableModelTest
 {
     // ======================================================================
@@ -69,13 +62,13 @@ public final class TableModelTest
     // ======================================================================
 
     /** The nice mocks control for use in the fixture. */
-    private IMocksControl niceMocksControl_;
+    private Optional<IMocksControl> niceMocksControl_;
 
     /** The table environment model for use in the fixture. */
-    private TableEnvironmentModel tableEnvironmentModel_;
+    private Optional<TableEnvironmentModel> tableEnvironmentModel_;
 
     /** The table model under test in the fixture. */
-    private TableModel tableModel_;
+    private Optional<TableModel> tableModel_;
 
 
     // ======================================================================
@@ -87,6 +80,9 @@ public final class TableModelTest
      */
     public TableModelTest()
     {
+        niceMocksControl_ = Optional.empty();
+        tableEnvironmentModel_ = Optional.empty();
+        tableModel_ = Optional.empty();
     }
 
 
@@ -151,7 +147,7 @@ public final class TableModelTest
                 return componentFocusability == ComponentFocusability.FOCUSABLE;
             }
         };
-        return TestComponents.createUniqueComponent( tableModel_.getTable().getTableEnvironment(), componentStrategyUI );
+        return TestComponents.createUniqueComponent( getTableModel().getTable().getTableEnvironment(), componentStrategyUI );
     }
 
     /**
@@ -192,7 +188,7 @@ public final class TableModelTest
                 return componentFocusability == ComponentFocusability.FOCUSABLE;
             }
         };
-        return TestComponents.createUniqueContainer( tableModel_.getTable().getTableEnvironment(), containerStrategyUI );
+        return TestComponents.createUniqueContainer( getTableModel().getTable().getTableEnvironment(), containerStrategyUI );
     }
 
     /**
@@ -228,7 +224,7 @@ public final class TableModelTest
         {
             final Method method = TableModel.class.getDeclaredMethod( methodName );
             method.setAccessible( true );
-            method.invoke( tableModel_ );
+            method.invoke( getTableModel() );
         }
         catch( final Exception e )
         {
@@ -273,6 +269,36 @@ public final class TableModelTest
     }
 
     /**
+     * Gets the fixture nice mocks control.
+     * 
+     * @return The fixture nice mocks control; never {@code null}.
+     */
+    private IMocksControl getNiceMocksControl()
+    {
+        return niceMocksControl_.get();
+    }
+
+    /**
+     * Gets the fixture table environment model.
+     * 
+     * @return The fixture table environment model; never {@code null}.
+     */
+    private TableEnvironmentModel getTableEnvironmentModel()
+    {
+        return tableEnvironmentModel_.get();
+    }
+
+    /**
+     * Gets the table model under test in the fixture.
+     * 
+     * @return The table model under test in the fixture; never {@code null}.
+     */
+    private TableModel getTableModel()
+    {
+        return tableModel_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -282,9 +308,10 @@ public final class TableModelTest
     public void setUp()
         throws Exception
     {
-        niceMocksControl_ = EasyMock.createNiceControl();
-        final TableEnvironmentModel tableEnvironmentModel = tableEnvironmentModel_ = new TableEnvironmentModel( TestTableEnvironments.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
-        tableModel_ = new TableModel( tableEnvironmentModel, tableEnvironmentModel.getTableEnvironment().createTable(), TestTableNetworks.createTableNetwork() );
+        niceMocksControl_ = Optional.of( EasyMock.createNiceControl() );
+        final TableEnvironmentModel tableEnvironmentModel = new TableEnvironmentModel( TestTableEnvironments.createTableEnvironment( new SingleThreadedTableEnvironmentContext() ) );
+        tableEnvironmentModel_ = Optional.of( tableEnvironmentModel );
+        tableModel_ = Optional.of( new TableModel( tableEnvironmentModel, tableEnvironmentModel.getTableEnvironment().createTable(), TestTableNetworks.createTableNetwork() ) );
     }
 
     /**
@@ -294,15 +321,16 @@ public final class TableModelTest
     @Test
     public void testAddTableModelListener_Listener_Absent()
     {
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final ITableModelListener listener = niceMocksControl.createMock( ITableModelListener.class );
         listener.tableChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
+        niceMocksControl.replay();
 
         fireTableChangedEvent();
-        tableModel_.addTableModelListener( listener );
+        getTableModel().addTableModelListener( listener );
         fireTableChangedEvent();
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -313,10 +341,11 @@ public final class TableModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testAddTableModelListener_Listener_Present()
     {
+        final TableModel tableModel = getTableModel();
         final ITableModelListener listener = EasyMock.createMock( ITableModelListener.class );
-        tableModel_.addTableModelListener( listener );
+        tableModel.addTableModelListener( listener );
 
-        tableModel_.addTableModelListener( listener );
+        tableModel.addTableModelListener( listener );
     }
 
     /**
@@ -326,16 +355,18 @@ public final class TableModelTest
     @Test
     public void testContainerModel_ContainerChanged_FiresTableModelDirtyFlagChangedEvent()
     {
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
         final IComponent component = createUniqueContainer();
-        tableModel_.getTable().getTabletop().addComponent( component );
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        tableModel.getTable().getTabletop().addComponent( component );
+        final ITableModelListener listener = niceMocksControl.createMock( ITableModelListener.class );
         listener.tableModelDirtyFlagChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.addTableModelListener( listener );
+        niceMocksControl.replay();
+        tableModel.addTableModelListener( listener );
 
         component.setLocation( new Point( 1000, 1000 ) );
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -345,16 +376,18 @@ public final class TableModelTest
     @Test
     public void testContainerModel_ContainerChanged_FiresTableChangedEvent()
     {
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
         final IComponent component = createUniqueContainer();
-        tableModel_.getTable().getTabletop().addComponent( component );
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        tableModel.getTable().getTabletop().addComponent( component );
+        final ITableModelListener listener = niceMocksControl.createMock( ITableModelListener.class );
         listener.tableChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.addTableModelListener( listener );
+        niceMocksControl.replay();
+        tableModel.addTableModelListener( listener );
 
         component.setLocation( new Point( 1000, 1000 ) );
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -364,10 +397,9 @@ public final class TableModelTest
     @Test( expected = AssertionError.class )
     public void testGetChildPath_ComponentModel_NotTabletopModel()
     {
-        final TableEnvironmentModel tableEnvironmentModel = tableEnvironmentModel_;
-        assertNotNull( tableEnvironmentModel );
+        final TableEnvironmentModel tableEnvironmentModel = getTableEnvironmentModel();
 
-        tableModel_.getChildPath( new ComponentModel( tableEnvironmentModel, TestComponents.createUniqueComponent( tableEnvironmentModel.getTableEnvironment() ) ) );
+        getTableModel().getChildPath( new ComponentModel( tableEnvironmentModel, TestComponents.createUniqueComponent( tableEnvironmentModel.getTableEnvironment() ) ) );
     }
 
     /**
@@ -377,15 +409,16 @@ public final class TableModelTest
     @Test
     public void testGetComponentModel_Path_Absent()
     {
+        final TableModel tableModel = getTableModel();
         final IContainer container = createUniqueContainer();
-        tableModel_.getTable().getTabletop().addComponent( container );
+        tableModel.getTable().getTabletop().addComponent( container );
         container.addComponent( createUniqueComponent() );
         container.addComponent( createUniqueComponent() );
         container.addComponent( createUniqueComponent() );
 
-        assertNull( tableModel_.getComponentModel( new ComponentPath( null, 1 ) ) );
-        assertNull( tableModel_.getComponentModel( new ComponentPath( new ComponentPath( null, 0 ), 1 ) ) );
-        assertNull( tableModel_.getComponentModel( new ComponentPath( new ComponentPath( new ComponentPath( null, 0 ), 0 ), 3 ) ) );
+        assertNull( tableModel.getComponentModel( new ComponentPath( null, 1 ) ) );
+        assertNull( tableModel.getComponentModel( new ComponentPath( new ComponentPath( null, 0 ), 1 ) ) );
+        assertNull( tableModel.getComponentModel( new ComponentPath( new ComponentPath( new ComponentPath( null, 0 ), 0 ), 3 ) ) );
     }
 
     /**
@@ -395,8 +428,9 @@ public final class TableModelTest
     @Test
     public void testGetComponentModel_Path_Present()
     {
+        final TableModel tableModel = getTableModel();
         final IContainer expectedContainer = createUniqueContainer();
-        tableModel_.getTable().getTabletop().addComponent( expectedContainer );
+        tableModel.getTable().getTabletop().addComponent( expectedContainer );
         expectedContainer.addComponent( createUniqueComponent() );
         expectedContainer.addComponent( createUniqueComponent() );
         final IComponent expectedComponent = createUniqueComponent();
@@ -404,10 +438,10 @@ public final class TableModelTest
 
         final ComponentPath expectedContainerPath = expectedContainer.getPath();
         assertNotNull( expectedContainerPath );
-        final ComponentModel actualContainerModel = tableModel_.getComponentModel( expectedContainerPath );
+        final ComponentModel actualContainerModel = tableModel.getComponentModel( expectedContainerPath );
         final ComponentPath expectedComponentPath = expectedComponent.getPath();
         assertNotNull( expectedComponentPath );
-        final ComponentModel actualComponentModel = tableModel_.getComponentModel( expectedComponentPath );
+        final ComponentModel actualComponentModel = tableModel.getComponentModel( expectedComponentPath );
 
         assertNotNull( actualContainerModel );
         assertSame( expectedContainer, actualContainerModel.getComponent() );
@@ -422,7 +456,7 @@ public final class TableModelTest
     @Test
     public void testGetComponentModels_Location_ComponentModelAbsent()
     {
-        assertTrue( tableModel_.getComponentModels( new Point( Integer.MIN_VALUE, Integer.MIN_VALUE ) ).isEmpty() );
+        assertTrue( getTableModel().getComponentModels( new Point( Integer.MIN_VALUE, Integer.MIN_VALUE ) ).isEmpty() );
     }
 
     /**
@@ -433,13 +467,15 @@ public final class TableModelTest
     @Test
     public void testGetComponentModels_Location_ComponentModelPresent_MultipleComponentModels()
     {
+        final TableModel tableModel = getTableModel();
+        //
         final Point location1 = new Point( 7, 420 );
         final Point location2 = new Point( 7, -420 );
         final Point location3 = new Point( 7, 840 );
         //
         final IContainer container1 = createUniqueContainer();
         container1.setLocation( location1 );
-        tableModel_.getTable().getTabletop().addComponent( container1 );
+        tableModel.getTable().getTabletop().addComponent( container1 );
         final IComponent component1 = createUniqueComponent();
         component1.setLocation( location1 );
         container1.addComponent( component1 );
@@ -449,7 +485,7 @@ public final class TableModelTest
         //
         final IContainer container2 = createUniqueContainer();
         container2.setLocation( location2 );
-        tableModel_.getTable().getTabletop().addComponent( container2 );
+        tableModel.getTable().getTabletop().addComponent( container2 );
         final IComponent component3 = createUniqueComponent();
         component3.setLocation( location2 );
         container2.addComponent( component3 );
@@ -459,7 +495,7 @@ public final class TableModelTest
         //
         final IContainer container3 = createUniqueContainer();
         container3.setLocation( location1 );
-        tableModel_.getTable().getTabletop().addComponent( container3 );
+        tableModel.getTable().getTabletop().addComponent( container3 );
         final IComponent component5 = createUniqueComponent();
         component5.setLocation( location1 );
         container3.addComponent( component5 );
@@ -468,7 +504,7 @@ public final class TableModelTest
         container3.addComponent( component6 );
         //
         final List<IComponent> expectedComponents = Arrays.asList( //
-            tableModel_.getTable().getTabletop(), //
+            tableModel.getTable().getTabletop(), //
             container1, //
             container3, //
             component1, //
@@ -476,7 +512,7 @@ public final class TableModelTest
             component5 );
 
         final List<IComponent> actualComponents = new ArrayList<>();
-        for( final ComponentModel componentModel : tableModel_.getComponentModels( location1 ) )
+        for( final ComponentModel componentModel : tableModel.getComponentModels( location1 ) )
         {
             actualComponents.add( componentModel.getComponent() );
         }
@@ -492,16 +528,17 @@ public final class TableModelTest
     @Test
     public void testGetComponentModels_Location_ComponentModelPresent_SingleComponentModel()
     {
+        final TableModel tableModel = getTableModel();
         final Point location = new Point( 7, 42 );
         final IComponent component = createUniqueComponent();
         component.setLocation( location );
-        tableModel_.getTable().getTabletop().addComponent( component );
+        tableModel.getTable().getTabletop().addComponent( component );
         final List<IComponent> expectedComponents = Arrays.asList( //
-            tableModel_.getTable().getTabletop(), //
+            tableModel.getTable().getTabletop(), //
             component );
 
         final List<IComponent> actualComponents = new ArrayList<>();
-        for( final ComponentModel componentModel : tableModel_.getComponentModels( location ) )
+        for( final ComponentModel componentModel : tableModel.getComponentModels( location ) )
         {
             actualComponents.add( componentModel.getComponent() );
         }
@@ -516,10 +553,11 @@ public final class TableModelTest
     @Test
     public void testGetComponentModels_ReturnValue_Copy()
     {
-        final List<ComponentModel> componentModels = tableModel_.getComponentModels( new Point( 0, 0 ) );
+        final TableModel tableModel = getTableModel();
+        final List<ComponentModel> componentModels = tableModel.getComponentModels( new Point( 0, 0 ) );
         final int expectedComponentModelsSize = componentModels.size();
 
-        tableModel_.getTable().getTabletop().addComponent( createUniqueComponent() );
+        tableModel.getTable().getTabletop().addComponent( createUniqueComponent() );
 
         assertEquals( expectedComponentModelsSize, componentModels.size() );
     }
@@ -532,10 +570,11 @@ public final class TableModelTest
     @Test
     public void testGetFocusableComponentModel_Location_FocusableComponentModel()
     {
+        final TableModel tableModel = getTableModel();
         final IComponent expectedComponent = createUniqueContainer();
-        tableModel_.getTable().getTabletop().addComponent( expectedComponent );
+        tableModel.getTable().getTabletop().addComponent( expectedComponent );
 
-        final ComponentModel actualComponentModel = tableModel_.getFocusableComponentModel( new Point( 0, 0 ) );
+        final ComponentModel actualComponentModel = tableModel.getFocusableComponentModel( new Point( 0, 0 ) );
 
         assertNotNull( actualComponentModel );
         assertSame( expectedComponent, actualComponentModel.getComponent() );
@@ -548,9 +587,10 @@ public final class TableModelTest
     @Test
     public void testGetFocusableComponentModel_Location_NoComponentModel()
     {
-        tableModel_.getTable().getTabletop().addComponent( createUniqueContainer() );
+        final TableModel tableModel = getTableModel();
+        tableModel.getTable().getTabletop().addComponent( createUniqueContainer() );
 
-        assertNull( tableModel_.getFocusableComponentModel( new Point( Integer.MIN_VALUE, Integer.MIN_VALUE ) ) );
+        assertNull( tableModel.getFocusableComponentModel( new Point( Integer.MIN_VALUE, Integer.MIN_VALUE ) ) );
     }
 
     /**
@@ -564,8 +604,9 @@ public final class TableModelTest
     @Test
     public void testGetFocusableComponentModelWithSearchVector_SearchVector_FollowingDirection_Location_FollowingFocusableComponentModel()
     {
+        final TableModel tableModel = getTableModel();
         final IContainer parentContainer = createUniqueContainer();
-        tableModel_.getTable().getTabletop().addComponent( parentContainer );
+        tableModel.getTable().getTabletop().addComponent( parentContainer );
         final IContainer container = createUniqueContainer();
         parentContainer.addComponent( container );
         final IComponent childComponent = createUniqueComponent( ComponentFocusability.FOCUSABLE );
@@ -574,9 +615,9 @@ public final class TableModelTest
 
         final ComponentPath containerPath = container.getPath();
         assertNotNull( containerPath );
-        final ComponentModel componentModel = tableModel_.getComponentModel( containerPath );
+        final ComponentModel componentModel = tableModel.getComponentModel( containerPath );
         assertNotNull( componentModel );
-        final ComponentModel actualComponentModel = tableModel_.getFocusableComponentModel( new Point( 0, 0 ), new ComponentModelVector( componentModel, ComponentAxis.FOLLOWING ) );
+        final ComponentModel actualComponentModel = tableModel.getFocusableComponentModel( new Point( 0, 0 ), new ComponentModelVector( componentModel, ComponentAxis.FOLLOWING ) );
 
         assertNotNull( actualComponentModel );
         assertSame( expectedComponent, actualComponentModel.getComponent() );
@@ -592,8 +633,9 @@ public final class TableModelTest
     @Test
     public void testGetFocusableComponentModelWithSearchVector_SearchVector_FollowingDirection_Location_NoOtherFocusableComponentModel()
     {
+        final TableModel tableModel = getTableModel();
         final IContainer parentContainer = createUniqueContainer( ComponentFocusability.NOT_FOCUSABLE );
-        tableModel_.getTable().getTabletop().addComponent( parentContainer );
+        tableModel.getTable().getTabletop().addComponent( parentContainer );
         final IContainer container = createUniqueContainer();
         parentContainer.addComponent( container );
         final IComponent childComponent = createUniqueComponent();
@@ -602,9 +644,9 @@ public final class TableModelTest
 
         final ComponentPath containerPath = container.getPath();
         assertNotNull( containerPath );
-        final ComponentModel componentModel = tableModel_.getComponentModel( containerPath );
+        final ComponentModel componentModel = tableModel.getComponentModel( containerPath );
         assertNotNull( componentModel );
-        final ComponentModel actualComponentModel = tableModel_.getFocusableComponentModel( new Point( 0, 0 ), new ComponentModelVector( componentModel, ComponentAxis.FOLLOWING ) );
+        final ComponentModel actualComponentModel = tableModel.getFocusableComponentModel( new Point( 0, 0 ), new ComponentModelVector( componentModel, ComponentAxis.FOLLOWING ) );
 
         assertNotNull( actualComponentModel );
         assertSame( expectedComponent, actualComponentModel.getComponent() );
@@ -621,8 +663,9 @@ public final class TableModelTest
     @Test
     public void testGetFocusableComponentModelWithSearchVector_SearchVector_FollowingDirection_Location_PrecedingFocusableComponentModel()
     {
+        final TableModel tableModel = getTableModel();
         final IContainer parentContainer = createUniqueContainer();
-        tableModel_.getTable().getTabletop().addComponent( parentContainer );
+        tableModel.getTable().getTabletop().addComponent( parentContainer );
         final IContainer container = createUniqueContainer();
         parentContainer.addComponent( container );
         final IComponent childComponent = createUniqueComponent();
@@ -631,9 +674,9 @@ public final class TableModelTest
 
         final ComponentPath containerPath = container.getPath();
         assertNotNull( containerPath );
-        final ComponentModel componentModel = tableModel_.getComponentModel( containerPath );
+        final ComponentModel componentModel = tableModel.getComponentModel( containerPath );
         assertNotNull( componentModel );
-        final ComponentModel actualComponentModel = tableModel_.getFocusableComponentModel( new Point( 0, 0 ), new ComponentModelVector( componentModel, ComponentAxis.FOLLOWING ) );
+        final ComponentModel actualComponentModel = tableModel.getFocusableComponentModel( new Point( 0, 0 ), new ComponentModelVector( componentModel, ComponentAxis.FOLLOWING ) );
 
         assertNotNull( actualComponentModel );
         assertSame( expectedComponent, actualComponentModel.getComponent() );
@@ -649,13 +692,14 @@ public final class TableModelTest
     @Test
     public void testGetFocusableComponentModelWithSearchVector_SearchVector_Null_Location_FocusableComponentModel()
     {
+        final TableModel tableModel = getTableModel();
         final IContainer container = createUniqueContainer();
-        tableModel_.getTable().getTabletop().addComponent( container );
+        tableModel.getTable().getTabletop().addComponent( container );
         final IComponent childComponent = createUniqueComponent();
         container.addComponent( childComponent );
         final IComponent expectedComponent = container;
 
-        final ComponentModel actualComponentModel = tableModel_.getFocusableComponentModel( new Point( 0, 0 ), null );
+        final ComponentModel actualComponentModel = tableModel.getFocusableComponentModel( new Point( 0, 0 ), null );
 
         assertNotNull( actualComponentModel );
         assertSame( expectedComponent, actualComponentModel.getComponent() );
@@ -670,9 +714,10 @@ public final class TableModelTest
     @Test
     public void testGetFocusableComponentModelWithSearchVector_SearchVector_Null_Location_NoComponentModel()
     {
-        tableModel_.getTable().getTabletop().addComponent( createUniqueContainer() );
+        final TableModel tableModel = getTableModel();
+        tableModel.getTable().getTabletop().addComponent( createUniqueContainer() );
 
-        assertNull( tableModel_.getFocusableComponentModel( new Point( Integer.MIN_VALUE, Integer.MIN_VALUE ), null ) );
+        assertNull( tableModel.getFocusableComponentModel( new Point( Integer.MIN_VALUE, Integer.MIN_VALUE ), null ) );
     }
 
     /**
@@ -684,9 +729,10 @@ public final class TableModelTest
     @Test
     public void testGetFocusableComponentModelWithSearchVector_SearchVector_Null_Location_NoFocusableComponentModel()
     {
-        tableModel_.getTable().getTabletop().addComponent( createUniqueComponent() );
+        final TableModel tableModel = getTableModel();
+        tableModel.getTable().getTabletop().addComponent( createUniqueComponent() );
 
-        assertNull( tableModel_.getFocusableComponentModel( new Point( 0, 0 ), null ) );
+        assertNull( tableModel.getFocusableComponentModel( new Point( 0, 0 ), null ) );
     }
 
     /**
@@ -700,8 +746,9 @@ public final class TableModelTest
     @Test
     public void testGetFocusableComponentModelWithSearchVector_SearchVector_PrecedingDirection_Location_FollowingFocusableComponentModel()
     {
+        final TableModel tableModel = getTableModel();
         final IContainer parentContainer = createUniqueContainer( ComponentFocusability.NOT_FOCUSABLE );
-        tableModel_.getTable().getTabletop().addComponent( parentContainer );
+        tableModel.getTable().getTabletop().addComponent( parentContainer );
         final IContainer container = createUniqueContainer();
         parentContainer.addComponent( container );
         final IComponent childComponent = createUniqueComponent( ComponentFocusability.FOCUSABLE );
@@ -710,9 +757,9 @@ public final class TableModelTest
 
         final ComponentPath containerPath = container.getPath();
         assertNotNull( containerPath );
-        final ComponentModel componentModel = tableModel_.getComponentModel( containerPath );
+        final ComponentModel componentModel = tableModel.getComponentModel( containerPath );
         assertNotNull( componentModel );
-        final ComponentModel actualComponentModel = tableModel_.getFocusableComponentModel( new Point( 0, 0 ), new ComponentModelVector( componentModel, ComponentAxis.PRECEDING ) );
+        final ComponentModel actualComponentModel = tableModel.getFocusableComponentModel( new Point( 0, 0 ), new ComponentModelVector( componentModel, ComponentAxis.PRECEDING ) );
 
         assertNotNull( actualComponentModel );
         assertSame( expectedComponent, actualComponentModel.getComponent() );
@@ -728,8 +775,9 @@ public final class TableModelTest
     @Test
     public void testGetFocusableComponentModelWithSearchVector_SearchVector_PrecedingDirection_Location_NoOtherFocusableComponentModel()
     {
+        final TableModel tableModel = getTableModel();
         final IContainer parentContainer = createUniqueContainer( ComponentFocusability.NOT_FOCUSABLE );
-        tableModel_.getTable().getTabletop().addComponent( parentContainer );
+        tableModel.getTable().getTabletop().addComponent( parentContainer );
         final IContainer container = createUniqueContainer();
         parentContainer.addComponent( container );
         final IComponent childComponent = createUniqueComponent();
@@ -738,9 +786,9 @@ public final class TableModelTest
 
         final ComponentPath containerPath = container.getPath();
         assertNotNull( containerPath );
-        final ComponentModel componentModel = tableModel_.getComponentModel( containerPath );
+        final ComponentModel componentModel = tableModel.getComponentModel( containerPath );
         assertNotNull( componentModel );
-        final ComponentModel actualComponentModel = tableModel_.getFocusableComponentModel( new Point( 0, 0 ), new ComponentModelVector( componentModel, ComponentAxis.PRECEDING ) );
+        final ComponentModel actualComponentModel = tableModel.getFocusableComponentModel( new Point( 0, 0 ), new ComponentModelVector( componentModel, ComponentAxis.PRECEDING ) );
 
         assertNotNull( actualComponentModel );
         assertSame( expectedComponent, actualComponentModel.getComponent() );
@@ -757,8 +805,9 @@ public final class TableModelTest
     @Test
     public void testGetFocusableComponentModelWithSearchVector_SearchVector_PrecedingDirection_Location_PrecedingFocusableComponentModel()
     {
+        final TableModel tableModel = getTableModel();
         final IContainer parentContainer = createUniqueContainer();
-        tableModel_.getTable().getTabletop().addComponent( parentContainer );
+        tableModel.getTable().getTabletop().addComponent( parentContainer );
         final IContainer container = createUniqueContainer();
         parentContainer.addComponent( container );
         final IComponent childComponent = createUniqueComponent();
@@ -767,9 +816,9 @@ public final class TableModelTest
 
         final ComponentPath containerPath = container.getPath();
         assertNotNull( containerPath );
-        final ComponentModel componentModel = tableModel_.getComponentModel( containerPath );
+        final ComponentModel componentModel = tableModel.getComponentModel( containerPath );
         assertNotNull( componentModel );
-        final ComponentModel actualComponentModel = tableModel_.getFocusableComponentModel( new Point( 0, 0 ), new ComponentModelVector( componentModel, ComponentAxis.PRECEDING ) );
+        final ComponentModel actualComponentModel = tableModel.getFocusableComponentModel( new Point( 0, 0 ), new ComponentModelVector( componentModel, ComponentAxis.PRECEDING ) );
 
         assertNotNull( actualComponentModel );
         assertSame( expectedComponent, actualComponentModel.getComponent() );
@@ -782,11 +831,12 @@ public final class TableModelTest
     @Test
     public void testGetOriginOffset_ReturnValue_Copy()
     {
-        final Dimension originOffset = tableModel_.getOriginOffset();
+        final TableModel tableModel = getTableModel();
+        final Dimension originOffset = tableModel.getOriginOffset();
         final Dimension expectedOriginOffset = new Dimension( originOffset );
         originOffset.setSize( expectedOriginOffset.width + 100, expectedOriginOffset.height + 200 );
 
-        final Dimension actualOriginOffset = tableModel_.getOriginOffset();
+        final Dimension actualOriginOffset = tableModel.getOriginOffset();
 
         assertEquals( expectedOriginOffset, actualOriginOffset );
     }
@@ -797,14 +847,16 @@ public final class TableModelTest
     @Test
     public void testOpen_FiresTableChangedEvent()
     {
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final ITableModelListener listener = niceMocksControl.createMock( ITableModelListener.class );
         listener.tableChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.addTableModelListener( listener );
+        niceMocksControl.replay();
+        tableModel.addTableModelListener( listener );
 
-        tableModel_.open();
+        tableModel.open();
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -814,14 +866,16 @@ public final class TableModelTest
     @Test
     public void testOpen_FiresTableModelDirtyFlagChangedEvent()
     {
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final ITableModelListener listener = niceMocksControl.createMock( ITableModelListener.class );
         listener.tableModelDirtyFlagChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.addTableModelListener( listener );
+        niceMocksControl.replay();
+        tableModel.addTableModelListener( listener );
 
-        tableModel_.open();
+        tableModel.open();
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -831,14 +885,16 @@ public final class TableModelTest
     @Test
     public void testOpen_FiresTableModelFileChangedEvent()
     {
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final ITableModelListener listener = niceMocksControl.createMock( ITableModelListener.class );
         listener.tableModelFileChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.addTableModelListener( listener );
+        niceMocksControl.replay();
+        tableModel.addTableModelListener( listener );
 
-        tableModel_.open();
+        tableModel.open();
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -848,14 +904,16 @@ public final class TableModelTest
     @Test
     public void testOpen_FiresTableModelFocusChangedEvent()
     {
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final ITableModelListener listener = niceMocksControl.createMock( ITableModelListener.class );
         listener.tableModelFocusChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.addTableModelListener( listener );
+        niceMocksControl.replay();
+        tableModel.addTableModelListener( listener );
 
-        tableModel_.open();
+        tableModel.open();
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -865,14 +923,16 @@ public final class TableModelTest
     @Test
     public void testOpen_FiresTableModelHoverChangedEvent()
     {
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final ITableModelListener listener = niceMocksControl.createMock( ITableModelListener.class );
         listener.tableModelHoverChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.addTableModelListener( listener );
+        niceMocksControl.replay();
+        tableModel.addTableModelListener( listener );
 
-        tableModel_.open();
+        tableModel.open();
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -882,14 +942,16 @@ public final class TableModelTest
     @Test
     public void testOpen_FiresTableModelOriginOffsetChangedEvent()
     {
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final ITableModelListener listener = niceMocksControl.createMock( ITableModelListener.class );
         listener.tableModelOriginOffsetChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.addTableModelListener( listener );
+        niceMocksControl.replay();
+        tableModel.addTableModelListener( listener );
 
-        tableModel_.open();
+        tableModel.open();
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -903,16 +965,18 @@ public final class TableModelTest
     public void testOpenFromFile_FiresTableChangedEvent()
         throws Exception
     {
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
         final File file = createTemporaryFile();
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        final ITableModelListener listener = niceMocksControl.createMock( ITableModelListener.class );
         listener.tableChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.save( file );
-        tableModel_.addTableModelListener( listener );
+        niceMocksControl.replay();
+        tableModel.save( file );
+        tableModel.addTableModelListener( listener );
 
-        tableModel_.open( file );
+        tableModel.open( file );
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -926,16 +990,18 @@ public final class TableModelTest
     public void testOpenFromFile_FiresTableModelDirtyFlagChangedEvent()
         throws Exception
     {
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
         final File file = createTemporaryFile();
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        final ITableModelListener listener = niceMocksControl.createMock( ITableModelListener.class );
         listener.tableModelDirtyFlagChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.save( file );
-        tableModel_.addTableModelListener( listener );
+        niceMocksControl.replay();
+        tableModel.save( file );
+        tableModel.addTableModelListener( listener );
 
-        tableModel_.open( file );
+        tableModel.open( file );
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -949,16 +1015,18 @@ public final class TableModelTest
     public void testOpenFromFile_FiresTableModelFileChangedEvent()
         throws Exception
     {
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
         final File file = createTemporaryFile();
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        final ITableModelListener listener = niceMocksControl.createMock( ITableModelListener.class );
         listener.tableModelFileChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.save( file );
-        tableModel_.addTableModelListener( listener );
+        niceMocksControl.replay();
+        tableModel.save( file );
+        tableModel.addTableModelListener( listener );
 
-        tableModel_.open( file );
+        getTableModel().open( file );
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -972,16 +1040,18 @@ public final class TableModelTest
     public void testOpenFromFile_FiresTableModelFocusChangedEvent()
         throws Exception
     {
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
         final File file = createTemporaryFile();
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        final ITableModelListener listener = niceMocksControl.createMock( ITableModelListener.class );
         listener.tableModelFocusChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.save( file );
-        tableModel_.addTableModelListener( listener );
+        niceMocksControl.replay();
+        tableModel.save( file );
+        tableModel.addTableModelListener( listener );
 
-        tableModel_.open( file );
+        tableModel.open( file );
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -995,16 +1065,18 @@ public final class TableModelTest
     public void testOpenFromFile_FiresTableModelHoverChangedEvent()
         throws Exception
     {
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
         final File file = createTemporaryFile();
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        final ITableModelListener listener = niceMocksControl.createMock( ITableModelListener.class );
         listener.tableModelHoverChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.save( file );
-        tableModel_.addTableModelListener( listener );
+        niceMocksControl.replay();
+        tableModel.save( file );
+        tableModel.addTableModelListener( listener );
 
-        tableModel_.open( file );
+        tableModel.open( file );
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -1018,16 +1090,18 @@ public final class TableModelTest
     public void testOpenFromFile_FiresTableModelOriginOffsetChangedEvent()
         throws Exception
     {
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
         final File file = createTemporaryFile();
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        final ITableModelListener listener = niceMocksControl.createMock( ITableModelListener.class );
         listener.tableModelOriginOffsetChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.save( file );
-        tableModel_.addTableModelListener( listener );
+        niceMocksControl.replay();
+        tableModel.save( file );
+        tableModel.addTableModelListener( listener );
 
-        tableModel_.open( file );
+        tableModel.open( file );
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -1037,22 +1111,24 @@ public final class TableModelTest
     @Test
     public void testRemoveFocusedComponentModel_FiresTableModelFocusChangedEvent()
     {
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
         final IComponent component = createUniqueContainer();
-        tableModel_.getTable().getTabletop().addComponent( component );
+        tableModel.getTable().getTabletop().addComponent( component );
         final ComponentPath componentPath = component.getPath();
         assertNotNull( componentPath );
-        final ComponentModel componentModel = tableModel_.getComponentModel( componentPath );
-        tableModel_.setFocus( componentModel );
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        final ComponentModel componentModel = tableModel.getComponentModel( componentPath );
+        tableModel.setFocus( componentModel );
+        final ITableModelListener listener = niceMocksControl.createMock( ITableModelListener.class );
         listener.tableModelFocusChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.addTableModelListener( listener );
+        niceMocksControl.replay();
+        tableModel.addTableModelListener( listener );
 
-        assertEquals( componentModel, tableModel_.getFocusedComponentModel() );
-        tableModel_.getTable().getTabletop().removeComponent( component );
+        assertEquals( componentModel, tableModel.getFocusedComponentModel() );
+        tableModel.getTable().getTabletop().removeComponent( component );
 
-        niceMocksControl_.verify();
-        assertNull( tableModel_.getFocusedComponentModel() );
+        niceMocksControl.verify();
+        assertNull( tableModel.getFocusedComponentModel() );
     }
 
     /**
@@ -1062,22 +1138,24 @@ public final class TableModelTest
     @Test
     public void testRemoveHoveredComponentModel_FiresTableModelHoverChangedEvent()
     {
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
         final IComponent component = createUniqueContainer();
-        tableModel_.getTable().getTabletop().addComponent( component );
+        tableModel.getTable().getTabletop().addComponent( component );
         final ComponentPath componentPath = component.getPath();
         assertNotNull( componentPath );
-        final ComponentModel componentModel = tableModel_.getComponentModel( componentPath );
-        tableModel_.setHover( componentModel );
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        final ComponentModel componentModel = tableModel.getComponentModel( componentPath );
+        tableModel.setHover( componentModel );
+        final ITableModelListener listener = niceMocksControl.createMock( ITableModelListener.class );
         listener.tableModelHoverChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.addTableModelListener( listener );
+        niceMocksControl.replay();
+        tableModel.addTableModelListener( listener );
 
-        assertEquals( componentModel, tableModel_.getHoveredComponentModel() );
-        tableModel_.getTable().getTabletop().removeComponent( component );
+        assertEquals( componentModel, tableModel.getHoveredComponentModel() );
+        tableModel.getTable().getTabletop().removeComponent( component );
 
-        niceMocksControl_.verify();
-        assertNull( tableModel_.getHoveredComponentModel() );
+        niceMocksControl.verify();
+        assertNull( tableModel.getHoveredComponentModel() );
     }
 
     /**
@@ -1088,7 +1166,7 @@ public final class TableModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveTableModelListener_Listener_Absent()
     {
-        tableModel_.removeTableModelListener( EasyMock.createMock( ITableModelListener.class ) );
+        getTableModel().removeTableModelListener( EasyMock.createMock( ITableModelListener.class ) );
     }
 
     /**
@@ -1098,16 +1176,18 @@ public final class TableModelTest
     @Test
     public void testRemoveTableModelListener_Listener_Present()
     {
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final ITableModelListener listener = niceMocksControl.createMock( ITableModelListener.class );
         listener.tableChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.addTableModelListener( listener );
+        niceMocksControl.replay();
+        tableModel.addTableModelListener( listener );
 
         fireTableChangedEvent();
-        tableModel_.removeTableModelListener( listener );
+        tableModel.removeTableModelListener( listener );
         fireTableChangedEvent();
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -1121,15 +1201,17 @@ public final class TableModelTest
     public void testSave_FiresTableModelDirtyFlagChangedEvent()
         throws Exception
     {
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
         final File file = createTemporaryFile();
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        final ITableModelListener listener = niceMocksControl.createMock( ITableModelListener.class );
         listener.tableModelDirtyFlagChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.addTableModelListener( listener );
+        niceMocksControl.replay();
+        tableModel.addTableModelListener( listener );
 
-        tableModel_.save( file );
+        tableModel.save( file );
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -1143,15 +1225,17 @@ public final class TableModelTest
     public void testSave_FiresTableModelFileChangedEvent()
         throws Exception
     {
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
         final File file = createTemporaryFile();
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        final ITableModelListener listener = niceMocksControl.createMock( ITableModelListener.class );
         listener.tableModelFileChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.addTableModelListener( listener );
+        niceMocksControl.replay();
+        tableModel.addTableModelListener( listener );
 
-        tableModel_.save( file );
+        tableModel.save( file );
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -1161,23 +1245,24 @@ public final class TableModelTest
     @Test
     public void testSetFocus()
     {
+        final TableModel tableModel = getTableModel();
         final IContainer container1 = createUniqueContainer();
-        tableModel_.getTable().getTabletop().addComponent( container1 );
+        tableModel.getTable().getTabletop().addComponent( container1 );
         final ComponentPath container1Path = container1.getPath();
         assertNotNull( container1Path );
-        final ComponentModel containerModel1 = tableModel_.getComponentModel( container1Path );
+        final ComponentModel containerModel1 = tableModel.getComponentModel( container1Path );
         final IContainer container2 = createUniqueContainer();
-        tableModel_.getTable().getTabletop().addComponent( container2 );
+        tableModel.getTable().getTabletop().addComponent( container2 );
         final ComponentPath container2Path = container2.getPath();
         assertNotNull( container2Path );
-        final ComponentModel containerModel2 = tableModel_.getComponentModel( container2Path );
+        final ComponentModel containerModel2 = tableModel.getComponentModel( container2Path );
 
         assertNotNull( containerModel1 );
         assertNotNull( containerModel2 );
-        tableModel_.setFocus( containerModel1 );
+        tableModel.setFocus( containerModel1 );
         assertTrue( containerModel1.isFocused() );
         assertFalse( containerModel2.isFocused() );
-        tableModel_.setFocus( containerModel2 );
+        tableModel.setFocus( containerModel2 );
         assertFalse( containerModel1.isFocused() );
         assertTrue( containerModel2.isFocused() );
     }
@@ -1189,7 +1274,7 @@ public final class TableModelTest
     @Test
     public void testSetFocus_ComponentModel_Null()
     {
-        tableModel_.setFocus( null );
+        getTableModel().setFocus( null );
     }
 
     /**
@@ -1199,19 +1284,21 @@ public final class TableModelTest
     @Test
     public void testSetFocus_FiresTableModelFocusChangedEvent()
     {
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
         final IContainer container = createUniqueContainer();
-        tableModel_.getTable().getTabletop().addComponent( container );
+        tableModel.getTable().getTabletop().addComponent( container );
         final ComponentPath containerPath = container.getPath();
         assertNotNull( containerPath );
-        final ComponentModel containerModel = tableModel_.getComponentModel( containerPath );
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        final ComponentModel containerModel = tableModel.getComponentModel( containerPath );
+        final ITableModelListener listener = niceMocksControl.createMock( ITableModelListener.class );
         listener.tableModelFocusChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.addTableModelListener( listener );
+        niceMocksControl.replay();
+        tableModel.addTableModelListener( listener );
 
-        tableModel_.setFocus( containerModel );
+        tableModel.setFocus( containerModel );
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -1221,23 +1308,24 @@ public final class TableModelTest
     @Test
     public void testSetHover()
     {
+        final TableModel tableModel = getTableModel();
         final IContainer container1 = createUniqueContainer();
-        tableModel_.getTable().getTabletop().addComponent( container1 );
+        tableModel.getTable().getTabletop().addComponent( container1 );
         final ComponentPath container1Path = container1.getPath();
         assertNotNull( container1Path );
-        final ComponentModel containerModel1 = tableModel_.getComponentModel( container1Path );
+        final ComponentModel containerModel1 = tableModel.getComponentModel( container1Path );
         final IContainer container2 = createUniqueContainer();
-        tableModel_.getTable().getTabletop().addComponent( container2 );
+        tableModel.getTable().getTabletop().addComponent( container2 );
         final ComponentPath container2Path = container2.getPath();
         assertNotNull( container2Path );
-        final ComponentModel containerModel2 = tableModel_.getComponentModel( container2Path );
+        final ComponentModel containerModel2 = tableModel.getComponentModel( container2Path );
 
         assertNotNull( containerModel1 );
         assertNotNull( containerModel2 );
-        tableModel_.setHover( containerModel1 );
+        tableModel.setHover( containerModel1 );
         assertTrue( containerModel1.isHovered() );
         assertFalse( containerModel2.isHovered() );
-        tableModel_.setHover( containerModel2 );
+        tableModel.setHover( containerModel2 );
         assertFalse( containerModel1.isHovered() );
         assertTrue( containerModel2.isHovered() );
     }
@@ -1249,7 +1337,7 @@ public final class TableModelTest
     @Test
     public void testSetHover_ComponentModel_Null()
     {
-        tableModel_.setHover( null );
+        getTableModel().setHover( null );
     }
 
     /**
@@ -1259,19 +1347,21 @@ public final class TableModelTest
     @Test
     public void testSetHover_FiresTableModelHoverChangedEvent()
     {
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
         final IContainer container = createUniqueContainer();
-        tableModel_.getTable().getTabletop().addComponent( container );
+        tableModel.getTable().getTabletop().addComponent( container );
         final ComponentPath containerPath = container.getPath();
         assertNotNull( containerPath );
-        final ComponentModel containerModel = tableModel_.getComponentModel( containerPath );
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        final ComponentModel containerModel = tableModel.getComponentModel( containerPath );
+        final ITableModelListener listener = niceMocksControl.createMock( ITableModelListener.class );
         listener.tableModelHoverChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.addTableModelListener( listener );
+        niceMocksControl.replay();
+        tableModel.addTableModelListener( listener );
 
-        tableModel_.setHover( containerModel );
+        tableModel.setHover( containerModel );
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -1281,14 +1371,16 @@ public final class TableModelTest
     @Test
     public void testSetOriginOffset_FiresTableModelOriginOffsetChangedEvent()
     {
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final ITableModelListener listener = niceMocksControl.createMock( ITableModelListener.class );
         listener.tableModelOriginOffsetChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.addTableModelListener( listener );
+        niceMocksControl.replay();
+        tableModel.addTableModelListener( listener );
 
-        tableModel_.setOriginOffset( new Dimension( 100, 200 ) );
+        tableModel.setOriginOffset( new Dimension( 100, 200 ) );
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -1298,14 +1390,16 @@ public final class TableModelTest
     @Test
     public void testTable_StateChanged_FiresTableChangedEvent()
     {
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final ITableModelListener listener = niceMocksControl.createMock( ITableModelListener.class );
         listener.tableChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.addTableModelListener( listener );
+        niceMocksControl.replay();
+        tableModel.addTableModelListener( listener );
 
-        tableModel_.getTable().getTabletop().addComponent( createUniqueContainer() );
+        tableModel.getTable().getTabletop().addComponent( createUniqueContainer() );
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -1316,18 +1410,20 @@ public final class TableModelTest
     @Test
     public void testTableChanged_CatchesListenerException()
     {
-        final ITableModelListener listener1 = niceMocksControl_.createMock( ITableModelListener.class );
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final ITableModelListener listener1 = niceMocksControl.createMock( ITableModelListener.class );
         listener1.tableChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        final ITableModelListener listener2 = niceMocksControl_.createMock( ITableModelListener.class );
+        final ITableModelListener listener2 = niceMocksControl.createMock( ITableModelListener.class );
         listener2.tableChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.addTableModelListener( listener1 );
-        tableModel_.addTableModelListener( listener2 );
+        niceMocksControl.replay();
+        tableModel.addTableModelListener( listener1 );
+        tableModel.addTableModelListener( listener2 );
 
         fireTableChangedEvent();
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -1338,18 +1434,20 @@ public final class TableModelTest
     @Test
     public void testTableModelDirtyFlagChanged_CatchesListenerException()
     {
-        final ITableModelListener listener1 = niceMocksControl_.createMock( ITableModelListener.class );
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final ITableModelListener listener1 = niceMocksControl.createMock( ITableModelListener.class );
         listener1.tableModelDirtyFlagChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        final ITableModelListener listener2 = niceMocksControl_.createMock( ITableModelListener.class );
+        final ITableModelListener listener2 = niceMocksControl.createMock( ITableModelListener.class );
         listener2.tableModelDirtyFlagChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        niceMocksControl_.replay();
-        tableModel_.addTableModelListener( listener1 );
-        tableModel_.addTableModelListener( listener2 );
+        niceMocksControl.replay();
+        tableModel.addTableModelListener( listener1 );
+        tableModel.addTableModelListener( listener2 );
 
         fireTableModelDirtyFlagChangedEvent();
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -1364,18 +1462,20 @@ public final class TableModelTest
     public void testTableModelFileChanged_CatchesListenerException()
         throws Exception
     {
-        final ITableModelListener listener1 = niceMocksControl_.createMock( ITableModelListener.class );
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final ITableModelListener listener1 = niceMocksControl.createMock( ITableModelListener.class );
         listener1.tableModelFileChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        final ITableModelListener listener2 = niceMocksControl_.createMock( ITableModelListener.class );
+        final ITableModelListener listener2 = niceMocksControl.createMock( ITableModelListener.class );
         listener2.tableModelFileChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.addTableModelListener( listener1 );
-        tableModel_.addTableModelListener( listener2 );
+        niceMocksControl.replay();
+        tableModel.addTableModelListener( listener1 );
+        tableModel.addTableModelListener( listener2 );
 
         fireTableModelFileChangedEvent();
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -1386,18 +1486,20 @@ public final class TableModelTest
     @Test
     public void testTableModelFocusChanged_CatchesListenerException()
     {
-        final ITableModelListener listener1 = niceMocksControl_.createMock( ITableModelListener.class );
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final ITableModelListener listener1 = niceMocksControl.createMock( ITableModelListener.class );
         listener1.tableModelFocusChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        final ITableModelListener listener2 = niceMocksControl_.createMock( ITableModelListener.class );
+        final ITableModelListener listener2 = niceMocksControl.createMock( ITableModelListener.class );
         listener2.tableModelFocusChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.addTableModelListener( listener1 );
-        tableModel_.addTableModelListener( listener2 );
+        niceMocksControl.replay();
+        tableModel.addTableModelListener( listener1 );
+        tableModel.addTableModelListener( listener2 );
 
         fireTableModelFocusChangedEvent();
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -1408,18 +1510,20 @@ public final class TableModelTest
     @Test
     public void testTableModelHoverChanged_CatchesListenerException()
     {
-        final ITableModelListener listener1 = niceMocksControl_.createMock( ITableModelListener.class );
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final ITableModelListener listener1 = niceMocksControl.createMock( ITableModelListener.class );
         listener1.tableModelHoverChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        final ITableModelListener listener2 = niceMocksControl_.createMock( ITableModelListener.class );
+        final ITableModelListener listener2 = niceMocksControl.createMock( ITableModelListener.class );
         listener2.tableModelHoverChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.addTableModelListener( listener1 );
-        tableModel_.addTableModelListener( listener2 );
+        niceMocksControl.replay();
+        tableModel.addTableModelListener( listener1 );
+        tableModel.addTableModelListener( listener2 );
 
         fireTableModelHoverChangedEvent();
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -1430,18 +1534,20 @@ public final class TableModelTest
     @Test
     public void testTableModelOriginOffsetChanged_CatchesListenerException()
     {
-        final ITableModelListener listener1 = niceMocksControl_.createMock( ITableModelListener.class );
+        final TableModel tableModel = getTableModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final ITableModelListener listener1 = niceMocksControl.createMock( ITableModelListener.class );
         listener1.tableModelOriginOffsetChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        final ITableModelListener listener2 = niceMocksControl_.createMock( ITableModelListener.class );
+        final ITableModelListener listener2 = niceMocksControl.createMock( ITableModelListener.class );
         listener2.tableModelOriginOffsetChanged( EasyMock.<@NonNull TableModelEvent>notNull() );
-        niceMocksControl_.replay();
-        tableModel_.addTableModelListener( listener1 );
-        tableModel_.addTableModelListener( listener2 );
+        niceMocksControl.replay();
+        tableModel.addTableModelListener( listener1 );
+        tableModel.addTableModelListener( listener2 );
 
         fireTableModelOriginOffsetChangedEvent();
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
 

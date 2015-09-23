@@ -21,10 +21,9 @@
 
 package org.gamegineer.table.internal.net.impl.node.server.handlers;
 
+import java.util.Optional;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.internal.net.impl.node.IMessageHandler;
 import org.gamegineer.table.internal.net.impl.node.common.messages.CancelControlRequestMessage;
 import org.gamegineer.table.internal.net.impl.node.server.IRemoteClientNodeController;
@@ -35,23 +34,14 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link CancelControlRequestMessageHandler} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class CancelControlRequestMessageHandlerTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The message handler under test in the fixture. */
-    private IMessageHandler messageHandler_;
-
     /** The mocks control for use in the fixture. */
-    private IMocksControl mocksControl_;
+    private Optional<IMocksControl> mocksControl_;
 
 
     // ======================================================================
@@ -64,12 +54,34 @@ public final class CancelControlRequestMessageHandlerTest
      */
     public CancelControlRequestMessageHandlerTest()
     {
+        mocksControl_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the message handler under test in the fixture.
+     * 
+     * @return The message handler under test in the fixture; never {@code null}
+     *         .
+     */
+    private IMessageHandler getMessageHandler()
+    {
+        return CancelControlRequestMessageHandler.INSTANCE;
+    }
+
+    /**
+     * Gets the fixture mocks control.
+     * 
+     * @return The fixture mocks control; never {@code null}.
+     */
+    private IMocksControl getMocksControl()
+    {
+        return mocksControl_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -81,8 +93,7 @@ public final class CancelControlRequestMessageHandlerTest
     public void setUp()
         throws Exception
     {
-        mocksControl_ = EasyMock.createControl();
-        messageHandler_ = CancelControlRequestMessageHandler.INSTANCE;
+        mocksControl_ = Optional.of( EasyMock.createControl() );
     }
 
     /**
@@ -96,15 +107,16 @@ public final class CancelControlRequestMessageHandlerTest
     public void testHandleMessage_CancelControlRequestMessage()
         throws Exception
     {
-        final IServerNode localNode = mocksControl_.createMock( IServerNode.class );
+        final IMocksControl mocksControl = getMocksControl();
+        final IServerNode localNode = mocksControl.createMock( IServerNode.class );
         localNode.cancelControlRequest();
-        final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
+        final IRemoteClientNodeController remoteNodeController = mocksControl.createMock( IRemoteClientNodeController.class );
         EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
-        mocksControl_.replay();
+        mocksControl.replay();
 
         final CancelControlRequestMessage message = new CancelControlRequestMessage();
-        messageHandler_.handleMessage( remoteNodeController, message );
+        getMessageHandler().handleMessage( remoteNodeController, message );
 
-        mocksControl_.verify();
+        mocksControl.verify();
     }
 }

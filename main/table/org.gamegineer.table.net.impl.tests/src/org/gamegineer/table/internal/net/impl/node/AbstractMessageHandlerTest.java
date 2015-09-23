@@ -23,14 +23,13 @@ package org.gamegineer.table.internal.net.impl.node;
 
 import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
+import java.util.Optional;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.net.impl.node.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.impl.transport.AbstractMessage;
@@ -42,12 +41,6 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link AbstractMessageHandler} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class AbstractMessageHandlerTest
 {
     // ======================================================================
@@ -55,10 +48,10 @@ public final class AbstractMessageHandlerTest
     // ======================================================================
 
     /** The message handler under test in the fixture. */
-    private MockMessageHandler messageHandler_;
+    private Optional<MockMessageHandler> messageHandler_;
 
     /** The mocks control for use in the fixture. */
-    private IMocksControl mocksControl_;
+    private Optional<IMocksControl> mocksControl_;
 
 
     // ======================================================================
@@ -71,12 +64,35 @@ public final class AbstractMessageHandlerTest
      */
     public AbstractMessageHandlerTest()
     {
+        messageHandler_ = Optional.empty();
+        mocksControl_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the message handler under test in the fixture.
+     * 
+     * @return The message handler under test in the fixture; never {@code null}
+     *         .
+     */
+    private MockMessageHandler getMessageHandler()
+    {
+        return messageHandler_.get();
+    }
+
+    /**
+     * Gets the fixture mocks control.
+     * 
+     * @return The fixture mocks control; never {@code null}.
+     */
+    private IMocksControl getMocksControl()
+    {
+        return mocksControl_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -88,8 +104,8 @@ public final class AbstractMessageHandlerTest
     public void setUp()
         throws Exception
     {
-        mocksControl_ = EasyMock.createControl();
-        messageHandler_ = new MockMessageHandler();
+        mocksControl_ = Optional.of( EasyMock.createControl() );
+        messageHandler_ = Optional.of( new MockMessageHandler() );
     }
 
     /**
@@ -99,13 +115,15 @@ public final class AbstractMessageHandlerTest
     @Test
     public void testHandleMessage_Message_Supported()
     {
-        final IRemoteNodeController<@NonNull ?> remoteNodeController = mocksControl_.createMock( IRemoteNodeController.class );
+        final MockMessageHandler messageHandler = getMessageHandler();
+        final IMocksControl mocksControl = getMocksControl();
+        final IRemoteNodeController<@NonNull ?> remoteNodeController = mocksControl.createMock( IRemoteNodeController.class );
         final IMessage message = new FakeMessage();
-        mocksControl_.replay();
+        mocksControl.replay();
 
-        messageHandler_.handleMessage( remoteNodeController, message );
+        messageHandler.handleMessage( remoteNodeController, message );
 
-        assertEquals( 1, messageHandler_.getHandleFakeMessageCallCount() );
+        assertEquals( 1, messageHandler.getHandleFakeMessageCallCount() );
     }
 
     /**
@@ -116,18 +134,20 @@ public final class AbstractMessageHandlerTest
     @Test
     public void testHandleMessage_Message_Unsupported()
     {
-        final IRemoteNodeController<@NonNull ?> remoteNodeController = mocksControl_.createMock( IRemoteNodeController.class );
+        final MockMessageHandler messageHandler = getMessageHandler();
+        final IMocksControl mocksControl = getMocksControl();
+        final IRemoteNodeController<@NonNull ?> remoteNodeController = mocksControl.createMock( IRemoteNodeController.class );
         final Capture<IMessage> messageCapture = new Capture<>();
         remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.<@Nullable IMessageHandler>isNull() );
-        final IMessage message = mocksControl_.createMock( IMessage.class );
+        final IMessage message = mocksControl.createMock( IMessage.class );
         EasyMock.expect( message.getId() ).andReturn( IMessage.MINIMUM_ID ).anyTimes();
         EasyMock.expect( message.getCorrelationId() ).andReturn( IMessage.MAXIMUM_ID ).anyTimes();
-        mocksControl_.replay();
+        mocksControl.replay();
 
-        messageHandler_.handleMessage( remoteNodeController, message );
+        messageHandler.handleMessage( remoteNodeController, message );
 
-        mocksControl_.verify();
-        assertEquals( 1, messageHandler_.getHandleUnexpectedMessageCallCount() );
+        mocksControl.verify();
+        assertEquals( 1, messageHandler.getHandleUnexpectedMessageCallCount() );
         assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
         assertEquals( TableNetworkError.UNEXPECTED_MESSAGE, ((ErrorMessage)messageCapture.getValue()).getError() );
     }

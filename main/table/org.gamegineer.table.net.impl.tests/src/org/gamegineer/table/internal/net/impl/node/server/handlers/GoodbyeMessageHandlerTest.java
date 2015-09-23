@@ -21,10 +21,9 @@
 
 package org.gamegineer.table.internal.net.impl.node.server.handlers;
 
+import java.util.Optional;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.internal.net.impl.node.IMessageHandler;
 import org.gamegineer.table.internal.net.impl.node.common.messages.GoodbyeMessage;
 import org.gamegineer.table.internal.net.impl.node.server.IRemoteClientNodeController;
@@ -35,23 +34,14 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link GoodbyeMessageHandler} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class GoodbyeMessageHandlerTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The message handler under test in the fixture. */
-    private IMessageHandler messageHandler_;
-
     /** The mocks control for use in the fixture. */
-    private IMocksControl mocksControl_;
+    private Optional<IMocksControl> mocksControl_;
 
 
     // ======================================================================
@@ -64,12 +54,34 @@ public final class GoodbyeMessageHandlerTest
      */
     public GoodbyeMessageHandlerTest()
     {
+        mocksControl_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the message handler under test in the fixture.
+     * 
+     * @return The message handler under test in the fixture; never {@code null}
+     *         .
+     */
+    private IMessageHandler getMessageHandler()
+    {
+        return GoodbyeMessageHandler.INSTANCE;
+    }
+
+    /**
+     * Gets the fixture mocks control.
+     * 
+     * @return The fixture mocks control; never {@code null}.
+     */
+    private IMocksControl getMocksControl()
+    {
+        return mocksControl_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -81,8 +93,7 @@ public final class GoodbyeMessageHandlerTest
     public void setUp()
         throws Exception
     {
-        mocksControl_ = EasyMock.createControl();
-        messageHandler_ = GoodbyeMessageHandler.INSTANCE;
+        mocksControl_ = Optional.of( EasyMock.createControl() );
     }
 
     /**
@@ -96,13 +107,14 @@ public final class GoodbyeMessageHandlerTest
     public void testHandleMessage_GoodbyeMessage()
         throws Exception
     {
-        final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
+        final IMocksControl mocksControl = getMocksControl();
+        final IRemoteClientNodeController remoteNodeController = mocksControl.createMock( IRemoteClientNodeController.class );
         remoteNodeController.close( TableNetworkError.CLIENT_SHUTDOWN );
-        mocksControl_.replay();
+        mocksControl.replay();
 
         final GoodbyeMessage message = new GoodbyeMessage();
-        messageHandler_.handleMessage( remoteNodeController, message );
+        getMessageHandler().handleMessage( remoteNodeController, message );
 
-        mocksControl_.verify();
+        mocksControl.verify();
     }
 }

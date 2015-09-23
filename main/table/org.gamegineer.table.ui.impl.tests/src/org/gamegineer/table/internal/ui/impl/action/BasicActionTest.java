@@ -23,11 +23,10 @@ package org.gamegineer.table.internal.ui.impl.action;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Optional;
 import javax.swing.Action;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.util.IPredicate;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,12 +34,6 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link BasicAction} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class BasicActionTest
 {
     // ======================================================================
@@ -48,10 +41,10 @@ public final class BasicActionTest
     // ======================================================================
 
     /** The basic action under test in the fixture. */
-    private BasicAction action_;
+    private Optional<BasicAction> basicAction_;
 
     /** The mocks control for use in the fixture. */
-    private IMocksControl mocksControl_;
+    private Optional<IMocksControl> mocksControl_;
 
 
     // ======================================================================
@@ -63,6 +56,8 @@ public final class BasicActionTest
      */
     public BasicActionTest()
     {
+        basicAction_ = Optional.empty();
+        mocksControl_ = Optional.empty();
     }
 
 
@@ -81,6 +76,26 @@ public final class BasicActionTest
     }
 
     /**
+     * Gets the basic action under test in the fixture.
+     * 
+     * @return The basic action under test in the fixture; never {@code null}.
+     */
+    private BasicAction getBasicAction()
+    {
+        return basicAction_.get();
+    }
+
+    /**
+     * Gets the fixture mocks control.
+     * 
+     * @return The fixture mocks control; never {@code null}.
+     */
+    private IMocksControl getMocksControl()
+    {
+        return mocksControl_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -90,8 +105,8 @@ public final class BasicActionTest
     public void setUp()
         throws Exception
     {
-        mocksControl_ = EasyMock.createControl();
-        action_ = new BasicAction( "id" ); //$NON-NLS-1$
+        mocksControl_ = Optional.of( EasyMock.createControl() );
+        basicAction_ = Optional.of( new BasicAction( "id" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -101,14 +116,16 @@ public final class BasicActionTest
     @Test
     public void testAddActionListener_Listener_Absent()
     {
-        final ActionListener listener = mocksControl_.createMock( ActionListener.class );
+        final BasicAction basicAction = getBasicAction();
+        final IMocksControl mocksControl = getMocksControl();
+        final ActionListener listener = mocksControl.createMock( ActionListener.class );
         listener.actionPerformed( EasyMock.<ActionEvent>notNull() );
-        mocksControl_.replay();
+        mocksControl.replay();
 
-        action_.addActionListener( listener );
-        action_.actionPerformed( createActionEvent() );
+        basicAction.addActionListener( listener );
+        basicAction.actionPerformed( createActionEvent() );
 
-        mocksControl_.verify();
+        mocksControl.verify();
     }
 
     /**
@@ -119,10 +136,11 @@ public final class BasicActionTest
     @Test( expected = IllegalArgumentException.class )
     public void testAddActionListener_Listener_Present()
     {
-        final ActionListener listener = mocksControl_.createMock( ActionListener.class );
-        action_.addActionListener( listener );
+        final BasicAction basicAction = getBasicAction();
+        final ActionListener listener = getMocksControl().createMock( ActionListener.class );
+        basicAction.addActionListener( listener );
 
-        action_.addActionListener( listener );
+        basicAction.addActionListener( listener );
     }
 
     /**
@@ -133,14 +151,16 @@ public final class BasicActionTest
     @Test
     public void testAddShouldEnablePredicate_Predicate_Absent()
     {
-        final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
+        final BasicAction basicAction = getBasicAction();
+        final IMocksControl mocksControl = getMocksControl();
+        final IPredicate<Action> predicate = mocksControl.createMock( IPredicate.class );
         EasyMock.expect( predicate.evaluate( EasyMock.<Action>notNull() ) ).andReturn( false );
-        mocksControl_.replay();
+        mocksControl.replay();
 
-        action_.addShouldEnablePredicate( predicate );
-        action_.update();
+        basicAction.addShouldEnablePredicate( predicate );
+        basicAction.update();
 
-        mocksControl_.verify();
+        mocksControl.verify();
     }
 
     /**
@@ -151,10 +171,11 @@ public final class BasicActionTest
     @Test( expected = IllegalArgumentException.class )
     public void testAddShouldEnablePredicate_Predicate_Present()
     {
-        final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
-        action_.addShouldEnablePredicate( predicate );
+        final BasicAction basicAction = getBasicAction();
+        final IPredicate<Action> predicate = getMocksControl().createMock( IPredicate.class );
+        basicAction.addShouldEnablePredicate( predicate );
 
-        action_.addShouldEnablePredicate( predicate );
+        basicAction.addShouldEnablePredicate( predicate );
     }
 
     /**
@@ -165,14 +186,16 @@ public final class BasicActionTest
     @Test
     public void testAddShouldSelectPredicate_Predicate_Absent()
     {
-        final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
+        final BasicAction basicAction = getBasicAction();
+        final IMocksControl mocksControl = getMocksControl();
+        final IPredicate<Action> predicate = mocksControl.createMock( IPredicate.class );
         EasyMock.expect( predicate.evaluate( EasyMock.<Action>notNull() ) ).andReturn( false );
-        mocksControl_.replay();
+        mocksControl.replay();
 
-        action_.addShouldSelectPredicate( predicate );
-        action_.update();
+        basicAction.addShouldSelectPredicate( predicate );
+        basicAction.update();
 
-        mocksControl_.verify();
+        mocksControl.verify();
     }
 
     /**
@@ -183,10 +206,11 @@ public final class BasicActionTest
     @Test( expected = IllegalArgumentException.class )
     public void testAddShouldSelectPredicate_Predicate_Present()
     {
-        final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
-        action_.addShouldSelectPredicate( predicate );
+        final BasicAction basicAction = getBasicAction();
+        final IPredicate<Action> predicate = getMocksControl().createMock( IPredicate.class );
+        basicAction.addShouldSelectPredicate( predicate );
 
-        action_.addShouldSelectPredicate( predicate );
+        basicAction.addShouldSelectPredicate( predicate );
     }
 
     /**
@@ -197,7 +221,7 @@ public final class BasicActionTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveActionListener_Listener_Absent()
     {
-        action_.removeActionListener( mocksControl_.createMock( ActionListener.class ) );
+        getBasicAction().removeActionListener( getMocksControl().createMock( ActionListener.class ) );
     }
 
     /**
@@ -207,14 +231,16 @@ public final class BasicActionTest
     @Test
     public void testRemoveActionListener_Listener_Present()
     {
-        final ActionListener listener = mocksControl_.createMock( ActionListener.class );
-        mocksControl_.replay();
-        action_.addActionListener( listener );
+        final BasicAction basicAction = getBasicAction();
+        final IMocksControl mocksControl = getMocksControl();
+        final ActionListener listener = mocksControl.createMock( ActionListener.class );
+        mocksControl.replay();
+        basicAction.addActionListener( listener );
 
-        action_.removeActionListener( listener );
-        action_.actionPerformed( createActionEvent() );
+        basicAction.removeActionListener( listener );
+        basicAction.actionPerformed( createActionEvent() );
 
-        mocksControl_.verify();
+        mocksControl.verify();
     }
 
     /**
@@ -225,7 +251,7 @@ public final class BasicActionTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveShouldEnablePredicate_Predicate_Absent()
     {
-        action_.removeShouldEnablePredicate( mocksControl_.createMock( IPredicate.class ) );
+        getBasicAction().removeShouldEnablePredicate( getMocksControl().createMock( IPredicate.class ) );
     }
 
     /**
@@ -236,14 +262,16 @@ public final class BasicActionTest
     @Test
     public void testRemoveShouldEnablePredicate_Predicate_Present()
     {
-        final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
-        mocksControl_.replay();
-        action_.addShouldEnablePredicate( predicate );
+        final BasicAction basicAction = getBasicAction();
+        final IMocksControl mocksControl = getMocksControl();
+        final IPredicate<Action> predicate = mocksControl.createMock( IPredicate.class );
+        mocksControl.replay();
+        basicAction.addShouldEnablePredicate( predicate );
 
-        action_.removeShouldEnablePredicate( predicate );
-        action_.update();
+        basicAction.removeShouldEnablePredicate( predicate );
+        basicAction.update();
 
-        mocksControl_.verify();
+        mocksControl.verify();
     }
 
     /**
@@ -254,7 +282,7 @@ public final class BasicActionTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveShouldSelectPredicate_Predicate_Absent()
     {
-        action_.removeShouldSelectPredicate( mocksControl_.createMock( IPredicate.class ) );
+        getBasicAction().removeShouldSelectPredicate( getMocksControl().createMock( IPredicate.class ) );
     }
 
     /**
@@ -265,13 +293,15 @@ public final class BasicActionTest
     @Test
     public void testRemoveShouldSelectPredicate_Predicate_Present()
     {
-        final IPredicate<Action> predicate = mocksControl_.createMock( IPredicate.class );
-        mocksControl_.replay();
-        action_.addShouldSelectPredicate( predicate );
+        final BasicAction basicAction = getBasicAction();
+        final IMocksControl mocksControl = getMocksControl();
+        final IPredicate<Action> predicate = mocksControl.createMock( IPredicate.class );
+        mocksControl.replay();
+        basicAction.addShouldSelectPredicate( predicate );
 
-        action_.removeShouldSelectPredicate( predicate );
-        action_.update();
+        basicAction.removeShouldSelectPredicate( predicate );
+        basicAction.update();
 
-        mocksControl_.verify();
+        mocksControl.verify();
     }
 }

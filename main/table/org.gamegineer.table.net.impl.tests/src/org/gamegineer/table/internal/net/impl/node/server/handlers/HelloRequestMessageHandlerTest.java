@@ -22,13 +22,12 @@
 package org.gamegineer.table.internal.net.impl.node.server.handlers;
 
 import static org.junit.Assert.assertEquals;
+import java.util.Optional;
 import org.easymock.Capture;
 import org.easymock.CaptureType;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.table.internal.net.impl.node.IMessageHandler;
 import org.gamegineer.table.internal.net.impl.node.common.ProtocolVersions;
@@ -45,23 +44,14 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link HelloRequestMessageHandler} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class HelloRequestMessageHandlerTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The message handler under test in the fixture. */
-    private IMessageHandler messageHandler_;
-
     /** The mocks control for use in the fixture. */
-    private IMocksControl mocksControl_;
+    private Optional<IMocksControl> mocksControl_;
 
 
     // ======================================================================
@@ -74,12 +64,34 @@ public final class HelloRequestMessageHandlerTest
      */
     public HelloRequestMessageHandlerTest()
     {
+        mocksControl_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the message handler under test in the fixture.
+     * 
+     * @return The message handler under test in the fixture; never {@code null}
+     *         .
+     */
+    private IMessageHandler getMessageHandler()
+    {
+        return HelloRequestMessageHandler.INSTANCE;
+    }
+
+    /**
+     * Gets the fixture mocks control.
+     * 
+     * @return The fixture mocks control; never {@code null}.
+     */
+    private IMocksControl getMocksControl()
+    {
+        return mocksControl_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -91,8 +103,7 @@ public final class HelloRequestMessageHandlerTest
     public void setUp()
         throws Exception
     {
-        mocksControl_ = EasyMock.createControl();
-        messageHandler_ = HelloRequestMessageHandler.INSTANCE;
+        mocksControl_ = Optional.of( EasyMock.createControl() );
     }
 
     /**
@@ -103,19 +114,20 @@ public final class HelloRequestMessageHandlerTest
     @Test
     public void testHandleMessage_HelloRequestMessage_SupportedProtocolVersion()
     {
-        final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
+        final IMocksControl mocksControl = getMocksControl();
+        final IRemoteClientNodeController remoteNodeController = mocksControl.createMock( IRemoteClientNodeController.class );
         final Capture<IMessage> messageCapture = new Capture<>( CaptureType.ALL );
         remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.<@Nullable IMessageHandler>isNull() );
         remoteNodeController.setChallenge( EasyMock.<byte @NonNull []>notNull() );
         remoteNodeController.setSalt( EasyMock.<byte @NonNull []>notNull() );
         remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.<@NonNull IMessageHandler>notNull() );
-        mocksControl_.replay();
+        mocksControl.replay();
 
         final HelloRequestMessage message = new HelloRequestMessage();
         message.setSupportedProtocolVersion( ProtocolVersions.VERSION_1 );
-        messageHandler_.handleMessage( remoteNodeController, message );
+        getMessageHandler().handleMessage( remoteNodeController, message );
 
-        mocksControl_.verify();
+        mocksControl.verify();
         assertEquals( 2, messageCapture.getValues().size() );
         final IMessage firstResponseMessage = messageCapture.getValues().get( 0 );
         assertEquals( HelloResponseMessage.class, firstResponseMessage.getClass() );
@@ -134,17 +146,18 @@ public final class HelloRequestMessageHandlerTest
     @Test
     public void testHandleMessage_HelloRequestMessage_UnsupportedProtocolVersion()
     {
-        final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
+        final IMocksControl mocksControl = getMocksControl();
+        final IRemoteClientNodeController remoteNodeController = mocksControl.createMock( IRemoteClientNodeController.class );
         final Capture<IMessage> messageCapture = new Capture<>();
         remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.<@Nullable IMessageHandler>isNull() );
         remoteNodeController.close( TableNetworkError.UNSUPPORTED_PROTOCOL_VERSION );
-        mocksControl_.replay();
+        mocksControl.replay();
 
         final HelloRequestMessage message = new HelloRequestMessage();
         message.setSupportedProtocolVersion( 0 );
-        messageHandler_.handleMessage( remoteNodeController, message );
+        getMessageHandler().handleMessage( remoteNodeController, message );
 
-        mocksControl_.verify();
+        mocksControl.verify();
         assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
         assertEquals( message.getId(), messageCapture.getValue().getCorrelationId() );
         assertEquals( TableNetworkError.UNSUPPORTED_PROTOCOL_VERSION, ((ErrorMessage)messageCapture.getValue()).getError() );

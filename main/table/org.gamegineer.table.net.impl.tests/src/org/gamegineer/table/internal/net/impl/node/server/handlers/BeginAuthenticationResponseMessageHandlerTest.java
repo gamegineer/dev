@@ -22,12 +22,11 @@
 package org.gamegineer.table.internal.net.impl.node.server.handlers;
 
 import static org.junit.Assert.assertEquals;
+import java.util.Optional;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.impl.node.IMessageHandler;
@@ -47,23 +46,14 @@ import org.junit.Test;
  * A fixture for testing the {@link BeginAuthenticationResponseMessageHandler}
  * class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class BeginAuthenticationResponseMessageHandlerTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The message handler under test in the fixture. */
-    private IMessageHandler messageHandler_;
-
     /** The mocks control for use in the fixture. */
-    private IMocksControl mocksControl_;
+    private Optional<IMocksControl> mocksControl_;
 
 
     // ======================================================================
@@ -76,12 +66,34 @@ public final class BeginAuthenticationResponseMessageHandlerTest
      */
     public BeginAuthenticationResponseMessageHandlerTest()
     {
+        mocksControl_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the message handler under test in the fixture.
+     * 
+     * @return The message handler under test in the fixture; never {@code null}
+     *         .
+     */
+    private IMessageHandler getMessageHandler()
+    {
+        return BeginAuthenticationResponseMessageHandler.INSTANCE;
+    }
+
+    /**
+     * Gets the fixture mocks control.
+     * 
+     * @return The fixture mocks control; never {@code null}.
+     */
+    private IMocksControl getMocksControl()
+    {
+        return mocksControl_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -93,8 +105,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
     public void setUp()
         throws Exception
     {
-        mocksControl_ = EasyMock.createControl();
-        messageHandler_ = BeginAuthenticationResponseMessageHandler.INSTANCE;
+        mocksControl_ = Optional.of( EasyMock.createControl() );
     }
 
     /**
@@ -110,6 +121,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
     public void testHandleMessage_BeginAuthenticationResponseMessage()
         throws Exception
     {
+        final IMocksControl mocksControl = getMocksControl();
         final String playerName = "playerName"; //$NON-NLS-1$
         final SecureString password = new SecureString( "password".toCharArray() ); //$NON-NLS-1$
         final byte[] challenge = new byte[] {
@@ -120,9 +132,9 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         };
         final Authenticator authenticator = new Authenticator();
         final byte[] response = authenticator.createResponse( challenge, password, salt );
-        final IServerNode localNode = mocksControl_.createMock( IServerNode.class );
+        final IServerNode localNode = mocksControl.createMock( IServerNode.class );
         EasyMock.expect( localNode.getPassword() ).andReturn( new SecureString( password ) );
-        final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
+        final IRemoteClientNodeController remoteNodeController = mocksControl.createMock( IRemoteClientNodeController.class );
         EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
         EasyMock.expect( remoteNodeController.getChallenge() ).andReturn( challenge ).anyTimes();
         EasyMock.expect( remoteNodeController.getSalt() ).andReturn( salt ).anyTimes();
@@ -130,14 +142,14 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         final Capture<IMessage> messageCapture = new Capture<>();
         remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.<@Nullable IMessageHandler>isNull() );
         remoteNodeController.bind( playerName );
-        mocksControl_.replay();
+        mocksControl.replay();
 
         final BeginAuthenticationResponseMessage message = new BeginAuthenticationResponseMessage();
         message.setPlayerName( playerName );
         message.setResponse( response );
-        messageHandler_.handleMessage( remoteNodeController, message );
+        getMessageHandler().handleMessage( remoteNodeController, message );
 
-        mocksControl_.verify();
+        mocksControl.verify();
         assertEquals( EndAuthenticationMessage.class, messageCapture.getValue().getClass() );
         assertEquals( message.getId(), messageCapture.getValue().getCorrelationId() );
     }
@@ -155,6 +167,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
     public void testHandleMessage_BeginAuthenticationResponseMessage_AuthenticationFailed()
         throws Exception
     {
+        final IMocksControl mocksControl = getMocksControl();
         final String playerName = "playerName"; //$NON-NLS-1$
         final SecureString password = new SecureString( "password".toCharArray() ); //$NON-NLS-1$
         final byte[] challenge = new byte[] {
@@ -166,23 +179,23 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         final byte[] response = new byte[] {
             9, 10, 11, 12
         };
-        final IServerNode localNode = mocksControl_.createMock( IServerNode.class );
+        final IServerNode localNode = mocksControl.createMock( IServerNode.class );
         EasyMock.expect( localNode.getPassword() ).andReturn( new SecureString( password ) );
-        final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
+        final IRemoteClientNodeController remoteNodeController = mocksControl.createMock( IRemoteClientNodeController.class );
         EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
         EasyMock.expect( remoteNodeController.getChallenge() ).andReturn( challenge ).anyTimes();
         EasyMock.expect( remoteNodeController.getSalt() ).andReturn( salt ).anyTimes();
         final Capture<IMessage> messageCapture = new Capture<>();
         remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.<@Nullable IMessageHandler>isNull() );
         remoteNodeController.close( TableNetworkError.AUTHENTICATION_FAILED );
-        mocksControl_.replay();
+        mocksControl.replay();
 
         final BeginAuthenticationResponseMessage message = new BeginAuthenticationResponseMessage();
         message.setPlayerName( playerName );
         message.setResponse( response );
-        messageHandler_.handleMessage( remoteNodeController, message );
+        getMessageHandler().handleMessage( remoteNodeController, message );
 
-        mocksControl_.verify();
+        mocksControl.verify();
         assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
         assertEquals( message.getId(), messageCapture.getValue().getCorrelationId() );
         assertEquals( TableNetworkError.AUTHENTICATION_FAILED, ((ErrorMessage)messageCapture.getValue()).getError() );
@@ -202,6 +215,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
     public void testHandleMessage_BeginAuthenticationResponseMessage_DuplicatePlayerName()
         throws Exception
     {
+        final IMocksControl mocksControl = getMocksControl();
         final String playerName = "playerName"; //$NON-NLS-1$
         final SecureString password = new SecureString( "password".toCharArray() ); //$NON-NLS-1$
         final byte[] challenge = new byte[] {
@@ -212,9 +226,9 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         };
         final Authenticator authenticator = new Authenticator();
         final byte[] response = authenticator.createResponse( challenge, password, salt );
-        final IServerNode localNode = mocksControl_.createMock( IServerNode.class );
+        final IServerNode localNode = mocksControl.createMock( IServerNode.class );
         EasyMock.expect( localNode.getPassword() ).andReturn( new SecureString( password ) );
-        final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
+        final IRemoteClientNodeController remoteNodeController = mocksControl.createMock( IRemoteClientNodeController.class );
         EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
         EasyMock.expect( remoteNodeController.getChallenge() ).andReturn( challenge ).anyTimes();
         EasyMock.expect( remoteNodeController.getSalt() ).andReturn( salt ).anyTimes();
@@ -222,14 +236,14 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         final Capture<IMessage> messageCapture = new Capture<>();
         remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.<@Nullable IMessageHandler>isNull() );
         remoteNodeController.close( TableNetworkError.DUPLICATE_PLAYER_NAME );
-        mocksControl_.replay();
+        mocksControl.replay();
 
         final BeginAuthenticationResponseMessage message = new BeginAuthenticationResponseMessage();
         message.setPlayerName( playerName );
         message.setResponse( response );
-        messageHandler_.handleMessage( remoteNodeController, message );
+        getMessageHandler().handleMessage( remoteNodeController, message );
 
-        mocksControl_.verify();
+        mocksControl.verify();
         assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
         assertEquals( message.getId(), messageCapture.getValue().getCorrelationId() );
         assertEquals( TableNetworkError.DUPLICATE_PLAYER_NAME, ((ErrorMessage)messageCapture.getValue()).getError() );
@@ -243,14 +257,15 @@ public final class BeginAuthenticationResponseMessageHandlerTest
     @Test
     public void testHandleMessage_UnexpectedMessage()
     {
-        final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
+        final IMocksControl mocksControl = getMocksControl();
+        final IRemoteClientNodeController remoteNodeController = mocksControl.createMock( IRemoteClientNodeController.class );
         remoteNodeController.sendMessage( EasyMock.<@NonNull IMessage>notNull(), EasyMock.<@Nullable IMessageHandler>isNull() );
         remoteNodeController.close( TableNetworkError.UNEXPECTED_MESSAGE );
-        mocksControl_.replay();
+        mocksControl.replay();
 
         final FakeMessage message = new FakeMessage();
-        messageHandler_.handleMessage( remoteNodeController, message );
+        getMessageHandler().handleMessage( remoteNodeController, message );
 
-        mocksControl_.verify();
+        mocksControl.verify();
     }
 }

@@ -24,11 +24,10 @@ package org.gamegineer.table.internal.ui.impl.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import java.util.Optional;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IContainer;
@@ -42,12 +41,6 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link ContainerModel} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractContainerModelTestCase
     extends AbstractComponentModelTestCase<ContainerModel>
 {
@@ -56,7 +49,7 @@ public abstract class AbstractContainerModelTestCase
     // ======================================================================
 
     /** The nice mocks control for use in the fixture. */
-    private IMocksControl niceMocksControl_;
+    private Optional<IMocksControl> niceMocksControl_;
 
 
     // ======================================================================
@@ -69,6 +62,7 @@ public abstract class AbstractContainerModelTestCase
      */
     protected AbstractContainerModelTestCase()
     {
+        niceMocksControl_ = Optional.empty();
     }
 
 
@@ -161,6 +155,16 @@ public abstract class AbstractContainerModelTestCase
     }
 
     /**
+     * Gets the fixture nice mocks control.
+     * 
+     * @return The fixture nice mocks control; never {@code null}.
+     */
+    private IMocksControl getNiceMocksControl()
+    {
+        return niceMocksControl_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -171,7 +175,7 @@ public abstract class AbstractContainerModelTestCase
     public void setUp()
         throws Exception
     {
-        niceMocksControl_ = EasyMock.createNiceControl();
+        niceMocksControl_ = Optional.of( EasyMock.createNiceControl() );
 
         super.setUp();
     }
@@ -183,15 +187,16 @@ public abstract class AbstractContainerModelTestCase
     @Test
     public void testAddContainerModelListener_Listener_Absent()
     {
-        final IContainerModelListener listener = niceMocksControl_.createMock( IContainerModelListener.class );
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final IContainerModelListener listener = niceMocksControl.createMock( IContainerModelListener.class );
         listener.containerLayoutChanged( EasyMock.<@NonNull ContainerModelEvent>notNull() );
-        niceMocksControl_.replay();
+        niceMocksControl.replay();
 
         fireContainerLayoutChangedEvent();
         getContainerModel().addContainerModelListener( listener );
         fireContainerLayoutChangedEvent();
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -202,10 +207,11 @@ public abstract class AbstractContainerModelTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testAddContainerModelListener_Listener_Present()
     {
+        final ContainerModel containerModel = getContainerModel();
         final IContainerModelListener listener = EasyMock.createMock( IContainerModelListener.class );
-        getContainerModel().addContainerModelListener( listener );
+        containerModel.addContainerModelListener( listener );
 
-        getContainerModel().addContainerModelListener( listener );
+        containerModel.addContainerModelListener( listener );
     }
 
     /**
@@ -215,16 +221,18 @@ public abstract class AbstractContainerModelTestCase
     @Test
     public void testComponentModel_ComponentChanged_FiresComponentChangedEvent()
     {
-        final IComponent component = TestComponents.createUniqueComponent( getContainerModel().getComponent().getTableEnvironment() );
-        getContainerModel().getComponent().addComponent( component );
-        final IComponentModelListener listener = niceMocksControl_.createMock( IComponentModelListener.class );
+        final ContainerModel containerModel = getContainerModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final IComponent component = TestComponents.createUniqueComponent( containerModel.getComponent().getTableEnvironment() );
+        containerModel.getComponent().addComponent( component );
+        final IComponentModelListener listener = niceMocksControl.createMock( IComponentModelListener.class );
         listener.componentChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
-        niceMocksControl_.replay();
-        getContainerModel().addComponentModelListener( listener );
+        niceMocksControl.replay();
+        containerModel.addComponentModelListener( listener );
 
         component.setOrientation( component.getOrientation().inverse() );
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -235,18 +243,20 @@ public abstract class AbstractContainerModelTestCase
     @Test
     public void testComponentModelAdded_CatchesListenerException()
     {
-        final IContainerModelListener listener1 = niceMocksControl_.createMock( IContainerModelListener.class );
+        final ContainerModel containerModel = getContainerModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final IContainerModelListener listener1 = niceMocksControl.createMock( IContainerModelListener.class );
         listener1.componentModelAdded( EasyMock.<@NonNull ContainerModelContentChangedEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        final IContainerModelListener listener2 = niceMocksControl_.createMock( IContainerModelListener.class );
+        final IContainerModelListener listener2 = niceMocksControl.createMock( IContainerModelListener.class );
         listener2.componentModelAdded( EasyMock.<@NonNull ContainerModelContentChangedEvent>notNull() );
-        niceMocksControl_.replay();
-        getContainerModel().addContainerModelListener( listener1 );
-        getContainerModel().addContainerModelListener( listener2 );
+        niceMocksControl.replay();
+        containerModel.addContainerModelListener( listener1 );
+        containerModel.addContainerModelListener( listener2 );
 
         fireComponentModelAddedEvent();
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -257,15 +267,16 @@ public abstract class AbstractContainerModelTestCase
     @Test
     public void testComponentModelRemoved_CatchesListenerException()
     {
-        final IContainerModelListener listener = niceMocksControl_.createMock( IContainerModelListener.class );
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final IContainerModelListener listener = niceMocksControl.createMock( IContainerModelListener.class );
         listener.componentModelRemoved( EasyMock.<@NonNull ContainerModelContentChangedEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        niceMocksControl_.replay();
+        niceMocksControl.replay();
         getContainerModel().addContainerModelListener( listener );
 
         fireComponentModelRemovedEvent();
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -276,17 +287,19 @@ public abstract class AbstractContainerModelTestCase
     @Test
     public void testContainer_ComponentAdded_FiresComponentModelAddedEventAndComponentChangedEvent()
     {
-        final IComponentModelListener componentModelListener = niceMocksControl_.createMock( IComponentModelListener.class );
+        final ContainerModel containerModel = getContainerModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final IComponentModelListener componentModelListener = niceMocksControl.createMock( IComponentModelListener.class );
         componentModelListener.componentChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
-        final IContainerModelListener containerModelListener = niceMocksControl_.createMock( IContainerModelListener.class );
+        final IContainerModelListener containerModelListener = niceMocksControl.createMock( IContainerModelListener.class );
         containerModelListener.componentModelAdded( EasyMock.<@NonNull ContainerModelContentChangedEvent>notNull() );
-        niceMocksControl_.replay();
-        getContainerModel().addComponentModelListener( componentModelListener );
-        getContainerModel().addContainerModelListener( containerModelListener );
+        niceMocksControl.replay();
+        containerModel.addComponentModelListener( componentModelListener );
+        containerModel.addContainerModelListener( containerModelListener );
 
-        getContainerModel().getComponent().addComponent( TestComponents.createUniqueComponent( getContainerModel().getComponent().getTableEnvironment() ) );
+        containerModel.getComponent().addComponent( TestComponents.createUniqueComponent( containerModel.getComponent().getTableEnvironment() ) );
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -297,19 +310,21 @@ public abstract class AbstractContainerModelTestCase
     @Test
     public void testContainer_ComponentRemoved_FiresComponentModelRemovedEventAndComponentChangedEvent()
     {
-        final IComponent component = TestComponents.createUniqueComponent( getContainerModel().getComponent().getTableEnvironment() );
-        getContainerModel().getComponent().addComponent( component );
-        final IComponentModelListener componentModelListener = niceMocksControl_.createMock( IComponentModelListener.class );
+        final ContainerModel containerModel = getContainerModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final IComponent component = TestComponents.createUniqueComponent( containerModel.getComponent().getTableEnvironment() );
+        containerModel.getComponent().addComponent( component );
+        final IComponentModelListener componentModelListener = niceMocksControl.createMock( IComponentModelListener.class );
         componentModelListener.componentChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
-        final IContainerModelListener containerModelListener = niceMocksControl_.createMock( IContainerModelListener.class );
+        final IContainerModelListener containerModelListener = niceMocksControl.createMock( IContainerModelListener.class );
         containerModelListener.componentModelRemoved( EasyMock.<@NonNull ContainerModelContentChangedEvent>notNull() );
-        niceMocksControl_.replay();
-        getContainerModel().addComponentModelListener( componentModelListener );
-        getContainerModel().addContainerModelListener( containerModelListener );
+        niceMocksControl.replay();
+        containerModel.addComponentModelListener( componentModelListener );
+        containerModel.addContainerModelListener( containerModelListener );
 
-        getContainerModel().getComponent().removeComponent( component );
+        containerModel.getComponent().removeComponent( component );
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -319,17 +334,19 @@ public abstract class AbstractContainerModelTestCase
     @Test
     public void testContainer_LayoutChanged_FiresContainerLayoutChangedEventAndComponentChangedEvent()
     {
-        final IComponentModelListener componentModelListener = niceMocksControl_.createMock( IComponentModelListener.class );
+        final ContainerModel containerModel = getContainerModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final IComponentModelListener componentModelListener = niceMocksControl.createMock( IComponentModelListener.class );
         componentModelListener.componentChanged( EasyMock.<@NonNull ComponentModelEvent>notNull() );
-        final IContainerModelListener containerModelListener = niceMocksControl_.createMock( IContainerModelListener.class );
+        final IContainerModelListener containerModelListener = niceMocksControl.createMock( IContainerModelListener.class );
         containerModelListener.containerLayoutChanged( EasyMock.<@NonNull ContainerModelEvent>notNull() );
-        niceMocksControl_.replay();
-        getContainerModel().addComponentModelListener( componentModelListener );
-        getContainerModel().addContainerModelListener( containerModelListener );
+        niceMocksControl.replay();
+        containerModel.addComponentModelListener( componentModelListener );
+        containerModel.addContainerModelListener( containerModelListener );
 
-        getContainerModel().getComponent().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
+        containerModel.getComponent().setLayout( TestContainerLayouts.createHorizontalContainerLayout() );
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -340,18 +357,20 @@ public abstract class AbstractContainerModelTestCase
     @Test
     public void testContainerLayoutChanged_CatchesListenerException()
     {
-        final IContainerModelListener listener1 = niceMocksControl_.createMock( IContainerModelListener.class );
+        final ContainerModel containerModel = getContainerModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final IContainerModelListener listener1 = niceMocksControl.createMock( IContainerModelListener.class );
         listener1.containerLayoutChanged( EasyMock.<@NonNull ContainerModelEvent>notNull() );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        final IContainerModelListener listener2 = niceMocksControl_.createMock( IContainerModelListener.class );
+        final IContainerModelListener listener2 = niceMocksControl.createMock( IContainerModelListener.class );
         listener2.containerLayoutChanged( EasyMock.<@NonNull ContainerModelEvent>notNull() );
-        niceMocksControl_.replay();
-        getContainerModel().addContainerModelListener( listener1 );
-        getContainerModel().addContainerModelListener( listener2 );
+        niceMocksControl.replay();
+        containerModel.addContainerModelListener( listener1 );
+        containerModel.addContainerModelListener( listener2 );
 
         fireContainerLayoutChangedEvent();
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 
     /**
@@ -472,11 +491,12 @@ public abstract class AbstractContainerModelTestCase
     @Test
     public void testGetComponentModelCount()
     {
-        getContainerModel().getComponent().addComponent( createUniqueComponent() );
-        getContainerModel().getComponent().addComponent( createUniqueComponent() );
-        getContainerModel().getComponent().addComponent( createUniqueComponent() );
+        final ContainerModel containerModel = getContainerModel();
+        containerModel.getComponent().addComponent( createUniqueComponent() );
+        containerModel.getComponent().addComponent( createUniqueComponent() );
+        containerModel.getComponent().addComponent( createUniqueComponent() );
 
-        final int actualValue = getContainerModel().getComponentModelCount();
+        final int actualValue = containerModel.getComponentModelCount();
 
         assertEquals( 3, actualValue );
     }
@@ -499,15 +519,17 @@ public abstract class AbstractContainerModelTestCase
     @Test
     public void testRemoveContainerModelListener_Listener_Present()
     {
-        final IContainerModelListener listener = niceMocksControl_.createMock( IContainerModelListener.class );
+        final ContainerModel containerModel = getContainerModel();
+        final IMocksControl niceMocksControl = getNiceMocksControl();
+        final IContainerModelListener listener = niceMocksControl.createMock( IContainerModelListener.class );
         listener.containerLayoutChanged( EasyMock.<@NonNull ContainerModelEvent>notNull() );
-        niceMocksControl_.replay();
-        getContainerModel().addContainerModelListener( listener );
+        niceMocksControl.replay();
+        containerModel.addContainerModelListener( listener );
 
         fireContainerLayoutChangedEvent();
-        getContainerModel().removeContainerModelListener( listener );
+        containerModel.removeContainerModelListener( listener );
         fireContainerLayoutChangedEvent();
 
-        niceMocksControl_.verify();
+        niceMocksControl.verify();
     }
 }

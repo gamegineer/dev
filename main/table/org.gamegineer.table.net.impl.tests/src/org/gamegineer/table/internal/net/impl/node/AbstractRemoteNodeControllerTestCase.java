@@ -21,11 +21,9 @@
 
 package org.gamegineer.table.internal.net.impl.node;
 
-import static org.junit.Assert.assertNotNull;
+import java.util.Optional;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.internal.net.impl.transport.IMessage;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,23 +39,14 @@ import org.junit.Test;
  * @param <RemoteNodeType>
  *        The type of the remote table network node.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNodeController<LocalNodeType>, LocalNodeType extends INode<RemoteNodeType>, RemoteNodeType extends IRemoteNode>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
-    /** The mocks control used to create the mock local node in the fixture. */
-    private IMocksControl nodeMocksControl_;
-
     /** The remote node controller under test in the fixture. */
-    private T remoteNodeController_;
+    private Optional<T> remoteNodeController_;
 
 
     // ======================================================================
@@ -70,6 +59,7 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
      */
     protected AbstractRemoteNodeControllerTestCase()
     {
+        remoteNodeController_ = Optional.empty();
     }
 
 
@@ -133,8 +123,7 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
      */
     protected final T getRemoteNodeController()
     {
-        assertNotNull( remoteNodeController_ );
-        return remoteNodeController_;
+        return remoteNodeController_.get();
     }
 
     /**
@@ -156,12 +145,11 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     public void setUp()
         throws Exception
     {
-        final IMocksControl nodeMocksControl = nodeMocksControl_ = EasyMock.createNiceControl();
+        final IMocksControl nodeMocksControl = EasyMock.createNiceControl();
         final LocalNodeType node = createMockLocalNode( nodeMocksControl );
-        nodeMocksControl_.replay();
+        nodeMocksControl.replay();
 
-        remoteNodeController_ = createRemoteNodeController( createMockNodeLayer(), node );
-        assertNotNull( remoteNodeController_ );
+        remoteNodeController_ = Optional.of( createRemoteNodeController( createMockNodeLayer(), node ) );
     }
 
     /**
@@ -171,10 +159,11 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     @Test( expected = IllegalStateException.class )
     public void testBind_Bound()
     {
-        openRemoteNode( getRemoteNodeController() );
-        getRemoteNodeController().bind( "playerName" ); //$NON-NLS-1$
+        final T remoteNodeController = getRemoteNodeController();
+        openRemoteNode( remoteNodeController );
+        remoteNodeController.bind( "playerName" ); //$NON-NLS-1$
 
-        getRemoteNodeController().bind( "playerName" ); //$NON-NLS-1$
+        remoteNodeController.bind( "playerName" ); //$NON-NLS-1$
     }
 
     /**

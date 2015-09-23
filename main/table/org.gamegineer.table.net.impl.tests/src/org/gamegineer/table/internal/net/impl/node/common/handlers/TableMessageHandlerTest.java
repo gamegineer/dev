@@ -21,10 +21,9 @@
 
 package org.gamegineer.table.internal.net.impl.node.common.handlers;
 
+import java.util.Optional;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.internal.net.impl.node.IMessageHandler;
 import org.gamegineer.table.internal.net.impl.node.INetworkTable;
 import org.gamegineer.table.internal.net.impl.node.INode;
@@ -38,23 +37,14 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link TableMessageHandler} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class TableMessageHandlerTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The message handler under test in the fixture. */
-    private IMessageHandler messageHandler_;
-
     /** The mocks control for use in the fixture. */
-    private IMocksControl mocksControl_;
+    private Optional<IMocksControl> mocksControl_;
 
 
     // ======================================================================
@@ -66,12 +56,34 @@ public final class TableMessageHandlerTest
      */
     public TableMessageHandlerTest()
     {
+        mocksControl_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the message handler under test in the fixture.
+     * 
+     * @return The message handler under test in the fixture; never {@code null}
+     *         .
+     */
+    private IMessageHandler getMessageHandler()
+    {
+        return TableMessageHandler.INSTANCE;
+    }
+
+    /**
+     * Gets the fixture mocks control.
+     * 
+     * @return The fixture mocks control; never {@code null}.
+     */
+    private IMocksControl getMocksControl()
+    {
+        return mocksControl_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -83,8 +95,7 @@ public final class TableMessageHandlerTest
     public void setUp()
         throws Exception
     {
-        mocksControl_ = EasyMock.createControl();
-        messageHandler_ = TableMessageHandler.INSTANCE;
+        mocksControl_ = Optional.of( EasyMock.createControl() );
     }
 
     /**
@@ -98,21 +109,22 @@ public final class TableMessageHandlerTest
     public void testHandleMessage_TableMessage()
         throws Exception
     {
+        final IMocksControl mocksControl = getMocksControl();
         final Object tableMemento = new Object();
-        final INetworkTable table = mocksControl_.createMock( INetworkTable.class );
-        final ITableManager tableManager = mocksControl_.createMock( ITableManager.class );
+        final INetworkTable table = mocksControl.createMock( INetworkTable.class );
+        final ITableManager tableManager = mocksControl.createMock( ITableManager.class );
         tableManager.setTableState( table, tableMemento );
-        final INode<IRemoteNode> localNode = mocksControl_.createMock( INode.class );
+        final INode<IRemoteNode> localNode = mocksControl.createMock( INode.class );
         EasyMock.expect( localNode.getTableManager() ).andReturn( tableManager ).anyTimes();
-        final IRemoteNodeController<INode<IRemoteNode>> remoteNodeController = mocksControl_.createMock( IRemoteNodeController.class );
+        final IRemoteNodeController<INode<IRemoteNode>> remoteNodeController = mocksControl.createMock( IRemoteNodeController.class );
         EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
         EasyMock.expect( remoteNodeController.getTable() ).andReturn( table ).anyTimes();
-        mocksControl_.replay();
+        mocksControl.replay();
 
         final TableMessage message = new TableMessage();
         message.setMemento( tableMemento );
-        messageHandler_.handleMessage( remoteNodeController, message );
+        getMessageHandler().handleMessage( remoteNodeController, message );
 
-        mocksControl_.verify();
+        mocksControl.verify();
     }
 }
