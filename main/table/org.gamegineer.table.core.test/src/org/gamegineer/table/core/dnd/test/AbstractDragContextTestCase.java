@@ -29,10 +29,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import net.jcip.annotations.Immutable;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.table.core.ComponentPath;
 import org.gamegineer.table.core.ComponentSurfaceDesign;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
@@ -52,12 +50,6 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IDragContext} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractDragContextTestCase
 {
     // ======================================================================
@@ -65,37 +57,34 @@ public abstract class AbstractDragContextTestCase
     // ======================================================================
 
     /** The default component surface design for use in the fixture. */
-    private static final @NonNull ComponentSurfaceDesign DEFAULT_SURFACE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "defaultSurfaceDesign" ), 10, 10 ); //$NON-NLS-1$
+    private static final ComponentSurfaceDesign DEFAULT_SURFACE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "defaultSurfaceDesign" ), 10, 10 ); //$NON-NLS-1$
 
     /** The location where the drag-and-drop operation is begun. */
-    private Point beginDragLocation_;
+    private Optional<Point> beginDragLocation_;
 
     /** The drag context under test in the fixture. */
-    private IDragContext dragContext_;
+    private Optional<IDragContext> dragContext_;
 
     /**
      * The drag source associated with the drag context under test in the
      * fixture.
      */
-    private IDragSource dragSource_;
+    private Optional<IDragSource> dragSource_;
 
     /**
      * The container used to hold the components being dragged during the
      * drag-and-drop operation.
      */
-    private IContainer mobileContainer_;
+    private Optional<IContainer> mobileContainer_;
 
     /**
      * The collection of component states prior to the beginning of the
      * drag-and-drop operation.
      */
-    private List<PreDragComponentState> preDragComponentStates_;
-
-    /** The table associated with the drag context under test in the fixture. */
-    private ITable table_;
+    private Optional<List<PreDragComponentState>> preDragComponentStates_;
 
     /** The container that ultimately receives the component being dragged. */
-    private IContainer targetContainer_;
+    private Optional<IContainer> targetContainer_;
 
 
     // ======================================================================
@@ -108,6 +97,12 @@ public abstract class AbstractDragContextTestCase
      */
     protected AbstractDragContextTestCase()
     {
+        beginDragLocation_ = Optional.empty();
+        dragContext_ = Optional.empty();
+        dragSource_ = Optional.empty();
+        mobileContainer_ = Optional.empty();
+        preDragComponentStates_ = Optional.empty();
+        targetContainer_ = Optional.empty();
     }
 
 
@@ -189,7 +184,7 @@ public abstract class AbstractDragContextTestCase
         final int x,
         final int y )
     {
-        final IComponent component = TestComponents.createUniqueComponent( table_.getTableEnvironment() );
+        final IComponent component = TestComponents.createUniqueComponent( getTable().getTableEnvironment() );
         component.setOrigin( new Point( x, y ) );
         component.setSurfaceDesign( component.getOrientation(), DEFAULT_SURFACE_DESIGN );
         return component;
@@ -210,10 +205,64 @@ public abstract class AbstractDragContextTestCase
         final int x,
         final int y )
     {
-        final IContainer container = TestComponents.createUniqueContainer( table_.getTableEnvironment() );
+        final IContainer container = TestComponents.createUniqueContainer( getTable().getTableEnvironment() );
         container.setOrigin( new Point( x, y ) );
         container.setSurfaceDesign( container.getOrientation(), DEFAULT_SURFACE_DESIGN );
         return container;
+    }
+
+    /**
+     * Gets the fixture location where the drag-and-drop operation is begun.
+     * 
+     * @return The fixture location where the drag-and-drop operation is begun; never {@code null}.
+     */
+    private Point getBeginDragLocation()
+    {
+        return beginDragLocation_.get();
+    }
+
+    /**
+     * Gets the drag context under test in the fixture.
+     * 
+     * @return The drag context under test in the fixture; never {@code null}.
+     */
+    protected final IDragContext getDragContext()
+    {
+        return dragContext_.get();
+    }
+
+    /**
+     * Gets the fixture drag source.
+     * 
+     * @return The fixture drag source; never {@code null}.
+     */
+    private IDragSource getDragSource()
+    {
+        return dragSource_.get();
+    }
+
+    /**
+     * Gets the fixture container used to hold the components being dragged during the
+     * drag-and-drop operation.
+     * 
+     * @return The fixture container used to hold the components being dragged during the
+     * drag-and-drop operation; never {@code null}.
+     */
+    private IContainer getMobileContainer()
+    {
+        return mobileContainer_.get();
+    }
+
+    /**
+     * Gets the fixture collection of component states prior to the beginning of the
+     * drag-and-drop operation.
+     * 
+     * @return The fixture collection of component states prior to the beginning of the
+     * drag-and-drop operation; never {@code null}.
+     */
+    private List<PreDragComponentState> getPreDragComponentStates()
+    {
+        return preDragComponentStates_.get();
     }
 
     /**
@@ -222,6 +271,18 @@ public abstract class AbstractDragContextTestCase
      * @return The table associated with the fixture; never {@code null}.
      */
     protected abstract ITable getTable();
+
+    /**
+     * Gets the fixture container that ultimately receives the component being
+     * dragged.
+     * 
+     * @return The fixture container that ultimately receives the component
+     *         being dragged; never {@code null}.
+     */
+    private IContainer getTargetContainer()
+    {
+        return targetContainer_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -233,10 +294,10 @@ public abstract class AbstractDragContextTestCase
     public void setUp()
         throws Exception
     {
-        table_ = getTable();
-        assertNotNull( table_ );
-        dragSource_ = table_.getExtension( IDragSource.class );
-        assertNotNull( dragSource_ );
+        final ITable table = getTable();
+        final IDragSource dragSource = table.getExtension( IDragSource.class );
+        assertNotNull( dragSource );
+        dragSource_ = Optional.of( dragSource );
 
         final IContainer sourceContainer = createUniqueContainer( 0, 0 );
         sourceContainer.addComponent( createUniqueComponent( 0, 0 ) );
@@ -245,22 +306,28 @@ public abstract class AbstractDragContextTestCase
         final IComponent dragComponent2 = createUniqueComponent( 10, 0 );
         sourceContainer.addComponent( dragComponent2 );
         sourceContainer.addComponent( createUniqueComponent( 15, 0 ) );
-        table_.getTabletop().addComponent( sourceContainer );
+        table.getTabletop().addComponent( sourceContainer );
 
-        preDragComponentStates_ = new ArrayList<>();
-        preDragComponentStates_.add( new PreDragComponentState( dragComponent1 ) );
-        preDragComponentStates_.add( new PreDragComponentState( dragComponent2 ) );
+        final List<PreDragComponentState> preDragComponentStates = new ArrayList<>();
+        preDragComponentStates.add( new PreDragComponentState( dragComponent1 ) );
+        preDragComponentStates.add( new PreDragComponentState( dragComponent2 ) );
+        preDragComponentStates_ = Optional.of( preDragComponentStates );
 
-        final IContainer targetContainer = targetContainer_ = createUniqueContainer( 50, 50 );
+        final IContainer targetContainer = createUniqueContainer( 50, 50 );
         targetContainer.addComponent( createUniqueComponent( 50, 50 ) );
         targetContainer.addComponent( createUniqueComponent( 55, 50 ) );
-        table_.getTabletop().addComponent( targetContainer );
+        targetContainer_ = Optional.of( targetContainer );
+        table.getTabletop().addComponent( targetContainer );
 
-        final Point beginDragLocation = beginDragLocation_ = new Point( 0, 0 );
+        final Point beginDragLocation = new Point( 0, 0 );
+        beginDragLocation_ = Optional.of( beginDragLocation );
 
-        dragContext_ = dragSource_.beginDrag( beginDragLocation, dragComponent1, createFixtureDragStrategyFactory() );
-        assertNotNull( dragContext_ );
-        mobileContainer_ = dragComponent1.getContainer();
+        final IDragContext dragContext = dragSource.beginDrag( beginDragLocation, dragComponent1, createFixtureDragStrategyFactory() );
+        assertNotNull( dragContext );
+        dragContext_ = Optional.of( dragContext );
+        final IContainer mobileContainer = dragComponent1.getContainer();
+        assertNotNull( mobileContainer );
+        mobileContainer_ = Optional.of( mobileContainer );
     }
 
     /**
@@ -270,9 +337,11 @@ public abstract class AbstractDragContextTestCase
     @Test
     public void testCancel_AddsComponentsToOriginalContainerAtOriginalIndex()
     {
-        dragContext_.cancel();
+        final List<PreDragComponentState> preDragComponentStates = getPreDragComponentStates();
 
-        for( final PreDragComponentState preDragComponentState : preDragComponentStates_ )
+        getDragContext().cancel();
+
+        for( final PreDragComponentState preDragComponentState : preDragComponentStates )
         {
             assertSame( preDragComponentState.container, preDragComponentState.component.getContainer() );
             final ComponentPath componentPath = preDragComponentState.component.getPath();
@@ -289,11 +358,11 @@ public abstract class AbstractDragContextTestCase
     public void testCancel_EndsActiveDragAndDropOperation()
     {
         final IComponent component = createUniqueComponent();
-        table_.getTabletop().addComponent( component );
+        getTable().getTabletop().addComponent( component );
 
-        dragContext_.cancel();
+        getDragContext().cancel();
 
-        assertNotNull( dragSource_.beginDrag( new Point( 0, 0 ), component, PassiveDragStrategyFactory.INSTANCE ) );
+        assertNotNull( getDragSource().beginDrag( new Point( 0, 0 ), component, PassiveDragStrategyFactory.INSTANCE ) );
     }
 
     /**
@@ -303,9 +372,9 @@ public abstract class AbstractDragContextTestCase
     @Test
     public void testCancel_RemovesMobileContainer()
     {
-        dragContext_.cancel();
+        getDragContext().cancel();
 
-        assertNull( mobileContainer_.getTable() );
+        assertNull( getMobileContainer().getTable() );
     }
 
     /**
@@ -315,11 +384,13 @@ public abstract class AbstractDragContextTestCase
     @Test
     public void testCancel_RestoresOriginalDragComponentLocations()
     {
-        dragContext_.drag( new Point( beginDragLocation_.x + 100, beginDragLocation_.y + 100 ) );
+        final IDragContext dragContext = getDragContext();
+        final Point beginDragLocation = getBeginDragLocation();
+        dragContext.drag( new Point( beginDragLocation.x + 100, beginDragLocation.y + 100 ) );
 
-        dragContext_.cancel();
+        dragContext.cancel();
 
-        for( final PreDragComponentState preDragComponentState : preDragComponentStates_ )
+        for( final PreDragComponentState preDragComponentState : getPreDragComponentStates() )
         {
             assertEquals( preDragComponentState.location, preDragComponentState.component.getLocation() );
         }
@@ -333,9 +404,10 @@ public abstract class AbstractDragContextTestCase
     @Test( expected = IllegalStateException.class )
     public void testCancel_State_Illegal_DragAndDropOperationNotActive()
     {
-        dragContext_.cancel();
+        final IDragContext dragContext = getDragContext();
+        dragContext.cancel();
 
-        dragContext_.cancel();
+        dragContext.cancel();
     }
 
     /**
@@ -345,10 +417,13 @@ public abstract class AbstractDragContextTestCase
     @Test
     public void testDrag_ChangesDragComponentLocations()
     {
-        dragContext_.drag( new Point( beginDragLocation_.x + 11, beginDragLocation_.y + 33 ) );
-        dragContext_.drag( new Point( beginDragLocation_.x + 22, beginDragLocation_.y + 44 ) );
+        final IDragContext dragContext = getDragContext();
+        final Point beginDragLocation = getBeginDragLocation();
 
-        for( final PreDragComponentState preDragComponentState : preDragComponentStates_ )
+        dragContext.drag( new Point( beginDragLocation.x + 11, beginDragLocation.y + 33 ) );
+        dragContext.drag( new Point( beginDragLocation.x + 22, beginDragLocation.y + 44 ) );
+
+        for( final PreDragComponentState preDragComponentState : getPreDragComponentStates() )
         {
             assertEquals( new Point( preDragComponentState.location.x + 22, preDragComponentState.location.y + 44 ), preDragComponentState.component.getLocation() );
         }
@@ -362,9 +437,10 @@ public abstract class AbstractDragContextTestCase
     @Test( expected = IllegalStateException.class )
     public void testDrag_State_Illegal_DragAndDropOperationNotActive()
     {
-        dragContext_.cancel();
+        final IDragContext dragContext = getDragContext();
+        dragContext.cancel();
 
-        dragContext_.drag( new Point( 0, 0 ) );
+        dragContext.drag( new Point( 0, 0 ) );
     }
 
     /**
@@ -374,15 +450,18 @@ public abstract class AbstractDragContextTestCase
     @Test
     public void testDrop_AddsComponentsToTargetContainerAtTopIndex()
     {
-        dragContext_.drop( new Point( 51, 51 ) );
+        final IContainer targetContainer = getTargetContainer();
+        final List<PreDragComponentState> preDragComponentStates = getPreDragComponentStates();
+
+        getDragContext().drop( new Point( 51, 51 ) );
 
         int index = 0;
-        for( final PreDragComponentState preDragComponentState : preDragComponentStates_ )
+        for( final PreDragComponentState preDragComponentState : preDragComponentStates )
         {
-            assertSame( targetContainer_, preDragComponentState.component.getContainer() );
+            assertSame( targetContainer, preDragComponentState.component.getContainer() );
             final ComponentPath componentPath = preDragComponentState.component.getPath();
             assertNotNull( componentPath );
-            assertEquals( targetContainer_.getComponentCount() - (preDragComponentStates_.size() - index), componentPath.getIndex() );
+            assertEquals( targetContainer.getComponentCount() - (preDragComponentStates.size() - index), componentPath.getIndex() );
             ++index;
         }
     }
@@ -394,10 +473,13 @@ public abstract class AbstractDragContextTestCase
     @Test
     public void testDrop_ChangesDragComponentLocations()
     {
-        dragContext_.drag( new Point( beginDragLocation_.x + 11, beginDragLocation_.y + 33 ) );
-        dragContext_.drop( new Point( beginDragLocation_.x + 22, beginDragLocation_.y + 44 ) );
+        final IDragContext dragContext = getDragContext();
+        final Point beginDragLocation = getBeginDragLocation();
 
-        for( final PreDragComponentState preDragComponentState : preDragComponentStates_ )
+        dragContext.drag( new Point( beginDragLocation.x + 11, beginDragLocation.y + 33 ) );
+        dragContext.drop( new Point( beginDragLocation.x + 22, beginDragLocation.y + 44 ) );
+
+        for( final PreDragComponentState preDragComponentState : getPreDragComponentStates() )
         {
             assertEquals( new Point( preDragComponentState.location.x + 22, preDragComponentState.location.y + 44 ), preDragComponentState.component.getLocation() );
         }
@@ -415,7 +497,8 @@ public abstract class AbstractDragContextTestCase
     public void testDrop_DropNotAllowedOnTargetContainer()
         throws Exception
     {
-        dragContext_.cancel();
+        IDragContext dragContext = getDragContext();
+        dragContext.cancel();
         final IDragStrategyFactory dragStrategyFactory = new IDragStrategyFactory()
         {
             @Override
@@ -441,11 +524,12 @@ public abstract class AbstractDragContextTestCase
             }
         };
         final IComponent component = createUniqueComponent( 1000, 1000 );
-        table_.getTabletop().addComponent( component );
+        getTable().getTabletop().addComponent( component );
         final PreDragComponentState preDragComponentState = new PreDragComponentState( component );
 
-        dragContext_ = dragSource_.beginDrag( component.getLocation(), component, dragStrategyFactory );
-        dragContext_.drop( new Point( 0, 0 ) );
+        dragContext = getDragSource().beginDrag( component.getLocation(), component, dragStrategyFactory );
+        assertNotNull( dragContext );
+        dragContext.drop( new Point( 0, 0 ) );
 
         assertEquals( preDragComponentState.container, component.getContainer() );
         final ComponentPath componentPath = component.getPath();
@@ -462,11 +546,11 @@ public abstract class AbstractDragContextTestCase
     public void testDrop_EndsActiveDragAndDropOperation()
     {
         final IComponent component = createUniqueComponent();
-        table_.getTabletop().addComponent( component );
+        getTable().getTabletop().addComponent( component );
 
-        dragContext_.drop( new Point( 0, 0 ) );
+        getDragContext().drop( new Point( 0, 0 ) );
 
-        assertNotNull( dragSource_.beginDrag( new Point( 0, 0 ), component, PassiveDragStrategyFactory.INSTANCE ) );
+        assertNotNull( getDragSource().beginDrag( new Point( 0, 0 ), component, PassiveDragStrategyFactory.INSTANCE ) );
     }
 
     /**
@@ -476,9 +560,11 @@ public abstract class AbstractDragContextTestCase
     @Test
     public void testDrop_RemovesMobileContainer()
     {
-        dragContext_.drop( new Point( beginDragLocation_.x + 100, beginDragLocation_.y + 100 ) );
+        final Point beginDragLocation = getBeginDragLocation();
 
-        assertNull( mobileContainer_.getTable() );
+        getDragContext().drop( new Point( beginDragLocation.x + 100, beginDragLocation.y + 100 ) );
+
+        assertNull( getMobileContainer().getTable() );
     }
 
     /**
@@ -489,9 +575,10 @@ public abstract class AbstractDragContextTestCase
     @Test( expected = IllegalStateException.class )
     public void testDrop_State_Illegal_DragAndDropOperationNotActive()
     {
-        dragContext_.cancel();
+        final IDragContext dragContext = getDragContext();
+        dragContext.cancel();
 
-        dragContext_.drop( new Point( 0, 0 ) );
+        dragContext.drop( new Point( 0, 0 ) );
     }
 
 
@@ -511,12 +598,12 @@ public abstract class AbstractDragContextTestCase
         // ==================================================================
 
         /** The component being dragged. */
-        final @NonNull IComponent component;
+        final IComponent component;
 
         /**
          * The component container before the drag-and-drop operation began.
          */
-        final @NonNull IContainer container;
+        final IContainer container;
 
         /**
          * The component index within its container before the drag-and-drop
@@ -528,7 +615,7 @@ public abstract class AbstractDragContextTestCase
          * The component location in table coordinates before the drag-and-drop
          * operation began.
          */
-        final @NonNull Point location;
+        final Point location;
 
 
         // ==================================================================
