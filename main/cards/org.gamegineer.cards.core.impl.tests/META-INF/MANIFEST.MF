@@ -9,6 +9,4 @@ Bundle-Version: 0.17.0.qualifier
 Fragment-Host: org.gamegineer.cards.core.impl;bundle-version="0.17.0"
 Import-Package: org.gamegineer.table.core.dnd.test;version="[0.17.0,0.18.0)",
  org.gamegineer.table.core.test;version="[0.17.0,0.18.0)"
-Require-Bundle: org.gamegineer.common.core.impl;bundle-version="[0.17.0,0.18.0)",
- org.gamegineer.table.core.impl;bundle-version="[0.17.0,0.18.0)",
- org.junit;bundle-version="4.8.2"
+Require-Bundle: org.junit;bundle-version="4.8.2"
