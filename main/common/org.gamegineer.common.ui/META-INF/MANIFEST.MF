@@ -31,5 +31,5 @@ Import-Package: javax.help;version="2.0.5",
  org.gamegineer.common.core.app;version="[0.17.0,0.18.0)",
  org.gamegineer.common.core.runtime;version="[0.17.0,0.18.0)",
  org.gamegineer.common.core.security;version="[0.17.0,0.18.0)",
- org.osgi.framework;version="1.6.0"
+ org.osgi.framework;version="1.8.0"
 Require-Bundle: org.eclipse.equinox.common;bundle-version="3.6.0"

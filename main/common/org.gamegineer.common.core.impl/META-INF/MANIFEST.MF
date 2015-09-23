@@ -14,8 +14,8 @@ Import-Package: net.jcip.annotations;version="1.0.0",
  org.gamegineer.common.core.logging;version="[0.17.0,0.18.0)",
  org.gamegineer.common.core.runtime;version="[0.17.0,0.18.0)",
  org.gamegineer.common.core.util.osgi;version="[0.17.0,0.18.0)",
- org.osgi.framework;version="1.6.0",
- org.osgi.service.component;version="1.1.0"
+ org.osgi.framework;version="1.8.0",
+ org.osgi.service.component;version="1.2.2"
 Service-Component: OSGI-INF/executorService.xml,
  OSGI-INF/loggingComponents.xml,
  OSGI-INF/loggingService.xml

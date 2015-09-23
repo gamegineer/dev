@@ -19,7 +19,7 @@ Import-Package: net.jcip.annotations;version="1.0.0",
  org.gamegineer.common.persistence.serializable;version="[0.17.0,0.18.0)",
  org.gamegineer.table.core;version="[0.17.0,0.18.0)",
  org.gamegineer.table.net;version="[0.17.0,0.18.0)",
- org.osgi.framework;version="1.6.0",
- org.osgi.util.tracker;version="1.5.0"
+ org.osgi.framework;version="1.8.0",
+ org.osgi.util.tracker;version="1.5.1"
 Service-Component: OSGI-INF/*PersistenceDelegates.xml,
  OSGI-INF/tableNetworkFactory.xml
