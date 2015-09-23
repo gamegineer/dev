@@ -99,12 +99,11 @@ public final class DeckPrototypeFactory
      * Creates a new card prototype.
      * 
      * @param tableEnvironment
-     *        The table environment; must not be {@code null}.
+     *        The table environment.
      * @param faceDesignId
-     *        The identifier of the component surface design of the card face;
-     *        must not be {@code null}.
+     *        The identifier of the component surface design of the card face.
      * 
-     * @return A new card prototype; never {@code null}.
+     * @return A new card prototype.
      * 
      * @throws org.gamegineer.table.ui.prototype.ComponentPrototypeFactoryException
      *         If the card prototype cannot be created.

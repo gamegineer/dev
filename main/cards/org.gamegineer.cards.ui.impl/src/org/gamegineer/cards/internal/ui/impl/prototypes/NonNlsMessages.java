@@ -100,10 +100,10 @@ final class NonNlsMessages
      * specified.
      * 
      * @param parameterName
-     *        The parameter name; must not be {@code null}.
+     *        The parameter name.
      * 
      * @return The formatted message indicating the specified parameter was not
-     *         specified; never {@code null}.
+     *         specified.
      */
     static String CardPilePrototypeFactory_setInitializationData_parameterNotSpecified(
         final String parameterName )
@@ -118,10 +118,10 @@ final class NonNlsMessages
      * specified.
      * 
      * @param parameterName
-     *        The parameter name; must not be {@code null}.
+     *        The parameter name.
      * 
      * @return The formatted message indicating the specified parameter was not
-     *         specified; never {@code null}.
+     *         specified.
      */
     static String CardPrototypeFactory_setInitializationData_parameterNotSpecified(
         final String parameterName )
@@ -136,10 +136,10 @@ final class NonNlsMessages
      * specified.
      * 
      * @param parameterName
-     *        The parameter name; must not be {@code null}.
+     *        The parameter name.
      * 
      * @return The formatted message indicating the specified parameter was not
-     *         specified; never {@code null}.
+     *         specified.
      */
     static String DeckPrototypeFactory_setInitializationData_parameterNotSpecified(
         final String parameterName )

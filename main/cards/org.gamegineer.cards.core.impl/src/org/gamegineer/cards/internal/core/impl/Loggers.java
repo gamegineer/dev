@@ -1,6 +1,6 @@
 /*
  * Loggers.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -51,7 +51,7 @@ public final class Loggers
     /**
      * Gets the default logger for the bundle.
      * 
-     * @return The default logger for the bundle; never {@code null}.
+     * @return The default logger for the bundle.
      */
     public static Logger getDefaultLogger()
     {

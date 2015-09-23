@@ -77,10 +77,10 @@ final class NonNlsMessages
      * is unknown.
      * 
      * @param componentStrategyId
-     *        The component strategy identifier; may be {@code null}.
+     *        The component strategy identifier.
      * 
      * @return The formatted message indicating the component strategy
-     *         identifier is unknown; never {@code null}.
+     *         identifier is unknown.
      */
     static String ComponentStrategyExtensionFactory_create_unknownId(
         final @Nullable ComponentStrategyId componentStrategyId )

@@ -144,7 +144,7 @@ final class CardStrategy
          * 
          * @param component
          *        The component from which the drag-and-drop operation will
-         *        begin; must not be {@code null}.
+         *        begin.
          */
         DragStrategy(
             final IComponent component )
@@ -231,7 +231,7 @@ final class CardStrategy
          * pile.
          * 
          * @param component
-         *        The component (card); must not be {@code null}.
+         *        The component (card).
          * 
          * @return {@code true} if the specified component (card) is contained
          *         within a card pile; otherwise {@code false}.
