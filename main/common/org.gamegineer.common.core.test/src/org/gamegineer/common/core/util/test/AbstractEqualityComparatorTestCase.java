@@ -28,8 +28,7 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 import java.util.Collections;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.gamegineer.common.core.util.IEqualityComparator;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,12 +40,6 @@ import org.junit.Test;
  * @param <T>
  *        The type of the comparable object.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractEqualityComparatorTestCase<T>
 {
     // ======================================================================
@@ -54,10 +47,7 @@ public abstract class AbstractEqualityComparatorTestCase<T>
     // ======================================================================
 
     /** The equality comparator under test in the fixture. */
-    private IEqualityComparator<T> equalityComparator_;
-
-    /** The reference instance for use in the fixture. */
-    private T reference_;
+    private Optional<IEqualityComparator<T>> equalityComparator_;
 
 
     // ======================================================================
@@ -70,6 +60,7 @@ public abstract class AbstractEqualityComparatorTestCase<T>
      */
     protected AbstractEqualityComparatorTestCase()
     {
+        equalityComparator_ = Optional.empty();
     }
 
 
@@ -124,6 +115,17 @@ public abstract class AbstractEqualityComparatorTestCase<T>
         throws Exception;
 
     /**
+     * Gets the equality comparator under test in the fixture.
+     * 
+     * @return The equality comparator under test in the fixture; never
+     *         {@code null}.
+     */
+    protected final IEqualityComparator<T> getEqualityComparator()
+    {
+        return equalityComparator_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -133,10 +135,7 @@ public abstract class AbstractEqualityComparatorTestCase<T>
     public void setUp()
         throws Exception
     {
-        equalityComparator_ = createEqualityComparator();
-        assertNotNull( equalityComparator_ );
-        reference_ = createReferenceInstance();
-        assertNotNull( reference_ );
+        equalityComparator_ = Optional.of( createEqualityComparator() );
     }
 
     /**
@@ -172,11 +171,13 @@ public abstract class AbstractEqualityComparatorTestCase<T>
     public void testEquals_Equal_NotSame()
         throws Exception
     {
+        final IEqualityComparator<T> equalityComparator = getEqualityComparator();
+        final T reference = createReferenceInstance();
         final T other = createReferenceInstance();
 
-        assertNotSame( reference_, other );
-        assertTrue( equalityComparator_.equals( reference_, other ) );
-        assertTrue( equalityComparator_.equals( other, reference_ ) ); // symmetric
+        assertNotSame( reference, other );
+        assertTrue( equalityComparator.equals( reference, other ) );
+        assertTrue( equalityComparator.equals( other, reference ) ); // symmetric
     }
 
     /**
@@ -186,17 +187,23 @@ public abstract class AbstractEqualityComparatorTestCase<T>
     @Test
     public void testEquals_Equal_Null()
     {
-        assertTrue( equalityComparator_.equals( null, null ) );
+        assertTrue( getEqualityComparator().equals( null, null ) );
     }
 
     /**
      * Ensures the {@link IEqualityComparator#equals(Object, Object)} method
      * correctly indicates an instance is equal to itself.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testEquals_Equal_Same()
+        throws Exception
     {
-        assertTrue( equalityComparator_.equals( reference_, reference_ ) ); // reflexive
+        final T reference = createReferenceInstance();
+
+        assertTrue( getEqualityComparator().equals( reference, reference ) ); // reflexive
     }
 
     /**
@@ -210,9 +217,11 @@ public abstract class AbstractEqualityComparatorTestCase<T>
     public void testEquals_Unequal()
         throws Exception
     {
+        final IEqualityComparator<T> equalityComparator = getEqualityComparator();
+        final T reference = createReferenceInstance();
         for( final T other : createUnequalInstances() )
         {
-            assertFalse( String.format( "expected <%1$s> and <%2$s> to be unequal", reference_, other ), equalityComparator_.equals( reference_, other ) ); //$NON-NLS-1$
+            assertFalse( String.format( "expected <%1$s> and <%2$s> to be unequal", reference, other ), equalityComparator.equals( reference, other ) ); //$NON-NLS-1$
         }
     }
 
@@ -220,58 +229,80 @@ public abstract class AbstractEqualityComparatorTestCase<T>
      * Ensures the {@link IEqualityComparator#equals(Object, Object)} method
      * throws an exception when passed a first instance that has a different
      * class than that expected by the comparator.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = ClassCastException.class )
     public void testEquals_Unequal_DifferentClass_Obj1()
+        throws Exception
     {
         @SuppressWarnings( "unchecked" )
-        final IEqualityComparator<Object> untypedEqualityComparator = (IEqualityComparator<Object>)equalityComparator_;
+        final IEqualityComparator<Object> untypedEqualityComparator = (IEqualityComparator<Object>)getEqualityComparator();
+        final T reference = createReferenceInstance();
         final Object obj1 = new Object()
         {
             // anonymous type in case the comparator generic type really is Object
         };
 
-        untypedEqualityComparator.equals( obj1, reference_ );
+        untypedEqualityComparator.equals( obj1, reference );
     }
 
     /**
      * Ensures the {@link IEqualityComparator#equals(Object, Object)} method
      * throws an exception when passed a second instance that has a different
      * class than that expected by the comparator.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = ClassCastException.class )
     public void testEquals_Unequal_DifferentClass_Obj2()
+        throws Exception
     {
         @SuppressWarnings( "unchecked" )
-        final IEqualityComparator<Object> untypedEqualityComparator = (IEqualityComparator<Object>)equalityComparator_;
+        final IEqualityComparator<Object> untypedEqualityComparator = (IEqualityComparator<Object>)getEqualityComparator();
+        final T reference = createReferenceInstance();
         final Object obj2 = new Object()
         {
             // anonymous type in case the comparator generic type really is Object
         };
 
-        untypedEqualityComparator.equals( reference_, obj2 );
+        untypedEqualityComparator.equals( reference, obj2 );
     }
 
     /**
      * Ensures the {@link IEqualityComparator#equals(Object, Object)} method
      * correctly handles a {@code null} first instance when the second instance
      * is not {@code null}.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testEquals_Unequal_Null_Obj1()
+        throws Exception
     {
-        assertFalse( equalityComparator_.equals( null, reference_ ) );
+        final T reference = createReferenceInstance();
+
+        assertFalse( getEqualityComparator().equals( null, reference ) );
     }
 
     /**
      * Ensures the {@link IEqualityComparator#equals(Object, Object)} method
      * correctly handles a {@code null} second instance when the first instance
      * is not {@code null}.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testEquals_Unequal_Null_Obj2()
+        throws Exception
     {
-        assertFalse( equalityComparator_.equals( reference_, null ) );
+        final T reference = createReferenceInstance();
+
+        assertFalse( getEqualityComparator().equals( reference, null ) );
     }
 
     /**
@@ -285,10 +316,12 @@ public abstract class AbstractEqualityComparatorTestCase<T>
     public void testHashCode_Equal()
         throws Exception
     {
+        final IEqualityComparator<T> equalityComparator = getEqualityComparator();
+        final T reference = createReferenceInstance();
         final T other = createReferenceInstance();
 
-        assertNotSame( reference_, other );
-        assertEquals( equalityComparator_.hashCode( reference_ ), equalityComparator_.hashCode( other ) );
+        assertNotSame( reference, other );
+        assertEquals( equalityComparator.hashCode( reference ), equalityComparator.hashCode( other ) );
     }
 
     /**
@@ -298,7 +331,7 @@ public abstract class AbstractEqualityComparatorTestCase<T>
     @Test
     public void testHashCode_Equal_Null()
     {
-        assertEquals( 0, equalityComparator_.hashCode( null ) );
+        assertEquals( 0, getEqualityComparator().hashCode( null ) );
     }
 
     /**
@@ -312,9 +345,11 @@ public abstract class AbstractEqualityComparatorTestCase<T>
     public void testHashCode_Unequal()
         throws Exception
     {
+        final IEqualityComparator<T> equalityComparator = getEqualityComparator();
+        final T reference = createReferenceInstance();
         for( final T other : createUnequalInstances() )
         {
-            assertTrue( String.format( "expected hash codes for <%1$s> and <%2$s> to be unequal", reference_, other ), equalityComparator_.hashCode( reference_ ) != equalityComparator_.hashCode( other ) ); //$NON-NLS-1$
+            assertTrue( String.format( "expected hash codes for <%1$s> and <%2$s> to be unequal", reference, other ), equalityComparator.hashCode( reference ) != equalityComparator.hashCode( other ) ); //$NON-NLS-1$
         }
     }
 
@@ -327,7 +362,7 @@ public abstract class AbstractEqualityComparatorTestCase<T>
     public void testHashCode_Unequal_DifferentClass()
     {
         @SuppressWarnings( "unchecked" )
-        final IEqualityComparator<Object> untypedEqualityComparator = (IEqualityComparator<Object>)equalityComparator_;
+        final IEqualityComparator<Object> untypedEqualityComparator = (IEqualityComparator<Object>)getEqualityComparator();
         final Object obj = new Object()
         {
             // anonymous type in case the comparator generic type really is Object

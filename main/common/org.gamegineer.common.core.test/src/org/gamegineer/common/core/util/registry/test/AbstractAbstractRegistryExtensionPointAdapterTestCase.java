@@ -22,16 +22,14 @@
 package org.gamegineer.common.core.util.registry.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import java.util.Optional;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.registry.AbstractRegistryExtensionPointAdapter;
 import org.gamegineer.common.core.util.registry.IRegistry;
@@ -49,12 +47,6 @@ import org.junit.Test;
  * @param <ObjectType>
  *        The type of object managed by the registry.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<RegistryExtensionPointAdapterType extends AbstractRegistryExtensionPointAdapter<ObjectIdType, ObjectType>, @NonNull ObjectIdType, @NonNull ObjectType>
 {
     // ======================================================================
@@ -62,10 +54,10 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
     // ======================================================================
 
     /** The mocks control for use in the fixture. */
-    private IMocksControl mocksControl_;
+    private Optional<IMocksControl> mocksControl_;
 
     /** The registry extension point adapter under test in the fixture. */
-    private RegistryExtensionPointAdapterType registryExtensionPointAdapter_;
+    private Optional<RegistryExtensionPointAdapterType> registryExtensionPointAdapter_;
 
 
     // ======================================================================
@@ -78,6 +70,8 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
      */
     protected AbstractAbstractRegistryExtensionPointAdapterTestCase()
     {
+        mocksControl_ = Optional.empty();
+        registryExtensionPointAdapter_ = Optional.empty();
     }
 
 
@@ -137,7 +131,7 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
     @SuppressWarnings( "unchecked" )
     private IRegistry<ObjectIdType, ObjectType> createMockRegistry()
     {
-        return mocksControl_.createMock( IRegistry.class );
+        return getMocksControl().createMock( IRegistry.class );
     }
 
     /**
@@ -185,6 +179,27 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
         RegistryExtensionPointAdapterType registryExtensionPointAdapter );
 
     /**
+     * Gets the fixture mocks control.
+     * 
+     * @return The fixture mocks control; never {@code null}.
+     */
+    private IMocksControl getMocksControl()
+    {
+        return mocksControl_.get();
+    }
+
+    /**
+     * Gets the registry extension point adapter under test in the fixture.
+     * 
+     * @return The registry extension point adapter under test in the fixture;
+     *         never {@code null}.
+     */
+    protected final RegistryExtensionPointAdapterType getRegistryExtensionPointAdapter()
+    {
+        return registryExtensionPointAdapter_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -194,8 +209,8 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
     public void setUp()
         throws Exception
     {
-        mocksControl_ = EasyMock.createControl();
-        registryExtensionPointAdapter_ = createRegistryExtensionPointAdapter();
+        mocksControl_ = Optional.of( EasyMock.createControl() );
+        registryExtensionPointAdapter_ = Optional.of( createRegistryExtensionPointAdapter() );
     }
 
     /**
@@ -211,8 +226,8 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
     public void testAddedFromExtension()
         throws Exception
     {
-        final IMocksControl mocksControl = mocksControl_;
-        assertNotNull( mocksControl );
+        final RegistryExtensionPointAdapterType registryExtensionPointAdapter = getRegistryExtensionPointAdapter();
+        final IMocksControl mocksControl = getMocksControl();
         final IExtensionRegistry extensionRegistry = mocksControl.createMock( IExtensionRegistry.class );
         final IExtension extension = mocksControl.createMock( IExtension.class );
         final IConfigurationElement configurationElement = mocksControl.createMock( IConfigurationElement.class );
@@ -227,10 +242,10 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
         final Capture<ObjectType> objectCapture = new Capture<>();
         objectRegistry.registerObject( EasyMock.capture( objectCapture ) );
         mocksControl.replay();
-        registryExtensionPointAdapter_.bindObjectRegistry( objectRegistry );
-        registryExtensionPointAdapter_.bindExtensionRegistry( extensionRegistry );
+        registryExtensionPointAdapter.bindObjectRegistry( objectRegistry );
+        registryExtensionPointAdapter.bindExtensionRegistry( extensionRegistry );
 
-        registryExtensionPointAdapter_.added( new IExtension[] {
+        registryExtensionPointAdapter.added( new IExtension[] {
             extension
         } );
 
@@ -246,9 +261,11 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
     @Test( expected = IllegalStateException.class )
     public void testBindExtensionRegistry_AlreadyBound()
     {
-        registryExtensionPointAdapter_.bindExtensionRegistry( mocksControl_.createMock( IExtensionRegistry.class ) );
+        final RegistryExtensionPointAdapterType registryExtensionPointAdapter = getRegistryExtensionPointAdapter();
+        final IMocksControl mocksControl = getMocksControl();
+        registryExtensionPointAdapter.bindExtensionRegistry( mocksControl.createMock( IExtensionRegistry.class ) );
 
-        registryExtensionPointAdapter_.bindExtensionRegistry( mocksControl_.createMock( IExtensionRegistry.class ) );
+        registryExtensionPointAdapter.bindExtensionRegistry( mocksControl.createMock( IExtensionRegistry.class ) );
     }
 
     /**
@@ -259,9 +276,10 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
     @Test( expected = IllegalStateException.class )
     public void testBindObjectRegistry_AlreadyBound()
     {
-        registryExtensionPointAdapter_.bindObjectRegistry( createMockRegistry() );
+        final RegistryExtensionPointAdapterType registryExtensionPointAdapter = getRegistryExtensionPointAdapter();
+        registryExtensionPointAdapter.bindObjectRegistry( createMockRegistry() );
 
-        registryExtensionPointAdapter_.bindObjectRegistry( createMockRegistry() );
+        registryExtensionPointAdapter.bindObjectRegistry( createMockRegistry() );
     }
 
     /**
@@ -277,8 +295,8 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
     public void testRemovedFromExtension()
         throws Exception
     {
-        final IMocksControl mocksControl = mocksControl_;
-        assertNotNull( mocksControl );
+        final RegistryExtensionPointAdapterType registryExtensionPointAdapter = getRegistryExtensionPointAdapter();
+        final IMocksControl mocksControl = getMocksControl();
         final IExtensionRegistry extensionRegistry = mocksControl.createMock( IExtensionRegistry.class );
         final IExtension extension = mocksControl.createMock( IExtension.class );
         final IConfigurationElement configurationElement = mocksControl.createMock( IConfigurationElement.class );
@@ -294,13 +312,13 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
         final Capture<ObjectType> objectCapture = new Capture<>();
         objectRegistry.unregisterObject( EasyMock.capture( objectCapture ) );
         mocksControl.replay();
-        registryExtensionPointAdapter_.bindObjectRegistry( objectRegistry );
-        registryExtensionPointAdapter_.bindExtensionRegistry( extensionRegistry );
-        registryExtensionPointAdapter_.added( new IExtension[] {
+        registryExtensionPointAdapter.bindObjectRegistry( objectRegistry );
+        registryExtensionPointAdapter.bindExtensionRegistry( extensionRegistry );
+        registryExtensionPointAdapter.added( new IExtension[] {
             extension
         } );
 
-        registryExtensionPointAdapter_.removed( new IExtension[] {
+        registryExtensionPointAdapter.removed( new IExtension[] {
             extension
         } );
 
@@ -317,9 +335,11 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
     @Test( expected = IllegalArgumentException.class )
     public void testUnbindExtensionRegistry_ExtensionRegistry_NotBound()
     {
-        registryExtensionPointAdapter_.bindExtensionRegistry( mocksControl_.createMock( IExtensionRegistry.class ) );
+        final RegistryExtensionPointAdapterType registryExtensionPointAdapter = getRegistryExtensionPointAdapter();
+        final IMocksControl mocksControl = getMocksControl();
+        registryExtensionPointAdapter.bindExtensionRegistry( mocksControl.createMock( IExtensionRegistry.class ) );
 
-        registryExtensionPointAdapter_.unbindExtensionRegistry( mocksControl_.createMock( IExtensionRegistry.class ) );
+        registryExtensionPointAdapter.unbindExtensionRegistry( mocksControl.createMock( IExtensionRegistry.class ) );
     }
 
     /**
@@ -330,8 +350,9 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
     @Test( expected = IllegalArgumentException.class )
     public void testUnbindObjectRegistry_ObjectRegistry_NotBound()
     {
-        registryExtensionPointAdapter_.bindObjectRegistry( createMockRegistry() );
+        final RegistryExtensionPointAdapterType registryExtensionPointAdapter = getRegistryExtensionPointAdapter();
+        registryExtensionPointAdapter.bindObjectRegistry( createMockRegistry() );
 
-        registryExtensionPointAdapter_.unbindObjectRegistry( createMockRegistry() );
+        registryExtensionPointAdapter.unbindObjectRegistry( createMockRegistry() );
     }
 }

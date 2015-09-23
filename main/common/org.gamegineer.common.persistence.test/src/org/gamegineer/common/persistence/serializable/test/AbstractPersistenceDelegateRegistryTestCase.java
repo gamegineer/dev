@@ -22,13 +22,11 @@
 package org.gamegineer.common.persistence.serializable.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import java.util.Optional;
 import java.util.Set;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
 import org.junit.Before;
@@ -38,12 +36,6 @@ import org.junit.Test;
  * A fixture for testing the basic aspects of classes that implement the
  * {@link IPersistenceDelegateRegistry} interface.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractPersistenceDelegateRegistryTestCase
 {
     // ======================================================================
@@ -51,7 +43,7 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     // ======================================================================
 
     /** The persistence delegate registry under test in the fixture. */
-    private IPersistenceDelegateRegistry persistenceDelegateRegistry_;
+    private Optional<IPersistenceDelegateRegistry> persistenceDelegateRegistry_;
 
 
     // ======================================================================
@@ -64,6 +56,7 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
      */
     protected AbstractPersistenceDelegateRegistryTestCase()
     {
+        persistenceDelegateRegistry_ = Optional.empty();
     }
 
 
@@ -84,6 +77,17 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
         throws Exception;
 
     /**
+     * Gets the persistence delegate registry under test in the fixture.
+     * 
+     * @return The persistence delegate registry under test in the fixture;
+     *         never {@code null}.
+     */
+    protected final IPersistenceDelegateRegistry getPersistenceDelegateRegistry()
+    {
+        return persistenceDelegateRegistry_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -93,8 +97,7 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     public void setUp()
         throws Exception
     {
-        persistenceDelegateRegistry_ = createPersistenceDelegateRegistry();
-        assertNotNull( persistenceDelegateRegistry_ );
+        persistenceDelegateRegistry_ = Optional.of( createPersistenceDelegateRegistry() );
     }
 
     /**
@@ -105,7 +108,7 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     @Test
     public void testGetPersistenceDelegateForType_Type_Absent()
     {
-        assertNull( persistenceDelegateRegistry_.getPersistenceDelegate( Object.class ) );
+        assertNull( getPersistenceDelegateRegistry().getPersistenceDelegate( Object.class ) );
     }
 
     /**
@@ -116,11 +119,12 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     @Test
     public void testGetPersistenceDelegateForType_Type_Present()
     {
+        final IPersistenceDelegateRegistry persistenceDelegateRegistry = getPersistenceDelegateRegistry();
         final Class<?> expectedType = Object.class;
         final IPersistenceDelegate expectedPersistenceDelegate = new FakePersistenceDelegate();
-        persistenceDelegateRegistry_.registerPersistenceDelegate( expectedType, expectedPersistenceDelegate );
+        persistenceDelegateRegistry.registerPersistenceDelegate( expectedType, expectedPersistenceDelegate );
 
-        final IPersistenceDelegate actualPersistenceDelegate = persistenceDelegateRegistry_.getPersistenceDelegate( expectedType );
+        final IPersistenceDelegate actualPersistenceDelegate = persistenceDelegateRegistry.getPersistenceDelegate( expectedType );
 
         assertSame( expectedPersistenceDelegate, actualPersistenceDelegate );
     }
@@ -133,7 +137,7 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     @Test
     public void testGetPersistenceDelegateForTypeName_TypeName_Absent()
     {
-        assertNull( persistenceDelegateRegistry_.getPersistenceDelegate( "unknownTypeName" ) ); //$NON-NLS-1$
+        assertNull( getPersistenceDelegateRegistry().getPersistenceDelegate( "unknownTypeName" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -144,11 +148,12 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     @Test
     public void testGetPersistenceDelegateForTypeName_TypeName_Present()
     {
+        final IPersistenceDelegateRegistry persistenceDelegateRegistry = getPersistenceDelegateRegistry();
         final Class<?> expectedType = Object.class;
         final IPersistenceDelegate expectedPersistenceDelegate = new FakePersistenceDelegate();
-        persistenceDelegateRegistry_.registerPersistenceDelegate( expectedType, expectedPersistenceDelegate );
+        persistenceDelegateRegistry.registerPersistenceDelegate( expectedType, expectedPersistenceDelegate );
 
-        final IPersistenceDelegate actualPersistenceDelegate = persistenceDelegateRegistry_.getPersistenceDelegate( expectedType.getName() );
+        final IPersistenceDelegate actualPersistenceDelegate = persistenceDelegateRegistry.getPersistenceDelegate( expectedType.getName() );
 
         assertSame( expectedPersistenceDelegate, actualPersistenceDelegate );
     }
@@ -160,12 +165,13 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     @Test
     public void testGetTypeNames_ReturnValue_Copy()
     {
-        final Set<String> typeNames = persistenceDelegateRegistry_.getTypeNames();
+        final IPersistenceDelegateRegistry persistenceDelegateRegistry = getPersistenceDelegateRegistry();
+        final Set<String> typeNames = persistenceDelegateRegistry.getTypeNames();
         final int expectedTypeNamesSize = typeNames.size();
 
         typeNames.add( Object.class.getName() );
 
-        assertEquals( expectedTypeNamesSize, persistenceDelegateRegistry_.getTypeNames().size() );
+        assertEquals( expectedTypeNamesSize, persistenceDelegateRegistry.getTypeNames().size() );
     }
 
     /**
@@ -175,10 +181,11 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     @Test
     public void testGetTypeNames_ReturnValue_Snapshot()
     {
-        final Set<String> typeNames = persistenceDelegateRegistry_.getTypeNames();
-        persistenceDelegateRegistry_.registerPersistenceDelegate( Object.class, new FakePersistenceDelegate() );
+        final IPersistenceDelegateRegistry persistenceDelegateRegistry = getPersistenceDelegateRegistry();
+        final Set<String> typeNames = persistenceDelegateRegistry.getTypeNames();
+        persistenceDelegateRegistry.registerPersistenceDelegate( Object.class, new FakePersistenceDelegate() );
 
-        assertTrue( typeNames.size() != persistenceDelegateRegistry_.getTypeNames().size() );
+        assertTrue( typeNames.size() != persistenceDelegateRegistry.getTypeNames().size() );
     }
 
     /**
@@ -190,10 +197,11 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testRegisterPersistenceDelegate_Type_Registered()
     {
+        final IPersistenceDelegateRegistry persistenceDelegateRegistry = getPersistenceDelegateRegistry();
         final Class<?> type = Object.class;
-        persistenceDelegateRegistry_.registerPersistenceDelegate( type, new FakePersistenceDelegate() );
+        persistenceDelegateRegistry.registerPersistenceDelegate( type, new FakePersistenceDelegate() );
 
-        persistenceDelegateRegistry_.registerPersistenceDelegate( type, new FakePersistenceDelegate() );
+        persistenceDelegateRegistry.registerPersistenceDelegate( type, new FakePersistenceDelegate() );
     }
 
     /**
@@ -204,12 +212,13 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     @Test
     public void testRegisterPersistenceDelegate_Type_Unregistered()
     {
+        final IPersistenceDelegateRegistry persistenceDelegateRegistry = getPersistenceDelegateRegistry();
         final Class<?> type = Object.class;
         final IPersistenceDelegate expectedPersistenceDelegate = new FakePersistenceDelegate();
 
-        persistenceDelegateRegistry_.registerPersistenceDelegate( type, expectedPersistenceDelegate );
+        persistenceDelegateRegistry.registerPersistenceDelegate( type, expectedPersistenceDelegate );
 
-        assertSame( expectedPersistenceDelegate, persistenceDelegateRegistry_.getPersistenceDelegate( type ) );
+        assertSame( expectedPersistenceDelegate, persistenceDelegateRegistry.getPersistenceDelegate( type ) );
     }
 
     /**
@@ -221,10 +230,11 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testUnregisterPersistenceDelegate_Type_Registered_DifferentInstance()
     {
+        final IPersistenceDelegateRegistry persistenceDelegateRegistry = getPersistenceDelegateRegistry();
         final Class<?> type = Object.class;
-        persistenceDelegateRegistry_.registerPersistenceDelegate( type, new FakePersistenceDelegate() );
+        persistenceDelegateRegistry.registerPersistenceDelegate( type, new FakePersistenceDelegate() );
 
-        persistenceDelegateRegistry_.unregisterPersistenceDelegate( type, new FakePersistenceDelegate() );
+        persistenceDelegateRegistry.unregisterPersistenceDelegate( type, new FakePersistenceDelegate() );
     }
 
     /**
@@ -235,16 +245,17 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     @Test
     public void testUnregisterPersistenceDelegate_Type_Registered_SameInstance()
     {
+        final IPersistenceDelegateRegistry persistenceDelegateRegistry = getPersistenceDelegateRegistry();
         final Class<?> type = Object.class;
         final IPersistenceDelegate persistenceDelegate = new FakePersistenceDelegate();
-        final int originalTypeNamesSize = persistenceDelegateRegistry_.getTypeNames().size();
-        persistenceDelegateRegistry_.registerPersistenceDelegate( type, persistenceDelegate );
-        assertEquals( originalTypeNamesSize + 1, persistenceDelegateRegistry_.getTypeNames().size() );
+        final int originalTypeNamesSize = persistenceDelegateRegistry.getTypeNames().size();
+        persistenceDelegateRegistry.registerPersistenceDelegate( type, persistenceDelegate );
+        assertEquals( originalTypeNamesSize + 1, persistenceDelegateRegistry.getTypeNames().size() );
 
-        persistenceDelegateRegistry_.unregisterPersistenceDelegate( type, persistenceDelegate );
+        persistenceDelegateRegistry.unregisterPersistenceDelegate( type, persistenceDelegate );
 
-        assertNull( persistenceDelegateRegistry_.getPersistenceDelegate( type ) );
-        assertEquals( originalTypeNamesSize, persistenceDelegateRegistry_.getTypeNames().size() );
+        assertNull( persistenceDelegateRegistry.getPersistenceDelegate( type ) );
+        assertEquals( originalTypeNamesSize, persistenceDelegateRegistry.getTypeNames().size() );
     }
 
     /**
@@ -258,6 +269,6 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     {
         final Class<?> type = Object.class;
 
-        persistenceDelegateRegistry_.unregisterPersistenceDelegate( type, new FakePersistenceDelegate() );
+        getPersistenceDelegateRegistry().unregisterPersistenceDelegate( type, new FakePersistenceDelegate() );
     }
 }

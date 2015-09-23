@@ -27,10 +27,9 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collections;
 import java.util.Dictionary;
 import java.util.Hashtable;
+import java.util.Optional;
 import java.util.logging.Filter;
-import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.logging.LoggingServiceConstants;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,12 +40,6 @@ import org.osgi.service.component.ComponentFactory;
 /**
  * A fixture for testing the {@link AbstractLoggingComponentFactory} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class AbstractLoggingComponentFactoryTest
 {
     // ======================================================================
@@ -54,10 +47,10 @@ public final class AbstractLoggingComponentFactoryTest
     // ======================================================================
 
     /** Component properties for use in the fixture. */
-    private Dictionary<String, Object> componentProperties_;
+    private Optional<Dictionary<String, Object>> componentProperties_;
 
     /** The logging component factory under test in the fixture. */
-    private AbstractLoggingComponentFactory<Object> factory_;
+    private Optional<AbstractLoggingComponentFactory<Object>> factory_;
 
 
     // ======================================================================
@@ -70,12 +63,35 @@ public final class AbstractLoggingComponentFactoryTest
      */
     public AbstractLoggingComponentFactoryTest()
     {
+        componentProperties_ = Optional.empty();
+        factory_ = Optional.empty();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the fixture component properties.
+     * 
+     * @return The fixture component properties; never {@code null}.
+     */
+    private Dictionary<String, Object> getComponentProperties()
+    {
+        return componentProperties_.get();
+    }
+
+    /**
+     * Gets the logging component factory under test in the fixture.
+     * 
+     * @return The logging component factory under test in the fixture; never
+     *         {@code null}.
+     */
+    private AbstractLoggingComponentFactory<Object> getFactory()
+    {
+        return factory_.get();
+    }
 
     /**
      * Sets up the test fixture.
@@ -87,15 +103,16 @@ public final class AbstractLoggingComponentFactoryTest
     public void setUp()
         throws Exception
     {
-        componentProperties_ = new Hashtable<>();
-        componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_TYPE_NAME, Object.class.getName() );
-        componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_INSTANCE_NAME, "instanceName" ); //$NON-NLS-1$
-        componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_LOGGING_PROPERTIES, Collections.<@NonNull String, @NonNull String>emptyMap() );
+        final Dictionary<String, Object> componentProperties = new Hashtable<>();
+        componentProperties.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_TYPE_NAME, Object.class.getName() );
+        componentProperties.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_INSTANCE_NAME, "instanceName" ); //$NON-NLS-1$
+        componentProperties.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_LOGGING_PROPERTIES, Collections.<@NonNull String, @NonNull String>emptyMap() );
+        componentProperties_ = Optional.of( componentProperties );
 
-        factory_ = new AbstractLoggingComponentFactory<Object>( nonNull( Object.class ) )
+        factory_ = Optional.of( new AbstractLoggingComponentFactory<Object>( nonNull( Object.class ) )
         {
             // no overrides
-        };
+        } );
     }
 
     /**
@@ -142,7 +159,7 @@ public final class AbstractLoggingComponentFactoryTest
     @Test( expected = ComponentException.class )
     public void testNewInstance_ComponentProperties_Null()
     {
-        factory_.newInstance( null );
+        getFactory().newInstance( null );
     }
 
     /**
@@ -152,9 +169,10 @@ public final class AbstractLoggingComponentFactoryTest
     @Test( expected = ComponentException.class )
     public void testNewInstance_InstanceName_Absent()
     {
-        componentProperties_.remove( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_INSTANCE_NAME );
+        final Dictionary<String, Object> componentProperties = getComponentProperties();
+        componentProperties.remove( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_INSTANCE_NAME );
 
-        factory_.newInstance( componentProperties_ );
+        getFactory().newInstance( componentProperties );
     }
 
     /**
@@ -164,9 +182,10 @@ public final class AbstractLoggingComponentFactoryTest
     @Test( expected = ComponentException.class )
     public void testNewInstance_InstanceName_IllegalType()
     {
-        componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_INSTANCE_NAME, new Object() );
+        final Dictionary<String, Object> componentProperties = getComponentProperties();
+        componentProperties.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_INSTANCE_NAME, new Object() );
 
-        factory_.newInstance( componentProperties_ );
+        getFactory().newInstance( componentProperties );
     }
 
     /**
@@ -177,9 +196,10 @@ public final class AbstractLoggingComponentFactoryTest
     @Test
     public void testNewInstance_LoggingProperties_Absent()
     {
-        componentProperties_.remove( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_LOGGING_PROPERTIES );
+        final Dictionary<String, Object> componentProperties = getComponentProperties();
+        componentProperties.remove( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_LOGGING_PROPERTIES );
 
-        assertNotNull( factory_.newInstance( componentProperties_ ) );
+        assertNotNull( getFactory().newInstance( componentProperties ) );
     }
 
     /**
@@ -190,9 +210,10 @@ public final class AbstractLoggingComponentFactoryTest
     @Test( expected = ComponentException.class )
     public void testNewInstance_LoggingProperties_IllegalType()
     {
-        componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_LOGGING_PROPERTIES, new Object() );
+        final Dictionary<String, Object> componentProperties = getComponentProperties();
+        componentProperties.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_LOGGING_PROPERTIES, new Object() );
 
-        factory_.newInstance( componentProperties_ );
+        getFactory().newInstance( componentProperties );
     }
 
     /**
@@ -202,9 +223,10 @@ public final class AbstractLoggingComponentFactoryTest
     @Test( expected = ComponentException.class )
     public void testNewInstance_TypeName_Absent()
     {
-        componentProperties_.remove( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_TYPE_NAME );
+        final Dictionary<String, Object> componentProperties = getComponentProperties();
+        componentProperties.remove( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_TYPE_NAME );
 
-        factory_.newInstance( componentProperties_ );
+        getFactory().newInstance( componentProperties );
     }
 
     /**
@@ -214,8 +236,9 @@ public final class AbstractLoggingComponentFactoryTest
     @Test( expected = ComponentException.class )
     public void testNewInstance_TypeName_IllegalType()
     {
-        componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_TYPE_NAME, new Object() );
+        final Dictionary<String, Object> componentProperties = getComponentProperties();
+        componentProperties.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_TYPE_NAME, new Object() );
 
-        factory_.newInstance( componentProperties_ );
+        getFactory().newInstance( componentProperties );
     }
 }

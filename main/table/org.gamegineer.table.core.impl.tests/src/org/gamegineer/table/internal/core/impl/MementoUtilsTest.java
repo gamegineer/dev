@@ -24,13 +24,10 @@ package org.gamegineer.table.internal.core.impl;
 import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import java.util.Optional;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.junit.Before;
@@ -39,12 +36,6 @@ import org.junit.Test;
 /**
  * A fixture for testing the {@link MementoUtils} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class MementoUtilsTest
 {
     // ======================================================================
@@ -52,22 +43,22 @@ public final class MementoUtilsTest
     // ======================================================================
 
     /** The name of an attribute guaranteed to be absent from the memento. */
-    private static final @NonNull String ABSENT_ATTRIBUTE_NAME = "absent"; //$NON-NLS-1$
+    private static final String ABSENT_ATTRIBUTE_NAME = "absent"; //$NON-NLS-1$
 
     /**
      * The name of an attribute guaranteed to be present and in the memento with
      * a {@code null} value.
      */
-    private static final @NonNull String NULL_ATTRIBUTE_NAME = "null"; //$NON-NLS-1$
+    private static final String NULL_ATTRIBUTE_NAME = "null"; //$NON-NLS-1$
 
     /** The name of an attribute guaranteed to be present in the memento. */
-    private static final @NonNull String PRESENT_ATTRIBUTE_NAME = "present"; //$NON-NLS-1$
+    private static final String PRESENT_ATTRIBUTE_NAME = "present"; //$NON-NLS-1$
 
     /** The value of an attribute guaranteed to be present in the memento. */
-    private static final @NonNull String PRESENT_ATTRIBUTE_VALUE = "present-Value"; //$NON-NLS-1$
+    private static final String PRESENT_ATTRIBUTE_VALUE = "present-Value"; //$NON-NLS-1$
 
     /** A memento for use in the fixture. */
-    private Map<String, @Nullable Object> memento_;
+    private Optional<Map<String, @Nullable Object>> memento_;
 
 
     // ======================================================================
@@ -79,6 +70,7 @@ public final class MementoUtilsTest
      */
     public MementoUtilsTest()
     {
+        memento_ = Optional.empty();
     }
 
 
@@ -93,8 +85,7 @@ public final class MementoUtilsTest
      */
     private Map<String, @Nullable Object> getMemento()
     {
-        assertNotNull( memento_ );
-        return memento_;
+        return memento_.get();
     }
 
     /**
@@ -107,9 +98,10 @@ public final class MementoUtilsTest
     public void setUp()
         throws Exception
     {
-        memento_ = new HashMap<>();
-        memento_.put( NULL_ATTRIBUTE_NAME, null );
-        memento_.put( PRESENT_ATTRIBUTE_NAME, PRESENT_ATTRIBUTE_VALUE );
+        final Map<String, @Nullable Object> memento = new HashMap<>();
+        memento.put( NULL_ATTRIBUTE_NAME, null );
+        memento.put( PRESENT_ATTRIBUTE_NAME, PRESENT_ATTRIBUTE_VALUE );
+        memento_ = Optional.of( memento );
     }
 
     /**

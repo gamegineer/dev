@@ -22,14 +22,12 @@
 package org.gamegineer.common.core.util.registry.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import java.util.Collection;
-import org.eclipse.jdt.annotation.DefaultLocation;
+import java.util.Optional;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.registry.IRegistry;
 import org.junit.Before;
@@ -44,12 +42,6 @@ import org.junit.Test;
  * @param <ObjectType>
  *        The type of object managed by the registry.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public abstract class AbstractRegistryTestCase<@NonNull ObjectIdType, @NonNull ObjectType>
 {
     // ======================================================================
@@ -57,7 +49,7 @@ public abstract class AbstractRegistryTestCase<@NonNull ObjectIdType, @NonNull O
     // ======================================================================
 
     /** The registry under test in the fixture. */
-    private IRegistry<ObjectIdType, ObjectType> registry_;
+    private Optional<IRegistry<ObjectIdType, ObjectType>> registry_;
 
 
     // ======================================================================
@@ -69,6 +61,7 @@ public abstract class AbstractRegistryTestCase<@NonNull ObjectIdType, @NonNull O
      */
     protected AbstractRegistryTestCase()
     {
+        registry_ = Optional.empty();
     }
 
 
@@ -117,6 +110,16 @@ public abstract class AbstractRegistryTestCase<@NonNull ObjectIdType, @NonNull O
         ObjectType object );
 
     /**
+     * Gets the registry under test in the fixture.
+     * 
+     * @return The registry under test in the fixture; never {@code null}.
+     */
+    protected final IRegistry<ObjectIdType, ObjectType> getRegistry()
+    {
+        return registry_.get();
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -126,8 +129,7 @@ public abstract class AbstractRegistryTestCase<@NonNull ObjectIdType, @NonNull O
     public void setUp()
         throws Exception
     {
-        registry_ = createRegistry();
-        assertNotNull( registry_ );
+        registry_ = Optional.of( createRegistry() );
     }
 
     /**
@@ -137,7 +139,7 @@ public abstract class AbstractRegistryTestCase<@NonNull ObjectIdType, @NonNull O
     @Test
     public void testGetObject_Id_Absent()
     {
-        assertNull( registry_.getObject( getObjectId( createUniqueObject() ) ) );
+        assertNull( getRegistry().getObject( getObjectId( createUniqueObject() ) ) );
     }
 
     /**
@@ -147,10 +149,11 @@ public abstract class AbstractRegistryTestCase<@NonNull ObjectIdType, @NonNull O
     @Test
     public void testGetObject_Id_Present()
     {
+        final IRegistry<ObjectIdType, ObjectType> registry = getRegistry();
         final ObjectType expectedObject = createUniqueObject();
-        registry_.registerObject( expectedObject );
+        registry.registerObject( expectedObject );
 
-        final @Nullable ObjectType actualObject = registry_.getObject( getObjectId( expectedObject ) );
+        final @Nullable ObjectType actualObject = registry.getObject( getObjectId( expectedObject ) );
 
         assertSame( expectedObject, actualObject );
     }
@@ -162,12 +165,13 @@ public abstract class AbstractRegistryTestCase<@NonNull ObjectIdType, @NonNull O
     @Test
     public void testGetObjects_ReturnValue_Copy()
     {
-        final Collection<ObjectType> objects = registry_.getObjects();
+        final IRegistry<ObjectIdType, ObjectType> registry = getRegistry();
+        final Collection<ObjectType> objects = registry.getObjects();
         final int expectedObjectsSize = objects.size();
 
         objects.add( createUniqueObject() );
 
-        assertEquals( expectedObjectsSize, registry_.getObjects().size() );
+        assertEquals( expectedObjectsSize, registry.getObjects().size() );
     }
 
     /**
@@ -177,10 +181,11 @@ public abstract class AbstractRegistryTestCase<@NonNull ObjectIdType, @NonNull O
     @Test
     public void testGetObjects_ReturnValue_Snapshot()
     {
-        final Collection<ObjectType> objects = registry_.getObjects();
-        registry_.registerObject( createUniqueObject() );
+        final IRegistry<ObjectIdType, ObjectType> registry = getRegistry();
+        final Collection<ObjectType> objects = registry.getObjects();
+        registry.registerObject( createUniqueObject() );
 
-        assertTrue( objects.size() != registry_.getObjects().size() );
+        assertTrue( objects.size() != registry.getObjects().size() );
     }
 
     /**
@@ -190,10 +195,11 @@ public abstract class AbstractRegistryTestCase<@NonNull ObjectIdType, @NonNull O
     @Test( expected = IllegalArgumentException.class )
     public void testRegisterObject_Object_Registered()
     {
+        final IRegistry<ObjectIdType, ObjectType> registry = getRegistry();
         final ObjectType object = createUniqueObject();
-        registry_.registerObject( object );
+        registry.registerObject( object );
 
-        registry_.registerObject( cloneObject( object ) );
+        registry.registerObject( cloneObject( object ) );
     }
 
     /**
@@ -203,11 +209,12 @@ public abstract class AbstractRegistryTestCase<@NonNull ObjectIdType, @NonNull O
     @Test
     public void testRegisterObject_Object_Unregistered()
     {
+        final IRegistry<ObjectIdType, ObjectType> registry = getRegistry();
         final ObjectType object = createUniqueObject();
 
-        registry_.registerObject( object );
+        registry.registerObject( object );
 
-        assertTrue( registry_.getObjects().contains( object ) );
+        assertTrue( registry.getObjects().contains( object ) );
     }
 
     /**
@@ -218,12 +225,13 @@ public abstract class AbstractRegistryTestCase<@NonNull ObjectIdType, @NonNull O
     @Test( expected = IllegalArgumentException.class )
     public void testUnregisterObject_Object_Registered_DifferentInstance()
     {
+        final IRegistry<ObjectIdType, ObjectType> registry = getRegistry();
         final ObjectType object = createUniqueObject();
-        final int originalObjectsSize = registry_.getObjects().size();
-        registry_.registerObject( object );
-        assertEquals( originalObjectsSize + 1, registry_.getObjects().size() );
+        final int originalObjectsSize = registry.getObjects().size();
+        registry.registerObject( object );
+        assertEquals( originalObjectsSize + 1, registry.getObjects().size() );
 
-        registry_.unregisterObject( cloneObject( object ) );
+        registry.unregisterObject( cloneObject( object ) );
     }
 
     /**
@@ -233,14 +241,15 @@ public abstract class AbstractRegistryTestCase<@NonNull ObjectIdType, @NonNull O
     @Test
     public void testUnregisterObject_Object_Registered_SameInstance()
     {
+        final IRegistry<ObjectIdType, ObjectType> registry = getRegistry();
         final ObjectType object = createUniqueObject();
-        final int originalObjectsSize = registry_.getObjects().size();
-        registry_.registerObject( object );
-        assertEquals( originalObjectsSize + 1, registry_.getObjects().size() );
+        final int originalObjectsSize = registry.getObjects().size();
+        registry.registerObject( object );
+        assertEquals( originalObjectsSize + 1, registry.getObjects().size() );
 
-        registry_.unregisterObject( object );
+        registry.unregisterObject( object );
 
-        assertEquals( originalObjectsSize, registry_.getObjects().size() );
+        assertEquals( originalObjectsSize, registry.getObjects().size() );
     }
 
     /**
@@ -252,6 +261,6 @@ public abstract class AbstractRegistryTestCase<@NonNull ObjectIdType, @NonNull O
     {
         final ObjectType object = createUniqueObject();
 
-        registry_.unregisterObject( object );
+        getRegistry().unregisterObject( object );
     }
 }

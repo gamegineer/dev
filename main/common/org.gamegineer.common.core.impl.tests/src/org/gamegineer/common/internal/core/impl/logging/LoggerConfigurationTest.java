@@ -29,11 +29,9 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Handler;
 import java.util.logging.Level;
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.gamegineer.common.core.logging.LoggingServiceConstants;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,12 +41,6 @@ import org.osgi.service.component.ComponentFactory;
 /**
  * A fixture for testing the {@link LoggerConfiguration} class.
  */
-@NonNullByDefault( {
-    DefaultLocation.PARAMETER, //
-    DefaultLocation.RETURN_TYPE, //
-    DefaultLocation.TYPE_BOUND, //
-    DefaultLocation.TYPE_ARGUMENT
-} )
 public final class LoggerConfigurationTest
 {
     // ======================================================================
@@ -56,25 +48,25 @@ public final class LoggerConfigurationTest
     // ======================================================================
 
     /** The class name of the filter used in the fixture. */
-    private static final @NonNull String FILTER_CLASS_NAME = FakeFilter.class.getName();
+    private static final String FILTER_CLASS_NAME = FakeFilter.class.getName();
 
     /** The instance name of the filter used in the fixture. */
-    private static final @NonNull String FILTER_INSTANCE_NAME = "filterName"; //$NON-NLS-1$
+    private static final String FILTER_INSTANCE_NAME = "filterName"; //$NON-NLS-1$
 
     /** The class name of the handler used in the fixture. */
-    private static final @NonNull String HANDLER_CLASS_NAME = FakeHandler.class.getName();
+    private static final String HANDLER_CLASS_NAME = FakeHandler.class.getName();
 
     /** The instance name of the first handler used in the fixture. */
-    private static final @NonNull String HANDLER_INSTANCE_NAME_1 = "handlerName1"; //$NON-NLS-1$
+    private static final String HANDLER_INSTANCE_NAME_1 = "handlerName1"; //$NON-NLS-1$
 
     /** The instance name of the second handler used in the fixture. */
-    private static final @NonNull String HANDLER_INSTANCE_NAME_2 = "handlerName2"; //$NON-NLS-1$
+    private static final String HANDLER_INSTANCE_NAME_2 = "handlerName2"; //$NON-NLS-1$
 
     /** The default logger configuration under test in the fixture. */
-    private LoggerConfiguration config_;
+    private Optional<LoggerConfiguration> loggerConfiguration_;
 
     /** The logger properties for use in the fixture. */
-    private Map<String, String> properties_;
+    private Optional<Map<String, String>> properties_;
 
 
     // ======================================================================
@@ -86,6 +78,8 @@ public final class LoggerConfigurationTest
      */
     public LoggerConfigurationTest()
     {
+        loggerConfiguration_ = Optional.empty();
+        properties_ = Optional.empty();
     }
 
 
@@ -94,14 +88,24 @@ public final class LoggerConfigurationTest
     // ======================================================================
 
     /**
+     * Gets the logger configuration under test in the fixture.
+     * 
+     * @return The logger configuration under test in the fixture; never
+     *         {@code null}.
+     */
+    private LoggerConfiguration getLoggerConfiguration()
+    {
+        return loggerConfiguration_.get();
+    }
+
+    /**
      * Gets the fixture logger properties.
      * 
      * @return The fixture logger properties; never {@code null}.
      */
     private Map<String, String> getProperties()
     {
-        assertNotNull( properties_ );
-        return properties_;
+        return properties_.get();
     }
 
     /**
@@ -143,8 +147,8 @@ public final class LoggerConfigurationTest
         // Handler 2
         properties.put( String.format( "%1$s.%2$s.%3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_2, LoggingServiceConstants.PROPERTY_HANDLER_LEVEL ), Level.WARNING.getName() ); //$NON-NLS-1$
 
-        properties_ = properties;
-        config_ = new LoggerConfiguration( "logger.default", properties ); //$NON-NLS-1$
+        properties_ = Optional.of( properties );
+        loggerConfiguration_ = Optional.of( new LoggerConfiguration( "logger.default", properties ) ); //$NON-NLS-1$
     }
 
     /**
@@ -176,7 +180,7 @@ public final class LoggerConfigurationTest
         final ServiceRegistration<ComponentFactory> serviceRegistration = FakeFilter.registerComponentFactory();
         try
         {
-            final FakeFilter filter = (FakeFilter)config_.getFilter( null );
+            final FakeFilter filter = (FakeFilter)getLoggerConfiguration().getFilter( null );
 
             assertNotNull( filter );
             assertFalse( filter.getFakeBooleanProperty() );
@@ -195,7 +199,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetFilter_Configured_FilterCreationFailed()
     {
-        assertNull( config_.getFilter( null ) );
+        assertNull( getLoggerConfiguration().getFilter( null ) );
     }
 
     /**
@@ -245,7 +249,7 @@ public final class LoggerConfigurationTest
         final ServiceRegistration<ComponentFactory> serviceRegistration = FakeHandler.registerComponentFactory();
         try
         {
-            final List<Handler> handlers = config_.getHandlers();
+            final List<Handler> handlers = getLoggerConfiguration().getHandlers();
 
             assertEquals( 2, handlers.size() );
             assertEquals( Level.SEVERE, handlers.get( 0 ).getLevel() );
@@ -268,7 +272,7 @@ public final class LoggerConfigurationTest
         final ServiceRegistration<ComponentFactory> serviceRegistration = FakeHandler.registerFailingComponentFactory();
         try
         {
-            final List<Handler> handlers = config_.getHandlers();
+            final List<Handler> handlers = getLoggerConfiguration().getHandlers();
 
             assertNotNull( handlers );
             assertTrue( handlers.isEmpty() );
@@ -340,7 +344,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetLevel_Configured()
     {
-        assertEquals( Level.SEVERE, config_.getLevel( null ) );
+        assertEquals( Level.SEVERE, getLoggerConfiguration().getLevel( null ) );
     }
 
     /**
@@ -363,7 +367,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetUseParentHandlers_Configured()
     {
-        assertEquals( true, config_.getUseParentHandlers( false ) );
+        assertEquals( true, getLoggerConfiguration().getUseParentHandlers( false ) );
     }
 
     /**
