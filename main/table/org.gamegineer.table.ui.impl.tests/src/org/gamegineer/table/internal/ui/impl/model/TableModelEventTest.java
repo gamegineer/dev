@@ -62,8 +62,7 @@ public final class TableModelEventTest
     /**
      * Gets the table model event under test in the fixture.
      * 
-     * @return The table model event under test in the fixture; never
-     *         {@code null}.
+     * @return The table model event under test in the fixture.
      */
     private TableModelEvent getEvent()
     {

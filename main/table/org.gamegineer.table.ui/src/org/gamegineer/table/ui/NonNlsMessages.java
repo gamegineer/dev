@@ -87,10 +87,10 @@ final class NonNlsMessages
      * is not registered.
      * 
      * @param componentStrategyId
-     *        The component strategy identifier; must not be {@code null}.
+     *        The component strategy identifier.
      * 
      * @return The formatted message indicating the component strategy
-     *         identifier is not registered; never {@code null}.
+     *         identifier is not registered.
      */
     static String ComponentStrategyUIRegistry_getComponentStrategyUI_unknownComponentStrategyId(
         final ComponentStrategyId componentStrategyId )
@@ -105,10 +105,10 @@ final class NonNlsMessages
      * identifier is not registered.
      * 
      * @param componentSurfaceDesignId
-     *        The component surface design identifier; must not be {@code null}.
+     *        The component surface design identifier.
      * 
      * @return The formatted message indicating the component surface design
-     *         identifier is not registered; never {@code null}.
+     *         identifier is not registered.
      */
     static String ComponentSurfaceDesignUIRegistry_getComponentSurfaceDesignUI_unknownComponentSurfaceDesignId(
         final ComponentSurfaceDesignId componentSurfaceDesignId )

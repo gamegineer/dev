@@ -86,7 +86,7 @@ public final class FileHistoryPreferences
      * Adds the specified file to the history.
      * 
      * @param file
-     *        The file; must not be {@code null}.
+     *        The file.
      */
     void addFile(
         final File file )
@@ -100,8 +100,8 @@ public final class FileHistoryPreferences
     /**
      * Gets the collection of files in the history.
      * 
-     * @return The collection of files in the history; never {@code null}. The
-     *         collection is ordered from the oldest file to the newest file.
+     * @return The collection of files in the history. The collection is ordered
+     *         from the oldest file to the newest file.
      */
     public List<File> getFiles()
     {
@@ -115,7 +115,7 @@ public final class FileHistoryPreferences
      * Loads the file history preferences from the specified preference node.
      * 
      * @param preferences
-     *        The preferences node; must not be {@code null}.
+     *        The preferences node.
      */
     void load(
         final Preferences preferences )
@@ -143,7 +143,7 @@ public final class FileHistoryPreferences
      * Removes the specified file from the history.
      * 
      * @param file
-     *        The file; must not be {@code null}.
+     *        The file.
      */
     void removeFile(
         final File file )
@@ -158,7 +158,7 @@ public final class FileHistoryPreferences
      * Stores the file history preferences in the specified preference node.
      * 
      * @param preferences
-     *        The preferences node; must not be {@code null}.
+     *        The preferences node.
      */
     void save(
         final Preferences preferences )

@@ -1,6 +1,6 @@
 /*
  * AbstractContainerStrategyUITestCase.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -53,8 +53,7 @@ public abstract class AbstractContainerStrategyUITestCase<ContainerStrategyUITyp
     /**
      * Gets the container strategy user interface under test in the fixture.
      * 
-     * @return The container strategy user interface under test in the fixture;
-     *         never {@code null}.
+     * @return The container strategy user interface under test in the fixture.
      */
     protected final ContainerStrategyUIType getContainerStrategyUI()
     {

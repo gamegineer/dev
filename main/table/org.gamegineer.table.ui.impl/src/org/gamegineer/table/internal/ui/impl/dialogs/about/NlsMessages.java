@@ -88,8 +88,7 @@ final class NlsMessages
     /**
      * Gets the formatted message for the message label text.
      * 
-     * @return The formatted message for the message label text; never
-     *         {@code null}.
+     * @return The formatted message for the message label text.
      */
     static String AboutDialog_messageLabel_text()
     {
@@ -99,7 +98,7 @@ final class NlsMessages
     /**
      * Gets the formatted message for the dialog title.
      * 
-     * @return The formatted message for the dialog title; never {@code null}.
+     * @return The formatted message for the dialog title.
      */
     static String AboutDialog_title()
     {

@@ -74,7 +74,7 @@ class ComponentView
      * Initializes a new instance of the {@code ComponentView} class.
      * 
      * @param componentModel
-     *        The model associated with this view; must not be {@code null}.
+     *        The model associated with this view.
      */
     ComponentView(
         final ComponentModel componentModel )
@@ -155,7 +155,7 @@ class ComponentView
      * Subclasses are not required to call the superclass method.
      * </p>
      * 
-     * @return The model associated with this view; never {@code null}.
+     * @return The model associated with this view.
      */
     ComponentModel getComponentModel()
     {
@@ -166,10 +166,9 @@ class ComponentView
      * Gets the user interface for the specified component surface design.
      * 
      * @param componentSurfaceDesign
-     *        The component surface design; must not be {@code null}.
+     *        The component surface design.
      * 
-     * @return The user interface for the active component surface design; never
-     *         {@code null}.
+     * @return The user interface for the active component surface design.
      */
     private static ComponentSurfaceDesignUI getComponentSurfaceDesignUI(
         final ComponentSurfaceDesign componentSurfaceDesign )
@@ -189,7 +188,7 @@ class ComponentView
     /**
      * Gets the table environment model lock.
      * 
-     * @return The table environment model lock; never {@code null}.
+     * @return The table environment model lock.
      */
     final ITableEnvironmentModelLock getTableEnvironmentModelLock()
     {
@@ -204,7 +203,7 @@ class ComponentView
      * use of subclasses.
      * </p>
      * 
-     * @return The table view that owns this view; never {@code null}.
+     * @return The table view that owns this view.
      */
     final TableView getTableView()
     {
@@ -221,7 +220,7 @@ class ComponentView
      * </p>
      * 
      * @param tableView
-     *        The table view that owns this view; must not be {@code null}.
+     *        The table view that owns this view.
      */
     void initialize(
         final TableView tableView )
@@ -257,9 +256,9 @@ class ComponentView
      * </p>
      * 
      * @param component
-     *        The component in which to paint; must not be {@code null}.
+     *        The component in which to paint.
      * @param g
-     *        The graphics context in which to paint; must not be {@code null}.
+     *        The graphics context in which to paint.
      */
     void paint(
         final Component component,

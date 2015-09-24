@@ -59,14 +59,14 @@ final class ComponentPrototype
      * Initializes a new instance of the {@code ComponentPrototype} class.
      * 
      * @param name
-     *        The component prototype name; must not be {@code null}.
+     *        The component prototype name.
      * @param mnemonic
      *        The component prototype mnemonic.
      * @param categoryId
      *        The component prototype category identifier or {@code null} if the
      *        component prototype has no category.
      * @param componentPrototypeFactory
-     *        The component prototype factory; must not be {@code null}.
+     *        The component prototype factory.
      */
     ComponentPrototype(
         final String name,
@@ -99,7 +99,7 @@ final class ComponentPrototype
     /**
      * Gets the component prototype factory.
      * 
-     * @return The component prototype factory; never {@code null}.
+     * @return The component prototype factory.
      */
     IComponentPrototypeFactory getFactory()
     {
@@ -119,7 +119,7 @@ final class ComponentPrototype
     /**
      * Gets the component prototype name.
      * 
-     * @return The component prototype name; never {@code null}.
+     * @return The component prototype name.
      */
     String getName()
     {

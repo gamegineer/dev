@@ -59,7 +59,7 @@ final class Model
      * Initializes a new instance of the {@code Model} class.
      * 
      * @param tableModel
-     *        The table model; must not be {@code null}.
+     *        The table model.
      */
     Model(
         final TableModel tableModel )
@@ -86,7 +86,7 @@ final class Model
     /**
      * Gets a validator for the remote player field.
      * 
-     * @return A validator for the remote player field; never {@code null}.
+     * @return A validator for the remote player field.
      */
     @SuppressWarnings( "static-method" )
     IValidator getRemotePlayerValidator()
@@ -111,7 +111,7 @@ final class Model
     /**
      * Gets the collection of remote players.
      * 
-     * @return The collection of remote players; never {@code null}.
+     * @return The collection of remote players.
      */
     ListModel<IPlayer> getRemotePlayers()
     {

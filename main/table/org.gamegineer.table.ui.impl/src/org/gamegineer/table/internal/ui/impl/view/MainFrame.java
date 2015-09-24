@@ -110,9 +110,9 @@ public final class MainFrame
      * Initializes a new instance of the {@code MainFrame} class.
      * 
      * @param tableEnvironmentFactory
-     *        The table environment factory; must not be {@code null}.
+     *        The table environment factory.
      * @param tableNetworkFactory
-     *        The table network factory; must not be {@code null}.
+     *        The table network factory.
      */
     public MainFrame(
         final ITableEnvironmentFactory tableEnvironmentFactory,
@@ -337,7 +337,7 @@ public final class MainFrame
     /**
      * Gets the name of the table.
      * 
-     * @return The name of the table; never {@code null}.
+     * @return The name of the table.
      */
     private String getTableName()
     {
@@ -446,9 +446,8 @@ public final class MainFrame
      * Opens the an existing table from the specified file.
      * 
      * @param fileName
-     *        The name of the file from which the table will be opened; must not
-     *        be {@code null}. Pass an empty string to prompt the user for a
-     *        file name.
+     *        The name of the file from which the table will be opened. Pass an
+     *        empty string to prompt the user for a file name.
      */
     private void openTable(
         final String fileName )

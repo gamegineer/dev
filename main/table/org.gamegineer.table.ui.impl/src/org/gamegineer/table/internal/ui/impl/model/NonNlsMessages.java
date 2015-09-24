@@ -232,11 +232,10 @@ final class NonNlsMessages
      * table memento.
      * 
      * @param file
-     *        The file from which the table memento is read; must not be
-     *        {@code null}.
+     *        The file from which the table memento is read.
      * 
      * @return The formatted message indicating an error occurred while reading
-     *         the table memento; never {@code null}.
+     *         the table memento.
      */
     static String TableModel_readTableMemento_error(
         final File file )
@@ -249,11 +248,10 @@ final class NonNlsMessages
      * table memento.
      * 
      * @param file
-     *        The file to which the table memento is written; must not be
-     *        {@code null}.
+     *        The file to which the table memento is written.
      * 
      * @return The formatted message indicating an error occurred while writing
-     *         the table memento; never {@code null}.
+     *         the table memento.
      */
     static String TableModel_writeTableMemento_error(
         final File file )

@@ -62,8 +62,7 @@ public final class MainModelEventTest
     /**
      * Gets the main model event under test in the fixture.
      * 
-     * @return The main model event under test in the fixture; never
-     *         {@code null}.
+     * @return The main model event under test in the fixture.
      */
     private MainModelEvent getEvent()
     {

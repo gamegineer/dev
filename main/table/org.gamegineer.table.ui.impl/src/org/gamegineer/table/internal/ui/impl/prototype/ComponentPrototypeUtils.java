@@ -65,7 +65,7 @@ public final class ComponentPrototypeUtils
      * with the specified event.
      * 
      * @param event
-     *        The event; must not be {@code null}.
+     *        The event.
      * 
      * @return The component prototype factory for the Swing component
      *         associated with the specified event or {@code null} if not
@@ -91,9 +91,9 @@ public final class ComponentPrototypeUtils
      * Sets the component prototype factory for the specified Swing component.
      * 
      * @param uiComponent
-     *        The Swing component; must not be {@code null}.
+     *        The Swing component.
      * @param componentPrototypeFactory
-     *        The component prototype factory; must not be {@code null}.
+     *        The component prototype factory.
      */
     static void setComponentPrototypeFactory(
         final JComponent uiComponent,

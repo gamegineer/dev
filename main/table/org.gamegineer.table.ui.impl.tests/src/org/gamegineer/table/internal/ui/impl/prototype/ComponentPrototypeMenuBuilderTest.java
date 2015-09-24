@@ -82,9 +82,9 @@ public final class ComponentPrototypeMenuBuilderTest
      * Ensures the specified menus are equal.
      * 
      * @param menu1
-     *        The first object to compare; may be {@code null}.
+     *        The first object to compare.
      * @param menu2
-     *        The second object to compare; may be {@code null}.
+     *        The second object to compare.
      * 
      * @throws java.lang.AssertionError
      *         If the two objects are not equal.
@@ -132,9 +132,9 @@ public final class ComponentPrototypeMenuBuilderTest
      * Ensures the specified menu items are equal.
      * 
      * @param menuItem1
-     *        The first object to compare; may be {@code null}.
+     *        The first object to compare.
      * @param menuItem2
-     *        The second object to compare; may be {@code null}.
+     *        The second object to compare.
      * 
      * @throws java.lang.AssertionError
      *         If the two objects are not equal.
@@ -161,7 +161,7 @@ public final class ComponentPrototypeMenuBuilderTest
     /**
      * Gets the actual root menu.
      * 
-     * @return The actual root menu; never {@code null}.
+     * @return The actual root menu.
      */
     private JMenu getActualRootMenu()
     {
@@ -171,8 +171,7 @@ public final class ComponentPrototypeMenuBuilderTest
     /**
      * Gets the component prototype menu builder under test in the fixture.
      * 
-     * @return The component prototype menu builder under test in the fixture;
-     *         never {@code null}.
+     * @return The component prototype menu builder under test in the fixture.
      */
     private ComponentPrototypeMenuBuilder getComponentPrototypeMenuBuilder()
     {
@@ -182,7 +181,7 @@ public final class ComponentPrototypeMenuBuilderTest
     /**
      * Gets the expected root menu.
      * 
-     * @return The expected root menu; never {@code null}.
+     * @return The expected root menu.
      */
     private JMenu getExpectedRootMenu()
     {

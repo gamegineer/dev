@@ -86,14 +86,13 @@ final class Cursors
      * Creates a cursor with the specified image.
      * 
      * @param path
-     *        The bundle-relative path to the cursor image; must not be
-     *        {@code null}.
+     *        The bundle-relative path to the cursor image.
      * @param hotSpot
-     *        The cursor hot spot; must not be {@code null}.
+     *        The cursor hot spot.
      * @param name
-     *        The localized cursor name; must not be {@code null}.
+     *        The localized cursor name.
      * 
-     * @return A new cursor; never {@code null}.
+     * @return A new cursor.
      */
     private static Cursor createCursor(
         final String path,
@@ -131,7 +130,7 @@ final class Cursors
     /**
      * Creates the invalid cursor.
      * 
-     * @return The invalid cursor; never {@code null}.
+     * @return The invalid cursor.
      */
     private static Cursor createInvalidCursor()
     {
@@ -156,7 +155,7 @@ final class Cursors
     /**
      * Gets the default cursor.
      * 
-     * @return The default cursor; never {@code null}.
+     * @return The default cursor.
      */
     static Cursor getDefaultCursor()
     {
@@ -166,7 +165,7 @@ final class Cursors
     /**
      * Gets the grab cursor.
      * 
-     * @return The grab cursor; never {@code null}.
+     * @return The grab cursor.
      */
     static Cursor getGrabCursor()
     {
@@ -176,7 +175,7 @@ final class Cursors
     /**
      * Gets the hand cursor.
      * 
-     * @return The hand cursor; never {@code null}.
+     * @return The hand cursor.
      */
     static Cursor getHandCursor()
     {
@@ -186,7 +185,7 @@ final class Cursors
     /**
      * Gets the invalid cursor.
      * 
-     * @return The invalid cursor; never {@code null}.
+     * @return The invalid cursor.
      */
     static Cursor getInvalidCursor()
     {

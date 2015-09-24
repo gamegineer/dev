@@ -1,6 +1,6 @@
 /*
  * JComponents.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -55,7 +55,7 @@ public final class JComponents
      *        The type of the component.
      * 
      * @param component
-     *        The component; must not be {@code null}.
+     *        The component.
      */
     public static <T extends JComponent> void freezeHeight(
         final T component )

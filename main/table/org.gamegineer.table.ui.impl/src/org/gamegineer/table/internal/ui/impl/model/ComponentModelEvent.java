@@ -47,8 +47,7 @@ public final class ComponentModelEvent
      * Initializes a new instance of the {@code ComponentModelEvent} class.
      * 
      * @param source
-     *        The component model that fired the event; must not be {@code null}
-     *        .
+     *        The component model that fired the event.
      */
     public ComponentModelEvent(
         final ComponentModel source )
@@ -64,7 +63,7 @@ public final class ComponentModelEvent
     /**
      * Gets the component model that fired the event.
      * 
-     * @return The component model that fired the event; never {@code null}.
+     * @return The component model that fired the event.
      */
     public ComponentModel getComponentModel()
     {

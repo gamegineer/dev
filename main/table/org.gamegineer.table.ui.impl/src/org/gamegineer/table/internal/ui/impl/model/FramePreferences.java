@@ -134,7 +134,7 @@ public final class FramePreferences
      * Loads the frame preferences from the specified preference node.
      * 
      * @param preferences
-     *        The preferences node; must not be {@code null}.
+     *        The preferences node.
      */
     @SuppressWarnings( "boxing" )
     void load(
@@ -173,7 +173,7 @@ public final class FramePreferences
      * Stores the frame preferences in the specified preference node.
      * 
      * @param preferences
-     *        The preferences node; must not be {@code null}.
+     *        The preferences node.
      */
     @SuppressWarnings( "boxing" )
     void save(

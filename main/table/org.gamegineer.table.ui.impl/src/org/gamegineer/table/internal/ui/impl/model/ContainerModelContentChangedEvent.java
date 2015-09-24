@@ -1,6 +1,6 @@
 /*
  * ContainerModelContentChangedEvent.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -53,11 +53,9 @@ public final class ContainerModelContentChangedEvent
      * {@code ContainerModelContentChangedEvent} class.
      * 
      * @param source
-     *        The container model that fired the event; must not be {@code null}
-     *        .
+     *        The container model that fired the event.
      * @param componentModel
-     *        The component model associated with the event; must not be
-     *        {@code null}.
+     *        The component model associated with the event.
      * @param componentModelIndex
      *        The index of the component model associated with the event.
      * 
@@ -85,8 +83,7 @@ public final class ContainerModelContentChangedEvent
     /**
      * Gets the component model associated with the event.
      * 
-     * @return The component model associated with the event; never {@code null}
-     *         .
+     * @return The component model associated with the event.
      */
     public ComponentModel getComponentModel()
     {

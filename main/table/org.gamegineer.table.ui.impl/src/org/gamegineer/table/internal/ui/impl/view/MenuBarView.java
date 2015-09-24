@@ -1,6 +1,6 @@
 /*
  * MenuBarView.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -56,7 +56,7 @@ final class MenuBarView
      * Initializes a new instance of the {@code MenuBarView} class.
      * 
      * @param model
-     *        The model associated with this view; must not be {@code null}.
+     *        The model associated with this view.
      */
     MenuBarView(
         final MainModel model )
@@ -73,7 +73,7 @@ final class MenuBarView
     /**
      * Creates the add component menu.
      * 
-     * @return The add component menu; never {@code null}.
+     * @return The add component menu.
      */
     private JMenu createAddComponentMenu()
     {
@@ -86,7 +86,7 @@ final class MenuBarView
     /**
      * Creates the file menu.
      * 
-     * @return The file menu; never {@code null}.
+     * @return The file menu.
      */
     private JMenu createFileMenu()
     {
@@ -106,7 +106,7 @@ final class MenuBarView
     /**
      * Creates the help menu.
      * 
-     * @return The help menu; never {@code null}.
+     * @return The help menu.
      */
     private static JMenu createHelpMenu()
     {
@@ -121,7 +121,7 @@ final class MenuBarView
     /**
      * Creates the layout menu.
      * 
-     * @return The layout menu; never {@code null}.
+     * @return The layout menu.
      */
     private static JMenu createLayoutMenu()
     {
@@ -139,7 +139,7 @@ final class MenuBarView
     /**
      * Creates the network menu.
      * 
-     * @return The network menu; never {@code null}.
+     * @return The network menu.
      */
     private static JMenu createNetworkMenu()
     {
@@ -158,7 +158,7 @@ final class MenuBarView
     /**
      * Creates the menu bar.
      * 
-     * @return The menu bar; never {@code null}.
+     * @return The menu bar.
      */
     private JMenuBar createMenuBar()
     {
@@ -174,7 +174,7 @@ final class MenuBarView
     /**
      * Creates the table menu.
      * 
-     * @return The table menu; never {@code null}.
+     * @return The table menu.
      */
     private JMenu createTableMenu()
     {
@@ -195,9 +195,9 @@ final class MenuBarView
      * Creates a top-level menu with the specified attributes.
      * 
      * @param text
-     *        The menu text; must not be {@code null}.
+     *        The menu text.
      * 
-     * @return A new top-level menu; never {@code null}.
+     * @return A new top-level menu.
      */
     private static JMenu createTopLevelMenu(
         final String text )
@@ -210,7 +210,7 @@ final class MenuBarView
     /**
      * Creates the view menu.
      * 
-     * @return The view menu; never {@code null}.
+     * @return The view menu.
      */
     private static JMenu createViewMenu()
     {
@@ -223,7 +223,7 @@ final class MenuBarView
     /**
      * Gets the menu bar.
      * 
-     * @return The menu bar; never {@code null}.
+     * @return The menu bar.
      */
     JMenuBar getMenuBar()
     {

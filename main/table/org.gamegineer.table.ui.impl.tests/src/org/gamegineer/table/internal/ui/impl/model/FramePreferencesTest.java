@@ -62,8 +62,7 @@ public final class FramePreferencesTest
     /**
      * Gets the frame preferences under test in the fixture.
      * 
-     * @return The frame preferences under test in the fixture; never
-     *         {@code null}.
+     * @return The frame preferences under test in the fixture.
      */
     private FramePreferences getFramePreferences()
     {

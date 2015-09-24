@@ -88,7 +88,7 @@ public final class TableRunner
      * Initializes a new instance of the {@code TableRunner} class.
      * 
      * @param advisor
-     *        The table advisor; must not be {@code null}.
+     *        The table advisor.
      */
     public TableRunner(
         final ITableAdvisor advisor )
@@ -320,7 +320,7 @@ public final class TableRunner
      * </p>
      * 
      * @param result
-     *        The table result; must not be {@code null}.
+     *        The table result.
      */
     private void stop(
         final TableResult result )

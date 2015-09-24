@@ -54,9 +54,9 @@ public final class OptionDialogs
      * Shows a confirmation dialog with the options Yes, No, and Cancel.
      * 
      * @param parentComponent
-     *        The parent component of the dialog; may be {@code null}.
+     *        The parent component of the dialog.
      * @param message
-     *        The dialog message; must not be {@code null}.
+     *        The dialog message.
      * 
      * @return The option selected by the user.
      */
@@ -71,9 +71,9 @@ public final class OptionDialogs
      * Shows an error message dialog.
      * 
      * @param parentComponent
-     *        The parent component of the dialog; may be {@code null}.
+     *        The parent component of the dialog.
      * @param message
-     *        The dialog message; must not be {@code null}.
+     *        The dialog message.
      */
     public static void showErrorMessageDialog(
         final @Nullable Component parentComponent,

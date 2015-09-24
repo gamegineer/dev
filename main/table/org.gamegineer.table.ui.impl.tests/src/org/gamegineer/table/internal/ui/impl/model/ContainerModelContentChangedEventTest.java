@@ -62,7 +62,7 @@ public final class ContainerModelContentChangedEventTest
     /**
      * Creates a new unique component model.
      * 
-     * @return A new unique component model; never {@code null}.
+     * @return A new unique component model.
      */
     private ComponentModel createUniqueComponentModel()
     {
@@ -72,7 +72,7 @@ public final class ContainerModelContentChangedEventTest
     /**
      * Creates a new unique container model.
      * 
-     * @return A new unique container model; never {@code null}.
+     * @return A new unique container model.
      */
     private ContainerModel createUniqueContainerModel()
     {
@@ -82,7 +82,7 @@ public final class ContainerModelContentChangedEventTest
     /**
      * Gets the fixture table environment model.
      * 
-     * @return The fixture table environment model; never {@code null}.
+     * @return The fixture table environment model.
      */
     private TableEnvironmentModel getTableEnvironmentModel()
     {

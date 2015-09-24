@@ -1,6 +1,6 @@
 /*
  * ITableModelListener.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -39,7 +39,7 @@ public interface ITableModelListener
      * changed.
      * 
      * @param event
-     *        The event describing the table model; must not be {@code null} .
+     *        The event describing the table model.
      */
     public void tableChanged(
         TableModelEvent event );
@@ -48,7 +48,7 @@ public interface ITableModelListener
      * Invoked after the table model dirty flag has changed.
      * 
      * @param event
-     *        The event describing the table model; must not be {@code null} .
+     *        The event describing the table model.
      */
     public void tableModelDirtyFlagChanged(
         TableModelEvent event );
@@ -57,7 +57,7 @@ public interface ITableModelListener
      * Invoked after the table model file has changed.
      * 
      * @param event
-     *        The event describing the table model; must not be {@code null}.
+     *        The event describing the table model.
      */
     public void tableModelFileChanged(
         TableModelEvent event );
@@ -66,7 +66,7 @@ public interface ITableModelListener
      * Invoked after the table model focus has changed.
      * 
      * @param event
-     *        The event describing the table model; must not be {@code null}.
+     *        The event describing the table model.
      */
     public void tableModelFocusChanged(
         TableModelEvent event );
@@ -75,7 +75,7 @@ public interface ITableModelListener
      * Invoked after the table model hover has changed.
      * 
      * @param event
-     *        The event describing the table model; must not be {@code null}.
+     *        The event describing the table model.
      */
     public void tableModelHoverChanged(
         TableModelEvent event );
@@ -84,7 +84,7 @@ public interface ITableModelListener
      * Invoked after the table model origin offset has changed.
      * 
      * @param event
-     *        The event describing the table model; must not be {@code null}.
+     *        The event describing the table model.
      */
     public void tableModelOriginOffsetChanged(
         TableModelEvent event );

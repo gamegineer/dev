@@ -61,7 +61,7 @@ public abstract class AbstractComponentPrototypeFactoryTestCase
     /**
      * Creates the component prototype factory to be tested.
      * 
-     * @return The component prototype factory to be tested; never {@code null}.
+     * @return The component prototype factory to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -72,8 +72,7 @@ public abstract class AbstractComponentPrototypeFactoryTestCase
     /**
      * Gets the component prototype factory under test in the fixture.
      * 
-     * @return The component prototype factory under test in the fixture; never
-     *         {@code null}.
+     * @return The component prototype factory under test in the fixture.
      */
     protected final IComponentPrototypeFactory getComponentPrototypeFactory()
     {

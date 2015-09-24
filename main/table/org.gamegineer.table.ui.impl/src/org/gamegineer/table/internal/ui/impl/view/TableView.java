@@ -157,7 +157,7 @@ final class TableView
      * Initializes a new instance of the {@code TableView} class.
      * 
      * @param model
-     *        The model associated with this view; must not be {@code null}.
+     *        The model associated with this view.
      */
     TableView(
         final TableModel model )
@@ -187,8 +187,7 @@ final class TableView
      * Adds a new component to the table.
      * 
      * @param componentPrototypeFactory
-     *        The component prototype factory used to create the new component;
-     *        must not be {@code null}.
+     *        The component prototype factory used to create the new component.
      */
     private void addComponent(
         final IComponentPrototypeFactory componentPrototypeFactory )
@@ -276,7 +275,7 @@ final class TableView
      * Binds the accelerator key for the specified action.
      * 
      * @param action
-     *        The action; must not be {@code null}.
+     *        The action.
      */
     private void bindActionInput(
         final BasicAction action )
@@ -628,7 +627,7 @@ final class TableView
      * coordinate system.
      * 
      * @param point
-     *        The point; must not be {@code null}.
+     *        The point.
      */
     private void convertPointFromTable(
         final Point point )
@@ -642,7 +641,7 @@ final class TableView
      * coordinate system.
      * 
      * @param point
-     *        The point; must not be {@code null}.
+     *        The point.
      */
     private void convertPointToTable(
         final Point point )
@@ -656,7 +655,7 @@ final class TableView
      * view coordinate system.
      * 
      * @param rect
-     *        The rectangle; must not be {@code null}.
+     *        The rectangle.
      */
     private void convertRectangleFromTable(
         final Rectangle rect )
@@ -668,7 +667,7 @@ final class TableView
     /**
      * Creates the background paint.
      * 
-     * @return The background paint; never {@code null}.
+     * @return The background paint.
      */
     private static Paint createBackgroundPaint()
     {
@@ -684,8 +683,7 @@ final class TableView
     /**
      * Creates the collection of input handler singletons for the view.
      * 
-     * @return The collection of input handler singletons for the view; never
-     *         {@code null}.
+     * @return The collection of input handler singletons for the view.
      */
     private Map<Class<? extends AbstractInputHandler>, AbstractInputHandler> createInputHandlers()
     {
@@ -701,7 +699,7 @@ final class TableView
     /**
      * Creates the key listener for the view.
      * 
-     * @return The key listener for the view; never {@code null}.
+     * @return The key listener for the view.
      */
     private KeyListener createKeyListener()
     {
@@ -746,7 +744,7 @@ final class TableView
     /**
      * Create the mouse input listener for the view.
      * 
-     * @return The mouse input listener for the view; never {@code null}.
+     * @return The mouse input listener for the view.
      */
     private MouseInputListener createMouseInputListener()
     {
@@ -901,7 +899,7 @@ final class TableView
     /**
      * Gets the mouse location in table coordinates.
      * 
-     * @return The mouse location in table coordinates; never {@code null}.
+     * @return The mouse location in table coordinates.
      */
     private Point getMouseLocation()
     {
@@ -914,7 +912,7 @@ final class TableView
     /**
      * Gets the table environment model lock.
      * 
-     * @return The table environment model lock; never {@code null}.
+     * @return The table environment model lock.
      */
     private ITableEnvironmentModelLock getTableEnvironmentModelLock()
     {
@@ -1021,11 +1019,11 @@ final class TableView
      * Paints a border around the specified component.
      * 
      * @param g
-     *        The graphics context in which to paint; must not be {@code null}.
+     *        The graphics context in which to paint.
      * @param componentModel
-     *        The component model; must not be {@code null}.
+     *        The component model.
      * @param color
-     *        The border color; must not be {@code null}.
+     *        The border color.
      */
     private static void paintComponentBorder(
         final Graphics g,
@@ -1139,7 +1137,7 @@ final class TableView
      * Sets the layout of the focused container to the specified value.
      * 
      * @param layoutId
-     *        The identifier of the container layout; must not be {@code null}.
+     *        The identifier of the container layout.
      */
     private void setContainerLayout(
         final ContainerLayoutId layoutId )
@@ -1170,8 +1168,7 @@ final class TableView
      * Sets the current input handler
      * 
      * @param handlerClass
-     *        The class of the input handler to activate; must not be
-     *        {@code null}.
+     *        The class of the input handler to activate.
      * @param event
      *        The input event that triggered activation of the input handler;
      *        may be {@code null} if no input event triggered the activation.
@@ -1312,7 +1309,7 @@ final class TableView
          *        The input event; may be {@code null} if no input event is
          *        available.
          * 
-         * @return The mouse location in table coordinates; never {@code null}.
+         * @return The mouse location in table coordinates.
          */
         protected final Point getMouseLocation(
             final @Nullable InputEvent event )
@@ -1521,7 +1518,7 @@ final class TableView
          * Updates the focus.
          * 
          * @param event
-         *        The mouse event; must not be {@code null}.
+         *        The mouse event.
          */
         private void updateFocus(
             final MouseEvent event )
@@ -1630,7 +1627,7 @@ final class TableView
          * the original mouse location to begin a drag operation.
          * 
          * @param location
-         *        The mouse location; must not be {@code null}.
+         *        The mouse location.
          * 
          * @return {@code true} if the drag operation can begin; otherwise
          *         {@code false}.
@@ -1706,7 +1703,7 @@ final class TableView
          * Updates the focus.
          * 
          * @param event
-         *        The mouse event; must not be {@code null}.
+         *        The mouse event.
          */
         private void updateFocus(
             final MouseEvent event )
@@ -1906,14 +1903,12 @@ final class TableView
              * 
              * @param component
              *        The component from which the drag-and-drop operation will
-             *        begin; must not be {@code null}.
+             *        begin.
              * @param successorDragStrategy
              *        The successor drag strategy to which requests are
-             *        forwarded if they cannot be handled; must not be
-             *        {@code null}.
+             *        forwarded if they cannot be handled.
              * @param inputEvent
-             *        The input event used to initialize the drag strategy; must
-             *        not be {@code null}.
+             *        The input event used to initialize the drag strategy.
              */
             DragStrategy(
                 final IComponent component,
@@ -1974,7 +1969,7 @@ final class TableView
              * Sets the input event associated with the drag strategy.
              * 
              * @param inputEvent
-             *        The input event; must not be {@code null}.
+             *        The input event.
              */
             void setInputEvent(
                 final InputEvent inputEvent )
@@ -2012,7 +2007,7 @@ final class TableView
              * 
              * @param inputEvent
              *        The input event used to initialize a drag strategy created
-             *        by this factory; must not be {@code null}.
+             *        by this factory.
              */
             DragStrategyFactory(
                 final InputEvent inputEvent )
@@ -2178,8 +2173,7 @@ final class TableView
         /**
          * Gets the popup menu based on the current view state.
          * 
-         * @return The popup menu based on the current view state; never
-         *         {@code null}.
+         * @return The popup menu based on the current view state.
          */
         private JPopupMenu getPopupMenu()
         {

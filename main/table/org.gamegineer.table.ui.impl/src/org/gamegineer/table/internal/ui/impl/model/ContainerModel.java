@@ -79,11 +79,9 @@ public final class ContainerModel
      * Initializes a new instance of the {@code ContainerModel} class.
      * 
      * @param tableEnvironmentModel
-     *        The table environment model associated with this model; must not
-     *        be {@code null}.
+     *        The table environment model associated with this model.
      * @param container
-     *        The container associated with this model; must not be {@code null}
-     *        .
+     *        The container associated with this model.
      */
     ContainerModel(
         final TableEnvironmentModel tableEnvironmentModel,
@@ -107,7 +105,7 @@ public final class ContainerModel
      * Adds the specified container model listener to this container model.
      * 
      * @param listener
-     *        The container model listener; must not be {@code null}.
+     *        The container model listener.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is already a registered container model
@@ -123,11 +121,11 @@ public final class ContainerModel
      * Creates a component model for the specified component.
      * 
      * @param component
-     *        The component; must not be {@code null}.
+     *        The component.
      * @param componentIndex
      *        The component index; must not be negative.
      * 
-     * @return The component model that was created; never {@code null}.
+     * @return The component model that was created.
      */
     @GuardedBy( "getLock()" )
     private ComponentModel createComponentModel(
@@ -186,7 +184,7 @@ public final class ContainerModel
      * Fires a component model added event.
      * 
      * @param componentModel
-     *        The added component model; must not be {@code null}.
+     *        The added component model.
      * @param componentModelIndex
      *        The index of the added component; must not be negative.
      */
@@ -215,7 +213,7 @@ public final class ContainerModel
      * Fires a component model removed event.
      * 
      * @param componentModel
-     *        The removed component model; must not be {@code null}.
+     *        The removed component model.
      * @param componentModelIndex
      *        The index of the removed component; must not be negative.
      */
@@ -296,7 +294,7 @@ public final class ContainerModel
      * 
      * @param paths
      *        The collection of constituent component paths of the overall
-     *        component path; must not be {@code null} and must not be empty.
+     *        component path; must not be empty.
      * 
      * @return The component model in this container model at the specified path
      *         or {@code null} if no component model exists at the specified
@@ -366,10 +364,10 @@ public final class ContainerModel
     /**
      * Gets the collection of component models in this container model.
      * 
-     * @return The collection of component models in this container model; never
-     *         {@code null}. The component models are returned in order from the
-     *         component at the bottom of the container to the component at the
-     *         top of the container.
+     * @return The collection of component models in this container model. The
+     *         component models are returned in order from the component at the
+     *         bottom of the container to the component at the top of the
+     *         container.
      */
     public List<ComponentModel> getComponentModels()
     {
@@ -447,7 +445,7 @@ public final class ContainerModel
      * Removes the specified container model listener from this container model.
      * 
      * @param listener
-     *        The container model listener; must not be {@code null}.
+     *        The container model listener.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is not a registered container model listener.

@@ -69,12 +69,12 @@ public final class TextUtils
      * </p>
      * 
      * @param path
-     *        The path to shorten; must not be {@code null}.
+     *        The path to shorten.
      * @param maxLength
      *        The maximum length of the shortened path in characters; must not
      *        be negative.
      * 
-     * @return The shortened path; never {@code null}.
+     * @return The shortened path.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code maxLength} is negative.

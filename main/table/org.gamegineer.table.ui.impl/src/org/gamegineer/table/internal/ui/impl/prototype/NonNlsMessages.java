@@ -120,11 +120,10 @@ final class NonNlsMessages
      * the component prototype factory.
      * 
      * @param configurationElement
-     *        The component prototype factory configuration element; must not be
-     *        {@code null}.
+     *        The component prototype factory configuration element.
      * 
      * @return The formatted message indicating an error occurred while creating
-     *         the component prototype factory; never {@code null}.
+     *         the component prototype factory.
      */
     static String ComponentPrototypeFactoryProxy_getDelegate_createError(
         final IConfigurationElement configurationElement )
@@ -139,11 +138,10 @@ final class NonNlsMessages
      * are orphans.
      * 
      * @param componentPrototypeCategoryIds
-     *        The collection of component prototype category identifiers; must
-     *        not be {@code null}.
+     *        The collection of component prototype category identifiers.
      * 
      * @return The formatted message indicating the component prototype
-     *         categories are orphans; never {@code null}.
+     *         categories are orphans.
      */
     static String ComponentPrototypeMenuBuilder_buildMenu_orphanedCategories(
         final Collection<@Nullable String> componentPrototypeCategoryIds )

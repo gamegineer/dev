@@ -78,10 +78,10 @@ final class NlsMessages
      * Gets the formatted message for the Confirm Overwrite File dialog message.
      * 
      * @param file
-     *        The file to be overwritten; must not be {@code null}.
+     *        The file to be overwritten.
      * 
      * @return The formatted message for the Confirm Overwrite File dialog
-     *         message; never {@code null}.
+     *         message.
      */
     static String JFileChooser_confirmOverwriteFile_message(
         final File file )
@@ -93,10 +93,9 @@ final class NlsMessages
      * Gets the formatted message for the Warn File Not Found dialog message.
      * 
      * @param file
-     *        The file that was not found; must not be {@code null}.
+     *        The file that was not found.
      * 
-     * @return The formatted message for the Warn File Not Found dialog message;
-     *         never {@code null}.
+     * @return The formatted message for the Warn File Not Found dialog message.
      */
     static String JFileChooser_warnFileNotFound_message(
         final File file )

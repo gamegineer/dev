@@ -61,7 +61,7 @@ public abstract class AbstractTableRunnerFactoryTestCase
     /**
      * Creates the table runner factory to be tested.
      * 
-     * @return The table runner factory to be tested; never {@code null}.
+     * @return The table runner factory to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -72,8 +72,7 @@ public abstract class AbstractTableRunnerFactoryTestCase
     /**
      * Gets the table runner factory under test in the fixture.
      * 
-     * @return The table runner factory under test in the fixture; never
-     *         {@code null}.
+     * @return The table runner factory under test in the fixture.
      */
     protected final ITableRunnerFactory getTableRunnerFactory()
     {

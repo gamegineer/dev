@@ -202,7 +202,7 @@ public final class JFileChooser
      * Prompts the user to overwrite the specified file.
      * 
      * @param file
-     *        The file to be overwritten; must not be {@code null}.
+     *        The file to be overwritten.
      * 
      * @return {@code true} if the user wishes to overwrite the specified file;
      *         otherwise {@code false}.
@@ -222,7 +222,7 @@ public final class JFileChooser
      * Warns the user that the specified file was not found.
      * 
      * @param file
-     *        The file that was not found; must not be {@code null}.
+     *        The file that was not found.
      */
     private void warnFileNotFound(
         final File file )

@@ -57,7 +57,7 @@ public final class MainModel
      * Initializes a new instance of the {@code MainModel} class.
      * 
      * @param tableModel
-     *        The table model; must not be {@code null}.
+     *        The table model.
      */
     public MainModel(
         final TableModel tableModel )
@@ -78,7 +78,7 @@ public final class MainModel
      * Adds the specified main model listener to this main model.
      * 
      * @param listener
-     *        The main model listener; must not be {@code null}.
+     *        The main model listener.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is already a registered main model listener.
@@ -111,7 +111,7 @@ public final class MainModel
     /**
      * Gets the preferences model.
      * 
-     * @return The preferences model; never {@code null}.
+     * @return The preferences model.
      */
     public PreferencesModel getPreferencesModel()
     {
@@ -121,7 +121,7 @@ public final class MainModel
     /**
      * Gets the table model.
      * 
-     * @return The table model; never {@code null}.
+     * @return The table model.
      */
     public TableModel getTableModel()
     {
@@ -148,8 +148,7 @@ public final class MainModel
      * Opens an existing table from the specified file.
      * 
      * @param file
-     *        The file from which the table will be opened; must not be
-     *        {@code null}.
+     *        The file from which the table will be opened.
      * 
      * @throws org.gamegineer.table.internal.ui.impl.model.ModelException
      *         If an error occurs while opening the file.
@@ -175,7 +174,7 @@ public final class MainModel
      * Removes the specified main model listener from this main model.
      * 
      * @param listener
-     *        The main model listener; must not be {@code null}.
+     *        The main model listener.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is not a registered main model listener.
@@ -198,8 +197,7 @@ public final class MainModel
      * Saves the current table to the specified file.
      * 
      * @param file
-     *        The file to which the table will be saved; must not be
-     *        {@code null}.
+     *        The file to which the table will be saved.
      * 
      * @throws org.gamegineer.table.internal.ui.impl.model.ModelException
      *         If an error occurs while saving the file.

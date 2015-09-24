@@ -64,7 +64,7 @@ final class MenuUtils
     /**
      * Creates the default menu listener.
      * 
-     * @return The default menu listener; never {@code null}.
+     * @return The default menu listener.
      */
     private static MenuListener createDefaultMenuListener()
     {
@@ -96,7 +96,7 @@ final class MenuUtils
     /**
      * Creates the default popup menu listener.
      * 
-     * @return The default popup menu listener; never {@code null}.
+     * @return The default popup menu listener.
      */
     private static PopupMenuListener createDefaultPopupMenuListener()
     {
@@ -133,7 +133,7 @@ final class MenuUtils
      * before the menu is displayed.
      * </p>
      * 
-     * @return The default menu listener; never {@code null}.
+     * @return The default menu listener.
      */
     static MenuListener getDefaultMenuListener()
     {
@@ -148,7 +148,7 @@ final class MenuUtils
      * updated before the popup menu is displayed.
      * </p>
      * 
-     * @return The default popup menu listener; never {@code null}.
+     * @return The default popup menu listener.
      */
     static PopupMenuListener getDefaultPopupMenuListener()
     {

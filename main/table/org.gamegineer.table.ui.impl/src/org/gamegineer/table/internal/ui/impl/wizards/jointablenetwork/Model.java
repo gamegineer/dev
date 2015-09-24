@@ -83,7 +83,7 @@ final class Model
     /**
      * Gets the host name.
      * 
-     * @return The host name; never {@code null}.
+     * @return The host name.
      */
     public String getHostName()
     {
@@ -93,7 +93,7 @@ final class Model
     /**
      * Gets a validator for the host name field.
      * 
-     * @return A validator for the host name field; never {@code null}.
+     * @return A validator for the host name field.
      */
     @SuppressWarnings( "static-method" )
     IValidator getHostNameValidator()
@@ -118,7 +118,7 @@ final class Model
     /**
      * Gets the password.
      * 
-     * @return The password; never {@code null}.
+     * @return The password.
      */
     public SecureString getPassword()
     {
@@ -128,7 +128,7 @@ final class Model
     /**
      * Gets the player name.
      * 
-     * @return The player name; never {@code null}.
+     * @return The player name.
      */
     public String getPlayerName()
     {
@@ -138,7 +138,7 @@ final class Model
     /**
      * Gets a validator for the player name field.
      * 
-     * @return A validator for the player name field; never {@code null}.
+     * @return A validator for the player name field.
      */
     @SuppressWarnings( "static-method" )
     IValidator getPlayerNameValidator()
@@ -173,7 +173,7 @@ final class Model
     /**
      * Gets a validator for the port field.
      * 
-     * @return A validator for the port field; never {@code null}.
+     * @return A validator for the port field.
      */
     @SuppressWarnings( "static-method" )
     IValidator getPortValidator()
@@ -200,7 +200,7 @@ final class Model
      * Sets the host name.
      * 
      * @param hostName
-     *        The host name; must not be {@code null}.
+     *        The host name.
      */
     public void setHostName(
         final String hostName )
@@ -212,7 +212,7 @@ final class Model
      * Sets the password.
      * 
      * @param password
-     *        The password; must not be {@code null}.
+     *        The password.
      */
     public void setPassword(
         final SecureString password )
@@ -225,7 +225,7 @@ final class Model
      * Sets the player name.
      * 
      * @param playerName
-     *        The player name; must not be {@code null}.
+     *        The player name.
      */
     public void setPlayerName(
         final String playerName )

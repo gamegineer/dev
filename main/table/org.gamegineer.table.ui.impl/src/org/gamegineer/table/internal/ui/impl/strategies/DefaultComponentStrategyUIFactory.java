@@ -1,6 +1,6 @@
 /*
  * DefaultComponentStrategyUIFactory.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -54,10 +54,10 @@ public final class DefaultComponentStrategyUIFactory
      * component strategy.
      * 
      * @param componentStrategy
-     *        The component strategy; must not be {@code null}.
+     *        The component strategy.
      * 
      * @return A default component strategy user interface for the specified
-     *         component strategy; never {@code null}.
+     *         component strategy.
      */
     public static IComponentStrategyUI createDefaultComponentStrategyUI(
         final IComponentStrategy componentStrategy )

@@ -1,6 +1,6 @@
 /*
  * TestComponentStrategyUIs.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -68,10 +68,9 @@ public final class TestComponentStrategyUIs
      * Clones the specified component strategy user interface.
      * 
      * @param componentStrategyUI
-     *        The component strategy user interface to clone; must not be
-     *        {@code null}.
+     *        The component strategy user interface to clone.
      * 
-     * @return A new component strategy user interface; never {@code null}.
+     * @return A new component strategy user interface.
      */
     public static IComponentStrategyUI cloneComponentStrategyUI(
         final IComponentStrategyUI componentStrategyUI )
@@ -86,9 +85,9 @@ public final class TestComponentStrategyUIs
      * identifier.
      * 
      * @param id
-     *        The component strategy identifier; must not be {@code null}.
+     *        The component strategy identifier.
      * 
-     * @return A new component strategy user interface; never {@code null}.
+     * @return A new component strategy user interface.
      */
     public static IComponentStrategyUI createComponentStrategyUI(
         final ComponentStrategyId id )
@@ -102,12 +101,12 @@ public final class TestComponentStrategyUIs
      * interface.
      * 
      * @param id
-     *        The component strategy identifier; must not be {@code null}.
+     *        The component strategy identifier.
      * @param componentStrategyUI
      *        The component strategy user interface to which all operations will
-     *        be delegated; must not be {@code null}.
+     *        be delegated.
      * 
-     * @return A new component strategy user interface; never {@code null}.
+     * @return A new component strategy user interface.
      */
     public static IComponentStrategyUI createComponentStrategyUI(
         final ComponentStrategyId id,
@@ -120,14 +119,11 @@ public final class TestComponentStrategyUIs
      * Creates a decorator for the specified component strategy user interface.
      * 
      * @param componentStrategyUI
-     *        The component strategy user interface to be decorated; must not be
-     *        {@code null}.
+     *        The component strategy user interface to be decorated.
      * @param componentStrategyId
-     *        The component strategy identifier for the decorator; must not be
-     *        {@code null}.
+     *        The component strategy identifier for the decorator.
      * 
-     * @return A decorator for the specified component strategy user interface;
-     *         never {@code null}.
+     * @return A decorator for the specified component strategy user interface.
      */
     private static IComponentStrategyUI createComponentStrategyUIDecorator(
         final IComponentStrategyUI componentStrategyUI,
@@ -154,9 +150,9 @@ public final class TestComponentStrategyUIs
      * identifier.
      * 
      * @param id
-     *        The component strategy identifier; must not be {@code null}.
+     *        The component strategy identifier.
      * 
-     * @return A new container strategy user interface; never {@code null}.
+     * @return A new container strategy user interface.
      */
     public static IContainerStrategyUI createContainerStrategyUI(
         final ComponentStrategyId id )
@@ -170,12 +166,12 @@ public final class TestComponentStrategyUIs
      * interface.
      * 
      * @param id
-     *        The component strategy identifier; must not be {@code null}.
+     *        The component strategy identifier.
      * @param containerStrategyUI
      *        The container strategy user interface to which all operations will
-     *        be delegated; must not be {@code null}.
+     *        be delegated.
      * 
-     * @return A new container strategy user interface; never {@code null}.
+     * @return A new container strategy user interface.
      */
     public static IContainerStrategyUI createContainerStrategyUI(
         final ComponentStrategyId id,
@@ -188,14 +184,11 @@ public final class TestComponentStrategyUIs
      * Creates a decorator for the specified container strategy user interface.
      * 
      * @param containerStrategyUI
-     *        The container strategy user interface to be decorated; must not be
-     *        {@code null}.
+     *        The container strategy user interface to be decorated.
      * @param componentStrategyId
-     *        The component strategy identifier for the decorator; must not be
-     *        {@code null}.
+     *        The component strategy identifier for the decorator.
      * 
-     * @return A decorator for the specified container strategy user interface;
-     *         never {@code null}.
+     * @return A decorator for the specified container strategy user interface.
      */
     private static IContainerStrategyUI createContainerStrategyUIDecorator(
         final IContainerStrategyUI containerStrategyUI,
@@ -225,10 +218,9 @@ public final class TestComponentStrategyUIs
      *        The type of the component strategy user interface.
      * 
      * @param componentStrategyUI
-     *        The component strategy user interface; must not be {@code null}.
+     *        The component strategy user interface.
      * 
-     * @return The registered component strategy user interface; never
-     *         {@code null}.
+     * @return The registered component strategy user interface.
      */
     private static <T extends IComponentStrategyUI> T registerComponentStrategyUI(
         final T componentStrategyUI )

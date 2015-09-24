@@ -67,7 +67,7 @@ public final class SpringUtils
      * </p>
      * 
      * @param parent
-     *        The parent container; must not be {@code null}.
+     *        The parent container.
      * @param rows
      *        The number of rows in the grid.
      * @param columns
@@ -149,7 +149,7 @@ public final class SpringUtils
      * </p>
      * 
      * @param parent
-     *        The parent container; must not be {@code null}.
+     *        The parent container.
      * @param rows
      *        The number of rows in the grid.
      * @param columns
@@ -245,7 +245,7 @@ public final class SpringUtils
      * Gets the layout constraints for the specified grid cell.
      * 
      * @param parent
-     *        The parent container; must not be {@code null}.
+     *        The parent container.
      * @param row
      *        The grid cell row.
      * @param column
@@ -253,8 +253,7 @@ public final class SpringUtils
      * @param columns
      *        The number of columns in the grid.
      * 
-     * @return The layout constraints for the specified grid cell; never
-     *         {@code null}.
+     * @return The layout constraints for the specified grid cell.
      */
     private static SpringLayout.Constraints getGridCellConstraints(
         final Container parent,

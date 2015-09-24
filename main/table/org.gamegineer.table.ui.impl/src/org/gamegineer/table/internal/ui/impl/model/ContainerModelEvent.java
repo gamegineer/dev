@@ -49,8 +49,7 @@ public class ContainerModelEvent
      * Initializes a new instance of the {@code ContainerModelEvent} class.
      * 
      * @param source
-     *        The container model that fired the event; must not be {@code null}
-     *        .
+     *        The container model that fired the event.
      */
     public ContainerModelEvent(
         final ContainerModel source )
@@ -66,7 +65,7 @@ public class ContainerModelEvent
     /**
      * Gets the container model that fired the event.
      * 
-     * @return The container model that fired the event; never {@code null}.
+     * @return The container model that fired the event.
      */
     public final ContainerModel getContainerModel()
     {

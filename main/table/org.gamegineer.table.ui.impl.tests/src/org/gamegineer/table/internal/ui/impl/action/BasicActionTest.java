@@ -68,7 +68,7 @@ public final class BasicActionTest
     /**
      * Creates an action event suitable for testing.
      * 
-     * @return An action event suitable for testing; never {@code null}.
+     * @return An action event suitable for testing.
      */
     private static ActionEvent createActionEvent()
     {
@@ -78,7 +78,7 @@ public final class BasicActionTest
     /**
      * Gets the basic action under test in the fixture.
      * 
-     * @return The basic action under test in the fixture; never {@code null}.
+     * @return The basic action under test in the fixture.
      */
     private BasicAction getBasicAction()
     {
@@ -88,7 +88,7 @@ public final class BasicActionTest
     /**
      * Gets the fixture mocks control.
      * 
-     * @return The fixture mocks control; never {@code null}.
+     * @return The fixture mocks control.
      */
     private IMocksControl getMocksControl()
     {

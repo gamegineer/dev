@@ -60,7 +60,7 @@ public final class IconProxy
      * Initializes a new instance of the {@code IconProxy} class.
      * 
      * @param url
-     *        The icon URL; must not be {@code null}.
+     *        The icon URL.
      */
     public IconProxy(
         final URL url )
@@ -99,7 +99,7 @@ public final class IconProxy
     /**
      * Loads the underlying icon if necessary.
      * 
-     * @return The underlying icon; never {@code null}.
+     * @return The underlying icon.
      */
     private Icon load()
     {

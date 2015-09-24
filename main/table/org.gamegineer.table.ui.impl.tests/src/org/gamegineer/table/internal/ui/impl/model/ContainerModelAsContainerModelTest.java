@@ -1,6 +1,6 @@
 /*
  * ContainerModelAsContainerModelTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -92,10 +92,9 @@ public final class ContainerModelAsContainerModelTest
      * method.
      * 
      * @param containerModel
-     *        The container model; must not be {@code null}.
+     *        The container model.
      * @param methodName
-     *        The name of the method associated with the event; must not be
-     *        {@code null}.
+     *        The name of the method associated with the event.
      */
     private static void fireContainerModelEvent(
         final ContainerModel containerModel,
@@ -118,10 +117,9 @@ public final class ContainerModelAsContainerModelTest
      * method that accepts a {@link ComponentModel} and a primitive integer.
      * 
      * @param containerModel
-     *        The container model; must not be {@code null}.
+     *        The container model.
      * @param methodName
-     *        The name of the method associated with the event; must not be
-     *        {@code null}.
+     *        The name of the method associated with the event.
      */
     private static void fireContainerModelEventWithComponentModelAndInteger(
         final ContainerModel containerModel,

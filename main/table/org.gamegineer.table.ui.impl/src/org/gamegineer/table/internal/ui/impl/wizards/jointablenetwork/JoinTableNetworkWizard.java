@@ -67,8 +67,7 @@ public final class JoinTableNetworkWizard
      * Initializes a new instance of the {@code JoinTableNetworkWizard} class.
      * 
      * @param tableModel
-     *        The table model associated with the wizard; must not be
-     *        {@code null}.
+     *        The table model associated with the wizard.
      */
     public JoinTableNetworkWizard(
         final TableModel tableModel )
@@ -109,7 +108,7 @@ public final class JoinTableNetworkWizard
     /**
      * Gets the wizard model.
      * 
-     * @return The wizard model; never {@code null}.
+     * @return The wizard model.
      */
     Model getModel()
     {
@@ -119,7 +118,7 @@ public final class JoinTableNetworkWizard
     /**
      * Gets the table network configuration.
      * 
-     * @return The table network configuration; never {@code null}.
+     * @return The table network configuration.
      */
     private TableNetworkConfiguration getTableNetworkConfiguration()
     {
@@ -207,7 +206,7 @@ public final class JoinTableNetworkWizard
      * Shows an error message dialog at the next available opportunity.
      * 
      * @param message
-     *        The error message; must not be {@code null}.
+     *        The error message.
      */
     private void showErrorMessageDialogLater(
         final String message )

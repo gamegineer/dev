@@ -141,13 +141,11 @@ public final class TableModel
      * Initializes a new instance of the {@code TableModel} class.
      * 
      * @param tableEnvironmentModel
-     *        The table environment model associated with this model; must not
-     *        be {@code null}.
+     *        The table environment model associated with this model.
      * @param table
-     *        The table associated with this model; must not be {@code null}.
+     *        The table associated with this model.
      * @param tableNetwork
-     *        The table network associated with this model; must not be
-     *        {@code null}.
+     *        The table network associated with this model.
      */
     TableModel(
         final TableEnvironmentModel tableEnvironmentModel,
@@ -184,7 +182,7 @@ public final class TableModel
      * Adds the specified table model listener to this table model.
      * 
      * @param listener
-     *        The table model listener; must not be {@code null}.
+     *        The table model listener.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is already a registered table model listener.
@@ -199,7 +197,7 @@ public final class TableModel
      * Fires the specified event notification.
      * 
      * @param eventNotification
-     *        The event notification; must not be {@code null}.
+     *        The event notification.
      */
     private void fireEventNotification(
         final Runnable eventNotification )
@@ -348,7 +346,7 @@ public final class TableModel
      * Gets the component model in this table model at the specified path.
      * 
      * @param path
-     *        The component path; must not be {@code null}.
+     *        The component path.
      * 
      * @return The component model in this table model at the specified path or
      *         {@code null} if no component model exists at the specified path.
@@ -388,12 +386,12 @@ public final class TableModel
      * </p>
      * 
      * @param location
-     *        The location in table coordinates; must not be {@code null}.
+     *        The location in table coordinates.
      * 
      * @return The collection of component models in this table model at the
-     *         specified location; never {@code null}. The component models are
-     *         returned in order from the bottom-most component model to the
-     *         top-most component model; never {@code null}.
+     *         specified location. The component models are returned in order
+     *         from the bottom-most component model to the top-most component
+     *         model.
      */
     public List<ComponentModel> getComponentModels(
         final Point location )
@@ -453,7 +451,7 @@ public final class TableModel
      * Gets the top-most focusable component model at the specified location.
      * 
      * @param location
-     *        The location in table coordinates; must not be {@code null}.
+     *        The location in table coordinates.
      * 
      * @return The top-most focusable component model at the specified location
      *         or {@code null} if no focusable component model is at that
@@ -478,7 +476,7 @@ public final class TableModel
      * </p>
      * 
      * @param location
-     *        The location in table coordinates; must not be {@code null}.
+     *        The location in table coordinates.
      * @param searchVector
      *        The vector along which the search will proceed or {@code null} to
      *        return the top-most focusable component model.
@@ -579,7 +577,7 @@ public final class TableModel
     /**
      * Gets the table environment model lock.
      * 
-     * @return The table environment model lock; never {@code null}.
+     * @return The table environment model lock.
      */
     private ITableEnvironmentModelLock getLock()
     {
@@ -591,11 +589,11 @@ public final class TableModel
      * 
      * @param componentModels
      *        The list of component models being searched in ascending z-order
-     *        order; must not be {@code null}.
+     *        order.
      * @param index
      *        The current search index.
      * @param searchAxis
-     *        The search axis; must not be {@code null}.
+     *        The search axis.
      * 
      * @return The next search index.
      */
@@ -622,7 +620,7 @@ public final class TableModel
      * coordinates.
      * 
      * @return The offset of the table origin relative to the view origin in
-     *         table coordinates; never {@code null}.
+     *         table coordinates.
      */
     public Dimension getOriginOffset()
     {
@@ -649,7 +647,7 @@ public final class TableModel
     /**
      * Gets the table associated with this model.
      * 
-     * @return The table associated with this model; never {@code null}.
+     * @return The table associated with this model.
      */
     public ITable getTable()
     {
@@ -659,8 +657,7 @@ public final class TableModel
     /**
      * Gets the table environment model associated with this model.
      * 
-     * @return The table environment model associated with this model; never
-     *         {@code null}.
+     * @return The table environment model associated with this model.
      */
     public TableEnvironmentModel getTableEnvironmentModel()
     {
@@ -679,7 +676,7 @@ public final class TableModel
     /**
      * Gets the table network associated with this model.
      * 
-     * @return The table network associated with this model; never {@code null}.
+     * @return The table network associated with this model.
      */
     public ITableNetwork getTableNetwork()
     {
@@ -706,7 +703,7 @@ public final class TableModel
     /**
      * Gets the tabletop model.
      * 
-     * @return The tabletop model; never {@code null}.
+     * @return The tabletop model.
      */
     public ContainerModel getTabletopModel()
     {
@@ -793,8 +790,7 @@ public final class TableModel
      * Opens an existing table from the specified file.
      * 
      * @param file
-     *        The file from which the table will be opened; must not be
-     *        {@code null}.
+     *        The file from which the table will be opened.
      * 
      * @throws org.gamegineer.table.internal.ui.impl.model.ModelException
      *         If an error occurs while opening the file.
@@ -839,11 +835,9 @@ public final class TableModel
      * Reads a table memento from the specified file.
      * 
      * @param file
-     *        The file from which the table memento will be read; must not be
-     *        {@code null}.
+     *        The file from which the table memento will be read.
      * 
-     * @return The table memento that was read from the specified file; never
-     *         {@code null}.
+     * @return The table memento that was read from the specified file.
      * 
      * @throws org.gamegineer.table.internal.ui.impl.model.ModelException
      *         If an error occurs while reading the file.
@@ -872,7 +866,7 @@ public final class TableModel
      * Removes the specified table model listener from this table model.
      * 
      * @param listener
-     *        The table model listener; must not be {@code null}.
+     *        The table model listener.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is not a registered table model listener.
@@ -887,8 +881,7 @@ public final class TableModel
      * Saves the table to the specified file.
      * 
      * @param file
-     *        The file to which the table will be saved; must not be
-     *        {@code null}.
+     *        The file to which the table will be saved.
      * 
      * @throws org.gamegineer.table.internal.ui.impl.model.ModelException
      *         If an error occurs while saving the file.
@@ -1052,7 +1045,7 @@ public final class TableModel
      * 
      * @param originOffset
      *        The offset of the table origin relative to the view origin in
-     *        table coordinates; must not be {@code null}.
+     *        table coordinates.
      */
     public void setOriginOffset(
         final Dimension originOffset )
@@ -1083,10 +1076,9 @@ public final class TableModel
      * state of the specified table.
      * 
      * @param table
-     *        The table that will receive the memento; must not be {@code null}.
+     *        The table that will receive the memento.
      * @param file
-     *        The file from which the table memento will be read; must not be
-     *        {@code null}.
+     *        The file from which the table memento will be read.
      * 
      * @throws org.gamegineer.table.internal.ui.impl.model.ModelException
      *         If an error occurs while reading the file or setting the memento.
@@ -1110,10 +1102,9 @@ public final class TableModel
      * Writes the specified table memento to the specified file.
      * 
      * @param file
-     *        The file to which the table memento will be written; must not be
-     *        {@code null}.
+     *        The file to which the table memento will be written.
      * @param memento
-     *        The table memento to be written; must not be {@code null}.
+     *        The table memento to be written.
      * 
      * @throws org.gamegineer.table.internal.ui.impl.model.ModelException
      *         If an error occurs while writing the file.

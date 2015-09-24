@@ -64,8 +64,7 @@ public abstract class AbstractComponentStrategyUITestCase<ComponentStrategyUITyp
     /**
      * Creates the component strategy user interface to be tested.
      * 
-     * @return The component strategy user interface to be tested; never
-     *         {@code null}.
+     * @return The component strategy user interface to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -76,8 +75,7 @@ public abstract class AbstractComponentStrategyUITestCase<ComponentStrategyUITyp
     /**
      * Gets the component strategy user interface under test in the fixture.
      * 
-     * @return The component strategy user interface under test in the fixture;
-     *         never {@code null}.
+     * @return The component strategy user interface under test in the fixture.
      */
     protected final ComponentStrategyUIType getComponentStrategyUI()
     {

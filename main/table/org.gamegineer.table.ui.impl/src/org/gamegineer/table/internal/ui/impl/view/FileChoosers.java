@@ -54,9 +54,9 @@ final class FileChoosers
      * Gets the table file chooser.
      * 
      * @param file
-     *        The file used to initialize the file chooser; may be {@code null}.
+     *        The file used to initialize the file chooser.
      * 
-     * @return The table file chooser; never {@code null}.
+     * @return The table file chooser.
      */
     static JFileChooser getTableFileChooser(
         final @Nullable File file )

@@ -59,7 +59,7 @@ public final class DebugUtils
      * Traces the structure of the specified table.
      * 
      * @param table
-     *        The table; must not be {@code null}.
+     *        The table.
      */
     public static void trace(
         final ITable table )
@@ -72,7 +72,7 @@ public final class DebugUtils
      * Traces the structure of the specified table model.
      * 
      * @param tableModel
-     *        The table model; must not be {@code null}.
+     *        The table model.
      */
     public static void trace(
         final TableModel tableModel )
@@ -129,9 +129,9 @@ public final class DebugUtils
          * Formats the specified component.
          * 
          * @param component
-         *        The component; must not be {@code null}.
+         *        The component.
          * 
-         * @return The formatted component; never {@code null}.
+         * @return The formatted component.
          */
         private String format(
             final IComponent component )
@@ -165,7 +165,7 @@ public final class DebugUtils
          * Traces the structure of the specified table.
          * 
          * @param table
-         *        The table; must not be {@code null}.
+         *        The table.
          */
         void trace(
             final ITable table )
@@ -185,7 +185,7 @@ public final class DebugUtils
          * Traces the structure of the specified component.
          * 
          * @param component
-         *        The component; must not be {@code null}.
+         *        The component.
          */
         private void trace(
             final IComponent component )
@@ -248,9 +248,9 @@ public final class DebugUtils
          * Formats the specified component model.
          * 
          * @param componentModel
-         *        The component model; must not be {@code null}.
+         *        The component model.
          * 
-         * @return The formatted component model; never {@code null}.
+         * @return The formatted component model.
          */
         private String format(
             final ComponentModel componentModel )
@@ -284,7 +284,7 @@ public final class DebugUtils
          * Traces the structure of the specified table model.
          * 
          * @param tableModel
-         *        The table model; must not be {@code null}.
+         *        The table model.
          */
         void trace(
             final TableModel tableModel )
@@ -304,7 +304,7 @@ public final class DebugUtils
          * Traces the structure of the specified component model.
          * 
          * @param componentModel
-         *        The component model; must not be {@code null}.
+         *        The component model.
          */
         private void trace(
             final ComponentModel componentModel )

@@ -69,8 +69,7 @@ public final class TableEnvironmentModel
      * Initializes a new instance of the {@code TableEnvironmentModel} class.
      * 
      * @param tableEnvironment
-     *        The table environment associated with this model; must not be
-     *        {@code null}.
+     *        The table environment associated with this model.
      */
     public TableEnvironmentModel(
         final ITableEnvironment tableEnvironment )
@@ -115,10 +114,9 @@ public final class TableEnvironmentModel
      * Creates a new component model for the specified component.
      * 
      * @param component
-     *        The component; must not be {@code null}.
+     *        The component.
      * 
-     * @return A new component model for the specified component; never
-     *         {@code null}.
+     * @return A new component model for the specified component.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code component} was created by a table environment other
@@ -141,10 +139,9 @@ public final class TableEnvironmentModel
      * Creates a new container model for the specified container.
      * 
      * @param container
-     *        The container; must not be {@code null}.
+     *        The container.
      * 
-     * @return A new container model for the specified container; never
-     *         {@code null}.
+     * @return A new container model for the specified container.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code container} was created by a table environment other
@@ -162,11 +159,11 @@ public final class TableEnvironmentModel
      * Creates a new table model for the specified table and table network.
      * 
      * @param table
-     *        The table; must not be {@code null}.
+     *        The table.
      * @param tableNetwork
-     *        The table network; must not be {@code null}.
+     *        The table network.
      * 
-     * @return A new table model for the specified table; never {@code null}.
+     * @return A new table model for the specified table.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code table} was created by a table environment other than
@@ -193,7 +190,7 @@ public final class TableEnvironmentModel
      * </p>
      * 
      * @param eventNotification
-     *        The event notification; must not be {@code null}.
+     *        The event notification.
      */
     void fireEventNotification(
         final Runnable eventNotification )
@@ -234,7 +231,7 @@ public final class TableEnvironmentModel
     /**
      * Gets the table environment model lock.
      * 
-     * @return The table environment model lock; never {@code null}.
+     * @return The table environment model lock.
      */
     public ITableEnvironmentModelLock getLock()
     {
@@ -244,8 +241,7 @@ public final class TableEnvironmentModel
     /**
      * Gets the table environment associated with this model.
      * 
-     * @return The table environment associated with this model; never
-     *         {@code null}.
+     * @return The table environment associated with this model.
      */
     public ITableEnvironment getTableEnvironment()
     {

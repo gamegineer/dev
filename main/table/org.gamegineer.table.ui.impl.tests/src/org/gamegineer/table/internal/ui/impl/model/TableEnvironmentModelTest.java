@@ -64,7 +64,7 @@ public final class TableEnvironmentModelTest
     /**
      * Creates a new table environment.
      * 
-     * @return A new table environment; never {@code null}.
+     * @return A new table environment.
      */
     private static ITableEnvironment createTableEnvironment()
     {
@@ -74,8 +74,7 @@ public final class TableEnvironmentModelTest
     /**
      * Gets the table environment model under test in the fixture.
      * 
-     * @return The table environment model under test in the fixture; never
-     *         {@code null}.
+     * @return The table environment model under test in the fixture.
      */
     private TableEnvironmentModel getTableEnvironmentModel()
     {

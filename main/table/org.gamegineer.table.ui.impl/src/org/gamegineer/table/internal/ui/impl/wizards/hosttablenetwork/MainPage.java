@@ -205,7 +205,7 @@ final class MainPage
     /**
      * Gets the page controls.
      * 
-     * @return The page controls; never {@code null}.
+     * @return The page controls.
      */
     private Controls getControls()
     {
@@ -248,13 +248,13 @@ final class MainPage
          * Initializes a new instance of the {@code Controls} class.
          * 
          * @param confirmedPasswordField
-         *        The confirmed password field widget; must not be {@code null}.
+         *        The confirmed password field widget.
          * @param passwordField
-         *        The password field widget; must not be {@code null}.
+         *        The password field widget.
          * @param playerNameTextField
-         *        The player name text field widget; must not be {@code null}.
+         *        The player name text field widget.
          * @param portTextField
-         *        The port text field widget; must not be {@code null}.
+         *        The port text field widget.
          */
         Controls(
             final JPasswordField confirmedPasswordField,

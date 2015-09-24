@@ -102,7 +102,7 @@ public final class BundleImages
      * Initializes a new instance of the {@code BundleImages} class.
      * 
      * @param bundleContext
-     *        The bundle context; must not be {@code null}.
+     *        The bundle context.
      */
     BundleImages(
         final BundleContext bundleContext )
@@ -132,7 +132,7 @@ public final class BundleImages
      * Gets the icon with the specified bundle-relative path.
      * 
      * @param path
-     *        The bundle-relative path of the icon; must not be {@code null}.
+     *        The bundle-relative path of the icon.
      * 
      * @return The icon or {@code null} if no such icon exists.
      */
@@ -147,7 +147,7 @@ public final class BundleImages
      * Gets the image with the specified bundle-relative path.
      * 
      * @param path
-     *        The bundle-relative path of the image; must not be {@code null}.
+     *        The bundle-relative path of the image.
      * 
      * @return The image or {@code null} if no such image exists.
      */

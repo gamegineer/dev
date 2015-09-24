@@ -70,7 +70,7 @@ public final class PreferencesModel
     /**
      * Gets the file history preferences.
      * 
-     * @return The file history preferences; never {@code null}.
+     * @return The file history preferences.
      */
     public FileHistoryPreferences getFileHistoryPreferences()
     {
@@ -80,7 +80,7 @@ public final class PreferencesModel
     /**
      * Gets the frame window preferences.
      * 
-     * @return The frame window preferences; never {@code null}.
+     * @return The frame window preferences.
      */
     public FramePreferences getFramePreferences()
     {

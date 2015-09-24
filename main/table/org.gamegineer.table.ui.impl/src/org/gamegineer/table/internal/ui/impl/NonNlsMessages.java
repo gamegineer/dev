@@ -124,10 +124,10 @@ final class NonNlsMessages
      * specified image.
      * 
      * @param imageUrl
-     *        The URL of the image; must not be {@code null}.
+     *        The URL of the image.
      * 
      * @return The formatted message indicating an error occurred while reading
-     *         the specified image; never {@code null}.
+     *         the specified image.
      */
     static String BundleImages_getImage_readError(
         final URL imageUrl )
@@ -142,10 +142,10 @@ final class NonNlsMessages
      * surface design icon file was not found.
      * 
      * @param name
-     *        The bundle name; must not be {@code null}.
+     *        The bundle name.
      * 
      * @return The formatted message indicating the bundle hosting the component
-     *         surface design icon file was not found; never {@code null}.
+     *         surface design icon file was not found.
      */
     static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconBundleNotFound(
         final String name )
@@ -158,14 +158,12 @@ final class NonNlsMessages
      * file was not found.
      * 
      * @param bundle
-     *        The bundle hosting the component surface design icon file; must
-     *        not be {@code null}.
+     *        The bundle hosting the component surface design icon file.
      * @param path
-     *        The bundle path of the component surface design icon file; must
-     *        not be {@code null}.
+     *        The bundle path of the component surface design icon file.
      * 
      * @return The formatted message indicating the component surface design
-     *         icon file was not found; never {@code null}.
+     *         icon file was not found.
      */
     static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createObject_iconFileNotFound(
         final Bundle bundle,

@@ -53,11 +53,11 @@ public final class ComponentSurfaceDesignUI
      * Initializes a new instance of the {@code ComponentSurfaceDesignUI} class.
      * 
      * @param id
-     *        The component surface design identifier; must not be {@code null}.
+     *        The component surface design identifier.
      * @param name
-     *        The component surface design name; must not be {@code null}.
+     *        The component surface design name.
      * @param icon
-     *        The component surface design icon; must not be {@code null}.
+     *        The component surface design icon.
      */
     public ComponentSurfaceDesignUI(
         final ComponentSurfaceDesignId id,
@@ -77,7 +77,7 @@ public final class ComponentSurfaceDesignUI
     /**
      * Gets the component surface design icon.
      * 
-     * @return The component surface design icon; never {@code null}.
+     * @return The component surface design icon.
      */
     public Icon getIcon()
     {
@@ -87,7 +87,7 @@ public final class ComponentSurfaceDesignUI
     /**
      * Gets the component surface design identifier.
      * 
-     * @return The component surface design identifier; never {@code null}.
+     * @return The component surface design identifier.
      */
     public ComponentSurfaceDesignId getId()
     {
@@ -97,7 +97,7 @@ public final class ComponentSurfaceDesignUI
     /**
      * Gets the component surface design name.
      * 
-     * @return The component surface design name; never {@code null}.
+     * @return The component surface design name.
      */
     public String getName()
     {

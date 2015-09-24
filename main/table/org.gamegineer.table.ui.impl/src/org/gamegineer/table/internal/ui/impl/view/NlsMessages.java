@@ -408,10 +408,10 @@ final class NlsMessages
      * message.
      * 
      * @param tableName
-     *        The name of the active table; must not be {@code null}.
+     *        The name of the active table.
      * 
      * @return The formatted message for the Confirm Save Dirty Table dialog
-     *         message; never {@code null}.
+     *         message.
      */
     static String MainFrame_confirmSaveDirtyTable_message(
         final String tableName )
@@ -423,9 +423,9 @@ final class NlsMessages
      * Gets the formatted message for the frame title.
      * 
      * @param tableName
-     *        The name of the active table; must not be {@code null}.
+     *        The name of the active table.
      * 
-     * @return The formatted message for the frame title; never {@code null}.
+     * @return The formatted message for the frame title.
      */
     static String MainFrame_title(
         final String tableName )
@@ -439,11 +439,9 @@ final class NlsMessages
      * Gets the formatted message for the table network disconnected message.
      * 
      * @param error
-     *        The error that caused the table network disconnect; must not be
-     *        {@code null}.
+     *        The error that caused the table network disconnect.
      * 
-     * @return The formatted message for the table network disconnected message;
-     *         never {@code null}.
+     * @return The formatted message for the table network disconnected message.
      */
     static String MainView_tableNetworkDisconnected_error(
         final TableNetworkError error )
@@ -469,8 +467,7 @@ final class NlsMessages
     /**
      * Gets the formatted text for the open about dialog action.
      * 
-     * @return The formatted text for the open about dialog action; never
-     *         {@code null}.
+     * @return The formatted text for the open about dialog action.
      */
     static String OpenAboutDialogAction_text()
     {
@@ -484,10 +481,9 @@ final class NlsMessages
      * list.
      * 
      * @param playerRole
-     *        The player role; must not be {@code null}.
+     *        The player role.
      * 
-     * @return The formatted text for the specified role in the players list;
-     *         never {@code null}.
+     * @return The formatted text for the specified role in the players list.
      */
     static String TableNetworkPlayerView_playersList_role(
         final PlayerRole playerRole )
@@ -512,11 +508,9 @@ final class NlsMessages
      * Gets the formatted text for an element in the players list.
      * 
      * @param player
-     *        The player associated with the list element; must not be
-     *        {@code null}.
+     *        The player associated with the list element.
      * 
-     * @return The formatted text for an element in the players list; never
-     *         {@code null}.
+     * @return The formatted text for an element in the players list.
      */
     static String TableNetworkPlayerView_playersList_text(
         final IPlayer player )

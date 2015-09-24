@@ -132,11 +132,11 @@ public final class ComponentPrototypesExtensionPoint
      * Builds the component prototype menu using the extension registry.
      * 
      * @param rootMenu
-     *        The root menu; must not be {@code null}.
+     *        The root menu.
      * @param menuItemAction
-     *        The action used for all menu items; must not be {@code null}.
+     *        The action used for all menu items.
      * @param evaluationContextProvider
-     *        The evaluation context provider; must not be {@code null}.
+     *        The evaluation context provider.
      */
     public static void buildMenu(
         final JMenu rootMenu,
@@ -175,11 +175,11 @@ public final class ComponentPrototypesExtensionPoint
      * Builds the component prototype menu using the extension registry.
      * 
      * @param rootMenu
-     *        The root menu; must not be {@code null}.
+     *        The root menu.
      * @param menuItemAction
-     *        The action used for all menu items; must not be {@code null}.
+     *        The action used for all menu items.
      * @param evaluationContextProvider
-     *        The evaluation context provider; must not be {@code null}.
+     *        The evaluation context provider.
      */
     private static void buildMenuInternal(
         final JMenu rootMenu,
@@ -229,10 +229,9 @@ public final class ComponentPrototypesExtensionPoint
      * configuration element.
      * 
      * @param configurationElement
-     *        The component prototype configuration element; must not be
-     *        {@code null}.
+     *        The component prototype configuration element.
      * 
-     * @return A new component prototype; never {@code null}.
+     * @return A new component prototype.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code configurationElement} does not represent a legal
@@ -264,10 +263,9 @@ public final class ComponentPrototypesExtensionPoint
      * prototype category configuration element.
      * 
      * @param configurationElement
-     *        The component prototype category configuration element; must not
-     *        be {@code null}.
+     *        The component prototype category configuration element.
      * 
-     * @return A new component prototype category; never {@code null}.
+     * @return A new component prototype category.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code configurationElement} does not represent a legal
@@ -299,9 +297,9 @@ public final class ComponentPrototypesExtensionPoint
      * Decodes the specified string as a category path.
      * 
      * @param source
-     *        The string to decode; may be {@code null}.
+     *        The string to decode.
      * 
-     * @return The decoded category path; never {@code null}.
+     * @return The decoded category path.
      */
     private static List<String> decodeCategoryPath(
         final @Nullable String source )
@@ -318,9 +316,9 @@ public final class ComponentPrototypesExtensionPoint
      * Decodes the specified string as a mnemonic.
      * 
      * @param source
-     *        The string to decode; may be {@code null}.
+     *        The string to decode.
      * 
-     * @return The decoded mnemonic; never {@code null}.
+     * @return The decoded mnemonic.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code source} does not represent a legal mnemonic.
@@ -341,9 +339,9 @@ public final class ComponentPrototypesExtensionPoint
      * Indicates the specified configuration element is enabled.
      * 
      * @param configurationElement
-     *        The configuration element; must not be {@code null}.
+     *        The configuration element.
      * @param evaluationContextProvider
-     *        The evaluation context provider; must not be {@code null}.
+     *        The evaluation context provider.
      * 
      * @return {@code true} if the specified configuration element is enabled;
      *         otherwise {@code false}.

@@ -70,12 +70,11 @@ final class ComponentPrototypeFactoryProxy
      * class.
      * 
      * @param configurationElement
-     *        The component prototype factory configuration element; must not be
-     *        {@code null}.
+     *        The component prototype factory configuration element.
      * @param propertyName
      *        The name of the configuration element property (attribute or child
      *        element) that specifies the component prototype factory executable
-     *        extension; must not be {@code null}.
+     *        extension.
      */
     ComponentPrototypeFactoryProxy(
         final IConfigurationElement configurationElement,
@@ -107,7 +106,7 @@ final class ComponentPrototypeFactoryProxy
      * delegated.
      * 
      * @return The component prototype factory to which all operations are
-     *         delegated; never {@code null}.
+     *         delegated.
      * 
      * @throws org.gamegineer.table.ui.prototype.ComponentPrototypeFactoryException
      *         If the component prototype factory delegate is not available.

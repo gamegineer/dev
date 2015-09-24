@@ -130,11 +130,10 @@ final class NlsMessages
      * Gets the formatted message for the finish task execution error message.
      * 
      * @param error
-     *        The error that caused the finish task execution error; must not be
-     *        {@code null}.
+     *        The error that caused the finish task execution error.
      * 
      * @return The formatted message for the finish task execution error
-     *         message; never {@code null}.
+     *         message.
      */
     static String HostTableNetworkWizard_finish_error(
         final TableNetworkError error )

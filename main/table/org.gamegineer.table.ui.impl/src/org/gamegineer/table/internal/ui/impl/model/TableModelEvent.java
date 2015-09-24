@@ -47,7 +47,7 @@ public final class TableModelEvent
      * Initializes a new instance of the {@code TableModelEvent} class.
      * 
      * @param source
-     *        The table model that fired the event; must not be {@code null}.
+     *        The table model that fired the event.
      */
     public TableModelEvent(
         final TableModel source )
@@ -63,7 +63,7 @@ public final class TableModelEvent
     /**
      * Gets the table model that fired the event.
      * 
-     * @return The table model that fired the event; never {@code null}.
+     * @return The table model that fired the event.
      */
     public TableModel getTableModel()
     {

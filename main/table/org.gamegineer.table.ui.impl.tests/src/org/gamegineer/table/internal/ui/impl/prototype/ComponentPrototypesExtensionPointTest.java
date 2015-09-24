@@ -81,16 +81,15 @@ public final class ComponentPrototypesExtensionPointTest
      * Creates a new component prototype configuration element.
      * 
      * @param category
-     *        The component prototype category; may be {@code null}.
+     *        The component prototype category.
      * @param mnemonic
-     *        The component prototype mnemonic; may be {@code null}.
+     *        The component prototype mnemonic.
      * @param name
-     *        The component prototype name; may be {@code null}.
+     *        The component prototype name.
      * @param factoryClass
-     *        The component prototype factory class name; may be {@code null}.
+     *        The component prototype factory class name.
      * 
-     * @return A new component prototype configuration element; never
-     *         {@code null}.
+     * @return A new component prototype configuration element.
      */
     private IConfigurationElement createComponentPrototypeConfigurationElement(
         final @Nullable String category,
@@ -127,17 +126,15 @@ public final class ComponentPrototypesExtensionPointTest
      * Creates a new component prototype category configuration element.
      * 
      * @param id
-     *        The component prototype category identifier; may be {@code null}.
+     *        The component prototype category identifier.
      * @param mnemonic
-     *        The component prototype category mnemonic; may be {@code null}.
+     *        The component prototype category mnemonic.
      * @param name
-     *        The component prototype category name; may be {@code null}.
+     *        The component prototype category name.
      * @param parentCategory
-     *        The component prototype category parent category; may be
-     *        {@code null}.
+     *        The component prototype category parent category.
      * 
-     * @return A new component prototype category configuration element; never
-     *         {@code null}.
+     * @return A new component prototype category configuration element.
      */
     private IConfigurationElement createComponentPrototypeCategoryConfigurationElement(
         final @Nullable String id,
@@ -159,9 +156,9 @@ public final class ComponentPrototypesExtensionPointTest
      * Encodes the specified category path as a string.
      * 
      * @param path
-     *        The category path; must not be {@code null}.
+     *        The category path.
      * 
-     * @return The encoded category path; never {@code null}.
+     * @return The encoded category path.
      */
     private static String encodeCategoryPath(
         final List<String> path )
@@ -186,7 +183,7 @@ public final class ComponentPrototypesExtensionPointTest
     /**
      * Gets the fixture mocks control.
      * 
-     * @return The fixture mocks control; never {@code null}.
+     * @return The fixture mocks control.
      */
     private IMocksControl getMocksControl()
     {

@@ -62,7 +62,7 @@ public abstract class AbstractTableAdvisorTestCase
     /**
      * Creates the table advisor to be tested.
      * 
-     * @return The table advisor to be tested; never {@code null}.
+     * @return The table advisor to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -73,7 +73,7 @@ public abstract class AbstractTableAdvisorTestCase
     /**
      * Gets the table advisor under test in the fixture.
      * 
-     * @return The table advisor under test in the fixture; never {@code null}.
+     * @return The table advisor under test in the fixture.
      */
     protected final ITableAdvisor getTableAdvisor()
     {

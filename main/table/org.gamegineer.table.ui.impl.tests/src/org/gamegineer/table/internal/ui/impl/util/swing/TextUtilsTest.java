@@ -51,9 +51,9 @@ public final class TextUtilsTest
      * system conventions.
      * 
      * @param path
-     *        The Windows file system path; must not be {@code null}.
+     *        The Windows file system path.
      * 
-     * @return The normalized file system path; never {@code null}.
+     * @return The normalized file system path.
      */
     private static String normalizePath(
         final String path )

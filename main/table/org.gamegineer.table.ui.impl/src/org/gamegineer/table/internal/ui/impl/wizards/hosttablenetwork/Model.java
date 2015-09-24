@@ -87,7 +87,7 @@ final class Model
     /**
      * Gets the confirmed password.
      * 
-     * @return The confirmed password; never {@code null}.
+     * @return The confirmed password.
      */
     public SecureString getConfirmedPassword()
     {
@@ -97,7 +97,7 @@ final class Model
     /**
      * Gets the password.
      * 
-     * @return The password; never {@code null}.
+     * @return The password.
      */
     public SecureString getPassword()
     {
@@ -108,12 +108,11 @@ final class Model
      * Gets a validation status provider for the password fields.
      * 
      * @param passwordValue
-     *        The password observable value; must not be {@code null}.
+     *        The password observable value.
      * @param confirmedPasswordValue
-     *        The confirmed password observable value; must not be {@code null}.
+     *        The confirmed password observable value.
      * 
-     * @return A validation status provider for the password fields; never
-     *         {@code null}.
+     * @return A validation status provider for the password fields.
      */
     @SuppressWarnings( "static-method" )
     ValidationStatusProvider getPasswordValidationStatusProvider(
@@ -140,7 +139,7 @@ final class Model
     /**
      * Gets the player name.
      * 
-     * @return The player name; never {@code null}.
+     * @return The player name.
      */
     public String getPlayerName()
     {
@@ -150,7 +149,7 @@ final class Model
     /**
      * Gets a validator for the player name field.
      * 
-     * @return A validator for the player name field; never {@code null}.
+     * @return A validator for the player name field.
      */
     @SuppressWarnings( "static-method" )
     IValidator getPlayerNameValidator()
@@ -185,7 +184,7 @@ final class Model
     /**
      * Gets a validator for the port field.
      * 
-     * @return A validator for the port field; never {@code null}.
+     * @return A validator for the port field.
      */
     @SuppressWarnings( "static-method" )
     IValidator getPortValidator()
@@ -212,7 +211,7 @@ final class Model
      * Sets the confirmed password.
      * 
      * @param confirmedPassword
-     *        The confirmed password; must not be {@code null}.
+     *        The confirmed password.
      */
     public void setConfirmedPassword(
         final SecureString confirmedPassword )
@@ -225,7 +224,7 @@ final class Model
      * Sets the password.
      * 
      * @param password
-     *        The password; must not be {@code null}.
+     *        The password.
      */
     public void setPassword(
         final SecureString password )
@@ -238,7 +237,7 @@ final class Model
      * Sets the player name.
      * 
      * @param playerName
-     *        The player name; must not be {@code null}.
+     *        The player name.
      */
     public void setPlayerName(
         final String playerName )

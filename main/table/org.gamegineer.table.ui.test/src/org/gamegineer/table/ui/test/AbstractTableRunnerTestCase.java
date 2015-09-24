@@ -70,7 +70,7 @@ public abstract class AbstractTableRunnerTestCase
     /**
      * Creates the table runner to be tested.
      * 
-     * @return The table runner to be tested; never {@code null}.
+     * @return The table runner to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -81,7 +81,7 @@ public abstract class AbstractTableRunnerTestCase
     /**
      * Gets the table runner under test in the fixture.
      * 
-     * @return The table runner under test in the fixture; never {@code null}.
+     * @return The table runner under test in the fixture.
      */
     protected final ITableRunner getTableRunner()
     {

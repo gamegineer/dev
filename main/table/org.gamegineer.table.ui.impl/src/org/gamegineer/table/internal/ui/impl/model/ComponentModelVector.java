@@ -1,6 +1,6 @@
 /*
  * ComponentModelVector.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -48,11 +48,9 @@ public final class ComponentModelVector
      * Initializes a new instance of the {@code ComponentModelVector} class.
      * 
      * @param origin
-     *        The component model that represents the vector origin; must not be
-     *        {@code null}.
+     *        The component model that represents the vector origin.
      * @param direction
-     *        The component axis along which the vector is directed; must not be
-     *        {@code null}.
+     *        The component axis along which the vector is directed.
      */
     public ComponentModelVector(
         final ComponentModel origin,
@@ -70,8 +68,7 @@ public final class ComponentModelVector
     /**
      * Gets the component axis along which the vector is directed.
      * 
-     * @return The component axis along which the vector is directed; never
-     *         {@code null}.
+     * @return The component axis along which the vector is directed.
      */
     public ComponentAxis getDirection()
     {
@@ -81,8 +78,7 @@ public final class ComponentModelVector
     /**
      * Gets the component model that represents the vector origin.
      * 
-     * @return The component model that represents the vector origin; never
-     *         {@code null}.
+     * @return The component model that represents the vector origin.
      */
     public ComponentModel getOrigin()
     {

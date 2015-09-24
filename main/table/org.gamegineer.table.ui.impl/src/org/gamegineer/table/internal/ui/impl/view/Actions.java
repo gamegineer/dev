@@ -171,7 +171,7 @@ final class Actions
     /**
      * Creates the collection of actions.
      * 
-     * @return The collection of actions; never {@code null}.
+     * @return The collection of actions.
      */
     @SuppressWarnings( "boxing" )
     private static Map<Object, BasicAction> createActions()
@@ -430,9 +430,9 @@ final class Actions
      * Gets the action with the specified identifier.
      * 
      * @param id
-     *        The action identifier; must not be {@code null}.
+     *        The action identifier.
      * 
-     * @return The action; never {@code null}.
+     * @return The action.
      */
     private static BasicAction getAction(
         final Object id )
@@ -445,7 +445,7 @@ final class Actions
     /**
      * Gets the add component action.
      * 
-     * @return The add component action; never {@code null}.
+     * @return The add component action.
      */
     static BasicAction getAddComponentAction()
     {
@@ -455,8 +455,7 @@ final class Actions
     /**
      * Gets the cancel table network control request action.
      * 
-     * @return The cancel table network control request action; never
-     *         {@code null}.
+     * @return The cancel table network control request action.
      */
     static BasicAction getCancelTableNetworkControlRequestAction()
     {
@@ -466,7 +465,7 @@ final class Actions
     /**
      * Gets the debug trace table action.
      * 
-     * @return The debug trace table action; never {@code null}.
+     * @return The debug trace table action.
      */
     static BasicAction getDebugTraceTableAction()
     {
@@ -476,7 +475,7 @@ final class Actions
     /**
      * Gets the debug trace table model action.
      * 
-     * @return The debug trace table model action; never {@code null}.
+     * @return The debug trace table model action.
      */
     static BasicAction getDebugTraceTableModelAction()
     {
@@ -486,7 +485,7 @@ final class Actions
     /**
      * Gets the disconnect table network action.
      * 
-     * @return The disconnect table network action; never {@code null}.
+     * @return The disconnect table network action.
      */
     static BasicAction getDisconnectTableNetworkAction()
     {
@@ -496,7 +495,7 @@ final class Actions
     /**
      * Gets the display help action.
      * 
-     * @return The display help action; never {@code null}.
+     * @return The display help action.
      */
     static BasicAction getDisplayHelpAction()
     {
@@ -506,7 +505,7 @@ final class Actions
     /**
      * Gets the exit action.
      * 
-     * @return The exit action; never {@code null}.
+     * @return The exit action.
      */
     static BasicAction getExitAction()
     {
@@ -516,7 +515,7 @@ final class Actions
     /**
      * Gets the flip component action.
      * 
-     * @return The flip component action; never {@code null}.
+     * @return The flip component action.
      */
     static BasicAction getFlipComponentAction()
     {
@@ -526,7 +525,7 @@ final class Actions
     /**
      * Gets the give table network control action.
      * 
-     * @return The give table network control action; never {@code null}.
+     * @return The give table network control action.
      */
     static BasicAction getGiveTableNetworkControlAction()
     {
@@ -536,7 +535,7 @@ final class Actions
     /**
      * Gets the host table network action.
      * 
-     * @return The host table network action; never {@code null}.
+     * @return The host table network action.
      */
     static BasicAction getHostTableNetworkAction()
     {
@@ -546,7 +545,7 @@ final class Actions
     /**
      * Gets the join table network action.
      * 
-     * @return The join table network action; never {@code null}.
+     * @return The join table network action.
      */
     static BasicAction getJoinTableNetworkAction()
     {
@@ -556,7 +555,7 @@ final class Actions
     /**
      * Gets the open about dialog action.
      * 
-     * @return The open about dialog action; never {@code null}.
+     * @return The open about dialog action.
      */
     static BasicAction getOpenAboutDialogAction()
     {
@@ -566,7 +565,7 @@ final class Actions
     /**
      * Gets the open new table action.
      * 
-     * @return The open new table action; never {@code null}.
+     * @return The open new table action.
      */
     static BasicAction getOpenNewTableAction()
     {
@@ -576,7 +575,7 @@ final class Actions
     /**
      * Gets the open table action.
      * 
-     * @return The open table action; never {@code null}.
+     * @return The open table action.
      */
     static BasicAction getOpenTableAction()
     {
@@ -586,7 +585,7 @@ final class Actions
     /**
      * Gets the remove all components action.
      * 
-     * @return The remove all components action; never {@code null}.
+     * @return The remove all components action.
      */
     static BasicAction getRemoveAllComponentsAction()
     {
@@ -596,7 +595,7 @@ final class Actions
     /**
      * Gets the remove component action.
      * 
-     * @return The remove component action; never {@code null}.
+     * @return The remove component action.
      */
     static BasicAction getRemoveComponentAction()
     {
@@ -606,7 +605,7 @@ final class Actions
     /**
      * Gets the request table network control action.
      * 
-     * @return The request table network control action; never {@code null}.
+     * @return The request table network control action.
      */
     static BasicAction getRequestTableNetworkControlAction()
     {
@@ -616,7 +615,7 @@ final class Actions
     /**
      * Gets the reset table origin action.
      * 
-     * @return The reset table origin action; never {@code null}.
+     * @return The reset table origin action.
      */
     static BasicAction getResetTableOriginAction()
     {
@@ -626,7 +625,7 @@ final class Actions
     /**
      * Gets the save table action.
      * 
-     * @return The save table action; never {@code null}.
+     * @return The save table action.
      */
     static BasicAction getSaveTableAction()
     {
@@ -636,7 +635,7 @@ final class Actions
     /**
      * Gets the save table as action.
      * 
-     * @return The save table as action; never {@code null}.
+     * @return The save table as action.
      */
     static BasicAction getSaveTableAsAction()
     {
@@ -646,8 +645,7 @@ final class Actions
     /**
      * Gets the set accordian down container layout action.
      * 
-     * @return The set accordian down container layout action; never
-     *         {@code null}.
+     * @return The set accordian down container layout action.
      */
     static BasicAction getSetAccordianDownContainerLayoutAction()
     {
@@ -657,8 +655,7 @@ final class Actions
     /**
      * Gets the set accordian left container layout action.
      * 
-     * @return The set accordian left container layout action; never
-     *         {@code null}.
+     * @return The set accordian left container layout action.
      */
     static BasicAction getSetAccordianLeftContainerLayoutAction()
     {
@@ -668,8 +665,7 @@ final class Actions
     /**
      * Gets the set accordian right container layout action.
      * 
-     * @return The set accordian right container layout action; never
-     *         {@code null}.
+     * @return The set accordian right container layout action.
      */
     static BasicAction getSetAccordianRightContainerLayoutAction()
     {
@@ -679,7 +675,7 @@ final class Actions
     /**
      * Gets the set accordian up container layout action.
      * 
-     * @return The set accordian up container layout action; never {@code null}.
+     * @return The set accordian up container layout action.
      */
     static BasicAction getSetAccordianUpContainerLayoutAction()
     {
@@ -689,7 +685,7 @@ final class Actions
     /**
      * Gets the set stacked container layout action.
      * 
-     * @return The set stacked container layout action; never {@code null}.
+     * @return The set stacked container layout action.
      */
     static BasicAction getSetStackedContainerLayoutAction()
     {

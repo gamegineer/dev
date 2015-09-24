@@ -63,8 +63,7 @@ public final class FileHistoryPreferencesTest
     /**
      * Gets the file history preferences under test in the fixture.
      * 
-     * @return The file history preferences under test in the fixture; never
-     *         {@code null}.
+     * @return The file history preferences under test in the fixture.
      */
     private FileHistoryPreferences getFileHistoryPreferences()
     {

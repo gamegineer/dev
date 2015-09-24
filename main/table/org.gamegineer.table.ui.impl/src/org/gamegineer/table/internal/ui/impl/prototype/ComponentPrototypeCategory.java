@@ -62,17 +62,15 @@ final class ComponentPrototypeCategory
      * class.
      * 
      * @param id
-     *        The component prototype category identifier; must not be
-     *        {@code null}.
+     *        The component prototype category identifier.
      * @param name
-     *        The component prototype category name; must not be {@code null}.
+     *        The component prototype category name.
      * @param mnemonic
      *        The component prototype category mnemonic.
      * @param parentPath
-     *        The path of the parent component prototype category; must not be
-     *        {@code null}. The first element is the identifier of the furthest
-     *        ancestor. The last element is the identifier of the nearest
-     *        ancestor.
+     *        The path of the parent component prototype category. The first
+     *        element is the identifier of the furthest ancestor. The last
+     *        element is the identifier of the nearest ancestor.
      */
     ComponentPrototypeCategory(
         final String id,
@@ -96,14 +94,12 @@ final class ComponentPrototypeCategory
      * path.
      * 
      * @param parentPath
-     *        The path of the parent component prototype category; must not be
-     *        {@code null}.
+     *        The path of the parent component prototype category.
      * @param id
-     *        The component prototype category identifier; must not be
-     *        {@code null}.
+     *        The component prototype category identifier.
      * 
      * @return An immutable view of the specified component prototype category
-     *         path; never {@code null}.
+     *         path.
      */
     private static List<String> createPath(
         final List<String> parentPath,
@@ -118,7 +114,7 @@ final class ComponentPrototypeCategory
     /**
      * Gets the component prototype category identifier.
      * 
-     * @return The component prototype category identifier; never {@code null}.
+     * @return The component prototype category identifier.
      */
     String getId()
     {
@@ -138,7 +134,7 @@ final class ComponentPrototypeCategory
     /**
      * Gets the component prototype category name.
      * 
-     * @return The component prototype category name; never {@code null}.
+     * @return The component prototype category name.
      */
     String getName()
     {
@@ -148,8 +144,7 @@ final class ComponentPrototypeCategory
     /**
      * Gets an immutable view of the component prototype category path.
      * 
-     * @return An immutable view of the component prototype category path; never
-     *         {@code null}.
+     * @return An immutable view of the component prototype category path.
      */
     List<String> getPath()
     {

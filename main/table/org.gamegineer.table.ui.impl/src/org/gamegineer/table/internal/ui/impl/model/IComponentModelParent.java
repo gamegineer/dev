@@ -39,7 +39,7 @@ interface IComponentModelParent
      * table model.
      * 
      * @param componentModel
-     *        The child component model; must not be {@code null}.
+     *        The child component model.
      * 
      * @return The path to the specified child component model from its
      *         associated table model or {@code null} if this component model
@@ -56,7 +56,7 @@ interface IComponentModelParent
      * model and all of its ancestors.
      * </p>
      * 
-     * @return An evaluation context; never {@code null}.
+     * @return An evaluation context.
      */
     EvaluationContext getEvaluationContext();
 

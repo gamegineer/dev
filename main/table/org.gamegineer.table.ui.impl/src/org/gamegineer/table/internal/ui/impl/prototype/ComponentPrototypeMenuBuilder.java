@@ -66,7 +66,7 @@ final class ComponentPrototypeMenuBuilder
      * class.
      * 
      * @param menuItemAction
-     *        The action used for all menu items; must not be {@code null}.
+     *        The action used for all menu items.
      */
     ComponentPrototypeMenuBuilder(
         final Action menuItemAction )
@@ -85,8 +85,7 @@ final class ComponentPrototypeMenuBuilder
      * Adds the specified component prototype to the menu.
      * 
      * @param componentPrototype
-     *        The component prototype to add to the menu; must not be
-     *        {@code null}.
+     *        The component prototype to add to the menu.
      */
     void addComponentPrototype(
         final ComponentPrototype componentPrototype )
@@ -104,8 +103,7 @@ final class ComponentPrototypeMenuBuilder
      * Adds the specified component prototype category to the menu.
      * 
      * @param componentPrototypeCategory
-     *        The component prototype category to add to the menu; must not be
-     *        {@code null}.
+     *        The component prototype category to add to the menu.
      */
     void addComponentPrototypeCategory(
         final ComponentPrototypeCategory componentPrototypeCategory )
@@ -121,7 +119,7 @@ final class ComponentPrototypeMenuBuilder
      * using the specified root menu.
      * 
      * @param rootMenu
-     *        The root menu; must not be {@code null}.
+     *        The root menu.
      */
     void buildMenu(
         final JMenu rootMenu )
@@ -135,7 +133,7 @@ final class ComponentPrototypeMenuBuilder
      * Builds the menu associated with the specified menu descriptor.
      * 
      * @param menuDescriptor
-     *        The menu descriptor; must not be {@code null}.
+     *        The menu descriptor.
      * 
      * @return {@code true} if the menu associated with the specified menu
      *         descriptor should be added to its parent menu or {@code false} if
@@ -191,10 +189,10 @@ final class ComponentPrototypeMenuBuilder
      * specified menu descriptor and its descendants.
      * 
      * @param menuDescriptor
-     *        The menu descriptor; must not be {@code null}.
+     *        The menu descriptor.
      * @param ids
      *        The collection that will receive the component prototype category
-     *        identifiers; must not be {@code null}.
+     *        identifiers.
      */
     private static void collectAllComponentPrototypeCategoryIds(
         final MenuDescriptor menuDescriptor,
@@ -274,10 +272,10 @@ final class ComponentPrototypeMenuBuilder
          * 
          * @param id
          *        The component prototype category identifier associated with
-         *        the child menu; must not be {@code null}.
+         *        the child menu.
          * 
          * @return The child menu descriptor associated with the specified
-         *         component prototype category identifier; never {@code null}.
+         *         component prototype category identifier.
          */
         private MenuDescriptor getChildMenuDescriptor(
             final String id )
@@ -296,9 +294,9 @@ final class ComponentPrototypeMenuBuilder
         /**
          * Gets the collection of child menu descriptors.
          * 
-         * @return The collection of child menu descriptors; never {@code null}.
-         *         The returned collection is not a copy and must not be
-         *         modified by the caller.
+         * @return The collection of child menu descriptors. The returned
+         *         collection is not a copy and must not be modified by the
+         *         caller.
          */
         Collection<MenuDescriptor> getChildMenuDescriptors()
         {
@@ -315,11 +313,10 @@ final class ComponentPrototypeMenuBuilder
          * 
          * @param idPath
          *        The component prototype category identifier path; must not be
-         *        {@code null} and must not be empty.
+         *        empty.
          * 
          * @return The descendant menu descriptor associated with the specified
-         *         component prototype category identifier path; never
-         *         {@code null}.
+         *         component prototype category identifier path.
          */
         MenuDescriptor getDescendantMenuDescriptor(
             final List<String> idPath )
@@ -366,7 +363,7 @@ final class ComponentPrototypeMenuBuilder
          * </p>
          * 
          * @param menu
-         *        The menu; must not be {@code null}.
+         *        The menu.
          */
         void setMenu(
             final JMenu menu )

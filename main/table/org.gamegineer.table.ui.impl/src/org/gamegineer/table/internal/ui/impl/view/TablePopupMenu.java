@@ -1,6 +1,6 @@
 /*
  * TablePopupMenu.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -54,7 +54,7 @@ final class TablePopupMenu
      * Initializes a new instance of the {@code TablePopupMenu} class.
      * 
      * @param model
-     *        The model associated with the menu; must not be {@code null}.
+     *        The model associated with the menu.
      */
     TablePopupMenu(
         final TableModel model )
@@ -72,7 +72,7 @@ final class TablePopupMenu
     /**
      * Creates the add component menu.
      * 
-     * @return The add component menu; never {@code null}.
+     * @return The add component menu.
      */
     private JMenu createAddComponentMenu()
     {

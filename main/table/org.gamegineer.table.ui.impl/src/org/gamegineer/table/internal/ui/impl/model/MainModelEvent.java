@@ -47,7 +47,7 @@ public final class MainModelEvent
      * Initializes a new instance of the {@code MainModelEvent} class.
      * 
      * @param source
-     *        The main model that fired the event; must not be {@code null}.
+     *        The main model that fired the event.
      */
     public MainModelEvent(
         final MainModel source )
@@ -63,7 +63,7 @@ public final class MainModelEvent
     /**
      * Gets the main model that fired the event.
      * 
-     * @return The main model that fired the event; never {@code null}.
+     * @return The main model that fired the event.
      */
     public MainModel getMainModel()
     {

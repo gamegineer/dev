@@ -59,7 +59,7 @@ final class FileHistoryMenuItemGroupContentProvider
      * {@code FileHistoryMenuItemGroupContentProvider} class.
      * 
      * @param mainModel
-     *        The main model; must not be {@code null}.
+     *        The main model.
      */
     FileHistoryMenuItemGroupContentProvider(
         final MainModel mainModel )

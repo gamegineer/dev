@@ -70,7 +70,7 @@ public final class Converters
      * values of type {@link String}.
      * 
      * @return A data binding converter from values of type {@link Integer#TYPE}
-     *         to values of type {@link String}; never {@code null}.
+     *         to values of type {@link String}.
      */
     public static IConverter getPrimitiveIntegerToStringConverter()
     {
@@ -88,7 +88,7 @@ public final class Converters
      * values of type {@link Integer#TYPE}.
      * 
      * @return A data binding converter from values of type {@link String} to
-     *         values of type {@link Integer#TYPE}; never {@code null}.
+     *         values of type {@link Integer#TYPE}.
      */
     public static IConverter getStringToPrimitiveIntegerConverter()
     {
@@ -107,11 +107,11 @@ public final class Converters
      * {@link IllegalArgumentException} having the specified message.
      * 
      * @param converter
-     *        The converter to be decorated; must not be {@code null}.
+     *        The converter to be decorated.
      * @param exceptionMessage
-     *        The replacement exception message; must not be {@code null}.
+     *        The replacement exception message.
      * 
-     * @return The decorated converter; never {@code null}.
+     * @return The decorated converter.
      */
     public static IConverter withExceptionMessage(
         final IConverter converter,

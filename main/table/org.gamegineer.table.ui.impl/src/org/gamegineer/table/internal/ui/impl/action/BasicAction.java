@@ -68,7 +68,7 @@ public class BasicAction
      * Initializes a new instance of the {@code BasicAction} class.
      * 
      * @param id
-     *        The action identifier; must not be {@code null}.
+     *        The action identifier.
      */
     public BasicAction(
         final Object id )
@@ -102,7 +102,7 @@ public class BasicAction
      * Adds the specified listener to this action.
      * 
      * @param listener
-     *        The listener; must not be {@code null}.
+     *        The listener.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is already a registered action listener.
@@ -117,7 +117,7 @@ public class BasicAction
      * Adds the specified should enable predicate to this action.
      * 
      * @param predicate
-     *        The predicate; must not be {@code null}.
+     *        The predicate.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code predicate} is already a registered should enable
@@ -133,7 +133,7 @@ public class BasicAction
      * Adds the specified should select predicate to this action.
      * 
      * @param predicate
-     *        The predicate; must not be {@code null}.
+     *        The predicate.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code predicate} is already a registered should select
@@ -159,7 +159,7 @@ public class BasicAction
     /**
      * Gets the action identifier.
      * 
-     * @return The action identifier; never {@code null}.
+     * @return The action identifier.
      */
     public final Object getId()
     {
@@ -172,7 +172,7 @@ public class BasicAction
      * Removes the specified listener from this action.
      * 
      * @param listener
-     *        The listener; must not be {@code null}.
+     *        The listener.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is not a registered action listener.
@@ -187,7 +187,7 @@ public class BasicAction
      * Removes the specified should enable predicate from this action.
      * 
      * @param predicate
-     *        The predicate; must not be {@code null}.
+     *        The predicate.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code predicate} is not a registered should enable predicate.
@@ -202,7 +202,7 @@ public class BasicAction
      * Removes the specified should select predicate from this action.
      * 
      * @param predicate
-     *        The predicate; must not be {@code null}.
+     *        The predicate.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code predicate} is not a registered should select predicate.

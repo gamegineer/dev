@@ -68,7 +68,7 @@ public final class Branding
     /**
      * Gets the branding name.
      * 
-     * @return The branding name; never {@code null}.
+     * @return The branding name.
      */
     public static String getName()
     {
@@ -88,7 +88,7 @@ public final class Branding
     /**
      * Gets the branding version.
      * 
-     * @return The branding version; never {@code null}.
+     * @return The branding version.
      */
     public static Version getVersion()
     {
@@ -104,8 +104,7 @@ public final class Branding
     /**
      * Gets the collection of window images associated with the branding.
      * 
-     * @return The collection of window images associated with the branding;
-     *         never {@code null}.
+     * @return The collection of window images associated with the branding.
      */
     public static List<Image> getWindowImages()
     {

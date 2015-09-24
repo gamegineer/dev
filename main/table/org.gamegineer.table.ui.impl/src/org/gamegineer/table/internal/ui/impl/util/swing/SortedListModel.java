@@ -72,7 +72,7 @@ public final class SortedListModel<E>
      * default comparator.
      * 
      * @param listModel
-     *        The unsorted list model; must not be {@code null}.
+     *        The unsorted list model.
      */
     public SortedListModel(
         final ListModel<E> listModel )
@@ -85,7 +85,7 @@ public final class SortedListModel<E>
      * specified comparator.
      * 
      * @param listModel
-     *        The unsorted list model; must not be {@code null}.
+     *        The unsorted list model.
      * @param comparator
      *        The comparator used to sort the list model or {@code null} to use
      *        the default comparator.
@@ -111,7 +111,7 @@ public final class SortedListModel<E>
      * Creates a default comparator used to sort elements by their natural
      * order.
      * 
-     * @return A default comparator; never {@code null}.
+     * @return A default comparator.
      */
     private Comparator<E> createDefaultComparator()
     {
@@ -146,7 +146,7 @@ public final class SortedListModel<E>
      * 
      * @param entry
      *        The entry to be inserted into the collection of sorted list model
-     *        entries; must not be {@code null}.
+     *        entries.
      * 
      * @return The index in the collection of sorted list model entries into
      *         which the specified entry should be inserted.
@@ -242,7 +242,7 @@ public final class SortedListModel<E>
      * Invoked when the contents of the unsorted list model have changed.
      * 
      * @param event
-     *        Describes the event; must not be {@code null}.
+     *        Describes the event.
      */
     @SuppressWarnings( "boxing" )
     private void unsortedContentsChanged(
@@ -258,7 +258,7 @@ public final class SortedListModel<E>
      * list model.
      * 
      * @param event
-     *        Describes the event; must not be {@code null}.
+     *        Describes the event.
      */
     @SuppressWarnings( "boxing" )
     private void unsortedIntervalAdded(
@@ -296,7 +296,7 @@ public final class SortedListModel<E>
      * list model.
      * 
      * @param event
-     *        Describes the event; must not be {@code null}.
+     *        Describes the event.
      */
     @SuppressWarnings( "boxing" )
     private void unsortedIntervalRemoved(

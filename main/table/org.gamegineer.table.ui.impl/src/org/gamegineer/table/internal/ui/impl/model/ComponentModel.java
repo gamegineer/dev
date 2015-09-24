@@ -90,11 +90,9 @@ public class ComponentModel
      * Initializes a new instance of the {@code ComponentModel} class.
      * 
      * @param tableEnvironmentModel
-     *        The table environment model associated with this model; must not
-     *        be {@code null}.
+     *        The table environment model associated with this model.
      * @param component
-     *        The component associated with this model; must not be {@code null}
-     *        .
+     *        The component associated with this model.
      */
     ComponentModel(
         final TableEnvironmentModel tableEnvironmentModel,
@@ -121,7 +119,7 @@ public class ComponentModel
      * Adds the specified component model listener to this component model.
      * 
      * @param listener
-     *        The component model listener; must not be {@code null}.
+     *        The component model listener.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is already a registered component model
@@ -263,7 +261,7 @@ public class ComponentModel
      * Fires the specified event notification.
      * 
      * @param eventNotification
-     *        The event notification; must not be {@code null}.
+     *        The event notification.
      */
     final void fireEventNotification(
         final Runnable eventNotification )
@@ -278,7 +276,7 @@ public class ComponentModel
      * Subclasses are not required to call the superclass method.
      * </p>
      * 
-     * @return The component associated with this model; never {@code null}.
+     * @return The component associated with this model.
      */
     public IComponent getComponent()
     {
@@ -290,12 +288,12 @@ public class ComponentModel
      * strategy.
      * 
      * @param componentStrategy
-     *        The component strategy; must not be {@code null}.
+     *        The component strategy.
      * 
      * @return The component strategy user interface for the specified component
-     *         strategy; never {@code null}. A default component strategy user
-     *         interface is returned if a component strategy user interface is
-     *         not registered for the specified component strategy.
+     *         strategy. A default component strategy user interface is returned
+     *         if a component strategy user interface is not registered for the
+     *         specified component strategy.
      */
     private static IComponentStrategyUI getComponentStrategyUI(
         final IComponentStrategy componentStrategy )
@@ -327,7 +325,7 @@ public class ComponentModel
     /**
      * Gets the table environment model lock.
      * 
-     * @return The table environment model lock; never {@code null}.
+     * @return The table environment model lock.
      */
     final ITableEnvironmentModelLock getLock()
     {
@@ -375,8 +373,7 @@ public class ComponentModel
     /**
      * Gets the table environment model associated with this model.
      * 
-     * @return The table environment model associated with this model; never
-     *         {@code null}.
+     * @return The table environment model associated with this model.
      */
     public final TableEnvironmentModel getTableEnvironmentModel()
     {
@@ -393,10 +390,10 @@ public class ComponentModel
      * </p>
      * 
      * @param location
-     *        The location in table coordinates; must not be {@code null}.
+     *        The location in table coordinates.
      * @param componentModels
      *        The collection that receives the component models that occupy the
-     *        specified location; must not be {@code null}.
+     *        specified location.
      * 
      * @return {@code true} if this component model occupies the specified
      *         location; otherwise {@code false}.
@@ -427,7 +424,7 @@ public class ComponentModel
      * </p>
      * 
      * @param parent
-     *        The model parent; must not be {@code null}.
+     *        The model parent.
      */
     void initialize(
         final IComponentModelParent parent )
@@ -501,7 +498,7 @@ public class ComponentModel
      * 
      * @param componentModel
      *        The component model to test if it is the same as or an ancestor of
-     *        this component model; must not be {@code null}.
+     *        this component model.
      * 
      * @return {@code true} if this component model is the same as or a
      *         descendant of the specified component model; otherwise
@@ -533,7 +530,7 @@ public class ComponentModel
      * Removes the specified component model listener from this component model.
      * 
      * @param listener
-     *        The component model listener; must not be {@code null}.
+     *        The component model listener.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is not a registered component model listener.

@@ -1,6 +1,6 @@
 /*
  * DefaultComponentStrategyUI.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -41,7 +41,7 @@ final class DefaultComponentStrategyUI
      * class.
      * 
      * @param id
-     *        The component strategy identifier; must not be {@code null}.
+     *        The component strategy identifier.
      */
     DefaultComponentStrategyUI(
         final ComponentStrategyId id )

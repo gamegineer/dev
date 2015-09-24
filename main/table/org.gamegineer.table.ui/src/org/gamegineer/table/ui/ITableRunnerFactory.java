@@ -1,6 +1,6 @@
 /*
  * ITableRunnerFactory.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -37,10 +37,9 @@ public interface ITableRunnerFactory
      * running it.
      * 
      * @param advisor
-     *        The table advisor; must not be {@code null}.
+     *        The table advisor.
      * 
-     * @return An object capable of running the table user interface; never
-     *         {@code null}.
+     * @return An object capable of running the table user interface.
      */
     public ITableRunner createTableRunner(
         ITableAdvisor advisor );

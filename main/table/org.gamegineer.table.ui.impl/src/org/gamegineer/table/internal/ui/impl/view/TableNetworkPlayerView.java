@@ -82,7 +82,7 @@ final class TableNetworkPlayerView
      * Initializes a new instance of the {@code TableNetworkPlayerView} class.
      * 
      * @param model
-     *        The model associated with this view; must not be {@code null}.
+     *        The model associated with this view.
      */
     TableNetworkPlayerView(
         final TableModel model )
@@ -138,8 +138,7 @@ final class TableNetworkPlayerView
      * Refreshes the player list.
      * 
      * @param players
-     *        The collection of players connected to the table network; must not
-     *        be {@code null}.
+     *        The collection of players connected to the table network.
      */
     private void refreshPlayerList(
         final Collection<IPlayer> players )
@@ -245,9 +244,9 @@ final class TableNetworkPlayerView
          * Gets the icon for the specified player.
          * 
          * @param player
-         *        The player; must not be {@code null}.
+         *        The player.
          * 
-         * @return The icon for the specified player; never {@code null}.
+         * @return The icon for the specified player.
          */
         private Icon getPlayerIcon(
             final IPlayer player )

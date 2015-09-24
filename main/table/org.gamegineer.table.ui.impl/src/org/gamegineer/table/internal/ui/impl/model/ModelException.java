@@ -56,7 +56,7 @@ public final class ModelException
      * specified detail message and no cause.
      * 
      * @param message
-     *        The detail message; may be {@code null}.
+     *        The detail message.
      */
     public ModelException(
         final @Nullable String message )
@@ -69,7 +69,7 @@ public final class ModelException
      * detail message and the specified cause.
      * 
      * @param cause
-     *        The cause; may be {@code null}.
+     *        The cause.
      */
     public ModelException(
         final @Nullable Throwable cause )
@@ -82,9 +82,9 @@ public final class ModelException
      * specified detail message and cause.
      * 
      * @param message
-     *        The detail message; may be {@code null}.
+     *        The detail message.
      * @param cause
-     *        The cause; may be {@code null}.
+     *        The cause.
      */
     public ModelException(
         final @Nullable String message,

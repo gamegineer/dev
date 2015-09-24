@@ -65,7 +65,7 @@ final class ContainerView
      * Initializes a new instance of the {@code ContainerView} class.
      * 
      * @param containerModel
-     *        The model associated with this view; must not be {@code null}.
+     *        The model associated with this view.
      */
     ContainerView(
         final ContainerModel containerModel )
@@ -85,7 +85,7 @@ final class ContainerView
      * Invoked when a new component model is added to the container model.
      * 
      * @param componentModel
-     *        The added component model; must not be {@code null}.
+     *        The added component model.
      * @param componentModelIndex
      *        The index of the added component model; must not be negative.
      */
@@ -137,7 +137,7 @@ final class ContainerView
      * </p>
      * 
      * @param componentModel
-     *        The component model; must not be {@code null}.
+     *        The component model.
      * @param componentModelIndex
      *        The component model index; must not be negative.
      */

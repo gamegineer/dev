@@ -79,9 +79,9 @@ public final class ActionMediator
      * Binds the specified action listener to the specified action.
      * 
      * @param action
-     *        The action; must not be {@code null}.
+     *        The action.
      * @param listener
-     *        The action listener; must not be {@code null}.
+     *        The action listener.
      * 
      * @throws java.lang.IllegalStateException
      *         If an action listener is already bound to {@code action}.
@@ -102,9 +102,9 @@ public final class ActionMediator
      * action.
      * 
      * @param action
-     *        The action; must not be {@code null}.
+     *        The action.
      * @param predicate
-     *        The should enable action predicate; must not be {@code null}.
+     *        The should enable action predicate.
      * 
      * @throws java.lang.IllegalStateException
      *         If a should enable action predicate is already bound to the
@@ -127,9 +127,9 @@ public final class ActionMediator
      * action.
      * 
      * @param action
-     *        The action; must not be {@code null}.
+     *        The action.
      * @param predicate
-     *        The should select action predicate; must not be {@code null}.
+     *        The should select action predicate.
      * 
      * @throws java.lang.IllegalStateException
      *         If a should select action predicate is already bound to the
@@ -151,7 +151,7 @@ public final class ActionMediator
      * Indicates the specified action has at least one bound attachment.
      * 
      * @param action
-     *        The action; must not be {@code null}.
+     *        The action.
      * 
      * @return {@code true} if the specified action has at least one bound
      *         attachment; otherwise {@code false}.
@@ -166,7 +166,7 @@ public final class ActionMediator
      * Indicates the specified action has at least one bound predicate.
      * 
      * @param action
-     *        The action; must not be {@code null}.
+     *        The action.
      * 
      * @return {@code true} if the specified action has at least one bound
      *         predicate; otherwise {@code false}.
@@ -181,7 +181,7 @@ public final class ActionMediator
      * Unbinds all attachments from the specified action.
      * 
      * @param action
-     *        The action; must not be {@code null}.
+     *        The action.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code action} has no bound attachments.

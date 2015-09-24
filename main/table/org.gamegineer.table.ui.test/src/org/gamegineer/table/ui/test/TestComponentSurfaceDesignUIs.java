@@ -56,11 +56,9 @@ public final class TestComponentSurfaceDesignUIs
      * Clones the specified component surface design user interface.
      * 
      * @param componentSurfaceDesignUI
-     *        The component surface design user interface to clone; must not be
-     *        {@code null}.
+     *        The component surface design user interface to clone.
      * 
-     * @return A new component surface design user interface; never {@code null}
-     *         .
+     * @return A new component surface design user interface.
      */
     public static ComponentSurfaceDesignUI cloneComponentSurfaceDesignUI(
         final ComponentSurfaceDesignUI componentSurfaceDesignUI )
@@ -73,10 +71,9 @@ public final class TestComponentSurfaceDesignUIs
      * component surface design.
      * 
      * @param componentSurfaceDesign
-     *        The component surface design; must not be {@code null}.
+     *        The component surface design.
      * 
-     * @return A new component surface design user interface; never {@code null}
-     *         .
+     * @return A new component surface design user interface.
      */
     public static ComponentSurfaceDesignUI createComponentSurfaceDesignUI(
         final ComponentSurfaceDesign componentSurfaceDesign )
@@ -88,8 +85,7 @@ public final class TestComponentSurfaceDesignUIs
      * Creates a new component surface design user interface with a unique
      * identifier.
      * 
-     * @return A new component surface design user interface; never {@code null}
-     *         .
+     * @return A new component surface design user interface.
      */
     public static ComponentSurfaceDesignUI createUniqueComponentSurfaceDesignUI()
     {

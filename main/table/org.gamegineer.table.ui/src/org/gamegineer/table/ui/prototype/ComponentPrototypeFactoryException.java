@@ -59,7 +59,7 @@ public final class ComponentPrototypeFactoryException
      * detail message and no cause.
      * 
      * @param message
-     *        The detail message; may be {@code null}.
+     *        The detail message.
      */
     public ComponentPrototypeFactoryException(
         final @Nullable String message )
@@ -73,7 +73,7 @@ public final class ComponentPrototypeFactoryException
      * and specified cause.
      * 
      * @param cause
-     *        The cause; may be {@code null}.
+     *        The cause.
      */
     public ComponentPrototypeFactoryException(
         final @Nullable Throwable cause )
@@ -87,9 +87,9 @@ public final class ComponentPrototypeFactoryException
      * detail message and cause.
      * 
      * @param message
-     *        The detail message; may be {@code null}.
+     *        The detail message.
      * @param cause
-     *        The cause; may be {@code null}.
+     *        The cause.
      */
     public ComponentPrototypeFactoryException(
         final @Nullable String message,

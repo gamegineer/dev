@@ -1,6 +1,6 @@
 /*
  * IComponentModelListener.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -39,8 +39,7 @@ public interface IComponentModelListener
      * changed.
      * 
      * @param event
-     *        The event describing the component model; must not be {@code null}
-     *        .
+     *        The event describing the component model.
      */
     public void componentBoundsChanged(
         ComponentModelEvent event );
@@ -50,8 +49,7 @@ public interface IComponentModelListener
      * has changed.
      * 
      * @param event
-     *        The event describing the component model; must not be {@code null}
-     *        .
+     *        The event describing the component model.
      */
     public void componentChanged(
         ComponentModelEvent event );
@@ -60,8 +58,7 @@ public interface IComponentModelListener
      * Invoked after the component model has gained or lost the logical focus.
      * 
      * @param event
-     *        The event describing the component model; must not be {@code null}
-     *        .
+     *        The event describing the component model.
      */
     public void componentModelFocusChanged(
         ComponentModelEvent event );
@@ -70,8 +67,7 @@ public interface IComponentModelListener
      * Invoked after the component model has gained or lost the logical hover.
      * 
      * @param event
-     *        The event describing the component model; must not be {@code null}
-     *        .
+     *        The event describing the component model.
      */
     public void componentModelHoverChanged(
         ComponentModelEvent event );
@@ -81,8 +77,7 @@ public interface IComponentModelListener
      * has changed.
      * 
      * @param event
-     *        The event describing the component model; must not be {@code null}
-     *        .
+     *        The event describing the component model.
      */
     public void componentOrientationChanged(
         ComponentModelEvent event );
@@ -92,8 +87,7 @@ public interface IComponentModelListener
      * has changed.
      * 
      * @param event
-     *        The event describing the component model; must not be {@code null}
-     *        .
+     *        The event describing the component model.
      */
     public void componentSurfaceDesignChanged(
         ComponentModelEvent event );

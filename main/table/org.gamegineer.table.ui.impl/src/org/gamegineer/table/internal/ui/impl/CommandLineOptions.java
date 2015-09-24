@@ -1,6 +1,6 @@
 /*
  * CommandLineOptions.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -60,8 +60,7 @@ final class CommandLineOptions
     /**
      * Creates the collection of application command line options.
      * 
-     * @return The collection of application command line options; never
-     *         {@code null}.
+     * @return The collection of application command line options.
      */
     private static Options createOptions()
     {
@@ -75,8 +74,7 @@ final class CommandLineOptions
     /**
      * Gets the collection of application command line options.
      * 
-     * @return The collection of application command line options; never
-     *         {@code null}.
+     * @return The collection of application command line options.
      */
     static Options getOptions()
     {

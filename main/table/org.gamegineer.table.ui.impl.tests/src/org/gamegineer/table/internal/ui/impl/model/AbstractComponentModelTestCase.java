@@ -80,9 +80,9 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
      * Creates the component model to be tested.
      * 
      * @param tableEnvironmentModel
-     *        The fixture table environment model; must not be {@code null}.
+     *        The fixture table environment model.
      * 
-     * @return The component model to be tested; never {@code null}.
+     * @return The component model to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -146,7 +146,7 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     /**
      * Gets the component model under test in the fixture.
      * 
-     * @return The component model under test in the fixture; never {@code null}
+     * @return The component model under test in the fixture
      *         .
      */
     protected final T getComponentModel()
@@ -157,7 +157,7 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     /**
      * Gets the fixture mocks control.
      * 
-     * @return The fixture mocks control; never {@code null}.
+     * @return The fixture mocks control.
      */
     private IMocksControl getMocksControl()
     {
@@ -167,8 +167,7 @@ public abstract class AbstractComponentModelTestCase<T extends ComponentModel>
     /**
      * Gets the table environment model for use in the fixture.
      * 
-     * @return The table environment model for use in the fixture; never
-     *         {@code null}.
+     * @return The table environment model for use in the fixture.
      */
     protected final TableEnvironmentModel getTableEnvironmentModel()
     {

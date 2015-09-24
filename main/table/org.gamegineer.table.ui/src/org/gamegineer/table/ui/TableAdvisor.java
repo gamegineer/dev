@@ -49,7 +49,7 @@ public final class TableAdvisor
      * Initializes a new instance of the {@code TableAdvisor} class.
      * 
      * @param appArgs
-     *        The application argument collection; must not be {@code null}.
+     *        The application argument collection.
      */
     public TableAdvisor(
         final List<String> appArgs )

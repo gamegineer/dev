@@ -1,6 +1,6 @@
 /*
  * ComponentPrototypesExtensionPointFacade.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -63,10 +63,9 @@ final class ComponentPrototypesExtensionPointFacade
      * </p>
      * 
      * @param configurationElement
-     *        The component prototype configuration element; must not be
-     *        {@code null}.
+     *        The component prototype configuration element.
      * 
-     * @return A new component prototype; never {@code null}.
+     * @return A new component prototype.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code configurationElement} does not represent a legal
@@ -104,10 +103,9 @@ final class ComponentPrototypesExtensionPointFacade
      * </p>
      * 
      * @param configurationElement
-     *        The component prototype category configuration element; must not
-     *        be {@code null}.
+     *        The component prototype category configuration element.
      * 
-     * @return A new component prototype category; never {@code null}.
+     * @return A new component prototype category.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code configurationElement} does not represent a legal

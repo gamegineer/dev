@@ -78,13 +78,11 @@ public final class JMenuItemGroup
      * Initializes a new instance of the {@code JMenuItemGroup} class.
      * 
      * @param menu
-     *        The parent menu; must not be {@code null}.
+     *        The parent menu.
      * @param action
-     *        The action associated with all menu items in the group; must not
-     *        be {@code null}.
+     *        The action associated with all menu items in the group.
      * @param contentProvider
-     *        The content provider used to generate the menu items in the group;
-     *        must not be {@code null}.
+     *        The content provider used to generate the menu items in the group.
      */
     public JMenuItemGroup(
         final JMenu menu,
@@ -131,7 +129,7 @@ public final class JMenuItemGroup
      * Updates the menu items in the group.
      * 
      * @param menu
-     *        The menu that hosts the menu item group; must not be {@code null}.
+     *        The menu that hosts the menu item group.
      */
     @SuppressWarnings( "boxing" )
     private void updateMenuItems(
@@ -210,8 +208,7 @@ public final class JMenuItemGroup
          * in the returned collection.
          * </p>
          * 
-         * @return A collection of menu item descriptors for the group; never
-         *         {@code null}.
+         * @return A collection of menu item descriptors for the group.
          */
         public Collection<MenuItemDescriptor> getMenuItemDescriptors();
     }
@@ -242,9 +239,9 @@ public final class JMenuItemGroup
          * with the specified text and action command.
          * 
          * @param text
-         *        The menu item text; may be {@code null}.
+         *        The menu item text.
          * @param actionCommand
-         *        The menu item action command; may be {@code null}.
+         *        The menu item action command.
          */
         public MenuItemDescriptor(
             final @Nullable String text,
@@ -262,7 +259,7 @@ public final class JMenuItemGroup
         /**
          * Gets the menu item action command.
          * 
-         * @return The menu item action command; may be {@code null}.
+         * @return The menu item action command.
          */
         public @Nullable String getActionCommand()
         {
@@ -272,7 +269,7 @@ public final class JMenuItemGroup
         /**
          * Gets the menu item text.
          * 
-         * @return The menu item text; may be {@code null}.
+         * @return The menu item text.
          */
         public @Nullable String getText()
         {

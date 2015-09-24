@@ -156,7 +156,7 @@ public final class Activator
     /**
      * Gets the bundle context.
      * 
-     * @return The bundle context; never {@code null}.
+     * @return The bundle context.
      */
     public BundleContext getBundleContext()
     {
@@ -169,7 +169,7 @@ public final class Activator
     /**
      * Gets the bundle context.
      * 
-     * @return The bundle context; never {@code null}.
+     * @return The bundle context.
      */
     @GuardedBy( "lock_" )
     private BundleContext getBundleContextInternal()
@@ -181,7 +181,7 @@ public final class Activator
     /**
      * Gets the bundle image manager.
      * 
-     * @return The bundle image manager; never {@code null}.
+     * @return The bundle image manager.
      */
     public BundleImages getBundleImages()
     {
@@ -232,7 +232,7 @@ public final class Activator
     /**
      * Gets the default instance of the bundle activator.
      * 
-     * @return The default instance of the bundle activator; never {@code null}.
+     * @return The default instance of the bundle activator.
      */
     public static Activator getDefault()
     {
@@ -244,7 +244,7 @@ public final class Activator
     /**
      * Gets the executor service.
      * 
-     * @return The executor service; never {@code null}.
+     * @return The executor service.
      */
     public ExecutorService getExecutorService()
     {
@@ -265,7 +265,7 @@ public final class Activator
     /**
      * Gets the extension registry service.
      * 
-     * @return The extension registry service; never {@code null}.
+     * @return The extension registry service.
      */
     public @Nullable IExtensionRegistry getExtensionRegistry()
     {
@@ -353,8 +353,7 @@ public final class Activator
      * bundle.
      * 
      * @param type
-     *        The type whose user preference node is desired; must not be
-     *        {@code null}.
+     *        The type whose user preference node is desired.
      * 
      * @return The node for the specified type from the user preferences for
      *         this bundle or {@code null} if no preferences service is

@@ -82,7 +82,7 @@ final class MainView
      * Initializes a new instance of the {@code MainView} class.
      * 
      * @param model
-     *        The model associated with this view; must not be {@code null}.
+     *        The model associated with this view.
      */
     MainView(
         final MainModel model )

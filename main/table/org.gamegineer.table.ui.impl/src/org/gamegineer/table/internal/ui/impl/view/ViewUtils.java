@@ -110,10 +110,10 @@ final class ViewUtils
      * specified component surface design.
      * 
      * @param componentSurfaceDesign
-     *        The component surface design; must not be {@code null}.
+     *        The component surface design.
      * 
      * @return A default component surface design user interface for the
-     *         specified component surface design; never {@code null}.
+     *         specified component surface design.
      */
     static ComponentSurfaceDesignUI createDefaultComponentSurfaceDesignUI(
         final ComponentSurfaceDesign componentSurfaceDesign )
@@ -129,9 +129,9 @@ final class ViewUtils
      * Creates the missing icon for the specified size.
      * 
      * @param size
-     *        The icon size; must not be {@code null}.
+     *        The icon size.
      * 
-     * @return A new missing icon for the specified size; never {@code null}.
+     * @return A new missing icon for the specified size.
      */
     private static Icon createMissingIcon(
         final Dimension size )
@@ -183,10 +183,9 @@ final class ViewUtils
      * </p>
      * 
      * @param component
-     *        The view component associated with the table network; must not be
-     *        {@code null}.
+     *        The view component associated with the table network.
      * @param tableNetwork
-     *        The table network to be disconnected; must not be {@code null}.
+     *        The table network to be disconnected.
      */
     static void disconnectTableNetwork(
         final Component component,
@@ -240,9 +239,9 @@ final class ViewUtils
      * Gets the missing icon for the specified size.
      * 
      * @param size
-     *        The icon size; must not be {@code null}.
+     *        The icon size.
      * 
-     * @return The missing icon for the specified size; never {@code null}.
+     * @return The missing icon for the specified size.
      */
     private static Icon getMissingIcon(
         final Dimension size )

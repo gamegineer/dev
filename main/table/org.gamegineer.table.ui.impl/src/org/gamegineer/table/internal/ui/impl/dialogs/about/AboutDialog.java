@@ -181,7 +181,7 @@ public final class AboutDialog
      * preferred width.
      * 
      * @param htmlText
-     *        The HTML text; must not be {@code null}.
+     *        The HTML text.
      * @param preferredWidth
      *        The preferred width of the HTML text in pixels; must be positive.
      * 

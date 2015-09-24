@@ -85,8 +85,7 @@ public final class SelectRemotePlayerDialog
      * @param parentShell
      *        The parent shell or {@code null} to create a top-level shell.
      * @param tableModel
-     *        The table model associated with the dialog; must not be
-     *        {@code null}.
+     *        The table model associated with the dialog.
      */
     public SelectRemotePlayerDialog(
         final @Nullable Window parentShell,
@@ -201,7 +200,7 @@ public final class SelectRemotePlayerDialog
     /**
      * Gets the dialog controls.
      * 
-     * @return The dialog controls; never {@code null}.
+     * @return The dialog controls.
      */
     private Controls getControls()
     {
@@ -246,7 +245,7 @@ public final class SelectRemotePlayerDialog
          * Initializes a new instance of the {@code Controls} class.
          * 
          * @param playerList
-         *        The player list component; must not be {@code null}.
+         *        The player list component.
          */
         Controls(
             final JList<IPlayer> playerList )

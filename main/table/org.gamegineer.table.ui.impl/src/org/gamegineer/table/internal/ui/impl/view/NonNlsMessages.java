@@ -115,10 +115,10 @@ final class NonNlsMessages
      * interface is not available.
      * 
      * @param componentSurfaceDesignId
-     *        The component surface design identifier; must not be {@code null}.
+     *        The component surface design identifier.
      * 
      * @return The formatted message indicating the component surface design
-     *         user interface is not available; never {@code null}.
+     *         user interface is not available.
      */
     static String ComponentView_getComponentSurfaceDesignUI_notAvailable(
         final ComponentSurfaceDesignId componentSurfaceDesignId )
@@ -133,10 +133,10 @@ final class NonNlsMessages
      * the table.
      * 
      * @param file
-     *        The table file; must not be {@code null}.
+     *        The table file.
      * 
      * @return The formatted message that indicates an error occurred while
-     *         opening the table; never {@code null}.
+     *         opening the table.
      */
     static String MainFrame_openTable_error(
         final File file )
@@ -149,10 +149,10 @@ final class NonNlsMessages
      * the table.
      * 
      * @param file
-     *        The table file; must not be {@code null}.
+     *        The table file.
      * 
      * @return The formatted message that indicates an error occurred while
-     *         saving the table; never {@code null}.
+     *         saving the table.
      */
     static String MainFrame_saveTable_error(
         final File file )

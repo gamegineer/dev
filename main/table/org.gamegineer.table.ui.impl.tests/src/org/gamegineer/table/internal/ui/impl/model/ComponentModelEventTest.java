@@ -62,8 +62,7 @@ public final class ComponentModelEventTest
     /**
      * Gets the component model event under test in the fixture.
      * 
-     * @return The component model event under test in the fixture; never
-     *         {@code null}.
+     * @return The component model event under test in the fixture.
      */
     private ComponentModelEvent getEvent()
     {

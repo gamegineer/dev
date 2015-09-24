@@ -73,7 +73,7 @@ public final class MainModelTest
     /**
      * Creates a temporary file.
      * 
-     * @return A temporary file; never {@code null}.
+     * @return A temporary file.
      */
     private static File createTemporaryFile()
     {
@@ -110,7 +110,7 @@ public final class MainModelTest
     /**
      * Gets the main model under test in the fixture.
      * 
-     * @return The main model under test in the fixture; never {@code null}.
+     * @return The main model under test in the fixture.
      */
     private MainModel getMainModel()
     {
@@ -120,7 +120,7 @@ public final class MainModelTest
     /**
      * Gets the fixture nice mocks control.
      * 
-     * @return The fixture nice mocks control; never {@code null}.
+     * @return The fixture nice mocks control.
      */
     private IMocksControl getNiceMocksControl()
     {

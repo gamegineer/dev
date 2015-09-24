@@ -74,7 +74,7 @@ public abstract class AbstractContainerModelTestCase
      * Creates a new component with unique attributes using the fixture table
      * environment.
      * 
-     * @return A new component; never {@code null}.
+     * @return A new component.
      */
     private IComponent createUniqueComponent()
     {
@@ -85,7 +85,7 @@ public abstract class AbstractContainerModelTestCase
      * Creates a new container with unique attributes using the fixture table
      * environment.
      * 
-     * @return A new container; never {@code null}.
+     * @return A new container.
      */
     private IContainer createUniqueContainer()
     {
@@ -104,7 +104,7 @@ public abstract class AbstractContainerModelTestCase
      * Fires a component model added event for the specified container model.
      * 
      * @param containerModel
-     *        The container model; must not be {@code null}.
+     *        The container model.
      */
     protected abstract void fireComponentModelAddedEvent(
         ContainerModel containerModel );
@@ -121,7 +121,7 @@ public abstract class AbstractContainerModelTestCase
      * Fires a component model removed event for the specified container model.
      * 
      * @param containerModel
-     *        The container model; must not be {@code null}.
+     *        The container model.
      */
     protected abstract void fireComponentModelRemovedEvent(
         ContainerModel containerModel );
@@ -138,7 +138,7 @@ public abstract class AbstractContainerModelTestCase
      * Fires a container layout changed event for the specified container model.
      * 
      * @param containerModel
-     *        The container model; must not be {@code null}.
+     *        The container model.
      */
     protected abstract void fireContainerLayoutChangedEvent(
         ContainerModel containerModel );
@@ -146,7 +146,7 @@ public abstract class AbstractContainerModelTestCase
     /**
      * Gets the container model under test in the fixture.
      * 
-     * @return The container model under test in the fixture; never {@code null}
+     * @return The container model under test in the fixture
      *         .
      */
     protected final ContainerModel getContainerModel()
@@ -157,7 +157,7 @@ public abstract class AbstractContainerModelTestCase
     /**
      * Gets the fixture nice mocks control.
      * 
-     * @return The fixture nice mocks control; never {@code null}.
+     * @return The fixture nice mocks control.
      */
     private IMocksControl getNiceMocksControl()
     {

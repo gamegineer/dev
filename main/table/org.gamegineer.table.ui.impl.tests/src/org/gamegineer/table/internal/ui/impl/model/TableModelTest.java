@@ -93,7 +93,7 @@ public final class TableModelTest
     /**
      * Creates a temporary file.
      * 
-     * @return A temporary file; never {@code null}.
+     * @return A temporary file.
      */
     private static File createTemporaryFile()
     {
@@ -113,7 +113,7 @@ public final class TableModelTest
      * Creates a new component with unique attributes using the fixture table
      * environment and default user interface properties.
      * 
-     * @return A new component; never {@code null}.
+     * @return A new component.
      */
     private IComponent createUniqueComponent()
     {
@@ -125,10 +125,9 @@ public final class TableModelTest
      * environment and the specified user interface properties.
      * 
      * @param componentFocusability
-     *        Indicates the component is focusable or not; must not be
-     *        {@code null}.
+     *        Indicates the component is focusable or not.
      * 
-     * @return A new component; never {@code null}.
+     * @return A new component.
      */
     private IComponent createUniqueComponent(
         final ComponentFocusability componentFocusability )
@@ -154,7 +153,7 @@ public final class TableModelTest
      * Creates a new container with unique attributes using the fixture table
      * environment and default user interface properties.
      * 
-     * @return A new container; never {@code null}.
+     * @return A new container.
      */
     private IContainer createUniqueContainer()
     {
@@ -166,10 +165,9 @@ public final class TableModelTest
      * environment and the specified user interface properties.
      * 
      * @param componentFocusability
-     *        Indicates the container is focusable or not; must not be
-     *        {@code null}.
+     *        Indicates the container is focusable or not.
      * 
-     * @return A new container; never {@code null}.
+     * @return A new container.
      */
     private IContainer createUniqueContainer(
         final ComponentFocusability componentFocusability )
@@ -214,8 +212,7 @@ public final class TableModelTest
      * the fixture.
      * 
      * @param methodName
-     *        The name of the method that fires the table model event; must not
-     *        be {@code null}.
+     *        The name of the method that fires the table model event.
      */
     private void fireTableModelEvent(
         final String methodName )
@@ -271,7 +268,7 @@ public final class TableModelTest
     /**
      * Gets the fixture nice mocks control.
      * 
-     * @return The fixture nice mocks control; never {@code null}.
+     * @return The fixture nice mocks control.
      */
     private IMocksControl getNiceMocksControl()
     {
@@ -281,7 +278,7 @@ public final class TableModelTest
     /**
      * Gets the fixture table environment model.
      * 
-     * @return The fixture table environment model; never {@code null}.
+     * @return The fixture table environment model.
      */
     private TableEnvironmentModel getTableEnvironmentModel()
     {
@@ -291,7 +288,7 @@ public final class TableModelTest
     /**
      * Gets the table model under test in the fixture.
      * 
-     * @return The table model under test in the fixture; never {@code null}.
+     * @return The table model under test in the fixture.
      */
     private TableModel getTableModel()
     {

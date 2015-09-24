@@ -68,7 +68,7 @@ public final class ActionMediatorTest
     /**
      * Creates an action event suitable for testing.
      * 
-     * @return An action event suitable for testing; never {@code null}.
+     * @return An action event suitable for testing.
      */
     private static ActionEvent createActionEvent()
     {
@@ -78,7 +78,7 @@ public final class ActionMediatorTest
     /**
      * Creates a new basic action suitable for testing.
      * 
-     * @return A new basic action suitable for testing; never {@code null}.
+     * @return A new basic action suitable for testing.
      */
     private static BasicAction createBasicAction()
     {
@@ -88,7 +88,7 @@ public final class ActionMediatorTest
     /**
      * Gets the action mediator under test in the fixture.
      * 
-     * @return The action mediator under test in the fixture; never {@code null}
+     * @return The action mediator under test in the fixture
      *         .
      */
     private ActionMediator getActionMediator()
@@ -99,7 +99,7 @@ public final class ActionMediatorTest
     /**
      * Gets the fixture mocks control.
      * 
-     * @return The fixture mocks control; never {@code null}.
+     * @return The fixture mocks control.
      */
     private IMocksControl getMocksControl()
     {
