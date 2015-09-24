@@ -68,8 +68,7 @@ final class PersistenceDelegateProxy
      * Initializes a new instance of the {@code PersistenceDelegateProxy} class.
      * 
      * @param persistenceDelegateReference
-     *        The service registry reference to the persistence delegate; must
-     *        not be {@code null}.
+     *        The service registry reference to the persistence delegate.
      */
     PersistenceDelegateProxy(
         final ServiceReference<IPersistenceDelegate> persistenceDelegateReference )
@@ -118,8 +117,7 @@ final class PersistenceDelegateProxy
     /**
      * Gets the actual persistence delegate associated with this proxy.
      * 
-     * @return The actual persistence delegate associated with this proxy; never
-     *         {@code null}.
+     * @return The actual persistence delegate associated with this proxy.
      * 
      * @throws java.lang.IllegalStateException
      *         If the actual persistence delegate cannot be obtained.

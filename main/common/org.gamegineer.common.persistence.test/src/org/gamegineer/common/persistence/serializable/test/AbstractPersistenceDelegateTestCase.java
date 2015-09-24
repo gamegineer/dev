@@ -77,9 +77,9 @@ public abstract class AbstractPersistenceDelegateTestCase
      * </p>
      * 
      * @param expected
-     *        The expected subject; must not be {@code null}.
+     *        The expected subject.
      * @param actual
-     *        The actual subject; may be {@code null}.
+     *        The actual subject.
      * 
      * @throws java.lang.AssertionError
      *         If the two subjects are not equal.
@@ -95,10 +95,9 @@ public abstract class AbstractPersistenceDelegateTestCase
      * Creates a new object input stream for the specified input stream.
      * 
      * @param is
-     *        The input stream; must not be {@code null}.
+     *        The input stream.
      * 
-     * @return A new object input stream for the specified input stream; never
-     *         {@code null}.
+     * @return A new object input stream for the specified input stream.
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs.
@@ -114,10 +113,9 @@ public abstract class AbstractPersistenceDelegateTestCase
      * Creates a new object output stream for the specified output stream.
      * 
      * @param os
-     *        The output stream; must not be {@code null}.
+     *        The output stream.
      * 
-     * @return A new object output stream for the specified output stream; never
-     *         {@code null}.
+     * @return A new object output stream for the specified output stream.
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs.
@@ -132,14 +130,14 @@ public abstract class AbstractPersistenceDelegateTestCase
     /**
      * Creates the subject to be persisted.
      * 
-     * @return The subject to be persisted; never {@code null}.
+     * @return The subject to be persisted.
      */
     protected abstract Object createSubject();
 
     /**
      * Gets the fixture persistence delegate registry.
      * 
-     * @return The fixture persistence delegate registry; never {@code null}.
+     * @return The fixture persistence delegate registry.
      */
     private IPersistenceDelegateRegistry getPersistenceDelegateRegistry()
     {
@@ -151,8 +149,7 @@ public abstract class AbstractPersistenceDelegateTestCase
      * persisted.
      * 
      * @param persistenceDelegateRegistry
-     *        The persistence delegate registry for use in the fixture; must not
-     *        be {@code null}.
+     *        The persistence delegate registry for use in the fixture.
      */
     protected abstract void registerPersistenceDelegates(
         IPersistenceDelegateRegistry persistenceDelegateRegistry );

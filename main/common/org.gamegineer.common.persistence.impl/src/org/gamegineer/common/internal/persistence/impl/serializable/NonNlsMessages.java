@@ -97,11 +97,11 @@ final class NonNlsMessages
      * with the specified service reference has no delegators.
      * 
      * @param persistenceDelegateReference
-     *        The persistence delegate reference; must not be {@code null}.
+     *        The persistence delegate reference.
      * 
      * @return The formatted message indicating the persistence delegate
      *         associated with the specified service reference has no
-     *         delegators; never {@code null}.
+     *         delegators.
      */
     static String PersistenceDelegateRegistry_getDelegatorTypeNames_noDelegators(
         final ServiceReference<IPersistenceDelegate> persistenceDelegateReference )
@@ -114,11 +114,10 @@ final class NonNlsMessages
      * registered for the specified type.
      * 
      * @param typeName
-     *        The name of the type associated with the persistence delegate;
-     *        must not be {@code null}.
+     *        The name of the type associated with the persistence delegate.
      * 
      * @return The formatted message indicating a persistence delegate is
-     *         already registered for the specified type; never {@code null}.
+     *         already registered for the specified type.
      */
     static String PersistenceDelegateRegistry_registerPersistenceDelegate_type_registered(
         final String typeName )
@@ -132,14 +131,13 @@ final class NonNlsMessages
      * specified type.
      * 
      * @param typeName
-     *        The name of the type associated with the persistence delegate;
-     *        must not be {@code null}.
+     *        The name of the type associated with the persistence delegate.
      * @param persistenceDelegateReference
-     *        The persistence delegate reference; must not be {@code null}.
+     *        The persistence delegate reference.
      * 
      * @return The formatted message indicating the persistence delegate
      *         associated with the specified service reference cannot be
-     *         registered for the specified type; never {@code null}.
+     *         registered for the specified type.
      */
     static String PersistenceDelegateRegistry_registerPersistenceDelegateFromServiceReference_registrationFailed(
         final String typeName,
@@ -153,11 +151,10 @@ final class NonNlsMessages
      * registered for the specified type.
      * 
      * @param typeName
-     *        The name of the type associated with the persistence delegate;
-     *        must not be {@code null}.
+     *        The name of the type associated with the persistence delegate.
      * 
      * @return The formatted message indicating the persistence delegate is not
-     *         registered for the specified type; never {@code null}.
+     *         registered for the specified type.
      */
     static String PersistenceDelegateRegistry_unregisterPersistenceDelegate_type_unregistered(
         final String typeName )

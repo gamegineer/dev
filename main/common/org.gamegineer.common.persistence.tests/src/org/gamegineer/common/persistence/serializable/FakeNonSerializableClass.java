@@ -59,7 +59,7 @@ public final class FakeNonSerializableClass
      * @param intField
      *        The integer field.
      * @param stringField
-     *        The string field; may be {@code null}.
+     *        The string field.
      */
     public FakeNonSerializableClass(
         final int intField,
@@ -108,7 +108,7 @@ public final class FakeNonSerializableClass
     /**
      * Gets the string field.
      * 
-     * @return The string field; may be {@code null}.
+     * @return The string field.
      */
     public @Nullable String getStringField()
     {

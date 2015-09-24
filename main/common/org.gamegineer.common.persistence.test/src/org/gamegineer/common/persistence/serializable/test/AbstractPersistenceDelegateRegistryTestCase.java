@@ -67,8 +67,7 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     /**
      * Creates the persistence delegate registry to be tested.
      * 
-     * @return The persistence delegate registry to be tested; never
-     *         {@code null}.
+     * @return The persistence delegate registry to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -79,8 +78,7 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     /**
      * Gets the persistence delegate registry under test in the fixture.
      * 
-     * @return The persistence delegate registry under test in the fixture;
-     *         never {@code null}.
+     * @return The persistence delegate registry under test in the fixture.
      */
     protected final IPersistenceDelegateRegistry getPersistenceDelegateRegistry()
     {

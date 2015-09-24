@@ -40,8 +40,7 @@ public interface IPersistenceDelegateRegistry
      * Gets the persistence delegate associated with the specified type.
      * 
      * @param type
-     *        The type associated with the persistence delegate; must not be
-     *        {@code null}.
+     *        The type associated with the persistence delegate.
      * 
      * @return The persistence delegate associated with the specified type or
      *         {@code null} if no such type is registered.
@@ -53,8 +52,7 @@ public interface IPersistenceDelegateRegistry
      * Gets the persistence delegate associated with the specified type name.
      * 
      * @param typeName
-     *        The name of the type associated with the persistence delegate;
-     *        must not be {@code null}.
+     *        The name of the type associated with the persistence delegate.
      * 
      * @return The persistence delegate associated with the specified type name
      *         or {@code null} if no such type name is registered.
@@ -67,9 +65,9 @@ public interface IPersistenceDelegateRegistry
      * been registered with this service.
      * 
      * @return A collection of all type names for which a persistence delegate
-     *         has been registered with this service; never {@code null}. This
-     *         collection is a snapshot of the persistence delegates registered
-     *         at the time of the call.
+     *         has been registered with this service. This collection is a
+     *         snapshot of the persistence delegates registered at the time of
+     *         the call.
      */
     public Set<String> getTypeNames();
 
@@ -77,10 +75,9 @@ public interface IPersistenceDelegateRegistry
      * Registers the specified persistence delegate for the specified type.
      * 
      * @param type
-     *        The type associated with the persistence delegate; must not be
-     *        {@code null}.
+     *        The type associated with the persistence delegate.
      * @param persistenceDelegate
-     *        The persistence delegate; must not be {@code null}.
+     *        The persistence delegate.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If a persistence delegate is already registered for the specified
@@ -94,10 +91,9 @@ public interface IPersistenceDelegateRegistry
      * Unregisters the persistence delegate for the specified type.
      * 
      * @param type
-     *        The type associated with the persistence delegate; must not be
-     *        {@code null}.
+     *        The type associated with the persistence delegate.
      * @param persistenceDelegate
-     *        The persistence delegate; must not be {@code null}.
+     *        The persistence delegate.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If the specified persistence delegate was not previously

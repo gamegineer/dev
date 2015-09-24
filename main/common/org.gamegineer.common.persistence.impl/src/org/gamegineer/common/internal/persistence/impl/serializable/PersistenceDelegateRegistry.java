@@ -96,12 +96,10 @@ public final class PersistenceDelegateRegistry
      * persistence delegate service reference.
      * 
      * @param persistenceDelegateReference
-     *        The persistence delegate service reference; must not be
-     *        {@code null}.
+     *        The persistence delegate service reference.
      * 
      * @return The collection of delegator type names associated with the
-     *         specified persistence delegate service reference; never
-     *         {@code null}.
+     *         specified persistence delegate service reference.
      */
     private static Set<String> getDelegatorTypeNames(
         final ServiceReference<IPersistenceDelegate> persistenceDelegateReference )
@@ -184,8 +182,7 @@ public final class PersistenceDelegateRegistry
      * </p>
      * 
      * @param persistenceDelegateReference
-     *        The persistence delegate service reference; must not be
-     *        {@code null}.
+     *        The persistence delegate service reference.
      */
     public void registerPersistenceDelegate(
         final ServiceReference<IPersistenceDelegate> persistenceDelegateReference )
@@ -219,10 +216,9 @@ public final class PersistenceDelegateRegistry
      * Registers the specified persistence delegate for the specified type.
      * 
      * @param typeName
-     *        The name of the type associated with the persistence delegate;
-     *        must not be {@code null}.
+     *        The name of the type associated with the persistence delegate.
      * @param persistenceDelegate
-     *        The persistence delegate; must not be {@code null}.
+     *        The persistence delegate.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If a persistence delegate is already registered for the specified
@@ -266,8 +262,7 @@ public final class PersistenceDelegateRegistry
      * </p>
      * 
      * @param persistenceDelegateReference
-     *        The persistence delegate service reference; must not be
-     *        {@code null}.
+     *        The persistence delegate service reference.
      */
     public void unregisterPersistenceDelegate(
         final ServiceReference<IPersistenceDelegate> persistenceDelegateReference )
@@ -291,10 +286,9 @@ public final class PersistenceDelegateRegistry
      * Unregisters the persistence delegate for the specified type.
      * 
      * @param typeName
-     *        The name of the type associated with the persistence delegate;
-     *        must not be {@code null}.
+     *        The name of the type associated with the persistence delegate.
      * @param persistenceDelegate
-     *        The persistence delegate; must not be {@code null}.
+     *        The persistence delegate.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If the specified persistence delegate was not previously
@@ -348,9 +342,9 @@ public final class PersistenceDelegateRegistry
          * 
          * @param typeNames
          *        The collection of type names under which the persistence
-         *        delegate is registered; must not be {@code null}.
+         *        delegate is registered.
          * @param persistenceDelegateProxy
-         *        The persistence delegate proxy; must not be {@code null}.
+         *        The persistence delegate proxy.
          */
         PersistenceDelegateProxyRegistration(
             final Set<String> typeNames,

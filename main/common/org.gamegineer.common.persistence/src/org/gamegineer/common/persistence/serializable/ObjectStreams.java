@@ -69,10 +69,9 @@ public final class ObjectStreams
      * the platform's persistence delegate registry.
      * 
      * @param in
-     *        The input stream from which to read; must not be {@code null}.
+     *        The input stream from which to read.
      * 
-     * @return A new instance of the {@code ObjectInputStream} class; never
-     *         {@code null}.
+     * @return A new instance of the {@code ObjectInputStream} class.
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs while reading the stream header.
@@ -91,10 +90,9 @@ public final class ObjectStreams
      * the platform's persistence delegate registry.
      * 
      * @param out
-     *        The output stream on which to write; must not be {@code null}.
+     *        The output stream on which to write.
      * 
-     * @return A new instance of the {@code ObjectOutputStream} class; never
-     *         {@code null}.
+     * @return A new instance of the {@code ObjectOutputStream} class.
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs while writing the stream header.

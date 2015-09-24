@@ -62,9 +62,9 @@ public final class ObjectInputStream
      * Initializes a new instance of the {@code ObjectInputStream} class.
      * 
      * @param in
-     *        The input stream from which to read; must not be {@code null}.
+     *        The input stream from which to read.
      * @param persistenceDelegateRegistry
-     *        The persistence delegate registry; must not be {@code null}.
+     *        The persistence delegate registry.
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs while reading the stream header.

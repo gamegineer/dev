@@ -73,10 +73,9 @@ public final class ObjectStreamTest
      * Creates a new object input stream for the specified input stream.
      * 
      * @param is
-     *        The input stream; must not be {@code null}.
+     *        The input stream.
      * 
-     * @return A new object input stream for the specified input stream; never
-     *         {@code null}.
+     * @return A new object input stream for the specified input stream.
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs.
@@ -92,10 +91,9 @@ public final class ObjectStreamTest
      * Creates a new object output stream for the specified output stream.
      * 
      * @param os
-     *        The output stream; must not be {@code null}.
+     *        The output stream.
      * 
-     * @return A new object output stream for the specified output stream; never
-     *         {@code null}.
+     * @return A new object output stream for the specified output stream.
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs.
@@ -110,8 +108,7 @@ public final class ObjectStreamTest
     /**
      * Gets the persistence delegate registry under test in the fixture.
      * 
-     * @return The persistence delegate registry under test in the fixture;
-     *         never {@code null}.
+     * @return The persistence delegate registry under test in the fixture.
      */
     private IPersistenceDelegateRegistry getPersistenceDelegateRegistry()
     {

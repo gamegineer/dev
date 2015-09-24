@@ -55,9 +55,9 @@ public interface IPersistenceDelegate
      * whatever data it deems necessary.
      * 
      * @param stream
-     *        The object output stream; must not be {@code null}.
+     *        The object output stream.
      * @param cl
-     *        The class to be annotated; must not be {@code null}.
+     *        The class to be annotated.
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs.
@@ -72,11 +72,10 @@ public interface IPersistenceDelegate
      * serialized with an equivalent serializable object.
      * 
      * @param obj
-     *        The object being serialized; may be {@code null}.
+     *        The object being serialized.
      * 
-     * @return The alternate object that replaces the specified object; may be
-     *         {@code null}. The original object may be returned if no
-     *         replacement should occur.
+     * @return The alternate object that replaces the specified object. The
+     *         original object may be returned if no replacement should occur.
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs.
@@ -90,12 +89,12 @@ public interface IPersistenceDelegate
      * specified object stream class description.
      * 
      * @param stream
-     *        The object input stream; must not be {@code null}.
+     *        The object input stream.
      * @param desc
-     *        An object stream class description; must not be {@code null}.
+     *        An object stream class description.
      * 
      * @return The class associated with the specified object stream class
-     *         descriptor; never {@code null}.
+     *         descriptor.
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs.
@@ -112,11 +111,10 @@ public interface IPersistenceDelegate
      * object being deserialized with an equivalent object.
      * 
      * @param obj
-     *        The object being deserialized; may be {@code null}.
+     *        The object being deserialized.
      * 
-     * @return The alternate object that resolves the specified object; may be
-     *         {@code null}. The original object may be returned if no
-     *         resolution should occur.
+     * @return The alternate object that resolves the specified object. The
+     *         original object may be returned if no resolution should occur.
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs.

@@ -60,9 +60,9 @@ public final class ObjectOutputStream
      * Initializes a new instance of the {@code ObjectOutputStream} class.
      * 
      * @param out
-     *        The output stream on which to write; must not be {@code null}.
+     *        The output stream on which to write.
      * @param persistenceDelegateRegistry
-     *        The persistence delegate registry; must not be {@code null}.
+     *        The persistence delegate registry.
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs while writing the stream header.

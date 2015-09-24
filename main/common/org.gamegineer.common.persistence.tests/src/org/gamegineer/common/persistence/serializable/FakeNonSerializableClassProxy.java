@@ -1,6 +1,6 @@
 /*
  * FakeNonSerializableClassProxy.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -74,8 +74,7 @@ public final class FakeNonSerializableClassProxy
      * class from the specified {@code FakeNonSerializableClass} instance.
      * 
      * @param subject
-     *        The {@code FakeNonSerializableClass} instance; must not be
-     *        {@code null}.
+     *        The {@code FakeNonSerializableClass} instance.
      */
     public FakeNonSerializableClassProxy(
         final FakeNonSerializableClass subject )
@@ -94,7 +93,7 @@ public final class FakeNonSerializableClassProxy
      * deserialized.
      * 
      * @return A replacement object for this instance after it has been
-     *         deserialized; never {@code null}.
+     *         deserialized.
      */
     private Object readResolve()
     {
