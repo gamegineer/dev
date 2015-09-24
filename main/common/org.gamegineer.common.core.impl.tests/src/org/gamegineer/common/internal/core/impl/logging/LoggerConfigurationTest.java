@@ -273,7 +273,6 @@ public final class LoggerConfigurationTest
         {
             final List<Handler> handlers = getLoggerConfiguration().getHandlers();
 
-            assertNotNull( handlers );
             assertTrue( handlers.isEmpty() );
         }
         finally
@@ -317,7 +316,6 @@ public final class LoggerConfigurationTest
 
         final List<Handler> handlers = config.getHandlers();
 
-        assertNotNull( handlers );
         assertTrue( handlers.isEmpty() );
     }
 
@@ -332,7 +330,6 @@ public final class LoggerConfigurationTest
 
         final List<Handler> handlers = config.getHandlers();
 
-        assertNotNull( handlers );
         assertTrue( handlers.isEmpty() );
     }
 

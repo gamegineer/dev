@@ -23,7 +23,6 @@ package org.gamegineer.common.core.util.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 import java.util.Collection;
@@ -149,7 +148,6 @@ public abstract class AbstractEqualityComparatorTestCase<T>
     {
         final Collection<T> others = createUnequalInstances();
 
-        assertNotNull( others );
         assertFalse( "unequal instances collection must not be empty", others.isEmpty() ); //$NON-NLS-1$
         assertFalse( "unequal instances collection must not contain a null element", others.contains( null ) ); //$NON-NLS-1$
         for( final T other : others )

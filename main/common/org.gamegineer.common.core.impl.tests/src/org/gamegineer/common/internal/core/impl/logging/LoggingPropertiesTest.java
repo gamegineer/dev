@@ -22,7 +22,6 @@
 package org.gamegineer.common.internal.core.impl.logging;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import java.util.Collections;
@@ -210,7 +209,6 @@ public final class LoggingPropertiesTest
     {
         final Map<String, String> map = LoggingProperties.toMap( new Properties() );
 
-        assertNotNull( map );
         assertTrue( map.isEmpty() );
     }
 

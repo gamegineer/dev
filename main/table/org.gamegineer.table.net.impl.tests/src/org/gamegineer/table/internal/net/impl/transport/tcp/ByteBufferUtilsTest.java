@@ -140,7 +140,6 @@ public final class ByteBufferUtilsTest
 
         for( final ByteBuffer buffer : getBuffers() )
         {
-            assertNotNull( buffer );
             assertByteBuffer( buffer, 0, 4 );
         }
     }
@@ -213,7 +212,6 @@ public final class ByteBufferUtilsTest
         assertArrayEquals( expectedValue, actualValue );
         for( final ByteBuffer buffer : getBuffers() )
         {
-            assertNotNull( buffer );
             assertByteBuffer( buffer, 4, 0 );
         }
     }
@@ -285,7 +283,6 @@ public final class ByteBufferUtilsTest
         assertArrayEquals( expectedValue, actualValue );
         for( final ByteBuffer buffer : getBuffers() )
         {
-            assertNotNull( buffer );
             assertByteBuffer( buffer, 0, 4 );
         }
     }

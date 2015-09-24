@@ -217,7 +217,6 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
                 return nodeController.beginConnect( configuration );
             }
         } );
-        assertNotNull( connectFuture1 );
         nodeController.endConnect( connectFuture1 );
 
         final Future<@Nullable Void> connectFuture2 = getNodeLayerRunner().run( new Callable<Future<@Nullable Void>>()
@@ -228,7 +227,6 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
                 return nodeController.beginConnect( configuration );
             }
         } );
-        assertNotNull( connectFuture2 );
         nodeController.endConnect( connectFuture2 );
     }
 
@@ -252,7 +250,6 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
                 return nodeController.beginDisconnect();
             }
         } );
-        assertNotNull( disconnectFuture );
         nodeController.endDisconnect( disconnectFuture );
     }
 
@@ -277,7 +274,6 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
                 return nodeController.beginConnect( createTableNetworkConfiguration() );
             }
         } );
-        assertNotNull( connectFuture );
         nodeController.endConnect( connectFuture );
 
         getNodeLayerRunner().run( new Runnable()

@@ -1,6 +1,6 @@
 /*
  * ObjectUtilsTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,6 @@ package org.gamegineer.common.core.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
@@ -152,6 +151,6 @@ public final class ObjectUtilsTest
     @Test
     public void testToString_Obj_Null()
     {
-        assertNotNull( ObjectUtils.toString( null ) );
+        assertFalse( ObjectUtils.toString( null ).isEmpty() );
     }
 }

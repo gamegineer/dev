@@ -1,6 +1,6 @@
 /*
  * DefaultComponentStrategyUIFactoryTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.ui.impl.strategies;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.gamegineer.table.core.test.TestComponentStrategies;
 import org.gamegineer.table.ui.IComponentStrategyUI;
@@ -62,7 +61,6 @@ public final class DefaultComponentStrategyUIFactoryTest
     {
         final IComponentStrategyUI actualValue = DefaultComponentStrategyUIFactory.createDefaultComponentStrategyUI( TestComponentStrategies.createUniqueComponentStrategy() );
 
-        assertNotNull( actualValue );
         assertFalse( actualValue instanceof IContainerStrategyUI );
     }
 
@@ -77,7 +75,6 @@ public final class DefaultComponentStrategyUIFactoryTest
     {
         final IComponentStrategyUI actualValue = DefaultComponentStrategyUIFactory.createDefaultComponentStrategyUI( TestComponentStrategies.createUniqueContainerStrategy() );
 
-        assertNotNull( actualValue );
         assertTrue( actualValue instanceof IContainerStrategyUI );
     }
 }

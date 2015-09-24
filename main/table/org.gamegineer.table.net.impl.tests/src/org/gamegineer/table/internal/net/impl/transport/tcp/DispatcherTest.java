@@ -96,7 +96,6 @@ public final class DispatcherTest
                 return dispatcher.beginClose();
             }
         } );
-        assertNotNull( dispatcherCloseFuture );
 
         // Wait for dispatcher to close on current thread
         dispatcher.endClose( dispatcherCloseFuture );

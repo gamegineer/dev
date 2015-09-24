@@ -23,7 +23,6 @@ package org.gamegineer.table.core.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import java.awt.Point;
@@ -943,7 +942,6 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     {
         final List<IComponent> components = getContainer().removeAllComponents();
 
-        assertNotNull( components );
         assertEquals( 0, components.size() );
     }
 

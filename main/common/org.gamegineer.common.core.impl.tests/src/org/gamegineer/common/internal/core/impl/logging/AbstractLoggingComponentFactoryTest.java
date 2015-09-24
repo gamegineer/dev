@@ -22,7 +22,6 @@
 package org.gamegineer.common.internal.core.impl.logging;
 
 import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import java.util.Collections;
 import java.util.Dictionary;
@@ -129,7 +128,6 @@ public final class AbstractLoggingComponentFactoryTest
 
             final Filter component = AbstractLoggingComponentFactory.createNamedLoggingComponent( Filter.class, name, null );
 
-            assertNotNull( component );
             assertTrue( component instanceof FakeFilter );
         }
         finally
@@ -198,7 +196,7 @@ public final class AbstractLoggingComponentFactoryTest
         final Dictionary<String, Object> componentProperties = getComponentProperties();
         componentProperties.remove( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_LOGGING_PROPERTIES );
 
-        assertNotNull( getFactory().newInstance( componentProperties ) );
+        getFactory().newInstance( componentProperties );
     }
 
     /**

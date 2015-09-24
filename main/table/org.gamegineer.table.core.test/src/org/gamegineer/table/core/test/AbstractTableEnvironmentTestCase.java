@@ -22,7 +22,6 @@
 package org.gamegineer.table.core.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import java.util.Optional;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentStrategy;
@@ -114,7 +113,6 @@ public abstract class AbstractTableEnvironmentTestCase
         final ITableEnvironment tableEnvironment = getTableEnvironment();
         final IComponent component = tableEnvironment.createComponent( TestComponentStrategies.createUniqueComponentStrategy() );
 
-        assertNotNull( component );
         assertEquals( tableEnvironment, component.getTableEnvironment() );
     }
 
@@ -128,7 +126,6 @@ public abstract class AbstractTableEnvironmentTestCase
         final ITableEnvironment tableEnvironment = getTableEnvironment();
         final IContainer container = tableEnvironment.createContainer( TestComponentStrategies.createUniqueContainerStrategy() );
 
-        assertNotNull( container );
         assertEquals( tableEnvironment, container.getTableEnvironment() );
     }
 
@@ -142,7 +139,6 @@ public abstract class AbstractTableEnvironmentTestCase
         final ITableEnvironment tableEnvironment = getTableEnvironment();
         final ITable table = tableEnvironment.createTable();
 
-        assertNotNull( table );
         assertEquals( tableEnvironment, table.getTableEnvironment() );
     }
 }
