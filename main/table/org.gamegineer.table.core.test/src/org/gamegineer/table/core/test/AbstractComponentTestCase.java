@@ -25,7 +25,6 @@ import static org.gamegineer.table.core.test.Assert.assertComponentEquals;
 import static org.gamegineer.test.core.Assert.assertImmutableCollection;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -704,19 +703,6 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
         final Set<ComponentOrientation> actualValue = component.getSurfaceDesigns().keySet();
 
         assertEquals( expectedValue, actualValue );
-    }
-
-    /**
-     * Ensures the {@link IComponent#getSurfaceDesigns} method returns a
-     * collection whose values are not {@code null}.
-     */
-    @Test
-    public void testGetSurfaceDesigns_ReturnValue_Values_NonNull()
-    {
-        for( final ComponentSurfaceDesign surfaceDesign : getComponent().getSurfaceDesigns().values() )
-        {
-            assertNotNull( surfaceDesign );
-        }
     }
 
     /**

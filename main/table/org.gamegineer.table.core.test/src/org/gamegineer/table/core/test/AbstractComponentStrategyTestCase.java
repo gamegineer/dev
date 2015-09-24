@@ -24,7 +24,6 @@ package org.gamegineer.table.core.test;
 import static org.gamegineer.test.core.Assert.assertImmutableCollection;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import java.awt.Point;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -188,19 +187,6 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
         final Set<ComponentOrientation> actualValue = componentStrategy.getDefaultSurfaceDesigns().keySet();
 
         assertEquals( expectedValue, actualValue );
-    }
-
-    /**
-     * Ensures the {@link IComponentStrategy#getDefaultSurfaceDesigns} method
-     * returns a collection whose values are not {@code null}.
-     */
-    @Test
-    public void testGetDefaultSurfaceDesigns_ReturnValue_Values_NonNull()
-    {
-        for( final ComponentSurfaceDesign surfaceDesign : getComponentStrategy().getDefaultSurfaceDesigns().values() )
-        {
-            assertNotNull( surfaceDesign );
-        }
     }
 
     /**
