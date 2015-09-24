@@ -93,7 +93,7 @@ public final class AbstractNodeTest
     /**
      * Creates a new table network configuration.
      * 
-     * @return A new table network configuration; never {@code null}.
+     * @return A new table network configuration.
      */
     private TableNetworkConfiguration createTableNetworkConfiguration()
     {
@@ -103,7 +103,7 @@ public final class AbstractNodeTest
     /**
      * Gets the node under test in the fixture.
      * 
-     * @return The node under test in the fixture; never {@code null}.
+     * @return The node under test in the fixture.
      */
     private AbstractNode<@NonNull IRemoteNode> getNode()
     {
@@ -113,7 +113,7 @@ public final class AbstractNodeTest
     /**
      * Gets the fixture node layer runner.
      * 
-     * @return The fixture node layer runner; never {@code null}.
+     * @return The fixture node layer runner.
      */
     private NodeLayerRunner getNodeLayerRunner()
     {
@@ -123,7 +123,7 @@ public final class AbstractNodeTest
     /**
      * Gets the fixture table.
      * 
-     * @return The fixture table; never {@code null}.
+     * @return The fixture table.
      */
     private ITable getTable()
     {
@@ -133,7 +133,7 @@ public final class AbstractNodeTest
     /**
      * Gets the fixture table environment context.
      * 
-     * @return The fixture table environment context; never {@code null}.
+     * @return The fixture table environment context.
      */
     private MultiThreadedTableEnvironmentContext getTableEnvironmentContext()
     {
@@ -317,9 +317,9 @@ public final class AbstractNodeTest
          * Initializes a new instance of the {@code MockNode} class.
          * 
          * @param nodeLayer
-         *        The node layer; must not be {@code null}.
+         *        The node layer.
          * @param tableNetworkController
-         *        The table network controller; must not be {@code null}.
+         *        The table network controller.
          */
         MockNode(
             final INodeLayer nodeLayer,
@@ -393,7 +393,7 @@ public final class AbstractNodeTest
          * name.
          * 
          * @param playerName
-         *        The player name; must not be {@code null}.
+         *        The player name.
          * 
          * @return {@code true} if a table is bound to this node for the
          *         specified player name; otherwise {@code false}.

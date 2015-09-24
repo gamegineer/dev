@@ -60,7 +60,7 @@ public abstract class AbstractTransportLayerFactoryTestCase
     /**
      * Creates the transport layer factory to be tested.
      * 
-     * @return The transport layer factory to be tested; never {@code null}.
+     * @return The transport layer factory to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -71,8 +71,7 @@ public abstract class AbstractTransportLayerFactoryTestCase
     /**
      * Gets the transport layer factory under test in the fixture.
      * 
-     * @return The transport layer factory under test in the fixture; never
-     *         {@code null}.
+     * @return The transport layer factory under test in the fixture.
      */
     protected final ITransportLayerFactory getTransportLayerFactory()
     {

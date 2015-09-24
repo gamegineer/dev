@@ -63,8 +63,7 @@ final class OutputQueue
      * Initializes a new instance of the {@code OuputQueue} class.
      * 
      * @param bufferPool
-     *        The buffer pool associated with the queue; must not be
-     *        {@code null}.
+     *        The buffer pool associated with the queue.
      */
     OutputQueue(
         final ByteBufferPool bufferPool )
@@ -82,8 +81,7 @@ final class OutputQueue
      * Attempts to drain the queue to the specified channel.
      * 
      * @param channel
-     *        The channel to which the queue will be drained; must not be
-     *        {@code null}.
+     *        The channel to which the queue will be drained.
      * 
      * @return The number of bytes written to the channel.
      * 
@@ -127,8 +125,7 @@ final class OutputQueue
      * Adds the specified message envelope to the queue.
      * 
      * @param messageEnvelope
-     *        The message envelope to be added to the queue; must not be
-     *        {@code null}.
+     *        The message envelope to be added to the queue.
      */
     void enqueueMessageEnvelope(
         final MessageEnvelope messageEnvelope )

@@ -1,6 +1,6 @@
 /*
  * HelloResponseMessageHandler.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -66,9 +66,9 @@ public final class HelloResponseMessageHandler
      * 
      * @param remoteNodeController
      *        The control interface for the remote node that received the
-     *        message; must not be {@code null}.
+     *        message.
      * @param message
-     *        The message; must not be {@code null}.
+     *        The message.
      */
     @SuppressWarnings( {
         "static-method", "unused"
@@ -90,9 +90,9 @@ public final class HelloResponseMessageHandler
      * 
      * @param remoteNodeController
      *        The control interface for the remote node that received the
-     *        message; must not be {@code null}.
+     *        message.
      * @param message
-     *        The message; must not be {@code null}.
+     *        The message.
      */
     @SuppressWarnings( {
         "static-method", "unused"

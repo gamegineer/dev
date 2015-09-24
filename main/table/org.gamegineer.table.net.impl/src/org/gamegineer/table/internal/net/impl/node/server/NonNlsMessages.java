@@ -78,12 +78,10 @@ final class NonNlsMessages
      * network table by a player without the editor role.
      * 
      * @param playerName
-     *        The name of the player that attempted to modify the network table;
-     *        must not be {@code null}.
+     *        The name of the player that attempted to modify the network table.
      * 
      * @return The formatted message indicating an attempt was made to modify
-     *         the network table by a player without the editor role; never
-     *         {@code null}.
+     *         the network table by a player without the editor role.
      */
     static String ServerNode_networkTableModification_playerNotEditor(
         final String playerName )

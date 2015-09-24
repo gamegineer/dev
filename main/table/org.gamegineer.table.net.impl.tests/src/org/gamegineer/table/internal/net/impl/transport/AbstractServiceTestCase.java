@@ -59,7 +59,7 @@ public abstract class AbstractServiceTestCase
     /**
      * Creates the service to be tested.
      * 
-     * @return The service to be tested; never {@code null}.
+     * @return The service to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -70,7 +70,7 @@ public abstract class AbstractServiceTestCase
     /**
      * Gets the service under test in the fixture.
      * 
-     * @return The service under test in the fixture; never {@code null}.
+     * @return The service under test in the fixture.
      */
     protected final IService getService()
     {

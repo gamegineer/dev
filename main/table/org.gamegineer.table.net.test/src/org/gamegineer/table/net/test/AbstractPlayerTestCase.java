@@ -66,7 +66,7 @@ public abstract class AbstractPlayerTestCase
     /**
      * Creates the player to be tested.
      * 
-     * @return The player to be tested; never {@code null}.
+     * @return The player to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -77,7 +77,7 @@ public abstract class AbstractPlayerTestCase
     /**
      * Gets the player under test in the fixture.
      * 
-     * @return The player under test in the fixture; never {@code null}.
+     * @return The player under test in the fixture.
      */
     protected final IPlayer getPlayer()
     {
@@ -88,9 +88,9 @@ public abstract class AbstractPlayerTestCase
      * Sets the roles for the specified player.
      * 
      * @param player
-     *        The player; must not be {@code null}.
+     *        The player.
      * @param playerRoles
-     *        The collection of player roles; must not be {@code null}.
+     *        The collection of player roles.
      */
     protected abstract void setPlayerRoles(
         IPlayer player,

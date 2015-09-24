@@ -51,9 +51,9 @@ final class PassiveTransportLayer
      * Initializes a new instance of the {@code PassiveTransportLayer} class.
      * 
      * @param executorService
-     *        The transport layer executor service; must not be {@code null}.
+     *        The transport layer executor service.
      * @param context
-     *        The transport layer context; must not be {@code null}.
+     *        The transport layer context.
      */
     private PassiveTransportLayer(
         final ExecutorService executorService,

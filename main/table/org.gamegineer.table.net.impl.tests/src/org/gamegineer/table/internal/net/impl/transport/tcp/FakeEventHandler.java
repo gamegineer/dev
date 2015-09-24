@@ -49,8 +49,7 @@ class FakeEventHandler
      * default fake channel.
      * 
      * @param transportLayer
-     *        The transport layer associated with the event handler; must not be
-     *        {@code null}.
+     *        The transport layer associated with the event handler.
      */
     FakeEventHandler(
         final AbstractTransportLayer transportLayer )
@@ -63,10 +62,9 @@ class FakeEventHandler
      * specified channel.
      * 
      * @param transportLayer
-     *        The transport layer associated with the event handler; must not be
-     *        {@code null}.
+     *        The transport layer associated with the event handler.
      * @param channel
-     *        The event handler channel; must not be {@code null}.
+     *        The event handler channel.
      */
     FakeEventHandler(
         final AbstractTransportLayer transportLayer,

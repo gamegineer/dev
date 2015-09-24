@@ -80,12 +80,11 @@ final class LocalNetworkTable
      * Initializes a new instance of the {@code LocalNetworkTable} class.
      * 
      * @param nodeLayer
-     *        The node layer; must not be {@code null}.
+     *        The node layer.
      * @param tableManager
-     *        The table manager for the local table network node; must not be
-     *        {@code null}.
+     *        The table manager for the local table network node.
      * @param table
-     *        The local table; must not be {@code null}.
+     *        The local table.
      */
     LocalNetworkTable(
         final INodeLayer nodeLayer,
@@ -112,7 +111,7 @@ final class LocalNetworkTable
      * Adds the listeners for the specified component.
      * 
      * @param component
-     *        The component; must not be {@code null}.
+     *        The component.
      */
     @GuardedBy( "getTableEnvironmentLock()" )
     private void addComponentListeners(
@@ -149,7 +148,7 @@ final class LocalNetworkTable
     /**
      * Gets the table environment lock.
      * 
-     * @return The table environment lock; never {@code null}.
+     * @return The table environment lock.
      */
     private Lock getTableEnvironmentLock()
     {
@@ -189,7 +188,7 @@ final class LocalNetworkTable
      * Removes the listeners for the specified component.
      * 
      * @param component
-     *        The component; must not be {@code null}.
+     *        The component.
      */
     @GuardedBy( "getTableEnvironmentLock()" )
     private void removeComponentListeners(
@@ -232,7 +231,7 @@ final class LocalNetworkTable
      * </p>
      * 
      * @param task
-     *        The task to execute; must not be {@code null}.
+     *        The task to execute.
      */
     private void syncExec(
         final Runnable task )
@@ -438,7 +437,7 @@ final class LocalNetworkTable
          * was originated by the node layer.
          * 
          * @param event
-         *        The component event; must not be {@code null}.
+         *        The component event.
          * 
          * @return {@code true} if the specified component event should be
          *         ignored; otherwise {@code false}.
@@ -476,7 +475,7 @@ final class LocalNetworkTable
          * class.
          * 
          * @param actualComponentListener
-         *        The actual component listener; must not be {@code null}.
+         *        The actual component listener.
          */
         ComponentListenerProxy(
             final IComponentListener actualComponentListener )
@@ -688,7 +687,7 @@ final class LocalNetworkTable
          * was originated by the node layer.
          * 
          * @param event
-         *        The container event; must not be {@code null}.
+         *        The container event.
          * 
          * @return {@code true} if the specified container event should be
          *         ignored; otherwise {@code false}.
@@ -726,7 +725,7 @@ final class LocalNetworkTable
          * class.
          * 
          * @param actualContainerListener
-         *        The actual container listener; must not be {@code null}.
+         *        The actual container listener.
          */
         ContainerListenerProxy(
             final IContainerListener actualContainerListener )

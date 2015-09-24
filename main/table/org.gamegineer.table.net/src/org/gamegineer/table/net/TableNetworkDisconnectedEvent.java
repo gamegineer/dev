@@ -55,7 +55,7 @@ public final class TableNetworkDisconnectedEvent
      * class.
      * 
      * @param source
-     *        The table network that fired the event; must not be {@code null}.
+     *        The table network that fired the event.
      * @param error
      *        The error that caused the table network to be disconnected or
      *        {@code null} if the table network was disconnected normally.

@@ -51,7 +51,7 @@ final class RemoteNetworkTable
      * 
      * @param remoteNodeController
      *        The control interface for the remote node associated with the
-     *        table; must not be {@code null}.
+     *        table.
      */
     RemoteNetworkTable(
         final IRemoteNodeController<@NonNull ?> remoteNodeController )

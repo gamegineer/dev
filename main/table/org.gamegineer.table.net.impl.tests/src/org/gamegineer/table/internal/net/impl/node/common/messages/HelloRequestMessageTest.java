@@ -58,8 +58,7 @@ public final class HelloRequestMessageTest
     /**
      * Gets the hello request message under test in the fixture.
      * 
-     * @return The hello request message under test in the fixture; never
-     *         {@code null}.
+     * @return The hello request message under test in the fixture.
      */
     private HelloRequestMessage getMessage()
     {

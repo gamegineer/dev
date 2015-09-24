@@ -1,6 +1,6 @@
 /*
  * BeginAuthenticationResponseMessage.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -77,7 +77,7 @@ public final class BeginAuthenticationResponseMessage
     /**
      * Gets the player name.
      * 
-     * @return The player name; never {@code null}.
+     * @return The player name.
      */
     public String getPlayerName()
     {
@@ -87,8 +87,8 @@ public final class BeginAuthenticationResponseMessage
     /**
      * Gets the challenge response.
      * 
-     * @return The challenge response; never {@code null}. The returned value is
-     *         a direct reference to the field and must not be modified.
+     * @return The challenge response. The returned value is a direct reference
+     *         to the field and must not be modified.
      */
     public byte[] getResponse()
     {
@@ -99,7 +99,7 @@ public final class BeginAuthenticationResponseMessage
      * Sets the player name.
      * 
      * @param playerName
-     *        The player name; must not be {@code null}.
+     *        The player name.
      */
     public void setPlayerName(
         final String playerName )
@@ -111,8 +111,8 @@ public final class BeginAuthenticationResponseMessage
      * Sets the challenge response.
      * 
      * @param response
-     *        The challenge response; must not be {@code null}. No copy is made
-     *        of this value and it must not be modified at a later time.
+     *        The challenge response. No copy is made of this value and it must
+     *        not be modified at a later time.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code response} is empty.

@@ -54,9 +54,9 @@ final class ByteBufferUtils
      * the specified collection.
      * 
      * @param buffers
-     *        The byte buffer collection; must not be {@code null}.
+     *        The byte buffer collection.
      * 
-     * @return A new collection of duplicate byte buffers; never {@code null}.
+     * @return A new collection of duplicate byte buffers.
      */
     static Collection<ByteBuffer> duplicate(
         final Collection<ByteBuffer> buffers )
@@ -74,9 +74,9 @@ final class ByteBufferUtils
      * Fills the destination buffer with the contents of the source buffer.
      * 
      * @param destinationBuffer
-     *        The destination buffer; must not be {@code null}.
+     *        The destination buffer.
      * @param sourceBuffer
-     *        The source buffer; must not be {@code null}.
+     *        The source buffer.
      */
     static void fill(
         final ByteBuffer destinationBuffer,
@@ -99,7 +99,7 @@ final class ByteBufferUtils
      * Performs a relative bulk get on the specified byte buffer collection.
      * 
      * @param buffers
-     *        The collection of byte buffers; must not be {@code null}.
+     *        The collection of byte buffers.
      * @param length
      *        The count of bytes to get; must not be negative.
      * 
@@ -141,7 +141,7 @@ final class ByteBufferUtils
      * count of bytes remaining.
      * 
      * @param buffers
-     *        The collection of byte buffers; must not be {@code null}.
+     *        The collection of byte buffers.
      * @param length
      *        The count of bytes remaining; must not be negative.
      * 

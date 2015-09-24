@@ -60,7 +60,7 @@ public final class BeginAuthenticationRequestMessageTest
      * Gets the begin authentication request message under test in the fixture.
      * 
      * @return The begin authentication request message under test in the
-     *         fixture; never {@code null}.
+     *         fixture.
      */
     private BeginAuthenticationRequestMessage getMessage()
     {

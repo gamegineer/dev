@@ -71,8 +71,7 @@ public final class HelloResponseMessageHandlerTest
     /**
      * Gets the message handler under test in the fixture.
      * 
-     * @return The message handler under test in the fixture; never {@code null}
-     *         .
+     * @return The message handler under test in the fixture.
      */
     private IMessageHandler getMessageHandler()
     {
@@ -82,7 +81,7 @@ public final class HelloResponseMessageHandlerTest
     /**
      * Gets the fixture mocks control.
      * 
-     * @return The fixture mocks control; never {@code null}.
+     * @return The fixture mocks control.
      */
     private IMocksControl getMocksControl()
     {

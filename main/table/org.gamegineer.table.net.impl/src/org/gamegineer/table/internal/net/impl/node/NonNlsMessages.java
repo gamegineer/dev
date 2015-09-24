@@ -152,12 +152,12 @@ final class NonNlsMessages
      * unexpected message.
      * 
      * @param messageHandler
-     *        The message handler; must not be {@code null}.
+     *        The message handler.
      * @param message
-     *        The message; must not be {@code null}.
+     *        The message.
      * 
      * @return The formatted message indicating the message handler received an
-     *         unexpected message; never {@code null}.
+     *         unexpected message.
      */
     @SuppressWarnings( "boxing" )
     static String AbstractMessageHandler_messageReceived_unexpectedMessage(
@@ -179,10 +179,10 @@ final class NonNlsMessages
      * deserializing a message.
      * 
      * @param messageEnvelope
-     *        The message envelope; must not be {@code null}.
+     *        The message envelope.
      * 
      * @return The formatted message indicating an error occurred while
-     *         deserializing a message; never {@code null}.
+     *         deserializing a message.
      */
     @SuppressWarnings( "boxing" )
     static String AbstractRemoteNode_extractMessage_deserializationError(
@@ -197,10 +197,10 @@ final class NonNlsMessages
      * message.
      * 
      * @param message
-     *        The message; must not be {@code null}.
+     *        The message.
      * 
      * @return The formatted message indicating the service received an
-     *         unhandled message; never {@code null}.
+     *         unhandled message.
      */
     @SuppressWarnings( "boxing" )
     static String AbstractRemoteNode_messageReceived_unhandledMessage(
@@ -220,11 +220,10 @@ final class NonNlsMessages
      * received.
      * 
      * @param error
-     *        The table network error that was received; must not be
-     *        {@code null}.
+     *        The table network error that was received.
      * 
      * @return The formatted message indicating an uncorrelated error message
-     *         was received; never {@code null}.
+     *         was received.
      */
     static String ErrorMessageHandler_handleMessage_errorReceived(
         final TableNetworkError error )

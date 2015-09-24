@@ -88,9 +88,9 @@ abstract class AbstractTransportLayer
      * </p>
      * 
      * @param executorService
-     *        The transport layer executor service; must not be {@code null}.
+     *        The transport layer executor service.
      * @param context
-     *        The transport layer context; must not be {@code null}.
+     *        The transport layer context.
      */
     AbstractTransportLayer(
         final ExecutorService executorService,
@@ -115,10 +115,9 @@ abstract class AbstractTransportLayer
      *        The return type of the task.
      * 
      * @param task
-     *        The task to execute; must not be {@code null}.
+     *        The task to execute.
      * 
-     * @return An asynchronous completion token for the task; never {@code null}
-     *         .
+     * @return An asynchronous completion token for the task.
      * 
      * @throws java.util.concurrent.RejectedExecutionException
      *         If the task cannot be scheduled for execution.
@@ -133,10 +132,9 @@ abstract class AbstractTransportLayer
      * Asynchronously executes the specified task on the transport layer thread.
      * 
      * @param task
-     *        The task to execute; must not be {@code null}.
+     *        The task to execute.
      * 
-     * @return An asynchronous completion token for the task; never {@code null}
-     *         .
+     * @return An asynchronous completion token for the task.
      * 
      * @throws java.util.concurrent.RejectedExecutionException
      *         If the task cannot be scheduled for execution.
@@ -289,7 +287,7 @@ abstract class AbstractTransportLayer
      * layer.
      * 
      * @return A new network service that can be associated with the transport
-     *         layer; never {@code null}.
+     *         layer.
      */
     final IService createService()
     {
@@ -368,8 +366,7 @@ abstract class AbstractTransportLayer
     /**
      * Gets the dispatcher associated with the transport layer.
      * 
-     * @return The dispatcher associated with the transport layer; never
-     *         {@code null}.
+     * @return The dispatcher associated with the transport layer.
      */
     final Dispatcher getDispatcher()
     {
@@ -398,7 +395,7 @@ abstract class AbstractTransportLayer
      * Template method invoked to open the transport layer.
      * 
      * @param hostName
-     *        The host name; must not be {@code null}.
+     *        The host name.
      * @param port
      *        The port.
      * 
@@ -417,9 +414,9 @@ abstract class AbstractTransportLayer
      *        The return type of the task.
      * 
      * @param task
-     *        The task to execute; must not be {@code null}.
+     *        The task to execute.
      * 
-     * @return The return value of the task; may be {@code null}.
+     * @return The return value of the task.
      * 
      * @throws java.lang.InterruptedException
      *         If this thread is interrupted while waiting for the task to
@@ -452,7 +449,7 @@ abstract class AbstractTransportLayer
      * Synchronously executes the specified task on the transport layer thread.
      * 
      * @param task
-     *        The task to execute; must not be {@code null}.
+     *        The task to execute.
      * 
      * @throws java.lang.InterruptedException
      *         If this thread is interrupted while waiting for the task to
@@ -554,7 +551,7 @@ abstract class AbstractTransportLayer
         /**
          * Creates the transport layer executor service.
          * 
-         * @return The transport layer executor service; never {@code null}.
+         * @return The transport layer executor service.
          */
         private static ExecutorService createExecutorService()
         {
@@ -573,11 +570,12 @@ abstract class AbstractTransportLayer
          * Creates a new transport layer.
          * 
          * @param context
-         *        The transport layer context; must not be {@code null}.
+         *        The transport layer context.
          * 
-         * @return A new transport layer; never {@code null}.
+         * @return A new transport layer.
          * 
-         * @throws org.gamegineer.table.internal.net.impl.transport.TransportException
+         * @throws org.gamegineer.table.internal.net.impl.transport.
+         *         TransportException
          *         If the transport layer cannot be created.
          */
         final AbstractTransportLayer createTransportLayer(
@@ -617,12 +615,11 @@ abstract class AbstractTransportLayer
          * </p>
          * 
          * @param executorService
-         *        The transport layer executor service; must not be {@code null}
-         *        .
+         *        The transport layer executor service.
          * @param context
-         *        The transport layer context; must not be {@code null}.
+         *        The transport layer context.
          * 
-         * @return A new transport layer; never {@code null}.
+         * @return A new transport layer.
          */
         abstract AbstractTransportLayer createTransportLayer(
             ExecutorService executorService,

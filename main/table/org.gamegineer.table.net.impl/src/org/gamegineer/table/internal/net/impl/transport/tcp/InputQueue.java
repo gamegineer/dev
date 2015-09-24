@@ -64,8 +64,7 @@ final class InputQueue
      * Initializes a new instance of the {@code InputQueue} class.
      * 
      * @param bufferPool
-     *        The buffer pool associated with the queue; must not be
-     *        {@code null}.
+     *        The buffer pool associated with the queue.
      */
     InputQueue(
         final ByteBufferPool bufferPool )
@@ -126,7 +125,7 @@ final class InputQueue
      * Attempts to fill the queue from the specified channel.
      * 
      * @param channel
-     *        The channel used to fill the queue; must not be {@code null}.
+     *        The channel used to fill the queue.
      * 
      * @return The number of bytes read from the channel or -1 if channel has
      *         reached the end-of-stream.

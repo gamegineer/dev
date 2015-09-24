@@ -49,8 +49,7 @@ final class Connector
      * Initializes a new instance of the {@code Connector} class.
      * 
      * @param transportLayer
-     *        The transport layer associated with the connector; must not be
-     *        {@code null}.
+     *        The transport layer associated with the connector.
      */
     Connector(
         final AbstractTransportLayer transportLayer )
@@ -85,7 +84,7 @@ final class Connector
      * </p>
      * 
      * @param hostName
-     *        The host name of the remote peer; must not be {@code null}.
+     *        The host name of the remote peer.
      * @param port
      *        The port of the remote peer.
      * 
@@ -118,11 +117,11 @@ final class Connector
      * Creates and connects a new socket channel.
      * 
      * @param hostName
-     *        The host name of the remote peer; must not be {@code null}.
+     *        The host name of the remote peer.
      * @param port
      *        The port of the remote peer.
      * 
-     * @return A new socket channel; never {@code null}.
+     * @return A new socket channel.
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs.

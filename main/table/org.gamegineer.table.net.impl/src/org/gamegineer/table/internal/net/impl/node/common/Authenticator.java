@@ -80,7 +80,7 @@ public final class Authenticator
     /**
      * Creates a new challenge buffer.
      * 
-     * @return A new challenge buffer; never {@code null}.
+     * @return A new challenge buffer.
      * 
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
@@ -97,15 +97,13 @@ public final class Authenticator
      * material.
      * 
      * @param challenge
-     *        The challenge buffer; must not be {@code null}.
+     *        The challenge buffer.
      * @param password
-     *        The plain-text password used to generate the secret key; must not
-     *        be {@code null}.
+     *        The plain-text password used to generate the secret key.
      * @param salt
-     *        The salt buffer used to generate the secret key; must not be
-     *        {@code null}.
+     *        The salt buffer used to generate the secret key.
      * 
-     * @return A new response buffer; never {@code null}.
+     * @return A new response buffer.
      * 
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
@@ -135,7 +133,7 @@ public final class Authenticator
      * password.
      * 
      * @return A new salt buffer used to generate a secret key from a plain-text
-     *         password; never {@code null}.
+     *         password.
      * 
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
@@ -151,13 +149,11 @@ public final class Authenticator
      * Creates a secret key for the specified key material.
      * 
      * @param password
-     *        The plain-text password used to generate the secret key; must not
-     *        be {@code null}.
+     *        The plain-text password used to generate the secret key.
      * @param salt
-     *        The salt buffer used to generate the secret key; must not be
-     *        {@code null}.
+     *        The salt buffer used to generate the secret key.
      * 
-     * @return The secret key; never {@code null}.
+     * @return The secret key.
      * 
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
@@ -190,8 +186,7 @@ public final class Authenticator
      * @param length
      *        The buffer length; must not be negative.
      * 
-     * @return A buffer filled with securely-generated random bytes; never
-     *         {@code null}.
+     * @return A buffer filled with securely-generated random bytes.
      * 
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
@@ -219,9 +214,9 @@ public final class Authenticator
      * Gets the password as a character array.
      * 
      * @param password
-     *        The password; must not be {@code null}.
+     *        The password.
      * 
-     * @return The password as a character array; never {@code null}.
+     * @return The password as a character array.
      */
     private static char[] getPasswordChars(
         final SecureString password )

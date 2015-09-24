@@ -50,7 +50,7 @@ public final class TestTableNetworks
     /**
      * Creates a new table network.
      * 
-     * @return A new table network; never {@code null}.
+     * @return A new table network.
      */
     public static ITableNetwork createTableNetwork()
     {

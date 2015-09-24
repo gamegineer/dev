@@ -123,7 +123,7 @@ final class NodeLayer
     /**
      * Creates the node layer executor service.
      * 
-     * @return The node layer executor service; never {@code null}.
+     * @return The node layer executor service.
      */
     private ExecutorService createExecutorService()
     {

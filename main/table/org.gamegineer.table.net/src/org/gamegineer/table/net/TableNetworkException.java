@@ -51,8 +51,7 @@ public final class TableNetworkException
      * with the specified error, no detail message, and no cause.
      * 
      * @param error
-     *        The table network error associated with the exception; must not be
-     *        {@code null}.
+     *        The table network error associated with the exception.
      */
     public TableNetworkException(
         final TableNetworkError error )
@@ -65,10 +64,9 @@ public final class TableNetworkException
      * with the specified error, the specified detail message, and no cause.
      * 
      * @param error
-     *        The table network error associated with the exception; must not be
-     *        {@code null}.
+     *        The table network error associated with the exception.
      * @param message
-     *        The detail message; may be {@code null}.
+     *        The detail message.
      */
     public TableNetworkException(
         final TableNetworkError error,
@@ -82,10 +80,9 @@ public final class TableNetworkException
      * with the specified error, no detail message, and the specified cause.
      * 
      * @param error
-     *        The table network error associated with the exception; must not be
-     *        {@code null}.
+     *        The table network error associated with the exception.
      * @param cause
-     *        The cause; may be {@code null}.
+     *        The cause.
      */
     public TableNetworkException(
         final TableNetworkError error,
@@ -99,12 +96,11 @@ public final class TableNetworkException
      * with the specified error, detail message, and cause.
      * 
      * @param error
-     *        The table network error associated with the exception; must not be
-     *        {@code null}.
+     *        The table network error associated with the exception.
      * @param message
-     *        The detail message; may be {@code null}.
+     *        The detail message.
      * @param cause
-     *        The cause; may be {@code null}.
+     *        The cause.
      */
     public TableNetworkException(
         final TableNetworkError error,
@@ -124,8 +120,7 @@ public final class TableNetworkException
     /**
      * Gets the table network error associated with the exception.
      * 
-     * @return The table network error associated with the exception; never
-     *         {@code null}.
+     * @return The table network error associated with the exception.
      */
     public TableNetworkError getError()
     {

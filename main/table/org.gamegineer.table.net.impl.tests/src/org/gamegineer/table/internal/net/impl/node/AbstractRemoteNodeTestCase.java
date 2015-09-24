@@ -63,7 +63,7 @@ public abstract class AbstractRemoteNodeTestCase<T extends IRemoteNode>
     /**
      * Creates the remote node to be tested.
      * 
-     * @return The remote node to be tested; never {@code null}.
+     * @return The remote node to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -74,7 +74,7 @@ public abstract class AbstractRemoteNodeTestCase<T extends IRemoteNode>
     /**
      * Gets the remote node under test in the fixture.
      * 
-     * @return The remote node under test in the fixture; never {@code null}.
+     * @return The remote node under test in the fixture.
      */
     protected final T getRemoteNode()
     {

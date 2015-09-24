@@ -61,7 +61,7 @@ public abstract class AbstractTableNetworkFactoryTestCase
     /**
      * Creates the table network factory to be tested.
      * 
-     * @return The table network factory to be tested; never {@code null}.
+     * @return The table network factory to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -72,8 +72,7 @@ public abstract class AbstractTableNetworkFactoryTestCase
     /**
      * Gets the table network factory under test in the fixture.
      * 
-     * @return The table network factory under test in the fixture; never
-     *         {@code null}.
+     * @return The table network factory under test in the fixture.
      */
     protected final ITableNetworkFactory getTableNetworkFactory()
     {

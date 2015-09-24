@@ -95,11 +95,9 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
      * Creates a mock remote table network node for use in the fixture.
      * 
      * @param mocksControl
-     *        The mocks control for use in the fixture; must not be {@code null}
-     *        .
+     *        The mocks control for use in the fixture.
      * 
-     * @return A mock remote table network node for use in the fixture; never
-     *         {@code null}.
+     * @return A mock remote table network node for use in the fixture.
      */
     protected abstract RemoteNodeType createMockRemoteNode(
         IMocksControl mocksControl );
@@ -107,8 +105,7 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
     /**
      * Creates the table network node to be tested in the connected state.
      * 
-     * @return The table network node to be tested in the connected state; never
-     *         {@code null}.
+     * @return The table network node to be tested in the connected state.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -120,11 +117,9 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
      * Creates a node layer runner for the specified table network node.
      * 
      * @param node
-     *        The table network node to associate with the node layer runner;
-     *        must not be {@code null}.
+     *        The table network node to associate with the node layer runner.
      * 
-     * @return The new node layer runner for the specified table network node;
-     *         never {@code null}.
+     * @return The new node layer runner for the specified table network node.
      */
     protected abstract NodeLayerRunner createNodeLayerRunner(
         T node );
@@ -132,7 +127,7 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
     /**
      * Creates a new table network configuration.
      * 
-     * @return A new table network configuration; never {@code null}.
+     * @return A new table network configuration.
      */
     protected final TableNetworkConfiguration createTableNetworkConfiguration()
     {
@@ -142,7 +137,7 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
     /**
      * Gets the fixture nice mocks control.
      * 
-     * @return The fixture nice mocks control; never {@code null}.
+     * @return The fixture nice mocks control.
      */
     private IMocksControl getNiceMocksControl()
     {
@@ -152,8 +147,7 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
     /**
      * Gets the table network node under test in the fixture.
      * 
-     * @return The table network node under test in the fixture; never
-     *         {@code null}.
+     * @return The table network node under test in the fixture.
      */
     protected final T getNode()
     {
@@ -163,7 +157,7 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
     /**
      * Gets the fixture node layer runner.
      * 
-     * @return The fixture node layer runner; never {@code null}.
+     * @return The fixture node layer runner.
      */
     protected final NodeLayerRunner getNodeLayerRunner()
     {
@@ -173,7 +167,7 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
     /**
      * Gets the fixture table.
      * 
-     * @return The fixture table; never {@code null}.
+     * @return The fixture table.
      */
     private ITable getTable()
     {
@@ -183,7 +177,7 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
     /**
      * Gets the fixture table environment context.
      * 
-     * @return The fixture table environment context; never {@code null}.
+     * @return The fixture table environment context.
      */
     private MultiThreadedTableEnvironmentContext getTableEnvironmentContext()
     {
@@ -195,11 +189,9 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
      * specified table network node.
      * 
      * @param node
-     *        The table network node under test in the fixture; must not be
-     *        {@code null}.
+     *        The table network node under test in the fixture.
      * @param playerName
-     *        The name of the player associated with the remote node; must not
-     *        be {@code null}.
+     *        The name of the player associated with the remote node.
      * 
      * @return {@code true} if a remote node for the specified player is bound
      *         to the specified table network node; otherwise {@code false}.

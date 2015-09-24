@@ -60,8 +60,7 @@ public final class TableNetworkEventTest
     /**
      * Gets the table network event under test in the fixture.
      * 
-     * @return The table network event under test in the fixture; never
-     *         {@code null}.
+     * @return The table network event under test in the fixture.
      */
     private TableNetworkEvent getEvent()
     {

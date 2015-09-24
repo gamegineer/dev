@@ -53,7 +53,7 @@ public final class RemoteServerNodeAsRemoteServerNodeTest
     /**
      * Creates a mock local node for use in the fixture.
      * 
-     * @return A mock local node for use in the fixture; never {@code null}.
+     * @return A mock local node for use in the fixture.
      */
     private static IClientNode createMockLocalNode()
     {
@@ -66,7 +66,7 @@ public final class RemoteServerNodeAsRemoteServerNodeTest
     /**
      * Creates a mock node layer for use in the fixture.
      * 
-     * @return A mock node layer for use in the fixture; never {@code null}.
+     * @return A mock node layer for use in the fixture.
      */
     @SuppressWarnings( "boxing" )
     private static INodeLayer createMockNodeLayer()

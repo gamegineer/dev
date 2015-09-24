@@ -50,8 +50,7 @@ public interface IRemoteNodeController<@NonNull LocalNodeType extends INode<@Non
      * Binds the remote node to the local node for the specified player name.
      * 
      * @param playerName
-     *        The name of the player associated with the remote node; must not
-     *        be {@code null}.
+     *        The name of the player associated with the remote node.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If a remote node with the same player name has already been bound
@@ -78,14 +77,14 @@ public interface IRemoteNodeController<@NonNull LocalNodeType extends INode<@Non
     /**
      * Gets the local table network node.
      * 
-     * @return The local table network node; never {@code null}.
+     * @return The local table network node.
      */
     public LocalNodeType getLocalNode();
 
     /**
      * Gets the table associated with the remote node.
      * 
-     * @return The table associated with the remote node; never {@code null}.
+     * @return The table associated with the remote node.
      */
     public INetworkTable getTable();
 
@@ -93,7 +92,7 @@ public interface IRemoteNodeController<@NonNull LocalNodeType extends INode<@Non
      * Sends the specified message to the remote node peer.
      * 
      * @param message
-     *        The message; must not be {@code null}.
+     *        The message.
      * @param messageHandler
      *        The message handler to be invoked for any response to the
      *        specified message or {@code null} if no response is expected.

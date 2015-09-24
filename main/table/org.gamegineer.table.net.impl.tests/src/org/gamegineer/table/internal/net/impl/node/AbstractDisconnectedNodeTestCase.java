@@ -76,8 +76,7 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
     /**
      * Creates the table network node to be tested in the disconnected state.
      * 
-     * @return The table network node to be tested in the disconnected state;
-     *         never {@code null}.
+     * @return The table network node to be tested in the disconnected state.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -89,11 +88,9 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
      * Creates a mock remote table network node for use in the fixture.
      * 
      * @param mocksControl
-     *        The mocks control for use in the fixture; must not be {@code null}
-     *        .
+     *        The mocks control for use in the fixture.
      * 
-     * @return A mock remote table network node for use in the fixture; never
-     *         {@code null}.
+     * @return A mock remote table network node for use in the fixture.
      */
     protected abstract RemoteNodeType createMockRemoteNode(
         IMocksControl mocksControl );
@@ -102,11 +99,9 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
      * Creates a node layer runner for the specified table network node.
      * 
      * @param node
-     *        The table network node to associate with the node layer runner;
-     *        must not be {@code null}.
+     *        The table network node to associate with the node layer runner.
      * 
-     * @return The new node layer runner for the specified table network node;
-     *         never {@code null}.
+     * @return The new node layer runner for the specified table network node.
      */
     protected abstract NodeLayerRunner createNodeLayerRunner(
         T node );
@@ -114,7 +109,7 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
     /**
      * Gets the fixture nice mocks control.
      * 
-     * @return The fixture nice mocks control; never {@code null}.
+     * @return The fixture nice mocks control.
      */
     private IMocksControl getNiceMocksControl()
     {
@@ -124,8 +119,7 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
     /**
      * Gets the table network node under test in the fixture.
      * 
-     * @return The table network node under test in the fixture; never
-     *         {@code null}.
+     * @return The table network node under test in the fixture.
      */
     protected final T getNode()
     {
@@ -135,7 +129,7 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
     /**
      * Gets the node layer runner for use in the fixture.
      * 
-     * @return The node layer runner for use in the fixture; never {@code null}.
+     * @return The node layer runner for use in the fixture.
      */
     protected final NodeLayerRunner getNodeLayerRunner()
     {

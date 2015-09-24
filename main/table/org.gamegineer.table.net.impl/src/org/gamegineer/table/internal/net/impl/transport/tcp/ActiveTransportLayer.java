@@ -1,6 +1,6 @@
 /*
  * ActiveTransportLayer.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -42,9 +42,9 @@ final class ActiveTransportLayer
      * Initializes a new instance of the {@code ActiveTransportLayer} class.
      * 
      * @param executorService
-     *        The transport layer executor service; must not be {@code null}.
+     *        The transport layer executor service.
      * @param context
-     *        The transport layer context; must not be {@code null}.
+     *        The transport layer context.
      */
     private ActiveTransportLayer(
         final ExecutorService executorService,

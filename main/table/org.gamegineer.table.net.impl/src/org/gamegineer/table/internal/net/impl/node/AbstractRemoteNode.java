@@ -119,9 +119,9 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      * Initializes a new instance of the {@code AbstractRemoteNode} class.
      * 
      * @param nodeLayer
-     *        The node layer; must not be {@code null}.
+     *        The node layer.
      * @param node
-     *        The local table network node; must not be {@code null}.
+     *        The local table network node.
      */
     protected AbstractRemoteNode(
         final INodeLayer nodeLayer,
@@ -212,7 +212,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      * Extracts the message from the specified message envelope.
      * 
      * @param messageEnvelope
-     *        The message envelope; must not be {@code null}.
+     *        The message envelope.
      * 
      * @return The message extracted from the specified message envelope or
      *         {@code null} if the message envelope contains an unknown message.
@@ -301,7 +301,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      * by the local node.
      * 
      * @return A reference to this remote node as the type of remote node
-     *         expected by the local node; never {@code null}.
+     *         expected by the local node.
      */
     protected abstract RemoteNodeType getThisAsRemoteNodeType();
 
@@ -420,9 +420,9 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      * of the specified type.
      * 
      * @param type
-     *        The message type; must not be {@code null}.
+     *        The message type.
      * @param messageHandler
-     *        The message handler; must not be {@code null}.
+     *        The message handler.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If an uncorrelated message handler is already registered for the
@@ -442,7 +442,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      * Sends an error message to the remote peer with the specified attributes.
      * 
      * @param error
-     *        The error that occurred; must not be {@code null}.
+     *        The error that occurred.
      * @param correlationId
      *        The message correlation identifier.
      * 
@@ -565,9 +565,9 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
          * 
          * @param remoteNodeController
          *        The control interface for the remote node that received the
-         *        message; must not be {@code null}.
+         *        message.
          * @param message
-         *        The message; must not be {@code null}.
+         *        The message.
          */
         @SuppressWarnings( {
             "static-method", "unused"

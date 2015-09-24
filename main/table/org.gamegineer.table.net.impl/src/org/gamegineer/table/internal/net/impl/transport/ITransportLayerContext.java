@@ -42,7 +42,7 @@ public interface ITransportLayerContext
     /**
      * Creates a new network service.
      * 
-     * @return A new network service; never {@code null}.
+     * @return A new network service.
      */
     public IService createService();
 

@@ -64,8 +64,7 @@ final class Acceptor
      * Initializes a new instance of the {@code Acceptor} class.
      * 
      * @param transportLayer
-     *        The transport layer associated with the acceptor; must not be
-     *        {@code null}.
+     *        The transport layer associated with the acceptor.
      */
     Acceptor(
         final AbstractTransportLayer transportLayer )
@@ -117,8 +116,7 @@ final class Acceptor
      * </p>
      * 
      * @param hostName
-     *        The host name to which the acceptor will be bound; must not be
-     *        {@code null}.
+     *        The host name to which the acceptor will be bound.
      * @param port
      *        The port to which the acceptor will be bound.
      * 
@@ -193,12 +191,11 @@ final class Acceptor
      * Creates and initializes a new server socket channel.
      * 
      * @param hostName
-     *        The host name to which the acceptor will be bound; must not be
-     *        {@code null}.
+     *        The host name to which the acceptor will be bound.
      * @param port
      *        The port to which the acceptor will be bound.
      * 
-     * @return A new server socket channel; never {@code null}.
+     * @return A new server socket channel.
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs.

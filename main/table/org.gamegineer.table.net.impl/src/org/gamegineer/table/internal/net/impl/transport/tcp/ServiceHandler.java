@@ -93,10 +93,9 @@ final class ServiceHandler
      * Initializes a new instance of the {@code AbstractService} class.
      * 
      * @param transportLayer
-     *        The transport layer associated with the service handler; must not
-     *        be {@code null}.
+     *        The transport layer associated with the service handler.
      * @param service
-     *        The service; must not be {@code null}.
+     *        The service.
      */
     ServiceHandler(
         final AbstractTransportLayer transportLayer,
@@ -280,8 +279,7 @@ final class ServiceHandler
      * </p>
      * 
      * @param channel
-     *        The channel associated with the service handler; must not be
-     *        {@code null}.
+     *        The channel associated with the service handler.
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs

@@ -40,9 +40,9 @@ final class FakeTransportLayer
      * Initializes a new instance of the {@code FakeTransportLayer} class.
      * 
      * @param executorService
-     *        The transport layer executor service; must not be {@code null}.
+     *        The transport layer executor service.
      * @param context
-     *        The transport layer context; must not be {@code null}.
+     *        The transport layer context.
      */
     private FakeTransportLayer(
         final ExecutorService executorService,

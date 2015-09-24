@@ -57,7 +57,7 @@ public final class TransportException
      * the specified detail message and no cause.
      * 
      * @param message
-     *        The detail message; may be {@code null}.
+     *        The detail message.
      */
     public TransportException(
         final @Nullable String message )
@@ -70,7 +70,7 @@ public final class TransportException
      * no detail message and the specified cause.
      * 
      * @param cause
-     *        The cause; may be {@code null}.
+     *        The cause.
      */
     public TransportException(
         final @Nullable Throwable cause )
@@ -83,9 +83,9 @@ public final class TransportException
      * the specified detail message and cause.
      * 
      * @param message
-     *        The detail message; may be {@code null}.
+     *        The detail message.
      * @param cause
-     *        The cause; may be {@code null}.
+     *        The cause.
      */
     public TransportException(
         final @Nullable String message,

@@ -95,10 +95,9 @@ public final class TableNetwork
      * </p>
      * 
      * @param nodeFactory
-     *        The table network node factory; must not be {@code null}.
+     *        The table network node factory.
      * @param transportLayerFactory
-     *        The table network transport layer factory; must not be
-     *        {@code null}.
+     *        The table network transport layer factory.
      */
     TableNetwork(
         final INodeFactory nodeFactory,
@@ -154,10 +153,9 @@ public final class TableNetwork
      * the specified configuration.
      * 
      * @param configuration
-     *        The table network configuration; must not be {@code null}.
+     *        The table network configuration.
      * @param nodeController
-     *        The control interface of the table network node; must not be
-     *        {@code null}.
+     *        The control interface of the table network node.
      * 
      * @throws java.lang.InterruptedException
      *         If this thread is interrupted while waiting for the table network

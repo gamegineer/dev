@@ -65,7 +65,7 @@ final class NodeControllerProxy
      * Initializes a new instance of the {@code NodeControllerProxy} class.
      * 
      * @param actualNodeController
-     *        The actual node controller; must not be {@code null}.
+     *        The actual node controller.
      */
     NodeControllerProxy(
         final AbstractNode<@NonNull ?> actualNodeController )

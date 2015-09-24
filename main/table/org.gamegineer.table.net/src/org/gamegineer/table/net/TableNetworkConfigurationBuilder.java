@@ -1,6 +1,6 @@
 /*
  * TableNetworkConfigurationBuilder.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -60,8 +60,7 @@ public final class TableNetworkConfigurationBuilder
      * {@code TableNetworkConfigurationBuilder} class.
      * 
      * @param localTable
-     *        The local table to attach to the table network; must not be
-     *        {@code null}.
+     *        The local table to attach to the table network.
      */
     public TableNetworkConfigurationBuilder(
         final ITable localTable )
@@ -82,9 +81,9 @@ public final class TableNetworkConfigurationBuilder
      * Sets the name of the table network host.
      * 
      * @param hostName
-     *        The name of the table network host; must not be {@code null}.
+     *        The name of the table network host.
      * 
-     * @return A reference to this builder; never {@code null}.
+     * @return A reference to this builder.
      */
     public TableNetworkConfigurationBuilder setHostName(
         final String hostName )
@@ -98,9 +97,9 @@ public final class TableNetworkConfigurationBuilder
      * Sets the name of the local player.
      * 
      * @param localPlayerName
-     *        The local player name; must not be {@code null}.
+     *        The local player name.
      * 
-     * @return A reference to this builder; never {@code null}.
+     * @return A reference to this builder.
      */
     public TableNetworkConfigurationBuilder setLocalPlayerName(
         final String localPlayerName )
@@ -114,9 +113,9 @@ public final class TableNetworkConfigurationBuilder
      * Sets the password used to authenticate connections to the table network.
      * 
      * @param password
-     *        The password; must not be {@code null}.
+     *        The password.
      * 
-     * @return A reference to this builder; never {@code null}.
+     * @return A reference to this builder.
      */
     public TableNetworkConfigurationBuilder setPassword(
         final SecureString password )
@@ -132,7 +131,7 @@ public final class TableNetworkConfigurationBuilder
      * @param port
      *        The port of the table network host.
      * 
-     * @return A reference to this builder; never {@code null}.
+     * @return A reference to this builder.
      */
     public TableNetworkConfigurationBuilder setPort(
         final int port )
@@ -146,7 +145,7 @@ public final class TableNetworkConfigurationBuilder
      * Creates a new table network configuration based on the state of this
      * builder.
      * 
-     * @return A new table network configuration; never {@code null}.
+     * @return A new table network configuration.
      */
     public TableNetworkConfiguration toTableNetworkConfiguration()
     {

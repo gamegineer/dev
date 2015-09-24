@@ -87,10 +87,9 @@ public final class PlayersMessage
      * Gets the collection of players connected to the table network.
      * 
      * @param localPlayerName
-     *        The name of the local player; must not be {@code null}.
+     *        The name of the local player.
      * 
-     * @return The collection of players connected to the table network; never
-     *         {@code null}.
+     * @return The collection of players connected to the table network.
      */
     public Collection<IPlayer> getPlayers(
         final String localPlayerName )
@@ -119,8 +118,7 @@ public final class PlayersMessage
      * Sets the collection of players connected to the table network.
      * 
      * @param players
-     *        The collection of players connected to the table network; must not
-     *        be {@code null}.
+     *        The collection of players connected to the table network.
      */
     public void setPlayers(
         final Collection<IPlayer> players )

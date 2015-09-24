@@ -56,10 +56,9 @@ public final class TableNetworkConfigurations
      * table.
      * 
      * @param localTable
-     *        The local table to attach to the table network; must not be
-     *        {@code null}.
+     *        The local table to attach to the table network.
      * 
-     * @return A new default table network configuration; never {@code null}.
+     * @return A new default table network configuration.
      */
     public static TableNetworkConfiguration createDefaultTableNetworkConfiguration(
         final ITable localTable )

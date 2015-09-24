@@ -56,7 +56,7 @@ public abstract class AbstractMessageHandler<@NonNull RemoteNodeControllerType e
      * Initializes a new instance of the {@code AbstractMessageHandler} class.
      * 
      * @param remoteNodeControllerType
-     *        The type of the remote node controller; must not be {@code null}.
+     *        The type of the remote node controller.
      */
     protected AbstractMessageHandler(
         final Class<RemoteNodeControllerType> remoteNodeControllerType )
@@ -125,7 +125,7 @@ public abstract class AbstractMessageHandler<@NonNull RemoteNodeControllerType e
      * 
      * @param remoteNodeController
      *        The control interface for the remote node that received the
-     *        message; must not be {@code null}.
+     *        message.
      */
     protected void handleUnexpectedMessage(
         @SuppressWarnings( "unused" )

@@ -90,9 +90,9 @@ public final class ServerNode
      * Initializes a new instance of the {@code ServerNode} class.
      * 
      * @param nodeLayer
-     *        The node layer; must not be {@code null}.
+     *        The node layer.
      * @param tableNetworkController
-     *        The table network controller; must not be {@code null}.
+     *        The table network controller.
      */
     private ServerNode(
         final INodeLayer nodeLayer,
@@ -114,7 +114,7 @@ public final class ServerNode
      * Binds the specified player to the table network.
      * 
      * @param player
-     *        The player to bind to the table network; must not be {@code null}.
+     *        The player to bind to the table network.
      */
     private void bindPlayer(
         final Player player )
@@ -309,8 +309,7 @@ public final class ServerNode
      * table.
      * 
      * @param table
-     *        The table used to specify the master table; must not be
-     *        {@code null}.
+     *        The table used to specify the master table.
      * 
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
@@ -426,7 +425,7 @@ public final class ServerNode
      * master table.
      * 
      * @param remoteNode
-     *        The remote node; must not be {@code null}.
+     *        The remote node.
      */
     private void synchronizeRemoteTable(
         final IRemoteClientNode remoteNode )
@@ -440,8 +439,7 @@ public final class ServerNode
      * Unbinds the specified player from the table network.
      * 
      * @param playerName
-     *        The name of the player to unbind from the table network; must not
-     *        be {@code null}.
+     *        The name of the player to unbind from the table network.
      */
     private void unbindPlayer(
         final String playerName )
@@ -608,9 +606,9 @@ public final class ServerNode
          * class.
          * 
          * @param tableManagerDecoratee
-         *        The decorated table manager; must not be {@code null}.
+         *        The decorated table manager.
          * @param localPlayerName
-         *        The name of the local player; must not be {@code null}.
+         *        The name of the local player.
          */
         ServerTableManagerDecorator(
             final ITableManager tableManagerDecoratee,

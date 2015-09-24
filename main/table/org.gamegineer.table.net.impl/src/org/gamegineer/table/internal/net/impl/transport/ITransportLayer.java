@@ -42,8 +42,7 @@ public interface ITransportLayer
      * This method does nothing if the transport layer is already closed.
      * </p>
      * 
-     * @return An asynchronous completion token for the operation; never
-     *         {@code null}.
+     * @return An asynchronous completion token for the operation.
      */
     public Future<@Nullable Void> beginClose();
 
@@ -51,17 +50,16 @@ public interface ITransportLayer
      * Begins an asynchronous operation to open the transport layer.
      * 
      * @param hostName
-     *        The host name; must not be {@code null}. For a passive transport
-     *        layer, this value is the host name to which all services will be
-     *        bound. For an active transport layer, this value is the host name
-     *        of the remote service.
+     *        The host name. For a passive transport layer, this value is the
+     *        host name to which all services will be bound. For an active
+     *        transport layer, this value is the host name of the remote
+     *        service.
      * @param port
      *        The port. For a passive transport layer, this value is the port to
      *        which all services will be bound. For an active transport layer,
      *        this value is the port of the remote service.
      * 
-     * @return An asynchronous completion token for the operation; never
-     *         {@code null}.
+     * @return An asynchronous completion token for the operation.
      */
     public Future<@Nullable Void> beginOpen(
         String hostName,
@@ -77,8 +75,7 @@ public interface ITransportLayer
      * </p>
      * 
      * @param future
-     *        The asynchronous completion token associated with the operation;
-     *        must not be {@code null}.
+     *        The asynchronous completion token associated with the operation.
      * 
      * @throws java.lang.InterruptedException
      *         If this thread is interrupted while waiting for the transport
@@ -100,8 +97,7 @@ public interface ITransportLayer
      * </p>
      * 
      * @param future
-     *        The asynchronous completion token associated with the operation;
-     *        must not be {@code null}.
+     *        The asynchronous completion token associated with the operation.
      * 
      * @throws java.lang.IllegalStateException
      *         If the transport layer has already been opened or is closed.

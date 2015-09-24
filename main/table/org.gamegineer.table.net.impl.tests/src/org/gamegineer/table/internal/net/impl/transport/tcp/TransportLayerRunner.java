@@ -58,7 +58,7 @@ final class TransportLayerRunner
      * Initializes a new instance of the {@code TransportLayerRunner} class.
      * 
      * @param transportLayer
-     *        The transport layer; must not be {@code null}.
+     *        The transport layer.
      */
     TransportLayerRunner(
         final AbstractTransportLayer transportLayer )
@@ -98,7 +98,7 @@ final class TransportLayerRunner
      * Synchronously opens the associated transport layer.
      * 
      * @param hostName
-     *        The host name; must not be {@code null}.
+     *        The host name.
      * @param port
      *        The port.
      * 
@@ -132,10 +132,9 @@ final class TransportLayerRunner
      *        The type of the task result.
      * 
      * @param task
-     *        The task to execute on the transport layer thread; must not be
-     *        {@code null}.
+     *        The task to execute on the transport layer thread.
      * 
-     * @return The task result; may be {@code null}.
+     * @return The task result.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -155,13 +154,11 @@ final class TransportLayerRunner
      *        The type of the task result.
      * 
      * @param task
-     *        The task to execute on the transport layer thread; must not be
-     *        {@code null}.
+     *        The task to execute on the transport layer thread.
      * @param exceptionType
-     *        The checked exception expected type expected to be thrown; must
-     *        not be {@code null}.
+     *        The checked exception expected type expected to be thrown.
      * 
-     * @return The task result; may be {@code null}.
+     * @return The task result.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -182,13 +179,11 @@ final class TransportLayerRunner
      *        The type of the task result.
      * 
      * @param task
-     *        The task to execute on the transport layer thread; must not be
-     *        {@code null}.
+     *        The task to execute on the transport layer thread.
      * @param exceptionTypes
-     *        The collection of checked exception types expected to be thrown;
-     *        must not be {@code null}.
+     *        The collection of checked exception types expected to be thrown.
      * 
-     * @return The task result; may be {@code null}.
+     * @return The task result.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

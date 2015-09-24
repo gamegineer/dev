@@ -1,6 +1,6 @@
 /*
  * ITableNetworkListener.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,7 +40,7 @@ public interface ITableNetworkListener
      * Invoked when the table network has connected.
      * 
      * @param event
-     *        The event describing the table network; must not be {@code null}.
+     *        The event describing the table network.
      */
     public void tableNetworkConnected(
         TableNetworkEvent event );
@@ -49,7 +49,7 @@ public interface ITableNetworkListener
      * Invoked when the table network has disconnected.
      * 
      * @param event
-     *        The event describing the table network; must not be {@code null}.
+     *        The event describing the table network.
      */
     public void tableNetworkDisconnected(
         TableNetworkDisconnectedEvent event );
@@ -59,7 +59,7 @@ public interface ITableNetworkListener
      * been updated.
      * 
      * @param event
-     *        The event describing the table network; must not be {@code null}.
+     *        The event describing the table network.
      */
     public void tableNetworkPlayersUpdated(
         TableNetworkEvent event );

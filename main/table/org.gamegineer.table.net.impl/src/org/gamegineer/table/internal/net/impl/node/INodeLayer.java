@@ -45,10 +45,9 @@ public interface INodeLayer
      *        The return type of the task.
      * 
      * @param task
-     *        The task to execute; must not be {@code null}.
+     *        The task to execute.
      * 
-     * @return An asynchronous completion token for the task; never {@code null}
-     *         .
+     * @return An asynchronous completion token for the task.
      * 
      * @throws java.util.concurrent.RejectedExecutionException
      *         If the task cannot be scheduled for execution.
@@ -60,10 +59,9 @@ public interface INodeLayer
      * Asynchronously executes the specified task on the node layer thread.
      * 
      * @param task
-     *        The task to execute; must not be {@code null}.
+     *        The task to execute.
      * 
-     * @return An asynchronous completion token for the task; never {@code null}
-     *         .
+     * @return An asynchronous completion token for the task.
      * 
      * @throws java.util.concurrent.RejectedExecutionException
      *         If the task cannot be scheduled for execution.
@@ -88,7 +86,7 @@ public interface INodeLayer
      * Indicates the specified thread is the node layer thread.
      * 
      * @param thread
-     *        The thread; must not be {@code null}.
+     *        The thread.
      * 
      * @return {@code true} if the specified thread is the node layer thread;
      *         otherwise {@code false}.
@@ -103,9 +101,9 @@ public interface INodeLayer
      *        The return type of the task.
      * 
      * @param task
-     *        The task to execute; must not be {@code null}.
+     *        The task to execute.
      * 
-     * @return The return value of the task; may be {@code null}.
+     * @return The return value of the task.
      * 
      * @throws java.lang.InterruptedException
      *         If this thread is interrupted while waiting for the task to
@@ -123,7 +121,7 @@ public interface INodeLayer
      * Synchronously executes the specified task on the node layer thread.
      * 
      * @param task
-     *        The task to execute; must not be {@code null}.
+     *        The task to execute.
      * 
      * @throws java.lang.InterruptedException
      *         If this thread is interrupted while waiting for the task to

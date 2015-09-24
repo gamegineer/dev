@@ -39,7 +39,7 @@ public interface ITableNetwork
      * Adds the specified table network listener to this table network.
      * 
      * @param listener
-     *        The table network listener; must not be {@code null}.
+     *        The table network listener.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is already a registered table network
@@ -85,8 +85,7 @@ public interface ITableNetwork
     /**
      * Gets the collection of players connected to the table network.
      * 
-     * @return The collection of players connected to the table network; never
-     *         {@code null}.
+     * @return The collection of players connected to the table network.
      */
     public Collection<IPlayer> getPlayers();
 
@@ -99,7 +98,7 @@ public interface ITableNetwork
      * </p>
      * 
      * @param player
-     *        The player to receive control; must not be {@code null}.
+     *        The player to receive control.
      */
     public void giveControl(
         IPlayer player );
@@ -112,7 +111,7 @@ public interface ITableNetwork
      * </p>
      * 
      * @param configuration
-     *        The table network configuration; must not be {@code null}.
+     *        The table network configuration.
      * 
      * @throws java.lang.InterruptedException
      *         If this thread is interrupted while waiting for the table network
@@ -141,7 +140,7 @@ public interface ITableNetwork
      * </p>
      * 
      * @param configuration
-     *        The table network configuration; must not be {@code null}.
+     *        The table network configuration.
      * 
      * @throws java.lang.InterruptedException
      *         If this thread is interrupted while waiting for the table network
@@ -158,7 +157,7 @@ public interface ITableNetwork
      * Removes the specified table network listener from this table network.
      * 
      * @param listener
-     *        The table network listener; must not be {@code null}.
+     *        The table network listener.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is not a registered table network listener.

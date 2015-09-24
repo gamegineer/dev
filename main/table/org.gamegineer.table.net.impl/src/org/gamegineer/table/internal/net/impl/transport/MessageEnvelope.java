@@ -56,9 +56,9 @@ public final class MessageEnvelope
      * Initializes a new instance of the {@code MessageEnvelope} class.
      * 
      * @param bytes
-     *        The network representation of the message envelope; must not be
-     *        {@code null} and must not have a length less than the sum of
-     *        {@link Header#LENGTH} and the body length decoded from the header.
+     *        The network representation of the message envelope; must not have
+     *        a length less than the sum of {@link Header#LENGTH} and the body
+     *        length decoded from the header.
      */
     private MessageEnvelope(
         final byte[] bytes )
@@ -77,10 +77,10 @@ public final class MessageEnvelope
      * Creates a new message envelope from the specified byte array.
      * 
      * @param bytes
-     *        The byte array; must not be {@code null}. No copy is made of this
-     *        array and it must not be modified after calling this method.
+     *        The byte array. No copy is made of this array and it must not be
+     *        modified after calling this method.
      * 
-     * @return A new message envelope; never {@code null}.
+     * @return A new message envelope.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If the length of {@code bytes} is not exactly equal to the sum of
@@ -102,9 +102,9 @@ public final class MessageEnvelope
      * Creates a new message envelope from the specified message.
      * 
      * @param message
-     *        The message; must not be {@code null}.
+     *        The message.
      * 
-     * @return A new message envelope; never {@code null}.
+     * @return A new message envelope.
      * 
      * @throws java.io.IOException
      *         If the specified message cannot be serialized to the message
@@ -145,7 +145,7 @@ public final class MessageEnvelope
     /**
      * Gets the message envelope header.
      * 
-     * @return The message envelope header; never {@code null}.
+     * @return The message envelope header.
      */
     public Header getHeader()
     {
@@ -155,8 +155,7 @@ public final class MessageEnvelope
     /**
      * Gets the message contained in the message envelope body.
      * 
-     * @return The message contained in the message envelope body; never
-     *         {@code null}.
+     * @return The message contained in the message envelope body.
      * 
      * @throws java.io.IOException
      *         If the message cannot be deserialized from the message envelope
@@ -182,9 +181,8 @@ public final class MessageEnvelope
     /**
      * Gets a byte array representing the message envelope.
      * 
-     * @return A byte array representing the message envelope; never
-     *         {@code null}. The returned array is not a copy and must not be
-     *         modified by the caller.
+     * @return A byte array representing the message envelope. The returned
+     *         array is not a copy and must not be modified by the caller.
      */
     public byte[] toByteArray()
     {
@@ -225,8 +223,7 @@ public final class MessageEnvelope
          * 
          * @param bytes
          *        The network representation of the message envelope header;
-         *        must not be {@code null} and must not have a length less than
-         *        {@link #LENGTH}.
+         *        must not have a length less than {@link #LENGTH}.
          */
         Header(
             final byte[] bytes )
@@ -245,11 +242,10 @@ public final class MessageEnvelope
          * Creates a new message envelope header from the specified byte array.
          * 
          * @param bytes
-         *        The byte array; must not be {@code null}. No copy is made of
-         *        this array and it must not be modified after calling this
-         *        method.
+         *        The byte array. No copy is made of this array and it must not
+         *        be modified after calling this method.
          * 
-         * @return A new message envelope header; never {@code null}.
+         * @return A new message envelope header.
          * 
          * @throws java.lang.IllegalArgumentException
          *         If the length of {@code bytes} is not equal to
@@ -296,9 +292,9 @@ public final class MessageEnvelope
         /**
          * Gets a byte array representing the message envelope header.
          * 
-         * @return A byte array representing the message envelope header; never
-         *         {@code null}. The returned array is not a copy and must not
-         *         be modified by the caller.
+         * @return A byte array representing the message envelope header. The
+         *         returned array is not a copy and must not be modified by the
+         *         caller.
          */
         public byte[] toByteArray()
         {
@@ -350,7 +346,7 @@ public final class MessageEnvelope
          * @param bodyLength
          *        The length of the message envelope body in bytes.
          * 
-         * @return A reference to this builder; never {@code null}.
+         * @return A reference to this builder.
          */
         public HeaderBuilder setBodyLength(
             final int bodyLength )
@@ -366,7 +362,7 @@ public final class MessageEnvelope
          * @param correlationId
          *        The message correlation identifier.
          * 
-         * @return A reference to this builder; never {@code null}.
+         * @return A reference to this builder.
          */
         public HeaderBuilder setCorrelationId(
             final int correlationId )
@@ -381,7 +377,7 @@ public final class MessageEnvelope
          * @param id
          *        The message identifier.
          * 
-         * @return A reference to this builder; never {@code null}.
+         * @return A reference to this builder.
          */
         public HeaderBuilder setId(
             final int id )
@@ -395,7 +391,7 @@ public final class MessageEnvelope
          * Creates a new message envelope header based on the state of this
          * builder.
          * 
-         * @return A new message envelope header; never {@code null}.
+         * @return A new message envelope header.
          */
         public Header toHeader()
         {

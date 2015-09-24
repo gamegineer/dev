@@ -1,6 +1,6 @@
 /*
  * FakeMessage.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -65,8 +65,8 @@ public final class FakeMessage
     /**
      * Gets the message content.
      * 
-     * @return The message content; never {@code null}. The returned value is a
-     *         direct reference to the field and must not be modified.
+     * @return The message content. The returned value is a direct reference to
+     *         the field and must not be modified.
      */
     public byte[] getContent()
     {
@@ -77,8 +77,8 @@ public final class FakeMessage
      * Sets the message content.
      * 
      * @param content
-     *        The message content; must not be {@code null}.No copy is made of
-     *        this value and it must not be modified at a later time.
+     *        The message content. No copy is made of this value and it must not
+     *        be modified at a later time.
      */
     public void setContent(
         final byte[] content )

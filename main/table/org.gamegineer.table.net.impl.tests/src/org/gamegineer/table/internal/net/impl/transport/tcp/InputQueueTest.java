@@ -68,7 +68,7 @@ public final class InputQueueTest
     /**
      * Gets the input queue under test in the fixture.
      * 
-     * @return The input queue under test in the fixture; never {@code null}.
+     * @return The input queue under test in the fixture.
      */
     private InputQueue getInputQueue()
     {

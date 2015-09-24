@@ -99,9 +99,9 @@ public final class ClientNode
      * Initializes a new instance of the {@code ClientNode} class.
      * 
      * @param nodeLayer
-     *        The node layer; must not be {@code null}.
+     *        The node layer.
      * @param tableNetworkController
-     *        The table network controller; must not be {@code null}.
+     *        The table network controller.
      */
     private ClientNode(
         final INodeLayer nodeLayer,
@@ -292,7 +292,7 @@ public final class ClientNode
     /**
      * Gets the remote node associated with the server.
      * 
-     * @return The remote node associated with the server; never {@code null}.
+     * @return The remote node associated with the server.
      */
     private IRemoteServerNode getRemoteServerNode()
     {
@@ -445,7 +445,7 @@ public final class ClientNode
          * class.
          * 
          * @param tableManagerDecoratee
-         *        The decorated table manager; must not be {@code null}.
+         *        The decorated table manager.
          */
         ClientTableManagerDecorator(
             final ITableManager tableManagerDecoratee )

@@ -56,10 +56,10 @@ class FakeSocketChannel
 
     /**
      * Initializes a new instance of the {@code FakeSocketChannel} class using
-     * the specified selector provider; must not be {@code null}.
+     * the specified selector provider.
      * 
      * @param provider
-     *        The selector provider; must not be {@code null}.
+     *        The selector provider.
      */
     FakeSocketChannel(
         final @NonNull SelectorProvider provider )

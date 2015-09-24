@@ -59,8 +59,7 @@ abstract class AbstractEventHandler
      * Initializes a new instance of the {@code AbstractEventHandler} class.
      * 
      * @param transportLayer
-     *        The transport layer associated with the event handler; must not be
-     *        {@code null}.
+     *        The transport layer associated with the event handler.
      */
     AbstractEventHandler(
         final AbstractTransportLayer transportLayer )
@@ -128,7 +127,7 @@ abstract class AbstractEventHandler
     /**
      * Gets the event handler state.
      * 
-     * @return The event handler state; never {@code null}.
+     * @return The event handler state.
      */
     final State getState()
     {
@@ -144,8 +143,7 @@ abstract class AbstractEventHandler
      * This method may be called from any thread.
      * </p>
      * 
-     * @return The transport layer associated with the event handler; never
-     *         {@code null}.
+     * @return The transport layer associated with the event handler.
      */
     final AbstractTransportLayer getTransportLayer()
     {
@@ -209,7 +207,7 @@ abstract class AbstractEventHandler
      * Sets the event handler state.
      * 
      * @param state
-     *        The event handler state; must not be {@code null}.
+     *        The event handler state.
      */
     final void setState(
         final State state )

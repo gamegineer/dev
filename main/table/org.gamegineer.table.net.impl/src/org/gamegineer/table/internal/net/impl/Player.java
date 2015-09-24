@@ -59,7 +59,7 @@ public final class Player
      * name and no roles.
      * 
      * @param name
-     *        The player name; must not be {@code null}.
+     *        The player name.
      */
     public Player(
         final String name )
@@ -78,8 +78,7 @@ public final class Player
      * Adds the specified roles to this player.
      * 
      * @param roles
-     *        The collection of roles to add to this player; must not be
-     *        {@code null}.
+     *        The collection of roles to add to this player.
      */
     public void addRoles(
         final Set<PlayerRole> roles )
@@ -128,8 +127,7 @@ public final class Player
      * Removes the specified roles from this player.
      * 
      * @param roles
-     *        The collection of roles to remove from this player; must not be
-     *        {@code null}.
+     *        The collection of roles to remove from this player.
      */
     public void removeRoles(
         final Set<PlayerRole> roles )

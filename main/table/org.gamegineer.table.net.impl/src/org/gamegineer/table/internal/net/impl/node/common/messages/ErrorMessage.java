@@ -1,6 +1,6 @@
 /*
  * ErrorMessage.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -67,7 +67,7 @@ public final class ErrorMessage
     /**
      * Gets the error that occurred.
      * 
-     * @return The error that occurred; never {@code null}.
+     * @return The error that occurred.
      */
     public TableNetworkError getError()
     {
@@ -78,7 +78,7 @@ public final class ErrorMessage
      * Sets the error that occurred.
      * 
      * @param error
-     *        The error that occurred; must not be {@code null}.
+     *        The error that occurred.
      */
     public void setError(
         final TableNetworkError error )

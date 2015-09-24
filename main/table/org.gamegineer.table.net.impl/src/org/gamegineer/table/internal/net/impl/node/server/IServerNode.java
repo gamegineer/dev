@@ -56,8 +56,7 @@ public interface IServerNode
      * </p>
      * 
      * @param playerName
-     *        The name of the player to receive control; must not be
-     *        {@code null}.
+     *        The name of the player to receive control.
      */
     public void giveControl(
         String playerName );
@@ -67,7 +66,7 @@ public interface IServerNode
      * network.
      * 
      * @param playerName
-     *        The player name; must not be {@code null}.
+     *        The player name.
      * 
      * @return {@code true} if a player with the specified name is connected to
      *         the table network; otherwise {@code false}.

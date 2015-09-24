@@ -86,7 +86,7 @@ public final class Activator
     /**
      * Gets the bundle context.
      * 
-     * @return The bundle context; never {@code null}.
+     * @return The bundle context.
      */
     public BundleContext getBundleContext()
     {
@@ -99,7 +99,7 @@ public final class Activator
     /**
      * Gets the bundle context.
      * 
-     * @return The bundle context; never {@code null}.
+     * @return The bundle context.
      */
     @GuardedBy( "lock_" )
     private BundleContext getBundleContextInternal()
@@ -111,7 +111,7 @@ public final class Activator
     /**
      * Gets the default instance of the bundle activator.
      * 
-     * @return The default instance of the bundle activator; never {@code null}.
+     * @return The default instance of the bundle activator.
      */
     public static Activator getDefault()
     {
@@ -123,7 +123,7 @@ public final class Activator
     /**
      * Gets the executor service.
      * 
-     * @return The executor service; never {@code null}.
+     * @return The executor service.
      */
     public ExecutorService getExecutorService()
     {

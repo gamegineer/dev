@@ -76,8 +76,7 @@ public final class AbstractMessageHandlerTest
     /**
      * Gets the message handler under test in the fixture.
      * 
-     * @return The message handler under test in the fixture; never {@code null}
-     *         .
+     * @return The message handler under test in the fixture.
      */
     private MockMessageHandler getMessageHandler()
     {
@@ -87,7 +86,7 @@ public final class AbstractMessageHandlerTest
     /**
      * Gets the fixture mocks control.
      * 
-     * @return The fixture mocks control; never {@code null}.
+     * @return The fixture mocks control.
      */
     private IMocksControl getMocksControl()
     {
@@ -260,9 +259,9 @@ public final class AbstractMessageHandlerTest
          * 
          * @param remoteNodeController
          *        The control interface for the remote node that received the
-         *        message; must not be {@code null}.
+         *        message.
          * @param message
-         *        The message; must not be {@code null}.
+         *        The message.
          */
         @SuppressWarnings( "unused" )
         private void handleMessage(

@@ -52,10 +52,9 @@ public final class AbstractNodeUtils
      * specified local table network node.
      * 
      * @param node
-     *        The local table network node; must not be {@code null}.
+     *        The local table network node.
      * @param playerName
-     *        The name of the player associated with the remote node; must not
-     *        be {@code null}.
+     *        The name of the player associated with the remote node.
      * 
      * @return {@code true} if a remote node for the specified player is bound
      *         to the specified local table network node; otherwise

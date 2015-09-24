@@ -73,7 +73,7 @@ public final class ByteBufferUtilsTest
      * remaining.
      * 
      * @param buffer
-     *        The byte buffer; may be {@code null}.
+     *        The byte buffer.
      * @param position
      *        The expected byte buffer position.
      * @param remaining
@@ -92,7 +92,7 @@ public final class ByteBufferUtilsTest
     /**
      * Gets the fixture byte buffer collection.
      * 
-     * @return The fixture byte buffer collection; never {@code null}.
+     * @return The fixture byte buffer collection.
      */
     private List<ByteBuffer> getBuffers()
     {

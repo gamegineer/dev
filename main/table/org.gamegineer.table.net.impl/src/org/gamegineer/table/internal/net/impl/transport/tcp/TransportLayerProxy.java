@@ -58,7 +58,7 @@ final class TransportLayerProxy
      * Initializes a new instance of the {@code TransportLayerProxy} class.
      * 
      * @param transportLayer
-     *        The actual transport layer; must not be {@code null}.
+     *        The actual transport layer.
      */
     TransportLayerProxy(
         final AbstractTransportLayer transportLayer )

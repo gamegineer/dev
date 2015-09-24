@@ -49,7 +49,7 @@ public interface INode<@NonNull RemoteNodeType extends IRemoteNode>
      * Binds the specified remote node to the local table network node.
      * 
      * @param remoteNode
-     *        The remote node; must not be {@code null}.
+     *        The remote node.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If the table network is connected and {@code remoteNode} is
@@ -74,8 +74,8 @@ public interface INode<@NonNull RemoteNodeType extends IRemoteNode>
     /**
      * Gets the table network password.
      * 
-     * @return The table network password; never {@code null}. The returned
-     *         value is a copy and must be disposed when it is no longer needed.
+     * @return The table network password. The returned value is a copy and must
+     *         be disposed when it is no longer needed.
      * 
      * @throws java.lang.IllegalStateException
      *         If the table network is not connected.
@@ -86,7 +86,7 @@ public interface INode<@NonNull RemoteNodeType extends IRemoteNode>
      * Gets the name of the player associated with the local table network node.
      * 
      * @return The name of the player associated with the local table network
-     *         node; never {@code null}.
+     *         node.
      * 
      * @throws java.lang.IllegalStateException
      *         If the table network is not connected.
@@ -96,8 +96,7 @@ public interface INode<@NonNull RemoteNodeType extends IRemoteNode>
     /**
      * Gets the table manager for the local table network node.
      * 
-     * @return The table manager for the local table network node; never
-     *         {@code null}.
+     * @return The table manager for the local table network node.
      */
     public ITableManager getTableManager();
 
@@ -105,7 +104,7 @@ public interface INode<@NonNull RemoteNodeType extends IRemoteNode>
      * Unbinds the specified remote node from the local table network node.
      * 
      * @param remoteNode
-     *        The remote node; must not be {@code null}.
+     *        The remote node.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If the table network is connected and {@code remoteNode} is not

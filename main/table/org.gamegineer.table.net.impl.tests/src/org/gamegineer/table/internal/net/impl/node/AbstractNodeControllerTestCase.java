@@ -92,8 +92,7 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     /**
      * Creates the table network node controller to be tested.
      * 
-     * @return The table network node controller to be tested; never
-     *         {@code null}.
+     * @return The table network node controller to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -107,10 +106,10 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
      * 
      * @param nodeController
      *        The table network node controller to associate with the node layer
-     *        runner; must not be {@code null}.
+     *        runner.
      * 
      * @return The new node layer runner for the specified table network node
-     *         controller; never {@code null}.
+     *         controller.
      */
     protected abstract NodeLayerRunner createNodeLayerRunner(
         T nodeController );
@@ -118,7 +117,7 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     /**
      * Creates a new table network configuration.
      * 
-     * @return A new table network configuration; never {@code null}.
+     * @return A new table network configuration.
      */
     protected final TableNetworkConfiguration createTableNetworkConfiguration()
     {
@@ -128,8 +127,7 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     /**
      * Gets the table network node controller under test in the fixture.
      * 
-     * @return The table network node controller under test in the fixture;
-     *         never {@code null}.
+     * @return The table network node controller under test in the fixture.
      */
     protected final T getNodeController()
     {
@@ -139,7 +137,7 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     /**
      * Gets the fixture node layer runner.
      * 
-     * @return The fixture node layer runner; never {@code null}.
+     * @return The fixture node layer runner.
      */
     private NodeLayerRunner getNodeLayerRunner()
     {
@@ -149,7 +147,7 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     /**
      * Gets the fixture table.
      * 
-     * @return The fixture table; never {@code null}.
+     * @return The fixture table.
      */
     private ITable getTable()
     {
@@ -159,7 +157,7 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     /**
      * Gets the fixture table environment context.
      * 
-     * @return The fixture table environment context; never {@code null}.
+     * @return The fixture table environment context.
      */
     private MultiThreadedTableEnvironmentContext getTableEnvironmentContext()
     {

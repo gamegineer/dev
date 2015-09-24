@@ -42,7 +42,7 @@ public interface IService
      * Invoked when a message has been received from the peer service.
      * 
      * @param messageEnvelope
-     *        The message envelope; must not be {@code null}.
+     *        The message envelope.
      */
     public void messageReceived(
         MessageEnvelope messageEnvelope );
@@ -56,7 +56,7 @@ public interface IService
      * Invoked when the service has started.
      * 
      * @param context
-     *        The service context; must not be {@code null}.
+     *        The service context.
      */
     public void started(
         IServiceContext context );

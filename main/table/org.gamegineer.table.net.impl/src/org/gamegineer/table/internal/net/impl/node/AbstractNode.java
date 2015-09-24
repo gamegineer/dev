@@ -121,9 +121,9 @@ public abstract class AbstractNode<@NonNull RemoteNodeType extends IRemoteNode>
      * Initializes a new instance of the {@code AbstractNode} class.
      * 
      * @param nodeLayer
-     *        The node layer; must not be {@code null}.
+     *        The node layer.
      * @param tableNetworkController
-     *        The table network controller; must not be {@code null}.
+     *        The table network controller.
      */
     protected AbstractNode(
         final INodeLayer nodeLayer,
@@ -253,7 +253,7 @@ public abstract class AbstractNode<@NonNull RemoteNodeType extends IRemoteNode>
      * </p>
      * 
      * @param configuration
-     *        The table network configuration; must not be {@code null}.
+     *        The table network configuration.
      * 
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
@@ -281,11 +281,10 @@ public abstract class AbstractNode<@NonNull RemoteNodeType extends IRemoteNode>
      * </p>
      * 
      * @param tableManager
-     *        The table manager for the local network table; must not be
-     *        {@code null}.
+     *        The table manager for the local network table.
      * 
      * @return A decorator for the table manager used by the local network
-     *         table; never {@code null}.
+     *         table.
      */
     protected ITableManager createTableManagerDecoratorForLocalNetworkTable(
         final ITableManager tableManager )
@@ -303,7 +302,7 @@ public abstract class AbstractNode<@NonNull RemoteNodeType extends IRemoteNode>
      * This method is <b>not</b> invoked on the node layer thread.
      * </p>
      * 
-     * @return The transport layer for this node; never {@code null}.
+     * @return The transport layer for this node.
      * 
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If the transport layer cannot be created.
@@ -498,7 +497,7 @@ public abstract class AbstractNode<@NonNull RemoteNodeType extends IRemoteNode>
      * This method may be called from any thread.
      * </p>
      * 
-     * @return The node layer; never {@code null}.
+     * @return The node layer.
      */
     protected final INodeLayer getNodeLayer()
     {
@@ -535,8 +534,7 @@ public abstract class AbstractNode<@NonNull RemoteNodeType extends IRemoteNode>
      * Gets the bound remote node associated with the specified player.
      * 
      * @param playerName
-     *        The name of the player associated with the bound remote node; must
-     *        not be {@code null}.
+     *        The name of the player associated with the bound remote node.
      * 
      * @return The bound remote node associated with the specified player or
      *         {@code null} if no remote node is bound for the specified player.
@@ -552,7 +550,7 @@ public abstract class AbstractNode<@NonNull RemoteNodeType extends IRemoteNode>
     /**
      * Gets the collection of bound remote nodes.
      * 
-     * @return The collection of bound remote nodes; never {@code null}.
+     * @return The collection of bound remote nodes.
      */
     protected final Collection<RemoteNodeType> getRemoteNodes()
     {
@@ -568,7 +566,7 @@ public abstract class AbstractNode<@NonNull RemoteNodeType extends IRemoteNode>
      * This method may be called from any thread.
      * </p>
      * 
-     * @return The table network controller; never {@code null}.
+     * @return The table network controller.
      */
     protected final ITableNetworkController getTableNetworkController()
     {
@@ -578,8 +576,7 @@ public abstract class AbstractNode<@NonNull RemoteNodeType extends IRemoteNode>
     /**
      * Gets the bound table associated with the local table network node.
      * 
-     * @return The bound table associated with the local table network node;
-     *         never {@code null}.
+     * @return The bound table associated with the local table network node.
      */
     protected final INetworkTable getTable()
     {
@@ -594,7 +591,7 @@ public abstract class AbstractNode<@NonNull RemoteNodeType extends IRemoteNode>
     /**
      * Gets the collection of bound tables.
      * 
-     * @return The collection of bound tables; never {@code null}.
+     * @return The collection of bound tables.
      */
     private Collection<INetworkTable> getTables()
     {
@@ -642,7 +639,7 @@ public abstract class AbstractNode<@NonNull RemoteNodeType extends IRemoteNode>
      * </p>
      * 
      * @param remoteNode
-     *        The remote node that was bound; must not be {@code null}.
+     *        The remote node that was bound.
      */
     protected void remoteNodeBound(
         @SuppressWarnings( "unused" )
@@ -666,7 +663,7 @@ public abstract class AbstractNode<@NonNull RemoteNodeType extends IRemoteNode>
      * </p>
      * 
      * @param remoteNode
-     *        The remote node that was unbound; must not be {@code null}.
+     *        The remote node that was unbound.
      */
     protected void remoteNodeUnbound(
         @SuppressWarnings( "unused" )
@@ -734,9 +731,9 @@ public abstract class AbstractNode<@NonNull RemoteNodeType extends IRemoteNode>
          * Creates a new table network node.
          * 
          * @param tableNetworkController
-         *        The table network controller; must not be {@code null}.
+         *        The table network controller.
          * 
-         * @return A new table network node; never {@code null}.
+         * @return A new table network node.
          * 
          * @throws org.gamegineer.table.net.TableNetworkException
          *         If the table network node cannot be created.
@@ -776,11 +773,11 @@ public abstract class AbstractNode<@NonNull RemoteNodeType extends IRemoteNode>
          * </p>
          * 
          * @param nodeLayer
-         *        The node layer; must not be {@code null}.
+         *        The node layer.
          * @param tableNetworkController
-         *        The table network controller; must not be {@code null}.
+         *        The table network controller.
          * 
-         * @return A new table network node; never {@code null}.
+         * @return A new table network node.
          */
         protected abstract T createNode(
             INodeLayer nodeLayer,
@@ -823,14 +820,14 @@ public abstract class AbstractNode<@NonNull RemoteNodeType extends IRemoteNode>
         /**
          * Creates the actual service.
          * 
-         * @return The actual service; never {@code null}.
+         * @return The actual service.
          */
         protected abstract IService createActualService();
 
         /**
          * Gets the actual service.
          * 
-         * @return The actual service; never {@code null}.
+         * @return The actual service.
          */
         private IService getActualService()
         {
@@ -1027,7 +1024,7 @@ public abstract class AbstractNode<@NonNull RemoteNodeType extends IRemoteNode>
          * </p>
          * 
          * @param configuration
-         *        The table network configuration; must not be {@code null}.
+         *        The table network configuration.
          */
         Connecter(
             final TableNetworkConfiguration configuration )

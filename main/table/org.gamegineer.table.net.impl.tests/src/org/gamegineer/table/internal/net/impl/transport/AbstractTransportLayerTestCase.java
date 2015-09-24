@@ -64,7 +64,7 @@ public abstract class AbstractTransportLayerTestCase
     /**
      * Creates the transport layer to be tested.
      * 
-     * @return The transport layer to be tested; never {@code null}.
+     * @return The transport layer to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -75,8 +75,7 @@ public abstract class AbstractTransportLayerTestCase
     /**
      * Gets the transport layer under test in the fixture.
      * 
-     * @return The transport layer under test in the fixture; never {@code null}
-     *         .
+     * @return The transport layer under test in the fixture.
      */
     protected final ITransportLayer getTransportLayer()
     {

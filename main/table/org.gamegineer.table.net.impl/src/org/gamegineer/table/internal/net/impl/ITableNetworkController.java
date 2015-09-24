@@ -65,7 +65,7 @@ public interface ITableNetworkController
     /**
      * Gets the table network transport layer factory.
      * 
-     * @return The table network transport layer factory; never {@code null}.
+     * @return The table network transport layer factory.
      */
     public ITransportLayerFactory getTransportLayerFactory();
 

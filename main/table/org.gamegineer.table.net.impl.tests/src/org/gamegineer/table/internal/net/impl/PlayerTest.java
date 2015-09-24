@@ -63,7 +63,7 @@ public final class PlayerTest
     /**
      * Gets the player under test in the fixture.
      * 
-     * @return The player under test in the fixture; never {@code null}.
+     * @return The player under test in the fixture.
      */
     private Player getPlayer()
     {

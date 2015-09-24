@@ -79,7 +79,7 @@ final class ByteBufferPool
      * Returns the specified byte buffer to the pool.
      * 
      * @param byteBuffer
-     *        The byte buffer to return; must not be {@code null}.
+     *        The byte buffer to return.
      */
     void returnByteBuffer(
         final ByteBuffer byteBuffer )
@@ -98,7 +98,7 @@ final class ByteBufferPool
      * the pool using the {@link #returnByteBuffer(ByteBuffer)} method.
      * </p>
      * 
-     * @return A byte buffer; never {@code null}.
+     * @return A byte buffer.
      */
     ByteBuffer takeByteBuffer()
     {

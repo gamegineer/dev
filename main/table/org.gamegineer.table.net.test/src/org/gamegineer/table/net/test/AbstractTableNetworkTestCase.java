@@ -101,7 +101,7 @@ public abstract class AbstractTableNetworkTestCase
     /**
      * Creates the table network to be tested.
      * 
-     * @return The table network to be tested; never {@code null}.
+     * @return The table network to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -114,7 +114,7 @@ public abstract class AbstractTableNetworkTestCase
      * network.
      * 
      * @param tableNetwork
-     *        The table network; must not be {@code null}.
+     *        The table network.
      */
     protected abstract void fireTableNetworkPlayersUpdatedEvent(
         ITableNetwork tableNetwork );
@@ -122,7 +122,7 @@ public abstract class AbstractTableNetworkTestCase
     /**
      * Gets the fixture mocks control.
      * 
-     * @return The fixture mocks control; never {@code null}.
+     * @return The fixture mocks control.
      */
     private IMocksControl getMocksControl()
     {
@@ -132,7 +132,7 @@ public abstract class AbstractTableNetworkTestCase
     /**
      * Gets the table network under test in the fixture.
      * 
-     * @return The table network under test in the fixture; never {@code null}.
+     * @return The table network under test in the fixture.
      */
     private ITableNetwork getTableNetwork()
     {
@@ -142,7 +142,7 @@ public abstract class AbstractTableNetworkTestCase
     /**
      * Gets the fixture table network configuration.
      * 
-     * @return The fixture table network configuration; never {@code null}.
+     * @return The fixture table network configuration.
      */
     private TableNetworkConfiguration getTableNetworkConfiguration()
     {

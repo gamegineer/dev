@@ -64,8 +64,7 @@ public final class ByteBufferPoolTest
     /**
      * Gets the byte buffer pool under test in the fixture.
      * 
-     * @return The byte buffer pool under test in the fixture; never
-     *         {@code null}.
+     * @return The byte buffer pool under test in the fixture.
      */
     private ByteBufferPool getByteBufferPool()
     {

@@ -54,7 +54,7 @@ public final class NodeLayerRunner
      * Initializes a new instance of the {@code NodeLayerRunner} class.
      * 
      * @param node
-     *        The node that manages the node layer; must not be {@code null}.
+     *        The node that manages the node layer.
      */
     public NodeLayerRunner(
         final AbstractNode<@NonNull ?> node )
@@ -72,7 +72,7 @@ public final class NodeLayerRunner
      * network using the specified configuration.
      * 
      * @param configuration
-     *        The table network configuration; must not be {@code null}.
+     *        The table network configuration.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -127,10 +127,9 @@ public final class NodeLayerRunner
      *        The type of the task result.
      * 
      * @param task
-     *        The task to execute on the node layer thread; must not be
-     *        {@code null}.
+     *        The task to execute on the node layer thread.
      * 
-     * @return The task result; may be {@code null}.
+     * @return The task result.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -150,13 +149,11 @@ public final class NodeLayerRunner
      *        The type of the task result.
      * 
      * @param task
-     *        The task to execute on the node layer thread; must not be
-     *        {@code null}.
+     *        The task to execute on the node layer thread.
      * @param exceptionType
-     *        The checked exception expected type expected to be thrown; must
-     *        not be {@code null}.
+     *        The checked exception expected type expected to be thrown.
      * 
-     * @return The task result; may be {@code null}.
+     * @return The task result.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -177,13 +174,11 @@ public final class NodeLayerRunner
      *        The type of the task result.
      * 
      * @param task
-     *        The task to execute on the node layer thread; must not be
-     *        {@code null}.
+     *        The task to execute on the node layer thread.
      * @param exceptionTypes
-     *        The collection of checked exception types expected to be thrown;
-     *        must not be {@code null}.
+     *        The collection of checked exception types expected to be thrown.
      * 
-     * @return The task result; may be {@code null}.
+     * @return The task result.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -217,8 +212,7 @@ public final class NodeLayerRunner
      * expecting no result and no checked exceptions will be thrown.
      * 
      * @param task
-     *        The task to execute on the node layer thread; must not be
-     *        {@code null}.
+     *        The task to execute on the node layer thread.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

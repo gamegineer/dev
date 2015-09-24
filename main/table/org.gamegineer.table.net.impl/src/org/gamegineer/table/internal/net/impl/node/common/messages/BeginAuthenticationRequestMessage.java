@@ -1,6 +1,6 @@
 /*
  * BeginAuthenticationRequestMessage.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -77,8 +77,8 @@ public final class BeginAuthenticationRequestMessage
     /**
      * Gets the challenge.
      * 
-     * @return The challenge; never {@code null}. The returned value is a direct
-     *         reference to the field and must not be modified.
+     * @return The challenge. The returned value is a direct reference to the
+     *         field and must not be modified.
      */
     public byte[] getChallenge()
     {
@@ -88,9 +88,9 @@ public final class BeginAuthenticationRequestMessage
     /**
      * Gets the salt used to generate the shared secret key.
      * 
-     * @return The salt used to generate the shared secret key; never
-     *         {@code null}. The returned value is a direct reference to the
-     *         field and must not be modified.
+     * @return The salt used to generate the shared secret key. The returned
+     *         value is a direct reference to the field and must not be
+     *         modified.
      */
     public byte[] getSalt()
     {
@@ -101,8 +101,8 @@ public final class BeginAuthenticationRequestMessage
      * Sets the challenge.
      * 
      * @param challenge
-     *        The challenge; must not be {@code null}. No copy is made of this
-     *        value and it must not be modified at a later time.
+     *        The challenge. No copy is made of this value and it must not be
+     *        modified at a later time.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code challenge} is empty.
@@ -119,9 +119,8 @@ public final class BeginAuthenticationRequestMessage
      * Sets the salt used to generate the shared secret key.
      * 
      * @param salt
-     *        The salt used to generate the shared secret key; must not be
-     *        {@code null}. No copy is made of this value and it must not be
-     *        modified at a later time.
+     *        The salt used to generate the shared secret key. No copy is made
+     *        of this value and it must not be modified at a later time.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code salt} is empty.

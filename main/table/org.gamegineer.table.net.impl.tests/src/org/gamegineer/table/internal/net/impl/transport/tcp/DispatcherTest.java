@@ -105,7 +105,7 @@ public final class DispatcherTest
     /**
      * Gets the dispatcher under test in the fixture.
      * 
-     * @return The dispatcher under test in the fixture; never {@code null}.
+     * @return The dispatcher under test in the fixture.
      */
     private Dispatcher getDispatcher()
     {
@@ -117,7 +117,7 @@ public final class DispatcherTest
     /**
      * Gets the fixture transport layer.
      * 
-     * @return The fixture transport layer; never {@code null}.
+     * @return The fixture transport layer.
      */
     private AbstractTransportLayer getTransportLayer()
     {
@@ -127,7 +127,7 @@ public final class DispatcherTest
     /**
      * Gets the fixture transport layer runner.
      * 
-     * @return The fixture transport layer runner; never {@code null}.
+     * @return The fixture transport layer runner.
      */
     private TransportLayerRunner getTransportLayerRunner()
     {

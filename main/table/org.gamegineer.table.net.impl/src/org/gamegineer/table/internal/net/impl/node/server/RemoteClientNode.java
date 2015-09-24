@@ -78,9 +78,9 @@ final class RemoteClientNode
      * Initializes a new instance of the {@code RemoteClientNode} class.
      * 
      * @param nodeLayer
-     *        The node layer; must not be {@code null}.
+     *        The node layer.
      * @param localNode
-     *        The local table network node; must not be {@code null}.
+     *        The local table network node.
      */
     RemoteClientNode(
         final INodeLayer nodeLayer,

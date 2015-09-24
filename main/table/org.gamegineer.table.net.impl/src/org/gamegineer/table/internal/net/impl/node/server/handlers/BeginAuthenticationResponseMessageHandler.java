@@ -1,6 +1,6 @@
 /*
  * BeginAuthenticationResponseMessageHandler.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -74,12 +74,11 @@ public final class BeginAuthenticationResponseMessageHandler
      * 
      * @param remoteNodeController
      *        The control interface for the remote node that received the
-     *        message; must not be {@code null}.
+     *        message.
      * @param playerName
-     *        The remote player name; must not be {@code null}.
+     *        The remote player name.
      * @param response
-     *        The challenge response submitted by the remote player; must not be
-     *        {@code null}.
+     *        The challenge response submitted by the remote player.
      * 
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If the remote player cannot be authenticated.
@@ -125,9 +124,9 @@ public final class BeginAuthenticationResponseMessageHandler
      * 
      * @param remoteNodeController
      *        The control interface for the remote node that received the
-     *        message; must not be {@code null}.
+     *        message.
      * @param message
-     *        The message; must not be {@code null}.
+     *        The message.
      */
     @SuppressWarnings( {
         "static-method", "unused"

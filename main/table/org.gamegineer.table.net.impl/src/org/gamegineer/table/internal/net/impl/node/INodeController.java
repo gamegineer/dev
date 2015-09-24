@@ -51,10 +51,9 @@ public interface INodeController
      * table network using the specified configuration.
      * 
      * @param configuration
-     *        The table network configuration; must not be {@code null}.
+     *        The table network configuration.
      * 
-     * @return An asynchronous completion token for the operation; never
-     *         {@code null}.
+     * @return An asynchronous completion token for the operation.
      */
     public Future<@Nullable Void> beginConnect(
         TableNetworkConfiguration configuration );
@@ -67,8 +66,7 @@ public interface INodeController
      * This method does nothing if the table network node is not connected.
      * </p>
      * 
-     * @return An asynchronous completion token for the operation; never
-     *         {@code null}.
+     * @return An asynchronous completion token for the operation.
      */
     public Future<@Nullable Void> beginDisconnect();
 
@@ -93,8 +91,7 @@ public interface INodeController
      * </p>
      * 
      * @param future
-     *        The asynchronous completion token associated with the operation;
-     *        must not be {@code null}.
+     *        The asynchronous completion token associated with the operation.
      * 
      * @throws java.lang.InterruptedException
      *         If this thread is interrupted while waiting for the table network
@@ -116,8 +113,7 @@ public interface INodeController
      * </p>
      * 
      * @param future
-     *        The asynchronous completion token associated with the operation;
-     *        must not be {@code null}.
+     *        The asynchronous completion token associated with the operation.
      * 
      * @throws java.lang.InterruptedException
      *         If this thread is interrupted while waiting for the table network
@@ -138,8 +134,7 @@ public interface INodeController
     /**
      * Gets the collection of players connected to the table network.
      * 
-     * @return The collection of players connected to the table network; never
-     *         {@code null}.
+     * @return The collection of players connected to the table network.
      */
     public Collection<IPlayer> getPlayers();
 
@@ -152,8 +147,7 @@ public interface INodeController
      * </p>
      * 
      * @param playerName
-     *        The name of the player to receive control; must not be
-     *        {@code null}.
+     *        The name of the player to receive control.
      */
     public void giveControl(
         String playerName );

@@ -1,6 +1,6 @@
 /*
  * EchoResponseMessage.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -66,7 +66,7 @@ public final class EchoResponseMessage
     /**
      * Gets the message content.
      * 
-     * @return The message content; never {@code null}.
+     * @return The message content.
      */
     public String getContent()
     {
@@ -77,7 +77,7 @@ public final class EchoResponseMessage
      * Sets the message content.
      * 
      * @param content
-     *        The message content; must not be {@code null}.
+     *        The message content.
      */
     public void setContent(
         final String content )

@@ -131,10 +131,10 @@ final class NonNlsMessages
      * message.
      * 
      * @param message
-     *        The message; must not be {@code null}.
+     *        The message.
      * 
      * @return The formatted message indicating an error occurred while sending
-     *         a message; never {@code null}.
+     *         a message.
      */
     @SuppressWarnings( "boxing" )
     static String ServiceHandler_sendMessage_ioError(

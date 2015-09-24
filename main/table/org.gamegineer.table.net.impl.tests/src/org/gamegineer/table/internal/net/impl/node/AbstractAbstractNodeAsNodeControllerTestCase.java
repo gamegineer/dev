@@ -72,7 +72,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
     /**
      * Creates a transport layer that will fail when opened.
      * 
-     * @return A transport layer that will fail when opened; never {@code null}.
+     * @return A transport layer that will fail when opened.
      */
     private static ITransportLayer createFailingTransportLayer()
     {
@@ -122,8 +122,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
     /**
      * Creates a transport layer that will succeed when opened.
      * 
-     * @return A transport layer that will succeed when opened; never
-     *         {@code null}.
+     * @return A transport layer that will succeed when opened.
      */
     private static ITransportLayer createSuccessfulTransportLayer()
     {
@@ -367,9 +366,9 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
          * Initializes a new instance of the {@code MockNode} class.
          * 
          * @param nodeLayer
-         *        The node layer; must not be {@code null}.
+         *        The node layer.
          * @param tableNetworkController
-         *        The table network controller; must not be {@code null}.
+         *        The table network controller.
          */
         private MockNode(
             final INodeLayer nodeLayer,
@@ -605,7 +604,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
          * Sets the transport layer used by the node.
          * 
          * @param transportLayer
-         *        The transport layer; must not be {@code null}.
+         *        The transport layer.
          */
         void setTransportLayer(
             final ITransportLayer transportLayer )

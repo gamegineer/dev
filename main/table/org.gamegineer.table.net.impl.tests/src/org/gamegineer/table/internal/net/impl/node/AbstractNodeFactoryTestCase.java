@@ -60,7 +60,7 @@ public abstract class AbstractNodeFactoryTestCase
     /**
      * Creates the table network node factory to be tested.
      * 
-     * @return The table network node factory to be tested; never {@code null}.
+     * @return The table network node factory to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -71,8 +71,7 @@ public abstract class AbstractNodeFactoryTestCase
     /**
      * Gets the table network node factory under test in the fixture.
      * 
-     * @return The table network node factory under test in the fixture; never
-     *         {@code null}.
+     * @return The table network node factory under test in the fixture.
      */
     protected final INodeFactory getNodeFactory()
     {

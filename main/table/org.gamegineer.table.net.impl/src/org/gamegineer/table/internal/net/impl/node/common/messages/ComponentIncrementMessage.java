@@ -1,6 +1,6 @@
 /*
  * ComponentIncrementMessage.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -77,8 +77,7 @@ public final class ComponentIncrementMessage
     /**
      * Gets the incremental change to the state of the component.
      * 
-     * @return The incremental change to the state of the component; never
-     *         {@code null}.
+     * @return The incremental change to the state of the component.
      */
     public ComponentIncrement getIncrement()
     {
@@ -88,7 +87,7 @@ public final class ComponentIncrementMessage
     /**
      * Gets the component path.
      * 
-     * @return The component path; never {@code null}.
+     * @return The component path.
      */
     public ComponentPath getPath()
     {
@@ -99,8 +98,7 @@ public final class ComponentIncrementMessage
      * Sets the incremental change to the state of the component.
      * 
      * @param increment
-     *        The incremental change to the state of the component; must not be
-     *        {@code null}.
+     *        The incremental change to the state of the component.
      */
     public void setIncrement(
         final ComponentIncrement increment )
@@ -112,7 +110,7 @@ public final class ComponentIncrementMessage
      * Sets the component path.
      * 
      * @param path
-     *        The component path; must not be {@code null}.
+     *        The component path.
      */
     public void setPath(
         final ComponentPath path )

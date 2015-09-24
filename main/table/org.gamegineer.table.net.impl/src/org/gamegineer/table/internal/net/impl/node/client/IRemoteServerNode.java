@@ -1,6 +1,6 @@
 /*
  * IRemoteServerNode.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -45,8 +45,7 @@ public interface IRemoteServerNode
      * Gives control of the network table to the player with the specified name.
      * 
      * @param playerName
-     *        The name of the player to receive control; must not be
-     *        {@code null}.
+     *        The name of the player to receive control.
      */
     public void giveControl(
         String playerName );

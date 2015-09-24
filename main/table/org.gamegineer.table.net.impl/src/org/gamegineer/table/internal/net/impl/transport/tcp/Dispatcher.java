@@ -116,8 +116,7 @@ final class Dispatcher
      * Initializes a new instance of the {@code Dispatcher} class.
      * 
      * @param transportLayer
-     *        The transport layer associated with the dispatcher; must not be
-     *        {@code null}.
+     *        The transport layer associated with the dispatcher.
      */
     Dispatcher(
         final AbstractTransportLayer transportLayer )
@@ -154,8 +153,7 @@ final class Dispatcher
     /**
      * Begins an asynchronous operation to close the dispatcher.
      * 
-     * @return An asynchronous completion token for the operation; never
-     *         {@code null}.
+     * @return An asynchronous completion token for the operation.
      */
     Future<@Nullable Void> beginClose()
     {
@@ -200,7 +198,7 @@ final class Dispatcher
      * until this thread is interrupted.
      * 
      * @param selector
-     *        The event selector; must not be {@code null}.
+     *        The event selector.
      */
     private void dispatchEvents(
         final Selector selector )
@@ -273,8 +271,7 @@ final class Dispatcher
      * </p>
      * 
      * @param future
-     *        The asynchronous completion token associated with the operation;
-     *        must not be {@code null}.
+     *        The asynchronous completion token associated with the operation.
      * 
      * @throws java.lang.InterruptedException
      *         If this thread is interrupted while waiting for the operation to
@@ -300,7 +297,7 @@ final class Dispatcher
      * Adds the specified event handler to the status change queue.
      * 
      * @param eventHandler
-     *        The event handler; must not be {@code null}.
+     *        The event handler.
      */
     void enqueueStatusChange(
         final AbstractEventHandler eventHandler )
@@ -316,8 +313,7 @@ final class Dispatcher
     /**
      * Gets the byte buffer pool associated with the dispatcher.
      * 
-     * @return The byte buffer pool associated with the dispatcher; never
-     *         {@code null}.
+     * @return The byte buffer pool associated with the dispatcher.
      */
     ByteBufferPool getByteBufferPool()
     {
@@ -396,7 +392,7 @@ final class Dispatcher
      * Processes the events associated with the specified selection key.
      * 
      * @param selectionKey
-     *        The selection key; must not be {@code null}.
+     *        The selection key.
      */
     private void processEvents(
         final SelectionKey selectionKey )
@@ -435,8 +431,7 @@ final class Dispatcher
      * </p>
      * 
      * @param eventHandler
-     *        The event handler; must not be {@code null}; must not have been
-     *        previously registered.
+     *        The event handler; must not have been previously registered.
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs.
@@ -469,7 +464,7 @@ final class Dispatcher
      * Resumes event selection of the specified event handler.
      * 
      * @param eventHandler
-     *        The event handler; must not be {@code null}.
+     *        The event handler.
      */
     private static void resumeSelection(
         final AbstractEventHandler eventHandler )
@@ -521,8 +516,7 @@ final class Dispatcher
      * </p>
      * 
      * @param eventHandler
-     *        The event handler; must not be {@code null}; must have been
-     *        previously registered.
+     *        The event handler; must have been previously registered.
      */
     void unregisterEventHandler(
         final AbstractEventHandler eventHandler )

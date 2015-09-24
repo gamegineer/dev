@@ -60,7 +60,7 @@ public abstract class AbstractTableNetworkControllerTestCase
     /**
      * Creates the table network controller to be tested.
      * 
-     * @return The table network controller to be tested; never {@code null}.
+     * @return The table network controller to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -71,8 +71,7 @@ public abstract class AbstractTableNetworkControllerTestCase
     /**
      * Gets the table network controller under test in the fixture.
      * 
-     * @return The table network controller under test in the fixture; never
-     *         {@code null}.
+     * @return The table network controller under test in the fixture.
      */
     protected final ITableNetworkController getTableNetworkController()
     {

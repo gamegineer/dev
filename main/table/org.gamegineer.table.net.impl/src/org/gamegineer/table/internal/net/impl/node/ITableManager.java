@@ -1,6 +1,6 @@
 /*
  * ITableManager.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,12 +40,11 @@ public interface ITableManager
      * the table network
      * 
      * @param sourceTable
-     *        The table that originated the request; must not be {@code null}.
+     *        The table that originated the request.
      * @param componentPath
-     *        The component path; must not be {@code null}.
+     *        The component path.
      * @param componentIncrement
-     *        The incremental change to the state of the component; must not be
-     *        {@code null}.
+     *        The incremental change to the state of the component.
      */
     public void incrementComponentState(
         INetworkTable sourceTable,
@@ -56,9 +55,9 @@ public interface ITableManager
      * Sets the state of the table throughout the table network.
      * 
      * @param sourceTable
-     *        The table that originated the request; must not be {@code null}.
+     *        The table that originated the request.
      * @param tableMemento
-     *        The memento containing the table state; must not be {@code null}.
+     *        The memento containing the table state.
      */
     public void setTableState(
         INetworkTable sourceTable,

@@ -71,11 +71,9 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
      * Creates a mock local table network node for use in the fixture.
      * 
      * @param mocksControl
-     *        The mocks control for use in the fixture; must not be {@code null}
-     *        .
+     *        The mocks control for use in the fixture.
      * 
-     * @return A mock local table network node for use in the fixture; never
-     *         {@code null}.
+     * @return A mock local table network node for use in the fixture.
      */
     protected abstract LocalNodeType createMockLocalNode(
         IMocksControl mocksControl );
@@ -83,7 +81,7 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     /**
      * Creates a mock node layer for use in the fixture.
      * 
-     * @return A mock node layer for use in the fixture; never {@code null}.
+     * @return A mock node layer for use in the fixture.
      */
     @SuppressWarnings( "boxing" )
     private static INodeLayer createMockNodeLayer()
@@ -99,13 +97,13 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
      * Creates the remote node controller to be tested.
      * 
      * @param nodeLayer
-     *        The node layer; must not be {@code null}.
+     *        The node layer.
      * @param node
-     *        The local table network node; must not be {@code null}.
+     *        The local table network node.
      * 
-     * @return The remote node controller to be tested; never {@code null}. The
-     *         remote node associated with the returned controller should be in
-     *         the closed state.
+     * @return The remote node controller to be tested. The remote node
+     *         associated with the returned controller should be in the closed
+     *         state.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -118,8 +116,7 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     /**
      * Gets the remote node controller under test in the fixture.
      * 
-     * @return The remote node controller under test in the fixture; never
-     *         {@code null}.
+     * @return The remote node controller under test in the fixture.
      */
     protected final T getRemoteNodeController()
     {
@@ -130,7 +127,7 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
      * Opens the remote node associated with the specified controller.
      * 
      * @param remoteNodeController
-     *        The remote node controller; must not be {@code null}.
+     *        The remote node controller.
      */
     protected abstract void openRemoteNode(
         T remoteNodeController );

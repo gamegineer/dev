@@ -1,6 +1,6 @@
 /*
  * TableNetworkConfiguration.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -60,17 +60,16 @@ public final class TableNetworkConfiguration
      * class.
      * 
      * @param hostName
-     *        The name of the table network host; must not be {@code null}.
+     *        The name of the table network host.
      * @param port
      *        The port of the table network host.
      * @param password
      *        The password used to authenticate connections to the table
-     *        network; must not be {@code null}.
+     *        network.
      * @param localPlayerName
-     *        The name of the local player; must not be {@code null}.
+     *        The name of the local player.
      * @param localTable
-     *        The local table to attach to the table network; must not be
-     *        {@code null}.
+     *        The local table to attach to the table network.
      */
     public TableNetworkConfiguration(
         final String hostName,
@@ -100,7 +99,7 @@ public final class TableNetworkConfiguration
      * value is the remote name of the table network host.
      * </p>
      * 
-     * @return The name of the table network host; never {@code null}.
+     * @return The name of the table network host.
      */
     public String getHostName()
     {
@@ -116,7 +115,7 @@ public final class TableNetworkConfiguration
      * is the name of the player joining the table network.
      * </p>
      * 
-     * @return The name of the local player; never {@code null}.
+     * @return The name of the local player.
      */
     public String getLocalPlayerName()
     {
@@ -132,8 +131,7 @@ public final class TableNetworkConfiguration
      * the table to be joined to the table network.
      * </p>
      * 
-     * @return The local table to attach to the table network; never
-     *         {@code null}.
+     * @return The local table to attach to the table network.
      */
     public ITable getLocalTable()
     {
@@ -151,7 +149,7 @@ public final class TableNetworkConfiguration
      * </p>
      * 
      * @return The password used to authenticate connections to the table
-     *         network; never {@code null}.
+     *         network.
      */
     public SecureString getPassword()
     {
@@ -167,7 +165,7 @@ public final class TableNetworkConfiguration
      * value is the remote port of the table network host.
      * </p>
      * 
-     * @return The port of the table network; never {@code null}.
+     * @return The port of the table network.
      */
     public int getPort()
     {

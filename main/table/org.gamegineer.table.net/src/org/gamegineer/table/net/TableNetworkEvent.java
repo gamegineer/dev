@@ -49,7 +49,7 @@ public class TableNetworkEvent
      * Initializes a new instance of the {@code TableNetworkEvent} class.
      * 
      * @param source
-     *        The table network that fired the event; must not be {@code null}.
+     *        The table network that fired the event.
      */
     public TableNetworkEvent(
         final ITableNetwork source )
@@ -65,7 +65,7 @@ public class TableNetworkEvent
     /**
      * Gets the table network that fired the event.
      * 
-     * @return The table network that fired the event; never {@code null}.
+     * @return The table network that fired the event.
      */
     public final ITableNetwork getTableNetwork()
     {

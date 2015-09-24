@@ -1,6 +1,6 @@
 /*
  * TableMessage.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -66,7 +66,7 @@ public final class TableMessage
     /**
      * Gets the table memento.
      * 
-     * @return The table memento; never {@code null}.
+     * @return The table memento.
      */
     public Object getMemento()
     {
@@ -77,7 +77,7 @@ public final class TableMessage
      * Sets the table memento.
      * 
      * @param memento
-     *        The table memento; must not be {@code null}.
+     *        The table memento.
      */
     public void setMemento(
         final Object memento )

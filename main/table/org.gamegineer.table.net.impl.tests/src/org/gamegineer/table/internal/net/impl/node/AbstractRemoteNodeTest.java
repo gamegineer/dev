@@ -73,7 +73,7 @@ public final class AbstractRemoteNodeTest
     /**
      * Creates a mock local node for use in the fixture.
      * 
-     * @return A mock local node for use in the fixture; never {@code null}.
+     * @return A mock local node for use in the fixture.
      */
     private static INode<IRemoteNode> createMockLocalNode()
     {
@@ -86,7 +86,7 @@ public final class AbstractRemoteNodeTest
     /**
      * Creates a mock node layer for use in the fixture.
      * 
-     * @return A mock node layer for use in the fixture; never {@code null}.
+     * @return A mock node layer for use in the fixture.
      */
     @SuppressWarnings( "boxing" )
     private static INodeLayer createMockNodeLayer()
@@ -102,12 +102,11 @@ public final class AbstractRemoteNodeTest
      * Creates a new instance of the {@code AbstractRemoteNode} class.
      * 
      * @param nodeLayer
-     *        The node layer; must not be {@code null}.
+     *        The node layer.
      * @param node
-     *        The local table network node; must not be {@code null}.
+     *        The local table network node.
      * 
-     * @return A new instance of the {@code AbstractRemoteNode} class; never
-     *         {@code null}.
+     * @return A new instance of the {@code AbstractRemoteNode} class.
      */
     private static AbstractRemoteNode<INode<IRemoteNode>, IRemoteNode> createRemoteNode(
         final INodeLayer nodeLayer,
@@ -126,7 +125,7 @@ public final class AbstractRemoteNodeTest
     /**
      * Gets the fixture mocks control.
      * 
-     * @return The fixture mocks control; never {@code null}.
+     * @return The fixture mocks control.
      */
     private IMocksControl getMocksControl()
     {
@@ -136,7 +135,7 @@ public final class AbstractRemoteNodeTest
     /**
      * Gets the remote node under test in the fixture.
      * 
-     * @return The remote node under test in the fixture; never {@code null}.
+     * @return The remote node under test in the fixture.
      */
     private AbstractRemoteNode<INode<IRemoteNode>, IRemoteNode> getRemoteNode()
     {

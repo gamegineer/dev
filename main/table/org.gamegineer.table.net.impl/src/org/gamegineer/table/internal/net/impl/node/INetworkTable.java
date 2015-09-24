@@ -1,6 +1,6 @@
 /*
  * INetworkTable.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -44,10 +44,9 @@ public interface INetworkTable
      * with the table.
      * 
      * @param componentPath
-     *        The component path; must not be {@code null}.
+     *        The component path.
      * @param componentIncrement
-     *        The incremental change to the state of the component; must not be
-     *        {@code null}.
+     *        The incremental change to the state of the component.
      */
     public void incrementComponentState(
         ComponentPath componentPath,
@@ -57,7 +56,7 @@ public interface INetworkTable
      * Sets the state of the table.
      * 
      * @param tableMemento
-     *        The memento containing the table state; must not be {@code null}.
+     *        The memento containing the table state.
      */
     public void setTableState(
         Object tableMemento );

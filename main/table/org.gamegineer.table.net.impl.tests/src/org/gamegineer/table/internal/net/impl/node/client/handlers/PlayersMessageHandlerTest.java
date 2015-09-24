@@ -72,9 +72,9 @@ public final class PlayersMessageHandlerTest
      * Create a new mock player.
      * 
      * @param name
-     *        The player name; must not be {@code null}.
+     *        The player name.
      * 
-     * @return The new mock player; never {@code null}.
+     * @return The new mock player.
      */
     private IPlayer createMockPlayer(
         final String name )
@@ -88,8 +88,7 @@ public final class PlayersMessageHandlerTest
     /**
      * Gets the message handler under test in the fixture.
      * 
-     * @return The message handler under test in the fixture; never {@code null}
-     *         .
+     * @return The message handler under test in the fixture.
      */
     private IMessageHandler getMessageHandler()
     {
@@ -99,7 +98,7 @@ public final class PlayersMessageHandlerTest
     /**
      * Gets the fixture mocks control.
      * 
-     * @return The fixture mocks control; never {@code null}.
+     * @return The fixture mocks control.
      */
     private IMocksControl getMocksControl()
     {

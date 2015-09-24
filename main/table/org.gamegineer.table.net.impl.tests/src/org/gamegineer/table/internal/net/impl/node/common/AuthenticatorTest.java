@@ -54,9 +54,9 @@ public final class AuthenticatorTest
      * passwords.
      * 
      * @param expectedPassword
-     *        The expected password; must not be {@code null}.
+     *        The expected password.
      * @param actualPassword
-     *        The actual password; must not be {@code null}.
+     *        The actual password.
      * 
      * @return {@code true} if authentication is successful; otherwise
      *         {@code false}.
