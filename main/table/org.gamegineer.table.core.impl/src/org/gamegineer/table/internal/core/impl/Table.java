@@ -59,7 +59,7 @@ final class Table
     // ======================================================================
 
     /** The component comparator that orders components by their paths. */
-    private static final Comparator<IComponent> COMPONENT_COMPARATOR = new Comparator<IComponent>()
+    private static final Comparator<@NonNull IComponent> COMPONENT_COMPARATOR = new Comparator<IComponent>()
     {
         @Override
         public int compare(

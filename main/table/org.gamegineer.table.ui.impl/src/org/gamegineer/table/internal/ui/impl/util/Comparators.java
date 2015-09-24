@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.ui.impl.util;
 
 import java.util.Comparator;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.jdt.annotation.NonNull;
 import org.gamegineer.table.net.IPlayer;
 
 /**
@@ -36,7 +37,7 @@ public final class Comparators
     // ======================================================================
 
     /** A comparator that compares players by name. */
-    public static final Comparator<IPlayer> PLAYER_BY_NAME = new Comparator<IPlayer>()
+    public static final Comparator<@NonNull IPlayer> PLAYER_BY_NAME = new Comparator<IPlayer>()
     {
         @Override
         public int compare(

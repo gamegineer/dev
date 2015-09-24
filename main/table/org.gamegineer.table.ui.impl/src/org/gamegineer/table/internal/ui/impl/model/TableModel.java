@@ -40,6 +40,7 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.expressions.EvaluationContext;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.common.persistence.serializable.ObjectStreams;
@@ -69,7 +70,7 @@ public final class TableModel
      * The component model comparator that orders component models by their
      * paths.
      */
-    private static final Comparator<ComponentModel> COMPONENT_MODEL_COMPARATOR = new Comparator<ComponentModel>()
+    private static final Comparator<@NonNull ComponentModel> COMPONENT_MODEL_COMPARATOR = new Comparator<ComponentModel>()
     {
         @Override
         public int compare(
