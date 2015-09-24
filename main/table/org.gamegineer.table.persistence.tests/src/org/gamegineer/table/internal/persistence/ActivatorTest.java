@@ -58,7 +58,7 @@ public final class ActivatorTest
     /**
      * Gets the activator under test in the fixture.
      * 
-     * @return The activator under test in the fixture; never {@code null}.
+     * @return The activator under test in the fixture.
      */
     private Activator getActivator()
     {

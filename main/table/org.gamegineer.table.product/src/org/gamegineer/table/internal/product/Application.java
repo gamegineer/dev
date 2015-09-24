@@ -87,9 +87,9 @@ public final class Application
      * Creates a table advisor based on the specified application context.
      * 
      * @param context
-     *        The application context; must not be {@code null}.
+     *        The application context.
      * 
-     * @return A table advisor; never {@code null}.
+     * @return A table advisor.
      */
     private static ITableAdvisor createTableAdvisor(
         final IApplicationContext context )
@@ -102,9 +102,9 @@ public final class Application
      * Parses the specified application arguments array.
      * 
      * @param applicationArgumentsArray
-     *        The application arguments array; may be {@code null}.
+     *        The application arguments array.
      * 
-     * @return The collection of application arguments; never {@code null}.
+     * @return The collection of application arguments.
      */
     private static List<String> parseApplicationArguments(
         final @NonNull String @Nullable [] applicationArgumentsArray )
@@ -121,9 +121,9 @@ public final class Application
      * Publishes the branding service for the application.
      * 
      * @param context
-     *        The application context; must not be {@code null}.
+     *        The application context.
      * 
-     * @return The branding service; never {@code null}.
+     * @return The branding service.
      */
     private IBranding publishBranding(
         final IApplicationContext context )
@@ -203,10 +203,10 @@ public final class Application
      * exit object.
      * 
      * @param result
-     *        The table result; must not be {@code null}.
+     *        The table result.
      * 
      * @return The Equinox application exit object corresponding to the
-     *         specified table result; never {@code null}.
+     *         specified table result.
      */
     private static Object toApplicationExitObject(
         final TableResult result )
@@ -254,7 +254,7 @@ public final class Application
          * Initializes a new instance of the {@code Branding} class.
          * 
          * @param context
-         *        The application context; must not be {@code null}.
+         *        The application context.
          */
         Branding(
             final IApplicationContext context )

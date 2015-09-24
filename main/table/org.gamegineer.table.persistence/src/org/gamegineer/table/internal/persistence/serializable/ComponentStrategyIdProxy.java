@@ -1,6 +1,6 @@
 /*
  * ComponentStrategyIdProxy.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -65,8 +65,7 @@ public final class ComponentStrategyIdProxy
      * from the specified {@code ComponentStrategyId} instance.
      * 
      * @param componentStrategyId
-     *        The {@code ComponentStrategyId} instance; must not be {@code null}
-     *        .
+     *        The {@code ComponentStrategyId} instance.
      */
     public ComponentStrategyIdProxy(
         final ComponentStrategyId componentStrategyId )
@@ -84,7 +83,7 @@ public final class ComponentStrategyIdProxy
      * deserialized.
      * 
      * @return A replacement object for this instance after it has been
-     *         deserialized; never {@code null}.
+     *         deserialized.
      */
     private Object readResolve()
     {

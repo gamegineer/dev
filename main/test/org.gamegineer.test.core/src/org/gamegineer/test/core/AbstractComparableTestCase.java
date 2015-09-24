@@ -60,12 +60,11 @@ public abstract class AbstractComparableTestCase<T extends Comparable<T>>
      * 
      * <p>
      * Implementors should return one instance per field that is used to
-     * determine comparability. The returned collection must not be empty and
-     * must not contain a {@code null} entry.
+     * determine comparability. The returned collection must not be empty.
      * </p>
      * 
      * @return A collection of instances that are greater than the reference
-     *         instance; never {@code null}.
+     *         instance.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -79,12 +78,11 @@ public abstract class AbstractComparableTestCase<T extends Comparable<T>>
      * 
      * <p>
      * Implementors should return one instance per field that is used to
-     * determine comparability. The returned collection must not be empty and
-     * must not contain a {@code null} entry.
+     * determine comparability. The returned collection must not be empty.
      * </p>
      * 
      * @return A collection of instances that are less than the reference
-     *         instance; never {@code null}.
+     *         instance.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

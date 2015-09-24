@@ -68,7 +68,7 @@ public abstract class AbstractEquatableTestCase<T>
      * other instance returned by this method.
      * </p>
      * 
-     * @return A reference instance; never {@code null}.
+     * @return A reference instance.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -82,12 +82,11 @@ public abstract class AbstractEquatableTestCase<T>
      * 
      * <p>
      * Implementors should return one instance per field that is used to
-     * determine equality. The returned collection must not be empty and must
-     * not contain a {@code null} entry.
+     * determine equality. The returned collection must not be empty.
      * </p>
      * 
      * @return A collection of instances that are unequal to the reference
-     *         instance; never {@code null}.
+     *         instance.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

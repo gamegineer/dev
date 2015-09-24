@@ -1,6 +1,6 @@
 /*
  * ComponentPathProxy.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -67,7 +67,7 @@ public final class ComponentPathProxy
      * the specified {@code ComponentPath} instance.
      * 
      * @param componentPath
-     *        The {@code ComponentPath} instance; must not be {@code null}.
+     *        The {@code ComponentPath} instance.
      */
     public ComponentPathProxy(
         final ComponentPath componentPath )
@@ -90,7 +90,7 @@ public final class ComponentPathProxy
      * deserialized.
      * 
      * @return A replacement object for this instance after it has been
-     *         deserialized; never {@code null}.
+     *         deserialized.
      */
     private Object readResolve()
     {

@@ -88,10 +88,9 @@ final class NonNlsMessages
      * Gets the formatted message indicating the application is starting.
      * 
      * @param version
-     *        The application version; must not be {@code null}.
+     *        The application version.
      * 
-     * @return The formatted message indicating the application is starting;
-     *         never {@code null}.
+     * @return The formatted message indicating the application is starting.
      */
     static String Application_start_starting(
         final Version version )
@@ -103,10 +102,9 @@ final class NonNlsMessages
      * Gets the formatted message indicating the application has stopped.
      * 
      * @param result
-     *        The table result; must not be {@code null}.
+     *        The table result.
      * 
-     * @return The formatted message indicating the application has stopped;
-     *         never {@code null}.
+     * @return The formatted message indicating the application has stopped.
      */
     static String Application_start_stopped(
         final TableResult result )
