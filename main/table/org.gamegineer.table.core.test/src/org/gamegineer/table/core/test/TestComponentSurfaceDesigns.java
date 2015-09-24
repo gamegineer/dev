@@ -64,9 +64,9 @@ public final class TestComponentSurfaceDesigns
      * Clones the specified component surface design.
      * 
      * @param componentSurfaceDesign
-     *        The component surface design to clone; must not be {@code null}.
+     *        The component surface design to clone.
      * 
-     * @return A new component surface design; never {@code null}.
+     * @return A new component surface design.
      */
     public static ComponentSurfaceDesign cloneComponentSurfaceDesign(
         final ComponentSurfaceDesign componentSurfaceDesign )
@@ -78,7 +78,7 @@ public final class TestComponentSurfaceDesigns
      * Creates a new component surface design with a unique identifier and a
      * default size.
      * 
-     * @return A new component surface design; never {@code null}.
+     * @return A new component surface design.
      */
     public static ComponentSurfaceDesign createUniqueComponentSurfaceDesign()
     {
@@ -96,7 +96,7 @@ public final class TestComponentSurfaceDesigns
      *        The component surface design height in table coordinates; must not
      *        be negative.
      * 
-     * @return A new component surface design; never {@code null}.
+     * @return A new component surface design.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code width} or {@code height} is negative.
@@ -111,7 +111,7 @@ public final class TestComponentSurfaceDesigns
     /**
      * Gets a unique component surface design identifier.
      * 
-     * @return A unique component surface design identifier; never {@code null}.
+     * @return A unique component surface design identifier.
      */
     @SuppressWarnings( "boxing" )
     private static ComponentSurfaceDesignId getUniqueComponentSurfaceDesignId()
@@ -124,9 +124,9 @@ public final class TestComponentSurfaceDesigns
      * surface design registry.
      * 
      * @param componentSurfaceDesign
-     *        The component surface design; must not be {@code null}.
+     *        The component surface design.
      * 
-     * @return The registered component surface design; never {@code null}.
+     * @return The registered component surface design.
      */
     private static ComponentSurfaceDesign registerComponentSurfaceDesign(
         final ComponentSurfaceDesign componentSurfaceDesign )

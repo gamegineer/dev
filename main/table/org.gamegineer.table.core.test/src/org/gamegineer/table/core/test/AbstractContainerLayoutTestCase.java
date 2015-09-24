@@ -61,7 +61,7 @@ public abstract class AbstractContainerLayoutTestCase
     /**
      * Creates the container layout to be tested.
      * 
-     * @return The container layout to be tested; never {@code null}.
+     * @return The container layout to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -72,8 +72,7 @@ public abstract class AbstractContainerLayoutTestCase
     /**
      * Gets the container layout under test in the fixture.
      * 
-     * @return The container layout under test in the fixture; never
-     *         {@code null}.
+     * @return The container layout under test in the fixture.
      */
     protected final IContainerLayout getContainerLayout()
     {

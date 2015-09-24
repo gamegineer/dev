@@ -1,6 +1,6 @@
 /*
  * ContainerAsContainerTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -104,10 +104,9 @@ public final class ContainerAsContainerTest
      * method.
      * 
      * @param container
-     *        The container; must not be {@code null}.
+     *        The container.
      * @param methodName
-     *        The name of the method associated with the event; must not be
-     *        {@code null}.
+     *        The name of the method associated with the event.
      */
     private static void fireComponentEvent(
         final Container container,
@@ -169,10 +168,9 @@ public final class ContainerAsContainerTest
      * {@link Container} method.
      * 
      * @param container
-     *        The container; must not be {@code null}.
+     *        The container.
      * @param methodName
-     *        The name of the method associated with the event; must not be
-     *        {@code null}.
+     *        The name of the method associated with the event.
      */
     private static void fireContainerContentChangedEvent(
         final Container container,
@@ -204,10 +202,9 @@ public final class ContainerAsContainerTest
      * method.
      * 
      * @param container
-     *        The container; must not be {@code null}.
+     *        The container.
      * @param methodName
-     *        The name of the method associated with the event; must not be
-     *        {@code null}.
+     *        The name of the method associated with the event.
      */
     private static void fireContainerEvent(
         final Container container,

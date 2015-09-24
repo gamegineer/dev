@@ -37,7 +37,7 @@ interface IComponentParent
      * Gets the path to the specified child component from its associated table.
      * 
      * @param component
-     *        The child component; must not be {@code null}.
+     *        The child component.
      * 
      * @return The path to the specified child component from its associated
      *         table or {@code null} if this component parent is not associated

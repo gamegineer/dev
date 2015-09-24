@@ -61,7 +61,7 @@ public abstract class AbstractDragStrategyTestCase
     /**
      * Creates the drag strategy to be tested.
      * 
-     * @return The drag strategy to be tested; never {@code null}.
+     * @return The drag strategy to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -72,7 +72,7 @@ public abstract class AbstractDragStrategyTestCase
     /**
      * Gets the drag strategy under test in the fixture.
      * 
-     * @return The drag strategy under test in the fixture; never {@code null}.
+     * @return The drag strategy under test in the fixture.
      */
     protected final IDragStrategy getDragStrategy()
     {

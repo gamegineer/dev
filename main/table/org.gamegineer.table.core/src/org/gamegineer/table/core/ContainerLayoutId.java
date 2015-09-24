@@ -46,7 +46,7 @@ public final class ContainerLayoutId
      * Initializes a new instance of the {@code ContainerLayoutId} class.
      * 
      * @param id
-     *        The underlying identifier; must not be {@code null}.
+     *        The underlying identifier.
      */
     private ContainerLayoutId(
         final String id )
@@ -89,11 +89,9 @@ public final class ContainerLayoutId
      * </p>
      * 
      * @param id
-     *        The string representation of the identifier; must not be
-     *        {@code null}.
+     *        The string representation of the identifier.
      * 
-     * @return A new instance of the {@code ContainerLayoutId} class; never
-     *         {@code null}.
+     * @return A new instance of the {@code ContainerLayoutId} class.
      */
     public static ContainerLayoutId fromString(
         final String id )
@@ -117,7 +115,7 @@ public final class ContainerLayoutId
      * The string representation of an identifier has no specific format.
      * </p>
      * 
-     * @return The string representation of this identifier; never {@code null}.
+     * @return The string representation of this identifier.
      * 
      * @see java.lang.Object#toString()
      */

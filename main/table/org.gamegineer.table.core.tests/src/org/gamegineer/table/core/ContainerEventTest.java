@@ -60,8 +60,7 @@ public final class ContainerEventTest
     /**
      * Gets the container event under test in the fixture.
      * 
-     * @return The container event under test in the fixture; never {@code null}
-     *         .
+     * @return The container event under test in the fixture.
      */
     private ContainerEvent getContainerEvent()
     {

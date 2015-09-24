@@ -1,6 +1,6 @@
 /*
  * PassiveDragStrategy.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -50,7 +50,7 @@ public final class PassiveDragStrategy
      * Initializes a new instance of the {@code PassiveDragStrategy} class.
      * 
      * @param successorDragStrategy
-     *        The successor drag strategy; must not be {@code null}.
+     *        The successor drag strategy.
      */
     public PassiveDragStrategy(
         final IDragStrategy successorDragStrategy )

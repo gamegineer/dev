@@ -224,10 +224,9 @@ final class NonNlsMessages
      * Gets the formatted message indicating the attribute is absent.
      * 
      * @param attributeName
-     *        The attribute name; must not be {@code null}.
+     *        The attribute name.
      * 
-     * @return The formatted message indicating the attribute is absent; never
-     *         {@code null}.
+     * @return The formatted message indicating the attribute is absent.
      */
     static String MementoUtils_attribute_absent(
         final String attributeName )
@@ -240,10 +239,10 @@ final class NonNlsMessages
      * .
      * 
      * @param attributeName
-     *        The attribute name; must not be {@code null}.
+     *        The attribute name.
      * 
      * @return The formatted message indicating the attribute value is
-     *         {@code null}; never {@code null}.
+     *         {@code null}.
      */
     static String MementoUtils_attributeValue_null(
         final String attributeName )
@@ -256,10 +255,10 @@ final class NonNlsMessages
      * type.
      * 
      * @param attributeName
-     *        The attribute name; must not be {@code null}.
+     *        The attribute name.
      * 
      * @return The formatted message indicating the attribute value is of the
-     *         wrong type; never {@code null}.
+     *         wrong type.
      */
     static String MementoUtils_attributeValue_wrongType(
         final String attributeName )

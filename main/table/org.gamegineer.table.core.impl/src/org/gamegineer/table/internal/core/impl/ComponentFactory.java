@@ -76,11 +76,11 @@ final class ComponentFactory
      * specified memento.
      * 
      * @param tableEnvironment
-     *        The table environment; must not be {@code null}.
+     *        The table environment.
      * @param memento
-     *        The component memento; must not be {@code null}.
+     *        The component memento.
      * 
-     * @return A new component; never {@code null}.
+     * @return A new component.
      * 
      * @throws org.gamegineer.common.core.util.memento.MementoException
      *         If {@code memento} is malformed.
@@ -101,13 +101,13 @@ final class ComponentFactory
      * environment using the specified component strategy.
      * 
      * @param className
-     *        The component class name; must not be {@code null}.
+     *        The component class name.
      * @param tableEnvironment
-     *        The table environment; must not be {@code null}.
+     *        The table environment.
      * @param strategy
-     *        The component strategy; must not be {@code null}.
+     *        The component strategy.
      * 
-     * @return A new component; never {@code null}.
+     * @return A new component.
      * 
      * @throws org.gamegineer.common.core.util.memento.MementoException
      *         If the component cannot be created.
@@ -139,10 +139,9 @@ final class ComponentFactory
      * Creates a new empty memento for the specified component.
      * 
      * @param component
-     *        The component; must not be {@code null}.
+     *        The component.
      * 
-     * @return A new empty memento for the specified component; never
-     *         {@code null}.
+     * @return A new empty memento for the specified component.
      */
     static Map<String, Object> createMemento(
         final Component component )
@@ -157,10 +156,9 @@ final class ComponentFactory
      * Gets the component strategy associated with the specified identifier.
      * 
      * @param id
-     *        The component strategy identifier; must not be {@code null}.
+     *        The component strategy identifier.
      * 
-     * @return The component strategy associated with the specified identifier;
-     *         never {@code null}.
+     * @return The component strategy associated with the specified identifier.
      * 
      * @throws org.gamegineer.common.core.util.memento.MementoException
      *         If the component strategy is unknown.

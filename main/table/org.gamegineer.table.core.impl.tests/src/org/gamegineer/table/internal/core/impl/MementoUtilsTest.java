@@ -81,7 +81,7 @@ public final class MementoUtilsTest
     /**
      * Gets the fixture memento.
      * 
-     * @return The fixture memento; never {@code null}.
+     * @return The fixture memento.
      */
     private Map<String, @Nullable Object> getMemento()
     {

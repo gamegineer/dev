@@ -98,7 +98,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * Creates a new component with unique attributes using the fixture table
      * environment.
      * 
-     * @return A new component; never {@code null}.
+     * @return A new component.
      */
     private IComponent createUniqueComponent()
     {
@@ -110,10 +110,9 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * environment.
      * 
      * @param tableEnvironment
-     *        The table environment used to create the new component; must not
-     *        be {@code null}.
+     *        The table environment used to create the new component.
      * 
-     * @return A new component; never {@code null}.
+     * @return A new component.
      */
     private IComponent createUniqueComponent(
         final TableEnvironmentType tableEnvironment )
@@ -125,7 +124,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * Creates a new container with unique attributes using the fixture table
      * environment.
      * 
-     * @return A new container; never {@code null}.
+     * @return A new container.
      */
     private IContainer createUniqueContainer()
     {
@@ -137,10 +136,9 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * environment.
      * 
      * @param tableEnvironment
-     *        The table environment used to create the new container; must not
-     *        be {@code null}.
+     *        The table environment used to create the new container.
      * 
-     * @return A new container; never {@code null}.
+     * @return A new container.
      */
     private IContainer createUniqueContainer(
         final TableEnvironmentType tableEnvironment )
@@ -152,7 +150,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * Fires a component added event for the specified container.
      * 
      * @param container
-     *        The container; must not be {@code null}.
+     *        The container.
      */
     protected abstract void fireComponentAdded(
         ContainerType container );
@@ -161,7 +159,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * Fires a component removed event for the specified container.
      * 
      * @param container
-     *        The container; must not be {@code null}.
+     *        The container.
      */
     protected abstract void fireComponentRemoved(
         ContainerType container );
@@ -170,7 +168,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
      * Fires a container layout changed event for the specified container.
      * 
      * @param container
-     *        The container; must not be {@code null}.
+     *        The container.
      */
     protected abstract void fireContainerLayoutChanged(
         ContainerType container );
@@ -178,7 +176,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     /**
      * Gets the container under test in the fixture.
      * 
-     * @return The container under test in the fixture; never {@code null}.
+     * @return The container under test in the fixture.
      */
     protected final ContainerType getContainer()
     {
@@ -188,7 +186,7 @@ public abstract class AbstractContainerTestCase<TableEnvironmentType extends ITa
     /**
      * Gets the fixture mocks control.
      * 
-     * @return The fixture mocks control; never {@code null}.
+     * @return The fixture mocks control.
      */
     private IMocksControl getMocksControl()
     {

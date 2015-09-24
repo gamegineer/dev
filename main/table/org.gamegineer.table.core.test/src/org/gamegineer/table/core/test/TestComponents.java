@@ -56,10 +56,9 @@ public final class TestComponents
      * table environment using a default component strategy.
      * 
      * @param tableEnvironment
-     *        The table environment associated with the new component; must not
-     *        be {@code null}.
+     *        The table environment associated with the new component.
      * 
-     * @return A new component; never {@code null}.
+     * @return A new component.
      */
     public static IComponent createUniqueComponent(
         final ITableEnvironment tableEnvironment )
@@ -72,12 +71,11 @@ public final class TestComponents
      * table environment using the specified component strategy.
      * 
      * @param tableEnvironment
-     *        The table environment associated with the new component; must not
-     *        be {@code null}.
+     *        The table environment associated with the new component.
      * @param componentStrategy
-     *        The component strategy; must not be {@code null}.
+     *        The component strategy.
      * 
-     * @return A new component; never {@code null}.
+     * @return A new component.
      */
     public static IComponent createUniqueComponent(
         final ITableEnvironment tableEnvironment,
@@ -93,10 +91,9 @@ public final class TestComponents
      * table environment using a default container strategy.
      * 
      * @param tableEnvironment
-     *        The table environment associated with the new container; must not
-     *        be {@code null}.
+     *        The table environment associated with the new container.
      * 
-     * @return A new container; never {@code null}.
+     * @return A new container.
      */
     public static IContainer createUniqueContainer(
         final ITableEnvironment tableEnvironment )
@@ -109,12 +106,11 @@ public final class TestComponents
      * table environment using the specified container strategy.
      * 
      * @param tableEnvironment
-     *        The table environment associated with the new container; must not
-     *        be {@code null}.
+     *        The table environment associated with the new container.
      * @param containerStrategy
-     *        The container strategy; must not be {@code null}.
+     *        The container strategy.
      * 
-     * @return A new container; never {@code null}.
+     * @return A new container.
      */
     public static IContainer createUniqueContainer(
         final ITableEnvironment tableEnvironment,
@@ -130,7 +126,7 @@ public final class TestComponents
      * specified component.
      * 
      * @param component
-     *        The component; must not be {@code null}.
+     *        The component.
      */
     private static void setUniqueSurfaceDesigns(
         final IComponent component )

@@ -1,6 +1,6 @@
 /*
  * ComponentSurfaceDesignRegistry.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -51,10 +51,9 @@ public final class ComponentSurfaceDesignRegistry
      * Gets the component surface design with the specified identifier.
      * 
      * @param id
-     *        The component surface design identifier; must not be {@code null}.
+     *        The component surface design identifier.
      * 
-     * @return The component surface design with the specified identifier; never
-     *         {@code null}.
+     * @return The component surface design with the specified identifier.
      * 
      * @throws org.gamegineer.table.core.NoSuchComponentSurfaceDesignException
      *         If {@code id} is not registered.

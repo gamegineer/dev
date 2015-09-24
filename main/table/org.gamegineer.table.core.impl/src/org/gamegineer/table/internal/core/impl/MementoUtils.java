@@ -1,6 +1,6 @@
 /*
  * MementoUtils.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -54,13 +54,13 @@ final class MementoUtils
      * @param <T>
      *        The type of the attribute value.
      * @param memento
-     *        The memento; must not be {@code null}.
+     *        The memento.
      * @param name
-     *        The attribute name; must not be {@code null}.
+     *        The attribute name.
      * @param type
-     *        The type of the attribute value; must not be {@code null}.
+     *        The type of the attribute value.
      * 
-     * @return The attribute value; never {@code null}.
+     * @return The attribute value.
      * 
      * @throws org.gamegineer.common.core.util.memento.MementoException
      *         If the memento is not of type {@code Map}, the memento does not
@@ -108,9 +108,9 @@ final class MementoUtils
      * name.
      * 
      * @param memento
-     *        The memento; must not be {@code null}.
+     *        The memento.
      * @param name
-     *        The attribute name; must not be {@code null}.
+     *        The attribute name.
      * 
      * @return {@code true} if the memento contains an attribute with the
      *         specified name; otherwise {@code false}.

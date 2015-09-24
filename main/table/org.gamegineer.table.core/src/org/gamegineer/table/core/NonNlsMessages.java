@@ -149,10 +149,10 @@ final class NonNlsMessages
      * is not registered.
      * 
      * @param componentStrategyId
-     *        The component strategy identifier; must not be {@code null}.
+     *        The component strategy identifier.
      * 
      * @return The formatted message indicating the component strategy
-     *         identifier is not registered; never {@code null}.
+     *         identifier is not registered.
      */
     static String ComponentStrategyRegistry_getComponentStrategy_unknownComponentStrategyId(
         final ComponentStrategyId componentStrategyId )
@@ -165,11 +165,10 @@ final class NonNlsMessages
      * is not associated with a container strategy.
      * 
      * @param componentStrategyId
-     *        The component strategy identifier; must not be {@code null}.
+     *        The component strategy identifier.
      * 
      * @return The formatted message indicating the component strategy
-     *         identifier is not associated with a container strategy; never
-     *         {@code null}.
+     *         identifier is not associated with a container strategy.
      */
     static String ComponentStrategyRegistry_getContainerStrategy_notContainerStrategy(
         final ComponentStrategyId componentStrategyId )
@@ -184,10 +183,10 @@ final class NonNlsMessages
      * identifier is not registered.
      * 
      * @param componentSurfaceDesignId
-     *        The component surface design identifier; must not be {@code null}.
+     *        The component surface design identifier.
      * 
      * @return The formatted message indicating the component surface design
-     *         identifier is not registered; never {@code null}.
+     *         identifier is not registered.
      */
     static String ComponentSurfaceDesignRegistry_getComponentSurfaceDesign_unknownComponentSurfaceDesignId(
         final ComponentSurfaceDesignId componentSurfaceDesignId )
@@ -202,10 +201,10 @@ final class NonNlsMessages
      * not registered.
      * 
      * @param containerLayoutId
-     *        The container layout identifier; must not be {@code null}.
+     *        The container layout identifier.
      * 
      * @return The formatted message indicating the container layout identifier
-     *         is not registered; never {@code null}.
+     *         is not registered.
      */
     static String ContainerLayoutRegistry_getContainerLayout_unknownContainerLayoutId(
         final ContainerLayoutId containerLayoutId )

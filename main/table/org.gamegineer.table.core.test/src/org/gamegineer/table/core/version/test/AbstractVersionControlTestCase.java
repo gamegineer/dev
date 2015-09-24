@@ -72,7 +72,7 @@ public abstract class AbstractVersionControlTestCase
      * Creates a new component with unique attributes using the fixture table
      * environment.
      * 
-     * @return A new component; never {@code null}.
+     * @return A new component.
      */
     private IComponent createUniqueComponent()
     {
@@ -83,7 +83,7 @@ public abstract class AbstractVersionControlTestCase
      * Creates a new container with unique attributes using the fixture table
      * environment.
      * 
-     * @return A new container; never {@code null}.
+     * @return A new container.
      */
     private IContainer createUniqueContainer()
     {
@@ -93,14 +93,14 @@ public abstract class AbstractVersionControlTestCase
     /**
      * Gets the table associated with the fixture.
      * 
-     * @return The table associated with the fixture; never {@code null}.
+     * @return The table associated with the fixture.
      */
     protected abstract ITable getTable();
 
     /**
      * Gets the tabletop associated with the fixture.
      * 
-     * @return The tabletop associated with the fixture; never {@code null}.
+     * @return The tabletop associated with the fixture.
      */
     private IContainer getTabletop()
     {
@@ -110,8 +110,7 @@ public abstract class AbstractVersionControlTestCase
     /**
      * Gets the version control under test in the fixture.
      * 
-     * @return The version control under test in the fixture; never {@code null}
-     *         .
+     * @return The version control under test in the fixture.
      */
     protected final IVersionControl getVersionControl()
     {

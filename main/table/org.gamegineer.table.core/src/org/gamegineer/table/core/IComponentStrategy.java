@@ -40,31 +40,30 @@ public interface IComponentStrategy
     /**
      * Gets the default component location.
      * 
-     * @return The default component location; never {@code null}.
+     * @return The default component location.
      */
     public Point getDefaultLocation();
 
     /**
      * Gets the default component orientation.
      * 
-     * @return The default component orientation; never {@code null}.
+     * @return The default component orientation.
      */
     public ComponentOrientation getDefaultOrientation();
 
     /**
      * Gets the default component origin.
      * 
-     * @return The default component origin; never {@code null}.
+     * @return The default component origin.
      */
     public Point getDefaultOrigin();
 
     /**
      * Gets the default collection of component surface designs.
      * 
-     * @return The default collection of component surface designs; never
-     *         {@code null}. The keys in the returned collection must be
-     *         identical to the keys in the collection returned from
-     *         {@link #getSupportedOrientations}.
+     * @return The default collection of component surface designs. The keys in
+     *         the returned collection must be identical to the keys in the
+     *         collection returned from {@link #getSupportedOrientations}.
      */
     public Map<ComponentOrientation, ComponentSurfaceDesign> getDefaultSurfaceDesigns();
 
@@ -75,7 +74,7 @@ public interface IComponentStrategy
      *        The component strategy extension type.
      * 
      * @param type
-     *        The component strategy extension type; must not be {@code null}.
+     *        The component strategy extension type.
      * 
      * @return The component strategy extension of the specified type or
      *         {@code null} if the component strategy does not support the
@@ -87,7 +86,7 @@ public interface IComponentStrategy
     /**
      * Gets the component strategy identifier.
      * 
-     * @return The component strategy identifier; never {@code null}.
+     * @return The component strategy identifier.
      */
     public ComponentStrategyId getId();
 
@@ -96,8 +95,8 @@ public interface IComponentStrategy
      * the component.
      * 
      * @return An immutable view of the collection of supported orientations for
-     *         the component; never {@code null}. The returned collection is
-     *         guaranteed to not be empty.
+     *         the component. The returned collection is guaranteed to not be
+     *         empty.
      */
     public Collection<ComponentOrientation> getSupportedOrientations();
 }

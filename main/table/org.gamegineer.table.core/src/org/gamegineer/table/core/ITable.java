@@ -42,7 +42,7 @@ public interface ITable
      * Gets the component in this table at the specified path.
      * 
      * @param path
-     *        The component path; must not be {@code null}.
+     *        The component path.
      * 
      * @return The component in this table at the specified path or {@code null}
      *         if no component exists at the specified path.
@@ -60,12 +60,11 @@ public interface ITable
      * </p>
      * 
      * @param location
-     *        The location in table coordinates; must not be {@code null}.
+     *        The location in table coordinates.
      * 
      * @return The collection of components in this table at the specified
-     *         location; never {@code null}. The components are returned in
-     *         order from the bottom-most component to the top-most component;
-     *         never {@code null}.
+     *         location. The components are returned in order from the
+     *         bottom-most component to the top-most component.
      */
     public List<IComponent> getComponents(
         Point location );
@@ -77,7 +76,7 @@ public interface ITable
      *        The table extension type.
      * 
      * @param type
-     *        The table extension type; must not be {@code null}.
+     *        The table extension type.
      * 
      * @return The table extension of the specified type or {@code null} if the
      *         table does not support the specified extension.
@@ -88,8 +87,7 @@ public interface ITable
     /**
      * Gets the table environment associated with this table.
      * 
-     * @return The table environment associated with this table; never
-     *         {@code null}.
+     * @return The table environment associated with this table.
      */
     public ITableEnvironment getTableEnvironment();
 
@@ -100,7 +98,7 @@ public interface ITable
      * The tabletop represents the root component of the table.
      * </p>
      * 
-     * @return The tabletop; never {@code null}.
+     * @return The tabletop.
      */
     public IContainer getTabletop();
 }

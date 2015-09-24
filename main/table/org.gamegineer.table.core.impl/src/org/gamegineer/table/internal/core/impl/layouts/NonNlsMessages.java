@@ -82,10 +82,10 @@ final class NonNlsMessages
      * unknown.
      * 
      * @param containerLayoutId
-     *        The container layout identifier; may be {@code null}.
+     *        The container layout identifier.
      * 
      * @return The formatted message indicating the container layout identifier
-     *         is unknown; never {@code null}.
+     *         is unknown.
      */
     static String ContainerLayoutExtensionFactory_create_unknownId(
         final @Nullable ContainerLayoutId containerLayoutId )

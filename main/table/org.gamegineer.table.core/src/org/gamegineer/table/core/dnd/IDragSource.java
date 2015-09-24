@@ -40,14 +40,12 @@ public interface IDragSource
      * Begins a drag-and-drop operation in the associated table.
      * 
      * @param location
-     *        The beginning drag location in table coordinates; must not be
-     *        {@code null}.
+     *        The beginning drag location in table coordinates.
      * @param component
-     *        The component from which the drag-and-drop operation will begin;
-     *        must not be {@code null}.
+     *        The component from which the drag-and-drop operation will begin.
      * @param dragStrategyFactory
      *        A factory for creating the drag strategy for the drag-and-drop
-     *        operation; must not be {@code null}.
+     *        operation.
      * 
      * @return A context defining the new drag-and-drop operation or
      *         {@code null} if a drag-and-drop operation is not possible for the

@@ -45,7 +45,7 @@ public interface IComponent
      * Adds the specified component listener to this component.
      * 
      * @param listener
-     *        The component listener; must not be {@code null}.
+     *        The component listener.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is already a registered component listener.
@@ -56,8 +56,7 @@ public interface IComponent
     /**
      * Gets the bounds of this component in table coordinates.
      * 
-     * @return The bounds of this component in table coordinates; never
-     *         {@code null}.
+     * @return The bounds of this component in table coordinates.
      */
     public Rectangle getBounds();
 
@@ -77,15 +76,14 @@ public interface IComponent
      * component.
      * </p>
      * 
-     * @return The location of this component in table coordinates; never
-     *         {@code null}.
+     * @return The location of this component in table coordinates.
      */
     public Point getLocation();
 
     /**
      * Gets the orientation of this component.
      * 
-     * @return The orientation of this component; never {@code null}.
+     * @return The orientation of this component.
      */
     public ComponentOrientation getOrientation();
 
@@ -99,8 +97,7 @@ public interface IComponent
      * the location.
      * </p>
      * 
-     * @return The origin of this component in table coordinates; never
-     *         {@code null}.
+     * @return The origin of this component in table coordinates.
      */
     public Point getOrigin();
 
@@ -115,15 +112,14 @@ public interface IComponent
     /**
      * Gets the size of this component in table coordinates.
      * 
-     * @return The size of this component in table coordinates; never
-     *         {@code null}.
+     * @return The size of this component in table coordinates.
      */
     public Dimension getSize();
 
     /**
      * Gets the component strategy.
      * 
-     * @return The component strategy; never {@code null}.
+     * @return The component strategy.
      */
     public IComponentStrategy getStrategy();
 
@@ -132,8 +128,8 @@ public interface IComponent
      * this component.
      * 
      * @return An immutable view of the collection of supported orientations for
-     *         this component; never {@code null}. The returned collection is
-     *         guaranteed to not be empty.
+     *         this component. The returned collection is guaranteed to not be
+     *         empty.
      */
     public Collection<ComponentOrientation> getSupportedOrientations();
 
@@ -142,10 +138,10 @@ public interface IComponent
      * specified orientation.
      * 
      * @param orientation
-     *        The surface orientation; must not be {@code null}.
+     *        The surface orientation.
      * 
      * @return The design on the surface of this component associated with the
-     *         specified orientation; never {@code null}.
+     *         specified orientation.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code orientation} is not a legal orientation for this
@@ -157,8 +153,7 @@ public interface IComponent
     /**
      * Gets the collection of surface designs for this component.
      * 
-     * @return The collection of surface designs for this component; never
-     *         {@code null}.
+     * @return The collection of surface designs for this component.
      */
     public Map<ComponentOrientation, ComponentSurfaceDesign> getSurfaceDesigns();
 
@@ -173,8 +168,7 @@ public interface IComponent
     /**
      * Gets the table environment associated with this component.
      * 
-     * @return The table environment associated with this component; never
-     *         {@code null}.
+     * @return The table environment associated with this component.
      */
     public ITableEnvironment getTableEnvironment();
 
@@ -182,7 +176,7 @@ public interface IComponent
      * Removes the specified component listener from this component.
      * 
      * @param listener
-     *        The component listener; must not be {@code null}.
+     *        The component listener.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is not a registered component listener.
@@ -194,8 +188,7 @@ public interface IComponent
      * Sets the location of this component in table coordinates.
      * 
      * @param location
-     *        The location of this component in table coordinates; must not be
-     *        {@code null}.
+     *        The location of this component in table coordinates.
      */
     public void setLocation(
         Point location );
@@ -204,7 +197,7 @@ public interface IComponent
      * Sets the orientation of this component.
      * 
      * @param orientation
-     *        The orientation of this component; must not be {@code null}.
+     *        The orientation of this component.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code orientation} is not a legal orientation for this
@@ -217,8 +210,7 @@ public interface IComponent
      * Sets the origin of this component in table coordinates.
      * 
      * @param origin
-     *        The origin of this component in table coordinates; must not be
-     *        {@code null}.
+     *        The origin of this component in table coordinates.
      */
     public void setOrigin(
         Point origin );
@@ -228,10 +220,10 @@ public interface IComponent
      * specified orientation.
      * 
      * @param orientation
-     *        The surface orientation; must not be {@code null}.
+     *        The surface orientation.
      * @param surfaceDesign
      *        The design on the surface of this component associated with the
-     *        specified orientation; must not be {@code null}.
+     *        specified orientation.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code orientation} is not a legal orientation for this
@@ -245,13 +237,12 @@ public interface IComponent
      * Sets the collection of surface designs for this component.
      * 
      * @param surfaceDesigns
-     *        The collection of surface designs; must not be {@code null}. The
-     *        collection may contain a subset of the supported component surface
-     *        designs.
+     *        The collection of surface designs. The collection may contain a
+     *        subset of the supported component surface designs.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code surfaceDesigns} contains an illegal orientation for
-     *         this component or contains a {@code null} surface design.
+     *         this component.
      */
     public void setSurfaceDesigns(
         Map<ComponentOrientation, ComponentSurfaceDesign> surfaceDesigns );

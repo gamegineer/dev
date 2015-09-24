@@ -1,6 +1,6 @@
 /*
  * ComponentStrategyRegistry.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -51,10 +51,9 @@ public final class ComponentStrategyRegistry
      * Gets the component strategy with the specified identifier.
      * 
      * @param id
-     *        The component strategy identifier; must not be {@code null}.
+     *        The component strategy identifier.
      * 
-     * @return The component strategy with the specified identifier; never
-     *         {@code null}.
+     * @return The component strategy with the specified identifier.
      * 
      * @throws org.gamegineer.table.core.NoSuchComponentStrategyException
      *         If {@code id} is not registered.
@@ -82,10 +81,9 @@ public final class ComponentStrategyRegistry
      * Gets the container strategy with the specified identifier.
      * 
      * @param id
-     *        The container strategy identifier; must not be {@code null}.
+     *        The container strategy identifier.
      * 
-     * @return The container strategy with the specified identifier; never
-     *         {@code null}.
+     * @return The container strategy with the specified identifier.
      * 
      * @throws org.gamegineer.table.core.NoSuchComponentStrategyException
      *         If {@code id} is not registered or is not a container strategy.

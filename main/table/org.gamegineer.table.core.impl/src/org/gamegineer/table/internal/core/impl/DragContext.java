@@ -86,22 +86,19 @@ final class DragContext
      * Initializes a new instance of the {@code DragContext} class.
      * 
      * @param table
-     *        The table associated with the drag context; must not be
-     *        {@code null}.
+     *        The table associated with the drag context.
      * @param initialLocation
-     *        The initial drag location in table coordinates; must not be
-     *        {@code null}. No copy is made of this value and it must not be
-     *        modified after calling this method.
+     *        The initial drag location in table coordinates. No copy is made of
+     *        this value and it must not be modified after calling this method.
      * @param preDragComponentStates
      *        The collection of component states prior to the beginning of the
-     *        drag-and-drop operation; must not be {@code null}. No copy is made
-     *        of this value and it must not be modified after calling this
-     *        method.
+     *        drag-and-drop operation. No copy is made of this value and it must
+     *        not be modified after calling this method.
      * @param mobileContainer
      *        The container used to hold the components being dragged during the
-     *        drag-and-drop operation; must not be {@code null}.
+     *        drag-and-drop operation.
      * @param dragStrategy
-     *        The drag strategy; must not be {@code null}.
+     *        The drag strategy.
      */
     private DragContext(
         final Table table,
@@ -127,16 +124,14 @@ final class DragContext
      * Begins a drag-and-drop operation.
      * 
      * @param table
-     *        The table associated with the drag-and-drop operation; must not be
-     *        {@code null}.
+     *        The table associated with the drag-and-drop operation.
      * @param location
-     *        The beginning drag location in table coordinates; must not be
-     *        {@code null}.
+     *        The beginning drag location in table coordinates.
      * @param component
-     *        The component to be dragged; must not be {@code null}.
+     *        The component to be dragged.
      * @param dragStrategyFactory
      *        A factory for creating the drag strategy for the drag-and-drop
-     *        operation; must not be {@code null}.
+     *        operation.
      * 
      * @return A new instance of the {@code DragContext} class or {@code null}
      *         if a drag-and-drop operation is not possible for the specified
@@ -290,10 +285,9 @@ final class DragContext
      * Gets the default drag strategy for the specified component.
      * 
      * @param component
-     *        The component; must not be {@code null}.
+     *        The component.
      * 
-     * @return The default drag strategy for the specified component; never
-     *         {@code null}.
+     * @return The default drag strategy for the specified component.
      */
     private static IDragStrategy getDefaultDragStrategy(
         final IComponent component )
@@ -311,10 +305,9 @@ final class DragContext
      * Gets the container for the drop at the specified location.
      * 
      * @param location
-     *        The drop location in table coordinates; must not be {@code null}.
+     *        The drop location in table coordinates.
      * 
-     * @return The container for the drop at the specified location; never
-     *         {@code null}.
+     * @return The container for the drop at the specified location.
      */
     @GuardedBy( "getLock()" )
     private IContainer getDropContainer(
@@ -336,7 +329,7 @@ final class DragContext
     /**
      * Gets the table environment lock.
      * 
-     * @return The table environment lock; never {@code null}.
+     * @return The table environment lock.
      */
     private ITableEnvironmentLock getLock()
     {
@@ -347,7 +340,7 @@ final class DragContext
      * Moves the mobile container based on the specified drag location.
      * 
      * @param location
-     *        The drag location in table coordinates; must not be {@code null}.
+     *        The drag location in table coordinates.
      */
     private void moveMobileContainer(
         final Point location )
@@ -397,7 +390,7 @@ final class DragContext
          * class.
          * 
          * @param component
-         *        The component being dragged; must not be {@code null}.
+         *        The component being dragged.
          */
         PreDragComponentState(
             final IComponent component )

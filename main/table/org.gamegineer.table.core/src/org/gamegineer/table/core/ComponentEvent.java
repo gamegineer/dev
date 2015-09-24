@@ -59,10 +59,10 @@ public class ComponentEvent
      * Initializes a new instance of the {@code ComponentEvent} class.
      * 
      * @param source
-     *        The component that fired the event; must not be {@code null}.
+     *        The component that fired the event.
      * @param componentPath
      *        The path of the component that fired the event at the time the
-     *        event was fired; may be {@code null}.
+     *        event was fired.
      */
     public ComponentEvent(
         final IComponent source,
@@ -82,7 +82,7 @@ public class ComponentEvent
     /**
      * Gets the component that fired the event.
      * 
-     * @return The component that fired the event; never {@code null}.
+     * @return The component that fired the event.
      */
     public final IComponent getComponent()
     {
@@ -94,7 +94,7 @@ public class ComponentEvent
      * was fired.
      * 
      * @return The path of the component that fired the event at the time the
-     *         event was fired; may be {@code null}.
+     *         event was fired.
      */
     public final @Nullable ComponentPath getComponentPath()
     {
@@ -104,7 +104,7 @@ public class ComponentEvent
     /**
      * Gets the thread on which the event originated.
      * 
-     * @return The thread on which the event originated; never {@code null}.
+     * @return The thread on which the event originated.
      */
     public final Thread getThread()
     {

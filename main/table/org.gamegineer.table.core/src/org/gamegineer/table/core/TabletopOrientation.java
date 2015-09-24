@@ -1,6 +1,6 @@
 /*
  * TabletopOrientation.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -49,7 +49,7 @@ public final class TabletopOrientation
      * Initializes a new instance of the {@code Orientation} class.
      * 
      * @param name
-     *        The name of the enum constant; must not be {@code null}.
+     *        The name of the enum constant.
      * @param ordinal
      *        The ordinal of the enum constant.
      * 

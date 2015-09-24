@@ -61,7 +61,7 @@ public abstract class AbstractTableEnvironmentFactoryTestCase
     /**
      * Creates the table environment factory to be tested.
      * 
-     * @return The table environment factory to be tested; never {@code null}.
+     * @return The table environment factory to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -72,8 +72,7 @@ public abstract class AbstractTableEnvironmentFactoryTestCase
     /**
      * Gets the table environment factory under test in the fixture.
      * 
-     * @return The table environment factory under test in the fixture; never
-     *         {@code null}.
+     * @return The table environment factory under test in the fixture.
      */
     protected final ITableEnvironmentFactory getTableEnvironmentFactory()
     {

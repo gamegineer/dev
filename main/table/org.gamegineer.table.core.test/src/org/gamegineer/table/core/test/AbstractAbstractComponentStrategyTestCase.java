@@ -65,7 +65,7 @@ public abstract class AbstractAbstractComponentStrategyTestCase<ComponentStrateg
     /**
      * Creates the component strategy to be tested.
      * 
-     * @return The component strategy to be tested; never {@code null}.
+     * @return The component strategy to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -76,8 +76,7 @@ public abstract class AbstractAbstractComponentStrategyTestCase<ComponentStrateg
     /**
      * Gets the component strategy under test in the fixture.
      * 
-     * @return The component strategy under test in the fixture; never
-     *         {@code null}.
+     * @return The component strategy under test in the fixture.
      */
     protected final ComponentStrategyType getComponentStrategy()
     {
@@ -89,10 +88,10 @@ public abstract class AbstractAbstractComponentStrategyTestCase<ComponentStrateg
      * specified component strategy.
      * 
      * @param componentStrategy
-     *        The component strategy; must not be {@code null}.
+     *        The component strategy.
      * 
      * @return The identifier of the default component surface design for the
-     *         specified component strategy; never {@code null}.
+     *         specified component strategy.
      */
     protected abstract ComponentSurfaceDesignId getDefaultSurfaceDesignId(
         ComponentStrategyType componentStrategy );

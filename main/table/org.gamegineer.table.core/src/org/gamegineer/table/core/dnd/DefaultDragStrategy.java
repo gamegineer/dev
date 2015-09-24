@@ -51,8 +51,7 @@ public final class DefaultDragStrategy
      * Initializes a new instance of the {@code DefaultDragStrategy} class.
      * 
      * @param component
-     *        The component from which the drag-and-drop operation will begin;
-     *        must not be {@code null}.
+     *        The component from which the drag-and-drop operation will begin.
      */
     public DefaultDragStrategy(
         final IComponent component )

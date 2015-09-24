@@ -61,7 +61,7 @@ public abstract class AbstractDragStrategyFactoryTestCase
     /**
      * Creates the drag strategy factory to be tested.
      * 
-     * @return The drag strategy factory to be tested; never {@code null}.
+     * @return The drag strategy factory to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -72,8 +72,7 @@ public abstract class AbstractDragStrategyFactoryTestCase
     /**
      * Gets the drag strategy factory under test in the fixture.
      * 
-     * @return The drag strategy factory under test in the fixture; never
-     *         {@code null}.
+     * @return The drag strategy factory under test in the fixture.
      */
     protected final IDragStrategyFactory getDragStrategyFactory()
     {

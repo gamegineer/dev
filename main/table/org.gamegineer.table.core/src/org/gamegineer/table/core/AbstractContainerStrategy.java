@@ -1,6 +1,6 @@
 /*
  * AbstractContainerStrategy.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -42,7 +42,7 @@ public abstract class AbstractContainerStrategy
      * class.
      * 
      * @param id
-     *        The component strategy identifier; must not be {@code null}.
+     *        The component strategy identifier.
      */
     protected AbstractContainerStrategy(
         final ComponentStrategyId id )
@@ -76,8 +76,7 @@ public abstract class AbstractContainerStrategy
     /**
      * Gets the identifier of the default container layout.
      * 
-     * @return The identifier of the default container layout; never
-     *         {@code null}.
+     * @return The identifier of the default container layout.
      */
     protected abstract ContainerLayoutId getDefaultLayoutId();
 }

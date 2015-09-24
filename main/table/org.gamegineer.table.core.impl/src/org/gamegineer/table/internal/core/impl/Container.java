@@ -100,10 +100,9 @@ final class Container
      * Initializes a new instance of the {@code Container} class.
      * 
      * @param tableEnvironment
-     *        The table environment associated with the container; must not be
-     *        {@code null}.
+     *        The table environment associated with the container.
      * @param strategy
-     *        The container strategy; must not be {@code null}.
+     *        The container strategy.
      */
     Container(
         final TableEnvironment tableEnvironment,
@@ -168,10 +167,9 @@ final class Container
      * specified index.
      * 
      * @param components
-     *        The collection of components to be added to this container; must
-     *        not be {@code null}. The components are added to the this
-     *        container at the specified index in the order they appear in the
-     *        collection.
+     *        The collection of components to be added to this container. The
+     *        components are added to the this container at the specified index
+     *        in the order they appear in the collection.
      * @param boxedIndex
      *        The index at which the components will be added or {@code null} if
      *        the components should be added to the top of this container.
@@ -257,12 +255,12 @@ final class Container
      * Creates a container content changed event for this container.
      * 
      * @param component
-     *        The component associated with the event; must not be {@code null}.
+     *        The component associated with the event.
      * @param componentIndex
      *        The index of the component associated with the event; must not be
      *        negative.
      * 
-     * @return A new container content changed event; never {@code null}.
+     * @return A new container content changed event.
      */
     @GuardedBy( "getLock()" )
     private ContainerContentChangedEvent createContainerContentChangedEvent(
@@ -278,7 +276,7 @@ final class Container
     /**
      * Creates a container event for this container.
      * 
-     * @return A new container event; never {@code null}.
+     * @return A new container event.
      */
     @GuardedBy( "getLock()" )
     private ContainerEvent createContainerEvent()
@@ -292,7 +290,7 @@ final class Container
      * Fires a component added event.
      * 
      * @param component
-     *        The added component; must not be {@code null}.
+     *        The added component.
      * @param componentIndex
      *        The index of the added component; must not be negative.
      */
@@ -330,7 +328,7 @@ final class Container
      * Fires a component removed event.
      * 
      * @param component
-     *        The removed component; must not be {@code null}.
+     *        The removed component.
      * @param componentIndex
      *        The index of the removed component; must not be negative.
      */
@@ -464,7 +462,7 @@ final class Container
      * 
      * @param paths
      *        The collection of constituent component paths of the overall
-     *        component path; must not be {@code null} and must not be empty.
+     *        component path; must not be empty.
      * 
      * @return The component in this container at the specified path; or
      *         {@code null} if no component exists at the specified path.
@@ -515,7 +513,7 @@ final class Container
      * container.
      * 
      * @return The collection of mementos representing the components in this
-     *         container; never {@code null}.
+     *         container.
      */
     @GuardedBy( "getLock()" )
     private List<Object> getComponentMementos()
@@ -568,7 +566,7 @@ final class Container
     /**
      * Gets the identifier of the layout of components in this container.
      * 
-     * @return The container layout identifier; never {@code null}.
+     * @return The container layout identifier.
      */
     @GuardedBy( "getLock()" )
     private ContainerLayoutId getLayoutId()
@@ -720,14 +718,13 @@ final class Container
      * Removes all components from this container in the specified range.
      * 
      * @param componentRangeStrategy
-     *        The strategy used to determine the range of components to remove;
-     *        must not be {@code null}. The strategy will be invoked while the
-     *        table lock is held.
+     *        The strategy used to determine the range of components to remove.
+     *        The strategy will be invoked while the table lock is held.
      * 
-     * @return The collection of components removed from this container; never
-     *         {@code null}. The components are returned in order from the
-     *         component nearest the bottom of the container to the component
-     *         nearest the top of the container.
+     * @return The collection of components removed from this container. The
+     *         components are returned in order from the component nearest the
+     *         bottom of the container to the component nearest the top of the
+     *         container.
      */
     private List<IComponent> removeComponents(
         final ComponentRangeStrategy componentRangeStrategy )
@@ -800,7 +797,7 @@ final class Container
      * 
      * @param componentMementos
      *        The collection of mementos representing the components in this
-     *        container; must not be {@code null}.
+     *        container.
      * 
      * @throws org.gamegineer.common.core.util.memento.MementoException
      *         If any component memento is malformed.
@@ -864,7 +861,7 @@ final class Container
      * Sets the identifier of the layout of components in this container.
      * 
      * @param layoutId
-     *        The container layout identifier; must not be {@code null}.
+     *        The container layout identifier.
      * 
      * @throws org.gamegineer.common.core.util.memento.MementoException
      *         If the container layout identifier is not registered.

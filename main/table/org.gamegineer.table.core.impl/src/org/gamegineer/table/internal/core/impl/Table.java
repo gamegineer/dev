@@ -108,7 +108,7 @@ final class Table
      * Initializes a new instance of the {@code Table} class.
      * 
      * @param tableEnvironment
-     *        The table environment; must not be {@code null}.
+     *        The table environment.
      */
     Table(
         final TableEnvironment tableEnvironment )
@@ -200,13 +200,11 @@ final class Table
      * memento.
      * 
      * @param tableEnvironment
-     *        The table environment associated with the new table; must not be
-     *        {@code null}.
+     *        The table environment associated with the new table.
      * @param memento
-     *        The memento representing the initial table state; must not be
-     *        {@code null}.
+     *        The memento representing the initial table state.
      * 
-     * @return A new instance of the {@code Table} class; never {@code null}.
+     * @return A new instance of the {@code Table} class.
      * 
      * @throws org.gamegineer.common.core.util.memento.MementoException
      *         If {@code memento} is malformed.
@@ -307,7 +305,7 @@ final class Table
     /**
      * Gets the table environment lock.
      * 
-     * @return The table environment lock; never {@code null}.
+     * @return The table environment lock.
      */
     private ITableEnvironmentLock getLock()
     {

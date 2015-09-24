@@ -58,7 +58,7 @@ final class AccordianLayout
      * Initializes a new instance of the {@code AccordianLayout} class.
      * 
      * @param id
-     *        The container layout identifier; must not be {@code null}.
+     *        The container layout identifier.
      * @param offsetX
      *        The offset of each component in the x-direction in table
      *        coordinates.

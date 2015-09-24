@@ -120,7 +120,7 @@ public abstract class AbstractDragContextTestCase
      * sibling immediately above it, if present.</li>
      * </ul>
      * 
-     * @return A new drag strategy factory; never {@code null}.
+     * @return A new drag strategy factory.
      */
     private static IDragStrategyFactory createFixtureDragStrategyFactory()
     {
@@ -162,7 +162,7 @@ public abstract class AbstractDragContextTestCase
      * Creates a new component with unique attributes using the fixture table
      * environment.
      * 
-     * @return A new component; never {@code null}.
+     * @return A new component.
      */
     private IComponent createUniqueComponent()
     {
@@ -178,7 +178,7 @@ public abstract class AbstractDragContextTestCase
      * @param y
      *        The y-coordinate of the component origin.
      * 
-     * @return A new component; never {@code null}.
+     * @return A new component.
      */
     private IComponent createUniqueComponent(
         final int x,
@@ -199,7 +199,7 @@ public abstract class AbstractDragContextTestCase
      * @param y
      *        The y-coordinate of the container origin.
      * 
-     * @return A new container; never {@code null}.
+     * @return A new container.
      */
     private IContainer createUniqueContainer(
         final int x,
@@ -214,7 +214,7 @@ public abstract class AbstractDragContextTestCase
     /**
      * Gets the fixture location where the drag-and-drop operation is begun.
      * 
-     * @return The fixture location where the drag-and-drop operation is begun; never {@code null}.
+     * @return The fixture location where the drag-and-drop operation is begun.
      */
     private Point getBeginDragLocation()
     {
@@ -224,7 +224,7 @@ public abstract class AbstractDragContextTestCase
     /**
      * Gets the drag context under test in the fixture.
      * 
-     * @return The drag context under test in the fixture; never {@code null}.
+     * @return The drag context under test in the fixture.
      */
     protected final IDragContext getDragContext()
     {
@@ -234,7 +234,7 @@ public abstract class AbstractDragContextTestCase
     /**
      * Gets the fixture drag source.
      * 
-     * @return The fixture drag source; never {@code null}.
+     * @return The fixture drag source.
      */
     private IDragSource getDragSource()
     {
@@ -242,11 +242,11 @@ public abstract class AbstractDragContextTestCase
     }
 
     /**
-     * Gets the fixture container used to hold the components being dragged during the
-     * drag-and-drop operation.
+     * Gets the fixture container used to hold the components being dragged
+     * during the drag-and-drop operation.
      * 
-     * @return The fixture container used to hold the components being dragged during the
-     * drag-and-drop operation; never {@code null}.
+     * @return The fixture container used to hold the components being dragged
+     *         during the drag-and-drop operation.
      */
     private IContainer getMobileContainer()
     {
@@ -254,11 +254,11 @@ public abstract class AbstractDragContextTestCase
     }
 
     /**
-     * Gets the fixture collection of component states prior to the beginning of the
-     * drag-and-drop operation.
+     * Gets the fixture collection of component states prior to the beginning of
+     * the drag-and-drop operation.
      * 
-     * @return The fixture collection of component states prior to the beginning of the
-     * drag-and-drop operation; never {@code null}.
+     * @return The fixture collection of component states prior to the beginning
+     *         of the drag-and-drop operation.
      */
     private List<PreDragComponentState> getPreDragComponentStates()
     {
@@ -268,7 +268,7 @@ public abstract class AbstractDragContextTestCase
     /**
      * Gets the table associated with the fixture.
      * 
-     * @return The table associated with the fixture; never {@code null}.
+     * @return The table associated with the fixture.
      */
     protected abstract ITable getTable();
 
@@ -277,7 +277,7 @@ public abstract class AbstractDragContextTestCase
      * dragged.
      * 
      * @return The fixture container that ultimately receives the component
-     *         being dragged; never {@code null}.
+     *         being dragged.
      */
     private IContainer getTargetContainer()
     {
@@ -627,7 +627,7 @@ public abstract class AbstractDragContextTestCase
          * class.
          * 
          * @param component
-         *        The component being dragged; must not be {@code null}.
+         *        The component being dragged.
          */
         PreDragComponentState(
             final IComponent component )

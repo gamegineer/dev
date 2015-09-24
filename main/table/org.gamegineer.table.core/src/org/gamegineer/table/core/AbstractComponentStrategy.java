@@ -54,7 +54,7 @@ public abstract class AbstractComponentStrategy
      * class.
      * 
      * @param id
-     *        The component strategy identifier; must not be {@code null}.
+     *        The component strategy identifier.
      */
     protected AbstractComponentStrategy(
         final ComponentStrategyId id )
@@ -95,7 +95,7 @@ public abstract class AbstractComponentStrategy
     /**
      * Gets the default component surface design.
      * 
-     * @return The default component surface design; never {@code null}.
+     * @return The default component surface design.
      */
     private ComponentSurfaceDesign getDefaultSurfaceDesign()
     {
@@ -114,8 +114,7 @@ public abstract class AbstractComponentStrategy
     /**
      * Gets the identifier of the default component surface design.
      * 
-     * @return The identifier of the default component surface design; never
-     *         {@code null}.
+     * @return The identifier of the default component surface design.
      */
     protected abstract ComponentSurfaceDesignId getDefaultSurfaceDesignId();
 

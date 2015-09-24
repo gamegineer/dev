@@ -61,12 +61,12 @@ public class ContainerContentChangedEvent
      * class.
      * 
      * @param source
-     *        The container that fired the event; must not be {@code null}.
+     *        The container that fired the event.
      * @param containerPath
      *        The path of the container that fired the event at the time the
-     *        event was fired; may be {@code null}.
+     *        event was fired.
      * @param component
-     *        The component associated with the event; must not be {@code null}.
+     *        The component associated with the event.
      * @param componentIndex
      *        The index of the component associated with the event at the time
      *        the event was fired.
@@ -96,7 +96,7 @@ public class ContainerContentChangedEvent
     /**
      * Gets the component associated with the event.
      * 
-     * @return The component associated with the event; never {@code null}.
+     * @return The component associated with the event.
      */
     public final IComponent getComponent()
     {

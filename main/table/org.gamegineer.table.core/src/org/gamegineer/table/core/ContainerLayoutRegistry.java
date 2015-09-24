@@ -1,6 +1,6 @@
 /*
  * ContainerLayoutRegistry.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -50,10 +50,9 @@ public final class ContainerLayoutRegistry
      * Gets the container layout with the specified identifier.
      * 
      * @param id
-     *        The container layout identifier; must not be {@code null}.
+     *        The container layout identifier.
      * 
-     * @return The container layout with the specified identifier; never
-     *         {@code null}.
+     * @return The container layout with the specified identifier.
      * 
      * @throws org.gamegineer.table.core.NoSuchContainerLayoutException
      *         If {@code id} is not registered.

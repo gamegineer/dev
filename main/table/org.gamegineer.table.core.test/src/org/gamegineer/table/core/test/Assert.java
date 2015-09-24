@@ -57,9 +57,9 @@ public final class Assert
      * Asserts that two components are equal.
      * 
      * @param expected
-     *        The expected value; may be {@code null}.
+     *        The expected value.
      * @param actual
-     *        The actual value; may be {@code null}.
+     *        The actual value.
      * 
      * @throws java.lang.AssertionError
      *         If the two values are not equal.
@@ -102,9 +102,9 @@ public final class Assert
      * Asserts that two containers are equal.
      * 
      * @param expected
-     *        The expected value; must not be {@code null}.
+     *        The expected value.
      * @param actual
-     *        The actual value; must not be {@code null}.
+     *        The actual value.
      * 
      * @throws java.lang.AssertionError
      *         If the two values are not equal.
@@ -128,9 +128,9 @@ public final class Assert
      * Asserts that two tables are equal.
      * 
      * @param expected
-     *        The expected value; may be {@code null}.
+     *        The expected value.
      * @param actual
-     *        The actual value; may be {@code null}.
+     *        The actual value.
      * 
      * @throws java.lang.AssertionError
      *         If the two values are not equal.

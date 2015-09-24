@@ -1,6 +1,6 @@
 /*
  * AbstractContainerLayout.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -48,7 +48,7 @@ public abstract class AbstractContainerLayout
      * Initializes a new instance of the {@code AbstractContainerLayout} class.
      * 
      * @param id
-     *        The container layout identifier; must not be {@code null}.
+     *        The container layout identifier.
      */
     protected AbstractContainerLayout(
         final ContainerLayoutId id )
@@ -66,12 +66,12 @@ public abstract class AbstractContainerLayout
      * component at the specified index.
      * 
      * @param container
-     *        The container; must not be {@code null}.
+     *        The container.
      * @param index
      *        The component index.
      * 
      * @return The offset from the container origin in table coordinates of the
-     *         component at the specified index; never {@code null}.
+     *         component at the specified index.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code index} is negative.

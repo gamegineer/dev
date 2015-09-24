@@ -64,7 +64,7 @@ public final class TableTest
     /**
      * Gets the table under test in the fixture.
      * 
-     * @return The table under test in the fixture; never {@code null}.
+     * @return The table under test in the fixture.
      */
     private Table getTable()
     {
@@ -74,7 +74,7 @@ public final class TableTest
     /**
      * Gets the table environment for use in the fixture.
      * 
-     * @return The table environment for use in the fixture; never {@code null}.
+     * @return The table environment for use in the fixture.
      */
     private TableEnvironment getTableEnvironment()
     {

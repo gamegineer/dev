@@ -123,9 +123,9 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      * Creates the component to be tested.
      * 
      * @param tableEnvironment
-     *        The fixture table environment; must not be {@code null}.
+     *        The fixture table environment.
      * 
-     * @return The component to be tested; never {@code null}.
+     * @return The component to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -138,7 +138,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      * Creates a component orientation that is guaranteed to be illegal for all
      * components.
      * 
-     * @return An illegal component orientation; never {@code null}.
+     * @return An illegal component orientation.
      */
     private static ComponentOrientation createIllegalOrientation()
     {
@@ -167,7 +167,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     /**
      * Creates the table environment for use in the fixture.
      * 
-     * @return The table environment for use in the fixture; never {@code null}.
+     * @return The table environment for use in the fixture.
      */
     protected final TableEnvironmentType createTableEnvironment()
     {
@@ -179,9 +179,9 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      * context.
      * 
      * @param context
-     *        The table environment context; must not be {@code null}.
+     *        The table environment context.
      * 
-     * @return The table environment for use in the fixture; never {@code null}.
+     * @return The table environment for use in the fixture.
      */
     protected abstract TableEnvironmentType createTableEnvironment(
         final ITableEnvironmentContext context );
@@ -190,7 +190,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      * Fires a component bounds changed event for the specified component.
      * 
      * @param component
-     *        The component; must not be {@code null}.
+     *        The component.
      */
     protected abstract void fireComponentBoundsChanged(
         ComponentType component );
@@ -199,7 +199,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      * Fires a component orientation changed event for the specified component.
      * 
      * @param component
-     *        The component; must not be {@code null}.
+     *        The component.
      */
     protected abstract void fireComponentOrientationChanged(
         ComponentType component );
@@ -209,7 +209,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      * component.
      * 
      * @param component
-     *        The component; must not be {@code null}.
+     *        The component.
      */
     protected abstract void fireComponentSurfaceDesignChanged(
         ComponentType component );
@@ -219,15 +219,13 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      * specified collection of supported component orientations.
      * 
      * @param orientation
-     *        The component orientation for which an alternate is desired; must
-     *        not be {@code null}.
+     *        The component orientation for which an alternate is desired.
      * @param supportedOrientations
-     *        The collection of supported component orientations; must not be
-     *        {@code null}.
+     *        The collection of supported component orientations.
      * 
-     * @return The alternate component orientation; never {@code null}. If no
-     *         alternate component orientation is available, the specified
-     *         component orientation is returned.
+     * @return The alternate component orientation. If no alternate component
+     *         orientation is available, the specified component orientation is
+     *         returned.
      */
     private static ComponentOrientation getAlternateOrientation(
         final ComponentOrientation orientation,
@@ -248,10 +246,9 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
      * Gets an alternate to the specified point.
      * 
      * @param point
-     *        The point for which an alternate is desired; must not be
-     *        {@code null}.
+     *        The point for which an alternate is desired.
      * 
-     * @return The alternate point; never {@code null}.
+     * @return The alternate point.
      */
     private static Point getAlternatePoint(
         final Point point )
@@ -262,7 +259,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     /**
      * Gets the component under test in the fixture.
      * 
-     * @return The component under test in the fixture; never {@code null}.
+     * @return The component under test in the fixture.
      */
     protected final ComponentType getComponent()
     {
@@ -272,7 +269,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     /**
      * Gets the fixture mocks control.
      * 
-     * @return The fixture mocks control; never {@code null}.
+     * @return The fixture mocks control.
      */
     private IMocksControl getMocksControl()
     {
@@ -282,7 +279,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
     /**
      * Gets the table environment for use in the fixture.
      * 
-     * @return The table environment for use in the fixture; never {@code null}.
+     * @return The table environment for use in the fixture.
      */
     protected final TableEnvironmentType getTableEnvironment()
     {

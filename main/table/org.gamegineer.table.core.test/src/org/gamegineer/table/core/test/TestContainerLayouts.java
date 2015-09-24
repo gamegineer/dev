@@ -67,9 +67,9 @@ public final class TestContainerLayouts
      * Clones the specified container layout.
      * 
      * @param containerLayout
-     *        The container layout to clone; must not be {@code null}.
+     *        The container layout to clone.
      * 
-     * @return A new container layout; never {@code null}.
+     * @return A new container layout.
      */
     public static IContainerLayout cloneContainerLayout(
         final IContainerLayout containerLayout )
@@ -96,7 +96,7 @@ public final class TestContainerLayouts
      * horizontal direction with the right edge of each component immediately
      * next to the left edge of the following component.
      * 
-     * @return A new container layout; never {@code null}.
+     * @return A new container layout.
      */
     public static IContainerLayout createHorizontalContainerLayout()
     {
@@ -119,7 +119,7 @@ public final class TestContainerLayouts
     /**
      * Creates a new container layout with a unique identifier.
      * 
-     * @return A new container layout; never {@code null}.
+     * @return A new container layout.
      */
     public static IContainerLayout createUniqueContainerLayout()
     {
@@ -139,7 +139,7 @@ public final class TestContainerLayouts
      * vertical direction with the bottom edge of each component immediately
      * next to the top edge of the following component.
      * 
-     * @return A new container layout; never {@code null}.
+     * @return A new container layout.
      */
     public static IContainerLayout createVerticalContainerLayout()
     {
@@ -162,7 +162,7 @@ public final class TestContainerLayouts
     /**
      * Gets a unique container layout identifier.
      * 
-     * @return A unique container layout identifier; never {@code null}.
+     * @return A unique container layout identifier.
      */
     @SuppressWarnings( "boxing" )
     private static ContainerLayoutId getUniqueContainerLayoutId()
@@ -175,9 +175,9 @@ public final class TestContainerLayouts
      * registry.
      * 
      * @param containerLayout
-     *        The container layout; must not be {@code null}.
+     *        The container layout.
      * 
-     * @return The registered container layout; never {@code null}.
+     * @return The registered container layout.
      */
     private static IContainerLayout registerContainerLayout(
         final IContainerLayout containerLayout )
@@ -218,7 +218,7 @@ public final class TestContainerLayouts
          * class.
          * 
          * @param id
-         *        The container layout identifier; must not be {@code null}.
+         *        The container layout identifier.
          */
         AbstractContainerLayout(
             final ContainerLayoutId id )

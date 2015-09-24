@@ -79,8 +79,7 @@ public final class MultiThreadedTableEnvironmentContext
     /**
      * Creates the task used to execute the event notifications.
      * 
-     * @return The task used to execute the event notifications; never
-     *         {@code null}.
+     * @return The task used to execute the event notifications.
      */
     private Runnable createEventNotificationTask()
     {

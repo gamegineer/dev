@@ -71,7 +71,7 @@ public final class SingleThreadedTableEnvironmentContextTest
     /**
      * Gets the fixture mocks control.
      * 
-     * @return The fixture mocks control; never {@code null}.
+     * @return The fixture mocks control.
      */
     private IMocksControl getMocksControl()
     {
@@ -83,7 +83,7 @@ public final class SingleThreadedTableEnvironmentContextTest
      * fixture.
      * 
      * @return The single-threaded table environment context under test in the
-     *         fixture; never {@code null}.
+     *         fixture.
      */
     private SingleThreadedTableEnvironmentContext getTableEnvironmentContext()
     {

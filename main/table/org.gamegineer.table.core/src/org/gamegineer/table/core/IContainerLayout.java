@@ -1,6 +1,6 @@
 /*
  * IContainerLayout.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -39,7 +39,7 @@ public interface IContainerLayout
     /**
      * Gets the container layout identifier.
      * 
-     * @return The container layout identifier; never {@code null}.
+     * @return The container layout identifier.
      */
     public ContainerLayoutId getId();
 
@@ -48,7 +48,7 @@ public interface IContainerLayout
      * rules of this layout.
      * 
      * @param container
-     *        The container; must not be {@code null}.
+     *        The container.
      */
     public void layout(
         IContainer container );

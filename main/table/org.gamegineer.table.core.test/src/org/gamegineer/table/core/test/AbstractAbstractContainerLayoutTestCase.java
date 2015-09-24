@@ -67,7 +67,7 @@ public abstract class AbstractAbstractContainerLayoutTestCase<ContainerLayoutTyp
     /**
      * Creates the container layout to be tested.
      * 
-     * @return The container layout to be tested; never {@code null}.
+     * @return The container layout to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -80,15 +80,15 @@ public abstract class AbstractAbstractContainerLayoutTestCase<ContainerLayoutTyp
      * component at the specified index for the specified container layout.
      * 
      * @param containerLayout
-     *        The container layout; must not be {@code null}.
+     *        The container layout.
      * @param container
-     *        The container; must not be {@code null}.
+     *        The container.
      * @param index
      *        The component index.
      * 
      * @return The offset from the container origin in table coordinates of the
      *         component at the specified index for the specified container
-     *         layout; never {@code null}.
+     *         layout.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code index} is negative.
@@ -101,8 +101,7 @@ public abstract class AbstractAbstractContainerLayoutTestCase<ContainerLayoutTyp
     /**
      * Gets the container layout under test in the fixture.
      * 
-     * @return The container layout under test in the fixture; never
-     *         {@code null}.
+     * @return The container layout under test in the fixture.
      */
     protected final ContainerLayoutType getContainerLayout()
     {

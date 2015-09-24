@@ -72,9 +72,9 @@ public final class TestComponentStrategies
      * Clones the specified component strategy.
      * 
      * @param componentStrategy
-     *        The component strategy to clone; must not be {@code null}.
+     *        The component strategy to clone.
      * 
-     * @return A new component strategy; never {@code null}.
+     * @return A new component strategy.
      */
     public static IComponentStrategy cloneComponentStrategy(
         final IComponentStrategy componentStrategy )
@@ -88,13 +88,11 @@ public final class TestComponentStrategies
      * Creates a decorator for the specified component strategy.
      * 
      * @param componentStrategy
-     *        The component strategy to be decorated; must not be {@code null}.
+     *        The component strategy to be decorated.
      * @param componentStrategyId
-     *        The component strategy identifier for the decorator; must not be
-     *        {@code null}.
+     *        The component strategy identifier for the decorator.
      * 
-     * @return A decorator for the specified component strategy; never
-     *         {@code null}.
+     * @return A decorator for the specified component strategy.
      */
     private static IComponentStrategy createComponentStrategyDecorator(
         final IComponentStrategy componentStrategy,
@@ -151,13 +149,11 @@ public final class TestComponentStrategies
      * Creates a decorator for the specified container strategy.
      * 
      * @param containerStrategy
-     *        The container strategy to be decorated; must not be {@code null}.
+     *        The container strategy to be decorated.
      * @param componentStrategyId
-     *        The component strategy identifier for the decorator; must not be
-     *        {@code null}.
+     *        The component strategy identifier for the decorator.
      * 
-     * @return A decorator for the specified container strategy; never
-     *         {@code null}.
+     * @return A decorator for the specified container strategy.
      */
     private static IContainerStrategy createContainerStrategyDecorator(
         final IContainerStrategy containerStrategy,
@@ -219,7 +215,7 @@ public final class TestComponentStrategies
     /**
      * Creates a new component strategy with a unique identifier.
      * 
-     * @return A new component strategy; never {@code null}.
+     * @return A new component strategy.
      */
     public static IComponentStrategy createUniqueComponentStrategy()
     {
@@ -229,7 +225,7 @@ public final class TestComponentStrategies
     /**
      * Creates a new container strategy with a unique identifier.
      * 
-     * @return A new container strategy; never {@code null}.
+     * @return A new container strategy.
      */
     public static IContainerStrategy createUniqueContainerStrategy()
     {
@@ -239,7 +235,7 @@ public final class TestComponentStrategies
     /**
      * Gets a unique component strategy identifier.
      * 
-     * @return A unique component strategy identifier; never {@code null}.
+     * @return A unique component strategy identifier.
      */
     @SuppressWarnings( "boxing" )
     private static ComponentStrategyId getUniqueComponentStrategyId()
@@ -255,9 +251,9 @@ public final class TestComponentStrategies
      *        The type of the component strategy.
      * 
      * @param componentStrategy
-     *        The component strategy; must not be {@code null}.
+     *        The component strategy.
      * 
-     * @return The registered component strategy; never {@code null}.
+     * @return The registered component strategy.
      */
     private static <T extends IComponentStrategy> T registerComponentStrategy(
         final T componentStrategy )

@@ -58,7 +58,7 @@ public final class NoSuchComponentStrategyException
      * message and no cause.
      * 
      * @param message
-     *        The detail message; may be {@code null}.
+     *        The detail message.
      */
     public NoSuchComponentStrategyException(
         final @Nullable String message )
@@ -72,7 +72,7 @@ public final class NoSuchComponentStrategyException
      * specified cause.
      * 
      * @param cause
-     *        The cause; may be {@code null}.
+     *        The cause.
      */
     public NoSuchComponentStrategyException(
         final @Nullable Throwable cause )
@@ -86,9 +86,9 @@ public final class NoSuchComponentStrategyException
      * message and cause.
      * 
      * @param message
-     *        The detail message; may be {@code null}.
+     *        The detail message.
      * @param cause
-     *        The cause; may be {@code null}.
+     *        The cause.
      */
     public NoSuchComponentStrategyException(
         final @Nullable String message,

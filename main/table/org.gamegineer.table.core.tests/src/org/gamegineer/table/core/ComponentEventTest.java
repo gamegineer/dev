@@ -60,8 +60,7 @@ public final class ComponentEventTest
     /**
      * Gets the component event under test in the fixture.
      * 
-     * @return The component event under test in the fixture; never {@code null}
-     *         .
+     * @return The component event under test in the fixture.
      */
     private ComponentEvent getComponentEvent()
     {

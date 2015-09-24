@@ -59,10 +59,10 @@ public class ContainerEvent
      * Initializes a new instance of the {@code ContainerEvent} class.
      * 
      * @param source
-     *        The container that fired the event; must not be {@code null}.
+     *        The container that fired the event.
      * @param containerPath
      *        The path of the container that fired the event at the time the
-     *        event was fired; may be {@code null}.
+     *        event was fired.
      */
     public ContainerEvent(
         final IContainer source,
@@ -82,7 +82,7 @@ public class ContainerEvent
     /**
      * Gets the container that fired the event.
      * 
-     * @return The container that fired the event; never {@code null}.
+     * @return The container that fired the event.
      */
     public final IContainer getContainer()
     {
@@ -94,7 +94,7 @@ public class ContainerEvent
      * was fired.
      * 
      * @return The path of the container that fired the event at the time the
-     *         event was fired; may be {@code null}.
+     *         event was fired.
      */
     public final @Nullable ComponentPath getContainerPath()
     {
@@ -104,7 +104,7 @@ public class ContainerEvent
     /**
      * Gets the thread on which the event originated.
      * 
-     * @return The thread on which the event originated; never {@code null}.
+     * @return The thread on which the event originated.
      */
     public final Thread getThread()
     {

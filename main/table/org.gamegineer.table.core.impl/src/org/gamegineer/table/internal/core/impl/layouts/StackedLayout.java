@@ -56,7 +56,7 @@ final class StackedLayout
      * Initializes a new instance of the {@code StackedLayout} class.
      * 
      * @param id
-     *        The container layout identifier; must not be {@code null}.
+     *        The container layout identifier.
      * @param componentsPerStackLevel
      *        The number of components per stack level; must be positive.
      * @param stackLevelOffsetX

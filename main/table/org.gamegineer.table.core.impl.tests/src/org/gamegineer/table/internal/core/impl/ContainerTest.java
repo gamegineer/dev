@@ -71,7 +71,7 @@ public final class ContainerTest
      * Creates a new component with unique attributes using the fixture table
      * environment.
      * 
-     * @return A new component; never {@code null}.
+     * @return A new component.
      */
     private Component createUniqueComponent()
     {
@@ -87,7 +87,7 @@ public final class ContainerTest
     /**
      * Gets the container under test in the fixture.
      * 
-     * @return The container under test in the fixture; never {@code null}.
+     * @return The container under test in the fixture.
      */
     private Container getContainer()
     {
@@ -97,7 +97,7 @@ public final class ContainerTest
     /**
      * Gets the fixture table environment.
      * 
-     * @return The fixture table environment; never {@code null}.
+     * @return The fixture table environment.
      */
     private TableEnvironment getTableEnvironment()
     {

@@ -1,6 +1,6 @@
 /*
  * IDragStrategyFactory.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -37,13 +37,12 @@ public interface IDragStrategyFactory
      * with the specified component.
      * 
      * @param component
-     *        The component from which the drag-and-drop operation will begin;
-     *        must not be {@code null}.
+     *        The component from which the drag-and-drop operation will begin.
      * @param successorDragStrategy
      *        The successor drag strategy to which requests are forwarded if
-     *        they cannot be handled; must not be {@code null}.
+     *        they cannot be handled.
      * 
-     * @return A new drag strategy; never {@code null}.
+     * @return A new drag strategy.
      */
     public IDragStrategy createDragStrategy(
         IComponent component,

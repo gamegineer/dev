@@ -1,6 +1,6 @@
 /*
  * ComponentAsComponentTest.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -93,10 +93,9 @@ public final class ComponentAsComponentTest
      * method.
      * 
      * @param component
-     *        The component; must not be {@code null}.
+     *        The component.
      * @param methodName
-     *        The name of the method associated with the event; must not be
-     *        {@code null}.
+     *        The name of the method associated with the event.
      */
     private static void fireComponentEvent(
         final Component component,

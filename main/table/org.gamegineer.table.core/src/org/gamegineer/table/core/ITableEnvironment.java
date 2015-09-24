@@ -1,6 +1,6 @@
 /*
  * ITableEnvironment.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -48,10 +48,9 @@ public interface ITableEnvironment
      * Creates a new component from the specified memento.
      * 
      * @param memento
-     *        The memento that represents the state of the component; must not
-     *        be {@code null}.
+     *        The memento that represents the state of the component.
      * 
-     * @return A new component; never {@code null}.
+     * @return A new component.
      * 
      * @throws org.gamegineer.common.core.util.memento.MementoException
      *         If the memento is unknown or malformed.
@@ -64,9 +63,9 @@ public interface ITableEnvironment
      * Creates a new component using the specified strategy.
      * 
      * @param strategy
-     *        The component strategy; must not be {@code null}.
+     *        The component strategy.
      * 
-     * @return A new component; never {@code null}.
+     * @return A new component.
      */
     public IComponent createComponent(
         IComponentStrategy strategy );
@@ -75,9 +74,9 @@ public interface ITableEnvironment
      * Creates a new container using the specified strategy.
      * 
      * @param strategy
-     *        The container strategy; must not be {@code null}.
+     *        The container strategy.
      * 
-     * @return A new container; never {@code null}.
+     * @return A new container.
      */
     public IContainer createContainer(
         IContainerStrategy strategy );
@@ -85,7 +84,7 @@ public interface ITableEnvironment
     /**
      * Creates a new table.
      * 
-     * @return A new table; never {@code null}.
+     * @return A new table.
      */
     public ITable createTable();
 
@@ -100,7 +99,7 @@ public interface ITableEnvironment
      * methods that should be treated as an atomic operation.
      * </p>
      * 
-     * @return The table environment lock; never {@code null}.
+     * @return The table environment lock.
      */
     public ITableEnvironmentLock getLock();
 }

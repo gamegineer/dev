@@ -46,7 +46,7 @@ public final class ComponentSurfaceDesignId
      * Initializes a new instance of the {@code ComponentSurfaceDesignId} class.
      * 
      * @param id
-     *        The underlying identifier; must not be {@code null}.
+     *        The underlying identifier.
      */
     private ComponentSurfaceDesignId(
         final String id )
@@ -89,11 +89,9 @@ public final class ComponentSurfaceDesignId
      * </p>
      * 
      * @param id
-     *        The string representation of the identifier; must not be
-     *        {@code null}.
+     *        The string representation of the identifier.
      * 
-     * @return A new instance of the {@code ComponentSurfaceDesignId} class;
-     *         never {@code null}.
+     * @return A new instance of the {@code ComponentSurfaceDesignId} class.
      */
     public static ComponentSurfaceDesignId fromString(
         final String id )
@@ -117,7 +115,7 @@ public final class ComponentSurfaceDesignId
      * The string representation of an identifier has no specific format.
      * </p>
      * 
-     * @return The string representation of this identifier; never {@code null}.
+     * @return The string representation of this identifier.
      * 
      * @see java.lang.Object#toString()
      */

@@ -121,10 +121,9 @@ class Component
      * Initializes a new instance of the {@code Component} class.
      * 
      * @param tableEnvironment
-     *        The table environment associated with the component; must not be
-     *        {@code null}.
+     *        The table environment associated with the component.
      * @param strategy
-     *        The component strategy; must not be {@code null}.
+     *        The component strategy.
      */
     Component(
         final TableEnvironment tableEnvironment,
@@ -166,7 +165,7 @@ class Component
     /**
      * Creates a component event for this component.
      * 
-     * @return A new component event; never {@code null}.
+     * @return A new component event.
      */
     @GuardedBy( "getLock()" )
     private ComponentEvent createComponentEvent()
@@ -291,7 +290,7 @@ class Component
      * Fires the specified event notification.
      * 
      * @param eventNotification
-     *        The event notification; must not be {@code null}.
+     *        The event notification.
      */
     @GuardedBy( "getLock()" )
     final void fireEventNotification(
@@ -355,7 +354,7 @@ class Component
     /**
      * Gets the table environment lock.
      * 
-     * @return The table environment lock; never {@code null}.
+     * @return The table environment lock.
      */
     final ITableEnvironmentLock getLock()
     {
@@ -482,8 +481,7 @@ class Component
     /**
      * Gets the collection of surface design identifiers for this component.
      * 
-     * @return The collection of surface design identifier for this component;
-     *         never {@code null}.
+     * @return The collection of surface design identifier for this component.
      */
     @GuardedBy( "getLock()" )
     private Map<ComponentOrientation, ComponentSurfaceDesignId> getSurfaceDesignIds()
@@ -535,10 +533,10 @@ class Component
      * </p>
      * 
      * @param location
-     *        The location in table coordinates; must not be {@code null}.
+     *        The location in table coordinates.
      * @param components
      *        The collection that receives the components that occupy the
-     *        specified location; must not be {@code null}.
+     *        specified location.
      * 
      * @return {@code true} if this component occupies the specified location;
      *         otherwise {@code false}.
@@ -584,7 +582,7 @@ class Component
      * Indicates the specified component orientation is supported.
      * 
      * @param orientation
-     *        The component orientation; must not be {@code null}.
+     *        The component orientation.
      * 
      * @return {@code true} if the specified component orientation is supported;
      *         otherwise {@code false}.
@@ -605,7 +603,7 @@ class Component
      * </p>
      * 
      * @param memento
-     *        The memento; must not be {@code null}.
+     *        The memento.
      * 
      * @throws org.gamegineer.common.core.util.memento.MementoException
      *         If the memento does not represent a valid state for the
@@ -766,9 +764,9 @@ class Component
      * Sets the collection of surface design identifiers for this component.
      * 
      * @param surfaceDesignIds
-     *        The collection of surface design identifiers; must not be
-     *        {@code null}. The collection may contain a subset of the supported
-     *        component surface design identifiers.
+     *        The collection of surface design identifiers. The collection may
+     *        contain a subset of the supported component surface design
+     *        identifiers.
      * 
      * @throws org.gamegineer.common.core.util.memento.MementoException
      *         If any component surface design identifier is not registered.
@@ -819,7 +817,7 @@ class Component
      * </p>
      * 
      * @param offset
-     *        The translation offset; must not be {@code null}.
+     *        The translation offset.
      */
     @GuardedBy( "getLock()" )
     void translate(
@@ -843,7 +841,7 @@ class Component
      * </p>
      * 
      * @param memento
-     *        The memento; must not be {@code null}.
+     *        The memento.
      */
     @GuardedBy( "getLock()" )
     void writeMemento(

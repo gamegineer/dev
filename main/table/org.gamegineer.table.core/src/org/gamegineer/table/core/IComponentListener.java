@@ -1,6 +1,6 @@
 /*
  * IComponentListener.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,7 +40,7 @@ public interface IComponentListener
      * Invoked after the component bounds have changed.
      * 
      * @param event
-     *        The event describing the component; must not be {@code null}.
+     *        The event describing the component.
      */
     public void componentBoundsChanged(
         ComponentEvent event );
@@ -49,7 +49,7 @@ public interface IComponentListener
      * Invoked after the component orientation has changed.
      * 
      * @param event
-     *        The event describing the component; must not be {@code null}.
+     *        The event describing the component.
      */
     public void componentOrientationChanged(
         ComponentEvent event );
@@ -58,7 +58,7 @@ public interface IComponentListener
      * Invoked after a component surface design has changed.
      * 
      * @param event
-     *        The event describing the component; must not be {@code null}.
+     *        The event describing the component.
      */
     public void componentSurfaceDesignChanged(
         ComponentEvent event );

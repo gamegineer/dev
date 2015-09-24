@@ -51,10 +51,9 @@ public final class ComponentSurfaceDesign
      * from the specified size.
      * 
      * @param id
-     *        The component surface design identifier; must not be {@code null}.
+     *        The component surface design identifier.
      * @param size
-     *        The component surface design size in table coordinates; must not
-     *        be {@code null}.
+     *        The component surface design size in table coordinates.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If the width or height of {@code size} is negative.
@@ -71,7 +70,7 @@ public final class ComponentSurfaceDesign
      * from the specified width and height.
      * 
      * @param id
-     *        The component surface design identifier; must not be {@code null}.
+     *        The component surface design identifier.
      * @param width
      *        The component surface design width in table coordinates.
      * @param height
@@ -100,7 +99,7 @@ public final class ComponentSurfaceDesign
     /**
      * Gets the component surface design identifier.
      * 
-     * @return The component surface design identifier; never {@code null}.
+     * @return The component surface design identifier.
      */
     public ComponentSurfaceDesignId getId()
     {
@@ -110,8 +109,7 @@ public final class ComponentSurfaceDesign
     /**
      * Gets the component surface design size in table coordinates.
      * 
-     * @return The component surface design size in table coordinates; never
-     *         {@code null}.
+     * @return The component surface design size in table coordinates.
      */
     public Dimension getSize()
     {

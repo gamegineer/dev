@@ -1,6 +1,6 @@
 /*
  * IDragContext.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -46,8 +46,7 @@ public interface IDragContext
      * Continues the drag-and-drop operation.
      * 
      * @param location
-     *        The new drag location in table coordinates; must not be
-     *        {@code null}.
+     *        The new drag location in table coordinates.
      * 
      * @throws java.lang.IllegalStateException
      *         If the drag-and-drop operation is not active.
@@ -59,8 +58,7 @@ public interface IDragContext
      * Ends the drag-and-drop operation.
      * 
      * @param location
-     *        The ending drag location in table coordinates; must not be
-     *        {@code null}.
+     *        The ending drag location in table coordinates.
      * 
      * @throws java.lang.IllegalStateException
      *         If the drag-and-drop operation is not active.

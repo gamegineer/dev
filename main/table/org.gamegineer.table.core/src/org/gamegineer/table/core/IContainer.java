@@ -1,6 +1,6 @@
 /*
  * IContainer.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -39,7 +39,7 @@ public interface IContainer
      * Adds the specified component to the top of this container.
      * 
      * @param component
-     *        The component; must not be {@code null}.
+     *        The component.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code component} is already contained in a container or if
@@ -53,7 +53,7 @@ public interface IContainer
      * Adds the specified component to this container at the specified index.
      * 
      * @param component
-     *        The component; must not be {@code null}.
+     *        The component.
      * @param index
      *        The index at which the component will be added.
      * 
@@ -73,13 +73,12 @@ public interface IContainer
      * Adds the specified collection of components to the top of this container.
      * 
      * @param components
-     *        The collection of components to be added to this container; must
-     *        not be {@code null}. The components are added to the top of this
-     *        container in the order they appear in the collection.
+     *        The collection of components to be added to this container. The
+     *        components are added to the top of this container in the order
+     *        they appear in the collection.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code components} contains a {@code null} element; if any
-     *         component is already contained in a container; or if any
+     *         If any component is already contained in a container; or if any
      *         component was created by a table environment other than the table
      *         environment that created this container.
      */
@@ -91,16 +90,14 @@ public interface IContainer
      * specified index.
      * 
      * @param components
-     *        The collection of components to be added to this container; must
-     *        not be {@code null}. The components are added to the this
-     *        container at the specified index in the order they appear in the
-     *        collection.
+     *        The collection of components to be added to this container. The
+     *        components are added to the this container at the specified index
+     *        in the order they appear in the collection.
      * @param index
      *        The index at which the components will be added.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code components} contains a {@code null} element; if any
-     *         component is already contained in a container; or if any
+     *         If any component is already contained in a container; or if any
      *         component was created by a table environment other than the table
      *         environment that created this container.
      * @throws java.lang.IndexOutOfBoundsException
@@ -115,7 +112,7 @@ public interface IContainer
      * Adds the specified container listener to this container.
      * 
      * @param listener
-     *        The container listener; must not be {@code null}.
+     *        The container listener.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is already a registered container listener.
@@ -129,8 +126,7 @@ public interface IContainer
      * @param index
      *        The component index.
      * 
-     * @return The component in this container at the specified index; never
-     *         {@code null}.
+     * @return The component in this container at the specified index.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code index} is less than zero or greater than or equal to
@@ -149,24 +145,23 @@ public interface IContainer
     /**
      * Gets the collection of components in this container.
      * 
-     * @return The collection of components in this container; never
-     *         {@code null}. The components are returned in order from the
-     *         component at the bottom of the container to the component at the
-     *         top of the container.
+     * @return The collection of components in this container. The components
+     *         are returned in order from the component at the bottom of the
+     *         container to the component at the top of the container.
      */
     public List<IComponent> getComponents();
 
     /**
      * Gets the layout of components in this container.
      * 
-     * @return The layout of components in this container; never {@code null}.
+     * @return The layout of components in this container.
      */
     public IContainerLayout getLayout();
 
     /**
      * Gets the container strategy.
      * 
-     * @return The container strategy; never {@code null}.
+     * @return The container strategy.
      */
     @Override
     public IContainerStrategy getStrategy();
@@ -174,10 +169,9 @@ public interface IContainer
     /**
      * Removes all components in this container.
      * 
-     * @return The collection of components removed from this container; never
-     *         {@code null}. The components are returned in order from the
-     *         component at the bottom of the container to the component at the
-     *         top of the container.
+     * @return The collection of components removed from this container. The
+     *         components are returned in order from the component at the bottom
+     *         of the container to the component at the top of the container.
      */
     public List<IComponent> removeAllComponents();
 
@@ -185,7 +179,7 @@ public interface IContainer
      * Removes the specified component from this container.
      * 
      * @param component
-     *        The component to remove; must not be {@code null}.
+     *        The component to remove.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code component} is not contained within this container.
@@ -199,7 +193,7 @@ public interface IContainer
      * @param index
      *        The index of the component to be removed.
      * 
-     * @return The component that was removed; never {@code null}.
+     * @return The component that was removed.
      * 
      * @throws java.lang.IndexOutOfBoundsException
      *         If {@code index} is out of range (
@@ -212,7 +206,7 @@ public interface IContainer
      * Removes the specified container listener from this container.
      * 
      * @param listener
-     *        The container listener; must not be {@code null}.
+     *        The container listener.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is not a registered container listener.
@@ -224,8 +218,7 @@ public interface IContainer
      * Sets the layout of components in this container.
      * 
      * @param layout
-     *        The layout of components in this container; must not be
-     *        {@code null}.
+     *        The layout of components in this container.
      */
     public void setLayout(
         IContainerLayout layout );

@@ -115,9 +115,9 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
      * Creates the table to be tested.
      * 
      * @param tableEnvironment
-     *        The table environment; must not be {@code null}.
+     *        The table environment.
      * 
-     * @return The table to be tested; never {@code null}.
+     * @return The table to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -129,7 +129,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     /**
      * Creates the table environment for use in the fixture.
      * 
-     * @return The table environment for use in the fixture; never {@code null}.
+     * @return The table environment for use in the fixture.
      */
     protected final TableEnvironmentType createTableEnvironment()
     {
@@ -141,9 +141,9 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
      * context.
      * 
      * @param context
-     *        The table environment context; must not be {@code null}.
+     *        The table environment context.
      * 
-     * @return The table environment for use in the fixture; never {@code null}.
+     * @return The table environment for use in the fixture.
      */
     protected abstract TableEnvironmentType createTableEnvironment(
         final ITableEnvironmentContext context );
@@ -152,7 +152,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
      * Creates a new component with unique attributes using the fixture table
      * environment.
      * 
-     * @return A new component; never {@code null}.
+     * @return A new component.
      */
     private IComponent createUniqueComponent()
     {
@@ -163,7 +163,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
      * Creates a new container with unique attributes using the fixture table
      * environment.
      * 
-     * @return A new container; never {@code null}.
+     * @return A new container.
      */
     private IContainer createUniqueContainer()
     {
@@ -185,7 +185,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     /**
      * Gets the table under test in the fixture.
      * 
-     * @return The table under test in the fixture; never {@code null}.
+     * @return The table under test in the fixture.
      */
     protected final TableType getTable()
     {
@@ -195,7 +195,7 @@ public abstract class AbstractTableTestCase<TableEnvironmentType extends ITableE
     /**
      * Gets the fixture table environment.
      * 
-     * @return The fixture table environment; never {@code null}.
+     * @return The fixture table environment.
      */
     private TableEnvironmentType getTableEnvironment()
     {

@@ -75,7 +75,7 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     /**
      * Creates the component strategy to be tested.
      * 
-     * @return The component strategy to be tested; never {@code null}.
+     * @return The component strategy to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -87,7 +87,7 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
      * Creates a component orientation that is guaranteed to be illegal for all
      * components.
      * 
-     * @return An illegal component orientation; never {@code null}.
+     * @return An illegal component orientation.
      */
     private static ComponentOrientation createIllegalOrientation()
     {
@@ -106,8 +106,7 @@ public abstract class AbstractComponentStrategyTestCase<ComponentStrategyType ex
     /**
      * Gets the component strategy under test in the fixture.
      * 
-     * @return The component strategy under test in the fixture; never
-     *         {@code null}.
+     * @return The component strategy under test in the fixture.
      */
     protected final ComponentStrategyType getComponentStrategy()
     {

@@ -70,9 +70,9 @@ public abstract class AbstractTableEnvironmentTestCase
      * Creates the table environment to be tested.
      * 
      * @param context
-     *        The table environment context; must not be {@code null}.
+     *        The table environment context.
      * 
-     * @return The table environment to be tested; never {@code null}.
+     * @return The table environment to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -84,8 +84,7 @@ public abstract class AbstractTableEnvironmentTestCase
     /**
      * Gets the table environment under test in the fixture.
      * 
-     * @return The table environment under test in the fixture; never
-     *         {@code null}.
+     * @return The table environment under test in the fixture.
      */
     protected final ITableEnvironment getTableEnvironment()
     {

@@ -168,8 +168,8 @@ public final class ComponentPath
      * ordered from the root-most component to the leaf-most component.
      * 
      * @return A list of component paths ordered from the root-most component to
-     *         the leaf-most component; never {@code null}. The returned
-     *         collection is guaranteed to have at least one element.
+     *         the leaf-most component. The returned collection is guaranteed to
+     *         have at least one element.
      */
     public List<ComponentPath> toList()
     {
