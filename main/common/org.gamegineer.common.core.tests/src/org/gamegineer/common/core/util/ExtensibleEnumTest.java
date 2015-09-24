@@ -177,7 +177,7 @@ public final class ExtensibleEnumTest
          * Initializes a new instance of the {@code MockEnum} class.
          * 
          * @param name
-         *        The name of the enum constant; must not be {@code null}.
+         *        The name of the enum constant.
          * @param ordinal
          *        The ordinal of the enum constant.
          * 

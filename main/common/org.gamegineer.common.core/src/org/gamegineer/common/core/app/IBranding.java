@@ -60,7 +60,7 @@ public interface IBranding
     /**
      * Gets the branding identifier.
      * 
-     * @return The branding identifier; never {@code null}.
+     * @return The branding identifier.
      */
     public String getId();
 
@@ -75,7 +75,7 @@ public interface IBranding
      * Gets the value of the branding property with the specified name.
      * 
      * @param name
-     *        The branding name; must not be {@code null}.
+     *        The branding name.
      * 
      * @return The value of the branding property with the specified name or
      *         {@code null} if the property does not exist.

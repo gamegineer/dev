@@ -93,10 +93,10 @@ final class NonNlsMessages
      * the specified identifier.
      * 
      * @param id
-     *        The object identifier; must not be {@code null}.
+     *        The object identifier.
      * 
      * @return The formatted message indicating an object is already registered
-     *         for the specified identifier; never {@code null}.
+     *         for the specified identifier.
      */
     static String AbstractRegistry_registerObject_object_registered(
         final Object id )
@@ -109,10 +109,10 @@ final class NonNlsMessages
      * the specified identifier.
      * 
      * @param id
-     *        The object identifier; must not be {@code null}.
+     *        The object identifier.
      * 
      * @return The formatted message indicating the object is not registered for
-     *         the specified identifier; never {@code null}.
+     *         the specified identifier.
      */
     static String AbstractRegistry_unregisterObject_object_unregistered(
         final Object id )
@@ -127,10 +127,10 @@ final class NonNlsMessages
      * object configuration element.
      * 
      * @param configurationElement
-     *        The configuration element; must not be {@code null}.
+     *        The configuration element.
      * 
      * @return The formatted message indicating an error occurred while parsing
-     *         the object configuration element; never {@code null}.
+     *         the object configuration element.
      */
     static String AbstractRegistryExtensionPointAdapter_registerObject_parseError(
         final IConfigurationElement configurationElement )

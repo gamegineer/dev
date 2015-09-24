@@ -63,7 +63,7 @@ public abstract class ExtensibleEnum
      * Initializes a new instance of the {@code ExtensibleEnum} class.
      * 
      * @param name
-     *        The name of the enum constant; must not be {@code null}.
+     *        The name of the enum constant.
      * @param ordinal
      *        The ordinal of the enum constant.
      * 
@@ -126,7 +126,7 @@ public abstract class ExtensibleEnum
     /**
      * Gets the name of the enum constant.
      * 
-     * @return The name of the enum constant; never {@code null}.
+     * @return The name of the enum constant.
      */
     public final String name()
     {
@@ -152,8 +152,7 @@ public abstract class ExtensibleEnum
      * is resolved to a singleton instance.
      * </p>
      * 
-     * @return The alternate object that resolves this object; never
-     *         {@code null}.
+     * @return The alternate object that resolves this object.
      * 
      * @throws java.io.ObjectStreamException
      *         If an error occurs.
@@ -187,12 +186,11 @@ public abstract class ExtensibleEnum
      *        The enum type.
      * 
      * @param type
-     *        The enum type; must not be {@code null}.
+     *        The enum type.
      * @param name
-     *        The name of the enum constant; must not be {@code null}.
+     *        The name of the enum constant.
      * 
-     * @return The enum constant of the specified type with the specified name;
-     *         never {@code null}.
+     * @return The enum constant of the specified type with the specified name.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If the specified enum type has no constant with the specified
@@ -220,10 +218,9 @@ public abstract class ExtensibleEnum
      *        The enum type.
      * 
      * @param type
-     *        The enum type; must not be {@code null}.
+     *        The enum type.
      * 
-     * @return The collection of values associated with the specified enum type;
-     *         never {@code null}.
+     * @return The collection of values associated with the specified enum type.
      */
     public static <T extends ExtensibleEnum> List<T> values(
         final Class<T> type )

@@ -71,7 +71,7 @@ public abstract class AbstractEqualityComparatorTestCase<T>
     /**
      * Creates the equality comparator to be tested.
      * 
-     * @return The equality comparator to be tested; never {@code null}.
+     * @return The equality comparator to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -87,7 +87,7 @@ public abstract class AbstractEqualityComparatorTestCase<T>
      * other instance returned by this method.
      * </p>
      * 
-     * @return A reference instance; never {@code null}.
+     * @return A reference instance.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -101,12 +101,11 @@ public abstract class AbstractEqualityComparatorTestCase<T>
      * 
      * <p>
      * Implementors should return one instance per field that is used to
-     * determine equality. The returned collection must not be empty and must
-     * not contain a {@code null} entry.
+     * determine equality. The returned collection must not be empty.
      * </p>
      * 
      * @return A collection of instances that are unequal to the reference
-     *         instance; never {@code null}.
+     *         instance.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -117,8 +116,7 @@ public abstract class AbstractEqualityComparatorTestCase<T>
     /**
      * Gets the equality comparator under test in the fixture.
      * 
-     * @return The equality comparator under test in the fixture; never
-     *         {@code null}.
+     * @return The equality comparator under test in the fixture.
      */
     protected final IEqualityComparator<T> getEqualityComparator()
     {

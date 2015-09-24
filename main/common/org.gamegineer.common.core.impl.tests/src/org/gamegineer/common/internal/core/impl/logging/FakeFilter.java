@@ -103,7 +103,7 @@ public final class FakeFilter
      * Registers a component factory for the {@code FakeFilter} class.
      * 
      * @return The service registration token associated with the component
-     *         factory; never {@code null}.
+     *         factory.
      */
     public static ServiceRegistration<ComponentFactory> registerComponentFactory()
     {

@@ -54,9 +54,9 @@ public final class ComparableUtils
      *        The type of the objects to compare.
      * 
      * @param obj1
-     *        The first object to compare; may be {@code null}.
+     *        The first object to compare.
      * @param obj2
-     *        The second object to compare; may be {@code null}.
+     *        The second object to compare.
      * 
      * @return A negative integer if the first object is less than the second
      *         object; a positive integer if the first object is greater than

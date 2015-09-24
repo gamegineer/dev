@@ -97,10 +97,10 @@ final class NonNlsMessages
      * Gets the formatted message indicating logging component creation failed.
      * 
      * @param typeName
-     *        The type name of the logging component; must not be {@code null}.
+     *        The type name of the logging component.
      * 
      * @return The formatted message indicating logging component creation
-     *         failed; never {@code null}.
+     *         failed.
      */
     static String AbstractLoggingComponentFactory_createLoggingComponent_failed(
         final String typeName )
@@ -113,11 +113,10 @@ final class NonNlsMessages
      * for the specified logging component type.
      * 
      * @param typeName
-     *        The type name of the logging component; must not be {@code null}.
+     *        The type name of the logging component.
      * 
      * @return The formatted message indicating no component factory is
-     *         available for the specified logging component type; never
-     *         {@code null}.
+     *         available for the specified logging component type.
      */
     static String AbstractLoggingComponentFactory_findComponentFactory_noComponentFactoryAvailable(
         final String typeName )
@@ -129,10 +128,9 @@ final class NonNlsMessages
      * Gets the formatted message indicating the property value is illegal.
      * 
      * @param propertyName
-     *        The property name; must not be {@code null}.
+     *        The property name.
      * 
-     * @return The formatted message indicating the property value is illegal;
-     *         never {@code null}.
+     * @return The formatted message indicating the property value is illegal.
      */
     static String AbstractLoggingComponentFactory_getComponentProperty_illegalPropertyValue(
         final String propertyName )

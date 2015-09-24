@@ -67,7 +67,7 @@ public abstract class AbstractLoggingComponentFactory<@NonNull T>
      * class.
      * 
      * @param type
-     *        The type of the logging component; must not be {@code null}.
+     *        The type of the logging component.
      */
     protected AbstractLoggingComponentFactory(
         final Class<T> type )
@@ -95,13 +95,13 @@ public abstract class AbstractLoggingComponentFactory<@NonNull T>
      * </p>
      * 
      * @param component
-     *        The logging component; must not be {@code null}.
+     *        The logging component.
      * @param instanceName
-     *        The instance name of the logging component; must not be
-     *        {@code null}. This name is used to discover the component's
-     *        properties in the specified logging properties.
+     *        The instance name of the logging component. This name is used to
+     *        discover the component's properties in the specified logging
+     *        properties.
      * @param properties
-     *        The logging properties; may be {@code null}.
+     *        The logging properties.
      */
     protected void configureLoggingComponent(
         @SuppressWarnings( "unused" )
@@ -124,9 +124,9 @@ public abstract class AbstractLoggingComponentFactory<@NonNull T>
      * </p>
      * 
      * @param typeName
-     *        The type name of the logging component; must not be {@code null}.
+     *        The type name of the logging component.
      * 
-     * @return A new instance of the logging component; never {@code null}.
+     * @return A new instance of the logging component.
      * 
      * @throws org.osgi.service.component.ComponentException
      *         If an error occurs while creating the component.
@@ -179,14 +179,13 @@ public abstract class AbstractLoggingComponentFactory<@NonNull T>
      *        The type of the logging component.
      * 
      * @param type
-     *        The type of the logging component; must not be {@code null}.
+     *        The type of the logging component.
      * @param name
-     *        The fully-qualified name of the component; must not be
-     *        {@code null}.
+     *        The fully-qualified name of the component.
      * @param properties
-     *        The logging properties; may be {@code null}.
+     *        The logging properties.
      * 
-     * @return The logging component; never {@code null}.
+     * @return The logging component.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code name} is not a fully-qualified component name.
@@ -238,13 +237,12 @@ public abstract class AbstractLoggingComponentFactory<@NonNull T>
      * </p>
      * 
      * @param typeName
-     *        The component type name; must not be {@code null}.
+     *        The component type name.
      * @param type
-     *        The component type or one of its super types; must not be
-     *        {@code null}.
+     *        The component type or one of its super types.
      * 
      * @return A reference to the most appropriate component factory for the
-     *         specified component type information; never {@code null}.
+     *         specified component type information.
      * 
      * @throws org.osgi.service.component.ComponentException
      *         If a component factory is not available for the specified
@@ -273,8 +271,7 @@ public abstract class AbstractLoggingComponentFactory<@NonNull T>
      * Gets the component factory for the specified type name.
      * 
      * @param typeName
-     *        The type name of the component created by the factory; must not be
-     *        {@code null}.
+     *        The type name of the component created by the factory.
      * 
      * @return A reference to the component factory for the specified type name
      *         or {@code null} if no component factory is available.
@@ -310,16 +307,15 @@ public abstract class AbstractLoggingComponentFactory<@NonNull T>
      *        The property value type.
      * 
      * @param componentProperties
-     *        The collection of component properties; must not be {@code null}.
+     *        The collection of component properties.
      * @param name
-     *        The property name; must not be {@code null}.
+     *        The property name.
      * @param type
-     *        The property value type; must not be {@code null}.
+     *        The property value type.
      * @param isNullable
      *        Indicates the property value is nullable.
      * 
-     * @return The property value; may be {@code null} if {@code isNullable} is
-     *         {@code true}.
+     * @return The property value.
      * 
      * @throws org.osgi.service.component.ComponentException
      *         If the property value is not nullable and does not exist in the

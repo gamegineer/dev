@@ -53,7 +53,7 @@ public abstract class AbstractHandlerFactory<@NonNull T extends Handler>
      * Initializes a new instance of the {@code AbstractHandlerFactory} class.
      * 
      * @param type
-     *        The type of the logging component; must not be {@code null}.
+     *        The type of the logging component.
      */
     protected AbstractHandlerFactory(
         final Class<T> type )
@@ -93,11 +93,11 @@ public abstract class AbstractHandlerFactory<@NonNull T extends Handler>
      * in the logging properties.
      * 
      * @param handler
-     *        The handler; must not be {@code null}.
+     *        The handler.
      * @param instanceName
-     *        The instance name of the handler; must not be {@code null}.
+     *        The instance name of the handler.
      * @param properties
-     *        The logging properties; must not be {@code null}.
+     *        The logging properties.
      */
     private static void setEncoding(
         final Handler handler,
@@ -123,11 +123,11 @@ public abstract class AbstractHandlerFactory<@NonNull T extends Handler>
      * the logging properties.
      * 
      * @param handler
-     *        The handler; must not be {@code null}.
+     *        The handler.
      * @param instanceName
-     *        The instance name of the handler; must not be {@code null}.
+     *        The instance name of the handler.
      * @param properties
-     *        The logging properties; must not be {@code null}.
+     *        The logging properties.
      */
     private static void setFilter(
         final Handler handler,
@@ -157,11 +157,11 @@ public abstract class AbstractHandlerFactory<@NonNull T extends Handler>
      * in the logging properties.
      * 
      * @param handler
-     *        The handler; must not be {@code null}.
+     *        The handler.
      * @param instanceName
-     *        The instance name of the handler; must not be {@code null}.
+     *        The instance name of the handler.
      * @param properties
-     *        The logging properties; must not be {@code null}.
+     *        The logging properties.
      */
     private static void setFormatter(
         final Handler handler,
@@ -191,11 +191,11 @@ public abstract class AbstractHandlerFactory<@NonNull T extends Handler>
      * the logging properties.
      * 
      * @param handler
-     *        The handler; must not be {@code null}.
+     *        The handler.
      * @param instanceName
-     *        The instance name of the handler; must not be {@code null}.
+     *        The instance name of the handler.
      * @param properties
-     *        The logging properties; must not be {@code null}.
+     *        The logging properties.
      */
     private static void setLevel(
         final Handler handler,

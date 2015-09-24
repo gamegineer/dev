@@ -74,7 +74,7 @@ public final class SecureString
      * specified character array.
      * 
      * @param value
-     *        The initial value of the string; must not be {@code null}.
+     *        The initial value of the string.
      */
     public SecureString(
         final char[] value )
@@ -87,8 +87,7 @@ public final class SecureString
      * specified range of the specified character array.
      * 
      * @param value
-     *        The source of the initial value of the string; must not be
-     *        {@code null}.
+     *        The source of the initial value of the string.
      * @param offset
      *        The offset to the first character in the string value.
      * @param length
@@ -113,7 +112,7 @@ public final class SecureString
      * 
      * @param secureString
      *        The secure string whose value will be used as the initial value of
-     *        the string; must not be {@code null}.
+     *        the string.
      */
     public SecureString(
         final SecureString secureString )
@@ -143,7 +142,7 @@ public final class SecureString
      * Clears the contents of the specified character array.
      * 
      * @param value
-     *        The character array; must not be {@code null}.
+     *        The character array.
      */
     public static void clearCharArray(
         final char[] value )
@@ -221,10 +220,9 @@ public final class SecureString
      * </p>
      * 
      * @param value
-     *        The initial value of the string; must not be {@code null}.
+     *        The initial value of the string.
      * 
-     * @return A new instance of the {@code SecureString} class; never
-     *         {@code null}.
+     * @return A new instance of the {@code SecureString} class.
      */
     public static SecureString fromCharArray(
         final char[] value )
@@ -278,7 +276,7 @@ public final class SecureString
      * </p>
      * 
      * @return A new character array that contains the contents of the secure
-     *         string; never {@code null}.
+     *         string.
      */
     public char[] toCharArray()
     {

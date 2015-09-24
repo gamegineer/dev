@@ -143,7 +143,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<@NonNull ObjectIdTyp
      * Binds the extension registry service to this component.
      * 
      * @param extensionRegistry
-     *        The extension registry service; must not be {@code null}.
+     *        The extension registry service.
      * 
      * @throws java.lang.IllegalStateException
      *         If the extension registry is already bound.
@@ -162,7 +162,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<@NonNull ObjectIdTyp
      * Binds the object registry service to this component.
      * 
      * @param objectRegistry
-     *        The object registry service; must not be {@code null}.
+     *        The object registry service.
      * 
      * @throws java.lang.IllegalStateException
      *         If the object registry is already bound.
@@ -181,9 +181,9 @@ public abstract class AbstractRegistryExtensionPointAdapter<@NonNull ObjectIdTyp
      * Creates a new object from the specified configuration element.
      * 
      * @param configurationElement
-     *        The configuration element; must not be {@code null}.
+     *        The configuration element.
      * 
-     * @return A new object; never {@code null}.
+     * @return A new object.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If the configuration element represents an illegal object.
@@ -196,9 +196,9 @@ public abstract class AbstractRegistryExtensionPointAdapter<@NonNull ObjectIdTyp
      * configuration element.
      * 
      * @param configurationElement
-     *        The extension configuration element; must not be {@code null}.
+     *        The extension configuration element.
      * 
-     * @return An object registration; never {@code null}.
+     * @return An object registration.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If the configuration element represents an illegal object.
@@ -228,7 +228,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<@NonNull ObjectIdTyp
      * Gets the identifier of the extension point associated with this adapter.
      * 
      * @return The identifier of the extension point associated with this
-     *         adapter; never {@code null}.
+     *         adapter.
      */
     protected abstract String getExtensionPointId();
 
@@ -237,9 +237,9 @@ public abstract class AbstractRegistryExtensionPointAdapter<@NonNull ObjectIdTyp
      * specified extension.
      * 
      * @param objectRegistration
-     *        The object registration; must not be {@code null}.
+     *        The object registration.
      * @param extension
-     *        The extension; must not be {@code null}.
+     *        The extension.
      * 
      * @return {@code true} if the specified object registration was contributed
      *         by the specified extension; otherwise {@code false}.
@@ -279,7 +279,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<@NonNull ObjectIdTyp
      * element.
      * 
      * @param configurationElement
-     *        The extension configuration element; must not be {@code null}.
+     *        The extension configuration element.
      */
     private void registerObject(
         final IConfigurationElement configurationElement )
@@ -337,7 +337,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<@NonNull ObjectIdTyp
      * Unbinds the extension registry service from this component.
      * 
      * @param extensionRegistry
-     *        The extension registry service; must not be {@code null}.
+     *        The extension registry service.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code extensionRegistry} is not currently bound.
@@ -356,7 +356,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<@NonNull ObjectIdTyp
      * Unbinds the object registry service from this component.
      * 
      * @param objectRegistry
-     *        The object registry service; must not be {@code null}.
+     *        The object registry service.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code objectRegistry} is not currently bound.
@@ -396,7 +396,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<@NonNull ObjectIdTyp
      * Unregisters all objects contributed by the specified extension.
      * 
      * @param extension
-     *        The extension; must not be {@code null}.
+     *        The extension.
      */
     private void unregisterObjects(
         final IExtension extension )
@@ -456,11 +456,9 @@ public abstract class AbstractRegistryExtensionPointAdapter<@NonNull ObjectIdTyp
          * Initializes a new instance of the {@code ObjectRegistration} class.
          * 
          * @param extension
-         *        The extension that contributed the component strategy; must
-         *        not be {@code null}.
+         *        The extension that contributed the component strategy.
          * @param object
-         *        The object contributed by the extension; must not be
-         *        {@code null}.
+         *        The object contributed by the extension.
          */
         ObjectRegistration(
             final IExtension extension,
@@ -479,8 +477,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<@NonNull ObjectIdTyp
         /**
          * Gets the namespace identifier of the contributing extension.
          * 
-         * @return The namespace identifier of the contributing extension; never
-         *         {@code null}.
+         * @return The namespace identifier of the contributing extension.
          */
         String getExtensionNamespaceId()
         {
@@ -490,8 +487,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<@NonNull ObjectIdTyp
         /**
          * Gets the simple identifier of the contributing extension.
          * 
-         * @return The simple identifier of the contributing extension; may be
-         *         {@code null}.
+         * @return The simple identifier of the contributing extension.
          */
         @Nullable String getExtensionSimpleId()
         {
@@ -501,7 +497,7 @@ public abstract class AbstractRegistryExtensionPointAdapter<@NonNull ObjectIdTyp
         /**
          * Gets the object contributed by the extension.
          * 
-         * @return The object contributed by the extension; never {@code null}.
+         * @return The object contributed by the extension.
          */
         ObjectType getObject()
         {

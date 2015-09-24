@@ -77,9 +77,9 @@ public interface ILoggingService
      * Gets the default logger for the specified bundle.
      * 
      * @param bundle
-     *        The bundle; must not be {@code null}.
+     *        The bundle.
      * 
-     * @return The default logger for the specified bundle; never {@code null}.
+     * @return The default logger for the specified bundle.
      */
     public Logger getLogger(
         Bundle bundle );
@@ -88,13 +88,13 @@ public interface ILoggingService
      * Gets the named logger for the specified bundle.
      * 
      * @param bundle
-     *        The bundle; must not be {@code null}.
+     *        The bundle.
      * @param name
      *        The logger name. Hierarchical names are represented as a sequence
      *        of dot-separated name fragments. If {@code null} or an empty
      *        string, the default logger for the bundle will be returned.
      * 
-     * @return The named logger for the specified bundle; never {@code null}.
+     * @return The named logger for the specified bundle.
      */
     public Logger getLogger(
         Bundle bundle,

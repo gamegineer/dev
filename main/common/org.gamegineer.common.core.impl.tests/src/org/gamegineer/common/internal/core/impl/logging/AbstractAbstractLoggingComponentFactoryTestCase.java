@@ -70,7 +70,7 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     /**
      * Creates the logging component factory to be tested.
      * 
-     * @return The logging component factory to be tested; never {@code null}.
+     * @return The logging component factory to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -81,7 +81,7 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     /**
      * Gets the logging component for use in the fixture.
      * 
-     * @return The logging component for use in the fixture; never {@code null}.
+     * @return The logging component for use in the fixture.
      */
     protected final T getLoggingComponent()
     {
@@ -91,8 +91,7 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     /**
      * Gets the logging component factory under test in the fixture.
      * 
-     * @return The logging component factory under test in the fixture; never
-     *         {@code null}.
+     * @return The logging component factory under test in the fixture.
      */
     protected final F getLoggingComponentFactory()
     {
@@ -102,8 +101,7 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     /**
      * Gets the logging component type created by the factory.
      * 
-     * @return The logging component type created by the factory; never
-     *         {@code null}.
+     * @return The logging component type created by the factory.
      */
     protected abstract Class<? extends T> getLoggingComponentType();
 

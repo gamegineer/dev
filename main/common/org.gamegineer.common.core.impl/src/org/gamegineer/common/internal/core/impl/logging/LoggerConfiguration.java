@@ -61,10 +61,9 @@ final class LoggerConfiguration
      * Initializes a new instance of the {@code LoggerConfiguration} class.
      * 
      * @param name
-     *        The name of the logger associated with the configuration; must not
-     *        be {@code null}.
+     *        The name of the logger associated with the configuration.
      * @param properties
-     *        The logging properties; must not be {@code null}.
+     *        The logging properties.
      */
     LoggerConfiguration(
         final String name,
@@ -83,10 +82,9 @@ final class LoggerConfiguration
      * Gets the value of the {@code filter} property.
      * 
      * @param defaultValue
-     *        The default value to use if the property has not been configured;
-     *        may be {@code null}.
+     *        The default value to use if the property has not been configured.
      * 
-     * @return The value of the {@code filter} property; may be {@code null}.
+     * @return The value of the {@code filter} property.
      * 
      * @see java.util.logging.Logger#getFilter()
      */
@@ -116,7 +114,7 @@ final class LoggerConfiguration
     /**
      * Gets the value of the {@code handlers} property.
      * 
-     * @return The value of the {@code handlers} property; never {@code null}.
+     * @return The value of the {@code handlers} property.
      * 
      * @see java.util.logging.Logger#getHandlers()
      */
@@ -150,10 +148,9 @@ final class LoggerConfiguration
      * Gets the value of the {@code level} property.
      * 
      * @param defaultValue
-     *        The default value to use if the property has not been configured;
-     *        may be {@code null}.
+     *        The default value to use if the property has not been configured.
      * 
-     * @return The value of the {@code level} property; may be {@code null}.
+     * @return The value of the {@code level} property.
      * 
      * @see java.util.logging.Logger#getLevel()
      */

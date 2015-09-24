@@ -101,8 +101,8 @@ public final class Assert
      * @param expression
      *        The expression that tests the argument.
      * @param paramName
-     *        The name of the associated parameter; may be {@code null}. This
-     *        value should not be localized.
+     *        The name of the associated parameter. This value should not be
+     *        localized.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code expression} is {@code false}.
@@ -120,10 +120,10 @@ public final class Assert
      * @param expression
      *        The expression that tests the argument.
      * @param paramName
-     *        The name of the associated parameter; may be {@code null}. This
-     *        value should not be localized.
+     *        The name of the associated parameter. This value should not be
+     *        localized.
      * @param message
-     *        The message to include in the exception; may be {@code null}.
+     *        The message to include in the exception.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code expression} is {@code false}.
@@ -162,10 +162,10 @@ public final class Assert
      * @param expression
      *        The expression that tests the object's state.
      * @param message
-     *        The message to include in the exception; may be {@code null}.
+     *        The message to include in the exception.
      * 
      * @throws java.lang.IllegalStateException
-     *         If {@code expression} is {@code null}.
+     *         If {@code expression} is {@code false}.
      */
     public static void assertStateLegal(
         final boolean expression,

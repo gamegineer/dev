@@ -43,7 +43,7 @@ public interface IRegistry<@NonNull ObjectIdType, @NonNull ObjectType>
      * Gets the object with the specified identifier.
      * 
      * @param id
-     *        The object identifier; must not be {@code null}.
+     *        The object identifier.
      * 
      * @return The object with the specified identifier or {@code null} if no
      *         such identifier is registered.
@@ -54,9 +54,9 @@ public interface IRegistry<@NonNull ObjectIdType, @NonNull ObjectType>
     /**
      * Gets a collection of all objects managed by this registry.
      * 
-     * @return A collection of all objects managed by this registry; never
-     *         {@code null}. This collection is a snapshot of the objects
-     *         registered at the time of the call.
+     * @return A collection of all objects managed by this registry. This
+     *         collection is a snapshot of the objects registered at the time of
+     *         the call.
      */
     public Collection<ObjectType> getObjects();
 
@@ -64,7 +64,7 @@ public interface IRegistry<@NonNull ObjectIdType, @NonNull ObjectType>
      * Registers the specified object.
      * 
      * @param object
-     *        The object; must not be {@code null}.
+     *        The object.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If an object with the same identifier is already registered.
@@ -76,7 +76,7 @@ public interface IRegistry<@NonNull ObjectIdType, @NonNull ObjectType>
      * Unregisters the specified object.
      * 
      * @param object
-     *        The object; must not be {@code null}.
+     *        The object.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If the specified object was not previously registered.

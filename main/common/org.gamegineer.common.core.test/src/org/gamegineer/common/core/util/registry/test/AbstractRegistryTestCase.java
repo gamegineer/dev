@@ -73,9 +73,9 @@ public abstract class AbstractRegistryTestCase<@NonNull ObjectIdType, @NonNull O
      * Clones the specified object.
      * 
      * @param object
-     *        The object to clone; must not be {@code null}.
+     *        The object to clone.
      * 
-     * @return A new object; never {@code null}.
+     * @return A new object.
      */
     protected abstract ObjectType cloneObject(
         ObjectType object );
@@ -83,7 +83,7 @@ public abstract class AbstractRegistryTestCase<@NonNull ObjectIdType, @NonNull O
     /**
      * Creates the registry to be tested.
      * 
-     * @return The registry to be tested; never {@code null}.
+     * @return The registry to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -94,7 +94,7 @@ public abstract class AbstractRegistryTestCase<@NonNull ObjectIdType, @NonNull O
     /**
      * Creates a new object with a unique identifier.
      * 
-     * @return A new object; never {@code null}.
+     * @return A new object.
      */
     protected abstract ObjectType createUniqueObject();
 
@@ -102,9 +102,9 @@ public abstract class AbstractRegistryTestCase<@NonNull ObjectIdType, @NonNull O
      * Gets the identifier of the specified object.
      * 
      * @param object
-     *        The object; must not be {@code null}.
+     *        The object.
      * 
-     * @return The identifier of the specified object; never {@code null}.
+     * @return The identifier of the specified object.
      */
     protected abstract ObjectIdType getObjectId(
         ObjectType object );
@@ -112,7 +112,7 @@ public abstract class AbstractRegistryTestCase<@NonNull ObjectIdType, @NonNull O
     /**
      * Gets the registry under test in the fixture.
      * 
-     * @return The registry under test in the fixture; never {@code null}.
+     * @return The registry under test in the fixture.
      */
     protected final IRegistry<ObjectIdType, ObjectType> getRegistry()
     {

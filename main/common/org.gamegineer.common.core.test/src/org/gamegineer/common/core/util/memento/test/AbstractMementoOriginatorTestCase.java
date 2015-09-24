@@ -68,9 +68,9 @@ public abstract class AbstractMementoOriginatorTestCase
      * </p>
      * 
      * @param expected
-     *        The expected memento originator; must not be {@code null}.
+     *        The expected memento originator.
      * @param actual
-     *        The actual memento originator; must not be {@code null}.
+     *        The actual memento originator.
      * 
      * @throws java.lang.AssertionError
      *         If the two memento originators are not equal.
@@ -85,7 +85,7 @@ public abstract class AbstractMementoOriginatorTestCase
     /**
      * Creates the memento originator to be tested.
      * 
-     * @return The memento originator to be tested; never {@code null}.
+     * @return The memento originator to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -96,8 +96,7 @@ public abstract class AbstractMementoOriginatorTestCase
     /**
      * Gets the memento originator under test in the fixture.
      * 
-     * @return The memento originator under test in the fixture; never
-     *         {@code null}.
+     * @return The memento originator under test in the fixture.
      */
     protected final IMementoOriginator getMementoOriginator()
     {
@@ -109,7 +108,7 @@ public abstract class AbstractMementoOriginatorTestCase
      * in the value returned from {@link #createMementoOriginator()}.
      * 
      * @param mementoOriginator
-     *        The memento originator; must not be {@code null}.
+     *        The memento originator.
      */
     protected abstract void initializeMementoOriginator(
         IMementoOriginator mementoOriginator );

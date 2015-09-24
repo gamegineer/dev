@@ -82,9 +82,9 @@ public abstract class AbstractRegistry<@NonNull ObjectIdType, @NonNull ObjectTyp
      * Gets the identifier of the specified object.
      * 
      * @param object
-     *        The object; must not be {@code null}.
+     *        The object.
      * 
-     * @return The identifier of the specified object; never {@code null}.
+     * @return The identifier of the specified object.
      */
     protected abstract ObjectIdType getObjectId(
         ObjectType object );

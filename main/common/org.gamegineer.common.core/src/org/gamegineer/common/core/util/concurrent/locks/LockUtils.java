@@ -1,6 +1,6 @@
 /*
  * LockUtils.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -51,7 +51,7 @@ public final class LockUtils
      * Indicates the specified lock is held by the current thread.
      * 
      * @param lock
-     *        The lock; must not be {@code null}.
+     *        The lock.
      * 
      * @return {@code true} if the specified lock is held by the current thread;
      *         otherwise {@code false}.

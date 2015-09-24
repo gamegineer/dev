@@ -75,7 +75,7 @@ public final class AbstractLoggingComponentFactoryTest
     /**
      * Gets the fixture component properties.
      * 
-     * @return The fixture component properties; never {@code null}.
+     * @return The fixture component properties.
      */
     private Dictionary<String, Object> getComponentProperties()
     {
@@ -85,8 +85,7 @@ public final class AbstractLoggingComponentFactoryTest
     /**
      * Gets the logging component factory under test in the fixture.
      * 
-     * @return The logging component factory under test in the fixture; never
-     *         {@code null}.
+     * @return The logging component factory under test in the fixture.
      */
     private AbstractLoggingComponentFactory<Object> getFactory()
     {

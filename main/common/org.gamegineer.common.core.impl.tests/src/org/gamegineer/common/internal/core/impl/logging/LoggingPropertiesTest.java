@@ -68,8 +68,7 @@ public final class LoggingPropertiesTest
     /**
      * Gets the logging properties under test in the fixture.
      * 
-     * @return The logging properties under test in the fixture; never
-     *         {@code null}.
+     * @return The logging properties under test in the fixture.
      */
     private Map<String, String> getProperties()
     {

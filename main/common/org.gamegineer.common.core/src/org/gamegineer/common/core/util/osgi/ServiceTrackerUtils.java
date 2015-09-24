@@ -57,7 +57,7 @@ public final class ServiceTrackerUtils
      *        The type of the service.
      * 
      * @param serviceTrackerRef
-     *        A reference to the service tracker; must not be {@code null}.
+     *        A reference to the service tracker.
      */
     public static <@NonNull T> void closeService(
         final AtomicReference<@Nullable ServiceTracker<T, T>> serviceTrackerRef )
@@ -77,11 +77,11 @@ public final class ServiceTrackerUtils
      *        The type of the service.
      * 
      * @param bundleContext
-     *        The bundle context; must not be {@code null}.
+     *        The bundle context.
      * @param type
-     *        The type of the service; must not be {@code null}.
+     *        The type of the service.
      * @param serviceTrackerRef
-     *        A reference to the service tracker; must not be {@code null}.
+     *        A reference to the service tracker.
      * 
      * @return The service or {@code null} if the service is not available.
      */

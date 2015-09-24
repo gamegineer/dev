@@ -76,10 +76,9 @@ public abstract class AbstractAbstractHandlerFactoryTestCase<F extends AbstractH
      * Gets the map key for the specified logging property.
      * 
      * @param propertyName
-     *        The name of the logging property; must not be {@code null}.
+     *        The name of the logging property.
      * 
-     * @return The map key for the specified logging property; never
-     *         {@code null}.
+     * @return The map key for the specified logging property.
      */
     private String getLoggingPropertyKey(
         final String propertyName )

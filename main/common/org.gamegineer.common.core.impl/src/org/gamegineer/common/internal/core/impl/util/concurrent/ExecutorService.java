@@ -99,9 +99,9 @@ public final class ExecutorService
      *        The result type of the task.
      * 
      * @param task
-     *        The task; must not be {@code null}.
+     *        The task.
      * 
-     * @return A decorator for the specified task; never {@code null}.
+     * @return A decorator for the specified task.
      */
     private static <T> @NonNull Callable<T> createCallableDecorator(
         final @NonNull Callable<T> task )
@@ -135,9 +135,9 @@ public final class ExecutorService
      * uncaught exceptions on the task thread.
      * 
      * @param task
-     *        The task; must not be {@code null}.
+     *        The task.
      * 
-     * @return A decorator for the specified task; never {@code null}.
+     * @return A decorator for the specified task.
      */
     private static @NonNull Runnable createRunnableDecorator(
         final @NonNull Runnable task )
@@ -198,7 +198,7 @@ public final class ExecutorService
     /**
      * Gets the actual executor service.
      * 
-     * @return The actual executor service; never {@code null}.
+     * @return The actual executor service.
      */
     private java.util.concurrent.@NonNull ExecutorService getActualExecutorService()
     {

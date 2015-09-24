@@ -75,8 +75,7 @@ public final class FrameworkLogHandler
      * Initializes a new instance of the {@code FrameworkLogHandler} class.
      * 
      * @param frameworkLog
-     *        The framework log to which output will be written; must not be
-     *        {@code null}.
+     *        The framework log to which output will be written.
      */
     public FrameworkLogHandler(
         final FrameworkLog frameworkLog )
@@ -117,7 +116,7 @@ public final class FrameworkLogHandler
      * record.
      * 
      * @param record
-     *        The log record; must not be {@code null}.
+     *        The log record.
      * 
      * @return The framework log entry severity associated with the specified
      *         log record.

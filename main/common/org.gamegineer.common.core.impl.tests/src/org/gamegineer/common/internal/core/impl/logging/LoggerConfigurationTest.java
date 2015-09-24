@@ -90,8 +90,7 @@ public final class LoggerConfigurationTest
     /**
      * Gets the logger configuration under test in the fixture.
      * 
-     * @return The logger configuration under test in the fixture; never
-     *         {@code null}.
+     * @return The logger configuration under test in the fixture.
      */
     private LoggerConfiguration getLoggerConfiguration()
     {
@@ -101,7 +100,7 @@ public final class LoggerConfigurationTest
     /**
      * Gets the fixture logger properties.
      * 
-     * @return The fixture logger properties; never {@code null}.
+     * @return The fixture logger properties.
      */
     private Map<String, String> getProperties()
     {

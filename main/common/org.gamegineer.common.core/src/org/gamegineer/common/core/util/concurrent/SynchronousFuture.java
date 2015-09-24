@@ -70,7 +70,7 @@ public final class SynchronousFuture<@Nullable V>
      * the specified result.
      * 
      * @param result
-     *        The operation result; may be {@code null}.
+     *        The operation result.
      */
     public SynchronousFuture(
         final V result )
@@ -83,7 +83,7 @@ public final class SynchronousFuture<@Nullable V>
      * the specified exception.
      * 
      * @param exception
-     *        The operation exception; must not be {@code null}.
+     *        The operation exception.
      */
     public SynchronousFuture(
         final @NonNull Throwable exception )
@@ -95,9 +95,9 @@ public final class SynchronousFuture<@Nullable V>
      * Initializes a new instance of the {@code SynchronousFuture} class.
      * 
      * @param result
-     *        The operation result; may be {@code null}.
+     *        The operation result.
      * @param exception
-     *        The operation exception; may be {@code null}.
+     *        The operation exception.
      */
     private SynchronousFuture(
         final V result,

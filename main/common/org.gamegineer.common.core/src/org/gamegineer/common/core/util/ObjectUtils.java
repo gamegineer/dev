@@ -50,9 +50,9 @@ public final class ObjectUtils
      * Indicates the specified objects are equal.
      * 
      * @param obj1
-     *        The first object to be compared; may be {@code null}.
+     *        The first object to be compared.
      * @param obj2
-     *        The second object to be compared; may be {@code null}.
+     *        The second object to be compared.
      * 
      * @return {@code true} if the specified objects are equal; otherwise
      *         {@code false}.
@@ -77,8 +77,7 @@ public final class ObjectUtils
      * Gets a hash code for the specified object.
      * 
      * @param obj
-     *        The object for which a hash code is to be calculated; may be
-     *        {@code null}.
+     *        The object for which a hash code is to be calculated.
      * 
      * @return A hash code for the specified object.
      */
@@ -97,11 +96,9 @@ public final class ObjectUtils
      * Gets a string representation of the specified object.
      * 
      * @param obj
-     *        The object for which a string representation is desired; may be
-     *        {@code null}.
+     *        The object for which a string representation is desired.
      * 
-     * @return A string representation of the specified object; never
-     *         {@code null}.
+     * @return A string representation of the specified object.
      */
     public static String toString(
         final @Nullable Object obj )

@@ -75,9 +75,9 @@ public abstract class AbstractEqualityComparator<T>
      * Indicates the specified objects are equal.
      * 
      * @param obj1
-     *        The first object to compare; must not be {@code null}.
+     *        The first object to compare.
      * @param obj2
-     *        The second object to compare; must not be {@code null}.
+     *        The second object to compare.
      * 
      * @return {@code true} if the specified objects are equal; otherwise
      *         {@code false}.
@@ -105,8 +105,7 @@ public abstract class AbstractEqualityComparator<T>
      * Gets a hash code for the specified object.
      * 
      * @param obj
-     *        The object for which a hash code is to be calculated; must not be
-     *        {@code null}.
+     *        The object for which a hash code is to be calculated.
      * 
      * @return A hash code for the specified object.
      */

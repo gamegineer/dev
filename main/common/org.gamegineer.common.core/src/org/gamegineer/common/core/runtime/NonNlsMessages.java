@@ -77,12 +77,11 @@ final class NonNlsMessages
      * Gets the formatted message for all exceptions.
      * 
      * @param paramName
-     *        The name of the parameter that caused the exception; must not be
-     *        {@code null}.
+     *        The name of the parameter that caused the exception.
      * @param message
-     *        The exception detail message; must not be {@code null}.
+     *        The exception detail message.
      * 
-     * @return The formatted message for all exceptions; never {@code null}.
+     * @return The formatted message for all exceptions.
      */
     static String Assert_message(
         final String paramName,

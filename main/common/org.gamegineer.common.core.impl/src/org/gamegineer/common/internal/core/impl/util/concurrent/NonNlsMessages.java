@@ -72,7 +72,7 @@ final class NonNlsMessages
      * uncaught exception.
      * 
      * @return The formatted message indicating the thread was terminated by an
-     *         uncaught exception; never {@code null}.
+     *         uncaught exception.
      */
     static String ExecutorService_uncaughtException()
     {

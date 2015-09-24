@@ -72,10 +72,10 @@ final class NonNlsMessages
      * application version.
      * 
      * @param versionString
-     *        The application version string; must not be {@code null}.
+     *        The application version string.
      * 
      * @return The formatted message indicating an error occurred while parsing
-     *         the application version; never {@code null}.
+     *         the application version.
      */
     static String BrandingUtils_getVersion_parseError(
         final String versionString )

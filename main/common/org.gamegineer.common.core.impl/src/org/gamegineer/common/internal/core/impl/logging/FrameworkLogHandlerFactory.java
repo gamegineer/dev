@@ -70,7 +70,7 @@ public final class FrameworkLogHandlerFactory
      * Binds the specified framework log service.
      * 
      * @param frameworkLog
-     *        The framework log service to bind; must not be {@code null}.
+     *        The framework log service to bind.
      * 
      * @throws java.lang.IllegalStateException
      *         If a framework log service is already bound.
@@ -106,7 +106,7 @@ public final class FrameworkLogHandlerFactory
      * Unbinds the specified framework log service.
      * 
      * @param frameworkLog
-     *        The framework log service to unbind; must not be {@code null}.
+     *        The framework log service to unbind.
      * 
      * @throws java.lang.IllegalStateException
      *         If a different or no framework log service is currently bound.

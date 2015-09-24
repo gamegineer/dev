@@ -91,7 +91,7 @@ public final class FakeHandler
      * Registers a component factory for the {@code FakeHandler} class.
      * 
      * @return The service registration token associated with the component
-     *         factory; never {@code null}.
+     *         factory.
      */
     public static ServiceRegistration<ComponentFactory> registerComponentFactory()
     {
@@ -109,7 +109,7 @@ public final class FakeHandler
      * always fail to create the component.
      * 
      * @return The service registration token associated with the component
-     *         factory; never {@code null}.
+     *         factory.
      */
     public static ServiceRegistration<ComponentFactory> registerFailingComponentFactory()
     {

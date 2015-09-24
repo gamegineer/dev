@@ -60,14 +60,14 @@ final class LoggingProperties
      * an associated configuration in the specified logging properties.
      * 
      * @param properties
-     *        The logging properties; must not be {@code null}.
+     *        The logging properties.
      * @param name
-     *        The logger name; must not be {@code null}.
+     *        The logger name.
      * 
      * @return A list of names for each ancestor of the specified logger which
      *         has an associated configuration in the specified logging
-     *         properties; never {@code null}. The names are ordered from
-     *         nearest to furthest ancestor.
+     *         properties. The names are ordered from nearest to furthest
+     *         ancestor.
      */
     static List<String> getAncestorLoggerNames(
         final Map<String, String> properties,
@@ -114,13 +114,11 @@ final class LoggingProperties
      * logging properties.
      * 
      * @param properties
-     *        The logging properties; must not be {@code null}.
+     *        The logging properties.
      * @param componentName
-     *        The component name; must not be {@code null} and must contain at
-     *        least one dot.
+     *        The component name; must contain at least one dot.
      * @param propertyName
-     *        The property name; must not be {@code null} and must not contain
-     *        any dots.
+     *        The property name; must not contain any dots.
      * 
      * @return The value of the specified component property from the specified
      *         logging properties or {@code null} if the property does not
@@ -142,15 +140,13 @@ final class LoggingProperties
      * logging properties.
      * 
      * @param properties
-     *        The logging properties; must not be {@code null}.
+     *        The logging properties.
      * @param type
-     *        The component type; must not be {@code null}.
+     *        The component type.
      * @param instanceName
-     *        The component instance name; must not be {@code null} and must not
-     *        contain any dots.
+     *        The component instance name; must not contain any dots.
      * @param propertyName
-     *        The property name; must not be {@code null} and must not contain
-     *        any dots.
+     *        The property name; must not contain any dots.
      * 
      * @return The value of the specified component property from the specified
      *         logging properties or {@code null} if the property does not
@@ -172,10 +168,9 @@ final class LoggingProperties
      * Converts the specified properties collection into an equivalent map.
      * 
      * @param properties
-     *        The properties collection; must not be {@code null}.
+     *        The properties collection.
      * 
-     * @return A map that is equivalent to the specified properties collection;
-     *         never {@code null}.
+     * @return A map that is equivalent to the specified properties collection.
      */
     static Map<String, String> toMap(
         final Properties properties )

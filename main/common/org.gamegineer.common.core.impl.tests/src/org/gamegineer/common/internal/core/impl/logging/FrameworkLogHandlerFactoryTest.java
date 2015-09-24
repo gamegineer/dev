@@ -61,8 +61,7 @@ public final class FrameworkLogHandlerFactoryTest
     /**
      * Gets the framework log handler factory under test in the fixture.
      * 
-     * @return The framework log handler factory under test in the fixture;
-     *         never {@code null}.
+     * @return The framework log handler factory under test in the fixture.
      */
     private FrameworkLogHandlerFactory getFactory()
     {

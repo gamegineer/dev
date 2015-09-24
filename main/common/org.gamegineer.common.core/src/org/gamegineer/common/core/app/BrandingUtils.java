@@ -54,10 +54,9 @@ public final class BrandingUtils
      * Gets the version associated with the specified application branding.
      * 
      * @param branding
-     *        The application branding; must not be {@code null}.
+     *        The application branding.
      * 
-     * @return The version associated with the specified application branding;
-     *         never {@code null}.
+     * @return The version associated with the specified application branding.
      */
     public static Version getVersion(
         final IBranding branding )

@@ -61,7 +61,7 @@ public abstract class AbstractPredicateTestCase
     /**
      * Creates the predicate to be tested.
      * 
-     * @return The predicate to be tested; never {@code null}.
+     * @return The predicate to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -72,7 +72,7 @@ public abstract class AbstractPredicateTestCase
     /**
      * Gets the predicate under test in the fixture.
      * 
-     * @return The predicate under test in the fixture; never {@code null}.
+     * @return The predicate under test in the fixture.
      */
     protected final IPredicate<?> getPredicate()
     {

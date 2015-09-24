@@ -71,11 +71,11 @@ public abstract class AbstractAbstractRegistryTestCase<RegistryType extends Abst
      * registry.
      * 
      * @param registry
-     *        The registry; must not be {@code null}.
+     *        The registry.
      * @param object
-     *        The object; must not be {@code null}.
+     *        The object.
      * 
-     * @return The identifier of the specified object; never {@code null}.
+     * @return The identifier of the specified object.
      */
     protected abstract ObjectIdType getObjectId(
         RegistryType registry,
@@ -84,7 +84,7 @@ public abstract class AbstractAbstractRegistryTestCase<RegistryType extends Abst
     /**
      * Creates the registry to be tested.
      * 
-     * @return The registry to be tested; never {@code null}.
+     * @return The registry to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -95,7 +95,7 @@ public abstract class AbstractAbstractRegistryTestCase<RegistryType extends Abst
     /**
      * Gets the registry under test in the fixture.
      * 
-     * @return The registry under test in the fixture; never {@code null}.
+     * @return The registry under test in the fixture.
      */
     protected final RegistryType getRegistry()
     {

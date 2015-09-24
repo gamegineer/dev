@@ -85,11 +85,10 @@ public final class TaskUtils
      * </pre>
      * 
      * @param t
-     *        The unknown cause of a task execution exception; may be
-     *        {@code null}.
+     *        The unknown cause of a task execution exception.
      * 
      * @return The unchecked exception which caused the task execution
-     *         exception; never {@code null}.
+     *         exception.
      * 
      * @throws java.lang.Error
      *         If the cause was an error.

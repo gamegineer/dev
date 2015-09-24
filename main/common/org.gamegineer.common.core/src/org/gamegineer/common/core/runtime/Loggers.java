@@ -63,12 +63,12 @@ public abstract class Loggers
      * Gets the named logger for the specified bundle.
      * 
      * @param bundle
-     *        The bundle; must not be {@code null}.
+     *        The bundle.
      * @param name
      *        The logger name. If {@code null} or an empty string, the default
      *        logger for the bundle will be returned.
      * 
-     * @return The named logger for the specified bundle; never {@code null}.
+     * @return The named logger for the specified bundle.
      */
     protected static Logger getLogger(
         final Bundle bundle,

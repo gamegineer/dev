@@ -40,7 +40,7 @@ public interface IPredicate<T>
      * predicate.
      * 
      * @param obj
-     *        The object to evaluate; may be {@code null}.
+     *        The object to evaluate.
      * 
      * @return {@code true} if the specified object satisfies the conditions of
      *         this predicate; otherwise {@code false}.

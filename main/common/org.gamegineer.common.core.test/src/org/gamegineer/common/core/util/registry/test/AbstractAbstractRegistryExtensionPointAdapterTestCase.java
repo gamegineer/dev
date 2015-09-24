@@ -88,9 +88,9 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
      * </p>
      * 
      * @param expected
-     *        The expected object; may be {@code null}.
+     *        The expected object.
      * @param actual
-     *        The actual object; may be {@code null}.
+     *        The actual object.
      * 
      * @throws java.lang.AssertionError
      *         If the two objects are not equal.
@@ -107,13 +107,13 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
      * extension point associated with the adapter.
      * 
      * @param configurationElement
-     *        The configuration element; must not be {@code null}.
+     *        The configuration element.
      * @param mocksControl
-     *        The fixture mocks control; must not be {@code null}.
+     *        The fixture mocks control.
      * 
      * @return The object that will be created when
      *         {@link IConfigurationElement#createExecutableExtension} is called
-     *         on the specified configuration element; never {@code null}.
+     *         on the specified configuration element.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -126,7 +126,7 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
     /**
      * Creates a mock registry.
      * 
-     * @return A new mock registry; never {@code null}.
+     * @return A new mock registry.
      */
     @SuppressWarnings( "unchecked" )
     private IRegistry<ObjectIdType, ObjectType> createMockRegistry()
@@ -139,11 +139,11 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
      * method on the specified registry extension point adapter.
      * 
      * @param registryExtensionPointAdapter
-     *        The registry extension point adapter; must not be {@code null}.
+     *        The registry extension point adapter.
      * @param configurationElement
-     *        The configuration element; must not be {@code null}.
+     *        The configuration element.
      * 
-     * @return A new object; never {@code null}.
+     * @return A new object.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If the configuration element represents an illegal object.
@@ -155,8 +155,7 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
     /**
      * Creates the registry extension point adapter to be tested.
      * 
-     * @return The registry extension point adapter to be tested; never
-     *         {@code null}.
+     * @return The registry extension point adapter to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -170,10 +169,10 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
      * on the specified registry extension point adapter.
      * 
      * @param registryExtensionPointAdapter
-     *        The registry extension point adapter; must not be {@code null}.
+     *        The registry extension point adapter.
      * 
      * @return The identifier of the extension point associated with this
-     *         adapter; never {@code null}.
+     *         adapter.
      */
     protected abstract String getExtensionPointId(
         RegistryExtensionPointAdapterType registryExtensionPointAdapter );
@@ -181,7 +180,7 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
     /**
      * Gets the fixture mocks control.
      * 
-     * @return The fixture mocks control; never {@code null}.
+     * @return The fixture mocks control.
      */
     private IMocksControl getMocksControl()
     {
@@ -191,8 +190,7 @@ public abstract class AbstractAbstractRegistryExtensionPointAdapterTestCase<Regi
     /**
      * Gets the registry extension point adapter under test in the fixture.
      * 
-     * @return The registry extension point adapter under test in the fixture;
-     *         never {@code null}.
+     * @return The registry extension point adapter under test in the fixture.
      */
     protected final RegistryExtensionPointAdapterType getRegistryExtensionPointAdapter()
     {

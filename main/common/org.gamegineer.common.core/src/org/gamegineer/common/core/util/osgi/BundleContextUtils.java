@@ -65,9 +65,9 @@ public final class BundleContextUtils
      *        The type of the service.
      * 
      * @param bundleContext
-     *        The bundle context; must not be {@code null}.
+     *        The bundle context.
      * @param serviceReference
-     *        The service reference; must not be {@code null}.
+     *        The service reference.
      * 
      * @return The service associated with the specified reference or
      *         {@code null} if the service is not available.

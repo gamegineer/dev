@@ -61,8 +61,7 @@ public abstract class Debug
      * Initializes a new instance of the {@code Debug} class.
      * 
      * @param bundleSymbolicName
-     *        The symbolic name of the bundle associated with this instance;
-     *        must not be {@code null}.
+     *        The symbolic name of the bundle associated with this instance.
      */
     protected Debug(
         final String bundleSymbolicName )
@@ -78,8 +77,7 @@ public abstract class Debug
     /**
      * Gets the debug trace for the bundle associated with this instance.
      * 
-     * @return The debug trace for the bundle associated with this instance;
-     *         never {@code null}.
+     * @return The debug trace for the bundle associated with this instance.
      */
     private DebugTrace getDebugTrace()
     {
@@ -99,7 +97,7 @@ public abstract class Debug
      *        The debug option that is used to control whether the trace message
      *        is printed or {@code null} to always print the trace message.
      * @param message
-     *        The message; may be {@code null}.
+     *        The message.
      */
     public final void trace(
         final @Nullable String option,
@@ -115,9 +113,9 @@ public abstract class Debug
      *        The debug option that is used to control whether the trace message
      *        is printed or {@code null} to always print the trace message.
      * @param message
-     *        The message; may be {@code null}.
+     *        The message.
      * @param error
-     *        The exception; may be {@code null}.
+     *        The exception.
      */
     public final void trace(
         final @Nullable String option,
@@ -163,7 +161,7 @@ public abstract class Debug
      *        The debug option that is used to control whether the trace message
      *        is printed or {@code null} to always print the trace message.
      * @param methodArgument
-     *        The method argument; may be {@code null}.
+     *        The method argument.
      */
     public final void traceEntry(
         final @Nullable String option,
@@ -180,7 +178,7 @@ public abstract class Debug
      *        The debug option that is used to control whether the trace message
      *        is printed or {@code null} to always print the trace message.
      * @param methodArguments
-     *        The method arguments; may be {@code null}.
+     *        The method arguments.
      */
     public final void traceEntry(
         final @Nullable String option,
@@ -211,7 +209,7 @@ public abstract class Debug
      *        The debug option that is used to control whether the trace message
      *        is printed or {@code null} to always print the trace message.
      * @param result
-     *        The method result; may be {@code null}.
+     *        The method result.
      */
     public final void traceExit(
         final @Nullable String option,

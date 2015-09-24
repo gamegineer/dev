@@ -64,9 +64,9 @@ public final class Assert
      * </p>
      * 
      * @param expected
-     *        The expected object; may be {@code null}.
+     *        The expected object.
      * @param actual
-     *        The actual object; may be {@code null}.
+     *        The actual object.
      * 
      * @throws java.lang.AssertionError
      *         If the objects are not equal.
@@ -103,11 +103,11 @@ public final class Assert
      * comparator.
      * 
      * @param expected
-     *        The expected object; must not be {@code null}.
+     *        The expected object.
      * @param actual
-     *        The actual object; must not be {@code null}.
+     *        The actual object.
      * @param equalityComparator
-     *        The equality comparator; may be {@code null}.
+     *        The equality comparator.
      * 
      * @return {@code true} if the objects are equal or {@code false} if the
      *         objects could not be compared using the specified equality
@@ -146,7 +146,7 @@ public final class Assert
      * object.
      * 
      * @param obj
-     *        The object; must not be {@code null}.
+     *        The object.
      * 
      * @return The platform equality comparator associated with the specified
      *         object or {@code null} if no equality comparator is available.

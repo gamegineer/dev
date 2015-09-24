@@ -84,7 +84,7 @@ public final class LoggingService
      * Activates the logging service component.
      * 
      * @param bundleContext
-     *        The bundle context; must not be {@code null}.
+     *        The bundle context.
      */
     public void activate(
         final BundleContext bundleContext )
@@ -105,9 +105,9 @@ public final class LoggingService
      * </p>
      * 
      * @param loggerName
-     *        The logger name; must not be {@code null}.
+     *        The logger name.
      * @param properties
-     *        The logging properties; must not be {@code null}.
+     *        The logging properties.
      */
     @GuardedBy( "lock_" )
     private void configureAncestorLoggers(
@@ -131,9 +131,9 @@ public final class LoggingService
      * Configures the specified logger.
      * 
      * @param logger
-     *        The logger; must not be {@code null}.
+     *        The logger.
      * @param config
-     *        The logger configuration; must not be {@code null}.
+     *        The logger configuration.
      */
     private static void configureLogger(
         final Logger logger,
@@ -198,7 +198,7 @@ public final class LoggingService
      * Gets the fully-qualified name of the logger for the specified bundle.
      * 
      * @param bundle
-     *        The bundle; must not be {@code null}.
+     *        The bundle.
      * @param name
      *        The logger name. If {@code null} or an empty string, the
      *        fully-qualified name of the default logger for the bundle will be
@@ -224,7 +224,7 @@ public final class LoggingService
      * Gets the logging properties for the specified bundle.
      * 
      * @param bundle
-     *        The bundle; must not be {@code null}.
+     *        The bundle.
      * 
      * @return The logging properties for the specified bundle or {@code null}
      *         if no properties exist or they could not be loaded.

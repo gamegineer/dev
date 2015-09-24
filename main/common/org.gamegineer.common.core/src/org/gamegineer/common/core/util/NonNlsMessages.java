@@ -74,10 +74,9 @@ final class NonNlsMessages
      * Gets the formatted message indicating the ordinal is out of range.
      * 
      * @param ordinal
-     *        The ordinal of the enum constant; must not be {@code null}.
+     *        The ordinal of the enum constant.
      * 
-     * @return The formatted message indicating the ordinal is out of range;
-     *         never {@code null}.
+     * @return The formatted message indicating the ordinal is out of range.
      */
     @SuppressWarnings( "boxing" )
     static String ExtensibleEnum_ordinal_outOfRange(
@@ -91,12 +90,12 @@ final class NonNlsMessages
      * the specified name.
      * 
      * @param type
-     *        The enum type; must not be {@code null}.
+     *        The enum type.
      * @param name
-     *        The name of the enum constant; must not be {@code null}.
+     *        The name of the enum constant.
      * 
      * @return The formatted message indicating the enum type has no constant
-     *         with the specified name; never {@code null}.
+     *         with the specified name.
      */
     static String ExtensibleEnum_valueOf_nameIllegal(
         final Class<?> type,

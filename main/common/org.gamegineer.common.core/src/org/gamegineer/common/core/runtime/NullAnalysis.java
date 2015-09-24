@@ -64,9 +64,9 @@ public final class NullAnalysis
      *        The type of the value.
      * 
      * @param value
-     *        The value; may be {@code null}.
+     *        The value.
      * 
-     * @return The value; never {@code null}.
+     * @return The value.
      * 
      * @throws java.lang.AssertionError
      *         If {@code value} is {@code null}.
@@ -86,12 +86,11 @@ public final class NullAnalysis
      *        The type of the cast value.
      * 
      * @param type
-     *        The type to which the value is to be cast; must not be
-     *        {@code null}.
+     *        The type to which the value is to be cast.
      * @param value
-     *        The value; must not be {@code null}.
+     *        The value.
      * 
-     * @return The cast value; never {@code null}.
+     * @return The cast value.
      */
     public static <T> @NonNull T nonNull(
         final @NonNull Class<T> type,
@@ -115,9 +114,9 @@ public final class NullAnalysis
      *        The type of the class.
      * 
      * @param type
-     *        The class to be cast; must not be {@code null}.
+     *        The class to be cast.
      * 
-     * @return The cast class; never {@code null}.
+     * @return The cast class.
      */
     public static <T> @NonNull Class<@NonNull T> nonNull(
         final Class<T> type )

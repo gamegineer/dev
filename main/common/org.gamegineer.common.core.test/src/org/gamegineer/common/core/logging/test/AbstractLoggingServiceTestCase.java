@@ -65,7 +65,7 @@ public abstract class AbstractLoggingServiceTestCase
     /**
      * Creates the logging service to be tested.
      * 
-     * @return The logging service to be tested; never {@code null}.
+     * @return The logging service to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -76,7 +76,7 @@ public abstract class AbstractLoggingServiceTestCase
     /**
      * Gets the associated bundle.
      * 
-     * @return The associated bundle; never {@code null}.
+     * @return The associated bundle.
      */
     private static Bundle getBundle()
     {
@@ -86,7 +86,7 @@ public abstract class AbstractLoggingServiceTestCase
     /**
      * Gets the logging service under test in the fixture.
      * 
-     * @return The logging service under test in the fixture; never {@code null}.
+     * @return The logging service under test in the fixture.
      */
     protected final ILoggingService getLoggingService()
     {

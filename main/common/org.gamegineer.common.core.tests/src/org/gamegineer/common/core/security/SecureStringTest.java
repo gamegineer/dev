@@ -61,7 +61,7 @@ public final class SecureStringTest
     /**
      * Gets the secure string under test in the fixture.
      * 
-     * @return The secure string under test in the fixture; never {@code null}.
+     * @return The secure string under test in the fixture.
      */
     private SecureString getSecureString()
     {

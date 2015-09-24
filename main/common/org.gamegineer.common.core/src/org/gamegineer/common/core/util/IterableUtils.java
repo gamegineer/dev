@@ -57,9 +57,9 @@ public final class IterableUtils
      *        The type of the list elements.
      * 
      * @param list
-     *        The list; must not be {@code null}.
+     *        The list.
      * 
-     * @return A reversed view of the specified list; never {@code null}.
+     * @return A reversed view of the specified list.
      */
     public static <T> Iterable<T> reverse(
         final List<T> list )

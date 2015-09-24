@@ -53,7 +53,7 @@ public abstract class AbstractExtensibleEnumTestCase
     /**
      * Gets the enum type under test in the fixture.
      * 
-     * @return The enum type under test in the fixture; never {@code null}.
+     * @return The enum type under test in the fixture.
      */
     protected abstract Class<? extends ExtensibleEnum> getType();
 
