@@ -91,10 +91,10 @@ final class NonNlsMessages
      * for an unsupported component.
      * 
      * @param source
-     *        The property source; must not be {@code null}.
+     *        The property source.
      * 
      * @return The formatted message indicating the password property was
-     *         requested for an unsupported component; never {@code null}.
+     *         requested for an unsupported component.
      */
     static String ComponentProperties_password_unsupportedComponent(
         final Object source )
@@ -107,11 +107,10 @@ final class NonNlsMessages
      * was requested for an unsupported component.
      * 
      * @param source
-     *        The property source; must not be {@code null}.
+     *        The property source.
      * 
      * @return The formatted message indicating the single selection value
-     *         property was requested for an unsupported component; never
-     *         {@code null}.
+     *         property was requested for an unsupported component.
      */
     static String ComponentProperties_singleSelectionValue_unsupportedComponent(
         final Object source )
@@ -124,10 +123,10 @@ final class NonNlsMessages
      * an unsupported component.
      * 
      * @param source
-     *        The property source; must not be {@code null}.
+     *        The property source.
      * 
      * @return The formatted message indicating the text property was requested
-     *         for an unsupported component; never {@code null}.
+     *         for an unsupported component.
      */
     static String ComponentProperties_text_unsupportedComponent(
         final Object source )

@@ -59,8 +59,7 @@ public abstract class AbstractWizardPage
      * Initializes a new instance of the {@code AbstractWizardPage} class.
      * 
      * @param name
-     *        The unique name of the page within the wizard; must not be
-     *        {@code null}.
+     *        The unique name of the page within the wizard.
      */
     protected AbstractWizardPage(
         final String name )

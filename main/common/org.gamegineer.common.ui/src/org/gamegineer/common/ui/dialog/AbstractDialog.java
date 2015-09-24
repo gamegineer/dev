@@ -116,8 +116,7 @@ public abstract class AbstractDialog
      * </p>
      * 
      * @param id
-     *        The identifier of the button that was pressed; must not be
-     *        {@code null}.
+     *        The identifier of the button that was pressed.
      */
     protected void buttonPressed(
         final String id )
@@ -277,16 +276,16 @@ public abstract class AbstractDialog
      * Creates a new button with the specified properties.
      * 
      * @param parent
-     *        The parent container for the button; must not be {@code null}.
+     *        The parent container for the button.
      * @param id
-     *        The button identifier; must not be {@code null}.
+     *        The button identifier.
      * @param label
-     *        The button label; may be {@code null}.
+     *        The button label.
      * @param defaultButton
      *        {@code true} if the button is the default dialog button; otherwise
      *        {@code false}.
      * 
-     * @return The new button; never {@code null}.
+     * @return The new button.
      */
     protected final JButton createButton(
         final Container parent,
@@ -336,9 +335,9 @@ public abstract class AbstractDialog
      * </p>
      * 
      * @param parent
-     *        The parent container for the button bar; must not be {@code null}.
+     *        The parent container for the button bar.
      * 
-     * @return The dialog button bar component; never {@code null}.
+     * @return The dialog button bar component.
      */
     protected Component createButtonBar(
         final Container parent )
@@ -385,7 +384,7 @@ public abstract class AbstractDialog
      * </p>
      * 
      * @param parent
-     *        The parent container for the buttons; must not be {@code null}.
+     *        The parent container for the buttons.
      */
     protected void createButtonsForButtonBar(
         final Container parent )
@@ -430,10 +429,9 @@ public abstract class AbstractDialog
      * </p>
      * 
      * @param parent
-     *        The parent container for the dialog content area; must not be
-     *        {@code null}.
+     *        The parent container for the dialog content area.
      * 
-     * @return The dialog content area component; never {@code null}.
+     * @return The dialog content area component.
      */
     protected Component createDialogArea(
         final Container parent )
@@ -539,7 +537,7 @@ public abstract class AbstractDialog
      * Sets the standard layout data for the specified button.
      * 
      * @param button
-     *        The button; must not be {@code null}.
+     *        The button.
      */
     protected final void setButtonLayoutData(
         final JButton button )

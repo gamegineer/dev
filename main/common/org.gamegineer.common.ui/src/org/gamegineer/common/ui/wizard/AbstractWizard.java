@@ -84,7 +84,7 @@ public abstract class AbstractWizard
      * </p>
      * 
      * @param page
-     *        The new page; must not be {@code null}.
+     *        The new page.
      */
     protected final void addPage(
         final IWizardPage page )

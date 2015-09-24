@@ -51,7 +51,7 @@ public interface IWizard
      * Creates the wizard.
      * 
      * @param parent
-     *        The parent container for the wizard; must not be {@code null}.
+     *        The parent container for the wizard.
      */
     public void create(
         Container parent );
@@ -73,7 +73,7 @@ public interface IWizard
      * Gets the successor of the specified page in the wizard sequence.
      * 
      * @param page
-     *        A wizard page; must not be {@code null}.
+     *        A wizard page.
      * 
      * @return The successor of the specified page in the wizard sequence or
      *         {@code null} if none.
@@ -85,7 +85,7 @@ public interface IWizard
      * Gets the page with specified name in the wizard.
      * 
      * @param name
-     *        The page name; must not be {@code null}.
+     *        The page name.
      * 
      * @return The page with the specified name or {@code null} if no such page
      *         exists.
@@ -103,7 +103,7 @@ public interface IWizard
     /**
      * Gets the collection of pages in the wizard.
      * 
-     * @return The collection of pages in the wizard; never {@code null}.
+     * @return The collection of pages in the wizard.
      */
     public Collection<IWizardPage> getPages();
 
@@ -111,7 +111,7 @@ public interface IWizard
      * Gets the predecessor of the specified page in the wizard sequence.
      * 
      * @param page
-     *        A wizard page; must not be {@code null}.
+     *        A wizard page.
      * 
      * @return The predecessor of the specified page in the wizard sequence or
      *         {@code null} if none.

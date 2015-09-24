@@ -187,10 +187,9 @@ public abstract class AbstractDialogPage
      * </p>
      * 
      * @param parent
-     *        The parent container for the dialog page content area; must not be
-     *        {@code null}.
+     *        The parent container for the dialog page content area.
      * 
-     * @return The dialog page content area component; never {@code null}.
+     * @return The dialog page content area component.
      */
     protected Component createContent(
         final Container parent )
@@ -266,7 +265,7 @@ public abstract class AbstractDialogPage
      * Sets the standard layout data for the specified button.
      * 
      * @param button
-     *        The button; must not be {@code null}.
+     *        The button.
      */
     protected final void setButtonLayoutData(
         final JButton button )

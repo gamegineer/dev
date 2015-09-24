@@ -104,10 +104,9 @@ final class PasswordFieldTextProperty
      * Gets the password for the specified password field.
      * 
      * @param source
-     *        The password field; must not be {@code null}.
+     *        The password field.
      * 
-     * @return The password for the specified password field; never {@code null}
-     *         .
+     * @return The password for the specified password field.
      */
     private static char[] getPassword(
         final JPasswordField source )
@@ -161,11 +160,9 @@ final class PasswordFieldTextProperty
          * class.
          * 
          * @param property
-         *        The property to which this listener listens; must not be
-         *        {@code null}.
+         *        The property to which this listener listens.
          * @param listener
-         *        The listener that receives property change notifications; must
-         *        not be {@code null}.
+         *        The listener that receives property change notifications.
          */
         DocumentPropertyListener(
             final IProperty property,

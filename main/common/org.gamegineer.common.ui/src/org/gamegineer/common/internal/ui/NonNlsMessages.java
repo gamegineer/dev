@@ -72,10 +72,10 @@ final class NonNlsMessages
      * image.
      * 
      * @param imagePath
-     *        The bundle-relative path of the image; must not be {@code null}.
+     *        The bundle-relative path of the image.
      * 
      * @return The formatted message indicating an error occurred while loading
-     *         the image; never {@code null}.
+     *         the image.
      */
     static String ImageRegistry_loadImage_error(
         final String imagePath )

@@ -1,6 +1,6 @@
 /*
  * DialogMessage.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -48,9 +48,9 @@ public final class DialogMessage
      * Initializes a new instance of the {@code DialogMessage} class.
      * 
      * @param text
-     *        The message text; must not be {@code null}.
+     *        The message text.
      * @param type
-     *        The message type; must not be {@code null}.
+     *        The message type.
      */
     public DialogMessage(
         final String text,
@@ -68,7 +68,7 @@ public final class DialogMessage
     /**
      * Gets the message text.
      * 
-     * @return The message text; never {@code null}.
+     * @return The message text.
      */
     public String getText()
     {
@@ -78,7 +78,7 @@ public final class DialogMessage
     /**
      * Gets the message type.
      * 
-     * @return The message type; never {@code null}.
+     * @return The message type.
      */
     public DialogMessageType getType()
     {

@@ -55,8 +55,7 @@ public final class PixelConverter
      * font of the specified component.
      * 
      * @param component
-     *        The component whose font used for pixel conversions; must not be
-     *        {@code null}.
+     *        The component whose font used for pixel conversions.
      */
     public PixelConverter(
         final Component component )
@@ -69,8 +68,7 @@ public final class PixelConverter
      * specified font metrics.
      * 
      * @param fontMetrics
-     *        The font metrics used for pixel conversions; must not be
-     *        {@code null}.
+     *        The font metrics used for pixel conversions.
      */
     public PixelConverter(
         final FontMetrics fontMetrics )

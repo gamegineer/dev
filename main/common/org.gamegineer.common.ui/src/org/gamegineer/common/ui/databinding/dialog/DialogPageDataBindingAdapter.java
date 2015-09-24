@@ -91,9 +91,9 @@ public class DialogPageDataBindingAdapter
      * class.
      * 
      * @param dialogPage
-     *        The dialog page; must not be {@code null}.
+     *        The dialog page.
      * @param dataBindingContext
-     *        The data binding context; must not be {@code null}.
+     *        The data binding context.
      */
     public DialogPageDataBindingAdapter(
         final IDialogPage dialogPage,
@@ -120,7 +120,7 @@ public class DialogPageDataBindingAdapter
     /**
      * Creates the UI change listener.
      * 
-     * @return The UI change listener; never {@code null}.
+     * @return The UI change listener.
      */
     private IChangeListener createUIChangeListener()
     {
@@ -138,8 +138,7 @@ public class DialogPageDataBindingAdapter
     /**
      * Creates the validation status provider targets list change listener.
      * 
-     * @return The validation status provider targets list change listener;
-     *         never {@code null}.
+     * @return The validation status provider targets list change listener.
      */
     private IListChangeListener createValidationStatusProviderTargetsListChangeListener()
     {
@@ -171,8 +170,7 @@ public class DialogPageDataBindingAdapter
     /**
      * Creates the validation status providers list change listener.
      * 
-     * @return The validation status providers list change listener; never
-     *         {@code null}.
+     * @return The validation status providers list change listener.
      */
     private IListChangeListener createValidationStatusProvidersListChangeListener()
     {
@@ -259,7 +257,7 @@ public class DialogPageDataBindingAdapter
     /**
      * Gets the dialog page.
      * 
-     * @return The dialog page; never {@code null}.
+     * @return The dialog page.
      */
     protected final IDialogPage getDialogPage()
     {

@@ -133,11 +133,9 @@ final class ListSingleSelectionValueProperty
          * Initializes a new instance of the {@code ListPropertyListener} class.
          * 
          * @param property
-         *        The property to which this listener listens; must not be
-         *        {@code null}.
+         *        The property to which this listener listens.
          * @param listener
-         *        The listener that receives property change notifications; must
-         *        not be {@code null}.
+         *        The listener that receives property change notifications.
          */
         ListPropertyListener(
             final IProperty property,

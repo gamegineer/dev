@@ -61,7 +61,7 @@ public abstract class AbstractHelpSystemTestCase
     /**
      * Creates the help system to be tested.
      * 
-     * @return The help system to be tested; never {@code null}.
+     * @return The help system to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -72,7 +72,7 @@ public abstract class AbstractHelpSystemTestCase
     /**
      * Gets the help system under test in the fixture.
      * 
-     * @return The help system under test in the fixture; never {@code null}.
+     * @return The help system under test in the fixture.
      */
     protected final IHelpSystem getHelpSystem()
     {

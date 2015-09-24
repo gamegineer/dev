@@ -75,7 +75,7 @@ final class ProgressMonitorComponent
     /**
      * Gets the component controls.
      * 
-     * @return The component controls; never {@code null}.
+     * @return The component controls.
      */
     private Controls getControls()
     {
@@ -174,9 +174,9 @@ final class ProgressMonitorComponent
          * Initializes a new instance of the {@code Controls} class.
          * 
          * @param label
-         *        The task label; must not be {@code null}.
+         *        The task label.
          * @param progressBar
-         *        The task progress indicator; must not be {@code null}.
+         *        The task progress indicator.
          */
         Controls(
             final JLabel label,

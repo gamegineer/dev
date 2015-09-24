@@ -135,11 +135,9 @@ final class TextComponentTextProperty
          * class.
          * 
          * @param property
-         *        The property to which this listener listens; must not be
-         *        {@code null}.
+         *        The property to which this listener listens.
          * @param listener
-         *        The listener that receives property change notifications; must
-         *        not be {@code null}.
+         *        The listener that receives property change notifications.
          */
         DocumentPropertyListener(
             final IProperty property,

@@ -73,10 +73,10 @@ final class NonNlsMessages
      * specified image.
      * 
      * @param imageUrl
-     *        The URL of the image; must not be {@code null}.
+     *        The URL of the image.
      * 
      * @return The formatted message indicating an error occurred while reading
-     *         the specified image; never {@code null}.
+     *         the specified image.
      */
     static String BrandingUIUtils_getImage_readError(
         final URL imageUrl )

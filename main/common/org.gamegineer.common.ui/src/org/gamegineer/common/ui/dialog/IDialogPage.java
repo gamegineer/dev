@@ -44,8 +44,7 @@ public interface IDialogPage
      * </p>
      * 
      * @param parent
-     *        The parent container for the dialog page; must not be {@code null}
-     *        .
+     *        The parent container for the dialog page.
      */
     public void create(
         Container parent );

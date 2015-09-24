@@ -53,10 +53,10 @@ final class DataBindingUtils
      * specified validation status.
      * 
      * @param status
-     *        The validation status; must not be {@code null}.
+     *        The validation status.
      * 
      * @return The appropriate dialog message type for the severity of the
-     *         specified validation status; never {@code null}.
+     *         specified validation status.
      */
     static DialogMessageType getDialogMessageType(
         final IStatus status )

@@ -98,7 +98,7 @@ public final class WizardDialog
      * @param parentShell
      *        The parent shell or {@code null} to create a top-level shell.
      * @param wizard
-     *        The wizard hosted in the dialog; must not be {@code null}.
+     *        The wizard hosted in the dialog.
      */
     public WizardDialog(
         final @Nullable Window parentShell,
@@ -188,7 +188,7 @@ public final class WizardDialog
      * Begins the execution of the specified task.
      * 
      * @param task
-     *        The task; must not be {@code null}.
+     *        The task.
      */
     private void beginExecuteTask(
         final RunnableTask<?, ?> task )
@@ -543,7 +543,7 @@ public final class WizardDialog
      * </p>
      * 
      * @param id
-     *        The button identifier; must not be {@code null}.
+     *        The button identifier.
      */
     private void pressButton(
         final String id )

@@ -64,9 +64,9 @@ public final class BrandingUIUtils
      * Gets the image with the specified bundle-relative path.
      * 
      * @param bundle
-     *        The bundle that contains the image; must not be {@code null}.
+     *        The bundle that contains the image.
      * @param path
-     *        The bundle-relative path of the image; must not be {@code null}.
+     *        The bundle-relative path of the image.
      * 
      * @return The image or {@code null} if no such image exists.
      */
@@ -95,10 +95,10 @@ public final class BrandingUIUtils
      * application branding.
      * 
      * @param branding
-     *        The application branding; must not be {@code null}.
+     *        The application branding.
      * 
      * @return The collection of window images associated with the specified
-     *         application branding; never {@code null}.
+     *         application branding.
      */
     public static List<Image> getWindowImages(
         final IBranding branding )

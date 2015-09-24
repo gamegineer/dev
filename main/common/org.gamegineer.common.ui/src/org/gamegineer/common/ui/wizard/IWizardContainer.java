@@ -39,7 +39,7 @@ public interface IWizardContainer
      * Activates the specified page in the container.
      * 
      * @param page
-     *        A wizard page; must not be {@code null}.
+     *        A wizard page.
      */
     public void activatePage(
         IWizardPage page );

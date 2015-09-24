@@ -65,7 +65,7 @@ public abstract class AbstractWizardTestCase
     /**
      * Creates the wizard to be tested.
      * 
-     * @return The wizard to be tested; never {@code null}.
+     * @return The wizard to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -76,7 +76,7 @@ public abstract class AbstractWizardTestCase
     /**
      * Gets the wizard under test in the fixture.
      * 
-     * @return The wizard under test in the fixture; never {@code null}.
+     * @return The wizard under test in the fixture.
      */
     protected final IWizard getWizard()
     {

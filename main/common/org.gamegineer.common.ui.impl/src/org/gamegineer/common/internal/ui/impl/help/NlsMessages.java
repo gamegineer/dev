@@ -72,10 +72,9 @@ final class NlsMessages
      * Gets the formatted message for the master help set title.
      * 
      * @param name
-     *        The application name; may be {@code null}.
+     *        The application name.
      * 
-     * @return The formatted message for the master help set title; never
-     *         {@code null}.
+     * @return The formatted message for the master help set title.
      */
     static String HelpSystem_masterHelpSet_title(
         final @Nullable String name )

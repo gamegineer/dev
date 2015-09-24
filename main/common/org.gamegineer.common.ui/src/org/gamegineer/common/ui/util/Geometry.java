@@ -1,6 +1,6 @@
 /*
  * Geometry.java
- * Copyright 2008-2014 Gamegineer contributors and others.
+ * Copyright 2008-2015 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -52,9 +52,9 @@ public final class Geometry
      * Calculates the center point of the specified rectangle.
      * 
      * @param rect
-     *        A rectangle; must not be {@code null}.
+     *        A rectangle.
      * 
-     * @return The center point of the specified rectangle; never {@code null}.
+     * @return The center point of the specified rectangle.
      */
     public static Point calculateCenterPoint(
         final Rectangle rect )

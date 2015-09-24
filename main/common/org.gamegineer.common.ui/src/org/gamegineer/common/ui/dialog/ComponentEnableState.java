@@ -50,8 +50,7 @@ public final class ComponentEnableState
      * Initializes a new instance of the {@code ComponentEnableState} class.
      * 
      * @param components
-     *        The collection of components that have been disabled; must not be
-     *        {@code null}.
+     *        The collection of components that have been disabled.
      */
     private ComponentEnableState(
         final Collection<Component> components )
@@ -68,10 +67,10 @@ public final class ComponentEnableState
      * Disables the specified component and its descendants.
      * 
      * @param component
-     *        The component to disable; must not be {@code null}.
+     *        The component to disable.
      * 
      * @return A memento representing the previous enable/disable state of the
-     *         component and its descendants; never {@code null}.
+     *         component and its descendants.
      */
     public static ComponentEnableState disable(
         final Component component )
@@ -86,10 +85,9 @@ public final class ComponentEnableState
      * Disables the specified component and its descendants.
      * 
      * @param component
-     *        The component to disable; must not be {@code null}.
+     *        The component to disable.
      * @param components
-     *        The collection of components that have been disabled; must not be
-     *        {@code null}.
+     *        The collection of components that have been disabled.
      */
     private static void disable(
         final Component component,

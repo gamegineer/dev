@@ -86,7 +86,7 @@ public final class ImageRegistry
      * Gets the image associated with the specified bundle-relative path.
      * 
      * @param path
-     *        The bundle-relative path of the image; must not be {@code null}.
+     *        The bundle-relative path of the image.
      * 
      * @return The image associated with the specified bundle-relative path or
      *         {@code null} if no such image exists.

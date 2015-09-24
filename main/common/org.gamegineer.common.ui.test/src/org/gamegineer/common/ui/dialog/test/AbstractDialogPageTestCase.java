@@ -61,7 +61,7 @@ public abstract class AbstractDialogPageTestCase
     /**
      * Creates the dialog page to be tested.
      * 
-     * @return The dialog page to be tested; never {@code null}.
+     * @return The dialog page to be tested.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -72,7 +72,7 @@ public abstract class AbstractDialogPageTestCase
     /**
      * Gets the dialog page under test in the fixture.
      * 
-     * @return The dialog page under test in the fixture; never {@code null}.
+     * @return The dialog page under test in the fixture.
      */
     protected final IDialogPage getDialogPage()
     {

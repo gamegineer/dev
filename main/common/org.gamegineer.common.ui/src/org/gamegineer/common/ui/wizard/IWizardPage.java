@@ -45,8 +45,7 @@ public interface IWizardPage
     /**
      * Gets the unique name of the page within the wizard.
      * 
-     * @return The unique name of the page within the wizard; never {@code null}
-     *         .
+     * @return The unique name of the page within the wizard.
      */
     public String getName();
 
@@ -115,7 +114,7 @@ public interface IWizardPage
      * </p>
      * 
      * @param wizard
-     *        The wizard that hosts the page; must not be {@code null}.
+     *        The wizard that hosts the page.
      * 
      * @throws java.lang.IllegalStateException
      *         If the page is already hosted by a wizard.

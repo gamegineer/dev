@@ -114,7 +114,7 @@ public abstract class AbstractWindow<T extends Window>
      * </p>
      * 
      * @param shell
-     *        The shell; must not be {@code null}.
+     *        The shell.
      */
     protected void configureShell(
         final T shell )
@@ -191,9 +191,9 @@ public abstract class AbstractWindow<T extends Window>
      * </p>
      * 
      * @param parent
-     *        The parent container for all content; must not be {@code null}.
+     *        The parent container for all content.
      * 
-     * @return The window content; never {@code null}.
+     * @return The window content.
      */
     protected Component createContent(
         final Container parent )
@@ -209,7 +209,7 @@ public abstract class AbstractWindow<T extends Window>
      * @param parent
      *        The parent shell or {@code null} to create a top-level shell.
      * 
-     * @return The window shell; never {@code null}.
+     * @return The window shell.
      */
     protected abstract T createShell(
         final @Nullable Window parent );
@@ -219,11 +219,10 @@ public abstract class AbstractWindow<T extends Window>
      * the display bounds.
      * 
      * @param preferredBounds
-     *        The preferred bounds; must not be {@code null}.
+     *        The preferred bounds.
      * 
      * @return The adjusted bounds that are as close to the preferred bounds as
-     *         possible without extending beyond the display bounds; never
-     *         {@code null}.
+     *         possible without extending beyond the display bounds.
      */
     private static Rectangle getConstrainedBounds(
         final Rectangle preferredBounds )
@@ -267,9 +266,9 @@ public abstract class AbstractWindow<T extends Window>
      * </p>
      * 
      * @param initialSize
-     *        The initial size of the shell; must not be {@code null}.
+     *        The initial size of the shell.
      * 
-     * @return The initial location of the shell; never {@code null}.
+     * @return The initial location of the shell.
      */
     protected Point getInitialLocation(
         final Dimension initialSize )
@@ -291,7 +290,7 @@ public abstract class AbstractWindow<T extends Window>
      * This implementation returns the preferred size of the shell.
      * </p>
      * 
-     * @return The initial size of the shell; never {@code null}.
+     * @return The initial size of the shell.
      */
     protected Dimension getInitialSize()
     {

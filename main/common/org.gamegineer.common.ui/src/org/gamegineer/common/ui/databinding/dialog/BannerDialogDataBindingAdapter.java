@@ -91,9 +91,9 @@ public class BannerDialogDataBindingAdapter
      * class.
      * 
      * @param bannerDialog
-     *        The banner dialog; must not be {@code null}.
+     *        The banner dialog.
      * @param dataBindingContext
-     *        The data binding context; must not be {@code null}.
+     *        The data binding context.
      */
     public BannerDialogDataBindingAdapter(
         final AbstractBannerDialog bannerDialog,
@@ -120,7 +120,7 @@ public class BannerDialogDataBindingAdapter
     /**
      * Creates the UI change listener.
      * 
-     * @return The UI change listener; never {@code null}.
+     * @return The UI change listener.
      */
     private IChangeListener createUIChangeListener()
     {
@@ -138,8 +138,7 @@ public class BannerDialogDataBindingAdapter
     /**
      * Creates the validation status provider targets list change listener.
      * 
-     * @return The validation status provider targets list change listener;
-     *         never {@code null}.
+     * @return The validation status provider targets list change listener.
      */
     private IListChangeListener createValidationStatusProviderTargetsListChangeListener()
     {
@@ -171,8 +170,7 @@ public class BannerDialogDataBindingAdapter
     /**
      * Creates the validation status providers list change listener.
      * 
-     * @return The validation status providers list change listener; never
-     *         {@code null}.
+     * @return The validation status providers list change listener.
      */
     private IListChangeListener createValidationStatusProvidersListChangeListener()
     {
@@ -248,7 +246,7 @@ public class BannerDialogDataBindingAdapter
     /**
      * Gets the banner dialog.
      * 
-     * @return The banner dialog; never {@code null}.
+     * @return The banner dialog.
      */
     protected final AbstractBannerDialog getBannerDialog()
     {

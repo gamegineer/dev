@@ -81,7 +81,7 @@ public final class SwingRealm
      * </p>
      * 
      * @param runnable
-     *        The runnable to execute; must not be {@code null}.
+     *        The runnable to execute.
      */
     private static void execSystem(
         final Runnable runnable )
@@ -158,7 +158,7 @@ public final class SwingRealm
      * </p>
      * 
      * @param runnable
-     *        The runnable to execute; must not be {@code null}.
+     *        The runnable to execute.
      */
     private static void safeInvokeAndWait(
         final Runnable runnable )

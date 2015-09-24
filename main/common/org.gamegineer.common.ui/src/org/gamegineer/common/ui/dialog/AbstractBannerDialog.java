@@ -125,10 +125,9 @@ public abstract class AbstractBannerDialog
      * Creates the dialog banner component.
      * 
      * @param parent
-     *        The parent container for the dialog banner; must not be
-     *        {@code null}.
+     *        The parent container for the dialog banner.
      * 
-     * @return The dialog banner component; never {@code null}.
+     * @return The dialog banner component.
      */
     private Component createBanner(
         final Container parent )
@@ -211,10 +210,9 @@ public abstract class AbstractBannerDialog
      * </p>
      * 
      * @param parent
-     *        The parent container for the dialog content area; must not be
-     *        {@code null}.
+     *        The parent container for the dialog content area.
      * 
-     * @return The dialog content area component; never {@code null}.
+     * @return The dialog content area component.
      */
     protected Component createContentArea(
         final Container parent )

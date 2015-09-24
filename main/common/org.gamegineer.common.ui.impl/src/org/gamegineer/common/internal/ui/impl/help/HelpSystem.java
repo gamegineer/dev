@@ -155,7 +155,7 @@ public final class HelpSystem
      * system.
      * 
      * @param helpSetProvider
-     *        The help set provider; must not be {@code null}.
+     *        The help set provider.
      */
     private void addHelpSet(
         final IHelpSetProvider helpSetProvider )
@@ -180,7 +180,7 @@ public final class HelpSystem
      * Binds the application branding to this component.
      * 
      * @param branding
-     *        The application branding; must not be {@code null}.
+     *        The application branding.
      * 
      * @throws java.lang.IllegalStateException
      *         If the application branding is already bound.
@@ -251,7 +251,7 @@ public final class HelpSystem
      * reference.
      * 
      * @param helpSetProviderReference
-     *        The help set provider service reference; must not be {@code null}.
+     *        The help set provider service reference.
      */
     public void registerHelpSetProvider(
         final ServiceReference<IHelpSetProvider> helpSetProviderReference )
@@ -270,7 +270,7 @@ public final class HelpSystem
      * system.
      * 
      * @param helpSetProvider
-     *        The help set provider; must not be {@code null}.
+     *        The help set provider.
      */
     private void removeHelpSet(
         final IHelpSetProvider helpSetProvider )
@@ -357,7 +357,7 @@ public final class HelpSystem
      * Unbinds the application branding from this component.
      * 
      * @param branding
-     *        The application branding; must not be {@code null}.
+     *        The application branding.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code branding} is not currently bound.
@@ -377,7 +377,7 @@ public final class HelpSystem
      * reference.
      * 
      * @param helpSetProviderReference
-     *        The help set provider service reference; must not be {@code null}.
+     *        The help set provider service reference.
      */
     public void unregisterHelpSetProvider(
         final ServiceReference<IHelpSetProvider> helpSetProviderReference )

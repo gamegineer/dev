@@ -66,8 +66,7 @@ final class HelpSetProviderProxy
      * Initializes a new instance of the {@code HelpSetProviderProxy} class.
      * 
      * @param helpSetProviderReference
-     *        The service registry reference to the help set provider; must not
-     *        be {@code null}.
+     *        The service registry reference to the help set provider.
      */
     HelpSetProviderProxy(
         final ServiceReference<IHelpSetProvider> helpSetProviderReference )
@@ -104,8 +103,7 @@ final class HelpSetProviderProxy
     /**
      * Gets the actual help set provider associated with this proxy.
      * 
-     * @return The actual help set provider associated with this proxy; never
-     *         {@code null}.
+     * @return The actual help set provider associated with this proxy.
      * 
      * @throws java.lang.IllegalStateException
      *         If the actual help set provider cannot be obtained.

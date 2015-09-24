@@ -129,7 +129,7 @@ public abstract class RunnableTask<T, V>
     /**
      * Gets the current task description.
      * 
-     * @return The current task description; never {@code null}.
+     * @return The current task description.
      */
     public final String getDescription()
     {
@@ -172,7 +172,7 @@ public abstract class RunnableTask<T, V>
      * Sets the current task description.
      * 
      * @param description
-     *        The current task description; must not be {@code null}.
+     *        The current task description.
      */
     protected final void setDescription(
         final String description )
