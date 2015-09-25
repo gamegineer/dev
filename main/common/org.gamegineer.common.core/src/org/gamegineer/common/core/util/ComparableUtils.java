@@ -21,6 +21,8 @@
 
 package org.gamegineer.common.core.util;
 
+import java.util.Comparator;
+import java.util.Objects;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -67,15 +69,6 @@ public final class ComparableUtils
         final @Nullable T obj1,
         final @Nullable T obj2 )
     {
-        if( obj1 == null )
-        {
-            return (obj2 == null) ? 0 : -1;
-        }
-        else if( obj2 == null )
-        {
-            return +1;
-        }
-
-        return obj1.compareTo( obj2 );
+        return Objects.compare( obj1, obj2, Comparator.nullsFirst( Comparator.<@Nullable T>naturalOrder() ) );
     }
 }
