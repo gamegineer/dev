@@ -25,10 +25,10 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import net.jcip.annotations.Immutable;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.ComparableUtils;
-import org.gamegineer.common.core.util.ObjectUtils;
 
 /**
  * The path to a component from its associated table.
@@ -155,12 +155,10 @@ public final class ComponentPath
      * @see java.lang.Object#hashCode()
      */
     @Override
+    @SuppressWarnings( "boxing" )
     public int hashCode()
     {
-        int hashCode = 17;
-        hashCode = 31 * hashCode + ObjectUtils.hashCode( parentPath_ );
-        hashCode = 31 * hashCode + index_;
-        return hashCode;
+        return Objects.hash( parentPath_, index_ );
     }
 
     /**

@@ -21,9 +21,9 @@
 
 package org.gamegineer.common.persistence.serializable;
 
+import java.util.Objects;
 import net.jcip.annotations.Immutable;
 import org.eclipse.jdt.annotation.Nullable;
-import org.gamegineer.common.core.util.ObjectUtils;
 
 /**
  * A fake non-serializable class used for testing the object serialization
@@ -92,7 +92,7 @@ public final class FakeNonSerializableClass
         }
 
         final FakeNonSerializableClass other = (FakeNonSerializableClass)obj;
-        return (intField_ == other.intField_) && ObjectUtils.equals( stringField_, other.stringField_ );
+        return (intField_ == other.intField_) && Objects.equals( stringField_, other.stringField_ );
     }
 
     /**
@@ -119,11 +119,9 @@ public final class FakeNonSerializableClass
      * @see java.lang.Object#hashCode()
      */
     @Override
+    @SuppressWarnings( "boxing" )
     public int hashCode()
     {
-        int result = 17;
-        result = result * 31 + intField_;
-        result = result * 31 + ObjectUtils.hashCode( stringField_ );
-        return result;
+        return Objects.hash( intField_, stringField_ );
     }
 }
