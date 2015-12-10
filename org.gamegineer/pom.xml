@@ -80,6 +80,7 @@
 		<g8r-repository-authority>build.g8r.local:8081</g8r-repository-authority>
 		<g8r-site-url>http://${g8r-repository-authority}/nexus/content/sites/site/gamegineer</g8r-site-url>
 		<g8r-version>0.17.0-SNAPSHOT</g8r-version>
+		<jacoco-maven-plugin-version>0.7.5.201505241946</jacoco-maven-plugin-version>
 		<maven-deploy-plugin-version>2.8.1</maven-deploy-plugin-version>
 		<maven-javadoc-plugin-version>2.9.1</maven-javadoc-plugin-version>
 		<maven-javahelp-plugin-version>1.1-SNAPSHOT</maven-javahelp-plugin-version>
@@ -117,6 +118,11 @@
 				<plugin>
 					<artifactId>maven-project-info-reports-plugin</artifactId>
 					<version>${maven-project-info-reports-plugin-version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.wagon</groupId>
+					<artifactId>wagon-webdav-jackrabbit</artifactId>
+					<version>${wagon-webdav-jackrabbit-version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
@@ -159,9 +165,9 @@
 					<version>${tycho-version}</version>
 				</plugin>
 				<plugin>
-					<groupId>org.apache.maven.wagon</groupId>
-					<artifactId>wagon-webdav-jackrabbit</artifactId>
-					<version>${wagon-webdav-jackrabbit-version}</version>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>${jacoco-maven-plugin-version}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -184,7 +190,7 @@
 					<excludes>
 						<exclude>**/*TestCase.java</exclude>
 					</excludes>
-					<argLine>-ea</argLine>
+					<argLine>${tycho.testArgLine} -ea</argLine>
 					<dependencies>
 						<dependency>
 							<type>p2-installable-unit</type>
@@ -227,5 +233,35 @@
 			</plugin>
 		</plugins>
 	</reporting>
+
+	<profiles>
+		<profile>
+			<id>code-coverage</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>prepare-agent</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>no-code-coverage</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<tycho.testArgLine></tycho.testArgLine>
+			</properties>
+		</profile>
+	</profiles>
 
 </project>
