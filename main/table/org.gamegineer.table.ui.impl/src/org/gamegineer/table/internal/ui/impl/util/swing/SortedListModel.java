@@ -1,6 +1,6 @@
 /*
  * SortedListModel.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -68,33 +68,18 @@ public final class SortedListModel<E>
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code SortedListModel} class using the
-     * default comparator.
-     * 
-     * @param listModel
-     *        The unsorted list model.
-     */
-    public SortedListModel(
-        final ListModel<E> listModel )
-    {
-        this( listModel, null );
-    }
-
-    /**
-     * Initializes a new instance of the {@code SortedListModel} class using the
-     * specified comparator.
+     * Initializes a new instance of the {@code SortedListModel} class.
      * 
      * @param listModel
      *        The unsorted list model.
      * @param comparator
-     *        The comparator used to sort the list model or {@code null} to use
-     *        the default comparator.
+     *        The comparator used to sort the list model.
      */
     public SortedListModel(
         final ListModel<E> listModel,
-        final @Nullable Comparator<E> comparator )
+        final Comparator<E> comparator )
     {
-        comparator_ = (comparator != null) ? comparator : createDefaultComparator();
+        comparator_ = comparator;
         sortedEntries_ = new ArrayList<>( listModel.getSize() );
         unsortedListModel_ = listModel;
 
@@ -106,27 +91,6 @@ public final class SortedListModel<E>
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Creates a default comparator used to sort elements by their natural
-     * order.
-     * 
-     * @return A default comparator.
-     */
-    private Comparator<E> createDefaultComparator()
-    {
-        return new Comparator<E>()
-        {
-            @Override
-            @SuppressWarnings( "unchecked" )
-            public int compare(
-                final E o1,
-                final E o2 )
-            {
-                return ((Comparable<E>)o1).compareTo( o2 );
-            }
-        };
-    }
 
     /*
      * @see javax.swing.ListModel#getElementAt(int)

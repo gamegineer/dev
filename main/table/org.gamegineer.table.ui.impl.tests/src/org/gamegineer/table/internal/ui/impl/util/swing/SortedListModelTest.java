@@ -1,6 +1,6 @@
 /*
  * SortedListModelTest.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -102,7 +102,7 @@ public final class SortedListModelTest
         {
             unsortedListModel.addElement( element );
         }
-        final SortedListModel<String> sortedListModel = new SortedListModel<>( unsortedListModel );
+        final SortedListModel<String> sortedListModel = new SortedListModel<>( unsortedListModel, Comparator.naturalOrder() );
 
         assertEquals( elements[ 3 ], sortedListModel.getElementAt( 0 ) );
         assertEquals( elements[ 2 ], sortedListModel.getElementAt( 1 ) );

@@ -1,6 +1,6 @@
 /*
  * DialogPageDataBindingAdapter.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -192,7 +192,9 @@ public class DialogPageDataBindingAdapter
                         targets.addListChangeListener( validationStatusProviderTargetsListChangeListener_ );
                         for( final Iterator<?> iterator = targets.iterator(); iterator.hasNext(); )
                         {
-                            ((IObservable)iterator.next()).addChangeListener( uiChangeListener_ );
+                            final IObservable observable = (IObservable)iterator.next();
+                            assert observable != null;
+                            observable.addChangeListener( uiChangeListener_ );
                         }
                     }
                     else
@@ -200,7 +202,9 @@ public class DialogPageDataBindingAdapter
                         targets.removeListChangeListener( validationStatusProviderTargetsListChangeListener_ );
                         for( final Iterator<?> iterator = targets.iterator(); iterator.hasNext(); )
                         {
-                            ((IObservable)iterator.next()).removeChangeListener( uiChangeListener_ );
+                            final IObservable observable = (IObservable)iterator.next();
+                            assert observable != null;
+                            observable.removeChangeListener( uiChangeListener_ );
                         }
                     }
                 }
@@ -226,11 +230,14 @@ public class DialogPageDataBindingAdapter
             for( final Iterator<?> validationStatusProviderIterator = dataBindingContext.getValidationStatusProviders().iterator(); validationStatusProviderIterator.hasNext(); )
             {
                 final ValidationStatusProvider validationStatusProvider = (ValidationStatusProvider)validationStatusProviderIterator.next();
+                assert validationStatusProvider != null;
                 final IObservableList targets = validationStatusProvider.getTargets();
                 targets.removeListChangeListener( validationStatusProviderTargetsListChangeListener_ );
                 for( final Iterator<?> targetIterator = targets.iterator(); targetIterator.hasNext(); )
                 {
-                    ((IObservable)targetIterator.next()).removeChangeListener( uiChangeListener_ );
+                    final IObservable observable = (IObservable)targetIterator.next();
+                    assert observable != null;
+                    observable.removeChangeListener( uiChangeListener_ );
                 }
             }
         }
@@ -283,11 +290,14 @@ public class DialogPageDataBindingAdapter
         for( final Iterator<?> validationStatusProviderListener = dataBindingContext.getValidationStatusProviders().iterator(); validationStatusProviderListener.hasNext(); )
         {
             final ValidationStatusProvider validationStatusProvider = (ValidationStatusProvider)validationStatusProviderListener.next();
+            assert validationStatusProvider != null;
             final IObservableList targets = validationStatusProvider.getTargets();
             targets.removeListChangeListener( validationStatusProviderTargetsListChangeListener_ );
             for( final Iterator<?> targetIterator = targets.iterator(); targetIterator.hasNext(); )
             {
-                ((IObservable)targetIterator.next()).removeChangeListener( uiChangeListener_ );
+                final IObservable observable = (IObservable)targetIterator.next();
+                assert observable != null;
+                observable.removeChangeListener( uiChangeListener_ );
             }
         }
     }
@@ -364,11 +374,14 @@ public class DialogPageDataBindingAdapter
         for( final Iterator<?> validationStatusProviderIterator = dataBindingContext.getValidationStatusProviders().iterator(); validationStatusProviderIterator.hasNext(); )
         {
             final ValidationStatusProvider validationStatusProvider = (ValidationStatusProvider)validationStatusProviderIterator.next();
+            assert validationStatusProvider != null;
             final IObservableList targets = validationStatusProvider.getTargets();
             targets.addListChangeListener( validationStatusProviderTargetsListChangeListener_ );
             for( final Iterator<?> targetIterator = targets.iterator(); targetIterator.hasNext(); )
             {
-                ((IObservable)targetIterator.next()).addChangeListener( uiChangeListener_ );
+                final IObservable observable = (IObservable)targetIterator.next();
+                assert observable != null;
+                observable.addChangeListener( uiChangeListener_ );
             }
         }
     }
