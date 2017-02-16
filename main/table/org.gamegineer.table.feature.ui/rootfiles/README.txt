@@ -28,4 +28,4 @@ A copy of the GNU General Public License is contained in the file LICENSE.txt, s
 
 USAGE
 
-Gamegineer requires a Java 7 or later runtime to be installed.  To start Gamegineer, run the gamegineer.bat file, sibling to this file.  (Users of non-Windows operating systems should simply copy and execute the contents of this batch file.)
+Gamegineer requires a Java 8 or later runtime to be installed.  To start Gamegineer, run the gamegineer.bat file, sibling to this file.  (Users of non-Windows operating systems should simply copy and execute the contents of this batch file.)
