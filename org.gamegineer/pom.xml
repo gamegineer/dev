@@ -46,8 +46,8 @@
 		<url>https://github.com/gamegineer/dev/tree/master/org.gamegineer</url>
 	</scm>
 	<issueManagement>
-		<system>Allura</system>
-		<url>http://sourceforge.net/p/gamegineer/tickets/</url>
+		<system>GitHub</system>
+		<url>https://github.com/gamegineer/dev/issues</url>
 	</issueManagement>
 	<ciManagement>
 		<system>Jenkins</system>
