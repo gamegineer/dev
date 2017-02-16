@@ -3,7 +3,7 @@
 REM =========================================================================
 REM
 REM dev-environment.bat
-REM Copyright 2008-2015 Gamegineer contributors and others.
+REM Copyright 2008-2017 Gamegineer contributors and others.
 REM All rights reserved.
 REM
 REM This is a sample development environment setup script required for a
@@ -23,15 +23,14 @@ REM
 REM
 REM Home directories of all build tools.
 REM
-SET ANT_HOME=C:\Program Files\apache-ant-1.9.6
-SET ECLIPSE_HOME=C:\Program Files\eclipse-4.5.0
-SET JAVA_HOME=C:\Program Files\Java\jdk1.8.0_60
-SET MAVEN_HOME=C:\Program Files\apache-maven-3.3.3
+SET ECLIPSE_HOME=C:\Program Files\eclipse-neon
+SET JAVA_HOME=C:\Program Files\Java\jdk1.8.0_121
+SET MAVEN_HOME=C:\Program Files\apache-maven-3.3.9
 
 REM
 REM Build tool options.
 REM
-SET ECLIPSE_OPTS=-Xmx512M
+SET ECLIPSE_OPTS=-Xmx1536M
 
 REM
 REM END-CUSTOM-VARIABLES
@@ -41,7 +40,7 @@ REM -------------------------------------------------------------------------
 REM
 REM Update path to include all build-related binaries.
 REM
-SET PATH=%JAVA_HOME%\bin;%ANT_HOME%\bin;%MAVEN_HOME%\bin;%ECLIPSE_HOME%;%PATH%
+SET PATH=%JAVA_HOME%\bin;%MAVEN_HOME%\bin;%ECLIPSE_HOME%;%PATH%
 
 REM
 REM Create useful macros.
