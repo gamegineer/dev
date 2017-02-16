@@ -141,6 +141,11 @@
 				</plugin>
 				<plugin>
 					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-compiler-plugin</artifactId>
+					<version>${tycho-version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
 					<artifactId>tycho-maven-plugin</artifactId>
 					<version>${tycho-version}</version>
 				</plugin>

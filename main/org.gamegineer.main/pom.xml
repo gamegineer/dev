@@ -54,4 +54,25 @@
 		</repository>
 	</repositories>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-compiler-plugin</artifactId>
+				<configuration>
+					<compilerArgs>
+						<compilerArg>-annotationpath</compilerArg>
+						 <!--
+						 FIXME: This is a Maven anti-pattern.  We should not refer to files outside of a module.
+						 A possible solution is to publish the org.gamegineer.other.settings module to the Maven
+						 repository and to require it as a dependency.  Then the files can be accessed by
+						 unpacking the dependent module.
+						 -->
+						<compilerArg>other/org.gamegineer.other.settings/eclipse/annotations</compilerArg>
+					</compilerArgs>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>
