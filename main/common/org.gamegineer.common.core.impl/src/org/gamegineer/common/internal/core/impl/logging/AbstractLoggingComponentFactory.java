@@ -1,6 +1,6 @@
 /*
  * AbstractLoggingComponentFactory.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -286,7 +286,7 @@ public abstract class AbstractLoggingComponentFactory<@NonNull T>
         {
             final String filter = String.format( "(%1$s=%2$s)", ComponentConstants.COMPONENT_FACTORY, typeName ); //$NON-NLS-1$
             @SuppressWarnings( "null" )
-            final Collection<ServiceReference<ComponentFactory>> serviceReferences = (Collection<ServiceReference<ComponentFactory>>)nonNull( Activator.getDefault().getBundleContext().<@NonNull ComponentFactory>getServiceReferences( nonNull( ComponentFactory.class ), filter ) );
+            final Collection<ServiceReference<ComponentFactory>> serviceReferences = (Collection<ServiceReference<ComponentFactory>>)nonNull( Activator.getDefault().getBundleContext().<@NonNull ComponentFactory>getServiceReferences( ComponentFactory.class, filter ) );
             if( serviceReferences.isEmpty() )
             {
                 return null;

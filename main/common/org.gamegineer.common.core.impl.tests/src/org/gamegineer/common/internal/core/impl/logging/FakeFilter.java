@@ -1,6 +1,6 @@
 /*
  * FakeFilter.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -107,7 +107,7 @@ public final class FakeFilter
      */
     public static ServiceRegistration<ComponentFactory> registerComponentFactory()
     {
-        final ComponentFactory componentFactory = new AbstractLoggingComponentFactory<FakeFilter>( nonNull( FakeFilter.class ) )
+        final ComponentFactory componentFactory = new AbstractLoggingComponentFactory<FakeFilter>( FakeFilter.class )
         {
             @Override
             protected void configureLoggingComponent(
@@ -122,7 +122,7 @@ public final class FakeFilter
                     return;
                 }
 
-                final String value = LoggingProperties.getProperty( properties, nonNull( component.getClass() ), instanceName, PROPERTY_FAKE_BOOLEAN_PROPERTY );
+                final String value = LoggingProperties.getProperty( properties, component.getClass(), instanceName, PROPERTY_FAKE_BOOLEAN_PROPERTY );
                 if( value != null )
                 {
                     component.setFakeBooleanProperty( Boolean.parseBoolean( value ) );
@@ -131,7 +131,7 @@ public final class FakeFilter
         };
         final Dictionary<String, Object> properties = new Hashtable<>();
         properties.put( ComponentConstants.COMPONENT_FACTORY, FakeFilter.class.getName() );
-        return nonNull( Activator.getDefault().getBundleContext().<@NonNull ComponentFactory>registerService( nonNull( ComponentFactory.class ), componentFactory, properties ) );
+        return nonNull( Activator.getDefault().getBundleContext().<@NonNull ComponentFactory>registerService( ComponentFactory.class, componentFactory, properties ) );
     }
 
     /**

@@ -1,6 +1,6 @@
 /*
  * AbstractRemoteNode.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.net.impl.node;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
@@ -139,9 +138,9 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
         table_ = new RemoteNetworkTable( this );
         uncorrelatedMessageHandlers_ = new IdentityHashMap<>();
 
-        registerUncorrelatedMessageHandler( nonNull( ComponentIncrementMessage.class ), ComponentIncrementMessageHandler.INSTANCE );
-        registerUncorrelatedMessageHandler( nonNull( ErrorMessage.class ), ErrorMessageHandler.INSTANCE );
-        registerUncorrelatedMessageHandler( nonNull( TableMessage.class ), TableMessageHandler.INSTANCE );
+        registerUncorrelatedMessageHandler( ComponentIncrementMessage.class, ComponentIncrementMessageHandler.INSTANCE );
+        registerUncorrelatedMessageHandler( ErrorMessage.class, ErrorMessageHandler.INSTANCE );
+        registerUncorrelatedMessageHandler( TableMessage.class, TableMessageHandler.INSTANCE );
     }
 
 
@@ -552,7 +551,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
          */
         private ErrorMessageHandler()
         {
-            super( nonNull( IRemoteNodeController.class ) );
+            super( IRemoteNodeController.class );
         }
 
 

@@ -1,6 +1,6 @@
 /*
  * FakeHandler.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -95,13 +95,13 @@ public final class FakeHandler
      */
     public static ServiceRegistration<ComponentFactory> registerComponentFactory()
     {
-        final ComponentFactory componentFactory = new AbstractHandlerFactory<FakeHandler>( nonNull( FakeHandler.class ) )
+        final ComponentFactory componentFactory = new AbstractHandlerFactory<FakeHandler>( FakeHandler.class )
         {
             // no overrides
         };
         final Dictionary<String, Object> properties = new Hashtable<>();
         properties.put( ComponentConstants.COMPONENT_FACTORY, FakeHandler.class.getName() );
-        return nonNull( Activator.getDefault().getBundleContext().<@NonNull ComponentFactory>registerService( nonNull( ComponentFactory.class ), componentFactory, properties ) );
+        return nonNull( Activator.getDefault().getBundleContext().<@NonNull ComponentFactory>registerService( ComponentFactory.class, componentFactory, properties ) );
     }
 
     /**
@@ -113,7 +113,7 @@ public final class FakeHandler
      */
     public static ServiceRegistration<ComponentFactory> registerFailingComponentFactory()
     {
-        final ComponentFactory componentFactory = new AbstractHandlerFactory<FakeHandler>( nonNull( FakeHandler.class ) )
+        final ComponentFactory componentFactory = new AbstractHandlerFactory<FakeHandler>( FakeHandler.class )
         {
             @Override
             protected FakeHandler createLoggingComponent(
@@ -124,6 +124,6 @@ public final class FakeHandler
         };
         final Dictionary<String, Object> properties = new Hashtable<>();
         properties.put( ComponentConstants.COMPONENT_FACTORY, FakeHandler.class.getName() );
-        return nonNull( Activator.getDefault().getBundleContext().<@NonNull ComponentFactory>registerService( nonNull( ComponentFactory.class ), componentFactory, properties ) );
+        return nonNull( Activator.getDefault().getBundleContext().<@NonNull ComponentFactory>registerService( ComponentFactory.class, componentFactory, properties ) );
     }
 }

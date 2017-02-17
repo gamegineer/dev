@@ -1,6 +1,6 @@
 /*
  * ComponentFactory.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.core.impl;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.HashMap;
 import java.util.Map;
 import net.jcip.annotations.ThreadSafe;
@@ -90,8 +89,8 @@ final class ComponentFactory
         final Object memento )
         throws MementoException
     {
-        final IComponentStrategy strategy = getComponentStrategy( MementoUtils.<@NonNull ComponentStrategyId>getAttribute( memento, STRATEGY_ID_MEMENTO_ATTRIBUTE_NAME, nonNull( ComponentStrategyId.class ) ) );
-        final Component component = createComponent( MementoUtils.<@NonNull String>getAttribute( memento, CLASS_NAME_MEMENTO_ATTRIBUTE_NAME, nonNull( String.class ) ), tableEnvironment, strategy );
+        final IComponentStrategy strategy = getComponentStrategy( MementoUtils.<@NonNull ComponentStrategyId>getAttribute( memento, STRATEGY_ID_MEMENTO_ATTRIBUTE_NAME, ComponentStrategyId.class ) );
+        final Component component = createComponent( MementoUtils.<@NonNull String>getAttribute( memento, CLASS_NAME_MEMENTO_ATTRIBUTE_NAME, String.class ), tableEnvironment, strategy );
         component.setMemento( memento );
         return component;
     }

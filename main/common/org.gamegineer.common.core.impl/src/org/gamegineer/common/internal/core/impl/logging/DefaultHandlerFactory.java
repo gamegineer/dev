@@ -1,6 +1,6 @@
 /*
  * DefaultHandlerFactory.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.logging.Handler;
 import net.jcip.annotations.ThreadSafe;
 
@@ -42,6 +41,6 @@ public final class DefaultHandlerFactory
      */
     public DefaultHandlerFactory()
     {
-        super( nonNull( Handler.class ) );
+        super( Handler.class );
     }
 }

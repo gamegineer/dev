@@ -1,6 +1,6 @@
 /*
  * RemoteClientNode.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.impl.node.server;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collection;
 import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.jdt.annotation.Nullable;
@@ -91,11 +90,11 @@ final class RemoteClientNode
         challenge_ = null;
         salt_ = null;
 
-        registerUncorrelatedMessageHandler( nonNull( CancelControlRequestMessage.class ), CancelControlRequestMessageHandler.INSTANCE );
-        registerUncorrelatedMessageHandler( nonNull( GiveControlMessage.class ), GiveControlMessageHandler.INSTANCE );
-        registerUncorrelatedMessageHandler( nonNull( GoodbyeMessage.class ), GoodbyeMessageHandler.INSTANCE );
-        registerUncorrelatedMessageHandler( nonNull( HelloRequestMessage.class ), HelloRequestMessageHandler.INSTANCE );
-        registerUncorrelatedMessageHandler( nonNull( RequestControlMessage.class ), RequestControlMessageHandler.INSTANCE );
+        registerUncorrelatedMessageHandler( CancelControlRequestMessage.class, CancelControlRequestMessageHandler.INSTANCE );
+        registerUncorrelatedMessageHandler( GiveControlMessage.class, GiveControlMessageHandler.INSTANCE );
+        registerUncorrelatedMessageHandler( GoodbyeMessage.class, GoodbyeMessageHandler.INSTANCE );
+        registerUncorrelatedMessageHandler( HelloRequestMessage.class, HelloRequestMessageHandler.INSTANCE );
+        registerUncorrelatedMessageHandler( RequestControlMessage.class, RequestControlMessageHandler.INSTANCE );
     }
 
 

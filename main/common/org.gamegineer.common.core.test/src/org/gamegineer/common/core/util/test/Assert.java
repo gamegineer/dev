@@ -1,6 +1,6 @@
 /*
  * Assert.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.core.util.test;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import net.jcip.annotations.ThreadSafe;
@@ -133,7 +132,7 @@ public final class Assert
                 return true;
             }
         }
-        catch( @SuppressWarnings( "unused" ) final ClassCastException e )
+        catch( final @SuppressWarnings( "unused" ) ClassCastException e )
         {
             return false;
         }
@@ -161,7 +160,7 @@ public final class Assert
         }
 
         @SuppressWarnings( "all" )
-        final IEqualityComparator<Object> equalityComparator = adapterManager.getAdapter( obj, nonNull( IEqualityComparator.class ) );
+        final IEqualityComparator<Object> equalityComparator = adapterManager.getAdapter( obj, IEqualityComparator.class );
         return equalityComparator;
     }
 }

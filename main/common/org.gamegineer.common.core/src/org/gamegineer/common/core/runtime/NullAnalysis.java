@@ -1,6 +1,6 @@
 /*
  * NullAnalysis.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -99,30 +99,5 @@ public final class NullAnalysis
         final T castValue = type.cast( value );
         assert castValue != null;
         return castValue;
-    }
-
-    /**
-     * Casts the specified class with a {@code null} type parameter to the
-     * equivalent class with a non-{@code null} type parameter.
-     * 
-     * <p>
-     * See Eclipse Bug 477719
-     * (https://bugs.eclipse.org/bugs/show_bug.cgi?id=477719).
-     * </p>
-     * 
-     * @param <T>
-     *        The type of the class.
-     * 
-     * @param type
-     *        The class to be cast.
-     * 
-     * @return The cast class.
-     */
-    public static <T> @NonNull Class<@NonNull T> nonNull(
-        final Class<T> type )
-    {
-        @SuppressWarnings( "null" )
-        final @NonNull Class<@NonNull T> nonNullType = (@NonNull Class<@NonNull T>)type;
-        return nonNullType;
     }
 }

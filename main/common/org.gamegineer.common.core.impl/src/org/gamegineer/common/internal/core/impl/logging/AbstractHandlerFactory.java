@@ -1,6 +1,6 @@
 /*
  * AbstractHandlerFactory.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.logging.Filter;
@@ -104,7 +103,7 @@ public abstract class AbstractHandlerFactory<@NonNull T extends Handler>
         final String instanceName,
         final Map<String, String> properties )
     {
-        final String value = LoggingProperties.getProperty( properties, nonNull( handler.getClass() ), instanceName, LoggingServiceConstants.PROPERTY_HANDLER_ENCODING );
+        final String value = LoggingProperties.getProperty( properties, handler.getClass(), instanceName, LoggingServiceConstants.PROPERTY_HANDLER_ENCODING );
         if( value != null )
         {
             try
@@ -134,7 +133,7 @@ public abstract class AbstractHandlerFactory<@NonNull T extends Handler>
         final String instanceName,
         final Map<String, String> properties )
     {
-        final String value = LoggingProperties.getProperty( properties, nonNull( handler.getClass() ), instanceName, LoggingServiceConstants.PROPERTY_HANDLER_FILTER );
+        final String value = LoggingProperties.getProperty( properties, handler.getClass(), instanceName, LoggingServiceConstants.PROPERTY_HANDLER_FILTER );
         if( value != null )
         {
             try
@@ -168,7 +167,7 @@ public abstract class AbstractHandlerFactory<@NonNull T extends Handler>
         final String instanceName,
         final Map<String, String> properties )
     {
-        final String value = LoggingProperties.getProperty( properties, nonNull( handler.getClass() ), instanceName, LoggingServiceConstants.PROPERTY_HANDLER_FORMATTER );
+        final String value = LoggingProperties.getProperty( properties, handler.getClass(), instanceName, LoggingServiceConstants.PROPERTY_HANDLER_FORMATTER );
         if( value != null )
         {
             try
@@ -202,7 +201,7 @@ public abstract class AbstractHandlerFactory<@NonNull T extends Handler>
         final String instanceName,
         final Map<String, String> properties )
     {
-        final String value = LoggingProperties.getProperty( properties, nonNull( handler.getClass() ), instanceName, LoggingServiceConstants.PROPERTY_HANDLER_LEVEL );
+        final String value = LoggingProperties.getProperty( properties, handler.getClass(), instanceName, LoggingServiceConstants.PROPERTY_HANDLER_LEVEL );
         if( value != null )
         {
             try

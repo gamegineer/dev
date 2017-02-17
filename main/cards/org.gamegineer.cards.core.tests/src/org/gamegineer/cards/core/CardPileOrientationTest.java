@@ -1,6 +1,6 @@
 /*
  * CardPileOrientationTest.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.cards.core;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import org.eclipse.jdt.annotation.NonNull;
 import org.junit.Test;
@@ -64,7 +63,7 @@ public final class CardPileOrientationTest
     @Test
     public void testInverse_NoUnsupportedValues()
     {
-        for( final CardPileOrientation orientation : CardPileOrientation.<@NonNull CardPileOrientation>values( nonNull( CardPileOrientation.class ) ) )
+        for( final CardPileOrientation orientation : CardPileOrientation.<@NonNull CardPileOrientation>values( CardPileOrientation.class ) )
         {
             orientation.inverse();
         }

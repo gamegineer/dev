@@ -1,6 +1,6 @@
 /*
  * ExtensibleEnumTest.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.core.util;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import java.io.ByteArrayInputStream;
@@ -108,7 +107,7 @@ public final class ExtensibleEnumTest
     @Test( expected = IllegalArgumentException.class )
     public void testValueOf_Name_Illegal()
     {
-        ExtensibleEnum.<@NonNull MockEnum>valueOf( nonNull( MockEnum.class ), "__UNKNOWN_NAME__" ); //$NON-NLS-1$
+        ExtensibleEnum.<@NonNull MockEnum>valueOf( MockEnum.class, "__UNKNOWN_NAME__" ); //$NON-NLS-1$
     }
 
     /**
@@ -118,9 +117,9 @@ public final class ExtensibleEnumTest
     @Test
     public void testValueOf_Name_Legal()
     {
-        assertSame( MockEnum.CONSTANT_1, ExtensibleEnum.<@NonNull MockEnum>valueOf( nonNull( MockEnum.class ), MockEnum.CONSTANT_1.name() ) );
-        assertSame( MockEnum.CONSTANT_2, ExtensibleEnum.<@NonNull MockEnum>valueOf( nonNull( MockEnum.class ), MockEnum.CONSTANT_2.name() ) );
-        assertSame( MockEnum.CONSTANT_3, ExtensibleEnum.<@NonNull MockEnum>valueOf( nonNull( MockEnum.class ), MockEnum.CONSTANT_3.name() ) );
+        assertSame( MockEnum.CONSTANT_1, ExtensibleEnum.<@NonNull MockEnum>valueOf( MockEnum.class, MockEnum.CONSTANT_1.name() ) );
+        assertSame( MockEnum.CONSTANT_2, ExtensibleEnum.<@NonNull MockEnum>valueOf( MockEnum.class, MockEnum.CONSTANT_2.name() ) );
+        assertSame( MockEnum.CONSTANT_3, ExtensibleEnum.<@NonNull MockEnum>valueOf( MockEnum.class, MockEnum.CONSTANT_3.name() ) );
     }
 
     /**
@@ -135,7 +134,7 @@ public final class ExtensibleEnumTest
             MockEnum.CONSTANT_2, //
             MockEnum.CONSTANT_3 );
 
-        final List<MockEnum> actualValues = ExtensibleEnum.<@NonNull MockEnum>values( nonNull( MockEnum.class ) );
+        final List<MockEnum> actualValues = ExtensibleEnum.<@NonNull MockEnum>values( MockEnum.class );
 
         assertEquals( expectedValues, actualValues );
     }

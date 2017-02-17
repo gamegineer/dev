@@ -1,6 +1,6 @@
 /*
  * Container.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.core.impl;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -620,11 +619,11 @@ final class Container
 
         super.readMemento( memento );
 
-        setLayoutId( MementoUtils.<@NonNull ContainerLayoutId>getAttribute( memento, LAYOUT_ID_MEMENTO_ATTRIBUTE_NAME, nonNull( ContainerLayoutId.class ) ) );
+        setLayoutId( MementoUtils.<@NonNull ContainerLayoutId>getAttribute( memento, LAYOUT_ID_MEMENTO_ATTRIBUTE_NAME, ContainerLayoutId.class ) );
         @SuppressWarnings( {
             "rawtypes", "unchecked"
         } )
-        final List<Object> componentMementos = MementoUtils.<@NonNull List>getAttribute( memento, COMPONENTS_MEMENTO_ATTRIBUTE_NAME, nonNull( List.class ) );
+        final List<Object> componentMementos = MementoUtils.<@NonNull List>getAttribute( memento, COMPONENTS_MEMENTO_ATTRIBUTE_NAME, List.class );
         setComponentMementos( componentMementos );
     }
 

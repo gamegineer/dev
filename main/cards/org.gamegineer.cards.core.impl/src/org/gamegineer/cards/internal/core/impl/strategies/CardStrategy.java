@@ -1,6 +1,6 @@
 /*
  * CardStrategy.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.cards.internal.core.impl.strategies;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -53,7 +52,7 @@ final class CardStrategy
     // ======================================================================
 
     /** The collection of supported card orientations. */
-    private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( CardOrientation.<@NonNull CardOrientation>values( nonNull( CardOrientation.class ) ) );
+    private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( CardOrientation.<@NonNull CardOrientation>values( CardOrientation.class ) );
 
 
     // ======================================================================

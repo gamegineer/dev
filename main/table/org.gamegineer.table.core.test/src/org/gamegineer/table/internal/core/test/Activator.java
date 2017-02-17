@@ -1,6 +1,6 @@
 /*
  * Activator.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.core.test;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
@@ -142,7 +141,7 @@ public final class Activator
     {
         synchronized( lock_ )
         {
-            return ServiceTrackerUtils.openService( componentStrategyRegistryTrackerRef_, getBundleContextInternal(), nonNull( IComponentStrategyRegistry.class ) );
+            return ServiceTrackerUtils.openService( componentStrategyRegistryTrackerRef_, getBundleContextInternal(), IComponentStrategyRegistry.class );
         }
     }
 
@@ -156,7 +155,7 @@ public final class Activator
     {
         synchronized( lock_ )
         {
-            return ServiceTrackerUtils.openService( componentSurfaceDesignRegistryTrackerRef_, getBundleContextInternal(), nonNull( IComponentSurfaceDesignRegistry.class ) );
+            return ServiceTrackerUtils.openService( componentSurfaceDesignRegistryTrackerRef_, getBundleContextInternal(), IComponentSurfaceDesignRegistry.class );
         }
     }
 
@@ -170,7 +169,7 @@ public final class Activator
     {
         synchronized( lock_ )
         {
-            return ServiceTrackerUtils.openService( containerLayoutRegistryTrackerRef_, getBundleContextInternal(), nonNull( IContainerLayoutRegistry.class ) );
+            return ServiceTrackerUtils.openService( containerLayoutRegistryTrackerRef_, getBundleContextInternal(), IContainerLayoutRegistry.class );
         }
     }
 
@@ -184,7 +183,7 @@ public final class Activator
     {
         synchronized( lock_ )
         {
-            return ServiceTrackerUtils.openService( tableEnvironmentFactoryTrackerRef_, getBundleContextInternal(), nonNull( ITableEnvironmentFactory.class ) );
+            return ServiceTrackerUtils.openService( tableEnvironmentFactoryTrackerRef_, getBundleContextInternal(), ITableEnvironmentFactory.class );
         }
     }
 
