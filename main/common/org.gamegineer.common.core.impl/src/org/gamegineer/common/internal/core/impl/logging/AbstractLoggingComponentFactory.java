@@ -22,7 +22,6 @@
 package org.gamegineer.common.internal.core.impl.logging;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -137,7 +136,7 @@ public abstract class AbstractLoggingComponentFactory<@NonNull T>
         try
         {
             final Class<?> type = Class.forName( typeName );
-            return nonNull( type_, type.newInstance() );
+            return type_.cast( type.newInstance() );
         }
         catch( final ClassNotFoundException e )
         {
