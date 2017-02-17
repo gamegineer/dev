@@ -1,6 +1,6 @@
 /*
  * ComponentPathTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -54,7 +54,7 @@ public final class ComponentPathTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_Index_Illegal_Negative()
     {
-        new ComponentPath( null, -1 );
+        new ComponentPath( ComponentPath.ROOT, -1 );
     }
 
     /**
@@ -64,13 +64,13 @@ public final class ComponentPathTest
     @Test
     public void testToList_OneLevelDeep()
     {
-        final ComponentPath componentPath0 = new ComponentPath( null, 0 );
+        final ComponentPath componentPath0 = ComponentPath.ROOT;
         final List<ComponentPath> expectedValue = Arrays.asList( //
             componentPath0 );
 
         final List<ComponentPath> actualValue = componentPath0.toList();
 
-        assertEquals( actualValue, expectedValue );
+        assertEquals( expectedValue, actualValue );
     }
 
     /**
@@ -80,7 +80,7 @@ public final class ComponentPathTest
     @Test
     public void testToList_ThreeLevelsDeep()
     {
-        final ComponentPath componentPath0 = new ComponentPath( null, 0 );
+        final ComponentPath componentPath0 = ComponentPath.ROOT;
         final ComponentPath componentPath1 = new ComponentPath( componentPath0, 10 );
         final ComponentPath componentPath2 = new ComponentPath( componentPath1, 100 );
         final List<ComponentPath> expectedValue = Arrays.asList( //
@@ -90,7 +90,7 @@ public final class ComponentPathTest
 
         final List<ComponentPath> actualValue = componentPath2.toList();
 
-        assertEquals( actualValue, expectedValue );
+        assertEquals( expectedValue, actualValue );
     }
 
     /**
@@ -100,7 +100,7 @@ public final class ComponentPathTest
     @Test
     public void testToList_TwoLevelsDeep()
     {
-        final ComponentPath componentPath0 = new ComponentPath( null, 0 );
+        final ComponentPath componentPath0 = ComponentPath.ROOT;
         final ComponentPath componentPath1 = new ComponentPath( componentPath0, 10 );
         final List<ComponentPath> expectedValue = Arrays.asList( //
             componentPath0, //
@@ -108,6 +108,26 @@ public final class ComponentPathTest
 
         final List<ComponentPath> actualValue = componentPath1.toList();
 
-        assertEquals( actualValue, expectedValue );
+        assertEquals( expectedValue, actualValue );
+    }
+
+    /**
+     * Ensures the {@link ComponentPath#toString} method returns the correct
+     * string representation of the component path.
+     */
+    @SuppressWarnings( "boxing" )
+    @Test
+    public void testToString()
+    {
+        final ComponentPath componentPath0 = ComponentPath.ROOT;
+        final ComponentPath componentPath1 = new ComponentPath( componentPath0, 10 );
+        final ComponentPath componentPath2 = new ComponentPath( componentPath1, 100 );
+        final String expectedValue = String.format( //
+            "ComponentPath[%d.%d.%d]", //$NON-NLS-1$
+            componentPath0.getIndex(), componentPath1.getIndex(), componentPath2.getIndex() );
+
+        final String actualValue = componentPath2.toString();
+
+        assertEquals( expectedValue, actualValue );
     }
 }

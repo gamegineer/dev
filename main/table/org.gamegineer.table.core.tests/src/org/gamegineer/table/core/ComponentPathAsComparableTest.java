@@ -1,6 +1,6 @@
 /*
  * ComponentPathAsComparableTest.java
- * Copyright 2008-2013 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -56,9 +56,8 @@ public final class ComponentPathAsComparableTest
     protected Collection<ComponentPath> createGreaterThanInstances()
     {
         final Collection<ComponentPath> others = new ArrayList<>();
-        others.add( new ComponentPath( new ComponentPath( new ComponentPath( null, 1 ), 1 ), 0 ) );
-        others.add( new ComponentPath( new ComponentPath( null, 1 ), 2 ) );
-        others.add( new ComponentPath( new ComponentPath( null, 2 ), 1 ) );
+        others.add( new ComponentPath( new ComponentPath( ComponentPath.ROOT, 1 ), 0 ) );
+        others.add( new ComponentPath( ComponentPath.ROOT, 2 ) );
         return others;
     }
 
@@ -69,9 +68,8 @@ public final class ComponentPathAsComparableTest
     protected Collection<ComponentPath> createLessThanInstances()
     {
         final Collection<ComponentPath> others = new ArrayList<>();
-        others.add( new ComponentPath( null, 1 ) );
-        others.add( new ComponentPath( new ComponentPath( null, 1 ), 0 ) );
-        others.add( new ComponentPath( new ComponentPath( null, 0 ), 1 ) );
+        others.add( ComponentPath.ROOT );
+        others.add( new ComponentPath( ComponentPath.ROOT, 0 ) );
         return others;
     }
 
@@ -81,7 +79,7 @@ public final class ComponentPathAsComparableTest
     @Override
     protected ComponentPath createReferenceInstance()
     {
-        return new ComponentPath( new ComponentPath( null, 1 ), 1 );
+        return new ComponentPath( ComponentPath.ROOT, 1 );
     }
 
     /*
@@ -91,10 +89,9 @@ public final class ComponentPathAsComparableTest
     protected Collection<ComponentPath> createUnequalInstances()
     {
         final Collection<ComponentPath> others = new ArrayList<>();
-        others.add( new ComponentPath( null, 1 ) );
-        others.add( new ComponentPath( new ComponentPath( null, 0 ), 1 ) );
-        others.add( new ComponentPath( new ComponentPath( null, 1 ), 0 ) );
-        others.add( new ComponentPath( new ComponentPath( new ComponentPath( null, 1 ), 1 ), 1 ) );
+        others.add( ComponentPath.ROOT );
+        others.add( new ComponentPath( ComponentPath.ROOT, 0 ) );
+        others.add( new ComponentPath( new ComponentPath( ComponentPath.ROOT, 1 ), 1 ) );
         return others;
     }
 }

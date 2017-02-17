@@ -1,0 +1,4 @@
+class java/util/stream/IntStream
+toArray
+ ()[I
+ ()[1I

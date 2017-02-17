@@ -1,6 +1,6 @@
 /*
  * TableModelTest.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -413,9 +413,8 @@ public final class TableModelTest
         container.addComponent( createUniqueComponent() );
         container.addComponent( createUniqueComponent() );
 
-        assertNull( tableModel.getComponentModel( new ComponentPath( null, 1 ) ) );
-        assertNull( tableModel.getComponentModel( new ComponentPath( new ComponentPath( null, 0 ), 1 ) ) );
-        assertNull( tableModel.getComponentModel( new ComponentPath( new ComponentPath( new ComponentPath( null, 0 ), 0 ), 3 ) ) );
+        assertNull( tableModel.getComponentModel( new ComponentPath( ComponentPath.ROOT, 1 ) ) );
+        assertNull( tableModel.getComponentModel( new ComponentPath( new ComponentPath( ComponentPath.ROOT, 0 ), 3 ) ) );
     }
 
     /**

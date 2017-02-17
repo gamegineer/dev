@@ -1,6 +1,6 @@
 /*
  * ComponentPath.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import net.jcip.annotations.Immutable;
 import org.eclipse.jdt.annotation.Nullable;
 import org.gamegineer.common.core.util.ComparableUtils;
@@ -53,11 +55,17 @@ public final class ComponentPath
     // Fields
     // ======================================================================
 
-    /** The component index relative to its parent. */
+    /** The path to the root component of a component hierarchy */
+    public static final ComponentPath ROOT = new ComponentPath( Optional.empty(), -1 );
+
+    /**
+     * The component index relative to its parent or -1 if the component has no
+     * parent.
+     */
     private final int index_;
 
-    /** The parent path or {@code null} if the component has no parent. */
-    private final @Nullable ComponentPath parentPath_;
+    /** The parent path or empty if the component has no parent. */
+    private final Optional<ComponentPath> parentPath_;
 
 
     // ======================================================================
@@ -68,7 +76,26 @@ public final class ComponentPath
      * Initializes a new instance of the {@code ComponentPath} class.
      * 
      * @param parentPath
-     *        The parent path or {@code null} if the component has no parent.
+     *        The parent path or empty if the component has no parent.
+     * @param index
+     *        component index relative to its parent or -1 if the component has
+     *        no parent.
+     */
+    private ComponentPath(
+        final Optional<ComponentPath> parentPath,
+        final int index )
+    {
+        assert index >= -1;
+
+        index_ = index;
+        parentPath_ = parentPath;
+    }
+
+    /**
+     * Initializes a new instance of the {@code ComponentPath} class.
+     * 
+     * @param parentPath
+     *        The parent path.
      * @param index
      *        The component index relative to its parent.
      * 
@@ -76,13 +103,12 @@ public final class ComponentPath
      *         If {@code index} is negative.
      */
     public ComponentPath(
-        final @Nullable ComponentPath parentPath,
+        final ComponentPath parentPath,
         final int index )
     {
-        assertArgumentLegal( index >= 0, "index", NonNlsMessages.ComponentPath_ctor_index_negative ); //$NON-NLS-1$
+        this( Optional.of( parentPath ), index );
 
-        index_ = index;
-        parentPath_ = parentPath;
+        assertArgumentLegal( index >= 0, "index", NonNlsMessages.ComponentPath_ctor_index_negative ); //$NON-NLS-1$
     }
 
 
@@ -102,7 +128,9 @@ public final class ComponentPath
             throw new NullPointerException( "other" ); //$NON-NLS-1$
         }
 
-        final int parentPathCompareResult = ComparableUtils.compareTo( parentPath_, other.parentPath_ );
+        final @Nullable ComponentPath parentPath = parentPath_.isPresent() ? parentPath_.get() : null;
+        final @Nullable ComponentPath otherParentPath = other.parentPath_.isPresent() ? other.parentPath_.get() : null;
+        final int parentPathCompareResult = ComparableUtils.compareTo( parentPath, otherParentPath );
         if( parentPathCompareResult != 0 )
         {
             return parentPathCompareResult;
@@ -134,7 +162,8 @@ public final class ComponentPath
     /**
      * Gets the component index relative to its parent.
      * 
-     * @return The component index relative to its parent.
+     * @return The component index relative to its parent or -1 if the component
+     *         has no parent.
      */
     public int getIndex()
     {
@@ -144,9 +173,9 @@ public final class ComponentPath
     /**
      * Gets the parent path.
      * 
-     * @return The parent path or {@code null} if the component has no parent.
+     * @return The parent path or empty if the component has no parent.
      */
-    public @Nullable ComponentPath getParentPath()
+    public Optional<ComponentPath> getParentPath()
     {
         return parentPath_;
     }
@@ -173,11 +202,12 @@ public final class ComponentPath
     {
         final List<ComponentPath> componentPaths = new ArrayList<>();
 
-        ComponentPath componentPath = this;
-        while( componentPath != null )
+        Optional<ComponentPath> componentPath = Optional.of( this );
+        while( componentPath.isPresent() )
         {
-            componentPaths.add( componentPath );
-            componentPath = componentPath.getParentPath();
+            final ComponentPath value = componentPath.get();
+            componentPaths.add( value );
+            componentPath = value.getParentPath();
         }
 
         Collections.reverse( componentPaths );
@@ -192,17 +222,10 @@ public final class ComponentPath
     {
         final StringBuilder sb = new StringBuilder();
         sb.append( "ComponentPath[" ); //$NON-NLS-1$
-
-        final List<ComponentPath> componentPaths = toList();
-        for( int index = 0, size = componentPaths.size(); index < size; ++index )
-        {
-            sb.append( componentPaths.get( index ).getIndex() );
-            if( index < (size - 1) )
-            {
-                sb.append( '.' );
-            }
-        }
-
+        sb.append( toList().stream() //
+            .map( ComponentPath::getIndex ) //
+            .map( Object::toString ) //
+            .collect( Collectors.joining( "." ) ) ); //$NON-NLS-1$
         sb.append( "]" ); //$NON-NLS-1$
         return sb.toString();
     }

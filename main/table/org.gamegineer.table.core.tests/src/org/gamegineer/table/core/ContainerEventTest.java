@@ -1,6 +1,6 @@
 /*
  * ContainerEventTest.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -77,7 +77,7 @@ public final class ContainerEventTest
     public void setUp()
         throws Exception
     {
-        containerEvent_ = Optional.of( new ContainerEvent( EasyMock.createMock( IContainer.class ), new ComponentPath( null, 0 ) ) );
+        containerEvent_ = Optional.of( new ContainerEvent( EasyMock.createMock( IContainer.class ), ComponentPath.ROOT ) );
     }
 
     /**

@@ -79,7 +79,7 @@ final class Table
     private static final String TABLETOP_MEMENTO_ATTRIBUTE_NAME = "table.tabletop"; //$NON-NLS-1$
 
     /** The path to the tabletop component. */
-    private static final ComponentPath TABLETOP_PATH = new ComponentPath( null, 0 );
+    private static final ComponentPath TABLETOP_PATH = ComponentPath.ROOT;
 
     /**
      * The drag context for the active drag-and-drop operation or {@code null}
@@ -240,8 +240,7 @@ final class Table
         final ComponentPath path )
     {
         final List<ComponentPath> paths = path.toList();
-        final ComponentPath tabletopPath = paths.get( 0 );
-        if( tabletopPath.getIndex() != 0 )
+        if( !TABLETOP_PATH.equals( paths.get( 0 ) ) )
         {
             return null;
         }

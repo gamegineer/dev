@@ -1,6 +1,6 @@
 /*
  * AbstractComponentTestCase.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -543,7 +543,7 @@ public abstract class AbstractComponentTestCase<TableEnvironmentType extends ITa
         container.addComponent( component2 );
         final IComponent component3 = createComponent( getTableEnvironment() );
         container.addComponent( component3 );
-        final ComponentPath expectedTabletopPath = new ComponentPath( null, 0 );
+        final ComponentPath expectedTabletopPath = ComponentPath.ROOT;
         final ComponentPath expectedContainerPath = new ComponentPath( expectedTabletopPath, 0 );
         final ComponentPath expectedComponentPath1 = new ComponentPath( expectedContainerPath, 0 );
         final ComponentPath expectedComponentPath2 = new ComponentPath( expectedContainerPath, 1 );

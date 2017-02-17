@@ -1,6 +1,6 @@
 /*
  * ComponentPathProxy.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.persistence.serializable;
 
 import java.io.Serializable;
-import java.util.List;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.ComponentPath;
 
@@ -41,8 +40,15 @@ public final class ComponentPathProxy
     private static final long serialVersionUID = -1400726262099665541L;
 
     /**
-     * The collection of component indexes ordered from the root-most ancestor
-     * component to the leaf-most component.
+     * The collection of component indexes ordered from the penultimate-root
+     * ancestor component to the leaf component.
+     * 
+     * <p>
+     * The root component index is <b>NOT</b> included in this collection. The
+     * root path component is always assumed to be {@link ComponentPath#ROOT}.
+     * Therefore, this collection will be empty only when the root component
+     * path is serialized.
+     * </p>
      * 
      * @serial
      */
@@ -72,12 +78,10 @@ public final class ComponentPathProxy
     public ComponentPathProxy(
         final ComponentPath componentPath )
     {
-        final List<ComponentPath> componentPaths = componentPath.toList();
-        indexes_ = new int[ componentPaths.size() ];
-        for( int index = 0; index < indexes_.length; ++index )
-        {
-            indexes_[ index ] = componentPaths.get( index ).getIndex();
-        }
+        indexes_ = componentPath.toList().stream() //
+            .filter( path -> !path.equals( ComponentPath.ROOT ) ) //
+            .mapToInt( ComponentPath::getIndex ) //
+            .toArray();
     }
 
 
@@ -94,15 +98,12 @@ public final class ComponentPathProxy
      */
     private Object readResolve()
     {
-        assert indexes_.length > 0;
-
-        ComponentPath componentPath = null;
-        for( int index = 0; index < indexes_.length; ++index )
+        ComponentPath componentPath = ComponentPath.ROOT;
+        for( final int index : indexes_ )
         {
-            componentPath = new ComponentPath( componentPath, indexes_[ index ] );
+            componentPath = new ComponentPath( componentPath, index );
         }
 
-        assert componentPath != null;
         return componentPath;
     }
 }

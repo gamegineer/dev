@@ -1,6 +1,6 @@
 /*
  * ComponentEventTest.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -77,7 +77,7 @@ public final class ComponentEventTest
     public void setUp()
         throws Exception
     {
-        componentEvent_ = Optional.of( new ComponentEvent( EasyMock.createMock( IComponent.class ), new ComponentPath( null, 0 ) ) );
+        componentEvent_ = Optional.of( new ComponentEvent( EasyMock.createMock( IComponent.class ), ComponentPath.ROOT ) );
     }
 
     /**

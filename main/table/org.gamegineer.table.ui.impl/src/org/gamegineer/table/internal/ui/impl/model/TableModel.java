@@ -1,6 +1,6 @@
 /*
  * TableModel.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -88,7 +88,7 @@ public final class TableModel
     };
 
     /** The path to the tabletop component model. */
-    private static final ComponentPath TABLETOP_MODEL_PATH = new ComponentPath( null, 0 );
+    private static final ComponentPath TABLETOP_MODEL_PATH = ComponentPath.ROOT;
 
     /**
      * The table revision number at which the table model was last committed.
@@ -356,8 +356,7 @@ public final class TableModel
         final ComponentPath path )
     {
         final List<ComponentPath> paths = path.toList();
-        final ComponentPath tabletopPath = paths.get( 0 );
-        if( tabletopPath.getIndex() != 0 )
+        if( !TABLETOP_MODEL_PATH.equals( paths.get( 0 ) ) )
         {
             return null;
         }
