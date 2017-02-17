@@ -1,6 +1,6 @@
 /*
  * LoggingService.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -93,7 +92,7 @@ public final class LoggingService
         // order to ensure the "org.gamegineer" logger is created so that all
         // other Gamegineer bundle loggers will inherit its attributes.
         // DO NOT REMOVE THIS STATEMENT!
-        getLogger( nonNull( bundleContext.getBundle() ) ).info( "Gamegineer logging service activated" ); //$NON-NLS-1$
+        getLogger( bundleContext.getBundle() ).info( "Gamegineer logging service activated" ); //$NON-NLS-1$
     }
 
     /**

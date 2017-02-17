@@ -49,36 +49,6 @@ public final class NullAnalysis
     // ======================================================================
 
     /**
-     * Casts the specified possibly {@code null} value to a non-{@code null}
-     * value.
-     * 
-     * <p>
-     * This method is intended to be used as a bridge between legacy APIs that
-     * have an unspecified nullity and code that employs null analysis. It is
-     * assumed that the legacy API whose return value is passed to this method
-     * has been verified to return a non-{@code null} value. If the specified
-     * value is {@code null}, an {@link AssertionError} will be raised.
-     * </p>
-     * 
-     * @param <T>
-     *        The type of the value.
-     * 
-     * @param value
-     *        The value.
-     * 
-     * @return The value.
-     * 
-     * @throws java.lang.AssertionError
-     *         If {@code value} is {@code null}.
-     */
-    public static <T> @NonNull T nonNull(
-        final T value )
-    {
-        assert value != null;
-        return value;
-    }
-
-    /**
      * Casts the specified non-{@code null} value to a non-{@code null} value of
      * the specified type.
      * 

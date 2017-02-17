@@ -285,8 +285,7 @@ public abstract class AbstractLoggingComponentFactory<@NonNull T>
         try
         {
             final String filter = String.format( "(%1$s=%2$s)", ComponentConstants.COMPONENT_FACTORY, typeName ); //$NON-NLS-1$
-            @SuppressWarnings( "null" )
-            final Collection<ServiceReference<ComponentFactory>> serviceReferences = (Collection<ServiceReference<ComponentFactory>>)nonNull( Activator.getDefault().getBundleContext().<@NonNull ComponentFactory>getServiceReferences( ComponentFactory.class, filter ) );
+            final Collection<ServiceReference<ComponentFactory>> serviceReferences = Activator.getDefault().getBundleContext().<@NonNull ComponentFactory>getServiceReferences( ComponentFactory.class, filter );
             if( serviceReferences.isEmpty() )
             {
                 return null;

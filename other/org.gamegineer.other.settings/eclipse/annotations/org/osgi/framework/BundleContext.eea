@@ -1,0 +1,10 @@
+class org/osgi/framework/BundleContext
+getBundle
+ ()Lorg/osgi/framework/Bundle;
+ ()L1org/osgi/framework/Bundle;
+getServiceReferences
+ <S:Ljava/lang/Object;>(Ljava/lang/Class<TS;>;Ljava/lang/String;)Ljava/util/Collection<Lorg/osgi/framework/ServiceReference<TS;>;>;
+ <S:Ljava/lang/Object;>(Ljava/lang/Class<TS;>;Ljava/lang/String;)L1java/util/Collection<L1org/osgi/framework/ServiceReference<TS;>;>;
+registerService
+ <S:Ljava/lang/Object;>(Ljava/lang/Class<TS;>;TS;Ljava/util/Dictionary<Ljava/lang/String;*>;)Lorg/osgi/framework/ServiceRegistration<TS;>;
+ <S:Ljava/lang/Object;>(Ljava/lang/Class<TS;>;TS;Ljava/util/Dictionary<Ljava/lang/String;*>;)L1org/osgi/framework/ServiceRegistration<TS;>;

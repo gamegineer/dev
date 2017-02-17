@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.internal.core.impl.logging;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Map;
@@ -131,7 +130,7 @@ public final class FakeFilter
         };
         final Dictionary<String, Object> properties = new Hashtable<>();
         properties.put( ComponentConstants.COMPONENT_FACTORY, FakeFilter.class.getName() );
-        return nonNull( Activator.getDefault().getBundleContext().<@NonNull ComponentFactory>registerService( ComponentFactory.class, componentFactory, properties ) );
+        return Activator.getDefault().getBundleContext().<@NonNull ComponentFactory>registerService( ComponentFactory.class, componentFactory, properties );
     }
 
     /**

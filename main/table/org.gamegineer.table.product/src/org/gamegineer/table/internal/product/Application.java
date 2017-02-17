@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.product;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -129,7 +128,7 @@ public final class Application
         final IApplicationContext context )
     {
         final IBranding branding = new Branding( context );
-        brandingServiceRegistrationRef_.set( nonNull( Activator.getDefault().getBundleContext().<@NonNull IBranding>registerService( IBranding.class, branding, null ) ) );
+        brandingServiceRegistrationRef_.set( Activator.getDefault().getBundleContext().<@NonNull IBranding>registerService( IBranding.class, branding, null ) );
         return branding;
     }
 

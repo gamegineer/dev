@@ -1,6 +1,6 @@
 /*
  * Loggers.java
- * Copyright 2008-2015 Gamegineer contributors and others.
+ * Copyright 2008-2017 Gamegineer contributors and others.
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.internal.ui;
 
-import static org.gamegineer.common.core.runtime.NullAnalysis.nonNull;
 import java.util.logging.Logger;
 import net.jcip.annotations.ThreadSafe;
 
@@ -55,6 +54,6 @@ public final class Loggers
      */
     public static Logger getDefaultLogger()
     {
-        return getLogger( nonNull( Activator.getDefault().getBundleContext().getBundle() ), null );
+        return getLogger( Activator.getDefault().getBundleContext().getBundle(), null );
     }
 }
